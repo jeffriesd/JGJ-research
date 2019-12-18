@@ -95,6 +95,7 @@
 \renewcommand{\C}{\mathcal{C}}
 \newcommand{\A}{\mathcal{A}}
 \renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
 \newcommand{\pid}{\underline{\mathit{id}}}
 \newcommand{\pcirc}{\,\underline{\circ}\,}
 \newcommand{\pzero}{\underline{0}}
@@ -2028,10 +2029,17 @@ $\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}$ is well-defined and
 gives a natural transformation from $\relsem{\Gamma; \Phi \vdash
   \Delta}$ to $\relsem{\Gamma; \Phi \vdash \tau}$.
 \end{lemma}
+
+{\color{blue} We will need to know that type interpretations respect type
+substitution. That's what all these little lemmas will establish.
+We will also ultimately want to know that term interpretations respect
+type susbstitution, and that term interpretations respect term
+substitution.}
+
 \begin{proof}
 The type application case will need the following lemma:
 \[ \setsem{\Gamma;\Phi \vdash F[\overline{\alpha := \tau}]}\rho =
-\setsem{\Gamma;\Phi \vdash F}\rho[\overline{\alpha :=
+\setsem{\Gamma;\Phi, \bm \alpha \vdash F}\rho[\overline{\alpha :=
     \setsem{\Gamma;\Phi \vdash \tau}\rho}] \]
 and probably a similar lemma for the relation interpretations.
 
@@ -2090,6 +2098,53 @@ If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
   \tau},\setsem{t : \tau}) \in \relsem{\tau}$.
 \end{thm}
 
+{\color{blue} We will need to go back and add typing rules for
+  well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
+  and relational interpretations of these maps (just the actual
+  functoial actions), and cases for $\map$ to all of our proofs thus
+  far having to do with terms.
+
+Next we will want to sanity-check our model by showing that term
+interps respect conversion rules. These are
+\begin{itemize}
+\item $\lambda x. t = \lambda y. t[x := y]$
+  \item $L_{\bm \alpha} x.t = L_{\bm \beta}y.(t[\bm \alpha := \bm
+    \beta][x := y])$
+\item $(\lambda x. t) s = t[x := s]$  
+\item $(L_{\bm \alpha} x.t)_{\bm \tau} s = t[\bm \alpha := \bm
+  \tau][x := s]$
+\item $\pi_i(t_1,t_2) = t_i$
+\item RULE FOR SUMS  
+\item $\fold\,k\,(in\,t) = k\,(\map\,(\fold\,k)\,t)$
+\item $\map \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm \alpha} x.x$
+\item $\map^\F_H \,(\overline{L_{\bm \alpha} x. \eta_{\bm \alpha}
+  (\mu_{\bm \alpha} x)}) = L_{\bigcup {\bm \alpha}}x.(\map^\F_H\,
+  \overline{\eta})_{\bigcup \bm \alpha} ((\map^\F_H\,
+  \overline{\mu})_{\bigcup \bm \alpha} x)$
+\item $\map^\T_F\, (\overline{\lambda x. x}) = \lambda x. x$
+\item $\map^\T_F\, \overline{\lambda x. g(fx)} = \lambda x. \map^\T_F\,
+  \overline{g}\, (\map^\T_F\, \overline{f}\, x)$
+\item $\lambda x. \map^\T_G\, \overline{f}\, (\eta_{\overline \sigma} x) =
+  \lambda x.\eta_{\overline \tau}\, (\map^\T_F \,\overline{f}\, x)$ 
+\item and other conversion rules as on page 18 of MFPS paper
+\end{itemize}
+Note that there is no analogue of the last conversion rulewhen the
+first vector of arguments to $\map^\F_H$ consists of natural
+transformations because natural transformations can only be atural in
+type variables (i.e., type constructor variables of arity $0$.
+
+
+
+
+Note that there are no computation rules for types because types are
+always fully applied in our syntax.
+
+The show that we have initial algebras for all functors definable in
+our syntax (perhaps in two steps, first by showing that we have a weak
+initial algebra, and then showing uniqueness), and possibly that we
+have final coalgebras as well.
+
+Other sanity checks?}
 
 \section{Free Theorems for Nested Types}
 
