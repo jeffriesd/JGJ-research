@@ -2114,8 +2114,8 @@ interps respect conversion rules. These are
 \item $(L_{\bm \alpha} x.t)_{\bm \tau} s = t[\bm \alpha := \bm
   \tau][x := s]$
 \item $\pi_i(t_1,t_2) = t_i$
-\item RULE FOR SUMS  
-\item $\fold\,k\,(in\,t) = k\,(\map\,(\fold\,k)\,t)$
+\item $\case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} = t_i[x_i := t]$
+\item $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$
 \item $\map \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm \alpha} x.x$
 \item $\map^\F_H \,(\overline{L_{\bm \alpha} x. \eta_{\bm \alpha}
   (\mu_{\bm \alpha} x)}) = L_{\bigcup {\bm \alpha}}x.(\map^\F_H\,
@@ -2124,11 +2124,19 @@ interps respect conversion rules. These are
 \item $\map^\T_F\, (\overline{\lambda x. x}) = \lambda x. x$
 \item $\map^\T_F\, \overline{\lambda x. g(fx)} = \lambda x. \map^\T_F\,
   \overline{g}\, (\map^\T_F\, \overline{f}\, x)$
-\item $\lambda x. \map^\T_G\, \overline{f}\, (\eta_{\overline \sigma} x) =
-  \lambda x.\eta_{\overline \tau}\, (\map^\T_F \,\overline{f}\, x)$ 
+\item $\star\;\;\;\lambda x. \map^\T_G\, \overline{f}\,
+  (\eta_{\overline \sigma} x) = \lambda x.\eta_{\overline \tau}\,
+  (\map^\T_F \,\overline{f}\, x)$
+\item $ \map^\F_H (\overline{\map^\F_{K_i} \overline{t_i}}) =
+  \map^\F_{H[\overline{\psi := K}]}\,\overline{t}$
+\item $\map^\T_G \, (\map^\T_F \, \overline{t}) =
+  \map^\T_{G[\overline{\beta := F}]}\,\overline{t}$
+\item $\map^\T_\alpha \, f = f$
+\item $\map^\F_\phi\, \eta = \eta$
+\item $\fold_H \, \tin_H x = x$ (This says syntactically that $\tin$ is initial)  
 \item and other conversion rules as on page 18 of MFPS paper
 \end{itemize}
-Note that there is no analogue of the last conversion rulewhen the
+Note that there is no analogue of the conversion rule $\star$ when the
 first vector of arguments to $\map^\F_H$ consists of natural
 transformations because natural transformations can only be atural in
 type variables (i.e., type constructor variables of arity $0$.
@@ -2136,12 +2144,12 @@ type variables (i.e., type constructor variables of arity $0$.
 Note that there are no computation rules for types because types are
 always fully applied in our syntax.
 
-The show that we have initial algebras for all functors definable in
-our syntax (perhaps in two steps, first by showing that we have a weak
-initial algebra, and then showing uniqueness), and possibly that we
-have final coalgebras as well.
+Show $\sem{\Gamma; \emptyset \vdash \sigma \to \tau} = \sem{\Gamma;
+  \emptyset \vdash \Nat^\emptyset\, \sigma\, \tau}$.
 
-Other sanity checks?}
+Other sanity checks?
+
+}
 
 \section{Free Theorems for Nested Types}
 
