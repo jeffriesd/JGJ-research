@@ -528,7 +528,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi^k := \mu \phi^k.\lambda 
   \alpha_1...\alpha_k.H][\alpha_1 := A_1]...[\alpha_k := A_k]$}
 \AXC{$\Gamma;\Phi \vdash A_i \mbox{\,for\,}i = 1,...,k$}
-\BIC{$\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi^k.\lambda 
+\BIC{$\Gamma;\Phi \,|\, \Delta \vdash \tin_H \,t : (\mu \phi^k.\lambda 
   \alpha_1...\alpha_k.H)A_1...A_k$}
 \DisplayProof
 \\\\
@@ -537,7 +537,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma;\emptyset \,|\, \Delta \vdash t :
   \Nat^{\bm \alpha}\,H[\phi := F][\bm \beta := \bm \alpha]\,F$}
 \TIC{$\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\bm \alpha}\,((\mu
+  \fold_H\, t : \Nat^{\bm \alpha}\,((\mu
   \phi.\lambda \bm \beta.H)\bm \alpha)\,F$} 
 \DisplayProof
 \end{array}\]
@@ -630,10 +630,11 @@ immaterial. Definition~\ref{def:set-interp} ensures that
       \tau_1},...,\alpha_k := \setsem{\Gamma;\Phi \vdash \tau_k}])\]
   Moreover, the third {\color{red} fourth} clause does indeed define a
   set. Indeed, local finite presentability of $\set$ and
-  $\omega$-cocontinuity of $\setsem{\Gamma;\bm \alpha \vdash
-    F}\rho$ ensure that $\{\eta : \setsem{\Gamma;\bm \alpha
-    \vdash F}\rho \Rightarrow \setsem{\Gamma;\bm \alpha \vdash
-    G}\rho\}$ (which contains $\setsem{\Gamma;\emptyset \vdash \Nat^{\bm \alpha}\,F\,G}\rho$) is equal to
+  $\omega$-cocontinuity of $\setsem{\Gamma;\bm \alpha \vdash F}\rho$
+  ensure that $\{\eta : \setsem{\Gamma;\bm \alpha \vdash F}\rho
+  \Rightarrow \setsem{\Gamma;\bm \alpha \vdash G}\rho\}$ (which
+  contains $\setsem{\Gamma;\emptyset \vdash \Nat^{\bm
+      \alpha}\,F\,G}\rho$) is a subset of
 \[\big\{({\setsem{\Gamma;\bm \alpha \vdash G}\rho[\bm \alpha := \bm
     S]})^{(\setsem{\Gamma;\bm \alpha \vdash F}\rho[\bm \alpha := \bm
     S])}~\big|~ {\bm S} = (S_1,...,S_{|\bm \alpha|}), \mbox{ and } S_i
@@ -2115,33 +2116,38 @@ interps respect conversion rules. These are
   \tau][x := s]$
 \item $\pi_i(t_1,t_2) = t_i$
 \item $\case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} = t_i[x_i := t]$
-\item $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$
+\item and other conversion rules as on page 18 of MFPS paper
+\item \item \item 
+\item All of the above are shorthands for saying that the interps of
+  the LHSs are the same as the interps of the RHSs. For this
+  conversiton rule: $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$,
+  we can't express it in syntax. So what we really want to say here is
+  that some semantic equivalent of this syntacic rule holds. And
+  similarly for the next rules.
 \item $\fold_H \, \tin_H x = x$ (Intuitively, this is the syntactic
   counterpart to initiality of $\tin$.)  
-\item $\map \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm \alpha} x.x$
+\item $\map^\F_H \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm
+  \alpha} x.x$ for all $H$
 \item $\map^\F_H \,(\overline{L_{\bm \alpha} x. \eta_{\bm \alpha}
   (\mu_{\bm \alpha} x)}) = L_{\bigcup {\bm \alpha}}x.(\map^\F_H\,
   \overline{\eta})_{\bigcup \bm \alpha} ((\map^\F_H\,
   \overline{\mu})_{\bigcup \bm \alpha} x)$
-\item $\map^\T_F\, (\overline{\lambda x. x}) = \lambda x. x$
-\item $\map^\T_F\, \overline{\lambda x. g(fx)} = \lambda x. \map^\T_F\,
-  \overline{g}\, (\map^\T_F\, \overline{f}\, x)$
-\item $\star\;\;\;\lambda x. \map^\T_G\, \overline{f}\,
-  (\eta_{\overline \sigma} x) = \lambda x.\eta_{\overline \tau}\,
-  (\map^\T_F \,\overline{f}\, x)$
+%\item $\map^\T_F\, (\overline{\lambda x. x}) = \lambda x. x$
+%\item $\map^\T_F\, \overline{\lambda x. g(fx)} = \lambda x. \map^\T_F\,
+%  \overline{g}\, (\map^\T_F\, \overline{f}\, x)$
+%\item $\star\;\;\;\lambda x. \map^\T_G\, \overline{f}\,
+%  (\eta_{\overline \sigma} x) = \lambda x.\eta_{\overline \tau}\,
+%  (\map^\T_F \,\overline{f}\, x)$
+\item $\lambda x. \map^\F_G\, \overline{f}\, (\eta_{\overline \sigma}
+  x) = \lambda x.\eta_{\overline \tau}\, (\map^\F_F \,\overline{f}\,
+  x)$ (note that $.. \vdash f : \Nat^\emptyset\,F\,G$)
 \item $ \map^\F_H (\overline{\map^\F_{K_i} \overline{t_i}}) =
   \map^\F_{H[\overline{\psi := K}]}\,\overline{t}$
-\item $\map^\T_G \, (\map^\T_F \, \overline{t}) =
-  \map^\T_{G[\overline{\beta := F}]}\,\overline{t}$
-\item $\map^\T_\alpha \, f = f$
+%\item $\map^\T_G \, (\map^\T_F \, \overline{t}) =
+%  \map^\T_{G[\overline{\beta := F}]}\,\overline{t}$
+%\item $\map^\T_\alpha \, f = f$
 \item $\map^\F_\phi\, \eta = \eta$
-\item and other conversion rules as on page 18 of MFPS paper
 \end{itemize}
-Note that there is no analogue of the conversion rule $\star$ when the
-first vector of arguments to $\map^\F_H$ consists of natural
-transformations because natural transformations can only be atural in
-type variables (i.e., type constructor variables of arity $0$.
-
 Note that there are no computation rules for types because types are
 always fully applied in our syntax.
 
