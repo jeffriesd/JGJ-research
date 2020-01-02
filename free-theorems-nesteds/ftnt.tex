@@ -2102,7 +2102,7 @@ If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
 {\color{blue} We will need to go back and add typing rules for
   well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
   and relational interpretations of these maps (just the actual
-  functoial actions), and cases for $\map$ to all of our proofs thus
+  functorial actions), and cases for $\map$ to all of our proofs thus
   far having to do with terms.
 
 Next we will want to sanity-check our model by showing that term
@@ -2117,13 +2117,24 @@ interps respect conversion rules. These are
 \item $\pi_i(t_1,t_2) = t_i$
 \item $\case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} = t_i[x_i := t]$
 \item and other conversion rules as on page 18 of MFPS paper
-\item \item \item 
+\item perhaps add weakening rules explicitly here?
+
+\vspace*{0.2in}
+  
 \item All of the above are shorthands for saying that the interps of
   the LHSs are the same as the interps of the RHSs. For this
-  conversiton rule: $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$,
+  conversion rule: $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$,
   we can't express it in syntax. So what we really want to say here is
   that some semantic equivalent of this syntacic rule holds. And
   similarly for the next rules.
+\item Maybe we want to show that $(\sem{\mu \alpha. F[\alpha]},
+  \sem{\tin})$ is an initial $\sem{F}$-algebra in the model? See
+  Birkedal and Mogelberg Section 5.4. As part of this we would have
+  the next bullet point, plus some other intermediate results as in
+  5.17, 5.18, and 5.19 there. We would also need representations of
+  map functions. Perhaps we can define them syntactically as in
+  Plotkin and Abadi section 2.1? (But isn't this precisely what we
+  tried?)
 \item $\fold_H \, \tin_H x = x$ (Intuitively, this is the syntactic
   counterpart to initiality of $\tin$.)  
 \item $\map^\F_H \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm
@@ -2152,15 +2163,20 @@ Note that there are no computation rules for types because types are
 always fully applied in our syntax.
 
 Show $\sem{\Gamma; \emptyset \vdash \sigma \to \tau} = \sem{\Gamma;
-  \emptyset \vdash \Nat^\emptyset\, \sigma\, \tau}$.
+  \emptyset \vdash \Nat^\emptyset\, \sigma\, \tau}$. Oh, this doesn't
+appear to hold. Unfolding the definitions, the latter appears to
+impose a commutativity condition ($\relsem{\Gamma \vdash \tau}(\Eq\,
+\rho) \circ \eta = \eta \circ \relsem{\Gamma \vdash \sigma}(\Eq
+\,\rho)$ that the former does not require.
 
 Other sanity checks?
 
 Note that our calculus does not support Church encodings of data types
-like pair or sum or list types. But we could (probably) alter our
-calculus to admit sum and product and list types because we can tell
-metatheoretically that these are fixed points of (positive) functors,
-and because all of the ``forall''s are at the top level.
+like pair or sum or list types because all of the ``forall''s in our
+calculus must be at the top level.  Nevertheless, our calculus does
+admit actual sum and product and list types because they are coded by
+$\mu$-terms in our calculus. We just don't have an equivalence of
+these types and their Church encodings in our calculus, that's all.
 
 }
 
