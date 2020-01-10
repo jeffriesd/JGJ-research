@@ -584,7 +584,7 @@ $\setsem{\cdot} : \F \to \setenv \to \set$ is defined by
   \setsem{\Gamma;\emptyset \vdash \Nat^{\bm \alpha}
     \,F\,G}\rho &= \{\eta : \setsem{\Gamma; \bm\alpha \vdash F}\rho[\bm \alpha := \text{--}]
       \Rightarrow \setsem{\Gamma;\bm \alpha \vdash G}\rho[\bm \alpha := \text{--}] \\
-      &\hspace{0.2in}|~\forall \overline{R : \rel(A, B)}.\\
+      &\hspace{0.2in}|~\forall \overline{A}, \overline{B} : \set. \forall \overline{R : \rel(A, B)}.\\
       &\hspace{0.2in}(\eta_{\overline{A}}, \eta_{\overline{B}})
       : \relsem{\Gamma; \bm \alpha \vdash F}\Eq_{\rho}[\bm \alpha := \overline{R}]
       \rightarrow_{\rel} \relsem{\Gamma;\bm \alpha \vdash G}\Eq_{\rho}[\bm \alpha := \overline{R}] \} \\
@@ -1012,7 +1012,7 @@ $(\delta^0_d, \delta^1_d)$ is a morphism from $(F^0_d,F^1_d,F^*_d)$ to
 $C$ in $RT_k$.
 \end{proof}
 
-\begin{definition}\label{def:omega-cocont}
+\begin{dfn}\label{def:omega-cocont}
 A functor $T = (T^0,T^1,T^*)$ on $RT_k$ is {\em $\omega$-cocontinuous}
 if $T^0$ and $T^1$ are $\omega$-cocontinuous endofunctors on
 $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous functor from
@@ -1020,7 +1020,7 @@ $RT_k$ to $[\rel^k,\rel]$.
 %, for every $\omega$-directed set $\cal D$,
 %\[T\,\colim{d \in {\cal D}}{(F^0_d, F^1_d,F^*_d)} = \colim{d \in {\cal
 %    D}}{T (F^0_d, F^1_d,F^*_d)}\]
-\end{definition}
+\end{dfn}
 
 For any $k$ and $R : \rel(A, B)$, let $K^\rel_R$ be the constantly
 $R$-valued functor from $\rel^k$ to $\rel$, and for any $k$ and set
@@ -1222,7 +1222,7 @@ defined by
   &= \pi_3(\mu T_{\rho})(\relsem{\Gamma;\Phi \vdash
      A_1}\rho)...(\relsem{\Gamma;\Phi \vdash A_k}\rho) \\
   \text{where }	T_{\rho}
-    &= (T^\set_{\rho}, T^\set_{\rho}, T^\rel_{\rho}) \\
+    &= (T^\set_{\pi_1\rho}, T^\set_{\pi_2\rho}, T^\rel_{\rho}) \\
   \text{and } T^\rel_{\rho}F
     &= \lambda R_1...R_k. \relsem{
       \Gamma;\Phi,\phi,\bm \alpha \vdash H}\rho[\phi :=
@@ -1286,7 +1286,7 @@ is given as follows:
          {\relsem{\Gamma;\Phi \vdash A}\rho'})$ is defined by
          $\relsem{\Gamma;\Phi \vdash \phi^k A_1...A_k} f =
          (f\phi)_{\bm {\relsem{\Gamma;\Phi \vdash A}\rho'}} \circ
-         \pi_3( \pi_1\rho\phi) (\bm {\relsem{\Gamma;\Phi \vdash A}f}) =
+         \pi_3(\rho\phi) (\bm {\relsem{\Gamma;\Phi \vdash A}f}) =
          \pi_3(\rho'\phi) (\bm {\relsem{\Gamma;\Phi \vdash A}f}) \circ
          (f \phi)_{\bm {\relsem{\Gamma;\Phi \vdash A}\rho}}$. 
 \item If $E = E_1 + E_2$ then $\relsem{\Gamma;\Phi \vdash E}f$ is
@@ -1360,7 +1360,7 @@ in turn.
 \item When $\tau = \Gamma; \Phi \vdash \phi^k\tau_1...\tau_k$, we have    
 \[\begin{array}{ll}
   & \pi_i (\relsem{\Gamma; \Phi \vdash \phi^k\tau_1...\tau_k}\rho)\\
-= & \pi_i ((\rho \phi)\overline{\relsem{\Gamma; \Phi \vdash \tau}\rho})\\
+= & \pi_i ( \pi_3(\rho \phi)\overline{\relsem{\Gamma; \Phi \vdash \tau}\rho})\\
 = & (\pi_i (\rho \phi)) (\pi_i(\overline{\relsem{\Gamma; \Phi \vdash \tau}\rho}))\\
 = & ((\pi_i \rho) \phi) (\overline{\setsem{\Gamma; \Phi \vdash
     \tau}(\pi_i \rho)})\\
@@ -1552,232 +1552,268 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 
 \subsection{The Identity Extension Lemma}
 
-% \begin{definition}
-% If $F : [\set^k, \set]$, then $\Eq_F^* : [\rel^k, \rel]$ is defined by
-% \[\begin{array}{lll}
-% \Eq_F^* \overline{R} & := & \bigcup_{\overline{f : A \to B},
-%   \overline{f|_{\dom R}} \subseteq \overline{R}} \langle
-% F\overline{f}|_{F \overline{\dom R}}\rangle\\
-% & = & \{ (F\overline{i}x, y) | x \in F \overline{\dom R} \text{ and }
-% \exists \overline{f : A \to B}. \overline{f|_{\dom R}} \subseteq
-% \overline{R}, y = F\overline{f}(F\overline{i}x) \}
-% \end{array}\]
-% for all $\overline{R : \rel(A, B)}$, where, $\overline{i} :
-% \overline{\dom\, R} \hookrightarrow \overline{A}$ is the subobject
-% defined by the domain of $\overline{R}$, and 
-% \[\begin{array}{lll}
-% \Eq_F^*(\alpha, \beta) & := & (F\alpha, F\beta)
-% \end{array}\]
-% for all $\overline{R : \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and
-% $\overline{(\alpha, \beta) : R \to S}$.
-% \end{definition}
+{\color{red} MISSING REMARK: If we have a relation environment rho and write rho[alpha := R] then, of course, we mean R to be (A,B,R) where A and B are the domain and codomain of R.}
 
-% \begin{lemma}\label{lem:eq-reln-functors}
-% If $F : [\set^k,\set]$ then the triple $\Eq_F = (F, F, \Eq_F^*)$ is a
-% relation transformer.
-% \end{lemma}
-% \begin{proof}
-% For all $\overline{R : \rel(A, B)}$, we have that $\Eq_F^* \overline
-% {R} : \rel(F\overline{A}, F\overline{B})$.
+%\begin{dfn}\label{def:eq-reln-functors}
+%If $F$ is a functor from $\set^k$ to $\set$, define $\Eq_F^* : \rel^k \to \rel$ as follows.
+%Let $\overline{R : \rel(A, B)}$ be relations in $\set$, i.e. $\overline{R \subseteq A \times B}$.
+%Notice that we can restrict the projections of $\overline{A \times B}$
+%to $\overline{\pi_1|_R : R \to A}$ and $\overline{\pi_2|_R : R \to B}$.
+%%let $\overline{i_R : R \hookrightarrow A \times B}$
+%%be the inclusion of $\overline{R}$ as a subset of $\overline{A \times B}$.
+%Then, $\Eq_F^* \overline{R} : \rel(F\overline{A}, F\overline{B})$ is the relation which relates
+%$x : F\overline{A}$ and $y : F\overline{B}$
+%if and only if there exists $z : F\overline{R}$
+%such that $F(\overline{\pi_1|_R})z = x$ and $F(\overline{\pi_2|_R})z = y$.
+%If $\overline{(\alpha, \beta) : R \to S}$ are morphisms in $\rel$,
+%then $\Eq_F^*\overline{(\alpha, \beta)}$ is defined as $(F\overline\alpha, F\overline\beta)$.
+%\end{dfn}
+%
+%\begin{lemma}
+%If $F$ is a functor from $\set^k$ to $\set$,
+%then the triple $\Eq_F = (F, F, \Eq_F^*)$ is in $RT_k$.
+%\end{lemma}
+%\begin{proof}
+%Consider $\overline{R : \rel(A, B)}$.
+%Then, by Definition~\ref{def:eq-reln-functors}, we have that
+%$\Eq_F^* \overline{R} : \rel(F\overline{A}, F\overline{B})$.
+%
+%Consider $\overline{(\alpha, \beta) : R \to_\rel S}$,
+%$x : F\overline{A}$ and $y : F\overline{B}$ such that
+%$(x, y) \in \Eq_F^*\overline{R}$, i.e., there exists $z : F\overline{R}$
+%such that $F(\overline{\pi_1|_R})z = x$ and $F(\overline{\pi_2|_R})z = y$.
+%Then, we want to show that
+%$(F\overline{\alpha}x, F\overline{\beta}y) \in \Eq_F^*\overline{S}$,
+%i.e., that there exists $w : F\overline{S}$ such that
+%$F(\overline{\pi_1|_S})w = F\overline{\alpha}x$
+%and $F(\overline{\pi_2|_S})w = F\overline{\beta}y$.
+%First, consider $\overline{\gamma : R \to_\set S}$
+%defined as $\overline{\gamma(a, b) = (\alpha a, \beta b)}$,
+%which is well defined because $\overline{(\alpha, \beta)}$ is a morphism in $\rel$.
+%Observe that $\overline{\pi_1|_S \circ \gamma = \alpha \circ \pi_1|_R}$
+%and $\overline{\pi_2|_S \circ \gamma = \beta \circ \pi_2|_R}$.
+%Then, let $w = F \overline{\gamma} z$.
+%We have that
+%\[
+%F(\overline{\pi_1|_S})w
+%= F(\overline{\pi_1|_S})(F \overline{\gamma} z)
+%= F(\overline{\pi_1|_S \circ \gamma}) z
+%= F(\overline{\alpha \circ \pi_1|_R}) z
+%= F\overline{\alpha}(F(\overline{\pi_1|_R})z)
+%= F\overline{\alpha}x
+%\]
+%and, analogously, $F(\overline{\pi_2|_S})w = F\overline{\beta}y$.
+%\end{proof}
+%
+%\begin{lemma}
+%If $F$ is a functor from $\set^k$ to $\set$ and $\overline{A : \set}$, then we have $\Eq_F^* \overline{\Eq^*_A} = (\Eq_{F\overline{A}})^*$.
+%\end{lemma}
+%\begin{proof}
+%Let $x, x' : F\overline{A}$.
+%We have that $(x, x') \in \Eq_F^* \overline{\Eq^*_A}$ if and only if
+%there exists $z : F\overline{\Eq^*_A}$ such that
+%$F(\overline{\pi_1|_{\Eq^*_A}})z = x$ and $F(\overline{\pi_2|_{\Eq^*_A}})z = x'$.
+%Notice that there is an isomorphism $\overline{\phi : A \to_{\set} \Eq^*_A}$
+%such that $\overline{\phi a = (a, a)}$ for $\overline{a : A}$,
+%and thus $\overline{\pi_1|_{\Eq^*_A} \circ \phi = \pi_2|_{\Eq^*_A} \circ \phi = \Id_A}$.
+%Then,
+%\[
+%F(\overline{\pi_1|_{\Eq^*_A}})z
+%= F(\overline{\pi_1|_{\Eq^*_A} \circ \phi \circ \phi^{-1}})z
+%= F \overline{\phi^{-1}} z
+%\]
+%and, analogously, $F(\overline{\pi_2|_{\Eq^*_A}})z = F \overline{\phi^{-1}} z$.
+%Then, $(x, x') \in \Eq_F^* \overline{\Eq^*_A}$ if and only if
+%there exists $z : F\overline{\Eq^*_A}$ such that
+%$F \overline{\phi^{-1}} z = x$ and $F \overline{\phi^{-1}} z = x'$;
+%equivalently, if and only if $x = x'$
+%(by letting $z = F \overline{\phi} x = F \overline{\phi} x'$).
+%That means that $\Eq_F^* \overline{\Eq^*_A}$ is the equality relation.
+%\end{proof}
 
-% We first show that for all $\overline{R : \rel(A, B)}$, $\overline{S :
-%   \rel(C, D)}$, and $\overline{(\alpha, \beta) : R \to S}$, we have
-% that $\Eq_F^*(\alpha, \beta)$ is a morphism in $\rel$.  To see this,
-% let $(F\overline{i}x, y) \in \Eq_F^* \overline{R}$. Then there
-% exists $\overline{f : A \to B}$ such that
-% $\overline{f}|_{\overline{\dom R}} \subseteq \overline{R}$, $x \in
-% F(\dom R)$, and $y = F\overline{f}(F\overline{i}x)$, where $i :
-% \overline{\dom R} \hookrightarrow \overline{A}$ is the subobject
-% defined by the domain of $\overline{R}$.  We need to show that $(F
-% \overline{\alpha}(F\overline{i} x), F \overline{\beta} y) \in \Eq_F^*
-% \overline{S}$, i.e., that $F \overline{\alpha}(F\overline{i} x) = F
-% \overline{j} x'$ for some $x' \in F(\dom S)$ where $\overline{j : \dom
-%   S \hookrightarrow C}$ is the subobject defined by the domain of
-% $\overline{S}$, and there exists $\overline{g : C \to D}$ such that
-% $\overline{g|_{\dom S}} \subseteq \overline{S}$,
-% % $(F \alpha) x \in F(\dom S)$,
-% and $F \overline{\beta}y = (F\overline{g}) (F \overline{j} x')$.
-
-% Next, observe that the assumption that $(\alpha, \beta)$ is a morphism
-% in $\rel$ means, in particular, that for every $a \in \dom R$ we have
-% that $\alpha (i a) \in \dom S$.  Then, there are functions
-% \[
-% \dom R
-% \xrightarrow{\alpha' = \alpha|_{\dom R}}
-% \alpha(\dom R)
-% \xrightarrow{k}
-% \dom S
-% \]
-% such that, for every $a \in \dom R$, we have that $\alpha (i a) = j (
-% k (\alpha' a))$.
-
-% We show that $F \overline{\alpha}(F\overline{i} x) = F \overline{j}
-% x'$ for some $x' \in F(\dom S)$.
-% % that there is a function $\alpha' \colon \dom R \to \dom S$ such that $\alpha i = j \alpha'$,
-% % which makes the inclusion $\alpha(\dom R) \subseteq \dom S$ explicit.
-% Observe that $F \overline{\alpha}(F\overline{i} x) = F
-% (\overline{\alpha \circ i}) x = F (j \circ k \circ \alpha') x$, so let
-% $x'$ be $F (k \circ \alpha') x$.
-
-% We show that there exists $\overline{g : C \to D}$ such that
-% $\overline{g|_{\dom S}} \subseteq \overline{S}$, and $F
-% \overline{\beta}y = (F\overline{g}) (F \overline{j} x')$.  Let
-% $\overline{\gamma : \alpha(\dom R) \to \dom R}$ be a right inverse of
-% $\alpha'$
-% % \[\ove.rline{\alpha|_{\dom R}^{\alpha(\dom R)} : \dom R \to \alpha(\dom R)}\]
-% (which exists assuming the Axiom of Choice).
-% Observe that, for every $c \in \alpha(\dom R)$, since $\gamma c \in \dom R$,
-% we have that $(\alpha(i(\gamma c)), \beta (f ( i (\gamma c)))) \in S$.
-% Then, it is possible to choose a function $g : C \to D$ such that
-% $g \circ j \circ k = \beta \circ f \circ i \circ \gamma$
-% % $g|_{\alpha(\dom R)} = \beta \circ \alpha \circ \gamma$
-% and $g_{\dom S} \subseteq S$
-% (again, thanks to the Axiom of Choice).
-% % Observe that $g \circ \alpha \circ i = \beta \circ f \circ i$.
-% Then,
-% \[
-% \begin{split}
-% (F\overline{g}) (F \overline{j} x')
-% %&=(Fg)((F\alpha)(F i x)) \\
-% %&=(Fg)((F\alpha)|_{F \dom R}x) \\
-% %&=(Fg)((F\alpha|_{\dom R})x) \\
-% &=F(g \circ j \circ k \circ \alpha')x \\
-% &=F(\beta \circ f \circ i \circ \gamma \circ \alpha')x \\
-% &=??? \\
-% &=F(\beta \circ f \circ i)x \\
-% %&=(F\beta)((F f)x) \\
-% &=(F\beta)((F f)(F i x)) \\
-% &=(F\beta)y
-% \end{split}
-% \]
-% \end{proof}
-
-\begin{dfn}\label{def:eq-reln-functors}
-If $F$ is a functor from $\set^k$ to $\set$, we define $\Eq_F^* :
-\rel^k \to \rel$ as follows. Given $R_1 : \rel(A_1, B_1), ..., R_k :
-\rel(A_k,B_k)$, let $\iota_{R_i} : R_i \hookrightarrow A_i \times B_i$
-be the inclusion of $R_i$ as a subset of $A_i \times B_i$ for $i =
-1,...,k$. We define $\Eq_F^* \overline{R} : \rel(F\overline{A},
-F\overline{B})$ by $(x,y) \in \Eq_F^* \overline{R}$
-%to be the relation that relates $x : F\overline{A}$
-%and $y : F\overline{B}$
-if and only if there exists a $z : F\overline{R}$ such that
-$F(\overline{\pi_1 \circ \iota_R})z = x$ and $F(\overline{\pi_2 \circ
-  \iota_R})z = y$.  If $(\alpha_1, \beta_1) : R_1 \to S_1, ...,
-(\alpha_k, \beta_k) : R_k \to S_k$ are morphisms in $\rel$ then we
-define $\Eq_F^*\overline{(\alpha, \beta)}$ by
-$\Eq_F^*\overline{(\alpha, \beta)} = (F\overline\alpha,
-F\overline\beta)$.
+\begin{dfn}
+If $F$ is a functor from $\set^k$ to $\set$, define $\Eq_F^* : \rel^k \to \rel$ as follows.
+Given $\overline{R : \rel(A, B)}$ be relations in $\set$,
+let $\overline{i_R : R \hookrightarrow_{\set} A \times B}$
+be the inclusions of $\overline{R}$ as subsets of $\overline{A \times B}$.
+By the universal property of the product,
+there exists a unique $h_{\overline{A \times B}}$
+making the diagram
+\[
+\begin{tikzcd}[row sep = large]
+F\overline{A}
+&F(\overline{A \times B})
+\ar[l, "{F\overline{\pi_1}}"']
+\ar[r, "{F\overline{\pi_2}}"]
+\ar[d, dashed, "{h_{\overline{A \times B}}}"]
+&F\overline{B} \\
+&F\overline{A} \times F\overline{B}
+\ar[ul, "{\pi_1}"] \ar[ur, "{\pi_2}"']
+\end{tikzcd}
+\]
+commute.
+Let $h_{\overline{R}} : F\overline{R} \to F\overline{A} \times F\overline{B}$
+be $h_{\overline{A \times B}} \circ F\overline{i_R}$.
+Then, define $\Eq_F^*\overline{R}$ as
+the subobject through which $h_{\overline{R}}$ is factorized
+by the mono-epi factorization system in $\set$,
+as shown in the following diagram.
+\[
+\begin{tikzcd}
+F\overline{R}
+\ar[rr, "{h_{\overline{R}}}"]
+\ar[dr, twoheadrightarrow, "{q_{\Eq_F^*\overline{R}}}"']
+&&F\overline{A} \times F\overline{B} \\
+&\Eq_F^*\overline{R}
+\ar[ur, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"']
+\end{tikzcd}
+\]
+Notice that, by construction, $\Eq_F^*\overline{R} : \rel(F\overline{A}, F\overline{B})$.
+If $\overline{(\alpha, \beta) : R \to_{\rel} S}$ are morphisms in $\rel$,
+then $\Eq_F^*\overline{(\alpha, \beta)}$ is defined as $(F\overline\alpha, F\overline\beta)$.
 \end{dfn}
 
+\begin{rmk}
+If $A: \set$, then we denote the equality relation on $A$ with $\Eq^*_A$, consistently with the fact that a set can be seen as a $0$-ary $\set$ functor and a relation can be see as a $0$-ary $\rel$ functor.
+\end{rmk}
+
 \begin{lemma}\label{lem:eq-reln-functors}
-If $F$ is a functor from $\set^k$ to $\set$, then the triple $\Eq_F =
-(F, F, \Eq_F^*)$ is in $RT_k$.
+If $F$ is a functor from $\set^k$ to $\set$,
+then the triple $\Eq_F = (F, F, \Eq_F^*)$ is in $RT_k$.
 \end{lemma}
 \begin{proof}
-If $R_1 : \rel(A_1, B_1), ..., R_k : \rel(A_k,B_k)$, then
-Definition~\ref{def:eq-reln-functors} ensures that $\Eq_F^*
-\overline{R} : \rel(F\overline{A}, F\overline{B})$.
-
-Moreover, if $(\alpha_1, \beta_1) : R_1 \to S_1, ..., (\alpha_k,
-\beta_k) : R_k \to S_k$ are morphisms in $\rel$, and if $x :
-F\overline{A}$ and $y : F\overline{B}$ are such that $(x, y) \in
-\Eq_F^*\overline{R}$, then there must exist a $z : F\overline{R}$ such
-that $F(\overline{\pi_1 \circ \iota_R})z = x$ and $F(\overline{\pi_2
-  \circ \iota_R})z = y$.  We want to show that $(F\overline{\alpha}x,
-F\overline{\beta}y) \in \Eq_F^*\overline{S}$, i.e., that there exists a
-$w : F\overline{S}$ such that $F(\overline{\pi_1 \circ \iota_S})w =
-F\overline{\alpha}x$ and $F(\overline{\pi_2 \circ \iota_S})w =
-F\overline{\beta}y$. To see this, first consider the $\set$-morphisms
-$\gamma_1 : R_1 \to S_1, ..., \gamma_k : R_k \to S_k$ defined by
-$\gamma_i(a, b) = (\alpha_i a, \beta_i b)$ for all $(a,b) : R_i$ and
-$i = 1,...,k$. These are well-defined because each $(\alpha_i,
-\beta_i)$ is a morphism in $\rel$. Next, observe that, for all $i =
-1,...,k$, we have that $\pi_1 \circ \iota_{S_i} \circ \gamma_i =
-\alpha_i \circ \pi_1 \circ \iota_{R_i}$ and $\pi_2 \circ \iota_{S_i}
-\circ \gamma_i = \beta_i \circ \pi_2 \circ \iota_{R_i}$. Let $w = F
-\overline{\gamma} z$. Then
-\[\begin{array}{lll}
-      F(\overline{\pi_1 \circ \iota_S})w
-& = & F(\overline{\pi_1 \circ \iota_S})(F \overline{\gamma} z)\\
-& = & F(\overline{\pi_1 \circ \iota_S \circ \gamma}) z\\
-& = & F(\overline{\alpha \circ \pi_1 \circ \iota_R}) z\\
-& = & F\overline{\alpha}(F(\overline{\pi_1 \circ \iota_R})z)\\
-& = & F\overline{\alpha}x\\
-\end{array}\]
-and, analogously, $F(\overline{\pi_2 \circ \iota_S})w = F\overline{\beta}y$.
+Consider $\overline{(\alpha, \beta) : R \to_\rel S}$, where $\overline{R : \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.
+We want to show that there exists a morphism $\epsilon : \Eq_F^*\overline{R} \to \Eq_F^*\overline{S}$ such that
+\[
+\begin{tikzcd}
+\Eq_F^*\overline{R}
+	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"]
+	\ar[d, "{\epsilon}"']
+& F\overline{A} \times F\overline{B}
+	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
+\Eq_F^*\overline{S}
+	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{S}}}"']
+& F\overline{C} \times F\overline{D}
+\end{tikzcd}
+\]
+commutes.
+By hypothesis, there exists $\overline{\gamma : R \to_{\set} S}$
+such that the diagram
+\[
+\begin{tikzcd}
+R
+	\ar[d, "{\gamma}"']
+	\ar[r, hookrightarrow, "{i_R}"]
+&A \times B
+	\ar[d, "{\alpha \times \beta}"] \\
+S
+	\ar[r, hookrightarrow, "{i_S}"]
+&C \times D
+\end{tikzcd}
+\]
+commutes.
+Thus, we get the following commutative diagram.
+\[
+\begin{tikzcd}
+F\overline{R}
+	\ar[d, "{F\overline{\gamma}}"']
+	\ar[r, hookrightarrow, "{F\overline{i_R}}"]
+	\ar[rr, bend left, "{h_{\overline{R}}}"]
+&F(\overline{A \times B})
+	\ar[d, "{F(\overline{\alpha \times \beta})}"]
+	\ar[r, "{h_{\overline{A \times B}}}"]
+&F\overline{A} \times F\overline{B}
+	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
+F\overline{S}
+	\ar[r, hookrightarrow, "{F\overline{i_S}}"']
+	\ar[rr, bend right, "{h_{\overline{S}}}"']
+&F(\overline{C \times D})
+	\ar[r, "{h_{\overline{C \times D}}}"']
+&F\overline{C} \times F\overline{D}
+\end{tikzcd}
+\]
+Then, by the left-lifting-property of $q_{\Eq_F^*\overline{R}}$
+with respect to $i_{\Eq_F^*\overline{S}}$
+given by the epi-mono factorization system,
+there exists $\epsilon$ such that the diagram
+\[
+\begin{tikzcd}
+F\overline{R}
+	\ar[d, "{F\overline{\gamma}}"']
+	\ar[r, twoheadrightarrow, "{q_{\Eq_F^*\overline{R}}}"]
+&\Eq_F^*\overline{R}
+	\ar[d, dashed, "{\epsilon}"]
+	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"]
+&F\overline{A} \times F\overline{B}
+	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
+F\overline{S}
+	\ar[r, twoheadrightarrow, "{q_{\Eq_F^*\overline{S}}}"']
+&\Eq_F^*\overline{S}
+	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{S}}}"']
+&F\overline{C} \times F\overline{D}
+\end{tikzcd}
+\]
+commutes.
 \end{proof}
 
-If $A_1,...,A_k$ are sets, the write $\overline{\Eq_A}$ for the
-sequence of relations $\Eq_{A_1}....\Eq_{A_k}$.
-
-\begin{lemma}
-If $F$ is a functor from $\set^k$ to $\set$ and $A_1, ..., A_k$ are
-sets, then $\Eq_F^* \overline{\Eq_A} = \Eq_{F\overline{A}}$.
+\begin{lemma}\label{lem:eq-reln-equalities}
+For all $\overline{A : \set}$, we have $\Eq_F^* \overline{\Eq^*_A} = \Eq^*_{F\overline{A}}$.
 \end{lemma}
 \begin{proof}
-Let $x, x' : F\overline{A}$. Then $(x, x') \in \Eq_F^*
-\overline{\Eq_A}$ if and only if there exists $z : F\overline{\Eq_A}$
-such that $F(\overline{\pi_1 \circ \iota_{\Eq_A}})z = x$ and
-$F(\overline{\pi_2 \circ \iota_{\Eq_A}})z = x'$.  For each $A : \set$
-there is an isomorphism $\phi_A : A \to \Eq_A$ in $\set$ such that
-$\iota_{\Eq_A} \circ \phi_A : A \to A \times A$ is the diagonal
-$\Delta_A$. Then
+The relation $\overline{\Eq^*_A}$ corresponds to the subobject
+$\overline{\Delta_{A} : A \to A \times A}$.
+As $h_{\overline{\Eq_A}}$ is the unique morphism making the diagram
 \[
-  F(\overline{\pi_1 \circ \iota_{\Eq_A}})z
-= F(\overline{\pi_1 \circ \iota_{\Eq_A} \circ \phi_A \circ \phi_A^{-1}})z
-= F(\overline{\pi_1 \circ \Delta_A})(F \overline{\phi_A^{-1}} z)
-= F\overline{\id_A}(F \overline{\phi_A^{-1}} z)
-= F \overline{\phi_A^{-1}} z
+\begin{tikzcd}[row sep = large]
+F\overline{A}
+&F(\overline{A \times A})
+\ar[l, "{F\overline{\pi_1}}"']
+\ar[r, "{F\overline{\pi_2}}"]
+&F\overline{A} \\
+&F\overline{A}
+\ar[u, "{F \overline{\Delta_{A}}}"']
+\ar[ul, equal]
+\ar[ur, equal]
+\ar[d, dashed, "{h_{\overline{\Eq^*_A}}}"] \\
+&F\overline{A} \times F\overline{A}
+\ar[uul, "{\pi_1}"] \ar[uur, "{\pi_2}"']
+\end{tikzcd}
 \]
-and, analogously, $F(\overline{\pi_2 \circ \iota_{\Eq_A}})z = F
-\overline{\phi_A^{-1}} z$.  Thus, $(x, x') \in \Eq_F^*
-\overline{\Eq_A}$ if and only if there exists $z : F\overline{\Eq_A}$
-such that $F \overline{\phi_A^{-1}} z = x$ and $F
-\overline{\phi_A^{-1}} z = x'$, i.e., if and only if $x = x'$ (by
-letting $z = F \overline{\phi_A} x = F \overline{\phi_A} x'$). We
-therefore have that $\Eq_F^* \overline{\Eq_A}$ is the equality
-relation $\Eq_{F\overline{A}}$ on $F\overline{A}$, as desired.
+commute,
+then $h_{\overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.
+Moreover, as $\Delta_{F\overline{A}}$ is a monomorphism,
+we have that $i_{\Eq_F^* \overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.
+To conclude, observe that the relation corresponding to the subobject $\Delta_{F\overline{A}}$ is $(\Eq_{F\overline{A}})^*$.
 \end{proof}
 
 We now show that an Identity Extension Lemma holds for the
 interpretation given in Sections~\ref{sec:set-interp}
-and~\ref{sec:rel-interp}. First, define $\Eq_A : \rel(A,A)$ for any
-set $A$ to be the relation $\{(x,x)~|~ x \in A\}$, and $\Eq_F$ for any
-$F : \rel^k \to \rel$ as in
-Definition~\ref{def:eq-reln-functors}. Furthermore, if $\rho$ is a set
+and~\ref{sec:rel-interp}.
+%First, define $\Eq^*_A : \rel(A,A)$ for any
+%set $A$ to be the relation $\{(x,x)~|~ x \in A\}$, and $\Eq^*_F$ for any
+%$F : [\rel^k,\rel]$ as in
+%Definition~\ref{def:eq-reln-functors}. 
+If $\rho$ is a set
 environment, define $\Eq_\rho$ to be the relation environment such
-that $\Eq_\rho x = \Eq_{\rho x}$ for all $x \in \V \cup \tvars$. The
-Identity Extension Lemma can then be stated and proved as follows:
+that $\Eq_\rho v = (\Eq_{\rho v})^*$ for all $v \in \V$ and $\Eq_\rho \phi = \Eq_{\rho \phi}$ for all $\phi \in \tvars$.
+The Identity Extension Lemma can then be stated and proved as follows:
 
 \begin{thm}\label{thm:iel}
-  If $\bm \alpha = \{\alpha_1,...,\alpha_k\}$, $\bm \beta =
-  \{\beta_1,...,\beta_m\}$, $\rho$ is a set environment, and $\bm
-  \alpha; \bm \beta \vdash \tau : \F$, then $\relsem{\bm \alpha; \bm
-    \beta \vdash \tau} \Eq_\rho = \Eq_{\setsem{\bm \alpha; \bm \beta
-      \vdash \tau}\rho}$. 
-%  [\alpha_1 := \Eq_{\alpha_1
-%      \rho},...,\alpha_k := \Eq_{\alpha_k \rho}, \beta_1 :=
-%    \Eq_{\beta_1 \rho} ,...,\beta_m := \Eq_{\beta_m \rho}] =
-%  \Eq_{\setsem{\bm \alpha; \bm \beta \vdash \tau}\rho}$.
+  If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$, then $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho = (\Eq_{\setsem{\Gamma; \Phi
+      \vdash \tau}\rho})^*$. 
 \end{thm}
 \begin{proof}
-{\color{red} REVISE}
 By induction on the structure of $\tau$.
-% Write $\rho'$ for the
-% relation environment $\rho[\alpha_1 := \Eq_{\alpha_1 \rho}, ...,\alpha_k
-%   := \Eq_{\alpha_k \rho}, \beta_1 := \Eq_{\beta_1 \rho}, ...,\beta_m
-%   := \Eq_{\beta_m \rho}]$.
 \begin{itemize}
 \item $\relsem{\Gamma; \emptyset \vdash v}\Eq_{\rho} =
-  \Eq_{\rho} v = \Eq_{\rho v} = \Eq_{\setsem{\Gamma; \emptyset \vdash v}\rho}$
+  \Eq_{\rho} v = (\Eq_{\rho v})^* = (\Eq_{\setsem{\Gamma; \emptyset \vdash v}\rho})^*$
   where $v \in \Gamma$.
 \item $\relsem{\Gamma; \emptyset \vdash \sigma \to \tau} \Eq_{\rho}
   = \relsem{\Gamma; \emptyset \vdash \sigma} \Eq_{\rho}
     \to \relsem{\Gamma; \emptyset \vdash \tau} \Eq_{\rho}
-  = \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho}
-    \to \Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
-  = \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho}$
+  = (\Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho})^*
+    \to (\Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho})^*
+  = (\Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho})^*$
   where the second equality is by the induction hypothesis.
 \item {\color{red} $\tau = \forall v.\tau_1$}
 \item By definition,
@@ -1787,7 +1823,7 @@ By induction on the structure of $\tau$.
   $(t_{\overline{A}}, t'_{\overline{B}})$ is a morphism
   $\relsem{\Gamma; \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha := R]}
   \to \relsem{\Gamma ; \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in $\rel$.
-  To prove that this is equal to $\Eq_{\setsem{\Gamma; \emptyset \vdash \Nat^{\overline\alpha} \,F\,G} \rho}$
+  To prove that this is equal to $(\Eq_{\setsem{\Gamma; \emptyset \vdash \Nat^{\overline\alpha} \,F\,G} \rho})^*$
   we need to show that
   $(t_{\overline{A}}, t'_{\overline{B}})$ is a morphism $\relsem{\Gamma; \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha := R]}
   \to \relsem{\Gamma ; \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in $\rel$
@@ -1805,46 +1841,94 @@ By induction on the structure of $\tau$.
   $\relsem{\Gamma; \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha := \Eq_{A}]}
   \to \relsem{\Gamma ; \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := \Eq_{A}]}$
   in $\rel$ for all $A_1\,...\,A_k : \set$, i.e., by induction hypothesis, a morphism
-  $\Eq_{\setsem{\Gamma; \overline\alpha \vdash F} \rho\overline{[\alpha := A]}}
-  \to \Eq_{\setsem{\Gamma ; \overline\alpha \vdash G} \rho\overline{[\alpha := A]}}$
+  $(\Eq_{\setsem{\Gamma; \overline\alpha \vdash F} \rho\overline{[\alpha := A]}})^*
+  \to (\Eq_{\setsem{\Gamma ; \overline\alpha \vdash G} \rho\overline{[\alpha := A]}})^*$
   in $\rel$.
-  That means that, for every $x : \Eq_{\setsem{\Gamma; \overline\alpha \vdash F} \rho\overline{[\alpha := A]}}$,
+  That means that, for every $x : (\Eq_{\setsem{\Gamma; \overline\alpha \vdash F} \rho\overline{[\alpha := A]}})^*$,
   $t_{\overline{A}}x = t'_{\overline{A}}x$.
   Then, by extensionality, $t = t'$.
 \item $\relsem{\Gamma; \Phi \vdash \zerot} \Eq_{\rho} = 0_\rel =
-  \Eq_{0_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash 0}\rho}$
+  (\Eq_{0_\set})^* = (\Eq_{\setsem{\Gamma; \Phi \vdash 0}\rho})^*$
 \item $\relsem{\Gamma; \Phi \vdash \onet} \Eq_{\rho} = 1_\rel =
-  \Eq_{1_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash 1}\rho}$
-\item $\relsem{\bm \alpha; \bm \beta \vdash
-  \phi^k\tau_1...\tau_k}\rho' = \phi^k\rho' (\relsem{\bm \alpha; \bm
-  \beta\vdash \tau_1}\rho')... (\relsem{\bm \alpha; \bm \beta\vdash
-  \tau_k}\rho') = \Eq_{\phi^k\rho} \Eq_{\setsem{\bm \alpha; \bm
-    \beta\vdash \tau_1}\rho}...$ $\Eq_{\setsem{\bm \alpha; \bm
-    \beta\vdash \tau_k}\rho} = \Eq_{\phi^k\rho (\setsem{\bm \alpha;\bm
-    \beta\vdash \tau_1}\rho)... (\setsem{\bm \alpha; \bm \beta\vdash
-    \tau_k}\rho)} = \Eq_{\setsem{\bm \alpha; \bm \beta \vdash
-    \phi^k\tau_1...\tau_k}\rho}$
-\item {\color{red} $\relsem{\bm \alpha; \bm \beta \vdash (\mu
-    \phi^k.\lambda \gamma_1...\gamma_k.\sigma)\tau_1...\tau_k}\rho' =
-  (\mu (F \mapsto \lambda R_1...R_k. \relsem{ \bm \alpha; \bm
-    \beta,\bm \gamma \vdash H}\rho'[\phi := F][\bm \gamma := \bm
-    R]))(\relsem{\bm \alpha; \bm \beta \vdash
-    \tau_1}\rho')...(\relsem{\bm \alpha; \bm \beta \vdash
-    \tau_k}\rho') = (\mu (F \mapsto \lambda
-  R_1...R_k. \Eq_{\relsem{\bm \alpha; \bm \beta,\bm \gamma \vdash
-      H}\rho[\phi := F][\bm \gamma := \bm R]}))$ $\Eq_{\setsem{\bm \alpha;
-    \bm \beta \vdash \tau_1}\rho}...\Eq_{\setsem{\bm \alpha; \bm \beta
-      \vdash \tau_k}\rho} = HERE!!!! = 
-  \Eq_{\setsem{\bm \alpha; \bm \beta \vdash (\mu
-    \phi^k.\lambda \gamma_1...\gamma_k.\sigma)\tau_1...\tau_k}\rho}$}
+  (\Eq_{1_\set})^* = (\Eq_{\setsem{\Gamma; \Phi \vdash 1}\rho})^*$
+\item The application case is proven by the sequence of equalities
+	\[
+	\begin{split}
+		\relsem{\Gamma; \Phi \vdash \phi^k\tau_1...\tau_k}\Eq_{\rho}
+		&= \pi_3(\Eq_{\rho}\phi^k) (\relsem{\Gamma; \Phi \vdash \tau_1} \Eq_{\rho}) ... (\relsem{\Gamma; \Phi \vdash \tau_k} \Eq_{\rho}) \\
+		&= (\Eq_{\rho} \phi^k)^* (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1} \rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k} \rho})^* \\
+		&= (\Eq_{\rho \phi^k (\setsem{\Gamma; \Phi \vdash \tau_1} \rho) ... (\setsem{\Gamma; \Phi \vdash \tau_k} \rho)})^* \\
+		&= (\Eq_{\setsem{\Gamma; \Phi \vdash \phi^k\tau_1...\tau_k}\rho})^*
+	\end{split}
+	\]
+	where the second equality is given by the induction hypothesis, and the third by Lemma~\ref{lem:eq-reln-equalities}.
+\item The fix-point case is proven by the sequence of equalities
+	\[
+	\begin{split}
+		\relsem{\Gamma; \Phi \vdash (\mu \phi^k.\lambda \alpha_1...\alpha_k. H)\tau_1...\tau_k}\Eq_{\rho}
+		&=\pi_3 (\mu {T_{\Eq_{\rho}}}) \relsem{\Gamma; \Phi \vdash \tau_1}\Eq_{\rho} ... \relsem{\Gamma; \Phi \vdash \tau_k}\Eq_{\rho} \\
+		&= \colim{n \in \nat}{((T^n_{\Eq_{\rho}} K_0)^*)} \relsem{\Gamma; \Phi \vdash \tau_1}\Eq_{\rho} ... \relsem{\Gamma; \Phi \vdash \tau_k}\Eq_{\rho} \\
+		&= \colim{n \in \nat}{((T^n_{\Eq_{\rho}} K_0)^*)} (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k}\rho})^* \\
+		&= \colim{n \in \nat}{( (T^n_{\Eq_{\rho}} K_0)^* (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k}\rho})^* )} \\
+		&= \colim{n \in \nat}{( (\Eq_{(T^\set_\rho)^n K_0})^* (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k}\rho})^* )} \\
+		&= \colim{n \in \nat}{(\Eq_{(T^\set_\rho)^n K_0 \setsem{\Gamma; \Phi \vdash \tau_1}\rho ... \setsem{\Gamma; \Phi \vdash \tau_k}\rho})^*} \\
+		&= (\Eq_{\colim{n \in \nat}{( (T^\set_{\rho})^n K_0 \setsem{\Gamma; \Phi \vdash \tau_1}\rho ... \setsem{\Gamma; \Phi \vdash \tau_k}\rho )}})^* \\
+		&= (\Eq_{\setsem{\Gamma; \Phi \vdash (\mu \phi^k.\lambda \alpha_1...\alpha_k. H)\tau_1...\tau_k}\rho})^*
+	\end{split}
+	\]
+	where the third equality is by induction hypothesis, the sixth is by Lemma~\ref{lem:eq-reln-equalities} and the fifth equality is because, for every $n \in \nat$, the following two statements can be proved by simultaneous induction:
+	\begin{equation}\label{eq:iel-fix-point-intermediate1}
+		(T^n_{\Eq_{\rho}} K_0^{\rel})^* (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k}\rho})^*
+		= (\Eq_{(T^\set_\rho)^n K_0^{\set}})^* (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho})^* ... (\Eq_{\setsem{\Gamma; \Phi \vdash \tau_k}\rho})^*
+	\end{equation}
+	and
+	\begin{multline}\label{eq:iel-fix-point-intermediate2}
+		\relsem{\Gamma; \Phi, \phi, \alpha \vdash H} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
+		=
+		\relsem{\Gamma; \Phi, \phi, \alpha \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_\rho)^n K_0^{\set}}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
+	\end{multline}
+	We prove~\eqref{eq:iel-fix-point-intermediate1}.
+	The case $n=0$ is trivial, because $T^0_{\Eq_{\rho}} K_0^{\rel} = K_0^{\rel}$ and $(T^\set_\rho)^0 K_0^{\set} = K_0^{\set}$;
+	the inductive step is proven by the sequence of equalities
+	\[
+	\begin{split}
+		(T^{n+1}_{\Eq_{\rho}} K_0^{\rel})^* \overline{(\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho})^*}
+		&= T^\rel_{\Eq_{\rho}} (T^{n}_{\Eq_{\rho}} K_0^{\rel}) \overline{(\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho})^*} \\
+		&= \relsem{\Gamma; \Phi, \phi, \alpha \vdash H} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
+		&= \relsem{\Gamma; \Phi, \phi, \alpha \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_\rho)^n K_0^{\set}}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
+		&= \relsem{\Gamma; \Phi, \phi, \alpha \vdash H} \Eq_{\rho [\phi := (T^\set_\rho)^n K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash \tau}\rho]}} \\
+		&= (\Eq_{\setsem{\Gamma; \Phi, \phi, \alpha \vdash H} \rho [\phi := (T^\set_\rho)^n K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash \tau}\rho]}})^* \\
+		&= (\Eq_{(T^\set_\rho)^{n+1} K_0^{\set} \overline{\setsem{\Gamma; \Phi \vdash \tau}\rho}})^* \\
+		&= (\Eq_{(T^\set_\rho)^{n+1} K_0^{\set}})^* \overline{(\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho})^*}
+	\end{split}
+	\]
+	where the third equality is by~\eqref{eq:iel-fix-point-intermediate2}, the fifth by the induction hypothesis on $H$, and the last by Lemma~\ref{lem:eq-reln-equalities}.
+	We prove the induction step of~\eqref{eq:iel-fix-point-intermediate2} by structural induction on $H$: the only interesting case, though, is when $\phi$ is applied, i.e., for $H = \phi \sigma_1 ... \sigma_k$, which is proved by the sequence of equalities
+	\[
+	\begin{split}
+		&\hspace{-0.2in} \relsem{\Gamma; \Phi, \phi, \alpha \vdash \phi \sigma_1 ... \sigma_k} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
+		&= (T^{n}_{\Eq_{\rho}} K_0^{\rel})^* \overline{\relsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\
+		&= (T^{n}_{\Eq_{\rho}} K_0^{\rel})^* \overline{\relsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \Eq_{\rho} [\phi := \Eq_{(T^\set_\rho)^{n} K_0^{\set}}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\
+		&= (T^{n}_{\Eq_{\rho}} K_0^{\rel})^* \overline{\relsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \Eq_{\rho [\phi := (T^\set_\rho)^{n} K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\
+		&= (T^{n}_{\Eq_{\rho}} K_0^{\rel})^* \overline{\Eq_{\setsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \rho [\phi := (T^\set_\rho)^{n} K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\
+		&= \Eq^*_{(T^\set_\rho)^{n} K_0^{\set}} \overline{\Eq_{\setsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \rho [\phi := (T^\set_\rho)^{n} K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\
+		&= \Eq^*_{(T^\set_{\rho})^{n} K_0^{\set}} \overline{\relsem{\Gamma; \Phi, \phi, \alpha \vdash \sigma} \Eq_{\rho} [\phi := \Eq_{(T^\set_{\rho})^{n} K_0^{\set}}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}} \\
+		&= \relsem{\Gamma; \Phi, \phi, \alpha \vdash \phi \sigma_1 ... \sigma_k} \Eq_{\rho} [\phi := \Eq_{(T^\set_{\rho})^{n} K_0^{\set}}] \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
+	\end{split}
+	\]
+	where the second equality is by the induction hypothesis for~\eqref{eq:iel-fix-point-intermediate2} on the $\sigma$s, the fourth is by the induction hypothesis
+	% for Theorem~\ref{thm:iel} 
+	on the $\sigma$s, and the fifth is by the induction hypothesis on $n$ for~\eqref{eq:iel-fix-point-intermediate1}.
 \item $\relsem{\Gamma; \Phi \vdash \sigma + \tau} \Eq_{\rho}
   = \relsem{\Gamma; \Phi \vdash \sigma} \Eq_{\rho} + \relsem{\Gamma; \Phi \vdash \tau} \Eq_{\rho}
-  = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho} + \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}
-  = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma + \tau}\rho}$
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho})^* + (\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho})^*
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho + \setsem{\Gamma; \Phi \vdash \tau}\rho})^*
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma + \tau}\rho})^*$
 \item $\relsem{\Gamma; \Phi \vdash \sigma \times \tau} \Eq_{\rho}
   = \relsem{\Gamma; \Phi \vdash \sigma}\Eq_{\rho} \times \relsem{\Gamma; \Phi \vdash \tau}\Eq_{\rho}
-  = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho} \times \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}
-  = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma \times \tau}\rho}$
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho})^* \times (\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho})^*
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho \times \setsem{\Gamma; \Phi \vdash \tau}\rho})^*
+  = (\Eq_{\setsem{\Gamma; \Phi \vdash \sigma \times \tau}\rho})^*$
 \end{itemize}
 \end{proof}
 
@@ -2102,7 +2186,7 @@ If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
 {\color{blue} We will need to go back and add typing rules for
   well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
   and relational interpretations of these maps (just the actual
-  functoial actions), and cases for $\map$ to all of our proofs thus
+  functorial actions), and cases for $\map$ to all of our proofs thus
   far having to do with terms.
 
 Next we will want to sanity-check our model by showing that term
@@ -2117,13 +2201,24 @@ interps respect conversion rules. These are
 \item $\pi_i(t_1,t_2) = t_i$
 \item $\case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} = t_i[x_i := t]$
 \item and other conversion rules as on page 18 of MFPS paper
-\item \item \item 
+\item perhaps add weakening rules explicitly here?
+
+\vspace*{0.2in}
+  
 \item All of the above are shorthands for saying that the interps of
   the LHSs are the same as the interps of the RHSs. For this
-  conversiton rule: $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$,
+  conversion rule: $\fold\,k\,(\tin\,t) = k\,(\map\,(\fold\,k)\,t)$,
   we can't express it in syntax. So what we really want to say here is
   that some semantic equivalent of this syntacic rule holds. And
   similarly for the next rules.
+\item Maybe we want to show that $(\sem{\mu \alpha. F[\alpha]},
+  \sem{\tin})$ is an initial $\sem{F}$-algebra in the model? See
+  Birkedal and Mogelberg Section 5.4. As part of this we would have
+  the next bullet point, plus some other intermediate results as in
+  5.17, 5.18, and 5.19 there. We would also need representations of
+  map functions. Perhaps we can define them syntactically as in
+  Plotkin and Abadi section 2.1? (But isn't this precisely what we
+  tried?)
 \item $\fold_H \, \tin_H x = x$ (Intuitively, this is the syntactic
   counterpart to initiality of $\tin$.)  
 \item $\map^\F_H \,\overline{(L_{\bm \alpha} x.x)} = L_{\bigcup \bm
@@ -2152,15 +2247,20 @@ Note that there are no computation rules for types because types are
 always fully applied in our syntax.
 
 Show $\sem{\Gamma; \emptyset \vdash \sigma \to \tau} = \sem{\Gamma;
-  \emptyset \vdash \Nat^\emptyset\, \sigma\, \tau}$.
+  \emptyset \vdash \Nat^\emptyset\, \sigma\, \tau}$. Oh, this doesn't
+appear to hold. Unfolding the definitions, the latter appears to
+impose a commutativity condition ($\relsem{\Gamma \vdash \tau}(\Eq\,
+\rho) \circ \eta = \eta \circ \relsem{\Gamma \vdash \sigma}(\Eq
+\,\rho)$ that the former does not require.
 
 Other sanity checks?
 
 Note that our calculus does not support Church encodings of data types
-like pair or sum or list types. But we could (probably) alter our
-calculus to admit sum and product and list types because we can tell
-metatheoretically that these are fixed points of (positive) functors,
-and because all of the ``forall''s are at the top level.
+like pair or sum or list types because all of the ``forall''s in our
+calculus must be at the top level.  Nevertheless, our calculus does
+admit actual sum and product and list types because they are coded by
+$\mu$-terms in our calculus. We just don't have an equivalence of
+these types and their Church encodings in our calculus, that's all.
 
 }
 
