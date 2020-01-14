@@ -584,7 +584,7 @@ so, mainly because of the cocontinuity conditions we must impose to
 ensure that they are well-behaved. We take some effort to develop
 these in Section~\ref{sec:rel-interp}, which separates
 Definitions~\ref{def:set-interp} and~\ref{def:rel-sem} in space but
-otherwise has on impact on the fact that they are given by mutually
+otherwise has no impact on the fact that they are given by mutually
 induction.
 
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
@@ -632,7 +632,7 @@ sufficiently uniform.
 
 \begin{dfn}\label{def:set-interp}
 Let $\rho$ be a set environment. The {\em set interpretation}
-$\setsem{\cdot} : \F \to \setenv \to \set$ is defined by
+$\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
 \begin{align*}
   \setsem{\Gamma;\emptyset \vdash v} \rho &= \rho v \mbox{
     if } v \in \V\\ 
@@ -1221,7 +1221,7 @@ Definition~\ref{def:set-interp}. We have:
 
 \begin{dfn}\label{def:rel-sem}
 Let $\rho$ be a relation environment. The {\em relation
-  interpretation} $\relsem{\cdot} : \F \to \relenv \to \rel$ is
+  interpretation} $\relsem{\cdot} : \F \to [\relenv, \rel]$ is
 defined by
 \begin{align*}
   \relsem{\Gamma;\emptyset \vdash v}\rho &= \rho v \mbox{ if
