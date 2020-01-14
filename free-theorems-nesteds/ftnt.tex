@@ -197,9 +197,6 @@ Nested Types} %% [Short Title] is optional;
   categories anywhere. 
 \item Couldn't do this before LICS paper? Or could Bob have done it?
   What's new?
-\item Introduce notation $\bm R$. Introduce notation $[\bm \alpha :=
-  \bm R]$ for $[\alpha_1 := R_1,...,\alpha_k := R_k]$ when the
-  cardinalities of $\bm \alpha$ and $\bm R$ are equal.
 \end{itemize}}
 
 \subsection{Preliminaries}\label{sec:prelims}
@@ -210,8 +207,8 @@ We write $\set$ for the category of sets and functions.
 The category $\rel$ is defined as follows.
 \begin{itemize}
 \item An object of $\rel$ is a triple $(A,B,R)$ where $R$ is a
-  relation between the objects $A$ and $B$ in $\set$. We identify
-  $(A,B,R)$ with $R$, and write $R : \rel(A,B)$ when convenient.
+  relation between the objects $A$ and $B$ in $\set$. We write $R :
+  \rel(A,B)$ when convenient.
 \item A morphism between objects $R : \rel(A,B)$ and $R' :
   \rel(A',B')$ of $\rel$ is a pair $(f : A \to A',g : B \to B')$ of
   morphisms in $\set$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in
@@ -266,7 +263,7 @@ and
 \zerot \mid \onet \mid \Pos\, \ol{\mcF^{\Pos}(V)} 
 \mid \mcF^{\Pos}(V)\! +\, \mcF^{\Pos}(V)
 \mid \mcF^{\Pos}(V)\! \times\, \mcF^{\Pos}(V)\\
-&\mid \left(\mu \phi^{k}. \lambda \ol{\alpha}.
+&\mid \left(\mu \phi^{k}. \lambda \alpha_1...\alpha_k.
 \mcF^{\Pos,\alpha_1,...,\alpha_k,\phi}(V)\right)
 \ol{\mcF^{\Pos}(V)}
 \end{align*}
@@ -392,10 +389,11 @@ trees that is natural in $\gamma$ but not in $\delta$.
 Substitution for first-order type constructor expressions is the usual
 capture-avoiding textual substitution. We write $\tau[\alpha :=
   \sigma]$ for the result of substituting $\sigma$ for $\alpha$ in
-$\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k := \tau_k]$ for
-$\tau[\alpha_1 := \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$.
-Substitution for second-order type constructor expressions is given in
-the next definition.
+$\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k := \tau_k]$, or
+$\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
+  \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$.  Substitution
+for second-order type constructor expressions is given in the next
+definition.
 %We write $F[\bm \alpha]$ to indicate that $\Gamma; \Phi, \bm \alpha
 %\vdash F : \F$, i.e., that $F$ is a second-order type constructor
 %expression depending on (at least) the type constructor variables in
@@ -411,9 +409,9 @@ operation $(\cdot)[\phi := F]$ of {\em second-order type constructor
 \tau[\phi := F] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
 \onet[\phi := F] & = & \onet\\[0.5ex]
 \zerot[\phi := F] & = & \zerot\\[0.25ex]
-(\psi^n \ol{\tau})[\phi := F] & = &
+(\psi \ol{\tau})[\phi := F] & = &
 \left\{\begin{array}{ll}
-\psi^n \,\ol{\tau[\phi := F]} & \mbox{if } \psi \not = \phi\\
+\psi \,\ol{\tau[\phi := F]} & \mbox{if } \psi \not = \phi\\
 F[\ol{\alpha := \tau[\phi := F]}] & \mbox{if } \psi = \phi
 \end{array}\right.\\
 \\[-0.25ex]
@@ -421,8 +419,8 @@ F[\ol{\alpha := \tau[\phi := F]}] & \mbox{if } \psi = \phi
 + \tau[\phi := F]\\[0.5ex] 
 (\sigma \times \tau)[\phi := F] & = & \sigma[\phi := F] \times \tau[\phi
   := F]\\[0.5ex]  
-((\mu \psi^n. \lambda \ol{\beta}.\, G)\ol{\tau}[\phi :=
-  F] & = & (\mu \psi^n. \lambda \ol{\beta}. \,G[\phi :=
+((\mu \psi. \lambda \ol{\beta}.\, G)\ol{\tau}[\phi :=
+  F] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=
   F])\, \ol{\tau[\phi := F]}
 \end{array}\]
 \end{dfn}
@@ -556,10 +554,10 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \DisplayProof
 \\\\
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu \phi.\lambda 
-  \ol{\alpha}.H][\ol{\alpha := A}]$}
-\AXC{$\ol{\Gamma;\Phi \vdash A}$}%_i \mbox{\,for\,}i = 1,...,k$}
+  \ol{\alpha}.H][\ol{\alpha := \tau}]$}
+\AXC{$\ol{\Gamma;\Phi \vdash \tau}$}%_i \mbox{\,for\,}i = 1,...,k$}
 \BIC{$\Gamma;\Phi \,|\, \Delta \vdash \tin_H \,t : (\mu \phi.\lambda 
-  \ol{\alpha}.H)\ol{A}$}
+  \ol{\alpha}.H)\ol{\tau}$}
 \DisplayProof
 \\\\
 \AXC{$\Gamma; \ol{\alpha} \vdash F : \F$}
@@ -599,7 +597,10 @@ environment $\rho'$ with $\rho|_\V = \rho'|_\V$ maps each type
 variable $v$ to $\id_{ \rho v}$, and each type constructor variable
 $\phi$ of arity $k$ to a natural transformation from the $k$-ary
 functor $\rho \phi$ on $\set$ to the $k$-ary functor $\rho' \phi$ on
-$\set$.
+$\set$. Composition of morphisms on set environments is given
+componentwise, with the identity morphism mapping each set environment
+to itself. This gives a category of set environments and morphisms
+between them, which we denote $\setenv$.
 \end{dfn}
 When convenient we identify a functor $F : [\set^0, \set]$ with the
 set that is its codomain.  With this convention, a set environment
@@ -609,8 +610,7 @@ set --- just as it does a type variable. If $\ol{\alpha} =
 \{\alpha_1,...,\alpha_k\}$ and $\ol{A} = \{A_1,...,A_k\}$, then we
 write $\rho[\ol{\alpha := A}]$ for the set environment $\rho'$ such
 that $\rho' \alpha_i = A_i$ for $i = 1,...,k$ and $\rho' \alpha = \rho
-\alpha$ if $\alpha \not \in \{\alpha_1,...,\alpha_k\}$. We write
-$\setenv$ for the collection of all set environments. 
+\alpha$ if $\alpha \not \in \{\alpha_1,...,\alpha_k\}$.
 
 If $\rho$ is a set environment we write $\Eq_\rho$ for the relation
 environment such that $\Eq_\rho v = \Eq_{\rho v}$ for every type
@@ -720,8 +720,8 @@ $\setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash H}$, this means that set
 interpretations of types must be functors.  This in turn means that
 the actions of set interpretations of types on objects and on
 morphisms in $\setenv$ are intertwined.  In fact, we know
-from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash E : \F$,
-$\setsem{\Gamma; \ol{\alpha} \vdash E}$ is actually functorial in
+from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash \tau : \F$,
+$\setsem{\Gamma; \ol{\alpha} \vdash \tau}$ is actually functorial in
 $\ol{\alpha}$ and $\omega$-cocontinuous.  What remains is to define
 the actions of each of these functors on morphisms between
 environments.
@@ -863,14 +863,11 @@ equivalent to: if $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b)
   \in S}$ then $(c,d) \in F^*\ol{R}$ implies $(F^0 \ol{\alpha}\,c,F^1
 \ol{\beta}\,d) \in F^*\ol{S}$.
 
-When convenient we identify a $0$-ary relation transformer $(A,B,R)$
-with the relation $(A,B,R)$. It will also be convenient to extend the
-identification of a relation with its third component as in
-Definition~\ref{def:rel} to identify a relation transformer $F =
-(F^0,F^1,F^*)$ with its third component $F^*$. In this case we may
-continue to write $F^0$ and $F^1$ for $\pi_1 F$ and $\pi_2 F$.  We
-extend these conventions to relation environments, introduced in
-Definition~\ref{def:reln-env} below, as well.
+When convenient we identify a $0$-ary relation transformer
+$[1,(A,B,R)]$ with the relation $(A,B,R)$. We may also write $F^0$ and
+$F^1$ for $\pi_1 F$ and $\pi_2 F$. We extend these conventions to
+relation environments, introduced in Definition~\ref{def:reln-env}
+below, as well.
 
 \begin{dfn}
 The category $RT_k$ of $k$-ary relation transformers is given by the
@@ -1059,10 +1056,11 @@ $C$ in $RT_k$.
 \end{proof}
 
 \begin{dfn}\label{def:omega-cocont}
-A functor $T = (T^0,T^1,T^*)$ on $RT_k$ is {\em $\omega$-cocontinuous}
-if $T^0$ and $T^1$ are $\omega$-cocontinuous endofunctors on
-$[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous functor from
-$RT_k$ to $[\rel^k,\rel]$.
+An endofunctor $T = (T^0,T^1,T^*)$ on $RT_k$ is {\em
+  $\omega$-cocontinuous} if $T^0$ and $T^1$ are $\omega$-cocontinuous
+endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
+functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
+$[RT_k,[\rel^k,\rel]]$. 
 %, for every $\omega$-directed set $\cal D$,
 %\[T\,\colim{d \in {\cal D}}{(F^0_d, F^1_d,F^*_d)} = \colim{d \in {\cal
 %    D}}{T (F^0_d, F^1_d,F^*_d)}\]
@@ -1071,14 +1069,13 @@ $RT_k$ to $[\rel^k,\rel]$.
 For any $k$ and $R : \rel(A, B)$, let $K^\rel_R$ be the constantly
 $R$-valued functor from $\rel^k$ to $\rel$, and for any $k$ and set
 $A$, let $K^\set_A$ be the constantly $A$-valued functor from $\set^k$
-to $\set$. Moreover, let $0$ denote either the empty set or the empty
-relation on the empty set, depending on the context.  Observing that,
-for every $k$, $K^\set_0$ is initial in the category of functors from
-$\set^k$ to $\set$, and similarly for $K^\rel_0$, we have that, for
-each $k$, $K_0 = (K^\set_0,K^\set_0,K^\rel_0)$ is initial in the
-category of $k$-ary relation transformers.  Thus, if $T =
-(T^0,T^1,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$ then we can
-define $\mu T$ to be the relation transformer
+to $\set$. Moreover, let $0$ denote either the initial object of
+$\set$ or the initial object of $\rel$, depending on the context.
+Observing that, for every $k$, $K^\set_0$ is initial in
+$[\set^k,\set]$, and similarly for $K^\rel_0$, we have that, for each
+$k$, $K_0 = (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus,
+if $T = (T^0,T^1,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$
+then we can define $\mu T$ to be the relation transformer
 \begin{equation*}
 \mu T = \lim_{\xrightarrow[n]{}}\, T^n K_0
 \end{equation*}
@@ -1090,7 +1087,7 @@ transformer, and that it is given explicitly by
 \end{equation}
 
 \begin{lemma}\label{lem:fp}
-For any $\omega$-cocontinuous functor on $RT_k$, $\mu T \cong T(\mu T)$.
+For any $T : [RT_k,RT_k]$, $\mu T \cong T(\mu T)$.
 \end{lemma}
 \begin{proof}
 We have $T(\mu T) = T(\colim{n}{(T^nK_0)}) \cong \colim{n}{T(T^nK_0)} =
@@ -1144,34 +1141,36 @@ a morphism in $RT_k$ unless $T$ is $\omega$-cocontinuous.
 
 \begin{dfn}\label{def:reln-env}
 A {\em relation environment} maps each type variable to a relation,
-and each type constructor variable of arity $k$ to a
+and each type constructor variable of arity $k$ to an
 $\omega$-cocontinuous $k$-ary relation transformer.  A morphism $f :
 \rho \to \rho'$ from a relation environment $\rho$ to a relation
 environment $\rho'$ such that $\rho|_\V = \rho'|_\V$ maps each type
 variable $v$ to $\id_{\rho v}$ and each type constructor variable
 $\phi$ of arity $k$ to a natural transformation from the $k$-ary
 relation transformer $\rho \phi$ to the $k$-ary relation transformer
-$\rho' \phi$.
+$\rho' \phi$. Composition of morphisms on relation environments is
+given componentwise, with the identity morphism mapping each relation
+environment to itself. This gives a category of relation environments
+and morphisms between them, which we denote $\relenv$.
 \end{dfn}
 When convenient we identify a $0$-ary relation transformer with the
 relation (transformer) that is its codomain.  With this convention, a
 relation environment maps a type constructor variable of arity $0$ to
 a $0$-ary relation transformer --- i.e., to a relation --- just as it
-does a type variable.  We write $\rho[\alpha_1 := R_1,...,\alpha_k :=
-  R_k]$ for the relation environment $\rho'$ such that $\rho' \alpha_i
-\, = R_i$ for $i = 1,...,k$ and $\rho' \alpha = \rho\alpha$ if $\alpha
-\not \in \{\alpha_1,...,\alpha_k\}$. We write $\relenv$ for the
-collection of all relation environments.  If $\rho$ is a relation
-environment, we write $\pi_1 \rho$ for the set environment mapping
-each type variable $\beta$ to $\pi_1 (\rho \beta)$ and each type
-constructor variable $\phi$ to the functor $(\rho\phi)^0$. The set
-environment $\pi_2 \rho$ is defined analogously.
+does a type variable.  We write $\rho[\ol{\alpha := R}]$ for the
+relation environment $\rho'$ such that $\rho' \alpha_i \, = R_i$ for
+$i = 1,...,k$ and $\rho' \alpha = \rho\alpha$ if $\alpha \not \in
+\{\alpha_1,...,\alpha_k\}$. If $\rho$ is a relation environment, we
+write $\pi_1 \rho$ for the set environment mapping each type variable
+$\beta$ to $\pi_1 (\rho \beta)$ and each type constructor variable
+$\phi$ to the functor $(\rho\phi)^0$. The set environment $\pi_2 \rho$
+is defined analogously.
 
 We define, for each $k$, the notion of an $\omega$-cocontinuous
 functor from $\relenv$ to $RT_k$:
 \begin{dfn}\label{def:relenv-functor}
-An $\omega$-cocontinuous functor $H : [\relenv, RT_k]$ is a triple $H
-= (H^0,H^1,H^*)$, where
+A functor $H : [\relenv, RT_k]$ is a triple $H = (H^0,H^1,H^*)$,
+where
 \begin{itemize}
 \item $H^0$ and $H^1$ are objects in $[\setenv,[\set^k,\set]]$
 \item $H^*$ is a an object in $[\relenv,[\rel^k,\rel]]$
@@ -1211,13 +1210,13 @@ following Definition~\ref{def:RT-functor}:
 
 Considering $\relenv$ as a product $\Pi_{\phi^k \in \V \cup \tvars}
 RT_k$, we extend Lemma~\ref{lem:colimits} to compute colimits in
-$\relenv$ ``componentwise'', and similarly extend
-Definition~\ref{def:omega-cocont} to give a ``componentwise'' notion
-of $\omega$-cocontinuity of functors from $\relenv$ to $RT_k$.
+$\relenv$ componentwise, and similarly extend
+Definition~\ref{def:omega-cocont} to give a componentwise notion of
+$\omega$-cocontinuity of functors from $\relenv$ to $RT_k$.
 
 We recall from the start of this section that
 Definition~\ref{def:rel-sem} is given mutually inductively with
-Definition~\ref{def:set-interp}. We have:
+Definition~\ref{def:set-interp}. We can, at last, define:
 
 \begin{dfn}\label{def:rel-sem}
 Let $\rho$ be a relation environment. The {\em relation
