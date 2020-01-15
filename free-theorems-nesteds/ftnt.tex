@@ -207,8 +207,8 @@ We write $\set$ for the category of sets and functions.
 The category $\rel$ is defined as follows.
 \begin{itemize}
 \item An object of $\rel$ is a triple $(A,B,R)$ where $R$ is a
-  relation between the objects $A$ and $B$ in $\set$. We write $R :
-  \rel(A,B)$ when convenient.
+  relation between the objects $A$ and $B$ in $\set$, i.e., a subset
+  of $A \times B$. We write $R : \rel(A,B)$ when convenient.
 \item A morphism between objects $R : \rel(A,B)$ and $R' :
   \rel(A',B')$ of $\rel$ is a pair $(f : A \to A',g : B \to B')$ of
   morphisms in $\set$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in
@@ -863,11 +863,11 @@ equivalent to: if $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b)
   \in S}$ then $(c,d) \in F^*\ol{R}$ implies $(F^0 \ol{\alpha}\,c,F^1
 \ol{\beta}\,d) \in F^*\ol{S}$.
 
-When convenient we identify a $0$-ary relation transformer
-$[1,(A,B,R)]$ with the relation $(A,B,R)$. We may also write $F^0$ and
-$F^1$ for $\pi_1 F$ and $\pi_2 F$. We extend these conventions to
-relation environments, introduced in Definition~\ref{def:reln-env}
-below, as well.
+When convenient we identify a $0$-ary relation transformer $(A,B,R)$
+with the relation $(A,B,R)$. We may also write $F^0$ and $F^1$ for
+$\pi_1 F$ and $\pi_2 F$. We extend these conventions to relation
+environments, introduced in Definition~\ref{def:reln-env} below, as
+well.
 
 \begin{dfn}
 The category $RT_k$ of $k$-ary relation transformers is given by the
@@ -1675,13 +1675,12 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 %\end{proof}
 
 \begin{dfn}
-If $F$ is a functor from $\set^k$ to $\set$, define $\Eq_F^*$
-%: \rel^k \to \rel$
-as follows.  Given $R_1 : \rel(A_1, B_1),$ $...,R_k : \rel(A_k,B_k)$,
-let $\overline{i_{R_i} : R_i \hookrightarrow A_i \times B_i}$ be the
-inclusion of $R_i$ as a subset of $A_i \times B_i$. By the universal
-property of the product, there exists a unique $h_{\overline{A \times
-    B}}$ making the diagram
+If $F$ is a functor from $\set^k$ to $\set$, define the functor
+$\Eq_F^*$ from $\rel^k$ to $\rel$ as follows.  Given $R_1 : \rel(A_1,
+B_1),$ $...,R_k : \rel(A_k,B_k)$, let $\overline{i_{R_i} : R_i
+  \hookrightarrow A_i \times B_i}$ be the inclusion of $R_i$ as a
+subset of $A_i \times B_i$. By the universal property of the product,
+there exists a unique $h_{\overline{A \times B}}$ making the diagram
 \[
 \begin{tikzcd}[row sep = large]
 F\overline{A}
@@ -1694,13 +1693,11 @@ F\overline{A}
 \ar[ul, "{\pi_1}"] \ar[ur, "{\pi_2}"']
 \end{tikzcd}
 \]
-commute.
-Let $h_{\overline{R}} : F\overline{R} \to F\overline{A} \times F\overline{B}$
-be $h_{\overline{A \times B}} \circ F\overline{i_R}$.
-Then, define $\Eq_F^*\overline{R}$ as
-the subobject through which $h_{\overline{R}}$ is factorized
-by the mono-epi factorization system in $\set$,
-as shown in the following diagram:
+commute.  Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
+\times F\overline{B}$ be $h_{\overline{A \times B}} \circ
+F\overline{i_R}$.  Then, define $\Eq_F^*\overline{R}$ as the subobject
+through which $h_{\overline{R}}$ is factorized by the mono-epi
+factorization system in $\set$, as shown in the following diagram:
 \[
 \begin{tikzcd}
 F\overline{R}
@@ -1717,7 +1714,7 @@ are morphisms in $\rel$, then $\Eq_F^*\overline{(\alpha, \beta)}$ is
 defined to be $(F\overline\alpha, F\overline\beta)$.
 \end{dfn}
 
-If $F$ is a functor from $\set^k$ to $\set]$, let $\Eq_F = (F, F,
+If $F$ is a functor from $\set^k$ to $\set$, let $\Eq_F = (F, F,
   \Eq_F^*)$. Note that if $A : \set$ then $\Eq_A$ is precisely as
   defined in Section~\ref{sec:prelims}. This is consistent with the
   fact that a set can be seen as a $0$-ary functor on sets and a
@@ -1727,10 +1724,13 @@ If $F$ is a functor from $\set^k$ to $\set]$, let $\Eq_F = (F, F,
 If $F : [\set^k,\set]$ then $\Eq_F$ is in $RT_k$.
 \end{lemma}
 \begin{proof}
-Consider $\overline{(\alpha, \beta) : R \to S}$, where $\overline{R :
-  \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.  We want to show that
-there exists a morphism $\epsilon : \Eq_F^*\overline{R} \to
-\Eq_F^*\overline{S}$ such that
+Clearly, $\Eq*_F : [\rel^k,\rel]$. i.e., $Eq^*_F$ is
+$\omega$-cocontinuous. 
+
+Now, consider $\overline{(\alpha, \beta) : R \to S}$, where
+$\overline{R : \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.  We want
+to show that there exists a morphism $\epsilon : \Eq_F^*\overline{R}
+\to \Eq_F^*\overline{S}$ such that
 \[
 \begin{tikzcd}
 \Eq_F^*\overline{R}
@@ -1744,7 +1744,7 @@ there exists a morphism $\epsilon : \Eq_F^*\overline{R} \to
 \end{tikzcd}
 \]
 commutes.
-By hypothesis, there exists $\overline{\gamma : R \to S}$
+By hypothesis, there exist $\overline{\gamma : R \to S}$
 such that the diagram
 \[
 \begin{tikzcd}
@@ -1781,7 +1781,7 @@ F\overline{S}
 Then, by the left-lifting-property of $q_{\Eq_F^*\overline{R}}$
 with respect to $i_{\Eq_F^*\overline{S}}$
 given by the epi-mono factorization system,
-there exists $\epsilon$ such that the diagram
+there exists an $\epsilon$ such that the diagram
 \[
 \begin{tikzcd}
 F\overline{R}
@@ -1804,12 +1804,12 @@ commutes.
 
 \begin{lemma}\label{lem:eq-reln-equalities}
 If $F : [\set^k,\set]$ and $A_1,...,A_k : \set$, then $\Eq_F^*
-  \overline{\Eq^*_A} = \Eq^*_{F\overline{A}}$.
+  \overline{\Eq_A} = \Eq_{F\overline{A}}$.
 \end{lemma}
 \begin{proof}
-The relation $\overline{\Eq^*_A}$ corresponds to the subobject
-$\overline{\Delta_{A} : A \to A \times A}$.
-Since $h_{\overline{\Eq_A}}$ is the unique morphism making the diagram
+The relation $\overline{\Eq_A}$ corresponds to the subobject
+$\overline{\Delta_{A} : A \to A \times A}$.  Since
+$h_{\overline{\Eq^*_A}}$ is the unique morphism making the diagram
 \[
 \begin{tikzcd}[row sep = large]
 F\overline{A}
@@ -1830,15 +1830,16 @@ commute, we have $h_{\overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.
 Moreover, since $\Delta_{F\overline{A}}$ is a monomorphism, we have
 that $i_{\Eq_F^* \overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.  To
 conclude we observe that the relation corresponding to the subobject
-$\Delta_{F\overline{A}}$ is $(\Eq_{F\overline{A}})^*$.
+$\Delta_{F\overline{A}}$ is $\Eq_{F\overline{A}}$.
 \end{proof}
 
 We now show that the Identity Extension Lemma holds for the
 interpretations given in Definitions~\ref{def:set-interp}
 and~\ref{def:rel-sem}. If $\rho$ is a set environment, define
 $\Eq_\rho$ to be the relation environment such that $\Eq_\rho v =
-\Eq_{\rho v}$ for all $v \in \V \cup \tvars$. The Identity Extension
-Lemma can then be stated and proved as follows:
+\Eq_{\rho v}$ for all $v \in \V \cup \tvars$. This is exactly the same
+definition that was given informally in Section~\ref{sec:set-interp}.
+The Identity Extension Lemma can then be stated and proved as follows:
 
 \begin{thm}\label{thm:iel}
   If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$,
