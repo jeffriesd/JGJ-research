@@ -2069,7 +2069,7 @@ natural transformation from $\relsem{\Gamma; \Phi \vdash \Delta}$ to
 $\relsem{\Gamma; \Phi \vdash \tau}$. These are given in the next two
 definitions. 
 
-\begin{dfn}\label{def:set-interp'}
+\begin{dfn}\label{def:set-interp}
 If $\rho$ is a set environment and $\Gamma;\Phi~|~\Delta \vdash t :
 \tau$ then $\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho$ is
 defined as follows:
@@ -2084,8 +2084,8 @@ defined as follows:
  \langle \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
   \tau}\rho, \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
 \rangle\\
-\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\bm \alpha} x.t : \Nat^{\bm
-    \alpha} \,F \,G}\rho & = &  \curry (\setsem{\Gamma;\bm \alpha
+\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
+    \alpha} \,F \,G}\rho & = &  \curry (\setsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
   G [\overline{\alpha := \tau}]}\rho & = & \eval \circ \langle
@@ -2093,7 +2093,7 @@ defined as follows:
   \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\setsem{\Gamma;\Phi
       \vdash \tau}\rho}},\\ 
  & & \hspace*{0.5in} \sem{\Gamma;\Phi \,|\,
-    \Delta \vdash s: F \overline{[\alpha := \tau]}}\rho \rangle\\ 
+    \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle\\ 
 & & \\
 \color{red} \mbox{Add rules for } \forall \mbox{ if we include
   it} & & \\
@@ -2129,15 +2129,15 @@ defined as follows:
 \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi^k.\lambda 
- {\bm \alpha}.H){\bm A}} \rho & = & \mathit{in} \circ
-  \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi^k := \mu
-      \phi^k.\lambda {\bm \alpha}.H][\bm \alpha := \bm A]} \rho\\  
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi.\lambda 
+ {\overline \alpha}.H){\overline \tau}} \rho & = & \mathit{in} \circ
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho\\  
 \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\bm \alpha}\,((\mu
-  \phi.\lambda \bm \beta.H)\bm \alpha)\,F}\rho & = & 
+  \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
+  \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho & = & 
 \mathit{fold}\circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-  \Nat^{\bm \alpha}\,(H[\phi := F][\bm \beta := \bm \alpha])\,F}\rho
+  \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
 \end{array}\]
 \end{dfn}
 
@@ -2164,7 +2164,7 @@ defined as follows:
   \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
       \vdash \tau}\rho}},\\ 
  & & \hspace*{0.5in} \sem{\Gamma;\Phi \,|\,
-    \Delta \vdash s: F \overline{[\alpha := \tau]}}\rho \rangle\\ 
+    \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle\\ 
 & & \\
 \color{red} \mbox{Add rules for } \forall \mbox{ if we include
   it} & & \\
@@ -2208,7 +2208,7 @@ defined as follows:
   \fold_{H,F}\, t : \Nat^{\bm \alpha}\,((\mu
   \phi.\lambda \bm \beta.H)\bm \alpha)\,F}\rho & = & 
 \mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-  \Nat^{\bm \alpha}\,(H[\phi := F][\bm \beta := \bm \alpha])\,F}\rho)
+  \Nat^{\bm \alpha}\,(H[\phi := F][\bm \beta := \bm \alpha])\,F}\rho
 \end{array}\]
 \end{dfn}
 
@@ -2218,18 +2218,197 @@ $\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
 similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
   \tau}$.
 
+\begin{lemma}\label{lemma:substitution}
+  We have that:
+  \begin{itemize}
+  \item for $\Gamma;\Phi,\alpha \vdash F$
+  and $\Gamma;\Phi \vdash \tau$,
+    \begin{equation}\label{eq:set-subs-var}
+      \setsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
+      \setsem{\Gamma;\Phi,\alpha \vdash F}\rho[\alpha :=
+      \setsem{\Gamma;\Phi \vdash \tau}\rho]
+    \end{equation}
+    and
+    \begin{equation}\label{eq:rel-subs-var}
+      \relsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
+      \relsem{\Gamma;\Phi, \alpha \vdash F}\rho[\alpha :=
+      \relsem{\Gamma;\Phi \vdash \tau}\rho]
+    \end{equation}
+  \item for $\Gamma;\Phi,\phi^k\vdash F$
+    and $\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$,
+    \begin{equation}\label{eq:set-subs-const}
+      \setsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
+      = \setsem{\Gamma; \Phi, \phi \vdash F}\rho
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\alpha := \text{--}]]
+    \end{equation}
+    and
+    \begin{equation}\label{eq:rel-subs-const}
+      \relsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
+      = \relsem{\Gamma; \Phi, \phi \vdash F}\rho
+      [\phi := \relsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\alpha := \text{--}]]
+    \end{equation}
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+Equations~\ref{eq:set-subs-var} and~\ref{eq:rel-subs-var} are special cases of,
+respectively, equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
+Though, it is convenient to prove equations~\ref{eq:set-subs-var}
+and~\ref{eq:rel-subs-var} first, and then use those to prove
+equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
+
+The proofs for the set interpretation and those for the relational interpretation
+are completely analogous, so we shall make the argument more abstract
+by using a generic interpretation $\sem{-}$.
+
+We prove equations~\ref{eq:set-subs-var} and~\ref{eq:rel-subs-var}.
+We proceed by induction on the structure of $F$.
+\begin{itemize}
+  \item $F : \T$ does not contain any type constructor variable to replace,
+    so there is nothing to prove.
+  \item $F = \onet, \zerot$ do not contain any type constructor variable to replace,
+    so there is nothing to prove.
+  \item for $F = F_1 \times F_2, F_1 + F_2$,
+    the substitution distributes over the product/sum
+    and it then suffices to apply the induction hypothesis.
+  \item for $F = \beta$ with $\beta \neq \alpha$, there is nothing to prove.
+  \item for $F = \alpha$, we have
+  \[
+  \sem{\Gamma;\Phi\vdash\alpha[\alpha := \tau]}\rho
+  = \sem{\Gamma;\Phi,\alpha\vdash\alpha}\rho[\alpha := \sem{\Gamma;\Phi\vdash\tau}\rho]
+  \]
+  as both are equal to $\sem{\Gamma;\Phi\vdash\tau}\rho$.
+  \item for $F = \phi^k \sigma_1 ... \sigma_k$, we have that
+  \[
+  \begin{split}
+  \sem{\Gamma; \Phi \vdash (\phi \overline{\sigma})[\alpha := \tau]}\rho
+    &=\sem{\Gamma; \Phi \vdash \phi (\overline{\sigma[\alpha := \tau]})}\rho \\
+    &=(\rho\phi)\overline{\sem{\Gamma;\Phi\vdash\sigma[\alpha := \tau]}\rho} \\
+    &=(\rho\phi)\overline{
+      \sem{\Gamma;\Phi,\alpha\vdash\sigma}
+      \rho [\alpha := \sem{\Gamma;\Phi\vdash\tau}] } \\
+    &=\sem{\Gamma; \Phi, \alpha \vdash \phi \overline{\sigma}}
+      \rho [\alpha := \sem{\Gamma;\Phi\vdash\tau}]
+  \end{split}
+  \]
+  where the third equality is by the induction hypothesis.
+  \item for $F = (\mu \psi. \lambda \beta_1 ... \beta_k. K) \sigma_1 ... \sigma_k$
+  we have that 
+  \[
+  \begin{split}
+  &\hspace{-0.3in} \sem{\Gamma; \Phi
+      \vdash ((\mu \psi. \lambda \overline{\beta}. K) \overline{\sigma})
+      [\alpha := \tau]}\rho \\
+    &=\sem{\Gamma; \Phi
+      \vdash (\mu \psi. \lambda \overline{\beta}. K[\alpha := \tau])
+      (\overline{\sigma [\alpha := \tau]})}\rho \\
+    &=\mu(\sem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\alpha := \tau]}
+      \rho[\psi := \text{--}][\overline{\beta := \text{--}}])
+      (\overline{\sem{\Gamma;\Phi \vdash \sigma [\alpha := \tau]}\rho}) \\
+    &=\mu(
+      \sem{\Gamma; \Phi, \psi, \overline{\beta}, \alpha \vdash K}
+      \rho
+      [\alpha := \sem{\Gamma;\Phi \vdash \tau}\rho]
+      [\psi := \text{--}]
+      [\overline{\beta := \text{--}}]
+    ) \\
+    &\hspace{0.5in} (\overline{
+      \sem{\Gamma;\Phi,\alpha \vdash \sigma}
+      \rho
+      [\alpha := \sem{\Gamma;\Phi\vdash \tau}\rho]
+    }) \\
+  &=\sem{\Gamma;\Phi,\alpha\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\sigma}}\rho
+      [\alpha := \sem{\Gamma;\Phi \vdash \tau}\rho]
+  \end{split}
+  \]
+  where the third equality is by the induction hypothesis.
+\end{itemize}
+
+We prove equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
+We proceed by induction on the structure of $F$.
+\begin{itemize}
+  \item $F : \T$ does not contain any type constructor variable to replace,
+    so there is nothing to prove.
+  \item $F = \onet, \zerot$ do not contain any type constructor variable to replace,
+    so there is nothing to prove.
+  \item for $F = F_1 \times F_2, F_1 + F_2$,
+    the substitution distributes over the product/sum
+    and it then suffices to apply the induction hypothesis.
+  \item for $F = \phi^k \tau_1 ... \tau_k$, we have that
+  \[
+  \begin{split}
+  \sem{\Gamma; \Phi \vdash (\phi \overline{\tau})[\phi := H]}\rho
+  &=\sem{\Gamma; \Phi \vdash H[\overline{\alpha:= \tau[\phi := H]}]}\rho \\
+  &=\sem{\Gamma; \Phi \vdash H}\rho
+    [\overline{\alpha:= \sem{\Gamma;\Phi\vdash\tau[\phi := H]}\rho}] \\
+  &=\sem{\Gamma; \Phi \vdash H}\rho
+    [\overline{
+      \alpha:= \sem{\Gamma;\Phi,\phi\vdash\tau}
+      \rho
+      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+    }] \\
+  &=\sem{\Gamma; \Phi, \phi \vdash \phi \overline{\tau}}\rho
+    [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+  \end{split}
+  \]
+  where the second equality is for equations~\ref{eq:set-subs-var}
+  and~\ref{eq:rel-subs-var},
+  and the third equality is by the induction hypothesis.
+  \item for $F = (\mu \psi. \lambda \beta_1 ... \beta_k. K) \tau_1 ... \tau_k$
+  we have that 
+  \[
+  \begin{split}
+  &\hspace{-0.3in} \sem{\Gamma; \Phi
+    \vdash ((\mu \psi. \lambda \overline{\beta}. K) \overline{\tau})[\phi := H]}\rho \\
+  &=\sem{\Gamma; \Phi
+    \vdash (\mu \psi. \lambda \overline{\beta}. K[\phi := H])
+    (\overline{\tau[\phi := H]})}\rho \\
+  &=\mu(\sem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\phi := H]}
+    \rho[\psi := \text{--}][\overline{\beta := \text{--}}])
+    (\overline{\sem{\Gamma;\Phi \vdash \tau[\phi := H]}\rho}) \\
+  &=\mu(
+      \sem{\Gamma; \Phi, \psi, \overline{\beta}, \phi \vdash K}
+      \rho
+      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+      [\psi := \text{--}]
+      [\overline{\beta := \text{--}}]
+    ) \\
+    &\hspace{0.5in} (\overline{
+      \sem{\Gamma;\Phi,\phi \vdash \tau}
+      \rho
+      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}
+        \rho[\overline{\alpha := \text{--}}]]
+    }) \\
+  &=\sem{\Gamma;\Phi,\phi\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\tau}}\rho
+      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+  \end{split}
+  \]
+  where the third equality is by the induction hypothesis.
+\end{itemize}
+\end{proof}
+
 The set and relation interpretations of every well-formed term are
 well-defined, and are actually natural transformations.
 
 \begin{lemma}\label{lem:soundness}
-For every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$, its
-set interpretation $\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}$ is
-well-defined and gives a natural transformation from $\setsem{\Gamma;
-  \Phi \vdash \Delta}$ to $\setsem{\Gamma; \Phi \vdash
-  \tau}$. Similarly, its relational interpretation
-$\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}$ is well-defined and
-gives a natural transformation from $\relsem{\Gamma; \Phi \vdash
-  \Delta}$ to $\relsem{\Gamma; \Phi \vdash \tau}$.
+For every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$,
+its set interpretation
+$\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}$
+is a well-defined natural transformation from
+$\setsem{\Gamma; \Phi \vdash \Delta}$
+to $\setsem{\Gamma; \Phi \vdash \tau}$,
+i.e., for every set environment $\rho$,
+it yields a function from
+$\setsem{\Gamma;\Phi \vdash \Delta}\rho$
+to $\setsem{\Gamma; \Phi \vdash\tau}\rho$.
+Similarly, its relational interpretation
+$\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}$
+is a well-defined natural transformation from
+$\relsem{\Gamma; \Phi \vdash \Delta}$
+to $\relsem{\Gamma; \Phi \vdash \tau}$,
+i.e., for every relation environment $\rho$,
+it yields a map of relations from
+$\relsem{\Gamma;\Phi \vdash \Delta}\rho$
+to $\relsem{\Gamma; \Phi \vdash\tau}\rho$.
 \end{lemma}
 
 {\color{blue} We will need to know that type interpretations respect type
@@ -2239,21 +2418,218 @@ type susbstitution, and that term interpretations respect term
 substitution.}
 
 \begin{proof}
-The type application case will need the following lemma:
-\[ \setsem{\Gamma;\Phi \vdash F[\overline{\alpha := \tau}]}\rho =
-\setsem{\Gamma;\Phi, \bm \alpha \vdash F}\rho[\overline{\alpha :=
-    \setsem{\Gamma;\Phi \vdash \tau}\rho}] \]
-and probably a similar lemma for the relation interpretations.
+We proceed by structural induction,
+and we only show the interesting cases.
+\begin{itemize}
+\item We show that
+  $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+  : \Nat^{\overline{\alpha}} \,F \,G}\rho$
+    %= \curry (\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}\rho\overline{[\alpha := \_]})$
+  is well-defined.
+  Given $d \in \setsem{\Gamma;\emptyset \vdash \Delta}$
+  and $\overline{A : \set}$, let
+  \[
+  \eta_{\overline{A}} = \curry (\setsem{\Gamma;\overline{\alpha}
+  \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := A}])d
+  \]
+  Then, for any
+  $z \in \setsem{\Gamma;\overline{\alpha} \vdash  F}\rho[\overline{\alpha := A}]$,
+  we have that
+  \[
+  %\curry (\setsem{\Gamma;\bm \alpha
+  %\,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])d \\
+  \eta_{\overline{A}} z
+  = \setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+  \rho\overline{[\alpha := A]}(d, z)
+  \in \setsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha := A}]
+  \]
+  %is a natural transformation in $\overline{A}$...
+  Thus, for all $\overline{R : \rel(A, B)}$,
+  if $(x, y) \in \relsem{\Gamma;\overline{\alpha} \vdash F} \Eq_{\rho}[\overline{\alpha := R}]$,
+  then
+  \[
+  ((d, x), (d, y))
+  \in \relsem{\Gamma;\overline{\alpha} \vdash \Delta, F} \Eq_{\rho}[\overline{\alpha := R}]
+  \]
+  Observe that, by the induction hypothesis on the term $t$,
+  \[
+  \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+    \Eq_{\rho}[\overline{\alpha := R}]
+  : \relsem{\Gamma;\overline{\alpha} \vdash \Delta, F} \Eq_{\rho}[\overline{\alpha := R}]
+  \to \relsem{\Gamma;\overline{\alpha} \vdash G} \Eq_{\rho}[\overline{\alpha := R}]
+  \]
+  and thus
+  \[
+  (\eta_{\overline{A}} x, \eta_{\overline{B}} y)
+  \in
+  %\colon \relsem{\Gamma;\overline{\alpha} \vdash  F} \Eq_{\rho}[\overline{\alpha := R}]
+  %\to
+  \relsem{\Gamma;\overline{\alpha} \vdash G} \Eq_{\rho}[\overline{\alpha := R}]
+  \]
 
-The in case will need the following lemma:
-\[ \setsem{\Gamma; \Phi \vdash H[\phi := \mu \phi. \lambda \alpha. H]
-  [\alpha := A]}\rho = \setsem{\Gamma; \Phi, \phi,\alpha \vdash
-      H}\rho[\phi := \mu T_\rho^\set][\alpha := \setsem{\Gamma;\Phi
-        \vdash A}\rho]\]
+  Naturality of $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+  : \Nat^{\overline{\alpha}} \,F \,G}$ follows from the fact that the currying of a natural transformation
+  is still a natural transformation.
+\item We show that
+  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+  : \Nat^{\overline{\alpha}} \,F \,G}\rho$
+  is well-defined.
+  Given $(d_1, d_2) \in \relsem{\Gamma;\emptyset \vdash \Delta}\rho$,
+  we want to show that
+  \[
+  \curry (\relsem{\Gamma;\overline{\alpha}
+  \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])(d_1, d_2)
+  \]
+  is in $\relsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho$.
+  For every $\overline{R : \rel(A, B)}$,
+  if $(x_1, x_2) \in \relsem{\Gamma;\overline{\alpha} \vdash F} \rho[\overline{\alpha := R}]$,
+  then
+  \[
+  \curry (
+    \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+    \rho[\overline{\alpha := \_}])(d_1, d_2)
+  )_{\overline R} (x_1, x_2)
+  \]
+  is equal to
+  \[
+    \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+    \rho[\overline{\alpha := R}]((d_1, x_1), (d_2, x_2))
+  \]
+  and
+  \[
+  ((d_1, x_1), (d_2, x_2))
+  \in \relsem{\Gamma;\overline{\alpha} \vdash \Delta, F} \rho[\overline{\alpha := R}]
+  \]
+  By the induction hypothesis on the term $t$,
+  $\relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+    \rho[\overline{\alpha := R}]$
+  is a morphism in $\rel$ from
+  $\relsem{\Gamma;\overline{\alpha} \vdash \Delta, F} \rho[\overline{\alpha} := R]$
+  to
+  $\relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha := R}]$
+  and thus
+  \[
+  \curry (
+    \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+    \rho[\overline{\alpha := \_}])(d_1, d_2)
+  )_{\overline R} (x_1, x_2)
+  \in
+  %\colon \relsem{\Gamma;\overline{\alpha} \vdash  F} \Eq_{\rho}[\overline{\alpha := R}]
+  %\to
+  \relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha := R}]
+  \]
 
-The fold case will need to use the conditions on the natural
-transformations obtained from the hypothesis to verify those obtained
-from the conclusion. (Perhaps other cases too.)
+  Naturality of
+  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+  : \Nat^{\overline{\alpha}} \,F \,G}$
+  follows from the fact that the currying of a natural transformation
+  is still a natural transformation.
+\item To define $\setsem{\Gamma;\Phi \,|\, \Delta \vdash
+  \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho$
+  we need Lemma~\ref{lemma:substitution} to show that
+  \[
+    \setsem{\Gamma;\Phi \vdash
+      H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+      [\overline{\alpha := \tau}]}\rho
+    =
+    \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho
+      [\phi := \mu T_\rho^\set]
+      [\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}]
+  \]
+  Then, we can define it as
+  \[
+  \begin{tikzcd}
+  \setsem{\Gamma;\Phi \vdash \Delta} \rho
+    \ar[d, "{\setsem{\Gamma;\Phi \,|\, \Delta \vdash t
+      : H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+      [\overline{\alpha := \tau}]}\rho}"]\\
+  \setsem{\Gamma;\Phi \vdash
+    H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+    [\overline{\alpha := \tau}]}\rho
+      \ar[d, equal] \\
+  \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho
+    [\phi := \mu T_\rho^\set]
+    [\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}]
+      \ar[d, equal] \\
+  T^\set_\rho(\mu T^\set_\rho)
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
+      \ar[d, "{\textit{in}}"] \\
+  \mu T^\set_\rho
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
+      \ar[d, equal] \\
+  \setsem{\Gamma;\Phi \vdash
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho
+  \end{tikzcd}
+  \]
+  
+  HERE TODO!!! Naturality follows from the fact that
+  \[
+  \begin{tikzcd}
+  T_{\rho}(\mu T_{\rho})
+    \ar[d, "{\textit{in}}"']
+    \ar[r, "{T_f(\mu T_f)}"]
+  &T_{\rho'}(\mu T_{\rho'})
+    \ar[d, "{\textit{in}}"] \\
+  \mu T_{\rho}
+    \ar[r, "{\mu T_f}"]
+  &\mu T_{\rho'}
+  \end{tikzcd}
+  \]
+  commutes for any morphism of environments $f : \rho \to \rho'$.
+  
+  We proceed analogously to define the relational interpretation of the same term.
+\item For the $\fold$ case, we shall check only the $\rel$-interpretation,
+  as the $\set$-interpretation is analogous.
+  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$
+  is defined as
+  \[
+  \begin{tikzcd}
+  \relsem{\Gamma;\emptyset \vdash \Delta}\rho
+  \ar[d, "{\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+    \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho}"] \\
+  \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
+    \ar[d, "{\text{\textit{fold}}}"] \\
+  \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho
+  \end{tikzcd}
+  \]
+  We want to show that $\textit{fold}$ is well defined.
+  Let $\eta \in \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho$.
+  For all $\overline{R : \rel(A, B)}$, we have that
+  $\eta_{\overline R}$ is a morphism in $\rel$.
+  Then, $(\textit{fold}\ \eta)_{\overline R} = \textit{fold}\ \eta_{\overline R}$ is too,
+  meaning that $\textit{fold}\ \eta$ belongs to
+  $\relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
+  Naturality of $\textit{fold}$ follows from the fact that,
+  because of the assumption $\Gamma;\phi,\overline{\beta} \vdash H$,
+  we have that $T_{\rho} = T_{\rho'}$ and $T_f = \Id$
+  for every morphism of environments $f:\rho\to\rho'$.
+\item To define $\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline \tau} s:
+  G [\overline{\alpha := \tau}]}\rho$
+  as
+  \[
+  \begin{tikzcd}
+  \setsem{\Gamma;\Phi \vdash \Delta}\rho
+    \ar[d, "{\langle \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+      \Nat^{\overline{\alpha}} \,F \,G}\rho,
+      \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle}"]\\
+  \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+    \ar[d, "{\eval_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} \times \Id}"]\\
+  \setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+  \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+  \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+    \ar[d, equal] \\
+  (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+    \to \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho)
+    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+      \ar[d, "{\eval}"]\\
+ \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho
+  \end{tikzcd}
+  \]
+  we need Lemma~\ref{lemma:substitution}.
+
+  We proceed analogously to define the relational interpretation of the same term.
+\end{itemize}
 \end{proof}
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
@@ -3354,5 +3730,4 @@ The fourth equality is by~\ref{eq:rel-transf-T-limit},
 \ref{eq:rel-transf-sigma-limit}, and induction on $\tau$.
 \end{itemize}
 \end{proof}
-
 
