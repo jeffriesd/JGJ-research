@@ -351,9 +351,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau}$}%_1...\tau_k : \mcF$}
 \DisplayProof
 \\
-\AXC{$\Gamma;\Phi,\ol{\alpha}
-  %  ^0_1,...,\alpha^0_k,\phi^k \vdash \tau
-  : \mcF$}
+\AXC{$\Gamma;\Phi,\ol{\alpha},\phi^k \vdash \tau : \mcF$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}% \mbox{\,for\,} i = 1,...,k$}
 \BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda
   \ol{\alpha}.%^0_1...\alpha^0_k.
@@ -582,7 +580,7 @@ so, mainly because of the cocontinuity conditions we must impose to
 ensure that they are well-behaved. We take some effort to develop
 these in Section~\ref{sec:rel-interp}, which separates
 Definitions~\ref{def:set-interp} and~\ref{def:rel-sem} in space but
-otherwise has no impact on the fact that they are given by mutually
+otherwise has no impact on the fact that they are given by mutual
 induction.
 
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
@@ -812,7 +810,8 @@ by
 \sigma^\set_f)\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} 
 \end{array}\]
 Again, this equality holds because $\mu T^\set_\rho$ and $\mu
-T^\set_{\rho'}$ are functors and $f\phi : \rho\phi \to \rho'\phi$ is a
+T^\set_{\rho'}$ are functors and $\mu \sigma_f^\set : \mu T_\rho^\set
+\to \mu T_{\rho'}^\set$ is a
 natural transformation, so that the following naturality square
 commutes:
 
@@ -1077,12 +1076,12 @@ $k$, $K_0 = (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus,
 if $T = (T^0,T^1,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$
 then we can define $\mu T$ to be the relation transformer
 \begin{equation*}
-\mu T = \lim_{\xrightarrow[n]{}}\, T^n K_0
+\mu T = \colim{n}{T^n K_0}
 \end{equation*}
 Then Lemma~\ref{lem:colimits} shows $\mu T$ is indeed a relation
 transformer, and that it is given explicitly by
 \begin{equation}\label{eq:mu}
-\lim_{\xrightarrow[n]{}}\, T^n K_0 = (\mu T^0,\mu T^1,
+\colim{n}{T^n K_0} = (\mu T^0,\mu T^1,
 \colim{n}{(T^nK_0)^*})
 \end{equation}
 
@@ -1573,9 +1572,9 @@ hypothesis.
 &= \pi_i((\mu T_{\rho'})(\overline{\relsem{\Gamma;\Phi \vdash
     \tau}f})) \circ \pi_i((\mu
 \sigma_f)_{\overline{\relsem{\Gamma;\Phi \vdash \tau}\rho}}) \\  
-&= \pi_i(\mu T_{\rho'})(\pi_i(\overline{\relsem{\Gamma;\Phi
+&= \pi_i(\mu T_{\rho'})(\overline{\pi_i(\relsem{\Gamma;\Phi
     \vdash \tau}f})) \circ \pi_i(\mu
-\sigma_f)_{\pi_i(\overline{\relsem{\Gamma;\Phi \vdash 
+\sigma_f)_{\overline{\pi_i(\relsem{\Gamma;\Phi \vdash 
       \tau}\rho})} \\ 
 &= (\mu T^\set_{\pi_i \rho'})(\overline{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i f)}) \circ (\mu \sigma^\set_{\pi_i f})_{\overline{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}} \\
 &= \setsem{\Gamma;\Phi \vdash (\mu \phi. \lambda \overline\alpha. H)\overline{\tau}}(\pi_i f).
