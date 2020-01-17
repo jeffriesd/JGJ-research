@@ -2562,19 +2562,79 @@ and we only show the interesting cases.
   \end{tikzcd}
   \]
   
-  HERE TODO!!! Naturality follows from the fact that
+  Naturality of
+  $\setsem{\Gamma;\Phi \,|\, \Delta \vdash
+  \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}}$
+  follows from the naturality of $\textit{in}$.
+  Indeed the diagram
+  % for any morphism of set environments $f : \rho \to \rho'$,
   \[
   \begin{tikzcd}
-  T_{\rho}(\mu T_{\rho})
-    \ar[d, "{\textit{in}}"']
-    \ar[r, "{T_f(\mu T_f)}"]
-  &T_{\rho'}(\mu T_{\rho'})
-    \ar[d, "{\textit{in}}"] \\
-  \mu T_{\rho}
-    \ar[r, "{\mu T_f}"]
-  &\mu T_{\rho'}
+  \setsem{\Gamma;\Phi \vdash
+    H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+    [\overline{\alpha := \tau}]}\rho
+      \ar[d, equal]
+      \ar[r, bend left = 5, "{\setsem{\Gamma;\Phi \vdash
+         H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+         [\overline{\alpha := \tau}]}f}"]
+  &\setsem{\Gamma;\Phi \vdash
+    H[\phi := \mu \phi.\lambda {\overline \alpha}.H]
+    [\overline{\alpha := \tau}]}\rho'
+      \ar[d, equal] \\
+  \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho
+    [\phi := \mu T_\rho^\set]
+    [\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}]
+      \ar[r, bend left = 5, "{
+         \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}f
+           [\phi := \mu \sigma_f^\set]
+           [\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}f}]
+      }"]
+      \ar[d, equal]
+  &\setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho'
+    [\phi := \mu T_{\rho'}^\set]
+    [\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho'}]
+      \ar[d, equal] \\
+  T^\set_\rho(\mu T^\set_\rho)
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
+      \ar[r, "{
+        \sigma^\set_f(\mu \sigma^\set_f)
+        (\overline{\setsem{\Gamma;\Phi \vdash \tau}f})
+      }"]
+      \ar[d, "{\textit{in}}"]
+  &T^\set_{\rho'}(\mu T^\set_{\rho'})
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho'})
+      \ar[d, "{\textit{in}}"] \\
+  \mu T^\set_\rho
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
+      \ar[r, "{
+        \mu \sigma^\set_f
+        (\overline{\setsem{\Gamma;\Phi \vdash \tau}f})
+      }"]
+      \ar[d, equal]
+  &\mu T^\set_{\rho'}
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho'})
+      \ar[d, equal] \\
+  \setsem{\Gamma;\Phi \vdash
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho
+      \ar[r, "{ \setsem{\Gamma;\Phi \vdash
+        (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} f }"]
+  &\setsem{\Gamma;\Phi \vdash
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho'
   \end{tikzcd}
   \]
+  % commutes.
+  % \[
+  % \begin{tikzcd}
+  % T_{\rho}(\mu T_{\rho})
+  %   \ar[d, "{\textit{in}}"']
+  %   \ar[r, "{T_f(\mu T_f)}"]
+  % &T_{\rho'}(\mu T_{\rho'})
+  %   \ar[d, "{\textit{in}}"] \\
+  % \mu T_{\rho}
+  %   \ar[r, "{\mu T_f}"]
+  % &\mu T_{\rho'}
+  % \end{tikzcd}
+  % \]
   commutes for any morphism of environments $f : \rho \to \rho'$.
   
   We proceed analogously to define the relational interpretation of the same term.
