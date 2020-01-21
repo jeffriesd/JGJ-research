@@ -2155,8 +2155,8 @@ defined as follows:
 \circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
   \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
 \rangle\\
-\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\bm \alpha} x.t : \Nat^{\bm
-    \alpha} \,F \,G}\rho & = &  \curry (\relsem{\Gamma;\bm \alpha
+\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
+    \alpha} \,F \,G}\rho & = &  \curry (\relsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
   G [\overline{\alpha := \tau}]}\rho & = & \eval \circ \langle
@@ -2183,7 +2183,7 @@ defined as follows:
 \relsem{\Gamma;\Phi\vdash \Delta}\rho \mbox{ to } 1\\ 
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} \rho& = &
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho\times
-\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau} \rho\\
+\relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} \rho& = &
 \pi_1 \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma}\rho & = &
@@ -2195,20 +2195,20 @@ defined as follows:
    & & \hspace*{0.79in} \relsem{\Gamma;\Phi \,|\, \Delta, y
     : \tau \vdash r : \gamma}\rho],\\
    & &  \hspace*{0.5in} \relsem{\Gamma;\Phi \,|\, \Delta \vdash t :
-  \sigma + \tau} \rho\rangle\\   
+  \sigma + \tau} \rho\rangle \\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} \rho& = &
 \inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\relsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi^k.\lambda 
- {\bm \alpha}.H){\bm A}} \rho & = & \mathit{in} \circ
-  \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi^k := \mu
-      \phi^k.\lambda {\bm \alpha}.H][\bm \alpha := \bm A]} \rho\\  
+\relsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi.\lambda 
+ {\overline \alpha}.H){\overline \tau}} \rho & = & \mathit{in} \circ
+  \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho\\  
 \relsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\bm \alpha}\,((\mu
-  \phi.\lambda \bm \beta.H)\bm \alpha)\,F}\rho & = & 
+  \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
+  \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho & = & 
 \mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-  \Nat^{\bm \alpha}\,(H[\phi := F][\bm \beta := \bm \alpha])\,F}\rho
+  \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
 \end{array}\]
 \end{dfn}
 
@@ -2218,49 +2218,86 @@ $\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
 similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
   \tau}$.
 
+% \begin{lemma}\label{lemma:substitution}
+%   We have that:
+%   \begin{itemize}
+%   \item for $\Gamma;\Phi,\alpha \vdash F$
+%   and $\Gamma;\Phi \vdash \tau$,
+%     \begin{equation}\label{eq:set-subs-var}
+%       \setsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
+%       \setsem{\Gamma;\Phi,\alpha \vdash F}\rho[\alpha :=
+%       \setsem{\Gamma;\Phi \vdash \tau}\rho]
+%     \end{equation}
+%     and
+%     \begin{equation}\label{eq:rel-subs-var}
+%       \relsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
+%       \relsem{\Gamma;\Phi, \alpha \vdash F}\rho[\alpha :=
+%       \relsem{\Gamma;\Phi \vdash \tau}\rho]
+%     \end{equation}
+%   \item for $\Gamma;\Phi,\phi^k\vdash F$
+%     and $\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$,
+%     \begin{equation}\label{eq:set-subs-const}
+%       \setsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
+%       = \setsem{\Gamma; \Phi, \phi \vdash F}\rho
+%       [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+%     \end{equation}
+%     and
+%     \begin{equation}\label{eq:rel-subs-const}
+%       \relsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
+%       = \relsem{\Gamma; \Phi, \phi \vdash F}\rho
+%       [\phi := \relsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+%     \end{equation}
+%   \end{itemize}
+%   {\color{red} ISSUE: the substitution $[\phi := H]$ should specify that the
+%   $\alpha$s in $H$ correspond to the arguments of $\phi$.
+%   For example, we could write $[\phi :=_{\alpha} H]$.}
+% \end{lemma}
 \begin{lemma}\label{lemma:substitution}
-  We have that:
+  We have that, for any set environment $\rho$ and morphism of set environments $f : \rho \to \rho'$
   \begin{itemize}
   \item for $\Gamma;\Phi,\alpha \vdash F$
   and $\Gamma;\Phi \vdash \tau$,
-    \begin{equation}\label{eq:set-subs-var}
+    \begin{gather}\label{eq:subs-var}
       \setsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
       \setsem{\Gamma;\Phi,\alpha \vdash F}\rho[\alpha :=
-      \setsem{\Gamma;\Phi \vdash \tau}\rho]
-    \end{equation}
-    and
-    \begin{equation}\label{eq:rel-subs-var}
-      \relsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
-      \relsem{\Gamma;\Phi, \alpha \vdash F}\rho[\alpha :=
-      \relsem{\Gamma;\Phi \vdash \tau}\rho]
-    \end{equation}
+      \setsem{\Gamma;\Phi \vdash \tau}\rho] \\
+    \intertext{and}\label{eq:subs-var-morph}
+      \setsem{\Gamma;\Phi \vdash F[\alpha := \tau]}f =
+      \setsem{\Gamma;\Phi,\alpha \vdash F}f[\alpha :=
+      \setsem{\Gamma;\Phi \vdash \tau}f]
+    \end{gather}
   \item for $\Gamma;\Phi,\phi^k\vdash F$
     and $\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$,
-    \begin{equation}\label{eq:set-subs-const}
+    \begin{gather}\label{eq:subs-const}
       \setsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
       = \setsem{\Gamma; \Phi, \phi \vdash F}\rho
-      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\alpha := \text{--}]]
-    \end{equation}
-    and
-    \begin{equation}\label{eq:rel-subs-const}
-      \relsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
-      = \relsem{\Gamma; \Phi, \phi \vdash F}\rho
-      [\phi := \relsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\alpha := \text{--}]]
-    \end{equation}
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]] \\
+    \intertext{and}\label{eq:subs-const-morph}
+      \setsem{\Gamma; \Phi \vdash F[\phi := H]}f
+      = \setsem{\Gamma; \Phi, \phi \vdash F}f
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}f[\overline{\alpha := \text{--}}]]
+    \end{gather}
   \end{itemize}
+  Analogous identities hold for the relational interpretation.
+
+  {\color{red} ISSUE: the substitution $[\phi := H]$ should specify that the
+  $\alpha$s in $H$ correspond to the arguments of $\phi$.
+  For example, we could write $[\phi :=_{\alpha} H]$.}
 \end{lemma}
 \begin{proof}
-Equations~\ref{eq:set-subs-var} and~\ref{eq:rel-subs-var} are special cases of,
-respectively, equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
-Though, it is convenient to prove equations~\ref{eq:set-subs-var}
-and~\ref{eq:rel-subs-var} first, and then use those to prove
-equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
-
 The proofs for the set interpretation and those for the relational interpretation
-are completely analogous, so we shall make the argument more abstract
-by using a generic interpretation $\sem{-}$.
+are completely analogous, so we shall just give the formers.
+Likewise, we shall only prove equations~\ref{eq:subs-var} and~\ref{eq:subs-const},
+as the proofs for equations~\ref{eq:subs-var-morph} and~\ref{eq:subs-const-morph}
+are analogous.
+% make the argument more abstract
+% by using a generic interpretation $\sem{-}$.
 
-We prove equations~\ref{eq:set-subs-var} and~\ref{eq:rel-subs-var}.
+Although equation~\ref{eq:subs-var} is a special case of equation~\ref{eq:subs-const},
+it is convenient to prove it first,
+and then use that to prove equation~\ref{eq:subs-const}.
+
+% We prove equations~\ref{eq:set-subs-var} and~\ref{eq:rel-subs-var}.
 We proceed by induction on the structure of $F$.
 \begin{itemize}
   \item $F : \T$ does not contain any type constructor variable to replace,
@@ -2273,113 +2310,116 @@ We proceed by induction on the structure of $F$.
   \item for $F = \beta$ with $\beta \neq \alpha$, there is nothing to prove.
   \item for $F = \alpha$, we have
   \[
-  \sem{\Gamma;\Phi\vdash\alpha[\alpha := \tau]}\rho
-  = \sem{\Gamma;\Phi,\alpha\vdash\alpha}\rho[\alpha := \sem{\Gamma;\Phi\vdash\tau}\rho]
+  \setsem{\Gamma;\Phi\vdash\alpha[\alpha := \tau]}\rho
+  = \setsem{\Gamma;\Phi,\alpha\vdash\alpha}\rho[\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho]
   \]
-  as both are equal to $\sem{\Gamma;\Phi\vdash\tau}\rho$.
-  \item for $F = \phi^k \sigma_1 ... \sigma_k$, we have that
+  as both are equal to $\setsem{\Gamma;\Phi\vdash\tau}\rho$.
+  \item for $F = \phi \overline{\sigma}$ with $\phi \neq \alpha$, we have that
   \[
   \begin{split}
-  \sem{\Gamma; \Phi \vdash (\phi \overline{\sigma})[\alpha := \tau]}\rho
-    &=\sem{\Gamma; \Phi \vdash \phi (\overline{\sigma[\alpha := \tau]})}\rho \\
-    &=(\rho\phi)\overline{\sem{\Gamma;\Phi\vdash\sigma[\alpha := \tau]}\rho} \\
+  \setsem{\Gamma; \Phi \vdash (\phi \overline{\sigma})[\alpha := \tau]}\rho
+    &=\setsem{\Gamma; \Phi \vdash \phi (\overline{\sigma[\alpha := \tau]})}\rho \\
+    &=(\rho\phi)\overline{\setsem{\Gamma;\Phi\vdash\sigma[\alpha := \tau]}\rho} \\
     &=(\rho\phi)\overline{
-      \sem{\Gamma;\Phi,\alpha\vdash\sigma}
-      \rho [\alpha := \sem{\Gamma;\Phi\vdash\tau}] } \\
-    &=\sem{\Gamma; \Phi, \alpha \vdash \phi \overline{\sigma}}
-      \rho [\alpha := \sem{\Gamma;\Phi\vdash\tau}]
+      \setsem{\Gamma;\Phi,\alpha\vdash\sigma}
+      \rho [\alpha := \setsem{\Gamma;\Phi\vdash\tau}] } \\
+    &=\setsem{\Gamma; \Phi, \alpha \vdash \phi \overline{\sigma}}
+      \rho [\alpha := \setsem{\Gamma;\Phi\vdash\tau}]
   \end{split}
   \]
   where the third equality is by the induction hypothesis.
-  \item for $F = (\mu \psi. \lambda \beta_1 ... \beta_k. K) \sigma_1 ... \sigma_k$
+  \item for $F = (\mu \psi. \lambda \overline{\beta}. K) \overline{\sigma}$
   we have that 
   \[
   \begin{split}
-  &\hspace{-0.3in} \sem{\Gamma; \Phi
+  &\hspace{-0.3in} \setsem{\Gamma; \Phi
       \vdash ((\mu \psi. \lambda \overline{\beta}. K) \overline{\sigma})
       [\alpha := \tau]}\rho \\
-    &=\sem{\Gamma; \Phi
+    &=\setsem{\Gamma; \Phi
       \vdash (\mu \psi. \lambda \overline{\beta}. K[\alpha := \tau])
       (\overline{\sigma [\alpha := \tau]})}\rho \\
-    &=\mu(\sem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\alpha := \tau]}
+    &=\mu(\setsem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\alpha := \tau]}
       \rho[\psi := \text{--}][\overline{\beta := \text{--}}])
-      (\overline{\sem{\Gamma;\Phi \vdash \sigma [\alpha := \tau]}\rho}) \\
+      (\overline{\setsem{\Gamma;\Phi \vdash \sigma [\alpha := \tau]}\rho}) \\
     &=\mu(
-      \sem{\Gamma; \Phi, \psi, \overline{\beta}, \alpha \vdash K}
+      \setsem{\Gamma; \Phi, \psi, \overline{\beta}, \alpha \vdash K}
       \rho
-      [\alpha := \sem{\Gamma;\Phi \vdash \tau}\rho]
+      [\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho]
       [\psi := \text{--}]
       [\overline{\beta := \text{--}}]
     ) \\
     &\hspace{0.5in} (\overline{
-      \sem{\Gamma;\Phi,\alpha \vdash \sigma}
+      \setsem{\Gamma;\Phi,\alpha \vdash \sigma}
       \rho
-      [\alpha := \sem{\Gamma;\Phi\vdash \tau}\rho]
+      [\alpha := \setsem{\Gamma;\Phi\vdash \tau}\rho]
     }) \\
-  &=\sem{\Gamma;\Phi,\alpha\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\sigma}}\rho
-      [\alpha := \sem{\Gamma;\Phi \vdash \tau}\rho]
+  &=\setsem{\Gamma;\Phi,\alpha\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\sigma}}\rho
+      [\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho]
   \end{split}
   \]
   where the third equality is by the induction hypothesis.
 \end{itemize}
 
-We prove equations~\ref{eq:set-subs-const} and~\ref{eq:rel-subs-const}.
+We prove equation~\ref{eq:subs-const}.
 We proceed by induction on the structure of $F$.
 \begin{itemize}
-  \item $F : \T$ does not contain any type constructor variable to replace,
+\item $F : \T$ does not contain any type constructor variable to replace,
     so there is nothing to prove.
-  \item $F = \onet, \zerot$ do not contain any type constructor variable to replace,
+\item $F = \onet, \zerot$ do not contain any type constructor variable to replace,
     so there is nothing to prove.
-  \item for $F = F_1 \times F_2, F_1 + F_2$,
+\item for $F = F_1 \times F_2, F_1 + F_2$,
     the substitution distributes over the product/sum
     and it then suffices to apply the induction hypothesis.
-  \item for $F = \phi^k \tau_1 ... \tau_k$, we have that
+\item for $F = \phi \overline{\tau}$, we have that
   \[
   \begin{split}
-  \sem{\Gamma; \Phi \vdash (\phi \overline{\tau})[\phi := H]}\rho
-  &=\sem{\Gamma; \Phi \vdash H[\overline{\alpha:= \tau[\phi := H]}]}\rho \\
-  &=\sem{\Gamma; \Phi \vdash H}\rho
-    [\overline{\alpha:= \sem{\Gamma;\Phi\vdash\tau[\phi := H]}\rho}] \\
-  &=\sem{\Gamma; \Phi \vdash H}\rho
+  &\hspace{-0.3in} \setsem{\Gamma; \Phi \vdash (\phi \overline{\tau})[\phi := H]}\rho \\
+  &=\setsem{\Gamma; \Phi \vdash H[\overline{\alpha:= \tau[\phi := H]}]}\rho \\
+  &=\setsem{\Gamma; \Phi \vdash H}\rho
+    [\overline{\alpha:= \setsem{\Gamma;\Phi\vdash\tau[\phi := H]}\rho}] \\
+  &=\setsem{\Gamma; \Phi \vdash H}\rho
     [\overline{
-      \alpha:= \sem{\Gamma;\Phi,\phi\vdash\tau}
+      \alpha:= \setsem{\Gamma;\Phi,\phi\vdash\tau}
       \rho
-      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
     }] \\
-  &=\sem{\Gamma; \Phi, \phi \vdash \phi \overline{\tau}}\rho
-    [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+  &=\setsem{\Gamma; \Phi, \phi \vdash \phi \overline{\tau}}\rho
+    [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
   \end{split}
   \]
-  where the second equality is for equations~\ref{eq:set-subs-var}
-  and~\ref{eq:rel-subs-var},
+  where the second equality is for equation~\ref{eq:subs-var},
   and the third equality is by the induction hypothesis.
-  \item for $F = (\mu \psi. \lambda \beta_1 ... \beta_k. K) \tau_1 ... \tau_k$
+\item for $F = \psi \overline{\tau}$ with $\psi \neq \phi$,
+  we have a case similar to the previous one but simpler,
+  as $\phi$ only needs to be substituted in the arguments
+  $\tau$ of $\psi$.
+\item for $F = (\mu \psi. \lambda \overline{\beta}. K) \overline{\tau}$
   we have that 
   \[
   \begin{split}
-  &\hspace{-0.3in} \sem{\Gamma; \Phi
+  &\hspace{-0.3in} \setsem{\Gamma; \Phi
     \vdash ((\mu \psi. \lambda \overline{\beta}. K) \overline{\tau})[\phi := H]}\rho \\
-  &=\sem{\Gamma; \Phi
+  &=\setsem{\Gamma; \Phi
     \vdash (\mu \psi. \lambda \overline{\beta}. K[\phi := H])
     (\overline{\tau[\phi := H]})}\rho \\
-  &=\mu(\sem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\phi := H]}
+  &=\mu(\setsem{\Gamma; \Phi, \psi, \overline{\beta} \vdash K[\phi := H]}
     \rho[\psi := \text{--}][\overline{\beta := \text{--}}])
-    (\overline{\sem{\Gamma;\Phi \vdash \tau[\phi := H]}\rho}) \\
+    (\overline{\setsem{\Gamma;\Phi \vdash \tau[\phi := H]}\rho}) \\
   &=\mu(
-      \sem{\Gamma; \Phi, \psi, \overline{\beta}, \phi \vdash K}
+      \setsem{\Gamma; \Phi, \psi, \overline{\beta}, \phi \vdash K}
       \rho
-      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
       [\psi := \text{--}]
       [\overline{\beta := \text{--}}]
     ) \\
     &\hspace{0.5in} (\overline{
-      \sem{\Gamma;\Phi,\phi \vdash \tau}
+      \setsem{\Gamma;\Phi,\phi \vdash \tau}
       \rho
-      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}
         \rho[\overline{\alpha := \text{--}}]]
     }) \\
-  &=\sem{\Gamma;\Phi,\phi\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\tau}}\rho
-      [\phi := \sem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
+  &=\setsem{\Gamma;\Phi,\phi\vdash(\mu\psi.\lambda\overline{\beta}.K)\overline{\tau}}\rho
+      [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
   \end{split}
   \]
   where the third equality is by the induction hypothesis.
@@ -2566,8 +2606,7 @@ and we only show the interesting cases.
   $\setsem{\Gamma;\Phi \,|\, \Delta \vdash
   \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}}$
   follows from the naturality of $\textit{in}$.
-  Indeed the diagram
-  % for any morphism of set environments $f : \rho \to \rho'$,
+  Indeed, the diagram
   \[
   \begin{tikzcd}
   \setsem{\Gamma;\Phi \vdash
@@ -2622,51 +2661,52 @@ and we only show the interesting cases.
     (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho'
   \end{tikzcd}
   \]
-  % commutes.
-  % \[
-  % \begin{tikzcd}
-  % T_{\rho}(\mu T_{\rho})
-  %   \ar[d, "{\textit{in}}"']
-  %   \ar[r, "{T_f(\mu T_f)}"]
-  % &T_{\rho'}(\mu T_{\rho'})
-  %   \ar[d, "{\textit{in}}"] \\
-  % \mu T_{\rho}
-  %   \ar[r, "{\mu T_f}"]
-  % &\mu T_{\rho'}
-  % \end{tikzcd}
-  % \]
   commutes for any morphism of environments $f : \rho \to \rho'$.
   
   We proceed analogously to define the relational interpretation of the same term.
-\item For the $\fold$ case, we shall check only the $\rel$-interpretation,
-  as the $\set$-interpretation is analogous.
-  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+\item For the $\fold$ case, we shall check only the set interpretation,
+  as the relational interpretation is analogous.
+  $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
   \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$
   is defined as
   \[
   \begin{tikzcd}
-  \relsem{\Gamma;\emptyset \vdash \Delta}\rho
-  \ar[d, "{\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+  \setsem{\Gamma;\emptyset \vdash \Delta}\rho
+  \ar[d, "{\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
     \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho}"] \\
-  \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
+  \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
     \ar[d, "{\text{\textit{fold}}}"] \\
-  \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho
+  \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho
   \end{tikzcd}
   \]
   We want to show that $\textit{fold}$ is well defined.
-  Let $\eta \in \relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho$.
-  For all $\overline{R : \rel(A, B)}$, we have that
-  $\eta_{\overline R}$ is a morphism in $\rel$.
+  Let $\eta \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho$.
+  For all $\overline{R : \set(A, B)}$, we have that
+  $\eta_{\overline R}$ is a morphism in $\set$.
   Then, $(\textit{fold}\ \eta)_{\overline R} = \textit{fold}\ \eta_{\overline R}$ is too,
   meaning that $\textit{fold}\ \eta$ belongs to
-  $\relsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
+  $\setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
+
   Naturality of $\textit{fold}$ follows from the fact that,
   because of the assumption $\Gamma;\phi,\overline{\beta} \vdash H$,
   we have that $T_{\rho} = T_{\rho'}$ and $T_f = \Id$
   for every morphism of environments $f:\rho\to\rho'$.
+  Then, $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}$
+  is natural.
 \item To define $\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline \tau} s:
   G [\overline{\alpha := \tau}]}\rho$
-  as
+  we need Lemma~\ref{lemma:substitution} to show that
+  \begin{multline}
+  (\setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+    \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}])
+    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho \\
+  =
+  (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+    \to \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho)
+    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+  \end{multline}
+  Then, we define it as
   \[
   \begin{tikzcd}
   \setsem{\Gamma;\Phi \vdash \Delta}\rho
@@ -2675,8 +2715,8 @@ and we only show the interesting cases.
       \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle}"]\\
   \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
     \ar[d, "{\eval_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} \times \Id}"]\\
-  \setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
-  \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+  (\setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+  \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}])
   \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
     \ar[d, equal] \\
   (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
@@ -2686,9 +2726,29 @@ and we only show the interesting cases.
  \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho
   \end{tikzcd}
   \]
-  we need Lemma~\ref{lemma:substitution}.
 
-  We proceed analogously to define the relational interpretation of the same term.
+  Naturality entails that, for every
+  $f : \rho \to \rho'$ morphism of environments,
+  $\phi \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho$
+  and $x \in \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho$,
+  we have
+  \[
+  \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f (\phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} x)
+  =
+  \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}} (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f x)
+  \]
+  which, abstracting over $x$ and using Lemma~\ref{lemma:substitution},
+  is equivalent to
+  \[
+  \setsem{\Gamma;\Phi,\overline{\alpha} \vdash G}f[\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}f}]
+    \circ \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}}
+  =
+  \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}}
+    \circ \setsem{\Gamma;\Phi,\overline{\alpha} \vdash F}f[\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}f}]
+  \]
+  which is true by naturality of $\phi$ applied to the morphism $\overline{\setsem{\Gamma;\Phi \vdash \tau}f}$.
+
+  We proceed analogously to define the relational interpretation of the same term.\qedhere
 \end{itemize}
 \end{proof}
 
