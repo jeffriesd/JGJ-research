@@ -2218,40 +2218,6 @@ $\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
 similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
   \tau}$.
 
-% \begin{lemma}\label{lemma:substitution}
-%   We have that:
-%   \begin{itemize}
-%   \item for $\Gamma;\Phi,\alpha \vdash F$
-%   and $\Gamma;\Phi \vdash \tau$,
-%     \begin{equation}\label{eq:set-subs-var}
-%       \setsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
-%       \setsem{\Gamma;\Phi,\alpha \vdash F}\rho[\alpha :=
-%       \setsem{\Gamma;\Phi \vdash \tau}\rho]
-%     \end{equation}
-%     and
-%     \begin{equation}\label{eq:rel-subs-var}
-%       \relsem{\Gamma;\Phi \vdash F[\alpha := \tau]}\rho =
-%       \relsem{\Gamma;\Phi, \alpha \vdash F}\rho[\alpha :=
-%       \relsem{\Gamma;\Phi \vdash \tau}\rho]
-%     \end{equation}
-%   \item for $\Gamma;\Phi,\phi^k\vdash F$
-%     and $\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$,
-%     \begin{equation}\label{eq:set-subs-const}
-%       \setsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
-%       = \setsem{\Gamma; \Phi, \phi \vdash F}\rho
-%       [\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
-%     \end{equation}
-%     and
-%     \begin{equation}\label{eq:rel-subs-const}
-%       \relsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
-%       = \relsem{\Gamma; \Phi, \phi \vdash F}\rho
-%       [\phi := \relsem{\Gamma;\Phi,\overline{\alpha}\vdash H}\rho[\overline{\alpha := \text{--}}]]
-%     \end{equation}
-%   \end{itemize}
-%   {\color{red} ISSUE: the substitution $[\phi := H]$ should specify that the
-%   $\alpha$s in $H$ correspond to the arguments of $\phi$.
-%   For example, we could write $[\phi :=_{\alpha} H]$.}
-% \end{lemma}
 \begin{lemma}\label{lemma:substitution}
   We have that, for any set environment $\rho$ and morphism of set environments $f : \rho \to \rho'$
   \begin{itemize}
@@ -2290,8 +2256,6 @@ are completely analogous, so we shall just give the formers.
 Likewise, we shall only prove equations~\ref{eq:subs-var} and~\ref{eq:subs-const},
 as the proofs for equations~\ref{eq:subs-var-morph} and~\ref{eq:subs-const-morph}
 are analogous.
-% make the argument more abstract
-% by using a generic interpretation $\sem{-}$.
 
 Although equation~\ref{eq:subs-var} is a special case of equation~\ref{eq:subs-const},
 it is convenient to prove it first,
@@ -2476,14 +2440,11 @@ and we only show the interesting cases.
   $z \in \setsem{\Gamma;\overline{\alpha} \vdash  F}\rho[\overline{\alpha := A}]$,
   we have that
   \[
-  %\curry (\setsem{\Gamma;\bm \alpha
-  %\,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])d \\
   \eta_{\overline{A}} z
   = \setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
   \rho\overline{[\alpha := A]}(d, z)
   \in \setsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha := A}]
   \]
-  %is a natural transformation in $\overline{A}$...
   Thus, for all $\overline{R : \rel(A, B)}$,
   if $(x, y) \in \relsem{\Gamma;\overline{\alpha} \vdash F} \Eq_{\rho}[\overline{\alpha := R}]$,
   then
@@ -2502,8 +2463,6 @@ and we only show the interesting cases.
   \[
   (\eta_{\overline{A}} x, \eta_{\overline{B}} y)
   \in
-  %\colon \relsem{\Gamma;\overline{\alpha} \vdash  F} \Eq_{\rho}[\overline{\alpha := R}]
-  %\to
   \relsem{\Gamma;\overline{\alpha} \vdash G} \Eq_{\rho}[\overline{\alpha := R}]
   \]
 
@@ -2554,8 +2513,6 @@ and we only show the interesting cases.
     \rho[\overline{\alpha := \_}])(d_1, d_2)
   )_{\overline R} (x_1, x_2)
   \in
-  %\colon \relsem{\Gamma;\overline{\alpha} \vdash  F} \Eq_{\rho}[\overline{\alpha := R}]
-  %\to
   \relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha := R}]
   \]
 
@@ -2661,11 +2618,12 @@ and we only show the interesting cases.
     (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho'
   \end{tikzcd}
   \]
-  commutes for any morphism of environments $f : \rho \to \rho'$.
+  commutes for any morphism of set  environments $f : \rho \to \rho'$.
   
-  We proceed analogously to define the relational interpretation of the same term.
+  We proceed analogously to show that the relational interpretation of the same term
+  is well-defined.
 \item For the $\fold$ case, we shall check only the set interpretation,
-  as the relational interpretation is analogous.
+  since the relational interpretation is defined analogously.
   $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
   \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$
   is defined as
@@ -2775,19 +2733,23 @@ $\rho : \relenv$,
 (\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_1 \rho),
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_2 \rho))\]
 \end{thm}
-
 \begin{proof}
-A straightforward proof by induction on the judgement
-$\Gamma;\Phi~|~\Delta \vdash t : \tau$, using
-Definitions~\ref{def:set-interp'} and~\ref{def:rel-interp}, together
+We proceed by induction on the judgement
+$\Gamma;\Phi~|~\Delta \vdash t : \tau$, proving that
+\[
+\pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho)
+= \setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_i\rho)
+\]
+for $i = 1, 2$.
+We will use Definitions~\ref{def:set-interp} and~\ref{def:rel-interp}, together
 with the facts that the cartesian structure of $\rel$ is derived from
 that of $\set$ and that initial algebras in $\rel$ are computed in
 terms of initial algebras in $\set$.
 \begin{itemize}
-\item
+\item for $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$ we have
   \[
   \begin{split}
-    \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho)
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho) \\
     &= \pi_i(
       \pi_{|\Delta|+1}: \relsem{\Gamma;\emptyset \vdash \Delta}\rho
       \times \relsem{\Gamma;\emptyset \vdash \tau}\rho
@@ -2802,7 +2764,7 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} (\pi_i\rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho) \\
@@ -2812,7 +2774,7 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}(\pi_i \rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho) \\
@@ -2829,7 +2791,8 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} (\pi_i \rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash
+  L_{\overline \alpha} x.t: \Nat^{\overline\alpha} \,F \,G$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
@@ -2846,7 +2809,8 @@ terms of initial algebras in $\set$.
       : \Nat^{\overline\alpha} \,F \,G}(\pi_i\rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\Phi \,|\, \Delta \vdash
+  t_{\bf \tau} s: G [\overline{\alpha := \tau}]$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
@@ -2879,9 +2843,9 @@ terms of initial algebras in $\set$.
       G [\overline{\alpha := \tau}]}(\pi_i\rho)
   \end{split}
   \]
-\item $\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$ is analogous to
+\item for $\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$ is analogous to
   $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$.
-\item
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$ we have
   \[
   \begin{split}
     \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho)
@@ -2894,9 +2858,9 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau}(\pi_i\rho) 
   \end{split}
   \]
-\item $\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$ is analogous to
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$ is analogous to
   $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$
-\item
+\item for $\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau$ we have
   \[
   \begin{split}
     \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} \rho)
@@ -2909,7 +2873,7 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} (\pi_i\rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$ we have
   \[
   \begin{split}
     \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} \rho)
@@ -2919,9 +2883,9 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} (\pi_i\rho)
   \end{split}
   \]
-\item $\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma$
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma$
   is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$.
-\item
+\item for $\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}\rho) \\
@@ -2949,7 +2913,7 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}(\pi_i\rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau$ we have
   \[
   \begin{split}
     \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} \rho)
@@ -2959,9 +2923,10 @@ terms of initial algebras in $\set$.
     &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} (\pi_i\rho)
   \end{split}
   \]
-\item $\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau$
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau$
   is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \inl \,t: \sigma + \tau$.
-\item
+\item for $\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
@@ -2979,7 +2944,8 @@ terms of initial algebras in $\set$.
       \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
   \end{split}
   \]
-\item
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+  : \Nat^{\overline \alpha}\, ((\mu\phi.\lambda \overline \beta.H)\overline \alpha)\,F$ we have
   \[
   \begin{split}
     &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
@@ -2993,17 +2959,19 @@ terms of initial algebras in $\set$.
       \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}(\pi_i\rho) \\
     &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
       \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
-      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}(\pi_i\rho)
+      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}(\pi_i\rho) \qedhere
   \end{split}
   \]
 \end{itemize}
 \end{proof}
 
 We now show that the interpretation given in
-Sections~\ref{sec:set-interp'},~\ref{sec:rel-interp},
+Sections~\ref{sec:set-interp},~\ref{sec:rel-interp},
 and~\ref{sec:term-interp} define a logical relation. Indeed, the
 Abstraction Theorem is the special case of Lemma~\ref{lem:soundness}
 for closed terms.
+
+{\color{red} Is Soundness Theorem Lemma 29 or Lemma 30???}
 
 \begin{thm}\label{thm:abstraction}
 If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
