@@ -2087,7 +2087,7 @@ defined as follows:
 \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
     \alpha} \,F \,G}\rho & = &  \curry (\setsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
-\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline \tau} s:
   G [\overline{\alpha := \tau}]}\rho & = & \eval \circ \langle
   (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
   \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\setsem{\Gamma;\Phi
@@ -2977,6 +2977,136 @@ for closed terms.
 If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
   \tau},\setsem{t : \tau}) \in \relsem{\tau}$.
 \end{thm}
+
+\begin{dfn}
+% Substitution of a type in a term, in place of a 0-ary type constructor variable.
+Let $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
+be a term and $\Gamma;\Phi \vdash \sigma : \F$
+be a type.
+Then, we define by induction on $t$ a term
+$\Gamma;\Phi \,|\, \Delta [\alpha := \sigma] \vdash t[\alpha := \sigma] : \tau [\alpha := \sigma]$
+as
+\begin{align*}
+x[\alpha := \sigma] &= x \\
+ (\lambda x.t)[\alpha := \sigma] &= \lambda x.(t[\alpha := \sigma]) \\
+ (st)[\alpha := \sigma] &= (s[\alpha := \sigma])(t[\alpha := \sigma]) \\
+ (L_{\overline \alpha} x.t)[\beta := \sigma] &= L_{\overline \alpha} x.(t[\beta := \sigma]) \\
+ (t_{\overline\tau}s)[\alpha := \sigma] &= t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) \\
+ (\bot_\tau t) [\alpha := \sigma] &= \bot_{\tau [\alpha := \sigma]} (t[\alpha := \sigma]) \\
+\top [\alpha := \sigma] &= \top \\
+(s,t)[\alpha := \sigma] &= (s[\alpha := \sigma], t[\alpha := \sigma]) \\
+(\pi_1 t)[\alpha := \sigma] &= \pi_1 (t[\alpha := \sigma]) \\
+(\pi_2 t)[\alpha := \sigma] &= \pi_2 (t[\alpha := \sigma]) \\
+(\case{t}{x \mapsto l}{y \mapsto r})[\alpha := \sigma] &= \case{t[\alpha := \sigma]}{x \mapsto l[\alpha := \sigma]}{y \mapsto r[\alpha := \sigma]} \\   
+(\inl\,s)[\alpha := \sigma] &= \inl\,(s[\alpha := \sigma]) \\
+(\inr\,s)[\alpha := \sigma] &= \inr\,(s[\alpha := \sigma]) \\
+(\tin\,t)[\alpha := \sigma] &= \tin(t[\alpha := \sigma]) \\
+(\fold_{H,F}\, t)[\alpha := \sigma] &= \fold_{H[\alpha := \sigma],F}\, (t[\alpha := \sigma])
+\end{align*}
+\end{dfn}
+
+\begin{lemma}
+\begin{gather*}
+  \setsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash t[\alpha := \sigma] : \tau[\alpha := \sigma]}\rho
+  = \setsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau }\rho [ \alpha := \setsem{\Gamma;\Phi\vdash\sigma}\rho ] \\
+  \relsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash t[\alpha := \sigma] : \tau[\alpha := \sigma]}\rho
+  = \relsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau }\rho [ \alpha := \relsem{\Gamma;\Phi\vdash\sigma}\rho ]
+\end{gather*}
+\end{lemma}
+\begin{proof}
+By induction on $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
+\begin{itemize}
+  \item $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t_{\overline\tau}s : G[\overline{\beta := \tau}]$
+  \[
+  \begin{split}
+    &\hspace{-0.3in}\setsem{\Gamma;\Phi \,|\, \Delta \vdash (t_{\overline\tau}s)[\alpha := \sigma] : G[\overline{\beta := \tau}][\alpha := \sigma]}\rho \\
+    &=\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) : G[\overline{\beta := \tau[\alpha := \sigma]}]}\rho \\
+    &=\eval \circ \langle
+      (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\beta}} \,F \,G}\rho\; \_)_{\overline{\setsem{\Gamma;\Phi\vdash \tau[\alpha := \sigma]}\rho}},
+      \setsem{\Gamma;\Phi \,|\, \Delta \vdash s[\alpha := \sigma]: F [\overline{\beta := \tau[\alpha := \sigma]}]}\rho
+    \rangle \\
+    &=\eval \circ \langle
+      (
+        \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\beta}} \,F \,G}\rho\; \_
+      )_{\overline{\setsem{\Gamma;\Phi,\alpha\vdash \tau}\rho [\alpha:=\setsem{\Gamma;\Phi\vdash\sigma}\rho] }},
+      \setsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash s: F [\overline{\beta := \tau}]}\rho [\alpha:=\setsem{\Gamma;\Phi\vdash\sigma}\rho]
+    \rangle \\
+    &=\setsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash t_{\overline\tau}s : G[\overline{\beta := \tau}]}\rho [\alpha:=\setsem{\Gamma;\Phi\vdash\sigma}\rho]
+  \end{split}
+  \]
+\end{itemize}
+\end{proof}
+
+\begin{dfn}
+% Substitution of a term in a term.
+Let $\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau$
+and $\Gamma;\Phi \,|\, \Delta \vdash s: \sigma$
+be terms.
+Then, we define by induction on $t$ a term
+$\Gamma;\Phi \,|\, \Delta \vdash t[x := s] : \tau$
+as
+\begin{align*}
+x[x := s] &= s \\
+y[x := s] &= y \hspace{0.3in}\text{if $x \neq y$} \\
+(\lambda x.t)[y := s] &= \lambda x.(t[y := s]) \\
+(st)[x := u] &= (s[x := u])(t[x := u]) \\
+(L_{\overline \alpha} x.t)[y := s] &= L_{\overline \alpha} x.(t[y := s]) \\
+(t_{\overline\tau}s)[x := u] &= (t[x := u])_{\overline{\tau}}(s[x := u]) \\
+(\bot_\tau t) [x := s] &= \bot_\tau (t[x := s]) \\
+\top [x := s] &= \top \\
+(s,t)[x := u] &= (s[x := u], t[x := u]) \\
+(\pi_1 t)[x := s] &= \pi_1 (t[x := s]) \\
+(\pi_2 t)[x := s] &= \pi_2 (t[x := s]) \\
+(\case{t}{x \mapsto l}{y \mapsto r})[z := s] &= \case{t[z := s]}{x \mapsto l[z := s]}{y \mapsto r[z := s]} \\   
+(\inl \,s)[x := u] &= \inl\,(s[x := u]) \\
+(\inr \,s)[x := u] &= \inr\,(s[x := u]) \\
+(\tin\,t)[x := s] &= \tin(t[x := s]) \\
+(\fold_{H,F}\, t)[x:=s] &= \fold_{H,F}\, (t[x:=s])
+\end{align*}
+\end{dfn}
+
+\begin{lemma}
+\begin{gather*}
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash t[x := s] : \tau }\rho(\_)
+  = \setsem{\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau}\rho
+    (\_, \setsem{\Gamma;\Phi \,|\, \Delta\vdash s: \sigma}\rho(\_)) \\
+  \relsem{\Gamma;\Phi \,|\, \Delta \vdash t[x := s] : \tau }\rho(\_)
+  = \relsem{\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau}\rho
+    (\_, \relsem{\Gamma;\Phi \,|\, \Delta\vdash s: \sigma}\rho(\_))
+\end{gather*}
+\end{lemma}
+\begin{proof}
+By induction on $\Gamma;\Phi,\alpha \,|\, \Delta, x: \sigma \vdash t : \tau$
+\begin{itemize}
+  \item $\Gamma;\Phi \,|\, x:\sigma \vdash x: \sigma$
+  \[
+  \begin{split}
+    \setsem{\Gamma;\Phi \,|\, \Delta \vdash x[x := s] : \sigma}\rho(\_)
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho(\_) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash x : \sigma}\rho
+    (\_, \setsem{\Gamma;\Phi \,|\, \Delta\vdash s: \sigma}\rho(\_))
+  \end{split}
+  \]
+  \item $\Gamma;\Phi \,|\, \Delta \vdash t_{\overline\tau}s : G[\overline{\alpha := \tau}]$
+  \[
+  \begin{split}
+    &\hspace{-0.3in}\setsem{\Gamma;\Phi \,|\, \Delta \vdash (t_{\overline\tau}s)[x := u] : G[\overline{\alpha := \tau}]}\rho \\
+    &=\setsem{\Gamma;\Phi \,|\, \Delta \vdash (t[x:=u])_{\overline{\tau}}(s[x := u]) : G[\overline{\alpha := \tau]}]}\rho \\
+    &=\eval \circ \langle
+      (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t[x:=u]: \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\setsem{\Gamma;\Phi\vdash\tau}\rho}},
+      \setsem{\Gamma;\Phi \,|\, \Delta \vdash s[x := u]: F [\overline{\alpha := \tau}]}\rho
+    \rangle \\
+    &=\eval \circ \langle
+      (
+        \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} \,F \,G}\rho(\_, \setsem{\Gamma;\Phi\,|\,\Delta\vdash u:\sigma}\rho\;\_\;)
+      )_{\overline{\setsem{\Gamma;\Phi,\vdash \tau}\rho}},
+      \setsem{\Gamma;\Phi, \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho(\_, \setsem{\Gamma;\Phi\,|\,\Delta\vdash u:\sigma}\rho\;\_
+    \rangle \\
+    &=\setsem{\Gamma;\Phi \,|\, \Delta, x:\sigma \vdash t_{\overline\tau}s : G[\overline{\alpha := \tau}]}\rho(\_, \setsem{\Gamma;\Phi\,|\,\Delta\vdash u:\sigma}\rho\;\_)
+  \end{split}
+  \]
+\end{itemize}
+\end{proof}
 
 {\color{blue} We will need to go back and add typing rules for
   well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
