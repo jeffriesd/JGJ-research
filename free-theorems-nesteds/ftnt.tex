@@ -863,10 +863,9 @@ equivalent to: if $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b)
 \ol{\beta}\,d) \in F^*\ol{S}$.
 
 When convenient we identify a $0$-ary relation transformer $(A,B,R)$
-with the relation $(A,B,R)$. We may also write $F^0$ and $F^1$ for
-$\pi_1 F$ and $\pi_2 F$. We extend these conventions to relation
-environments, introduced in Definition~\ref{def:reln-env} below, as
-well.
+with $R : \rel(A,B)$. We may also write $F^0$ and $F^1$ for $\pi_1 F$
+and $\pi_2 F$. We extend these conventions to relation environments,
+introduced in Definition~\ref{def:reln-env} below, as well.
 
 \begin{dfn}
 The category $RT_k$ of $k$-ary relation transformers is given by the
@@ -1674,10 +1673,11 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 %\end{proof}
 
 \begin{dfn}
-If $F$ is a functor from $\set^k$ to $\set$, define the functor
-$\Eq_F^*$ from $\rel^k$ to $\rel$ as follows.  Given $R_1 : \rel(A_1,
-B_1),$ $...,R_k : \rel(A_k,B_k)$, let $\overline{i_{R_i} : R_i
-  \hookrightarrow A_i \times B_i}$ be the inclusion of $R_i$ as a
+If $F$ is a functor from $\set^k$ to $\set$, we define the functor
+%$F^\wedge$ on relations as follows.
+$\Eq_F^* : \rel^k \to \rel$ as follows.  Given $R_1 : \rel(A_1,
+B_1),...,R_k : \rel(A_k,B_k)$, let $\iota_{R_i} : R_i \hookrightarrow
+A_i \times B_i$, for $i = 1,...,k$, be the inclusion of $R_i$ as a
 subset of $A_i \times B_i$. By the universal property of the product,
 there exists a unique $h_{\overline{A \times B}}$ making the diagram
 \[
@@ -1692,25 +1692,33 @@ F\overline{A}
 \ar[ul, "{\pi_1}"] \ar[ur, "{\pi_2}"']
 \end{tikzcd}
 \]
-commute.  Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
+commute. Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
 \times F\overline{B}$ be $h_{\overline{A \times B}} \circ
-F\overline{i_R}$.  Then, define $\Eq_F^*\overline{R}$ as the subobject
+F\overline{i_R}$. Define $F^\wedge\overline{R}$ to be the subobject
 through which $h_{\overline{R}}$ is factorized by the mono-epi
 factorization system in $\set$, as shown in the following diagram:
 \[
 \begin{tikzcd}
 F\overline{R}
 \ar[rr, "{h_{\overline{R}}}"]
-\ar[dr, twoheadrightarrow, "{q_{\Eq_F^*\overline{R}}}"']
+\ar[dr, twoheadrightarrow, "{q_{F^\wedge\overline{R}}}"']
 &&F\overline{A} \times F\overline{B} \\
-&\Eq_F^*\overline{R}
-\ar[ur, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"']
+&F^\wedge\overline{R}
+\ar[ur, hookrightarrow, "{i_{F^\wedge\overline{R}}}"']
 \end{tikzcd}
 \]
-Note that $\Eq_F^*\overline{R} : \rel(F\overline{A}, F\overline{B})$
-by construction.  Moreover, if $\overline{(\alpha, \beta) : R \to S}$
-are morphisms in $\rel$, then $\Eq_F^*\overline{(\alpha, \beta)}$ is
-defined to be $(F\overline\alpha, F\overline\beta)$.
+%
+%NO! $Eq_F^* \overline{(A,B,R)} =
+%(F\overline{A},F\overline{B},Eq_F^*\overline{R})$ 
+%Choose a different name for third component above, i.e., for the thing
+%in Def 22. Maybe $F^\wedge$ on relations, i.e., subsets of domains and
+%codomains? 
+Note that $F^\wedge\overline{R} : \rel(F\overline{A}, F\overline{B})$
+by construction, so we can define $\Eq_F^* \overline{(A,B,R)} =
+(F\overline{A}, F\overline{B}, \iota_{F^\wedge \overline{R}}F^\wedge\overline{R})$.  Moreover, if
+$\overline{(\alpha, \beta) : (A,B,R) \to (C,D,S)}$ are morphisms in
+$\rel$, then we define $\Eq_F^*\overline{(\alpha, \beta)}$ to be
+$(F\overline\alpha, F\overline\beta)$.
 \end{dfn}
 
 If $F$ is a functor from $\set^k$ to $\set$, let $\Eq_F = (F, F,
@@ -1723,41 +1731,40 @@ If $F$ is a functor from $\set^k$ to $\set$, let $\Eq_F = (F, F,
 If $F : [\set^k,\set]$ then $\Eq_F$ is in $RT_k$.
 \end{lemma}
 \begin{proof}
-Clearly, $\Eq*_F : [\rel^k,\rel]$. i.e., $Eq^*_F$ is
-$\omega$-cocontinuous. 
+Clearly, $\Eq^*_F$ is $\omega$-cocontinuous, so $\Eq^*_F :
+[\rel^k,\rel]$.
 
 Now, consider $\overline{(\alpha, \beta) : R \to S}$, where
 $\overline{R : \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.  We want
-to show that there exists a morphism $\epsilon : \Eq_F^*\overline{R}
-\to \Eq_F^*\overline{S}$ such that
+to show that there exists a morphism $\epsilon : F^\wedge\overline{R}
+\to F^\wedge\overline{S}$ such that
 \[
 \begin{tikzcd}
-\Eq_F^*\overline{R}
-	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"]
+F^\wedge\overline{R}
+	\ar[r, hookrightarrow, "{\iota_{F^\wedge\overline{R}}}"]
 	\ar[d, "{\epsilon}"']
 & F\overline{A} \times F\overline{B}
 	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
-\Eq_F^*\overline{S}
-	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{S}}}"']
+F^\wedge\overline{S}
+	\ar[r, hookrightarrow, "{\iota_{F^\wedge\overline{S}}}"']
 & F\overline{C} \times F\overline{D}
 \end{tikzcd}
 \]
-commutes.
-By hypothesis, there exist $\overline{\gamma : R \to S}$
-such that the diagram
+commutes.  By hypothesis, there exist $\overline{\gamma : R \to S}$
+such that each diagram
 \[
 \begin{tikzcd}
-R
-	\ar[d, "{\gamma}"']
-	\ar[r, hookrightarrow, "{i_R}"]
-&A \times B
-	\ar[d, "{\alpha \times \beta}"] \\
-S
-	\ar[r, hookrightarrow, "{i_S}"]
-&C \times D
+R_i
+	\ar[d, "{\gamma_i}"']
+	\ar[r, hookrightarrow, "{\iota_{R_i}}"]
+&A_i \times B_i
+	\ar[d, "{\alpha_i \times \beta_i}"] \\
+S_i
+	\ar[r, hookrightarrow, "{\iota_{S_i}}"]
+&C_i \times D_i
 \end{tikzcd}
 \]
-commutes. Thus, we get the following commutative diagram:
+commutes. We therefore get the following commutative diagram:
 \[
 \begin{tikzcd}
 F\overline{R}
@@ -1777,24 +1784,24 @@ F\overline{S}
 &F\overline{C} \times F\overline{D}
 \end{tikzcd}
 \]
-Then, by the left-lifting-property of $q_{\Eq_F^*\overline{R}}$
-with respect to $i_{\Eq_F^*\overline{S}}$
+Then, by the left-lifting property of $q_{F^\wedge\overline{R}}$
+with respect to $\iota_{F^\wedge\overline{S}}$
 given by the epi-mono factorization system,
 there exists an $\epsilon$ such that the diagram
 \[
 \begin{tikzcd}
 F\overline{R}
 	\ar[d, "{F\overline{\gamma}}"']
-	\ar[r, twoheadrightarrow, "{q_{\Eq_F^*\overline{R}}}"]
-&\Eq_F^*\overline{R}
+	\ar[r, twoheadrightarrow, "{q_{F^\wedge\overline{R}}}"]
+&F^\wedge\overline{R}
 	\ar[d, dashed, "{\epsilon}"]
-	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{R}}}"]
+	\ar[r, hookrightarrow, "{\iota_{F^\wedge\overline{R}}}"]
 &F\overline{A} \times F\overline{B}
 	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
 F\overline{S}
-	\ar[r, twoheadrightarrow, "{q_{\Eq_F^*\overline{S}}}"']
-&\Eq_F^*\overline{S}
-	\ar[r, hookrightarrow, "{i_{\Eq_F^*\overline{S}}}"']
+	\ar[r, twoheadrightarrow, "{q_{F^\wedge\overline{S}}}"']
+&F^\wedge\overline{S}
+	\ar[r, hookrightarrow, "{\iota_{F^\wedge\overline{S}}}"']
 &F\overline{C} \times F\overline{D}
 \end{tikzcd}
 \]
@@ -1806,30 +1813,47 @@ If $F : [\set^k,\set]$ and $A_1,...,A_k : \set$, then $\Eq_F^*
   \overline{\Eq_A} = \Eq_{F\overline{A}}$.
 \end{lemma}
 \begin{proof}
-The relation $\overline{\Eq_A}$ corresponds to the subobject
-$\overline{\Delta_{A} : A \to A \times A}$.  Since
-$h_{\overline{\Eq^*_A}}$ is the unique morphism making the diagram
+Each $\Eq_A : \rel$ has as its third component $\Delta_{A} : A \to A
+\times A$.  Since $h_{\overline{A \times A}}$ is the unique morphism
+making the bottom triangle of the following diagram commute
 \[
 \begin{tikzcd}[row sep = large]
+&F\overline{A}
+\ar[d, "{F \overline{\Delta_{A}}}"']
+\ar[dl, equal]
+\ar[dr, equal]\\
 F\overline{A}
 &F(\overline{A \times A})
 \ar[l, "{F\overline{\pi_1}}"']
 \ar[r, "{F\overline{\pi_2}}"]
+\ar[d, "{h_{\overline{A \times A}}}"]
 &F\overline{A} \\
-&F\overline{A}
-\ar[u, "{F \overline{\Delta_{A}}}"']
-\ar[ul, equal]
-\ar[ur, equal]
-\ar[d, dashed, "{h_{\overline{\Eq^*_A}}}"] \\
 &F\overline{A} \times F\overline{A}
-\ar[uul, "{\pi_1}"] \ar[uur, "{\pi_2}"']
+\ar[ul, "{\pi_1}"] \ar[ur, "{\pi_2}"']
 \end{tikzcd}
 \]
-commute, we have $h_{\overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.
-Moreover, since $\Delta_{F\overline{A}}$ is a monomorphism, we have
-that $i_{\Eq_F^* \overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.  To
-conclude we observe that the relation corresponding to the subobject
-$\Delta_{F\overline{A}}$ is $\Eq_{F\overline{A}}$.
+and since $h_{\overline{\Eq_A^*}} = h_{\overline{A \times A}} \circ F
+  \overline{\Delta_A}$, the universal property of the product 
+\[
+\begin{tikzcd}[row sep = large]
+F\overline{A}
+&F\overline{A} \times F\overline{A}
+\ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+&F\overline{A}\\
+&F\overline{A}
+\ar[u, dashed, "{\exists !}"]
+\ar[ul, equal]
+\ar[ur, equal]
+\end{tikzcd}
+\]
+gives that $h_{\overline{\Eq^*_A}} = \Delta_{F\overline{A}}$.
+Moreover, since $\Delta_{F\overline{A}}$ is a monomorphism, its
+epi-mono factorization gives that $\Delta_{F\overline{A}} =
+\iota_{F^\wedge \overline{\Delta_A}}$, and thus that $F^\wedge
+\overline{\Delta_A} = F\overline{A}$.  Therefore, $\Eq_F^* \overline{\Eq_A} =
+(F\overline{A}, F\overline{A}, \iota_{F^\wedge \overline{\Delta_A}}\,
+F^\wedge \overline{\Delta_A}) = (F\overline{A}, F\overline{A},
+\Delta_{F\overline{A}}\, F\overline{A}) = \Eq_{F\overline{A}}$.
 \end{proof}
 
 We now show that the Identity Extension Lemma holds for the
@@ -1900,10 +1924,12 @@ By induction on the structure of $\tau$.
   $t_{\overline{A}}x = t'_{\overline{A}}x$.  Then, by extensionality,
   $t = t'$.
 \item $\relsem{\Gamma; \Phi \vdash \zerot} \Eq_{\rho} = 0_\rel =
-  \Eq_{0_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash 0}\rho}$
+  \Eq_{0_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash \zerot}\rho}$
 \item $\relsem{\Gamma; \Phi \vdash \onet} \Eq_{\rho} = 1_\rel =
-  \Eq_{1_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash 1}\rho}$
-\item The application case is proved by the sequence of equalities
+  \Eq_{1_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash \onet}\rho}$
+\item The application case is proved by the following sequence of
+  equalities, where the second equality is given by the induction
+  hypothesis, and the third by Lemma~\ref{lem:eq-reln-equalities}:
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\Eq_{\rho} &=
@@ -1915,8 +1941,6 @@ By induction on the structure of $\tau$.
 &= \Eq_{\setsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\rho}
 \end{split}
 \]
-where the second equality is given by the induction hypothesis, and
-the third by Lemma~\ref{lem:eq-reln-equalities}.
 \item The fix-point case is proven by the sequence of equalities
 \[
 \begin{split}
@@ -1939,7 +1963,7 @@ the third by Lemma~\ref{lem:eq-reln-equalities}.
       \ol{\alpha}. H)\ol{\tau}}\rho}
 \end{split}
 \]
-where the third equality is by induction hypothesis, the sixth is by
+Here, the third equality is by induction hypothesis, the sixth is by
 Lemma~\ref{lem:eq-reln-equalities} and the fifth equality is because,
 for every $n \in \nat$, the following two statements can be proved by
 simultaneous induction:
@@ -1949,14 +1973,17 @@ T^n_{\Eq_{\rho}} K_0^{\rel}\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
 \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
 \end{equation}
 and
-\begin{multline}\label{eq:iel-fix-point-intermediate2}
-\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi :=
-  T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha :=
+\begin{equation}\label{eq:iel-fix-point-intermediate2}
+\begin{split}
+  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H}
+\Eq_{\rho} [\phi := 
+ & T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
-= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+=\;\; & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
   := \Eq_{(T^\set_\rho)^n K_0^{\set}}] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
-\end{multline}
+\end{split}
+\end{equation}
 We prove~\eqref{eq:iel-fix-point-intermediate1}.  The case $n=0$ is
 trivial, because $T^0_{\Eq_{\rho}} K_0^{\rel} = K_0^{\rel}$ and
 $(T^\set_\rho)^0 K_0^{\set} = K_0^{\set}$; the inductive step is
