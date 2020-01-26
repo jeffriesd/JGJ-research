@@ -1947,17 +1947,17 @@ By induction on the structure of $\tau$.
 \relsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}}\Eq_{\rho} 
 &=(\mu {T_{\Eq_{\rho}}}) \ol{\relsem{\Gamma; \Phi \vdash \tau}\Eq_{\rho}}\\ 
-&= \colim{n \in \nat}{T^n_{\Eq_{\rho}} K_0} \ol{\relsem{\Gamma; \Phi
-  \vdash \tau_1}\Eq_{\rho}}\\
+&= \colim{n \in \nat}{T^n_{\Eq_{\rho}} K_0}\, \ol{\relsem{\Gamma; \Phi
+  \vdash \tau}\Eq_{\rho}}\\
 %&= \colim{n \in \nat}{(T^n_{\Eq_{\rho}} K_0)}
 %\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}\\
-&= \colim{n \in \nat}{ T^n_{\Eq_{\rho}} K_0 \ol{\Eq_{\setsem{\Gamma;
-    \Phi \vdash \tau_1}\rho}}}\\
+&= \colim{n \in \nat}{ T^n_{\Eq_{\rho}} K_0 \,\ol{\Eq_{\setsem{\Gamma;
+    \Phi \vdash \tau}\rho}}}\\
 &= \colim{n \in \nat}{ \Eq_{(T^\set_\rho)^n K_0}
-  \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau_1}\rho}}}\\
-&= \colim{n \in \nat}{\Eq_{(T^\set_\rho)^n K_0 \ol{\setsem{\Gamma;
+  \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}}\\
+&= \colim{n \in \nat}{\Eq_{(T^\set_\rho)^n K_0 \,\ol{\setsem{\Gamma;
         \Phi \vdash \tau}\rho}}}\\ 
-&= \Eq_{\colim{n \in \nat}{ (T^\set_{\rho})^n K_0
+&= \Eq_{\colim{n \in \nat}{ (T^\set_{\rho})^n K_0\,
     \ol{\setsem{\Gamma; \Phi \vdash \tau}\rho}}}\\
 &= \Eq_{\setsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
       \ol{\alpha}. H)\ol{\tau}}\rho}
