@@ -2185,7 +2185,7 @@ defined as follows:
 \relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
     \alpha} \,F \,G}\rho & = &  \curry (\relsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
-\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline{\tau}} s:
   G [\overline{\alpha := \tau}]}\rho & = & \eval \circ \langle
   (\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
   \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
@@ -2275,7 +2275,8 @@ similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
 
   {\color{red} ISSUE: the substitution $[\phi := H]$ should specify that the
   $\alpha$s in $H$ correspond to the arguments of $\phi$.
-  For example, we could write $[\phi :=_{\alpha} H]$.}
+  For example, we could write $[\phi :=_{\alpha} H]$. Also add
+  $\overline{\alpha}$ notation to Definition~4.}
 \end{lemma}
 \begin{proof}
 The proofs for the set interpretation and those for the relational interpretation
@@ -2589,7 +2590,8 @@ and we only show the interesting cases.
   Naturality of
   $\setsem{\Gamma;\Phi \,|\, \Delta \vdash
   \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}}$
-  follows from the naturality of $\textit{in}$.
+  follows from the naturality of $\textit{in}$ with respect to the set
+  arguments to the functor.
   Indeed, the diagram
   \[
   \begin{tikzcd}
@@ -2668,7 +2670,7 @@ and we only show the interesting cases.
   Let $\eta \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho$.
   For all $\overline{R : \set(A, B)}$, we have that
   $\eta_{\overline R}$ is a morphism in $\set$.
-  Then, $(\textit{fold}\ \eta)_{\overline R} = \textit{fold}\ \eta_{\overline R}$ is too,
+  Then $(\textit{fold}\ \eta)_{\overline R} = \textit{fold}\ \eta_{\overline R}$ is too,
   meaning that $\textit{fold}\ \eta$ belongs to
   $\setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
 
@@ -2691,7 +2693,7 @@ and we only show the interesting cases.
     \to \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho)
     \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
   \end{multline}
-  Then, we define it as
+  Then, using this fact in the third step below, we define it as
   \[
   \begin{tikzcd}
   \setsem{\Gamma;\Phi \vdash \Delta}\rho
@@ -2747,7 +2749,7 @@ $(\setsem{\Gamma; \Phi \vdash \Delta},\setsem{\Gamma; \Phi \vdash
 $\relenv$ to $RT_0$, which we denote by $\sem{\Gamma; \Phi \vdash
   \Delta}$. We then have:
 
-\begin{thm}
+\begin{thm}\label{thm:at}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$ induces
 a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
 $\sem{\Gamma; \Phi \vdash \tau}$, i.e., a triple of natural
@@ -2995,10 +2997,8 @@ terms of initial algebras in $\set$.
 We now show that the interpretation given in
 Sections~\ref{sec:set-interp},~\ref{sec:rel-interp},
 and~\ref{sec:term-interp} define a logical relation. Indeed, the
-Abstraction Theorem is the special case of Lemma~\ref{lem:soundness}
-for closed terms.
-
-{\color{red} Is Soundness Theorem Lemma 29 or Lemma 30???}
+Abstraction Theorem is the special case of Theorem~\ref{thm:at} for
+closed terms.
 
 \begin{thm}\label{thm:abstraction}
 If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
@@ -3046,11 +3046,11 @@ By induction on $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
   \item $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t_{\overline\tau}s : G[\overline{\beta := \tau}]$
   \[
   \begin{split}
-    &\hspace{-0.3in}\setsem{\Gamma;\Phi \,|\, \Delta \vdash (t_{\overline\tau}s)[\alpha := \sigma] : G[\overline{\beta := \tau}][\alpha := \sigma]}\rho \\
-    &=\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) : G[\overline{\beta := \tau[\alpha := \sigma]}]}\rho \\
+    &\hspace{-0.3in}\setsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash (t_{\overline\tau}s)[\alpha := \sigma] : G[\overline{\beta := \tau}][\alpha := \sigma]}\rho \\
+    &=\setsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) : G[\overline{\beta := \tau[\alpha := \sigma]}]}\rho \\
     &=\eval \circ \langle
       (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\beta}} \,F \,G}\rho\; \_)_{\overline{\setsem{\Gamma;\Phi\vdash \tau[\alpha := \sigma]}\rho}},
-      \setsem{\Gamma;\Phi \,|\, \Delta \vdash s[\alpha := \sigma]: F [\overline{\beta := \tau[\alpha := \sigma]}]}\rho
+      \setsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash s[\alpha := \sigma]: F [\overline{\beta := \tau[\alpha := \sigma]}]}\rho
     \rangle \\
     &=\eval \circ \langle
       (
