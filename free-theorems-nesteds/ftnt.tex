@@ -852,10 +852,12 @@ commutes:
 \begin{dfn}\label{def:rel-transf}
 A {\em $k$-ary relation transformer} $F$ is a triple $(F^0, F^1,F^*)$,
 where $F^0,F^1 : [\set^k,\set]$ are functors, $F^* : [\rel^k, \rel]$
-is a functor, if $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$ then $F^*
+is a functor, if $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then $F^*
 \ol{R} : \rel(F^0 \ol{A}, F^1 \ol{B})$, and if $(\alpha_1, \beta_1)
 \in \Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$
 then $F^* \ol{(\alpha, \beta)} = (F^0 \ol{\alpha}, F^1 \ol{\beta})$.
+We define $F\overline{R}$ to be $F^*\overline{R}$ and
+$F\overline{(\alpha,\beta)}$ to be $F^*\overline{(\alpha,\beta)}$.
 \end{dfn}
 Expanding the last clause of Definition~\ref{def:rel-transf} is
 equivalent to: if $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b)
@@ -1075,20 +1077,21 @@ $k$, $K_0 = (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus,
 if $T = (T^0,T^1,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$
 then we can define $\mu T$ to be the relation transformer
 \begin{equation*}
-\mu T = \colim{n}{T^n K_0}
+\mu T = \colim{n \in \nat}{T^n K_0}
 \end{equation*}
 Then Lemma~\ref{lem:colimits} shows $\mu T$ is indeed a relation
 transformer, and that it is given explicitly by
 \begin{equation}\label{eq:mu}
-\colim{n}{T^n K_0} = (\mu T^0,\mu T^1,
-\colim{n}{(T^nK_0)^*})
+\colim{n \in \nat}{T^n K_0} = (\mu T^0,\mu T^1,
+\colim{n \in \nat}{(T^nK_0)^*})
 \end{equation}
 
 \begin{lemma}\label{lem:fp}
 For any $T : [RT_k,RT_k]$, $\mu T \cong T(\mu T)$.
 \end{lemma}
 \begin{proof}
-We have $T(\mu T) = T(\colim{n}{(T^nK_0)}) \cong \colim{n}{T(T^nK_0)} =
+We have $T(\mu T) = T(\colim{n \in \nat}{(T^nK_0)}) \cong \colim{n \in
+\nat}{T(T^nK_0)} =
 \mu T$.
 \end{proof}
 In fact, the isomorphism in Lemma~\ref{lem:fp} is given by the
@@ -1694,7 +1697,7 @@ F\overline{A}
 \]
 commute. Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
 \times F\overline{B}$ be $h_{\overline{A \times B}} \circ
-F\overline{i_R}$. Define $F^\wedge\overline{R}$ to be the subobject
+F\overline{\iota_R}$. Define $F^\wedge\overline{R}$ to be the subobject
 through which $h_{\overline{R}}$ is factorized by the mono-epi
 factorization system in $\set$, as shown in the following diagram:
 \[
@@ -1704,7 +1707,7 @@ F\overline{R}
 \ar[dr, twoheadrightarrow, "{q_{F^\wedge\overline{R}}}"']
 &&F\overline{A} \times F\overline{B} \\
 &F^\wedge\overline{R}
-\ar[ur, hookrightarrow, "{i_{F^\wedge\overline{R}}}"']
+\ar[ur, hookrightarrow, "{\iota_{F^\wedge\overline{R}}}"']
 \end{tikzcd}
 \]
 %
@@ -1764,12 +1767,29 @@ S_i
 &C_i \times D_i
 \end{tikzcd}
 \]
-commutes. We therefore get the following commutative diagram:
+commutes. Now note that both $h_{\overline{C \times D}} \circ
+F(\overline{\alpha \times \beta})$ and $(F\overline{\alpha} \times
+  F\overline{\beta}) \circ h_{\overline{A \times B}}$ make
+\[
+\begin{tikzcd}[row sep = large]
+F\overline{C}
+&F\overline{C} \times F\overline{D}
+\ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+&F\overline{D}\\
+&F(\overline{A \times B})
+\ar[u, dashed, "{\exists !}"]
+\ar[ul, "{F\pi_1 \circ F(\overline{\alpha \times \beta})}"]
+\ar[ur, "{F\pi_2 \circ F(\overline{\alpha \times \beta})}"']
+\end{tikzcd}
+\]
+commute, so they must be equal. We therefore get that the right-hand
+square below commutes, and thus that the entire following diagram does
+as well:
 \[
 \begin{tikzcd}
 F\overline{R}
 	\ar[d, "{F\overline{\gamma}}"']
-	\ar[r, hookrightarrow, "{F\overline{i_R}}"]
+	\ar[r, hookrightarrow, "{F\overline{\iota_R}}"]
 	\ar[rr, bend left, "{h_{\overline{R}}}"]
 &F(\overline{A \times B})
 	\ar[d, "{F(\overline{\alpha \times \beta})}"]
@@ -1777,17 +1797,16 @@ F\overline{R}
 &F\overline{A} \times F\overline{B}
 	\ar[d, "{F\overline{\alpha} \times F\overline{\beta}}"] \\
 F\overline{S}
-	\ar[r, hookrightarrow, "{F\overline{i_S}}"']
+	\ar[r, hookrightarrow, "{F\overline{\iota_S}}"']
 	\ar[rr, bend right, "{h_{\overline{S}}}"']
 &F(\overline{C \times D})
 	\ar[r, "{h_{\overline{C \times D}}}"']
 &F\overline{C} \times F\overline{D}
 \end{tikzcd}
 \]
-Then, by the left-lifting property of $q_{F^\wedge\overline{R}}$
-with respect to $\iota_{F^\wedge\overline{S}}$
-given by the epi-mono factorization system,
-there exists an $\epsilon$ such that the diagram
+Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
+with respect to $\iota_{F^\wedge\overline{S}}$ given by the epi-mono
+factorization system, there exists an $\epsilon$ such that the diagram
 \[
 \begin{tikzcd}
 F\overline{R}
@@ -1813,9 +1832,10 @@ If $F : [\set^k,\set]$ and $A_1,...,A_k : \set$, then $\Eq_F^*
   \overline{\Eq_A} = \Eq_{F\overline{A}}$.
 \end{lemma}
 \begin{proof}
-Each $\Eq_A : \rel$ has as its third component $\Delta_{A} : A \to A
-\times A$.  Since $h_{\overline{A \times A}}$ is the unique morphism
-making the bottom triangle of the following diagram commute
+Each $\Eq_A : \rel$ has as its third component $\Delta_{A} A$, where
+$\Delta_{A} : A \to A \times A$ is given by $\Delta_{A} A =
+\{(x,x)~|~x \in A\}$.  Since $h_{\overline{A \times A}}$ is the unique
+morphism making the bottom triangle of the following diagram commute
 \[
 \begin{tikzcd}[row sep = large]
 &F\overline{A}
@@ -1928,32 +1948,38 @@ By induction on the structure of $\tau$.
 \item $\relsem{\Gamma; \Phi \vdash \onet} \Eq_{\rho} = 1_\rel =
   \Eq_{1_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash \onet}\rho}$
 \item The application case is proved by the following sequence of
-  equalities, where the second equality is given by the induction
-  hypothesis, and the third by Lemma~\ref{lem:eq-reln-equalities}:
+  equalities, where the second equality is by the induction hypothesis
+  and the definition of the relation environment $\Eq_\rho$, the third
+  is by the definition of application of relation transformers from
+  Definition~\ref{def:rel-transf}, and the fourth is by
+  Lemma~\ref{lem:eq-reln-equalities}:
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\Eq_{\rho} &=
 (\Eq_{\rho}\phi)\ol{\relsem{\Gamma; \Phi \vdash \tau}
 \Eq_{\rho}}\\
-&= (\Eq_{\rho} \phi)^* \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}
+&= \Eq_{\rho \phi}\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}
   \rho}}\\
-&= \Eq_{(\rho \phi) \ol{\setsem{\Gamma; \Phi \vdash \tau} \rho}}\\
+&= (\Eq_{\rho \phi})^* \,\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}
+  \rho}}\\
+&= \Eq_{(\rho \phi) \,\ol{\setsem{\Gamma; \Phi \vdash \tau} \rho}}\\
+%&= (\Eq_{\rho \phi})^* \ol{\setsem{\Gamma; \Phi \vdash \tau} \rho}\\
 &= \Eq_{\setsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\rho}
 \end{split}
 \]
-\item The fix-point case is proven by the sequence of equalities
+\item The fixed point case is proven by the sequence of equalities
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}}\Eq_{\rho} 
-&=(\mu {T_{\Eq_{\rho}}}) \ol{\relsem{\Gamma; \Phi \vdash \tau}\Eq_{\rho}}\\ 
+&=(\mu {T_{\Eq_{\rho}}}) \,\ol{\relsem{\Gamma; \Phi \vdash \tau}\Eq_{\rho}}\\ 
 &= \colim{n \in \nat}{T^n_{\Eq_{\rho}} K_0}\, \ol{\relsem{\Gamma; \Phi
   \vdash \tau}\Eq_{\rho}}\\
 %&= \colim{n \in \nat}{(T^n_{\Eq_{\rho}} K_0)}
 %\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}\\
 &= \colim{n \in \nat}{ T^n_{\Eq_{\rho}} K_0 \,\ol{\Eq_{\setsem{\Gamma;
     \Phi \vdash \tau}\rho}}}\\
-&= \colim{n \in \nat}{ \Eq_{(T^\set_\rho)^n K_0}
+&= \colim{n \in \nat}{(\Eq_{(T^\set_\rho)^n K_0})^*
   \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}}\\
 &= \colim{n \in \nat}{\Eq_{(T^\set_\rho)^n K_0 \,\ol{\setsem{\Gamma;
         \Phi \vdash \tau}\rho}}}\\ 
@@ -1963,13 +1989,13 @@ By induction on the structure of $\tau$.
       \ol{\alpha}. H)\ol{\tau}}\rho}
 \end{split}
 \]
-Here, the third equality is by induction hypothesis, the sixth is by
-Lemma~\ref{lem:eq-reln-equalities} and the fifth equality is because,
+Here, the third equality is by induction hypothesis, the fifth is by
+Lemma~\ref{lem:eq-reln-equalities} and the fourth equality is because,
 for every $n \in \nat$, the following two statements can be proved by
 simultaneous induction:
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
-T^n_{\Eq_{\rho}} K_0^{\rel}\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
-      \tau}\rho}} = \Eq_{(T^\set_\rho)^n K_0^{\set}}
+T^n_{\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
+      \tau}\rho}} = (\Eq_{(T^\set_\rho)^n K_0})^*
 \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
 \end{equation}
 and
@@ -1977,37 +2003,37 @@ and
 \begin{split}
   \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H}
 \Eq_{\rho} [\phi := 
- & T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha :=
+ & T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
 =\;\; & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := \Eq_{(T^\set_\rho)^n K_0^{\set}}] \overline{[\alpha :=
+  := \Eq_{(T^\set_\rho)^n K_0}] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
 \end{split}
 \end{equation}
 We prove~\eqref{eq:iel-fix-point-intermediate1}.  The case $n=0$ is
-trivial, because $T^0_{\Eq_{\rho}} K_0^{\rel} = K_0^{\rel}$ and
-$(T^\set_\rho)^0 K_0^{\set} = K_0^{\set}$; the inductive step is
+trivial, because $T^0_{\Eq_{\rho}} K_0 = K_0$ and
+$(T^\set_\rho)^0 K_0 = K_0$; the inductive step is
 proved by the following sequence of equalities:
 \[
 \begin{split}
-T^{n+1}_{\Eq_{\rho}} K_0^{\rel}\, \overline{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
-&= T^\rel_{\Eq_{\rho}} (T^{n}_{\Eq_{\rho}} K_0^{\rel})
+T^{n+1}_{\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
+&= T^\rel_{\Eq_{\rho}} (T^{n}_{\Eq_{\rho}} K_0)
 \overline{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha :=
+  := T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := \Eq_{(T^\set_\rho)^n K_0^{\set}}] \overline{[\alpha :=
+  := \Eq_{(T^\set_\rho)^n K_0}] \overline{[\alpha :=
     \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho [\phi
-    := (T^\set_\rho)^n K_0^{\set}] \overline{[\alpha :=
+    := (T^\set_\rho)^n K_0] \overline{[\alpha :=
       \setsem{\Gamma; \Phi \vdash \tau}\rho]}} \\ 
 &= \Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \rho [\phi
-    := (T^\set_\rho)^n K_0^{\set}] \overline{[\alpha :=
+    := (T^\set_\rho)^n K_0] \overline{[\alpha :=
       \setsem{\Gamma; \Phi \vdash \tau}\rho]}} \\ 
-&= \Eq_{(T^\set_\rho)^{n+1} K_0^{\set} \overline{\setsem{\Gamma; \Phi
+&= \Eq_{(T^\set_\rho)^{n+1} K_0 \overline{\setsem{\Gamma; \Phi
       \vdash \tau}\rho}} \\ 
-&= \Eq_{(T^\set_\rho)^{n+1} K_0^{\set}} \overline{\Eq_{\setsem{\Gamma;
+&= (\Eq_{(T^\set_\rho)^{n+1} K_0})^*\, \overline{\Eq_{\setsem{\Gamma;
       \Phi \vdash \tau}\rho}} 
 \end{split}
 \]
@@ -2017,47 +2043,46 @@ Lemma~\ref{lem:eq-reln-equalities}.  We prove the induction step
 of~\eqref{eq:iel-fix-point-intermediate2} by structural induction on
 $H$: the only interesting case, though, is when $\phi$ is applied,
 i.e., for $H = \phi \ol{\sigma}$, which is proved by the sequence of
-equalities
+equalities:
 \[
 \begin{split}
 & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi
-    \ol{\sigma}} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0^{\rel}]
+    \ol{\sigma}} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0]
   \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
   \\
-&= T^{n}_{\Eq_{\rho}} K_0^{\rel}\, \overline{\relsem{\Gamma; \Phi,
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
-      T^{n}_{\Eq_{\rho}} K_0^{\rel}] \overline{[\alpha :=
+      T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
         \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\ 
-&= T^{n}_{\Eq_{\rho}} K_0^{\rel}\, \overline{\relsem{\Gamma; \Phi,
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
-      \Eq_{(T^\set_\rho)^{n} K_0^{\set}}] \overline{[\alpha :=
+      \Eq_{(T^\set_\rho)^{n} K_0}] \overline{[\alpha :=
         \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\ 
-&= T^{n}_{\Eq_{\rho}} K_0^{\rel}\, \overline{\relsem{\Gamma; \Phi,
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho [\phi := (T^\set_\rho)^{n}
-        K_0^{\set}] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash
+        K_0] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash
             \tau} \rho]}}} \\ 
-&= T^{n}_{\Eq_{\rho}} K_0^{\rel}\, \overline{\Eq_{\setsem{\Gamma;
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
         \Phi, \phi, \ol{\alpha} \vdash \sigma} \rho [\phi :=
-        (T^\set_\rho)^{n} K_0^{\set}] \overline{[\alpha :=
+        (T^\set_\rho)^{n} K_0] \overline{[\alpha :=
           \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\ 
-&= \Eq_{(T^\set_\rho)^{n} K_0^{\set}} \,\overline{\Eq_{\setsem{\Gamma;
+&= (\Eq_{(T^\set_\rho)^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
         \Phi, \phi, \ol{\alpha} \vdash \sigma} \rho [\phi :=
-        (T^\set_\rho)^{n} K_0^{\set}] \overline{[\alpha :=
+        (T^\set_\rho)^{n} K_0] \overline{[\alpha :=
           \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\ 
-&= \Eq_{(T^\set_{\rho})^{n} K_0^{\set}} \overline{\relsem{\Gamma;
+&= (\Eq_{(T^\set_{\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
       \Phi, \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
-      \Eq_{(T^\set_{\rho})^{n} K_0^{\set}}] \overline{[\alpha :=
+      \Eq_{(T^\set_{\rho})^{n} K_0}] \overline{[\alpha :=
         \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi \ol{\sigma}}
-  \Eq_{\rho} [\phi := \Eq_{(T^\set_{\rho})^{n} K_0^{\set}}]
+  \Eq_{\rho} [\phi := \Eq_{(T^\set_{\rho})^{n} K_0}]
   \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} 
 \end{split}
 \]
 Here, the second equality is by the induction hypothesis
 for~\eqref{eq:iel-fix-point-intermediate2} on the $\sigma$s, the
-fourth is by the induction hypothesis
-% for Theorem~\ref{thm:iel} 
-on the $\sigma$s, and the fifth is by the induction hypothesis on $n$
+fourth is by the induction hypothesis for Theorem~\ref{thm:iel} on the
+$\sigma$s, and the fifth is by the induction hypothesis on $n$
 for~\eqref{eq:iel-fix-point-intermediate1}.
 \item $\relsem{\Gamma; \Phi \vdash \sigma + \tau} \Eq_{\rho} =
   \relsem{\Gamma; \Phi \vdash \sigma} \Eq_{\rho} + \relsem{\Gamma;
