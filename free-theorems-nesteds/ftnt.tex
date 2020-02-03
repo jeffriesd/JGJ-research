@@ -3135,6 +3135,172 @@ By induction on $\Gamma;\Phi,\alpha \,|\, \Delta, x: \sigma \vdash t : \tau$
 \end{itemize}
 \end{proof}
 
+\begin{lemma}
+$\setsem{\Gamma;\emptyset \,|\, \Delta, y: \sigma \vdash t[x := y] : \tau}\rho
+= \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t: \tau}\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+\hspace{-0.3in} \setsem{\Gamma;\emptyset \,|\, \Delta, y: \sigma \vdash t[x := y] : \tau}\rho \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t: \tau}
+  \rho(\_, \setsem{\Gamma;\emptyset \,|\, \Delta, y: \sigma \vdash y: \sigma}\rho(\_, \_)) \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t: \tau}\rho(\_, \pi_2(\_, \_)) \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t: \tau}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda y. t[x := y] : \sigma \to \tau}\rho
+= \curry \circ \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau}\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+\hspace{-0.3in} \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda y. t[x := y] : \sigma \to \tau}\rho \\
+= \curry \circ \setsem{\Gamma;\emptyset \,|\, \Delta, y: \sigma \vdash t[x := y] : \tau}\rho \\
+= \curry \circ \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash L_{\overline{\beta}} y. (t[\overline{\alpha := \beta}][x := y])
+  : \Nat^{\beta} F[\overline{\alpha := \beta}] G[\overline{\alpha := \beta}]}\rho
+= \setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash L_{\overline{\alpha}} x. (t) : \Nat^{\alpha} F G}\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+\hspace{-0.3in} \setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash L_{\overline{\beta}} y. (t[\overline{\alpha := \beta}][x := y])
+  : \Nat^{\beta} F[\overline{\alpha := \beta}] G[\overline{\alpha := \beta}]}\rho \\
+= \curry(\setsem{\Gamma;\overline{\beta} \,|\, \Delta, y : F[\overline{\alpha := \beta}]
+  \vdash t[\overline{\alpha := \beta}][x := y]
+  : G[\overline{\alpha := \beta}]}\rho[\overline{\beta := \_}]) \\
+= \curry(\setsem{\Gamma;\overline{\beta} \,|\, \Delta, x : F[\overline{\alpha := \beta}]
+  \vdash t[\overline{\alpha := \beta}]
+  : G[\overline{\alpha := \beta}]}\rho[\overline{\beta := \_}]) \\
+= \curry(\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t : G}
+  \rho[\overline{\beta := \_}][\overline{\alpha := \setsem{\Gamma; \overline{\beta} \vdash \beta}\rho[\overline{\beta := \_}]}]) \\
+= \curry(\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t : G}
+  \rho[\overline{\alpha := \_}]) \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash L_{\overline{\alpha}} x. (t) : \Nat^{\alpha} F G}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash (\lambda x.t)s :\tau}\rho
+= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t[x := s] : \tau}\rho
+$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+\hspace{-0.3in} \setsem{\Gamma;\emptyset \,|\, \Delta \vdash (\lambda x.t)s :\tau}\rho \\
+= \eval \circ \langle
+  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash (\lambda x. t) : \sigma \to \tau}\rho,
+  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s : \sigma}\rho
+\rangle \\
+= \eval \circ \langle
+  \curry \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau}\rho,
+  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s : \sigma}\rho
+\rangle \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau}
+  \rho(\_, \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s : \sigma}\rho\_) \\
+= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t[x := s] : \tau}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Gamma;\Phi \,|\, \Delta \vdash {(L_{\overline{\alpha}} x.t)}_{\overline{\tau}}s :G[\overline{\alpha := \tau}]}\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t[\overline{\alpha := \tau}][x := s] : G[\overline{\alpha := \tau}]}\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+\hspace{-0.3in} \setsem{\Gamma;\Phi \,|\, \Delta \vdash {(L_{\overline{\alpha}} x.t)}_{\overline{\tau}}s :G[\overline{\alpha := \tau}]}\rho \\
+= \eval \circ \langle
+  (
+    \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} F G}\rho\_
+  )_{\setsem{\Gamma;\Phi\vdash\tau}\rho},
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash s : F[\overline{\alpha := \tau}]}\rho
+\rangle \\
+= \eval \circ \langle
+  \curry ( \setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}] ) \_,
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash s : F[\overline{\alpha := \tau}]}\rho
+\rangle \\
+= \setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
+  (\_, \setsem{\Gamma;\Phi \,|\, \Delta \vdash s : F[\overline{\alpha := \tau}]}\rho\_) \\
+= \setsem{\Gamma;\Phi \,|\, \Delta, x : F[\overline{\alpha := \tau}] \vdash t[\overline{\alpha := \tau}] : G[\overline{\alpha := \tau}]}\rho
+  (\_, \setsem{\Gamma;\Phi \,|\, \Delta \vdash s : F[\overline{\alpha := \tau}]}\rho\_) \\
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t[\overline{\alpha := \tau}][x := s] : G[\overline{\alpha := \tau}]}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Delta;\Phi \,|\, \Delta \vdash \pi_i(t_1,t_2) : \sigma_i}\rho = \setsem{\Delta;\Phi \,|\, \Delta \vdash t_i : \sigma_i}\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{l}
+  \setsem{\Delta;\Phi \,|\, \Delta \vdash \pi_i(t_1,t_2) : \sigma_i}\rho \\
+  = \pi_i \circ \setsem{\Delta;\Phi \,|\, \Delta \vdash (t_1,t_2) : \sigma_1 \times \sigma_2}\rho \\
+  = \pi_i \circ (\setsem{\Delta;\Phi \,|\, \Delta \vdash t_1 : \sigma_1}\rho
+    \times \setsem{\Delta;\Phi \,|\, \Delta \vdash t_2 : \sigma_2}\rho) \\
+  = \setsem{\Delta;\Phi \,|\, \Delta \vdash t_i : \sigma_i}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+$\setsem{\Gamma;\Phi \,|\, \Delta \vdash \case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} : \gamma }\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1[x := t] : \gamma }\rho$
+and
+$\setsem{\Gamma;\Phi \,|\, \Delta \vdash \case{\inr \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} : \gamma }\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_2[x := t] : \gamma }\rho$
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{cl}
+& \setsem{\Gamma;\Phi \,|\, \Delta \vdash \case{\inl \, t}{x_1 \mapsto t_1}{x_2 \mapsto t_2} : \gamma }\rho \\
+=& \eval \circ \langle
+  \curry [
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t_1 : \gamma }\rho,
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \tau \vdash t_2 : \gamma }\rho
+  ],
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \, t : \sigma + \tau }\rho
+\rangle \\
+=& \eval \circ \langle
+  \curry [
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t_1 : \gamma }\rho,
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \tau \vdash t_2 : \gamma }\rho
+  ],
+  \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma}\rho
+\rangle \\
+=& [
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t_1 : \gamma }\rho,
+    \setsem{\Gamma;\Phi \,|\, \Delta, x : \tau \vdash t_2 : \gamma }\rho
+  ] (
+    \_,
+    \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma}\rho\_
+  ) \\
+=& \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t_1 : \gamma }\rho (
+    \_,
+    \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma}\rho\_
+  ) \\
+=& \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1[x := t] : \gamma }\rho
+\end{array}
+\]
+\end{proof}
+
 {\color{blue} We will need to go back and add typing rules for
   well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
   and relational interpretations of these maps (just the actual
@@ -3145,8 +3311,8 @@ Next we will want to sanity-check our model by showing that term
 interps respect conversion rules. These are
 \begin{itemize}
 \item $\lambda x. t = \lambda y. t[x := y]$
-  \item $L_{\bm \alpha} x.t = L_{\bm \beta}y.(t[\bm \alpha := \bm
-    \beta][x := y])$
+\item $L_{\bm \alpha} x.t = L_{\bm \beta}y.(t[\bm \alpha := \bm
+  \beta][x := y])$
 \item $(\lambda x. t) s = t[x := s]$  
 \item $(L_{\bm \alpha} x.t)_{\bm \tau} s = t[\bm \alpha := \bm
   \tau][x := s]$
