@@ -3225,19 +3225,57 @@ By induction on $\Gamma;\Phi,\alpha \,|\, \Delta, x: \sigma \vdash t : \tau$
 \end{proof}
 
 \begin{lemma}[Weakening]\label{lemma:weakening}
-Let $\Gamma;\Phi \,|\, \Delta \vdash t : \tau$ be a term
-and $\Gamma;\Phi \,|\, \Delta \vdash \sigma$ be a type.
-Then,
+Weakening is supported by the following facts:
+\begin{itemize}
+\item Let $\Gamma;\emptyset \vdash \sigma : \T$ be a type.
+Then, $\Gamma,v;\emptyset \vdash \sigma : \T$ is well-typed,
+and for any set environment $\rho$ we have that
+\[
+\setsem{\Gamma,v;\emptyset \vdash \sigma}\rho
+= \setsem{\Gamma;\emptyset \vdash \sigma}\rho
+\]
+and for any relation environment $\rho$ we have that
+\[
+\relsem{\Gamma,v;\emptyset \vdash \sigma}\rho
+= \relsem{\Gamma;\emptyset \vdash \sigma}\rho
+\]
+\item Let $\Gamma;\Phi \vdash \sigma : \F$ be a type.
+Then, $\Gamma;\Phi,\alpha \vdash \sigma : \F$ is well-typed,
+and for any set environment $\rho$ we have that
+\[
+\setsem{\Gamma;\Phi,\alpha \vdash \sigma}\rho
+= \setsem{\Gamma;\Phi \vdash \sigma}\rho
+\]
+and for any relation environment $\rho$ we have that
+\[
+\relsem{\Gamma;\Phi,\alpha \vdash \sigma}\rho
+= \relsem{\Gamma;\Phi \vdash \sigma}\rho
+\]
+\item Let $\Gamma;\Phi \,|\, \Delta \vdash t : \tau$ be a term
+and $\Gamma;\Phi \vdash \sigma$ be a type.
+Then, $\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau$ is well-formed,
+and for any set environment $\rho$ we have that
 \[
   \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
   = \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho \pi_{\Delta}
 \]
 where $\pi_{\Delta}$ is the projection
-$\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to \setsem{\Gamma;\Phi \vdash \Delta}$.
+$\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to \setsem{\Gamma;\Phi \vdash \Delta}$,
+and for any relation environment $\rho$ we have that
+\[
+  \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
+  = \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho \pi_{\Delta}
+\]
+where $\pi_{\Delta}$ is the projection
+$\relsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to \relsem{\Gamma;\Phi \vdash \Delta}$.
+\end{itemize}
 \end{lemma}
 \begin{proof}
 {\color{red} Do we need a proof for this?}
 \end{proof}
+
+{\color{red} All of the following lemmas are stated and proved for set semantics,
+but they hold for relational semantics just as well.}
 
 \begin{lemma}\label{lemma:subst-variable}
 Let $\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau$
@@ -3443,6 +3481,140 @@ We have that
 \]
 where the last equality is by Lemma~\ref{lemma:subst-term-in-term}.
 \end{proof}
+
+\begin{lemma}
+Let
+\begin{gather*}
+\Gamma;\Phi \,|\, \Delta \vdash t_1 : \sigma \to \gamma \\
+\Gamma;\Phi \,|\, \Delta \vdash t_2 : \sigma \to \gamma \\
+\Gamma;\Phi \,|\, \Delta \vdash s_1 : \sigma \\
+\Gamma;\Phi \,|\, \Delta \vdash s_2 : \sigma
+\end{gather*}
+be terms such that, for any set environment $\rho$,
+\[
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1 : \sigma \to \gamma}\rho
+ = \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_2 : \sigma \to \gamma}\rho
+\]
+and
+\[
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_1 : \sigma}\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s_2 : \sigma}\rho
+\]
+Then, for any set environment $\rho$ we have that
+$\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1s_1 : \gamma}\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_2s_2 : \gamma}\rho$
+\end{lemma}
+\begin{proof}
+We have that
+\[
+\begin{array}{rcl}
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1s_1 : \gamma}\rho
+& = & \eval \langle \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_1 : \sigma \to \gamma}\rho,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_1 : \sigma}\rho \rangle \\
+& = & \eval \langle \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_2 : \sigma \to \gamma}\rho,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_2 : \sigma}\rho \rangle \\
+& = & \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_2s_2 : \gamma}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+Let $\Gamma;\Phi\vdash\tau$ be a type and
+\begin{gather*}
+\Gamma;\emptyset \,|\, \Delta \vdash t_1 : \Nat^{\overline{\alpha}} F G \\
+\Gamma;\emptyset \,|\, \Delta \vdash t_2 : \Nat^{\overline{\alpha}} F G \\
+\Gamma;\Phi \,|\, \Delta \vdash s_1 : F[\overline{\alpha := \tau}] \\
+\Gamma;\Phi \,|\, \Delta \vdash s_2 : F[\overline{\alpha := \tau}]
+\end{gather*}
+be terms such that, for any set environment $\rho$,
+\[
+\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t_1 : \Nat^{\overline{\alpha}} F G }\rho
+ = \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t_2 : \Nat^{\overline{\alpha}} F G }\rho
+\]
+and
+\[
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_1 : F[\overline{\alpha := \tau}]}\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s_2 : F[\overline{\alpha := \tau}]}\rho
+\]
+Then, for any set environment $\rho$ we have that
+\[
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash {(t_1)}_{\tau}s_1 : G[\overline{\alpha := \tau}]}\rho
+= \setsem{\Gamma;\Phi \,|\, \Delta \vdash {(t_2)}_{\tau}s_2 : G[\overline{\alpha := \tau}]}\rho
+\]
+\end{lemma}
+\begin{proof}
+We have that
+\[
+\begin{array}{cl}
+  & \setsem{\Gamma;\Phi \,|\, \Delta \vdash {(t_1)}_{\tau}s_1 : G[\overline{\alpha := \tau}]}\rho \\
+= & \eval \langle (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t_1 : \Nat^{\overline{\alpha}} F G}\rho\_)_{\overline{\setsem{\Gamma;\Phi\vdash\tau}\rho}},
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_1 : F[\overline{\alpha := \tau}]}\rho \rangle \\
+= & \eval \langle (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t_2 : \Nat^{\overline{\alpha}} F G}\rho\_)_{\overline{\setsem{\Gamma;\Phi\vdash\tau}\rho}},
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s_2 : F[\overline{\alpha := \tau}]}\rho \rangle \\
+= & \setsem{\Gamma;\Phi \,|\, \Delta \vdash {(t_2)}_{\tau}s_2 : G[\overline{\alpha := \tau}]}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+Let
+\begin{gather*}
+\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_1 : \tau \\
+\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_2 : \tau
+\end{gather*}
+be terms such that, for any set environment $\rho$,
+\[
+\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_1 : \tau}\rho
+ = \setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_2 : \tau}\rho
+\]
+Then, for any set environment $\rho$ we have that
+\[
+\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x. t_1 : \sigma \to \tau}\rho
+= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x. t_1 : \sigma \to \tau}\rho
+\]
+\end{lemma}
+\begin{proof}
+We have that
+\[
+\begin{array}{rcl}
+  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x. t_1 : \sigma \to \tau}\rho
+  & = & \curry (\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_1 : \tau}\rho) \\
+  & = & \curry (\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t_2 : \tau}\rho) \\
+  & = & \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x. t_2 : \sigma \to \tau}\rho
+\end{array}
+\]
+\end{proof}
+
+\begin{lemma}
+Let
+\begin{gather*}
+\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_1 : G \\
+\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_2 : G
+\end{gather*}
+be terms such that, for any set environment $\rho$,
+\[
+\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_1 : G}\rho
+ = \setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_2 : G}\rho
+\]
+Then, for any set environment $\rho$ we have that
+\[
+\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. t_1 : \Nat^{\overline{\alpha}} F G}\rho
+= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. t_2 : \Nat^{\overline{\alpha}} F G}\rho
+\]
+\end{lemma}
+\begin{proof}
+We have that
+\[
+\begin{array}{rcl}
+  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. t_1 : \Nat^{\overline{\alpha}} F G}\rho
+  & = & \curry (\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_1 : G}\rho[\overline{\alpha := \_}]) \\
+  & = & \curry (\setsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t_2 : G}\rho[\overline{\alpha := \_}]) \\
+  & = & \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. t_2 : \Nat^{\overline{\alpha}} F G}\rho
+\end{array}
+\]
+\end{proof}
+
+{\color{red} There might be more congruence lemmas (one for each term introduction/elimination rule)}
 
 {\color{blue} We will need to go back and add typing rules for
   well-formed terms involving $\map^\F$ and $\map^\T$ in Def 5, set
