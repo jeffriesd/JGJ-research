@@ -2658,6 +2658,206 @@ so that
 \end{split}\]
 \end{itemize}
 
+\item We now consider $\Gamma;\Phi \,|\, \Delta \vdash t_{\overline
+  \tau} s: G [\overline{\alpha := \tau}]$.
+\begin{itemize}
+\item To see that $\setsem{\Gamma;\Phi \,|\, \Delta \vdash
+  t_{\overline \tau} s: G [\overline{\alpha := \tau}]}$ is a natural
+  transformation from $\setsem{\Gamma; \Phi \vdash \Delta}$ to
+  $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}$ we need
+  to show that, for every $\rho : \setenv$, $\setsem{\Gamma;\Phi \,|\,
+    \Delta \vdash t_{\overline \tau} s: G [\overline{\alpha :=
+        \tau}]}\rho$ is a morphism from $\setsem{\Gamma; \Phi \vdash
+    \Delta}\rho$ to $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha :=
+        \tau}]}\rho$, and that these this family of morphisms is
+  natural in $\rho$. Let $\rho : \setenv$ and $d : \setsem{\Gamma;
+    \Phi \vdash \Delta}\rho$. Then
+\[\begin{array}{ll}
+  & \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline \tau} s: G
+  [\overline{\alpha := \tau}]}\,\rho\,d\\
+= & (\eval \circ \langle (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho}},\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}\rho \rangle)\,d\\
+= & \eval ((\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho}} \,d,\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}\rho\, d)\\
+= & \eval ((\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+d)_{\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho}},\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}\rho\, d)\\
+\end{array}\]
+By the induction hypothesis, $(\setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+d)_{\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho}}$ has type
+\[\setsem{\Gamma;
+  \ol{\alpha} \vdash F}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
+      \tau}\rho}] \to \setsem{\Gamma; \ol{\alpha} \vdash
+  G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}]\]
+\noindent
+and $\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}\rho\, d$ has type
+\[\begin{array}{ll}
+  & \setsem{\Gamma; \Phi \vdash F[\ol{\alpha := \tau}]}\rho\\
+= & \setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash \tau}\rho}]\\
+= & \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash \tau}\rho}]
+\end{array}\]
+by Equation~\ref{eq:subs-var}, and by {\color{red} weakening} in the
+last step, since the type $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}}
+F\,G$ is only well-formed if $\Gamma; \ol{\alpha} \vdash F : \F$ and
+$\Gamma; \ol{\alpha} \vdash G : \F$. Thus, $\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline \tau} s: G [\overline{\alpha :=
+      \tau}]}\,\rho\,d$ has type $\setsem{\Gamma; \ol{\alpha} \vdash
+  G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}] =
+\setsem{\Gamma; \Phi \vdash G[\ol{\alpha := \tau}]}\rho$, as desired.
+
+\vspace*{0.1in}
+
+To see that the family of maps comprising $\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline \tau} s: G [\overline{\alpha := \tau}]}$
+form a natural transformation, i.e., are natural in their relation
+environment argument, we need to show that the following diagram commutes: 
+\[\begin{tikzcd}
+\setsem{\Gamma;\Phi \vdash \Delta}\rho \ar[r, "{\setsem{\Gamma;\Phi
+      \vdash \Delta}f}"] \ar[d, "{\langle \setsem{\Gamma;\emptyset
+      \,|\, \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho,
+    \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+          \tau}]}\rho \rangle}"'] & \setsem{\Gamma;\Phi \vdash
+  \Delta}\rho' \ar[d, "{\langle \setsem{\Gamma;\emptyset \,|\,
+      \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho',
+    \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+          \tau}]}\rho' \rangle}"]\\
+\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho
+\times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} \times
+    \id)}"']
+\ar[r, bend left = 5, "{\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}f
+\times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f}"]
+& \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho'
+\times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho'
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}} \times
+    \id)}"]
+\\
+  %(\setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha :=
+%    \setsem{\Gamma;\Phi\vdash\tau}\rho}] \to
+%%\setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha :=
+%    \setsem{\Gamma;\Phi\vdash\tau}\rho}]) \times \setsem{\Gamma;\Phi
+%       \vdash F [\overline{\alpha := \tau}]}\rho \ar[d, equal] \\
+%(\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho \to
+%\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho) \times
+%\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho \ar[d,
+%  "{\eval}"]\\
+%
+\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho
+\ar[r, "{\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f}"']
+&
+\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho'
+\end{tikzcd}\]
+The top diagram commutes because the induction hypothesis ensures that
+$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}$ and $\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash s: F [\overline{\alpha := \tau}]}$ are natural in
+$\rho$. To see that the bottom diagram commutes, we must prove that,
+for every $\phi \in \setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$ and $x \in
+\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho$, we
+have
+\[\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f
+  (\phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} x) =
+\phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}}
+(\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f x)\] i.e.,
+for every $\phi \in \setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$,
+\[\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f
+ \circ \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} =
+ \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}} \circ
+ \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f\] But this
+ follows from the naturality of $\phi$. Indeed, $\phi \in
+ \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F
+   \,G}\rho$ implies that $\phi$ is a natural transformation from
+ $\setsem{\Gamma; \overline{\alpha} \vdash F}\rho[\overline{\alpha :=
+     \_}]$ to $\setsem{\Gamma; \overline{\alpha} \vdash
+   G}\rho[\overline{\alpha := \_}]$.
+For each $\tau$, consider the morphism $\setsem{\Gamma;\Phi \vdash
+  \tau}f : \setsem{\Gamma;\Phi \vdash \tau}\rho \to
+\setsem{\Gamma;\Phi \vdash \tau}\rho'$. The following diagram commutes
+by naturality of $\phi$:
+\[\begin{tikzcd}
+\setsem{\Gamma;\Phi \vdash F[\ol{\alpha := \tau}]}\rho \ar[d, equal] &
+\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}\rho \ar[d,
+  equal]\\
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash \tau}\rho}] \ar[r,
+  "{\;\;\;\phi_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}}\;\;\; }"]
+\ar[d, "{\setsem{\Gamma; \ol{\alpha} \vdash F}\id_\rho[\ol{\alpha := 
+        \setsem{\Gamma;\Phi \vdash \tau}f}]}"]
+& \setsem{\Gamma;
+  \ol{\alpha} \vdash G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
+      \tau}\rho}]
+\ar[d, "{\setsem{\Gamma; \ol{\alpha} \vdash G}\id_\rho[\ol{\alpha := 
+        \setsem{\Gamma;\Phi \vdash \tau}f}]}"]\\
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash \tau}\rho'}] \ar[r,
+  "{\phi_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}} }"]
+& \setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash \tau}\rho'}]
+\end{tikzcd}\]
+That is, $\setsem{\Gamma;\ol{\alpha} \vdash G}\id_\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi\vdash \tau}f}] \,\circ\,
+\phi_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}} =
+\phi_{\setsem{\Gamma;\Phi \vdash \tau}\rho'} \,\circ\,
+\setsem{\Gamma;\ol{\alpha} \vdash F}\id_\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi\vdash \tau}f}]$.  But since the only variables
+in the functorial contexts for $F$ and $G$ are $\ol{\alpha}$, we have
+that $\setsem{\Gamma;\Phi \vdash F}\id_\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi\vdash \tau}f}] = \setsem{\Gamma;\Phi \vdash
+  F}f[\ol{\alpha := \setsem{\Gamma;\Phi\vdash \tau}f}] =
+\setsem{\Gamma;\Phi \vdash F[\ol{\alpha := \tau}]}f$, and similarly
+for $G$.  Commutativity of this last diagram thus gives that
+$\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
+\phi_{\setsem{\Gamma;\Phi \vdash \tau}\rho} =
+\phi_{\setsem{\Gamma;\Phi \vdash \tau}\rho'} \,\circ\,
+\setsem{\Gamma;\Phi \vdash F[\ol{\alpha := \tau}]}f$, as desired.
+
+\item The proof that the relational interpretation of the same term is
+  a natural transformation of the right type is analogous.
+\item Finally, to see that $\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
+  \vdash t_{\bf \tau} s: G [\overline{\alpha := \tau}]}\rho) =
+  \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s: G
+    [\overline{\alpha := \tau}]}(\pi_i\rho)$ we compute
+\[\begin{array}{ll}
+  & \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s: G
+  [\overline{\alpha := \tau}]}\rho)\\
+= & \pi_i( \eval \circ \langle (\relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\relsem{\Gamma;\Phi \vdash \tau}\rho}},
+\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}\rho \rangle)\\
+= & \eval \circ \langle \pi_i((\relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\relsem{\Gamma;\Phi \vdash \tau}\rho}}),
+\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha
+      := \tau}]}\rho) \rangle\\
+= & \eval \circ \langle \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\pi_i(\relsem{\Gamma;\Phi \vdash \tau}\rho)}},
+\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha
+      := \tau}]}\rho) \rangle\\
+= & \eval \circ \langle (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  t : \Nat^{\overline{\alpha}} \,F \,G}(\pi_i\rho)\;
+\_)_{\overline{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}},
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      \tau}]}(\pi_i\rho) \rangle\\
+= & \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s: G
+  [\overline{\alpha := \tau}]}(\pi_i\rho)
+\end{array}\]
+\end{itemize}
 \item We now consider $\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
   \phi.\lambda {\overline \alpha}.H){\overline \tau}$.
 \begin{itemize}
@@ -2913,363 +3113,60 @@ $\overline{R : \rel(A, B)}$ and let $(u,v) \in \relsem{\Gamma;
   \ol{\alpha} \vdash (\mu \phi. \lambda
   \ol{\beta}.H)\ol{\alpha}}\Eq_\rho[\ol{\alpha := R}]$. If 
 
+{\color{red} FINISH extra condition!}
 
+{\color{blue}
+To Do:
+\begin{itemize}
+\item show set interp is natural in $\rho$
+\item show relational interp has right type and is natural
+\end{itemize}}
 
-
+\item Finally, to see that
+\[\begin{array}{ll}
+  &  \pi_i(\relsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
+  \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho)\\
+= & \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
+    \Nat^{\overline \alpha}\,((\mu \phi.\lambda \overline
+    \beta.H)\overline \alpha)\,F}(\pi_i\rho)
+\end{array}\]
+we compute
+\[\begin{array}{ll}
+  & \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+  : \Nat^{\overline \alpha}\,((\mu \phi.\lambda \overline
+  \beta.H)\overline \alpha)\,F}\rho)\\
+= & \pi_i(\mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta :=
+      \alpha}])\,F}\rho)\\
+= & \mathit{fold} \circ \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta :=
+      \alpha}])\,F}\rho)\\
+= & \mathit{fold} \circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t
+  : \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta :=
+      \alpha}])\,F}(\pi_i\rho)\\
+= &\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
+  \Nat^{\overline \alpha}\,((\mu \phi.\lambda \overline
+  \beta.H)\overline \alpha)\,F}(\pi_i\rho) 
+\end{array}\]
 \end{itemize}  
-
 \end{itemize}
 \end{proof}
-
-
-
 
 \vspace*{1in}
 
-{\color{red} OMIT eventually}
 
-
-\begin{proof}
-\begin{itemize}
-\item 
-
-$\eta \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho$.
-  For all $\overline{R : \set(A, B)}$, we have that
-  $\eta_{\overline R}$ is a morphism in $\set$.
-  Then $(\textit{fold}\ \eta)_{\overline R} = \textit{fold}\ \eta_{\overline R}$ is too,
-  meaning that $\textit{fold}\ \eta$ belongs to
-  $\setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
-
-  Naturality of $\textit{fold}$ follows from the fact that,
-  because of the assumption $\Gamma;\phi,\overline{\beta} \vdash H$,
-  we have that $T_{\rho} = T_{\rho'}$ and $T_f = \Id$
-  for every morphism of environments $f:\rho\to\rho'$.
-  Then, $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}$
-  is natural.
-\item To define $\setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline \tau} s:
-  G [\overline{\alpha := \tau}]}\rho$
-  we need Lemma~\ref{lemma:substitution} to show that
-  \begin{multline}
-  (\setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
-    \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}])
-    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho \\
-  =
-  (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-    \to \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho)
-    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-  \end{multline}
-  Then, using this fact in the third step below, we define it as
-  \[
-  \begin{tikzcd}
-  \setsem{\Gamma;\Phi \vdash \Delta}\rho
-    \ar[d, "{\langle \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-      \Nat^{\overline{\alpha}} \,F \,G}\rho,
-      \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle}"]\\
-  \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-    \ar[d, "{\eval_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} \times \Id}"]\\
-  (\setsem{\Gamma;\overline{\alpha} \vdash F}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}]
-  \to \setsem{\Gamma;\overline{\alpha} \vdash G}\rho[\overline{\alpha := \setsem{\Gamma;\Phi\vdash\tau}\rho}])
-  \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-    \ar[d, equal] \\
-  (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-    \to \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho)
-    \times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho
-      \ar[d, "{\eval}"]\\
- \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}\rho
-  \end{tikzcd}
-  \]
-
-  Naturality entails that, for every
-  $f : \rho \to \rho'$ morphism of environments,
-  $\phi \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho$
-  and $x \in \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho$,
-  we have
-  \[
-  \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f (\phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} x)
-  =
-  \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}} (\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f x)
-  \]
-  which, abstracting over $x$ and using Lemma~\ref{lemma:substitution},
-  is equivalent to
-  \[
-  \setsem{\Gamma;\Phi,\overline{\alpha} \vdash G}f[\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}f}]
-    \circ \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}}
-  =
-  \phi_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}}
-    \circ \setsem{\Gamma;\Phi,\overline{\alpha} \vdash F}f[\overline{\alpha := \setsem{\Gamma;\Phi \vdash \tau}f}]
-  \]
-  which is true by naturality of $\phi$ applied to the morphism $\overline{\setsem{\Gamma;\Phi \vdash \tau}f}$.
-
-  We proceed analogously to define the relational interpretation of the same term.\qedhere
-\end{itemize}
-\end{proof}
-
-%\subsection{The Abstraction Theorem}\label{sec:thms} 
-
-Since the Abstraction Theorem is a special case of soundness of the
-interpretation, it follows from Lemma~\ref{lem:soundness}. Indeed, we
-first observe that, by Lemma~\ref{lem:rel-transf-morph},
-$(\setsem{\Gamma; \Phi \vdash \Delta},\setsem{\Gamma; \Phi \vdash
-  \Delta},\relsem{\Gamma; \Phi \vdash \Delta})$ is a functor from
-$\relenv$ to $RT_0$, which we denote by $\sem{\Gamma; \Phi \vdash
-  \Delta}$. We then have:
-
-\begin{thm}\label{thm:at}
-Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$ induces
-a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
-$\sem{\Gamma; \Phi \vdash \tau}$, i.e., a triple of natural
-transformations 
-\[(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
-\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
-\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau})\] such that, for all
-$\rho : \relenv$,
-\[\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho =
-(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_1 \rho),
-\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_2 \rho))\]
-\end{thm}
-\begin{proof}
-We proceed by induction on the judgement
-$\Gamma;\Phi~|~\Delta \vdash t : \tau$, proving that
-\[
-\pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho)
-= \setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_i\rho)
-\]
-for $i = 1, 2$.
-We will use Definitions~\ref{def:set-interp} and~\ref{def:rel-interp}, together
-with the facts that the cartesian structure of $\rel$ is derived from
-that of $\set$ and that initial algebras in $\rel$ are computed in
-terms of initial algebras in $\set$.
-\begin{itemize}
-\item for $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho) \\
-    &= \pi_i(
-      \pi_{|\Delta|+1}: \relsem{\Gamma;\emptyset \vdash \Delta}\rho
-      \times \relsem{\Gamma;\emptyset \vdash \tau}\rho
-      \to \relsem{\Gamma;\emptyset \vdash \tau}\rho
-    ) \\
-    &= \pi_{|\Delta|+1}: \pi_i(\relsem{\Gamma;\emptyset \vdash \Delta}\rho)
-      \times \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho)
-      \to \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho) \\
-    &= \pi_{|\Delta|+1}: \setsem{\Gamma;\emptyset \vdash \Delta}(\pi_i\rho)
-      \times \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho)
-      \to \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho) \\
-    &= \setsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} (\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho) \\
-    &= \pi_i(\curry (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
-    &= \curry(\pi_i (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
-    &= \curry(\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}(\pi_i \rho)) \\
-    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}(\pi_i \rho)
-  \end{split}
-  \]
-\item for $\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho) \\
-    &= \pi_i(\eval \circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
-    \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho) \\
-    &= \eval \circ \langle
-       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}\rho),
-       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho)
-     \rangle \\
-    &= \eval \circ \langle
-       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}(\pi_i\rho),
-       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}(\pi_i\rho)
-     \rangle \\
-    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} (\pi_i \rho)
-  \end{split}
-  \]
-\item for $\Gamma;\emptyset \,|\, \Delta \vdash
-  L_{\overline \alpha} x.t: \Nat^{\overline\alpha} \,F \,G$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
-      : \Nat^{\overline\alpha} \,F \,G}\rho) \\
-    &= \pi_i(\curry (\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
-      \rho[\overline{\alpha := \_}])) \\
-    &= \curry (\pi_i(\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
-      \rho[\overline{\alpha := \_}])) \\
-    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
-      (\pi_i(\rho[\overline{\alpha := \_}]))) \\
-    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
-      (\pi_i\rho)[\overline{\alpha := \_}]) \\
-    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
-      : \Nat^{\overline\alpha} \,F \,G}(\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash
-  t_{\bf \tau} s: G [\overline{\alpha := \tau}]$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
-      G [\overline{\alpha := \tau}]}\rho) \\
-    &= \pi_i( \eval \circ \langle
-        (\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
-          \vdash \tau}\rho}},
-        \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho
-      \rangle) \\ 
-    &= \eval \circ \langle
-        \pi_i((\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
-          \vdash \tau}\rho}}),
-        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
-      \rangle \\ 
-    &= \eval \circ \langle
-        (\pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-          \Nat^{\overline{\alpha}} \,F \,G}\rho)\; \_)_{\overline{\pi_i(\relsem{\Gamma;\Phi
-          \vdash \tau}\rho)}},
-        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
-      \rangle \\ 
-    &= \eval \circ \langle
-        (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-          \Nat^{\overline{\alpha}} \,F \,G}(\pi_i\rho)\; \_)_{\overline{\setsem{\Gamma;\Phi
-          \vdash \tau}(\pi_i\rho)}},
-        \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}(\pi_i\rho)
-      \rangle \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
-      G [\overline{\alpha := \tau}]}(\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$ is analogous to
-  $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$.
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$ we have
-  \[
-  \begin{split}
-    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho)
-    &= \pi_i(!^0_{\relsem{\Gamma;\Phi \vdash \tau}\rho}
-      \circ \relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
-    &= !^0_{\pi_i(\relsem{\Gamma;\Phi \vdash \tau}\rho)}
-      \circ \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
-    &= !^0_{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}
-      \circ \setsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}(\pi_i\rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau}(\pi_i\rho) 
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$ is analogous to
-  $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$
-\item for $\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau$ we have
-  \[
-  \begin{split}
-    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} \rho)
-    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho
-      \times \relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
-    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho)
-      \times \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} (\pi_i\rho)
-      \times \setsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} (\pi_i\rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} (\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$ we have
-  \[
-  \begin{split}
-    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} \rho)
-    &= \pi_i(\pi_1 \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
-    &= \pi_1 \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
-    &= \pi_1 \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}(\pi_i\rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} (\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma$
-  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$.
-\item for $\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}\rho) \\
-    &= \pi_i(\eval \circ \langle
-        \curry \,[
-          \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho,
-          \relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho
-        ],
-        \relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho
-      \rangle) \\
-    &= \eval \circ \langle
-        \curry \,[
-          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho),
-          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho)
-        ],
-        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho)
-      \rangle \\
-    &= \eval \circ \langle
-        \curry \,[
-          \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}(\pi_i\rho),
-          \setsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}(\pi_i\rho)
-        ],
-        \setsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau}(\pi_i\rho)
-      \rangle \\
-    &= \setsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}(\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau$ we have
-  \[
-  \begin{split}
-    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} \rho)
-    &=\pi_i(\inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
-    &=\inl \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
-    &=\inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}(\pi_i\rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} (\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau$
-  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \inl \,t: \sigma + \tau$.
-\item for $\Gamma;\Phi \,|\, \Delta
-      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
-      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho) \\
-    &= \pi_i(\mathit{in} \circ
-      \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
-      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
-    &= \mathit{in} \circ
-      \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
-      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
-    &= \mathit{in} \circ
-      \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
-      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} (\pi_i\rho) \\
-    &= \setsem{\Gamma;\Phi \,|\, \Delta
-      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
-  \end{split}
-  \]
-\item for $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
-  : \Nat^{\overline \alpha}\, ((\mu\phi.\lambda \overline \beta.H)\overline \alpha)\,F$ we have
-  \[
-  \begin{split}
-    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
-      \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
-      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho) \\
-    &= \pi_i(\mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
-    &= \mathit{fold} \circ \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
-    &= \mathit{fold} \circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}(\pi_i\rho) \\
-    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
-      \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
-      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}(\pi_i\rho) \qedhere
-  \end{split}
-  \]
-\end{itemize}
-\end{proof}
-
-We now show that the interpretation given in
-Sections~\ref{sec:set-interp},~\ref{sec:rel-interp},
-and~\ref{sec:term-interp} define a logical relation. Indeed, the
-Abstraction Theorem is the special case of Theorem~\ref{thm:at} for
-closed terms.
+The Abstraction Theorem is now the special case of
+Theorem~\ref{thm:at-gen} for closed terms of close type:
 
 \begin{thm}\label{thm:abstraction}
-If $\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{t :
-  \tau},\setsem{t : \tau}) \in \relsem{\tau}$.
+If $\,\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{\vdash t
+  : \tau},\setsem{\vdash t : \tau}) \in \relsem{\vdash \tau}$.
 \end{thm}
+
+\pagebreak
+
+
 
 \begin{dfn}
 % Substitution of a type in a term, in place of a 0-ary type constructor variable.
@@ -4862,3 +4759,250 @@ The fourth equality is by~\ref{eq:rel-transf-T-limit},
 \end{itemize}
 \end{proof}
 
+
+
+
+\begin{thm}\label{thm:at}
+Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$ induces
+a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
+$\sem{\Gamma; \Phi \vdash \tau}$, i.e., a triple of natural
+transformations 
+\[(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
+\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
+\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau})\] such that, for all
+$\rho : \relenv$,
+\[\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho =
+(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_1 \rho),
+\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_2 \rho))\]
+\end{thm}
+\begin{proof}
+We proceed by induction on the judgement
+$\Gamma;\Phi~|~\Delta \vdash t : \tau$, proving that
+\[
+\pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho)
+= \setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_i\rho)
+\]
+for $i = 1, 2$.
+We will use Definitions~\ref{def:set-interp} and~\ref{def:rel-interp}, together
+with the facts that the cartesian structure of $\rel$ is derived from
+that of $\set$ and that initial algebras in $\rel$ are computed in
+terms of initial algebras in $\set$.
+\begin{itemize}
+\item for $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho) \\
+    &= \pi_i(
+      \pi_{|\Delta|+1}: \relsem{\Gamma;\emptyset \vdash \Delta}\rho
+      \times \relsem{\Gamma;\emptyset \vdash \tau}\rho
+      \to \relsem{\Gamma;\emptyset \vdash \tau}\rho
+    ) \\
+    &= \pi_{|\Delta|+1}: \pi_i(\relsem{\Gamma;\emptyset \vdash \Delta}\rho)
+      \times \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho)
+      \to \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho) \\
+    &= \pi_{|\Delta|+1}: \setsem{\Gamma;\emptyset \vdash \Delta}(\pi_i\rho)
+      \times \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho)
+      \to \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho) \\
+    &= \pi_i(\curry (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
+    &= \curry(\pi_i (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
+    &= \curry(\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}(\pi_i \rho)) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}(\pi_i \rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho) \\
+    &= \pi_i(\eval \circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
+    \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho) \\
+    &= \eval \circ \langle
+       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}\rho),
+       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho)
+     \rangle \\
+    &= \eval \circ \langle
+       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}(\pi_i\rho),
+       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}(\pi_i\rho)
+     \rangle \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} (\pi_i \rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash
+  L_{\overline \alpha} x.t: \Nat^{\overline\alpha} \,F \,G$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
+      : \Nat^{\overline\alpha} \,F \,G}\rho) \\
+    &= \pi_i(\curry (\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      \rho[\overline{\alpha := \_}])) \\
+    &= \curry (\pi_i(\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      \rho[\overline{\alpha := \_}])) \\
+    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      (\pi_i(\rho[\overline{\alpha := \_}]))) \\
+    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      (\pi_i\rho)[\overline{\alpha := \_}]) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
+      : \Nat^{\overline\alpha} \,F \,G}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash
+  t_{\bf \tau} s: G [\overline{\alpha := \tau}]$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+      G [\overline{\alpha := \tau}]}\rho) \\
+    &= \pi_i( \eval \circ \langle
+        (\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
+          \vdash \tau}\rho}},
+        \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho
+      \rangle) \\ 
+    &= \eval \circ \langle
+        \pi_i((\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
+          \vdash \tau}\rho}}),
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
+      \rangle \\ 
+    &= \eval \circ \langle
+        (\pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho)\; \_)_{\overline{\pi_i(\relsem{\Gamma;\Phi
+          \vdash \tau}\rho)}},
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
+      \rangle \\ 
+    &= \eval \circ \langle
+        (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}(\pi_i\rho)\; \_)_{\overline{\setsem{\Gamma;\Phi
+          \vdash \tau}(\pi_i\rho)}},
+        \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}(\pi_i\rho)
+      \rangle \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+      G [\overline{\alpha := \tau}]}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$ is analogous to
+  $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$.
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho)
+    &= \pi_i(!^0_{\relsem{\Gamma;\Phi \vdash \tau}\rho}
+      \circ \relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
+    &= !^0_{\pi_i(\relsem{\Gamma;\Phi \vdash \tau}\rho)}
+      \circ \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
+    &= !^0_{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}
+      \circ \setsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau}(\pi_i\rho) 
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$ is analogous to
+  $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$
+\item for $\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} \rho)
+    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho
+      \times \relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
+    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho)
+      \times \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} (\pi_i\rho)
+      \times \setsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} (\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} \rho)
+    &= \pi_i(\pi_1 \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
+    &= \pi_1 \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
+    &= \pi_1 \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma$
+  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$.
+\item for $\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}\rho) \\
+    &= \pi_i(\eval \circ \langle
+        \curry \,[
+          \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho,
+          \relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho
+        ],
+        \relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho
+      \rangle) \\
+    &= \eval \circ \langle
+        \curry \,[
+          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho),
+          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho)
+        ],
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho)
+      \rangle \\
+    &= \eval \circ \langle
+        \curry \,[
+          \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}(\pi_i\rho),
+          \setsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}(\pi_i\rho)
+        ],
+        \setsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau}(\pi_i\rho)
+      \rangle \\
+    &= \setsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} \rho)
+    &=\pi_i(\inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
+    &=\inl \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
+    &=\inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau$
+  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \inl \,t: \sigma + \tau$.
+\item for $\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho) \\
+    &= \pi_i(\mathit{in} \circ
+      \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
+    &= \mathit{in} \circ
+      \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
+    &= \mathit{in} \circ
+      \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} (\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+  : \Nat^{\overline \alpha}\, ((\mu\phi.\lambda \overline \beta.H)\overline \alpha)\,F$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+      \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
+      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho) \\
+    &= \pi_i(\mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
+    &= \mathit{fold} \circ \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
+    &= \mathit{fold} \circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+      \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
+      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}(\pi_i\rho) \qedhere
+  \end{split}
+  \]
+\end{itemize}
+\end{proof}
