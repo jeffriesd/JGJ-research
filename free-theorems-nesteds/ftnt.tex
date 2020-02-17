@@ -1,4 +1,4 @@
-%% For double-blind review submission, w/o CCS and ACM Reference (max submission space)
+% For double-blind review submission, w/o CCS and ACM Reference (max submission space)
 \documentclass[acmsmall,review,anonymous]{acmart}
 \settopmatter{printfolios=true,printccs=false,printacmref=false}
 %% For double-blind review submission, w/ CCS and ACM Reference
@@ -2763,24 +2763,18 @@ The top diagram commutes because the induction hypothesis ensures
 $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
   \Nat^{\overline{\alpha}} \,F \,G}$ and $\setsem{\Gamma;\Phi \,|\,
   \Delta \vdash s: F [\overline{\alpha := \tau}]}$ are natural in
-$\rho$. {\color{red} To see that the bottom diagram commutes, we first
-  note that since $\rho|_\Gamma = \rho'|_\Gamma$, $\Gamma; \ol{\alpha}
-  \vdash F : \F$, and $\Gamma; \ol{\alpha} \vdash G : \F$ we can
-  replace both instances of $f$ in $\setsem{\Gamma;\emptyset \vdash
-    \Nat^{\overline{\alpha}} \,F \,G}f \times \setsem{\Gamma;\Phi
-    \vdash F [\overline{\alpha := \tau}]}f$ with $\id$. Using the fact
-  that $\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F
-    \,G}$ and $\setsem{\Gamma;\Phi \vdash F [\overline{\alpha :=
-        \tau}]}$ are both functorial, we have that if $\eta \in
-  \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F
-    \,G}\rho$ and $x \in \setsem{\Gamma;\Phi \vdash F
-    [\overline{\alpha := \tau}]}\rho$, then $(\setsem{\Gamma;\emptyset
-    \vdash \Nat^{\overline{\alpha}} \,F \,G}f \times
-  \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}f) \,
-  (\eta,x) = (\eta,x)$.}  We must therefore prove that, for every
-$\eta \in \setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F
-  \,G}\rho$ and $x \in \setsem{\Gamma;\Phi \vdash F [\overline{\alpha
-      := \tau}]}\rho$, we have
+$\rho$. To see that the bottom diagram commutes, we first note that
+since $\rho|_\Gamma = \rho'|_\Gamma$, $\Gamma; \ol{\alpha} \vdash F :
+\F$, and $\Gamma; \ol{\alpha} \vdash G : \F$ we can replace the
+instance of $f$ in $\setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}f$ with $\id$. Then, using the fact
+that $\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F
+  \,G}$ is a functor, we have that $\setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\id = \id$. We must therefore prove
+that, for every $\eta \in \setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$ and $x \in
+\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := \tau}]}\rho$, we
+have
 \[\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}f
   (\eta_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho}} x) =
 \eta_{\overline{\sem{\Gamma;\Phi\vdash \tau}\rho'}}
@@ -3042,7 +3036,7 @@ natural transformation of the right type is analogous.
 
 The result follows from observing that $\setsem{\Gamma;\emptyset \,|\,
   \Delta \vdash \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu
-  \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}$ is exactly
+  \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$ is exactly
 $\mathit{fold} \circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
   \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta :=
       \alpha}])\,F}\rho$ by Definition~\ref{def:set-interp}, and that
@@ -3052,18 +3046,17 @@ the second arrow above is justified because, for every $d \in
   &  \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
       \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
           \alpha}])\,F}\rho\,d\\
-: & \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-  \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
-      \alpha}])\,F}\rho\\
+: & \setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi :=
+    F][\overline{\beta := \alpha}])\,F}\rho\\
 = & \{\eta : \setsem{\Gamma;\ol{\alpha} \vdash H[\phi :=
     F][\overline{\beta := \alpha}]}\rho[\ol{\alpha := \_}] \Rightarrow
 \setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := \_}] ~|~ ...\}\\
-= & \{\eta : T_{\rho[\ol{\alpha := \_}]}(\setsem{\Gamma; \ol{\alpha}
+= & \{\eta : T_{\rho}(\setsem{\Gamma; \ol{\alpha}
   \vdash F}\rho[\ol{\alpha := \_}]) \Rightarrow
 \setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := \_}] ~|~ ...\}
 \end{array}\]
 Here, the final equality holds because using {\color{red} weakening}
-in the third fifth, and sixth equalities below, and using
+in the third and fifth equalities below, and using
 Equations~\ref{eq:subs-var} and ~\ref{eq:subs-const} in the first and
 fourth, respectively, ensures that
 \[\begin{array}{ll}
@@ -3076,37 +3069,35 @@ fourth, respectively, ensures that
     F]}\rho[\ol{\alpha := \_}][\ol{\beta := \_}]\\
 = & \setsem{\Gamma; \ol{\beta} \vdash H[\phi :=  F]}\rho[\ol{\beta :=
     \_}]\\ 
-= & \setsem{\Gamma; \ol{\beta}, \phi \vdash H}\rho[\ol{\beta :=
-    \_}]p[\phi := \setsem{\Gamma; \ol{\beta},\ol{\alpha} \vdash
-    F}\rho[\ol{\beta := \_}][\ol{\alpha := \_}]\\
-= & \setsem{\Gamma; \ol{\beta}, \phi \vdash H}\rho[\ol{\beta :=
-    \_}][\phi := \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha
-      := \_}]]\\
-= & \setsem{\Gamma; \ol{\alpha}, \ol{\beta}, \phi \vdash H}\rho[\phi
-  := \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
-      \_}]][\ol{\beta := \_}]\\
-= & T_{\rho[\ol{\alpha := \_}]}(\setsem{\Gamma; \ol{\alpha} \vdash
-  F}\rho[\ol{\alpha := \_}])
+= & \lambda \ol{B}.\, \setsem{\Gamma; \ol{\beta}, \phi \vdash
+  H}\rho[\ol{\beta := B}][\phi := \lambda \ol{A}.\,\setsem{\Gamma;
+    \ol{\beta},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\alpha
+      := A}]]\\
+= &\lambda \ol{B}.\, \setsem{\Gamma; \ol{\beta}, \phi \vdash
+  H}\rho[\ol{\beta := B}][\phi := \lambda \ol{A}.\,\setsem{\Gamma;
+    \ol{\alpha} \vdash F}\rho[\ol{\alpha := A}]]\\
+= & T^\set_\rho \,(\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash
+  F}\rho[\ol{\alpha := A}])
 \end{array}\]
 That is, for each $d : \setsem{\Gamma;\emptyset \vdash \Delta}\rho =
 \setsem{\Gamma;\emptyset \vdash \Delta}\rho[\ol{\alpha := \_}]$
        {\color{red} by weakening}, we have that
        $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
          \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
-             \alpha}])\,F}\rho\,d$ comprises a family of natural
-       transformations, each of which is a $T^\set_{\rho[\ol{\alpha :=
-             \_}]}$-algebra with carrier $\setsem{\Gamma;\ol{\alpha}
-         \vdash F} \rho[\ol{\alpha := \_}]$. Thus, if $\eta :
-       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
-         \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
-             \alpha}])\,F}\rho\,d$ then $\mathit{fold}_{H,F}$ can
-       actually be applied to $\eta$ to get a new natural
-       transformation $\mathit{fold}\,\eta$ from $\mu
-       T_{\rho[\ol{\alpha := \_}]}$ to $\setsem{\Gamma;\ol{\alpha}
-         \vdash F}\rho[\ol{\alpha := \_}]$, i.e., from
-       $\setsem{\Gamma;\ol{\alpha} \vdash (\mu \phi.\lambda
-         \ol{\beta}.H) \ol{\alpha}}\rho[\ol{\alpha := \_}]$ to
-       $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := \_}]$.
+             \alpha}])\,F}\rho\,d$ is a natural transformation
+       that is a $T^\set_\rho$-algebra with carrier
+       $\setsem{\Gamma;\ol{\alpha} \vdash F} \rho[\ol{\alpha :=
+           \_}]$. Thus, if
+       $\eta = \setsem{\Gamma;\emptyset~|~\Delta
+          \vdash t: \Nat^{\overline\alpha}\,(H[\phi :=
+           F][\overline{\beta := \alpha}])\,F}\rho\,d$ then
+       $\mathit{fold}_{H,F}$ can actually be applied to $\eta$ to get
+       a new natural transformation $\mathit{fold}\,\eta$ from $\mu
+       T^\set_\rho$ to $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha
+           := \_}]$, i.e., from $\setsem{\Gamma;\ol{\alpha} \vdash
+         (\mu \phi.\lambda \ol{\beta}.H) \ol{\alpha}}\rho[\ol{\alpha
+           := \_}]$ to $\setsem{\Gamma;\ol{\alpha} \vdash
+         F}\rho[\ol{\alpha := \_}]$.
 
 \vspace*{0.1in}
 
@@ -3132,20 +3123,17 @@ show this, note that since $(\eta_{\ol{A}}, \eta_{\ol{B}})$ has type
   & \relsem{\Gamma;\ol{\alpha} \vdash H[\phi := F][\overline{\beta :=
       \alpha}]}\Eq_\rho[\ol{\alpha := R}] \to \relsem{\Gamma;
   \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := R}]\\
-= & T_{\Eq_\rho[\ol{\alpha := R}]}(\relsem{\Gamma; \ol{\alpha} \vdash
-  F}\Eq_\rho[\ol{\alpha := R}])\to \relsem{\Gamma; \ol{\alpha} \vdash
-  F}\Eq_\rho[\ol{\alpha := R}]
+= & T_{\Eq_\rho}\, (\relsem{\Gamma; \ol{\alpha}
+  \vdash F}\Eq_\rho[\ol{\alpha := \_}]) \,\ol{R} \to \relsem{\Gamma;
+  \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := \_}] \,\ol{R}
 \end{array}\]
-we have that $((\mathit{fold}\,\eta)_{\ol{A}},
-(\mathit{fold}\,\eta)_{\ol{B}}) = (\mathit{fold}\,\eta_{\ol{A}},
-\mathit{fold}\,\eta_{\ol{B}})$ has type
+we have that $(\mathit{fold}\, \eta)_{\ol{R}} =
+((\mathit{fold}\,\eta)_{\ol{A}}, (\mathit{fold}\,\eta)_{\ol{B}}) =
+(\mathit{fold}\,\eta_{\ol{A}}, \mathit{fold}\,\eta_{\ol{B}})$ has type
 \[\begin{array}{ll}
-& \mu T_{\Eq_\rho[\ol{\alpha := R}]} \to \relsem{\Gamma;\ol{\alpha} \vdash
+& (\mu T_{\Eq_\rho}) \,\ol{R} \to \relsem{\Gamma;\ol{\alpha} \vdash
   F}\rho[\ol{\alpha := R}]\\
-= & {\color{red} ??}\\
-= & (\mu T_{\Eq_\rho[\ol{\alpha := R}]})\ol{R} \to
-  \relsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := R}]\\
-= & (\mu T_{\Eq_\rho[\ol{\alpha := R}]})\ol{\relsem{\Gamma;\ol{\alpha}
+= & (\mu T_{\Eq_\rho})\,\ol{\relsem{\Gamma;\ol{\alpha}
   \vdash \alpha}\Eq_\rho[\ol{\alpha := R}]} \to
   \relsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := R}]\\
 = & \relsem{\Gamma; \ol{\alpha} \vdash (\mu \phi. \lambda
