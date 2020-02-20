@@ -234,20 +234,18 @@ $\omega$-cocontinuous functors from  $\C$ to $\D$.
 For each $k \ge 0$, we assume a countable set $\tvars^k$ of \emph{type
   constructor variables of arity $k$}, disjoint for distinct $k$.  We
 use lower case Greek letters for type constructor variables, and write
-$\phi^k$ to indicate that $\phi \in \tvars^k$.
-%We call $\tvars^0$ the set of {\em type variables}.
-When convenient we may write $\alpha, \beta$, etc., rather than
-$\alpha^0, \beta^0$, etc., for elements of $\tvars^0$. The set of all
-type constructor variables is $\tvars = \bigcup_{k \ge 0} \tvars^k$.
-We further assume an infinite set $\V$ of {\em type variables}
-disjoint from $\tvars$.  We write $\overline{\zeta}$ for either a set
-$\{\zeta_1,...,\zeta_n\}$ of type variables or a set of type
-constructor variables when the cardinality $n$ of the set is
-unimportant. If $\Pos$ is a set of type constructor variables then we
-write $\Pos, \overline{\phi}$ for $\Pos \cup \overline{\phi}$ when
-$\Pos \cap \overline{\phi} = \emptyset$.  We omit the boldface for a
-singleton set, thus writing $\phi$, rather than $\overline{\phi}$, for
-$\{\phi\}$.
+$\phi^k$ to indicate that $\phi \in \tvars^k$. When convenient we may
+write $\alpha, \beta$, etc., rather than $\alpha^0, \beta^0$, etc.,
+for elements of $\tvars^0$. The set of all type constructor variables
+is $\tvars = \bigcup_{k \ge 0} \tvars^k$.  We further assume an
+infinite set $\V$ of {\em type variables} disjoint from $\tvars$.  We
+write $\overline{\zeta}$ for either a set $\{\zeta_1,...,\zeta_n\}$ of
+type variables or a set of type constructor variables when the
+cardinality $n$ of the set is unimportant. If $\Pos$ is a set of type
+constructor variables then we write $\Pos, \overline{\phi}$ for $\Pos
+\cup \overline{\phi}$ when $\Pos \cap \overline{\phi} = \emptyset$.
+We omit the boldface for a singleton set, thus writing $\phi$, rather
+than $\overline{\phi}$, for $\{\phi\}$.
 
 \begin{dfn}
 Let $V$ be a finite subset of\, $\V$, and let $\Pos$ and
@@ -270,17 +268,25 @@ and
 \end{align*}
 \end{dfn}
 
-The above notation entails that an application $\tau\tau_1...\tau_k$ is
-allowed only when $\tau$ is a type constructor variable of arity $k$, or
-$\tau$ is a subexpression of the form $\mu \phi^{k}. \lambda
-\alpha_1...\alpha_k.\tau$. Moreover, if $\tau$ has arity $k$ then $\tau$
-must be applied to exactly $k$ arguments.  Accordingly, an overbar
-indicates a sequence of subexpressions whose length matches the arity
-of the functorial expression applied to it.  The fact that functorial
-expressions are always in \emph{$\eta$-long normal form} avoids having
-to consider $\beta$-conversion at the level of type constructors, and
-the fact that the standard type formers are all defined pointwise
-avoids having to relate functorial expressions at different kinds.
+The above notation entails that an application $\tau\tau_1...\tau_k$
+is allowed only when $\tau$ is a type constructor variable of arity
+$k$, or $\tau$ is a subexpression of the form $(\mu \phi^{k}. \lambda
+\alpha_1...\alpha_k.\tau) \tau_1...\tau_k$. Moreover, if $\tau$ has
+arity $k$ then $\tau$ must be applied to exactly $k$ arguments.
+Accordingly, an overbar indicates a sequence of subexpressions whose
+length matches the arity of the functorial expression applied to it.
+The fact that functorial expressions are always in \emph{$\eta$-long
+  normal form} avoids having to consider $\beta$-conversion at the
+level of type constructors, and the fact that the standard type
+formers are all defined pointwise avoids having to relate functorial
+expressions at different kinds.
+
+In a subexpression $\Nat^{\ol{\alpha}}\,\sigma\,\tau$, the $\Nat$
+operator binds all occurrences of the variables in $\ol{\alpha}$ in
+$\sigma$ and $\tau$. Similarly, in a subexpression $\mu \phi^k.\lambda
+\ol{\alpha}.\tau$, the $\mu$ operator binds all occurrences of the
+variable $\phi$, and the $\lambda$ operator binds all occurrences of
+the variables in $\ol{\alpha}$, in the body $\tau$.
 
 If $\tau \in \mcF^\Pos(V)$, if $\Pos$ contains only type constructor
 variables of arity $0$, and if $k=0$ for every occurrence of $\phi^k$
@@ -292,7 +298,7 @@ constructors, even if of arity $0$. In this case, they'd be
 substituted by type constructors of arity $0$ --- i.e., type constants
 --- such as Nat or Bool.
 
-\begin{dfn}
+\begin{dfn}\label{def:wftypes}
 Let $\Gamma$ be a {\em type context}, i.e., a finite set of type
 variables, and let $\Phi$ be a {\em type constructor context}, i.e., a
 finite set of type constructor variables. The formation rules for the
@@ -303,10 +309,6 @@ set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
 \UIC{$\Gamma,v;\emptyset \vdash v : \T$}
 \DisplayProof
 &
-\AXC{$\Gamma;\emptyset \vdash \sigma : \T$}
-\AXC{$\Gamma;\emptyset \vdash \tau : \T$}
-\BIC{$\Gamma;\emptyset \vdash \sigma \to \tau : \T$}
-\DisplayProof  
 \\
 \\
 {\color{red}
@@ -340,23 +342,16 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \AXC{\phantom{$\Gamma,\Phi$}}
 \UIC{$\Gamma;\Phi \vdash \onet : \mcF$}
 \DisplayProof
-%&
-%\AXC{$\phantom{\Gamma;\Phi \vdash \phi : \mcF}$} 
-%\UIC{$\Gamma;\Phi,\alpha^0 \vdash \alpha^0 : \mcF$}
-%\DisplayProof
-%<- subsumed\;by\;next\;rule\;
 \end{array}\]
 \[\begin{array}{c}
-\AXC{$\Gamma;\Phi \vdash \phi^k : \mcF$}
-\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}% \mbox{\,for\,} i = 1,...,k$}
-\BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau}$}%_1...\tau_k : \mcF$}
+\AXC{$\phi^k \in \Phi$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
+\BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau}$}
 \DisplayProof
 \\
 \AXC{$\Gamma;\Phi,\ol{\alpha},\phi^k \vdash \tau : \mcF$}
-\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}% \mbox{\,for\,} i = 1,...,k$}
-\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda
-  \ol{\alpha}.%^0_1...\alpha^0_k.
-  \,\tau)\ol{\tau}$}%_1...\tau_k : \mcF$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
+\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda \ol{\alpha}. \,\tau)\ol{\tau}$}
 \DisplayProof
 \end{array}\]
 \[\begin{array}{cc}
@@ -371,19 +366,24 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 \end{array}\]
 \end{dfn}
-%Note that if $\Gamma;\Phi \vdash \tau : \T$ then $\Gamma;\emptyset
-%\vdash \tau : \T$. 
 
-Our formation rules allow type constructor expressions like
-$\List\gamma = (\mu \beta. \lambda \alpha. \onet + \alpha \times
-\beta)\gamma$ either to be natural in $\gamma$ or not, according to
-whether it is well-formed in the context $\emptyset; \gamma$ or
-$\gamma;\emptyset$. If the former, then we can derive $\vdash
-\Nat^\gamma \onet (\List\gamma) : \T$. If the latter, then we
-cannot. Our formation rules also allow the derivation of, e.g.,
-$\delta; \emptyset \vdash \Nat^\gamma (\List \gamma) \, (\Tree \gamma
-\delta)$, which represents a natural transformation between lists and
-trees that is natural in $\gamma$ but not in $\delta$.
+Definition~\ref{def:wftypes} ensures that the expected weakening rules
+for well-formed type expressions and type constructor expressions
+hold.  If $\Gamma;\emptyset \vdash \sigma : \T$ and $\Gamma;\emptyset
+\vdash \tau : \T$, then our rules allow formation of the type
+expression $\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$. This
+type can can be thought of as representing the standard arrow type
+$\Gamma \vdash \sigma \to \tau$ in our calculus.  Our formation rules
+also allow type constructor expressions like $\List\gamma = (\mu
+\beta. \lambda \alpha. \onet + \alpha \times \beta)\gamma$ either to
+be natural in $\gamma$ or not, according to whether it is well-formed
+in the context $\emptyset; \gamma$ or $\gamma;\emptyset$. If the
+former, then we can derive $\vdash \Nat^\gamma \onet (\List\gamma) :
+\T$. If the latter, then we cannot. Our formation rules also allow the
+derivation of, e.g., $\delta; \emptyset \vdash \Nat^\gamma (\List
+\gamma) \, (\Tree \gamma \delta)$, which represents a natural
+transformation between lists and trees that is natural in $\gamma$ but
+not in $\delta$.
 
 Substitution for first-order type constructor expressions is the usual
 capture-avoiding textual substitution. We write $\tau[\alpha :=
@@ -393,40 +393,37 @@ $\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
   \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$.  Substitution
 for second-order type constructor expressions is given in the next
 definition.
-%We write $F[\bm \alpha]$ to indicate that $\Gamma; \Phi, \bm \alpha
-%\vdash F : \F$, i.e., that $F$ is a second-order type constructor
-%expression depending on (at least) the type constructor variables in
-%$\bm \alpha$.
 
+{\color{blue} Add subscript notation in next definition and propagate?
+  Omit when clear from context?}
 \begin{dfn}\label{def:second-order-subst}
-If \,$\Gamma; \Phi, \phi^k \vdash h[\phi] : \F$ and $\Gamma;\Phi,
-\ol{\alpha} \vdash F : \F$ with $\ol{\alpha} = \{\alpha_1,...,\alpha_k\}$
-and $k \geq 1$, then $\Gamma;\Phi \vdash h[\phi := F] : \F$, where the
-operation $(\cdot)[\phi := F]$ of {\em second-order type constructor
+If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
+\ol{\alpha} \vdash H : \F$ with $\ol{\alpha} = \{\alpha_1,...,\alpha_k\}$
+and $k \geq 1$, then $\Gamma;\Phi \vdash F[\phi := H] : \F$, where the
+operation $(\cdot)[\phi := H]$ of {\em second-order type constructor
   substitution} is defined by:
 \[\begin{array}{lll}
-\tau[\phi := F] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
-\onet[\phi := F] & = & \onet\\[0.5ex]
-\zerot[\phi := F] & = & \zerot\\[0.25ex]
-(\psi \ol{\tau})[\phi := F] & = &
+\tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
+\onet[\phi := H] & = & \onet\\[0.5ex]
+\zerot[\phi := H] & = & \zerot\\[0.25ex]
+(\psi \ol{\tau})[\phi := H] & = &
 \left\{\begin{array}{ll}
-\psi \,\ol{\tau[\phi := F]} & \mbox{if } \psi \not = \phi\\
-F[\ol{\alpha := \tau[\phi := F]}] & \mbox{if } \psi = \phi
+\psi \,\ol{\tau[\phi := H]} & \mbox{if } \psi \not = \phi\\
+H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
 \end{array}\right.\\
 \\[-0.25ex]
-(\sigma + \tau)[\phi := F] & = & \sigma[\phi := F]
-+ \tau[\phi := F]\\[0.5ex] 
-(\sigma \times \tau)[\phi := F] & = & \sigma[\phi := F] \times \tau[\phi
-  := F]\\[0.5ex]  
+(\sigma + \tau)[\phi := H] & = & \sigma[\phi := H]
++ \tau[\phi := H]\\[0.5ex] 
+(\sigma \times \tau)[\phi := H] & = & \sigma[\phi := H] \times \tau[\phi
+  := H]\\[0.5ex]  
 ((\mu \psi. \lambda \ol{\beta}.\, G)\ol{\tau}[\phi :=
-  F] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=
-  F])\, \ol{\tau[\phi := F]}
+  H] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=
+  H])\, \ol{\tau[\phi := H]}
 \end{array}\]
 \end{dfn}
-
 Note that, since an arity $0$ type constructor is first-order,
-substitution into it is just the usual textual replacement, i.e., the
-usual notion of substitution, as expected.
+substitution into it is just the usual textual replacement, i.e., is
+the usual notion of substitution, as expected.
 
 \subsection{Terms}
 
@@ -442,7 +439,7 @@ bindings of the form $x : \tau$, where $x \in {\cal V}$ and $\Gamma;
 We adopt the same conventions for denoting disjoint unions in term
 contexts as in type contexts and type constructor contexts.
 
-\begin{dfn}
+\begin{dfn}\label{def:well-formed-terms}
 Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
 rules for the set of\, {\em well-formed terms over $\Delta$} are
 \[\begin{array}{cc}
@@ -453,15 +450,15 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma;\Phi \vdash \tau : \mcF$}
 \UIC{$\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$}
 \DisplayProof
-\\\\
-\AXC{$\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau$}
-\UIC{$\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$}
-\DisplayProof
-&
-\AXC{$\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau$}
-\AXC{$\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma$}
-\BIC{$\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$}
-\DisplayProof
+%\\\\
+%\AXC{$\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau$}
+%\UIC{$\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$}
+%\DisplayProof
+%&
+%\AXC{$\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau$}
+%\AXC{$\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma$}
+%\BIC{$\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$}
+%\DisplayProof
 \\\\
 {\color{red}
 \AXC{$\Gamma,\alpha;\Phi \vdash \tau : \T$}
@@ -487,13 +484,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \UIC{$\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$}
 \DisplayProof
 &
-    {\color{red}
-      No\;elim\; \onet
-%\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s : \onet$}
-%\AXC{$\Gamma;\Phi \vdash G : \F$}
-%%\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : G$}
-%\BIC{$\Gamma;\Phi \,|\, \Delta \vdash t s : \Nat^\emptyset \onet G$}
-%\DisplayProof
+    {\color{red} No\;elim\; \onet
 }
 \\\\
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: \sigma$}
@@ -532,13 +523,6 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \vspace*{0.05in}
 
 \[\begin{array}{c}
-%{\color{red} Do\;we\;want\;this?
-%\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \onet$}
-%\AXC{$\Gamma;\Phi \vdash G : \F$}
-%\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s : G$}
-%\TIC{$\Gamma;\Phi \,|\, \Delta \vdash s t : \Nat^\emptyset \onet G$}
-%\DisplayProof}
-%\\\\
 \AXC{$\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}} \,F\,G : \T$}
 \AXC{$\Gamma; \ol{\alpha} \,|\, \Delta, x : F
   \vdash t: G  $} 
@@ -552,9 +536,9 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
   G[\overline{\alpha := \tau}]$}
 \DisplayProof
 \\\\
-\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu \phi.\lambda 
-  \ol{\alpha}.H][\ol{\alpha := \tau}]$}
-\AXC{$\ol{\Gamma;\Phi \vdash \tau}$}%_i \mbox{\,for\,}i = 1,...,k$}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := (\mu \phi.\lambda 
+  \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \tau}]$}
+\AXC{$\ol{\Gamma;\Phi \vdash \tau : \F}$}
 \BIC{$\Gamma;\Phi \,|\, \Delta \vdash \tin_H \,t : (\mu \phi.\lambda 
   \ol{\alpha}.H)\ol{\tau}$}
 \DisplayProof
@@ -569,6 +553,91 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \DisplayProof
 \end{array}\]
 \end{dfn}
+In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
+occurrences of the type variables in $\ol{\alpha}$ and the term
+variable $x$ in the body $t$.  Moreover, in the first hypothesis of
+the rule for $\tin_H\,t$, the variables in $\ol{\beta}$ are fresh with
+respect to $H$ and $\ol{\tau}$. Substitution for terms is the obvious
+extension of the usual capture-avoiding textual substitution.
+
+% Note that $\Delta[\alpha := \sigma] also needs to be defined
+%\begin{dfn}
+%Let $\Gamma, \alpha;\Phi \,|\, \Delta \vdash t : \tau$ and $\Gamma;\Phi
+%\vdash \sigma : \F$.  We define $\Gamma;\Phi \,|\, \Delta [\alpha :=
+%  \sigma] \vdash t[\alpha := \sigma] : \tau [\alpha := \sigma]$ by
+%structural induction on $t$ as follows:
+%\begin{align*}
+%x[\alpha := \sigma] &= x \\
+%%(\lambda x.t)[\alpha := \sigma] &= \lambda x.(t[\alpha := \sigma]) \\
+%%(st)[\alpha := \sigma] &= (s[\alpha := \sigma])(t[\alpha := \sigma]) \\
+%(t_{\overline\tau}s)[\alpha := \sigma] &= t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) \\
+%(\bot_\tau t) [\alpha := \sigma] &= \bot_{\tau [\alpha := \sigma]} (t[\alpha := \sigma]) \\
+%\top [\alpha := \sigma] &= \top \\
+%(s,t)[\alpha := \sigma] &= (s[\alpha := \sigma], t[\alpha := \sigma]) \\
+%(\pi_1 t)[\alpha := \sigma] &= \pi_1 (t[\alpha := \sigma]) \\
+%(\pi_2 t)[\alpha := \sigma] &= \pi_2 (t[\alpha := \sigma]) \\
+%(\case{t}{x \mapsto l}{y \mapsto r})[\alpha := \sigma] &= \case{t[\alpha := \sigma]}{x \mapsto l[\alpha := \sigma]}{y \mapsto r[\alpha := \sigma]} \\   
+%(\inl\,s)[\alpha := \sigma] &= \inl\,(s[\alpha := \sigma]) \\
+%(\inr\,s)[\alpha := \sigma] &= \inr\,(s[\alpha := \sigma]) \\
+%(\tin\,t)[\alpha := \sigma] &= \tin(t[\alpha := \sigma]) \\
+%(L_{\overline \beta} x.t)[\alpha := \sigma] &= \left\{
+%\begin{array}{ll}
+%L_{\overline \beta} x.(t[\alpha := \sigma]) & \mbox{ if } \alpha \not \in
+%\ol{\beta}\\ 
+%L_{\overline \beta} x.t & \mbox{ otherwise }
+%\end{array} \right.\\
+%(\fold_{H,F}\, t)[\alpha := \sigma] &= \fold_{H[\alpha :=
+%    \sigma],F[\alpha := \sigma]}\, (t[\alpha := \sigma]) 
+%\end{align*}
+%All cases should be defined below. It's just that if $\alpha$ doesn't
+%appear in the term, then there is no substitution to be done.
+%Now let $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$ and $\Gamma;\Phi
+%\vdash \sigma : \F$.  We define $\Gamma;\Phi \,|\, \Delta [\alpha :=
+%  \sigma] \vdash t[\alpha := \sigma] : \tau [\alpha := \sigma]$ by
+%structural induction on $t$ as follows:
+%\begin{align*}
+%x[\alpha := \sigma] &= x \\
+%(t_{\overline\tau}s)[\alpha := \sigma] &= t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) \\
+%(\bot_\tau t) [\alpha := \sigma] &= \bot_{\tau [\alpha := \sigma]} (t[\alpha := \sigma]) \\
+%\top [\alpha := \sigma] &= \top \\
+%(s,t)[\alpha := \sigma] &= (s[\alpha := \sigma], t[\alpha := \sigma]) \\
+%(\pi_1 t)[\alpha := \sigma] &= \pi_1 (t[\alpha := \sigma]) \\
+%(\pi_2 t)[\alpha := \sigma] &= \pi_2 (t[\alpha := \sigma]) \\
+%(\case{t}{x \mapsto l}{y \mapsto r})[\alpha := \sigma] &= \case{t[\alpha := \sigma]}{x \mapsto l[\alpha := \sigma]}{y \mapsto r[\alpha := \sigma]} \\   
+%(\inl\,s)[\alpha := \sigma] &= \inl\,(s[\alpha := \sigma]) \\
+%(\inr\,s)[\alpha := \sigma] &= \inr\,(s[\alpha := \sigma]) \\
+%(\tin\,t)[\alpha := \sigma] &= \tin(t[\alpha := \sigma]) \\
+%\end{align*}
+%\end{dfn}
+
+%\begin{dfn}
+%% Substitution of a term in a term.
+%Let $\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau$ and
+%$\Gamma;\Phi \,|\, \Delta \vdash s: \sigma$.  We define $\Gamma;\Phi
+%\,|\, \Delta \vdash t[x := s] : \tau$ by structural induction on $t$
+%as
+%\begin{align*}
+%x[x := s] &= s \\
+%y[x := s] &= y \hspace{0.3in}\text{if $x \neq y$} \\
+%%(\lambda x.t)[y := s] &= \lambda x.(t[y := s]) \\
+%%(st)[x := u] &= (s[x := u])(t[x := u]) \\
+%(L_{\overline \alpha} y.t)[x := s] &= L_{\overline \alpha} y.(t[x := s]) \\
+%(t_{\overline\tau}u)[x := s] &= (t[x := s])_{\overline{\tau}}(u[x := s]) \\
+%(\bot_\tau t) [x := s] &= \bot_\tau (t[x := s]) \\
+%\top [x := s] &= \top \\
+%(t,u)[x := s] &= (t[x := s], u[x := s]) \\
+%(\pi_1 t)[x := s] &= \pi_1 (t[x := s]) \\
+%(\pi_2 t)[x := s] &= \pi_2 (t[x := s]) \\
+%(\case{t}{y \mapsto l}{z \mapsto r})[x := s] &= \case{t[x := s]}{y \mapsto l[x := s]}{z \mapsto r[x := s]} \\   
+%(\inl \,t)[x := s] &= \inl\,(t[x := s]) \\
+%(\inr \,t)[x := s] &= \inr\,(t[x := s]) \\
+%(\tin\,t)[x := s] &= \tin(t[x := s]) \\
+%(\fold_{H,F}\, t)[x:=s] &= \fold_{H,F}\, (t[x:=s])
+%\end{align*}
+%\end{dfn}
+
+Definition~\ref{def:well-formed-terms} ensures that the expected
+weakening rules for well-formed terms hold.
 
 \section{Interpreting Types}\label{sec:type-interp}
 
@@ -589,17 +658,15 @@ induction.
 \begin{dfn}
 A {\em set environment} maps each type variable to a set, and each
 type constructor variable of arity $k$ to an element of
-$[\set^k,\set]$. 
-%to an $\omega$-cocontinuous functor from $\set^k$ to $\set$. 
-A morphism $f : \rho \to \rho'$ from a set environment $\rho$ to a set
-environment $\rho'$ with $\rho|_\V = \rho'|_\V$ maps each type
-variable $v$ to $\id_{ \rho v}$, and each type constructor variable
-$\phi$ of arity $k$ to a natural transformation from the $k$-ary
-functor $\rho \phi$ on $\set$ to the $k$-ary functor $\rho' \phi$ on
-$\set$. Composition of morphisms on set environments is given
-componentwise, with the identity morphism mapping each set environment
-to itself. This gives a category of set environments and morphisms
-between them, which we denote $\setenv$.
+$[\set^k,\set]$. A morphism $f : \rho \to \rho'$ from a set
+environment $\rho$ to a set environment $\rho'$ with $\rho|_\V =
+\rho'|_\V$ maps each type variable $v$ to $\id_{ \rho v}$, and each
+type constructor variable $\phi$ of arity $k$ to a natural
+transformation from the $k$-ary functor $\rho \phi$ on $\set$ to the
+$k$-ary functor $\rho' \phi$ on $\set$. Composition of morphisms on
+set environments is given componentwise, with the identity morphism
+mapping each set environment to itself. This gives a category of set
+environments and morphisms between them, which we denote $\setenv$.
 \end{dfn}
 When convenient we identify a functor $F : [\set^0, \set]$ with the
 set that is its codomain.  With this convention, a set environment
@@ -623,12 +690,6 @@ Definition~\ref{def:rel-sem}. Intuitively, this condition can be
 thought of as ensuring that set interpretations of such terms are
 sufficiently uniform.
 
-%If $\rho$ is a set environment and $\tau : \F$ then we write $\tau
-%\rho$ for the result of applying $\rho$ to $\tau$. When $\vdash \tau
-%: \mcF$ we write $\tau$ instead of $\tau\rho$ since the environment
-%is immaterial.  We will adopt similar conventions for terms in
-%Section~\ref{sec:term-interp} below.
-
 \begin{dfn}\label{def:set-sem}
 Let $\rho$ be a set environment. The {\em set interpretation}
 $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
@@ -650,19 +711,11 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
       : \relsem{\Gamma; \ol{\alpha} \vdash F}\Eq_{\rho}[\ol{\alpha := R}]
       \rightarrow \relsem{\Gamma;\ol{\alpha} \vdash
         G}\Eq_{\rho}[\ol{\alpha := R}] \} \\
-  %  &\\
-%  = {\color{red}
-%    \{({\setsem{G}\rho[\bm \alpha := \bm S]})^{(\setsem{F}\rho[\bm
-%        \alpha := \bm S])}~|~ \bm S \in \set^{|{\bm \alpha}|}\}}\\ 
-%
-% In a general ccc this would be
-%  &=\int_{\bm A \in \C_0^{|\bm \alpha|}}
-%  (\setsem{G}\rho[\bm \alpha := \bm A])^{(\setsem{F}\rho[\bm \alpha := \bm A])}\\
   \setsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \setsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
   \setsem{\Gamma;\Phi \vdash \phi\ol{\tau}}\rho &=
   (\rho\phi)\,\ol{\setsem{\Gamma;\Phi \vdash
-    \tau}\rho}\\%)...(\setsem{\Gamma;\Phi \vdash \tau_k}\rho)\\   
+    \tau}\rho}\\
   \setsem{\Gamma;\Phi \vdash \sigma+\tau}\rho &=
   \setsem{\Gamma;\Phi \vdash \sigma}\rho +
   \setsem{\Gamma;\Phi \vdash \tau}\rho\\
@@ -672,7 +725,6 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
   \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{\tau}}\rho &= (\mu
     T^\set_{\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}\\
-    %)...(\setsem{\Gamma;\Phi \vdash \tau_k}\rho) \\
     \text{where } T^\set_{\rho} F & = \lambda
   \ol{A}. \setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash
     H}\rho[\phi :=  F][\ol{\alpha := A}]\\
@@ -681,10 +733,14 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \end{dfn}
-If $\rho$ is a set environment and $\vdash \tau : \F$ then we may
-write $\setsem{\vdash \tau}$ instead of $\setsem{\emptyset; \emptyset
-  \vdash \tau}\rho$ since the environment is
-immaterial. Definition~\ref{def:set-sem} ensures that
+The interpretations in Definition~\ref{def:set-sem} respect weakening,
+i.e., a type and its weakenings all have the same set interpretations.
+The same holds for the actions of these interpretations on morphisms
+in Definition~\ref{def:set-sem-funcs} below. If $\rho$ is a set
+environment and $\vdash \tau : \F$ then we may write $\setsem{\vdash
+  \tau}$ instead of $\setsem{\emptyset; \emptyset \vdash \tau}\rho$
+since the environment is immaterial. Definition~\ref{def:set-sem}
+ensures that
 \[\setsem{\Gamma;\Phi \vdash F \ol{\tau}}\rho =
   \setsem{\Gamma;\Phi,\ol{\alpha} \vdash F\ol{\alpha}}
   (\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}}])\] Moreover,
@@ -705,11 +761,6 @@ gives rise to a morphism from ${\setsem{\Gamma;\ol{\alpha} \vdash
     G}\rho[\ol{\alpha := S}]}$. But there are only $\set$-many choices
 of morphisms between these (or any) two objects because $\set$ is
 locally small.
-%$\{\eta_X : \setsem{F}\rho\,X
-%\Rightarrow \setsem{G}\rho\,X~|~X \mbox{ is finite } \}$.
-%
-%$\{\,\{\eta_X~|~ X \mbox{ is finite }\}
-%~|~ \eta : \setsem{F}\rho \Rightarrow \setsem{G}\rho\}$.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that $T^\set_{\rho}$ is
@@ -725,7 +776,7 @@ in $\ol{\alpha}$ and $\omega$-cocontinuous.  What remains is to define
 the actions of each of these functors on morphisms between
 environments.
 
-\begin{dfn}
+\begin{dfn}\label{def:set-sem-funcs}
 Let $f: \rho \to \rho'$ for set environments $\rho$ and $\rho'$ such
 that $\rho|_\V = \rho'|_\V$. The action $\setsem{\Gamma;\Phi \vdash
   \tau}f$ of\, $\setsem{\Gamma;\Phi \vdash \tau}$ on the morphism $f$
@@ -777,19 +828,9 @@ is given as follows:
   $\setsem{\Gamma;\Phi \vdash \sigma \times \tau}f = 
   \setsem{\Gamma;\Phi \vdash \sigma}f \times \setsem{\Gamma;\Phi \vdash
     \tau}f$.
-\item If $\Gamma;\Phi \vdash (\mu \phi.\lambda \ol{\alpha}. H)\ol{\tau}$ then
-%writing
-%\[\begin{array}{ccc}
-%T^\set_\rho & = & F \mapsto \lambda R_1...R_k. \setsem{\Gamma;\Phi,\phi,\bm
-%  \alpha \vdash H}\rho[\phi :=
-%  F][\alpha_1 := R_1]...[\alpha_k := R_k]\\
-%T^\set_{\rho'} & = & F \mapsto \lambda
-%R_1...R_k. \setsem{\Gamma;\Phi,\phi,\bm \alpha \vdash H}\rho'[\phi
-%  := F][\alpha_1 := R_1]...[\alpha_k := R_k]\\
-%\end{array}\]
-%\noindent
-%and
-letting $\sigma^\set_f : T^\set_\rho \to T^\set_{\rho'}$ be the map
+\item If $\Gamma;\Phi \vdash (\mu \phi.\lambda
+  \ol{\alpha}. H)\ol{\tau}$ then letting $\sigma^\set_f : T^\set_\rho
+  \to T^\set_{\rho'}$ be the map
 \[ F \mapsto \lambda \ol{A}. \setsem{\Gamma;\Phi,\phi,\ol{\alpha} \vdash
   H}f[\phi := \id_F][\ol{\alpha := \id_A}] \] 
 we define
@@ -833,23 +874,6 @@ commutes:
 
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
-%To generalize to relations over an arbitrary category $\C$:
-%\begin{dfn}
-%Let $\C$ be a category. The category $\rel(\C)$ is defined as follows.
-%\begin{itemize}
-%\item An object of $\rel(\C)$ is a subobject of $A \times B$ provided
-%  $\C$ has subobject classifiers? given by the fibrational definition
-%  (if we want relations to be derived from predicates)? a reflexive
-%  graph (if we want them to be more abstract)? We write $R :
-%  \rel(A,B)$ to indicate that an object $R$ of $\rel$ is a relation
-%  between objects $A$ and $B$ of $\C$, and $(a,b) \in R$ to indicate
-%  that $a$ and $b$ are related by $R$.
-%\item A morphism between objects $R : \rel(A,B)$ and $R' :
-%  \rel(A',B')$ is a pair $(f : A \to A',g : B \to B')$ of morphisms in
-%  $\C$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in R$.
-%  \end{itemize}
-%\end{dfn}
-
 \begin{dfn}\label{def:rel-transf}
 A {\em $k$-ary relation transformer} $F$ is a triple $(F^0, F^1,F^*)$,
 where $F^0,F^1 : [\set^k,\set]$ are functors, $F^* : [\rel^k, \rel]$
@@ -882,8 +906,6 @@ following data:
   $(\delta^0_{\ol{A}}x, \delta^1_{\ol{B}}y) \in H^*\ol{R}$.  {\color{red}
     This is basically a fibred natural transformation, but for
     heterogeneous relations.}
-  %$H^* \bm R \circ \delta^0_{\bm A} = \delta^1_{\bm B}
-  %\circ G^*\bm R$.
 \item Identity morphisms and composition are inherited from the
   category of functors on $\set$.
 \end{itemize}
@@ -937,8 +959,6 @@ K^1$ are natural transformations between endofunctors on
 $[\set^k,\set]$ and the component of $\sigma$ at the $k$-ary relation
 transformer $F$ is given by $\sigma_F = (\sigma^0_{F^0},
 \sigma^1_{F^1})$.
-% $F$ in $RT_k$ and $i = 0, 1$, $\sigma^i F$ is a natural
-% transformation $H^i F^i \to K^i F^i$
 \end{dfn}
 Definition~\ref{def:RT-nat-trans} entails that $\sigma^i_{F^i}$ must
 be natural in $F^i : [\set^k,\set]$, and, for every $F$, both
@@ -1061,10 +1081,7 @@ An endofunctor $T = (T^0,T^1,T^*)$ on $RT_k$ is {\em
   $\omega$-cocontinuous} if $T^0$ and $T^1$ are $\omega$-cocontinuous
 endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
 functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
-$[RT_k,[\rel^k,\rel]]$. 
-%, for every $\omega$-directed set $\cal D$,
-%\[T\,\colim{d \in {\cal D}}{(F^0_d, F^1_d,F^*_d)} = \colim{d \in {\cal
-%    D}}{T (F^0_d, F^1_d,F^*_d)}\]
+$[RT_k,[\rel^k,\rel]]$.
 \end{dfn}
 
 For any $k$ and $R : \rel(A, B)$, let $K^\rel_R$ be the constantly
@@ -1282,8 +1299,12 @@ defined by
 \end{align*}
 \end{dfn}
 
-If $\rho$ is a relational environment and $\vdash \tau : \F$, then we
-write $\relsem{\vdash \tau }$ instead of
+The interpretations in Definition~\ref{def:rel-sem} respect weakening,
+i.e., a type and its weakenings all have the same relational
+interpretations. The same holds for the actions of these
+interpretations on morphisms in Definition~\ref{def:rel-sem-funcs}
+below.  If $\rho$ is a relational environment and $\vdash \tau : \F$,
+then we write $\relsem{\vdash \tau }$ instead of
 $\relsem{\emptyset;\emptyset\vdash \tau }\rho$ as for set
 interpretations.
 
@@ -1303,11 +1324,6 @@ the actions of each of these functors on morphisms between
 environments, and then argue that the functors given by
 Definitions~\ref{def:rel-sem} and~\ref{def:rel-sem-funcs} are
 well-defined and have the required properties.
-
-% \begin{lemma} Given a type $\Gamma;\Phi \vdash \tau$ and relation
-% environments $\rho$ and $\rho'$ such that $\rho|_{\Gamma,\Phi} =
-% \rho'|_{\Gamma,\Phi}$, we have that $\relsem{\Gamma;\Phi \vdash
-% \tau}\rho = \relsem{\Gamma;\Phi \vdash \tau}\rho'$.  \end{lemma}
 
 \begin{dfn}\label{def:rel-sem-funcs}
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
@@ -1347,32 +1363,14 @@ is given as follows:
   \relsem{\Gamma;\Phi \vdash \sigma}f \times \relsem{\Gamma;\Phi
     \vdash \tau}f$.
 \item If $\Gamma;\Phi \vdash (\mu \phi^k.\lambda
-  \ol{\alpha}. H)\ol{\tau}$ then
-% \[\begin{array}{ccc}
-% T^\rel_\rho & = & F \mapsto \lambda R_1...R_k. \relsem{\Gamma;\Phi,\phi,\bm
-%   \alpha \vdash H}\rho[\phi :=
-%   F][\alpha_1 := R_1]...[\alpha_k := R_k]\\
-% T^\rel_{\rho'} & = & F \mapsto \lambda
-% R_1...R_k. \relsem{\Gamma;\Phi,\phi,\bm \alpha \vdash H}\rho'[\phi
-%   := F][\alpha_1 := R_1]...[\alpha_k := R_k]\\
-% \end{array}\]
-% \noindent
-% and
- letting $\sigma_f : T_\rho \to T_{\rho'}$ be the map
+  \ol{\alpha}. H)\ol{\tau}$ then letting $\sigma_f : T_\rho \to
+  T_{\rho'}$ be the map
 \[ F \mapsto \lambda \ol{R}. \relsem{\Gamma;\Phi,\phi,\ol{\alpha} \vdash
   H}f[\phi := \id_F][\ol{\alpha := \id_R}]\]
 we define
 \[\begin{array}{ll}
  & \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}} f\\
-% : & \relsem{\Gamma;\Phi \vdash (\mu \phi^k.\lambda
-%  \alpha_1...\alpha_k. H)A_1...A_k} \rho \to \relsem{\Gamma;\Phi \vdash (\mu
-%  \phi^k.\lambda \alpha_1...\alpha_k. H)A_1...A_k} \rho'\\
-% = & (\mu T_\rho)(\relsem{\Gamma;\Phi \vdash A_1}\rho)...(\relsem{\Gamma;\Phi \vdash A_k}\rho) \to (\mu
-%T_{\rho'})(\relsem{\Gamma;\Phi \vdash A_1}\rho')...(\relsem{\Gamma;\Phi \vdash A_k}%\rho')  
-%\end{array}\]
-%\noindent
-%by
 = & (\mu \sigma_f)\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho'} \circ
 (\mu T_\rho)\ol{\relsem{\Gamma;\Phi \vdash \tau}f})\\ = &
 (\mu T_{\rho'})\ol{\relsem{\Gamma;\Phi \vdash \tau}f} \circ (\mu
@@ -1470,45 +1468,6 @@ F \to G$ in $RT_k$ and all $\overline{R : \rel(A, B)}$,
 = & (T^\set_{\pi_i \rho} (\pi_i \delta))_{\overline{\pi_i R}}
 \end{array}\]
 
-%$T_\rho \delta : T_\rho F \to T_\rho G$ is a
-%morphism in $RT_k$. That is, we have that for all $\overline{R : \rel(A,
-%  B)}$ and $(x, y) \in (T_\rho F)^* \overline{R}$, $((T_\rho
-%\delta)^0_{\overline A} \,x, (T_\rho \delta)^1_{\overline B}\, y) \in
-%(T_\rho G)^* \overline{R}$, i.e., $((T^\set_{\pi_1\rho}
-%\delta^0)_{\overline A}\, x, (T^\set_{\pi_2 \rho} \delta^1)_{\overline
-%  B}\, y) \in (T_\rho G)^* \overline{R}$. To see this, let
-%$\overline{R : \rel(A, B)}$ and $(x, y) \in (T_\rho F)^* \overline{R}
-%= \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
-%  F]\overline{[\alpha := R]}$. Then since
-%$\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
-%  \text{--}]\overline{[\alpha := R]}$ is a functor from $\relenv$ to
-%$RT$ by the induction hypothesis, we have that
-%\[\begin{array}{ll}
-% & \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}id_\rho[\phi :=
-%  \delta]\overline{[\alpha := id_R]}\\
-%: & \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
-%  F]\overline{[\alpha := R]} \to
-%\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
-%  G]\overline{[\alpha := R]}
-%\end{array}\]
-%is a morphism in $\rel$. Therefore,
-%\[\begin{array}{ll}
-% &\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\id_\rho[\phi :=
-%  \delta]\overline{[\alpha := \id_R]} (x, y) \\
-%=& ( (\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\id_\rho[\phi :=
-%  \delta]\overline{[\alpha := \id_R]})^0 x,\\
-% & \hspace*{0.4in}
-%(\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\id_\rho[\phi :=
-%  \delta]\overline{[\alpha := \id_R]})^1 y)\\
-%= &( \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\id_{\pi_1
-%  \rho}[\phi := \delta^0]\overline{[\alpha := \id_A]} x,\\
-%& \hspace*{0.4in}
-%\setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\id_{\pi_2 \rho}[\phi
-%  := \delta^1]\overline{[\alpha := \id_B]} y) \\ 
-%= & ((T^\set_{\pi_1\rho} \delta^0)_{\overline A} x, (T^\set_{\pi_2
-%  \rho} \delta^1)_{\overline B} y) 
-%\end{array}\]
-%is in $(T_\rho G)^* \overline{R}$.
 Here, the second equality is by the induction hypothesis.  That
 $T_\rho$ is $\omega$-cocontinuous follows immediately from the
 induction hypothesis on $\sem{\Gamma;\Phi,\phi,\ol{\alpha} \vdash H}$
@@ -1593,16 +1552,16 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 \end{itemize}
 \end{proof}
 
-%{\color{red} This generalizes the usual result that
-%  $(\setsem{\tau},\relsem{\tau})$ is a fibred functor to
-%  non-homogeneous relations.}
-
-
 The following lemma ensures that substitution interacts well with type
 interpretations.  It is a consequence of
 Definitions~\ref{def:second-order-subst},~\ref{def:set-interp},
 and~\ref{def:rel-interp}. {\color{red} Double check that no results
   from the next lemma are used in the preceding proof.}
+
+{\color{blue} The substitution $[\phi := H]$ should specify that the
+  $\alpha$s in $H$ correspond to the arguments of $\phi$.  For
+  example, we could write $[\phi :=_{\alpha} H]$. Also add
+  $\overline{\alpha}$ notation to Definition~4.}
 
 \begin{lemma}\label{lem:substitution}
 Let $\rho$ be a set environment $\rho$ and $f : \rho \to \rho'$ be a
@@ -1636,11 +1595,6 @@ morphism of set environments.
 Analogous identities hold for relation environments and morphisms
 between them.
 \end{lemma}
-
-{\color{red} ISSUE: the substitution $[\phi := H]$ should specify that
-  the $\alpha$s in $H$ correspond to the arguments of $\phi$.  For
-  example, we could write $[\phi :=_{\alpha} H]$. Also add
-  $\overline{\alpha}$ notation to Definition~4.}
 
 \begin{proof}
 The proofs for the set and relational interpretations are completely
@@ -1701,8 +1655,7 @@ Here, the third equality is by the induction hypothesis.
   \overline{\sigma}}\rho  [\alpha := \setsem{\Gamma;\Phi \vdash
    \tau}\rho] 
 \end{array}  \]
-Here, the third equality is by the induction hypothesis {\color{red}
-  and weakening}.
+Here, the third equality is by the induction hypothesis and weakening.
 \end{itemize}
 
 We now prove Equation~\ref{eq:subs-const}, again by induction on the
@@ -1761,7 +1714,7 @@ and the fourth is by Definition~\ref{def:set-sem}.
 Here, the first equality is by
 Definition~\ref{def:second-order-subst}, the second and fourth are by
 Definition~\ref{def:set-sem}, and the third is by the induction
-hypothesis {\color{red} and weakening}.
+hypothesis and weakening.
 \end{itemize}
 \end{proof}
 
@@ -2054,6 +2007,7 @@ $\Eq_\rho$ to be the relation environment such that $\Eq_\rho v =
 definition that was given informally in Section~\ref{sec:set-interp}.
 The Identity Extension Lemma can then be stated and proved as follows:
 
+{\color{blue} $\alpha$ vs. $\tau$. Strong vs. weak IEL?}
 \begin{thm}\label{thm:iel}
   If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$,
   then $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho =
@@ -2447,6 +2401,28 @@ $\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
 similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
   \tau}$.
 
+The interpretations in Definitions~\ref{def:set-interp}
+and~\ref{def:rel-interp} respect weakening, i.e., a term and its
+weakenings all have the same set and relational interpretations.
+{\color{red} The same for actions on morphisms??? Does this even make
+  sense?}
+In particular, for any $\rho \in \setenv$,
+\[ \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
+  = (\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho) \circ
+  \pi_{\Delta}\] where $\pi_{\Delta}$ is the projection
+  $\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to
+  \setsem{\Gamma;\Phi \vdash \Delta}$, and for any
+  $\rho \in \relenv$, 
+\[ \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
+  = (\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho) \circ
+  \pi_{\Delta}\] where $\pi_{\Delta}$ is the projection
+  $\relsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to
+  \relsem{\Gamma;\Phi \vdash \Delta}$.
+
+In addition, 
+
+
+  
 {\color{blue} Move factoids about interpretations here.}
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
@@ -2537,8 +2513,8 @@ and thus a family of morphisms
 \end{array}\]
 That is, for each $\ol{A : \set}$ and each $d :
 \setsem{\Gamma;\emptyset \vdash \Delta}\rho = \setsem{\Gamma;
-  \ol{\alpha} \vdash \Delta}\rho[\overline{\alpha := A}]$ {\color{red}
-  by weakening}, we have
+  \ol{\alpha} \vdash \Delta}\rho[\overline{\alpha := A}]$ by
+weakening, we have
 \[\begin{array}{ll}
   & (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
   x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,d)_{\ol{A}}\\
@@ -2709,11 +2685,11 @@ and $\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
 = & \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
     \setsem{\Gamma;\Phi \vdash \tau}\rho}]
 \end{array}\]
-by Equation~\ref{eq:subs-var}, and by {\color{red} weakening} in the
-last step, since the type $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}}
-F\,G$ is only well-formed if $\Gamma; \ol{\alpha} \vdash F : \F$ and
-$\Gamma; \ol{\alpha} \vdash G : \F$. Thus, $\setsem{\Gamma;\Phi \,|\,
-  \Delta \vdash t_{\overline \tau} s: G [\overline{\alpha :=
+by Equation~\ref{eq:subs-var}, and by weakening in the last step,
+since the type $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}} F\,G$ is
+only well-formed if $\Gamma; \ol{\alpha} \vdash F : \F$ and $\Gamma;
+\ol{\alpha} \vdash G : \F$. Thus, $\setsem{\Gamma;\Phi \,|\, \Delta
+  \vdash t_{\overline \tau} s: G [\overline{\alpha :=
       \tau}]}\,\rho\,d$ has type $\setsem{\Gamma; \ol{\alpha} \vdash
   G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}\rho}] =
 \setsem{\Gamma; \Phi \vdash G[\ol{\alpha := \tau}]}\rho$, as desired.
@@ -3056,7 +3032,7 @@ the second arrow above is justified because, for every $d \in
   \vdash F}\rho[\ol{\alpha := \_}]) \Rightarrow
 \setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := \_}] ~|~ ...\}
 \end{array}\]
-Here, the final equality holds because using {\color{red} weakening}
+Here, the final equality holds because using weakening
 in the third and fifth equalities below, and using
 Equations~\ref{eq:subs-var} and ~\ref{eq:subs-const} in the first and
 fourth, respectively, ensures that
@@ -3082,7 +3058,7 @@ fourth, respectively, ensures that
 \end{array}\]
 That is, for each $d : \setsem{\Gamma;\emptyset \vdash \Delta}\rho =
 \setsem{\Gamma;\emptyset \vdash \Delta}\rho[\ol{\alpha := \_}]$
-       {\color{red} by weakening}, we have that
+       by weakening, we have that
        $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
          \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
              \alpha}])\,F}\rho\,d$ is a natural transformation
@@ -3199,32 +3175,6 @@ If $\,\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{\vdash t
 
 
 
-\begin{dfn}
-% Substitution of a type in a term, in place of a 0-ary type constructor variable.
-Let $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
-be a term and $\Gamma;\Phi \vdash \sigma : \F$
-be a type.
-We define a term
-$\Gamma;\Phi \,|\, \Delta [\alpha := \sigma] \vdash t[\alpha := \sigma] : \tau [\alpha := \sigma]$
-by structural induction on $t$ as
-\begin{align*}
-x[\alpha := \sigma] &= x \\
- (\lambda x.t)[\alpha := \sigma] &= \lambda x.(t[\alpha := \sigma]) \\
- (st)[\alpha := \sigma] &= (s[\alpha := \sigma])(t[\alpha := \sigma]) \\
- (L_{\overline \alpha} x.t)[\beta := \sigma] &= L_{\overline \alpha} x.(t[\beta := \sigma]) \\
- (t_{\overline\tau}s)[\alpha := \sigma] &= t_{\overline{\tau[\alpha := \sigma]}}(s[\alpha := \sigma]) \\
- (\bot_\tau t) [\alpha := \sigma] &= \bot_{\tau [\alpha := \sigma]} (t[\alpha := \sigma]) \\
-\top [\alpha := \sigma] &= \top \\
-(s,t)[\alpha := \sigma] &= (s[\alpha := \sigma], t[\alpha := \sigma]) \\
-(\pi_1 t)[\alpha := \sigma] &= \pi_1 (t[\alpha := \sigma]) \\
-(\pi_2 t)[\alpha := \sigma] &= \pi_2 (t[\alpha := \sigma]) \\
-(\case{t}{x \mapsto l}{y \mapsto r})[\alpha := \sigma] &= \case{t[\alpha := \sigma]}{x \mapsto l[\alpha := \sigma]}{y \mapsto r[\alpha := \sigma]} \\   
-(\inl\,s)[\alpha := \sigma] &= \inl\,(s[\alpha := \sigma]) \\
-(\inr\,s)[\alpha := \sigma] &= \inr\,(s[\alpha := \sigma]) \\
-(\tin\,t)[\alpha := \sigma] &= \tin(t[\alpha := \sigma]) \\
-(\fold_{H,F}\, t)[\alpha := \sigma] &= \fold_{H[\alpha := \sigma],F}\, (t[\alpha := \sigma])
-\end{align*}
-\end{dfn}
 
 \begin{lemma}\label{lemma:subst-type-in-term}
 Let $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
@@ -3265,33 +3215,6 @@ By induction on $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t : \tau$
 \end{itemize}
 \end{proof}
 
-\begin{dfn}
-% Substitution of a term in a term.
-Let $\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau$
-and $\Gamma;\Phi \,|\, \Delta \vdash s: \sigma$
-be terms.
-We define a term
-$\Gamma;\Phi \,|\, \Delta \vdash t[x := s] : \tau$
-by structural induction on $t$ as
-\begin{align*}
-x[x := s] &= s \\
-y[x := s] &= y \hspace{0.3in}\text{if $x \neq y$} \\
-(\lambda x.t)[y := s] &= \lambda x.(t[y := s]) \\
-(st)[x := u] &= (s[x := u])(t[x := u]) \\
-(L_{\overline \alpha} x.t)[y := s] &= L_{\overline \alpha} x.(t[y := s]) \\
-(t_{\overline\tau}s)[x := u] &= (t[x := u])_{\overline{\tau}}(s[x := u]) \\
-(\bot_\tau t) [x := s] &= \bot_\tau (t[x := s]) \\
-\top [x := s] &= \top \\
-(s,t)[x := u] &= (s[x := u], t[x := u]) \\
-(\pi_1 t)[x := s] &= \pi_1 (t[x := s]) \\
-(\pi_2 t)[x := s] &= \pi_2 (t[x := s]) \\
-(\case{t}{x \mapsto l}{y \mapsto r})[z := s] &= \case{t[z := s]}{x \mapsto l[z := s]}{y \mapsto r[z := s]} \\   
-(\inl \,s)[x := u] &= \inl\,(s[x := u]) \\
-(\inr \,s)[x := u] &= \inr\,(s[x := u]) \\
-(\tin\,t)[x := s] &= \tin(t[x := s]) \\
-(\fold_{H,F}\, t)[x:=s] &= \fold_{H,F}\, (t[x:=s])
-\end{align*}
-\end{dfn}
 
 \begin{lemma}\label{lemma:subst-term-in-term}
 Let $\Gamma;\Phi \,|\, \Delta, x: \sigma \vdash t : \tau$
@@ -3343,55 +3266,6 @@ By induction on $\Gamma;\Phi,\alpha \,|\, \Delta, x: \sigma \vdash t : \tau$
 \end{itemize}
 \end{proof}
 
-\begin{lemma}[Weakening]\label{lemma:weakening}
-Weakening is supported by the following facts:
-\begin{itemize}
-\item Let $\Gamma;\emptyset \vdash \sigma : \T$ be a type.
-Then, $\Gamma,v;\emptyset \vdash \sigma : \T$ is well-typed,
-and for any set environment $\rho$ we have that
-\[
-\setsem{\Gamma,v;\emptyset \vdash \sigma}\rho
-= \setsem{\Gamma;\emptyset \vdash \sigma}\rho
-\]
-and for any relation environment $\rho$ we have that
-\[
-\relsem{\Gamma,v;\emptyset \vdash \sigma}\rho
-= \relsem{\Gamma;\emptyset \vdash \sigma}\rho
-\]
-\item Let $\Gamma;\Phi \vdash \sigma : \F$ be a type.
-Then, $\Gamma;\Phi,\alpha \vdash \sigma : \F$ is well-typed,
-and for any set environment $\rho$ we have that
-\[
-\setsem{\Gamma;\Phi,\alpha \vdash \sigma}\rho
-= \setsem{\Gamma;\Phi \vdash \sigma}\rho
-\]
-and for any relation environment $\rho$ we have that
-\[
-\relsem{\Gamma;\Phi,\alpha \vdash \sigma}\rho
-= \relsem{\Gamma;\Phi \vdash \sigma}\rho
-\]
-\item Let $\Gamma;\Phi \,|\, \Delta \vdash t : \tau$ be a term
-and $\Gamma;\Phi \vdash \sigma$ be a type.
-Then, $\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau$ is well-formed,
-and for any set environment $\rho$ we have that
-\[
-  \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
-  = \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho \pi_{\Delta}
-\]
-where $\pi_{\Delta}$ is the projection
-$\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to \setsem{\Gamma;\Phi \vdash \Delta}$,
-and for any relation environment $\rho$ we have that
-\[
-  \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
-  = \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho \pi_{\Delta}
-\]
-where $\pi_{\Delta}$ is the projection
-$\relsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to \relsem{\Gamma;\Phi \vdash \Delta}$.
-\end{itemize}
-\end{lemma}
-\begin{proof}
-{\color{red} Do we need a proof for this?}
-\end{proof}
 
 {\color{red} All of the following lemmas are stated and proved for set semantics,
 but they hold for relational semantics just as well.}
@@ -3420,11 +3294,11 @@ and the third equality is given by Lemma~\ref{lemma:weakening}.
 \end{proof}
 
 \begin{lemma}
-Let $\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau$
-be a term.
-Then, for any set environment $\rho$ we have that
-$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda y. t[x := y] : \sigma \to \tau}\rho
-= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x. t : \sigma \to \tau}\rho$
+Let $\Gamma;\emptyset \,|\, \Delta, x: \sigma \vdash t : \tau$ be a
+term.  Then, for any set environment $\rho$ we have that
+$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda y. t[x := y] :
+  \sigma \to \tau}\rho = \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \lambda x. t : \sigma \to \tau}\rho$
 \end{lemma}
 \begin{proof}
 We have that
