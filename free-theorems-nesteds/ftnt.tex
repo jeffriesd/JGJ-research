@@ -558,11 +558,13 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \end{array}\]
 \end{dfn}
 In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
-occurrences of the type variables in $\ol{\alpha}$ and the term
-variable $x$ in the body $t$.  Moreover, in the first hypothesis of
-the rule for $\tin_H\,t$, the variables in $\ol{\beta}$ are fresh with
-respect to $H$ and $\ol{\tau}$. Substitution for terms is the obvious
-extension of the usual capture-avoiding textual substitution.
+occurrences of the type variables in $\ol{\alpha}$ in the type of the
+term variable $x$ and in the body $t$, as well as all occurrences of
+$x$ in $t$.  Moreover, in the rule for $\tin_H$, the variables in
+$\ol{\beta}$ are fresh with respect to $H$. Substitution for terms is
+the obvious extension of the usual capture-avoiding textual
+substitution. Definition~\ref{def:well-formed-terms} ensures that the
+expected weakening rules for well-formed terms hold.
 
 % Note that $\Delta[\alpha := \sigma] also needs to be defined
 %\begin{dfn}
@@ -640,9 +642,6 @@ extension of the usual capture-avoiding textual substitution.
 %\end{align*}
 %\end{dfn}
 
-Definition~\ref{def:well-formed-terms} ensures that the expected
-weakening rules for well-formed terms hold.
-
 \section{Interpreting Types}\label{sec:type-interp}
 
 Parametricity requires that set interpretations of types are defined
@@ -700,9 +699,9 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
 \begin{align*}
   \setsem{\Gamma;\emptyset \vdash v} \rho &= \rho v \mbox{
     if } v \in \V\\ 
-  \setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho &=
-  \setsem{\Gamma;\emptyset \vdash \sigma} \rho \to
-  \setsem{\Gamma;\emptyset \vdash \tau} \rho\\ 
+%  \setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho &=
+%  \setsem{\Gamma;\emptyset \vdash \sigma} \rho \to
+%  \setsem{\Gamma;\emptyset \vdash \tau} \rho\\ 
  & {\color{red} \mbox{need to interpret forall types if we include them}}\\
   \setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}
     \,F\,G}\rho &= \{\eta : \setsem{\Gamma; \ol{\alpha} \vdash
@@ -740,7 +739,10 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
 The interpretations in Definition~\ref{def:set-sem} respect weakening,
 i.e., a type and its weakenings all have the same set interpretations.
 The same holds for the actions of these interpretations on morphisms
-in Definition~\ref{def:set-sem-funcs} below. If $\rho$ is a set
+in Definition~\ref{def:set-sem-funcs} below.  Moreover, the
+interpretation of $\Nat$-types ensures that $\setsem{\Gamma \vdash
+  \sigma \to \tau}\rho = \setsem{\Gamma \vdash \sigma} \rho \to
+\setsem{\Gamma \vdash \tau} \rho$, as expected.  If $\rho$ is a set
 environment and $\vdash \tau : \F$ then we may write $\setsem{\vdash
   \tau}$ instead of $\setsem{\emptyset; \emptyset \vdash \tau}\rho$
 since the environment is immaterial. Definition~\ref{def:set-sem}
@@ -788,9 +790,9 @@ is given as follows:
 \begin{itemize}
 \item If $\Gamma,v;\emptyset \vdash v$ then
   $\setsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$.
-\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
-  $\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
-  \id_{\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
+%\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
+%  $\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
+%  \id_{\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
 \item If $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G$, then we
   define $\setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G} f =
   \id_{\setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho}$.
@@ -875,6 +877,9 @@ commutes:
 \end{equation}
 \end{itemize}
 \end{dfn}
+The interpretation of $\Nat$-types ensures that if $\Gamma \vdash
+\sigma \to \tau$ then $\setsem{\Gamma\vdash \sigma \to \tau}f =
+\id_{\setsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected.
 
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
@@ -1248,9 +1253,9 @@ defined by
 \begin{align*}
   \relsem{\Gamma;\emptyset \vdash v}\rho &= \rho v \mbox{ if
   } v \in \V\\ 
-  \relsem{\Gamma;\emptyset \vdash \sigma \to \tau} \rho &=
-  \relsem{\Gamma;\emptyset \vdash \sigma} \rho \to
-  \relsem{\Gamma;\emptyset \vdash \tau} \rho \\ 
+%  \relsem{\Gamma;\emptyset \vdash \sigma \to \tau} \rho &=
+%  \relsem{\Gamma;\emptyset \vdash \sigma} \rho \to
+%  \relsem{\Gamma;\emptyset \vdash \tau} \rho \\ 
  & {\color{red} \mbox{need to interpret forall types if we include them}}\\
   \relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}
     \,F\,G}\rho &= \{\eta : \relsem{\Gamma;
@@ -1307,8 +1312,11 @@ The interpretations in Definition~\ref{def:rel-sem} respect weakening,
 i.e., a type and its weakenings all have the same relational
 interpretations. The same holds for the actions of these
 interpretations on morphisms in Definition~\ref{def:rel-sem-funcs}
-below.  If $\rho$ is a relational environment and $\vdash \tau : \F$,
-then we write $\relsem{\vdash \tau }$ instead of
+below.  Moreover, the interpretation of $\Nat$-types ensures that
+$\relsem{\Gamma \vdash \sigma \to \tau}\rho = \relsem{\Gamma \vdash
+  \sigma} \rho \to \relsem{\Gamma \vdash \tau} \rho$, as expected. If
+$\rho$ is a relational environment and $\vdash \tau : \F$, then we
+write $\relsem{\vdash \tau }$ instead of
 $\relsem{\emptyset;\emptyset\vdash \tau }\rho$ as for set
 interpretations.
 
@@ -1337,9 +1345,9 @@ is given as follows:
 \begin{itemize}
 \item If $\Gamma,v;\emptyset \vdash v$ then
   $\relsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$.
-\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
-  $\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
-  \id_{\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
+%\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
+%  $\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
+%  \id_{\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
 \item If $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G$, then we
   define $\relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G} f =
   \id_{\relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho}$.
@@ -1383,7 +1391,10 @@ we define
 \end{itemize}
 \end{dfn}
 
-To see that the functors given by Definitions~\ref{def:rel-sem}
+The interpretation of $\Nat$-types ensures that if $\Gamma;\emptyset
+\vdash \sigma \to \tau$ then $\relsem{\Gamma \vdash \sigma \to \tau}f
+= \id_{\relsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected. To
+see that the functors given by Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} are well-defined we must show that $T_\rho
 F$ is a relation transformer for any relation transformer $F$, and
 that $\sigma_f F : T_\rho F \to T_{\rho'} F$ is a morphism of relation
@@ -1642,7 +1653,7 @@ Here, the third equality is by the induction hypothesis.
 \item If $F = (\mu \phi. \lambda \overline{\beta}. G)
   \overline{\sigma}$, then
 \[\begin{array}{ll}
- & \setsem{\Gamma; \Phi \vdash ((\mu \phi. \lambda
+  & \setsem{\Gamma; \Phi \vdash ((\mu \phi. \lambda
   \overline{\beta}. G) \overline{\sigma}) [\alpha := \tau]}\rho \\
 =&\setsem{\Gamma; \Phi \vdash (\mu \phi. \lambda
   \overline{\beta}. G[\alpha := \tau]) (\overline{\sigma [\alpha :=
@@ -2023,13 +2034,13 @@ By induction on the structure of $\tau$.
 \item $\relsem{\Gamma; \emptyset \vdash v}\Eq_{\rho} = \Eq_{\rho} v =
   \Eq_{\rho v} = \Eq_{\setsem{\Gamma; \emptyset \vdash v}\rho}$ where
   $v \in \Gamma$.
-\item $\relsem{\Gamma; \emptyset \vdash \sigma \to \tau} \Eq_{\rho} =
-  \relsem{\Gamma; \emptyset \vdash \sigma} \Eq_{\rho} \to
-  \relsem{\Gamma; \emptyset \vdash \tau} \Eq_{\rho} =
-  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho} \to
-  \Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho} =
-  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho}$, where
-  the second equality is by the induction hypothesis.
+%\item $\relsem{\Gamma; \emptyset \vdash \sigma \to \tau} \Eq_{\rho} =
+%  \relsem{\Gamma; \emptyset \vdash \sigma} \Eq_{\rho} \to
+%  \relsem{\Gamma; \emptyset \vdash \tau} \Eq_{\rho} =
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho} \to
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho} =
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho}$, where
+%  the second equality is by the induction hypothesis.
 \item {\color{red} $\tau = \forall v.\tau_1$}
 \item By definition, $\relsem{\Gamma; \emptyset \vdash
   \Nat^{\overline\alpha} \,F\,G} \Eq_{\rho}$ is the relation on
@@ -2228,6 +2239,13 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
       \Phi \vdash \sigma \times \tau}\rho}$
 \end{itemize}
 \end{proof}
+It follows from Theorem~\ref{thm:iel} that $\relsem{\Gamma \vdash
+  \sigma \to \tau} \Eq_{\rho} =
+%\relsem{\Gamma; \emptyset
+%  \vdash \sigma} \Eq_{\rho} \to \relsem{\Gamma; \emptyset \vdash \tau}
+%\Eq_{\rho} = \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho} \to
+%\Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho} =
+\Eq_{\setsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected.
 
 \section{Interpreting Terms}\label{sec:term-interp}
 
@@ -2256,14 +2274,14 @@ defined as follows:
 \[\begin{array}{lll}
 \setsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho& = &
 \pi_{|\Delta|+1}\\
-\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho &
-= & \curry (\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
-  \tau}\rho)\\ 
-\setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho & = &
-\eval \circ
- \langle \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
-  \tau}\rho, \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
-\rangle\\
+%\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho &
+%= & \curry (\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+%  \tau}\rho)\\ 
+%\setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho & = &
+%\eval \circ
+% \langle \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
+%  \tau}\rho, \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
+%\rangle\\
 \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
     \alpha} \,F \,G}\rho & = &  \curry (\setsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
@@ -2309,21 +2327,27 @@ defined as follows:
 \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi.\lambda 
- {\overline \alpha}.H){\overline \tau}} \rho & = & \mathit{in} \circ
-  \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := (\mu
-      \phi.\lambda {\overline
-        \alpha}.H)\overline{\beta}][\overline{\alpha := \tau}]}
-  \rho,\\
-  & & \hspace*{0.1in} \mbox{ where the variables in } \overline{\beta}
-  \mbox{ are fresh }\\
+\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin :
+Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
+\mathit{in} : T^\set_\rho (\mu T^\set_\rho) \Rightarrow \mu T^\set_\rho\\
+\hspace*{1.24in}(\mu \phi.\lambda {\overline \alpha}.H){\overline
+  \beta} \rrbracket^\set \rho & & \\
 \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
-  \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho & = & 
-\mathit{fold}\circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-  \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
+  \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F}\rho & = & 
+\mathit{fold}_{T^\set_\rho} \circ \setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\ol \beta, \ol \gamma}\,(H[\phi :=
+    F][\overline{\alpha := \beta}])\,F}\rho 
 \end{array}\]
 \end{dfn}
+This interpretation gives that $\setsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash \lambda x.t : \sigma \to \tau}\rho = \curry
+(\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+  \tau}\rho)$ and $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash st:
+  \tau} \rho = \eval \circ \langle \setsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash s: \sigma \to \tau}\rho, \setsem{\Gamma;\emptyset
+  \,|\, \Delta \vdash t: \sigma}\rho \rangle$, as expected.
 
 \begin{dfn}\label{def:rel-interp}
 If $\rho$ is a relation environment and $\Gamma;\Phi~|~\Delta \vdash t :
@@ -2332,13 +2356,13 @@ defined as follows:
 \[\begin{array}{lll}
 \relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho& = &
 \pi_{|\Delta|+1}\\
-\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho &
-= & \curry (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
-  \tau}\rho)\\ 
-\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho & = & \eval
-\circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
-  \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
-\rangle\\
+%\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho &
+%= & \curry (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+%  \tau}\rho)\\ 
+%\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho & = & \eval
+%\circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
+%  \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
+%\rangle\\
 \relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
     \alpha} \,F \,G}\rho & = &  \curry (\relsem{\Gamma;\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
@@ -2384,33 +2408,32 @@ defined as follows:
 \inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\relsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi.\lambda 
- {\overline \alpha}.H){\overline \tau}} \rho & = & \mathit{in} \circ
-  \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := (\mu
-      \phi.\lambda {\overline \alpha}.H)
-      \overline{\beta}][\overline{\alpha := \tau}]} \rho\\   
-  & & \hspace*{0.1in} \mbox{ where the variables in } \overline{\beta}
-  \mbox{ are fresh }\\
-  \relsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\overline \alpha}\,((\mu
-  \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho & = & 
-\mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
-  \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho
+\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin :
+Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
+\mathit{in} : T_\rho (\mu T_\rho) \Rightarrow \mu T_\rho\\
+\hspace*{1.24in}(\mu \phi.\lambda {\overline \alpha}.H){\overline
+  \beta} \rrbracket^\rel \rho & & \\
+\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F}\rho & = & 
+\mathit{fold}_{T_\rho} \circ \relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash t : \Nat^{\ol \beta, \ol \gamma}\,(H[\phi :=
+    F][\overline{\alpha := \beta}])\,F}\rho 
 \end{array}\]
 \end{dfn}
-
-If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
-: \tau$, then we write $\setsem{\vdash t : \tau}$ instead of
-$\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
-similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
-  \tau}$.
+This interpretation gives that $\relsem{\Gamma;\emptyset \,|\, \Delta
+  \vdash \lambda x.t : \sigma \to \tau}\rho = \curry
+(\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+  \tau}\rho)$ and $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st:
+  \tau} \rho = \eval \circ \langle \relsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash s: \sigma \to \tau}\rho, \relsem{\Gamma;\emptyset
+  \,|\, \Delta \vdash t: \sigma}\rho \rangle$, as expected.
 
 The interpretations in Definitions~\ref{def:set-interp}
 and~\ref{def:rel-interp} respect weakening, i.e., a term and its
-weakenings all have the same set and relational interpretations.
-{\color{red} The same for actions on morphisms??? Does this even make
-  sense?}
-In particular, for any $\rho \in \setenv$,
+weakenings all have the same set and relational interpretations. In
+particular, for any $\rho \in \setenv$,
 \[ \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
   = (\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho) \circ
   \pi_{\Delta}\] where $\pi_{\Delta}$ is the projection
@@ -2456,16 +2479,22 @@ $\Gamma;\Phi \,|\, \Delta \vdash s : \sigma$ then
   \Delta\vdash s: \sigma}\rho\,R)$
 \end{itemize}
 Finally, direct calculation reveals that the set and relational
-interpretations of terms respect the judgment
+interpretations of terms respect the judgments
 \begin{itemize}
 \item $\Gamma; \Phi~|~\Delta \vdash (L_{\ol{\alpha}}x.t)_{\ol{\tau}}s
   = t [\ol{\alpha := \tau}][x := s]$
+\item {\color{blue} $\fold\,k\,(\tin\,t) = k\, (map\,(\fold\,k) t)$????}
 \end{itemize}
-{\color{blue} Add equation for fold?}
 The set and relational interpretations of terms therefore respect the
-congruence closed equational theory obtained by adding this judgment
+congruence closed equational theory obtained by adding these judgments
 to those generating the usual congruence closed equational theory
 induced by the other term formers.
+
+If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
+: \tau$, then we write $\setsem{\vdash t : \tau}$ instead of
+$\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$, and
+similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash t :
+  \tau}$.
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
@@ -2884,7 +2913,8 @@ $\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
   [\overline{\alpha := \tau}]}(\pi_i\rho)
 \end{array}\]
 \end{itemize}
-\item We now consider $\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
+\item {\color{blue} RE-DO $\tin$ CASE!!!}
+  We now consider $\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
   \phi.\lambda {\overline \alpha}.H){\overline \tau}$.
 \begin{itemize}
 \item To see that $\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t :
