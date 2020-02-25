@@ -645,16 +645,29 @@ expected weakening rules for well-formed terms hold.
 \section{Interpreting Types}\label{sec:type-interp}
 
 Parametricity requires that set interpretations of types are defined
-concurrently with their relational interpretations. In this section we
-give the set interpretations for types; in the next section we give
-their relational interpretations. While the set interpretations are
-relatively straightforward, their relation interpretations are less
-so, mainly because of the cocontinuity conditions we must impose to
-ensure that they are well-behaved. We take some effort to develop
-these in Section~\ref{sec:rel-interp}, which separates
-Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in space but
-otherwise has no impact on the fact that they are given by mutual
-induction.
+simultaneously with their relational interpretations. This is because
+the underlying interpretations of $\Nat$-types must be cut down to
+include only the ``parametric'' elements, as discussed in,
+e.g.,~\cite{agj14,bfss90,rey83}. Indeed, without this cutting down it
+will not be possible to prove the Identity Extension Lemma
+(Theorem~\ref{thm:iel}), which is the key property that makes a model
+relationally parametric, rather than just induced by a logical
+relation. The Identity Extension Lemma is similar to the Abstraction
+Theorem (Theorem~\ref{thm:abstraction}), except that it applies to
+{\em all} elements of a type's interpretation, not just those that are
+interpretations of terms. It can therefore be used to reason about
+arbitrary elements of a type's interpretation, not just those that are
+interpretations of terms.
+
+In this section we give the set interpretations for types; in the next
+section we give their relational interpretations. While the set
+interpretations are relatively straightforward, their relation
+interpretations are less so, mainly because of the cocontinuity
+conditions we must impose to ensure that they are well-behaved. We
+take some effort to develop these in Section~\ref{sec:rel-interp},
+which separates Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in
+space, but otherwise has no impact on the fact that they are given by
+mutual induction.
 
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
 
@@ -2022,7 +2035,6 @@ $\Eq_\rho$ to be the relation environment such that $\Eq_\rho v =
 definition that was given informally in Section~\ref{sec:set-interp}.
 The Identity Extension Lemma can then be stated and proved as follows:
 
-{\color{blue} $\alpha$ vs. $\tau$. Strong vs. weak IEL?}
 \begin{thm}\label{thm:iel}
   If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$,
   then $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho =
@@ -2327,7 +2339,7 @@ defined as follows:
 \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin :
+\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin_H :
 Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
     \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
 \mathit{in} : T^\set_\rho (\mu T^\set_\rho) \Rightarrow \mu T^\set_\rho\\
@@ -2408,7 +2420,7 @@ defined as follows:
 \inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin :
+\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin_H :
 Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
     \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
 \mathit{in} : T_\rho (\mu T_\rho) \Rightarrow \mu T_\rho\\
@@ -2483,12 +2495,17 @@ interpretations of terms respect the judgments
 \begin{itemize}
 \item $\Gamma; \Phi~|~\Delta \vdash (L_{\ol{\alpha}}x.t)_{\ol{\tau}}s
   = t [\ol{\alpha := \tau}][x := s]$
-\item {\color{blue} $\fold\,k\,(\tin\,t) = k\, (map\,(\fold\,k) t)$????}
+\item $\fold_{H,F}\,k \circ \tin_H = k \circ
+  {\color{blue}map}\,(\fold_{H,F}\,k)$
 \end{itemize}
-The set and relational interpretations of terms therefore respect the
-congruence closed equational theory obtained by adding these judgments
-to those generating the usual congruence closed equational theory
-induced by the other term formers.
+The latter is equivalent to
+$(\fold_{H,F}\,k)_{\ol{\sigma}\ol{\tau}}\,((\tin_H)_{\ol{\sigma}\ol{\tau}}\,t)
+= k_{\ol{\sigma}\ol{\tau}}\, ({\color{blue}
+  map}\,(\fold_{H,F}\,k)_{\ol{\sigma}\ol{\tau}}\, t)$ for all
+$\ol{\sigma}$ and $\ol{\tau}$.  The set and relational interpretations
+of terms therefore respect the congruence closed equational theory
+obtained by adding these judgments to those generating the usual
+congruence closed equational theory induced by the other term formers.
 
 If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
 : \tau$, then we write $\setsem{\vdash t : \tau}$ instead of
@@ -3047,8 +3064,9 @@ natural transformation of the right type is analogous.
   {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
 \end{split}\]
 \end{itemize}
-\item We now consider $\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda
+\item {\color{blue} RE-DO $\fold$ CASE!!!} We now consider
+  $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
+  \Nat^{\overline\alpha}\,((\mu \phi.\lambda
   \overline{\beta}.H)\overline{\alpha})\,F$.
 \begin{itemize}
 \item To see that $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
@@ -3243,13 +3261,8 @@ If $\,\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{\vdash t
   : \tau},\setsem{\vdash t : \tau}) \in \relsem{\vdash \tau}$.
 \end{thm}
 
-\pagebreak
-
 {\color{blue} 
-
 \begin{itemize}  
-\item Need this conversion rule: $\fold\,k\,(\tin\,t) =
-  k\,(\map\,(\fold\,k)\,t)$?
 \item Maybe we want to show that $(\sem{\mu \alpha. F[\alpha]},
   \sem{\tin})$ is an initial $\sem{F}$-algebra in the model? See
   Birkedal and Mogelberg Section 5.4. As part of this we would have
@@ -3290,6 +3303,8 @@ these types and their Church encodings in our calculus, that's all.
 }
 
 \section{Free Theorems for Nested Types}
+
+{\color{blue} RE-DO THIS SECTION}
 
 We can use the results of Section~\ref{sec:thms} to prove interesting
 results about nested types. To this end, let $\alpha_i$ have arity
@@ -4487,7 +4502,7 @@ terms of initial algebras in $\set$.
       \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
       \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} (\pi_i\rho) \\
     &= \setsem{\Gamma;\Phi \,|\, \Delta
-      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
+      \vdash \tin_H\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
   \end{split}
   \]
 \item for $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
