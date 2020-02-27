@@ -2339,18 +2339,19 @@ defined as follows:
 \inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin_H :
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
 Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
     \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
-\mathit{in} : T^\set_\rho (\mu T^\set_\rho) \Rightarrow \mu T^\set_\rho\\
+\lambda d\,\ol{B}\, \ol{C}.\,(\mathit{in}_{T^\set_{\rho[\ol{\gamma := C}]}})_{\ol{B}}\\
 \hspace*{1.24in}(\mu \phi.\lambda {\overline \alpha}.H){\overline
   \beta} \rrbracket^\set \rho & & \\
 \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
   \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
   \phi.\lambda \overline \alpha.H)\overline \beta\;F}\rho & = & 
-\mathit{fold}_{T^\set_\rho} \circ \setsem{\Gamma;\emptyset \,|\, \Delta
-  \vdash t : \Nat^{\ol \beta, \ol \gamma}\,(H[\phi :=
-    F][\overline{\alpha := \beta}])\,F}\rho 
+\lambda d\,\ol{B}\,\ol{C}.\, (\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
+        C}]}} (\lambda \ol{A}.\, (\setsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash t : \Nat^{\ol \beta, \ol \gamma}\,H[\phi :=
+    F]\;F[\overline{\beta := \alpha}]}\rho\,d)_{\ol{A}\,\ol{C}}))_{\ol{B}}
 \end{array}\]
 \end{dfn}
 This interpretation gives that $\setsem{\Gamma;\emptyset \,|\, \Delta
@@ -2420,18 +2421,22 @@ defined as follows:
 \inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\llbracket \Gamma;\Phi \,|\, \Delta \vdash \tin_H :
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
 Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
     \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
-\mathit{in} : T_\rho (\mu T_\rho) \Rightarrow \mu T_\rho\\
+\lambda d\,\ol{R}\, \ol{S}.\,(\mathit{in}_{T^\set_{\rho[\ol{\gamma := S}]}})_{\ol{R}}\\
 \hspace*{1.24in}(\mu \phi.\lambda {\overline \alpha}.H){\overline
   \beta} \rrbracket^\rel \rho & & \\
 \relsem{\Gamma;\emptyset \,|\, \Delta \vdash
   \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
   \phi.\lambda \overline \alpha.H)\overline \beta\;F}\rho & = & 
-\mathit{fold}_{T_\rho} \circ \relsem{\Gamma;\emptyset \,|\, \Delta
-  \vdash t : \Nat^{\ol \beta, \ol \gamma}\,(H[\phi :=
-    F][\overline{\alpha := \beta}])\,F}\rho 
+\lambda d\,\ol{R}\,\ol{S}.\, (\mathit{fold}_{T_{\rho[\ol{\gamma :=
+        S}]}} (\lambda \ol{V}.\, (\relsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash t : \Nat^{\ol \beta, \ol \gamma}\,H[\phi :=
+    F]\;F[\overline{\beta := \alpha}]}\rho\,d)_{\ol{V}\,\ol{S}}))_{\ol{R}}
+%\mathit{fold}_{T_\rho} \circ \relsem{\Gamma;\emptyset \,|\, \Delta
+%  \vdash t : \Nat^{\ol \beta, \ol \gamma}\,(H[\phi :=
+%    F][\overline{\alpha := \beta}])\,F}\rho 
 \end{array}\]
 \end{dfn}
 This interpretation gives that $\relsem{\Gamma;\emptyset \,|\, \Delta
@@ -2499,9 +2504,9 @@ interpretations of terms respect the judgments
   {\color{blue}map}\,(\fold_{H,F}\,k)$
 \end{itemize}
 The latter is equivalent to
-$(\fold_{H,F}\,k)_{\ol{\sigma}\ol{\tau}}\,((\tin_H)_{\ol{\sigma}\ol{\tau}}\,t)
-= k_{\ol{\sigma}\ol{\tau}}\, ({\color{blue}
-  map}\,(\fold_{H,F}\,k)_{\ol{\sigma}\ol{\tau}}\, t)$ for all
+$(\fold_{H,F}\,k)_{\ol{\sigma}\,\ol{\tau}}\,((\tin_H)_{\ol{\sigma}\,\ol{\tau}}\,t)
+= k_{\ol{\sigma}\,\ol{\tau}}\, ({\color{blue}
+  map}\,(\fold_{H,F}\,k)_{\ol{\sigma}\,\ol{\tau}}\, t)$ for all
 $\ol{\sigma}$ and $\ol{\tau}$.  The set and relational interpretations
 of terms therefore respect the congruence closed equational theory
 obtained by adding these judgments to those generating the usual
@@ -2786,8 +2791,9 @@ only well-formed if $\Gamma; \ol{\alpha} \vdash F : \F$ and $\Gamma;
 
 To see that the family of maps comprising $\setsem{\Gamma;\Phi \,|\,
   \Delta \vdash t_{\overline \tau} s: G [\overline{\alpha := \tau}]}$
-form a natural transformation, i.e., are natural in their relation
-environment argument, we need to show that the following diagram commutes: 
+form a natural transformation, i.e., are natural in their set
+environment argument, we need to show that the following diagram
+commutes:
 \[\begin{tikzcd}
 \setsem{\Gamma;\Phi \vdash \Delta}\rho \ar[r, "{\setsem{\Gamma;\Phi
       \vdash \Delta}f}"] \ar[d, "{\langle \setsem{\Gamma;\emptyset
@@ -2930,138 +2936,161 @@ $\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
   [\overline{\alpha := \tau}]}(\pi_i\rho)
 \end{array}\]
 \end{itemize}
-\item {\color{blue} RE-DO $\tin$ CASE!!!}
-  We now consider $\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
-  \phi.\lambda {\overline \alpha}.H){\overline \tau}$.
+\item We now consider $\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}$.
 \begin{itemize}
-\item To see that $\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t :
-  (\mu \phi.\lambda {\overline \alpha}.H)\overline \tau}$ is a natural
-  transformation from $\setsem{\Gamma;\Phi \vdash \Delta}$ to
-  $\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda {\overline
-      \alpha}.H)\overline \tau}$, we first note that it has the right
-  domain and codomain. Indeed, by the induction hypothesis we have
-  that $\setsem{\Gamma;\Phi~|~\Delta \vdash t : H[\phi := \mu
-      \phi.\lambda \ol{\alpha}.H][\ol{\alpha := \tau}]}$ is a natural
-  transformation from $\setsem{\Gamma;\Phi \vdash \Delta}$ to
-  $\setsem{\Gamma;\Phi\vdash H[\phi := \mu \phi.\lambda
-      \ol{\alpha}.H][\ol{\alpha := \tau}]}$. We therefore have that,
-  for each $\rho \in \setenv$, 
-\[\begin{tikzcd}
-\setsem{\Gamma;\Phi \vdash \Delta} \rho \ar[d, "{\setsem{\Gamma;\Phi
-      \,|\, \Delta \vdash t : H[\phi := \mu \phi.\lambda {\overline
-          \alpha}.H] [\overline{\alpha :=
-          \tau}]}\rho}"]\\
-\setsem{\Gamma;\Phi \vdash H[\phi := \mu \phi.\lambda {\overline
-      \alpha}.H] [\overline{\alpha := \tau}]}\rho \ar[d, equal]\\
-\setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho [\phi := \mu
-  T_\rho^\set] [\overline{\alpha := \setsem{\Gamma;\Phi \vdash
-      \tau}\rho}] \ar[d, equal]\\
-T^\set_\rho(\mu T^\set_\rho) (\overline{\setsem{\Gamma;\Phi \vdash
-    \tau}\rho}) \ar[d, "{\tin}"]\\
-\mu T^\set_\rho (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
-\ar[d, equal]\\
-\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda {\overline
-    \alpha}.H){\overline \tau}} \rho
-\end{tikzcd}\]
-Here, the first equality is by Equations~\ref{eq:subs-var}
-and~\ref{eq:subs-const} in Lemma~\ref{lem:substitution}, the second
-equality uses the definition of $T_\rho^\set$, and the final equality
-is by Definition~\ref{def:set-sem}. The entire morphism above from
-$\setsem{\Gamma;\Phi \vdash \Delta}\rho$ to $\setsem{\Gamma;\Phi
-  \vdash (\mu \phi.\lambda \ol{\alpha}.H)\ol{\tau}}\rho$ is, by
-Definition~\ref{def:set-interp}, $\setsem{\Gamma;\Phi \,|\, \Delta
-  \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H)\overline
-  \tau}$.
-
-\vspace*{0.5in}
-
-To see that $\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
-  \phi.\lambda {\overline \alpha}.H){\overline \tau}}$ is natural, we
-first note that since, by the induction hypothesis,
-$\setsem{\Gamma;\Phi~|~\Delta \vdash t : H[\phi := \mu \phi.\lambda
-    \ol{\alpha}.H][\ol{\alpha := \tau}]}$ is natural, the following
-diagram commutes:
-\[\begin{tikzcd}
-\setsem{\Gamma;\Phi \vdash \Delta}\rho \ar[d,
-  "{\setsem{\Gamma;\Phi~|~\Delta \vdash t : H[\phi := \mu \phi.\lambda
-        \ol{\alpha}.H][\ol{\alpha := \tau}]}\rho}"'] \ar[r,
-  "{\setsem{\Gamma;\Phi \vdash \Delta}f}"]& \setsem{\Gamma;\Phi
-  \vdash \Delta}\rho' \ar[d, "{\setsem{\Gamma;\Phi~|~\Delta \vdash t :
-      H[\phi := \mu \phi.\lambda \ol{\alpha}.H][\ol{\alpha :=
-          \tau}]}\rho'}"]\\
-\setsem{\Gamma;\Phi \vdash H[\phi := \mu \phi.\lambda {\overline
-       \alpha}.H] [\overline{\alpha := \tau}]}\rho 
- \ar[r, bend left = 5, "{\setsem{\Gamma;\Phi \vdash H[\phi := \mu
-         \phi.\lambda {\overline \alpha}.H] [\overline{\alpha :=
-           \tau}]}f}"]
- &\setsem{\Gamma;\Phi \vdash H[\phi := \mu \phi.\lambda {\overline
-      \alpha}.H] [\overline{\alpha := \tau}]}\rho'\\
-\end{tikzcd}\]
-Naturality of $\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
-  \phi.\lambda {\overline \alpha}.H){\overline \tau}}$ then follows
-from the naturality of $\mathit{in}$ with respect to the set arguments
-to the functor in the third commuting square below. Indeed, for any
-morphism of set environments $f : \rho \to \rho'$, the following
-diagram commutes:
+\item To see that if $d : \setsem{\Gamma;\emptyset \vdash \emptyset}
+  \rho$ then \[\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho\,d\] is in $\setsem{\Gamma;\emptyset \vdash
+    Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho$, we first show that, for all $\ol{B}$ and $\ol{C}$,
+\[\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+\rho\,d\,\ol{B}\,\ol{C}\] does indeed map
+\[\begin{array}{ll}
+  & \setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}]\\
+%= & \setsem{\Gamma;\ol{\beta},\ol{\gamma},\ol{\alpha} \vdash H[\phi :=
+%    (\mu \phi.\lambda {\overline \alpha}.H){\overline
+%      \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha :=
+%    \setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash \beta}\rho[\ol{\beta
+%        := B}][\ol{\gamma := C}]}]\\
+\hspace{0.2in} = & \setsem{\Gamma;\ol{\beta},\ol{\gamma},\ol{\alpha} \vdash H[\phi :=
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha :=
+    B}]\\
+\hspace{0.2in} = & \setsem{\Gamma;\phi,\ol{\beta},\ol{\gamma},\ol{\alpha} \vdash H}
+\rho[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha :=
+    B}]\\ & \hspace{0.5in} [\phi := \lambda
+  \ol{D}.\,\setsem{\Gamma; \ol{\beta},\ol{\gamma},\ol{\alpha}
+    \vdash (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}}\rho[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha :=
+    B}][\ol{\beta := D}]]\\
+\hspace{0.2in} = & \setsem{\Gamma;\phi,\ol{\gamma},\ol{\alpha} \vdash H}
+\rho[\ol{\gamma := C}][\ol{\alpha := B}]\\
+  & \hspace*{0.5in}[\phi := \lambda \ol{D}.\,
+  \setsem{\Gamma; \ol{\beta},\ol{\gamma}\vdash (\mu 
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}}\rho[\ol{\beta
+      := D}][\ol{\gamma := C}]]\\
+\hspace{0.2in} = & T_{\rho[\ol{\gamma := C}]}\, (\lambda \ol{D}.\,\setsem{\Gamma;
+  \ol{\beta},\ol{\gamma}\vdash (\mu 
+  \phi.\lambda {\overline \alpha}.H){\overline \beta}}\rho[\ol{\beta
+    := D}][\ol{\gamma := C}])\, \ol{B}\\
+\hspace{0.2in} = & T_{\rho[\ol{\gamma := C}]}\, (\mu T_{\rho[\ol{\gamma := C}]}) \, \ol{B}
+\end{array}\] to
+\[\begin{array}{ll}
+ & \setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+  {\overline \alpha}.H){\overline \beta}} \rho[\ol{\beta :=
+    B}][\ol{\gamma := C}]\\
+= & (\lambda \ol{D}.\, \setsem{\Gamma;
+  \ol{\beta},\ol{\gamma}\vdash (\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}}\rho[\ol{\beta := D}][\ol{\gamma :=
+    C}]) \ol{B}\\
+= & (\mu T_{\rho[\ol{\gamma := C}]}) \, \ol{B}
+\end{array}\]
+But $(\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}}$ certainly
+does this.
 
 \vspace*{0.1in}
 
-\[\begin{tikzcd}
- \setsem{\Gamma;\Phi \vdash H[\phi := \mu \phi.\lambda {\overline
-       \alpha}.H] [\overline{\alpha := \tau}]}\rho \ar[d, equal]
- \ar[r, bend left = 5, "{\setsem{\Gamma;\Phi \vdash H[\phi := \mu
-         \phi.\lambda {\overline \alpha}.H] [\overline{\alpha :=
-           \tau}]}f}"] &\setsem{\Gamma;\Phi \vdash H[\phi := \mu
-     \phi.\lambda {\overline \alpha}.H] [\overline{\alpha :=
-       \tau}]}\rho' \ar[d,
-   equal]\\ \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho
-    [\phi := \mu T_\rho^\set] [\overline{\alpha := \setsem{\Gamma;\Phi
-          \vdash \tau}\rho}] \ar[r, bend left = 5, "{
-        \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}f [\phi :=
-          \mu \sigma_f^\set] [\overline{\alpha := \setsem{\Gamma;\Phi
-              \vdash \tau}f}] }"] \ar[d, equal]
-    &\setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho' [\phi
-      := \mu T_{\rho'}^\set] [\overline{\alpha := \setsem{\Gamma;\Phi
-          \vdash \tau}\rho'}] \ar[d, equal]\\ T^\set_\rho(\mu
-    T^\set_\rho) (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho})
-    \ar[r, "{ \sigma^\set_f(\mu \sigma^\set_f)
-        (\overline{\setsem{\Gamma;\Phi \vdash \tau}f}) }"] \ar[d,
-      "\mathit{in}_{\overline{\setsem{\Gamma;\Phi \vdash \tau}f}}"]
-    &T^\set_{\rho'}(\mu T^\set_{\rho'}) (\overline{\setsem{\Gamma;\Phi
-        \vdash \tau}\rho'}) \ar[d,
-      "\mathit{in}_{\overline{\setsem{\Gamma;\Phi \vdash
-            \tau}\rho'}}"]\\ \mu T^\set_\rho
-    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho}) \ar[r, "{ \mu
-        \sigma^\set_f (\overline{\setsem{\Gamma;\Phi \vdash \tau}f})
-      }"] \ar[d, equal] &\mu T^\set_{\rho'}
-    (\overline{\setsem{\Gamma;\Phi \vdash \tau}\rho'}) \ar[d,
-      equal]\\ \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda {\overline
-        \alpha}.H){\overline \tau}} \rho \ar[r, "{ \setsem{\Gamma;\Phi
-          \vdash (\mu \phi.\lambda {\overline \alpha}.H){\overline
-            \tau}} f }"] &\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
-      {\overline \alpha}.){\overline \tau}} \rho'
+To see that
+\[\begin{array}{ll}
+ & \setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d\\
+=& \lambda \ol{B}\,\ol{C}.\,(\mathit{in}_{T_{\rho[\ol{\gamma :=
+        C}]}})_{\ol{B}}
+\end{array}\]
+is natural in $\ol{B}$ and $\ol{C}$, we observe that the following
+diagram commutes for all $\ol{f : B \to B'}$ and $\ol{g : C \to C'}$:
+\[\begin{tikzcd}[column sep=2.5in, row sep=0.75in]
+T_{\rho[\ol{\gamma := C}]}\, (\mu T_{\rho[\ol{\gamma := C}]})\, \ol{B}
+\ar[d, "{\sigma_{\id_\rho[\ol{\gamma := g}]}\,(\mu
+    \sigma_{\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"] \ar[r,
+  "{(\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}}}" ]
+& (\mu T_{\rho[\ol{\gamma := C}]})\, \ol{B} \ar[d, "{(\mu
+    \sigma_{\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"]\\
+T_{\rho[\ol{\gamma := C'}]}\, (\mu
+T_{\rho[\ol{\gamma := C'}]})\, \ol{B} \ar[d, "{T_{\rho[\ol{\gamma :=
+          C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]})\, \ol{f}}"]
+\ar[r,"{(\mathit{in}_{T_{\rho[\ol{\gamma := C'}]}})_{\ol{B}}}" ] & 
+  (\mu T_{\rho[\ol{\gamma := C'}]})\, \ol{B}
+\ar[d,"{(\mathit{in}_{T_{\rho[\ol{\gamma := C'}]}})_{\ol{B}}}" ] 
+\\
+T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]})\,
+\ol{B'} \ar[r, "{(\mathit{in}_{T_{\rho[\ol{\gamma :=
+            C'}]}})_{\ol{B'}}}"] & (\mu T_{\rho[\ol{\gamma := C'}]})\,
+\ol{B'}
+%\ar[d, "{(\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}}}"']
+%\ar[r, "{T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma :=
+%          C'}]})\, \ol{f} \; \circ \; \sigma_{\id_\rho[\ol{\gamma :=
+%          g}]}\,(\mu \sigma_{\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"] 
+%& T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]})\,
+%\ol{B'} \ar[d, "({\mathit{in}_{T_{\rho[\ol{\gamma := C'}]}}})_{\ol{B'}}"]\\
+%(\mu T_{\rho[\ol{\gamma := C}]})\, \ol{B}  \ar[r, "{(\mu
+%    T_{\rho[\ol{\gamma := C'}]})\, \ol{f} \; \circ \; \mu
+%    \sigma_{\id_\rho[\ol{\gamma := g}]} \ol{B}}"] 
+%    & (\mu T_{\rho[\ol{\gamma := C'}]})\, \ol{B'} 
 \end{tikzcd}\]
+Indeed, naturality of $\mathit{in}$ with respect to its functor
+argument ensures that the top diagram commutes, and naturality of
+$\mathit{in}_{T_{\rho[{\ol \gamma := C'}]}}$ ensures that the bottom
+one commutes. We therefore have that $\lambda
+\ol{B}\,\ol{C}.\,(\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}}$
+is natural in $\ol{B}$ and $\ol{C}$ as desired.
 \item The proof that the relational interpretation of the same term is a
 natural transformation of the right type is analogous.
-\item Finally, to see that $\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
-  \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline
-    \tau}} \rho) = \setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t :
-  (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}}
-  (\pi_i\rho)$ we compute
+\item Finally, to see that $\pi_i(\relsem{\Gamma;\emptyset \,|\,
+  \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi :=
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}}\,\rho\,d) = \setsem{\Gamma;\emptyset
+  \,|\, \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \,
+  H[\phi := (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}}\,(\pi_i \rho)\,(\pi_i d)$ we first
+  note that $d : \relsem{\Gamma; \emptyset \vdash \emptyset}\rho$ and
+  $\pi_i d : \setsem{\Gamma; \emptyset \vdash \emptyset} (\pi_i \rho)$
+  are uniquely determined. Further, the definition of natural
+  transformations in $\rel$ ensures that, for any $\ol{R}$ and
+  $\ol{S}$,
 \[\begin{split}
-  &~\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu
-  \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho) \\
-= &~\pi_i(\mathit{in} \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t :
-  H[\phi := \mu \phi.\lambda {\overline \alpha}.H][\overline{\alpha :=
-      \tau}]} \rho)\\
-= &~\mathit{in} \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t :
-  H[\phi := \mu \phi.\lambda {\overline \alpha}.H][\overline{\alpha :=
-      \tau}]} \rho)\\
-= &~\mathit{in} \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t :
-  H[\phi := \mu \phi.\lambda {\overline \alpha}.H][\overline{\alpha :=
-      \tau}]} (\pi_i\rho)\\
-= &~\setsem{\Gamma;\Phi \,|\, \Delta \vdash \tin\,t : (\mu \phi.\lambda
-  {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
+ &~(\mathit{in}_{T_{\rho[\ol{\gamma := S}]}})_{\ol{R}}\\
+=&~((\mathit{in}_{\pi_1 (T_{\rho[\ol{\gamma := S}]})})_{\ol{\pi_1 R}}, \,
+(\mathit{in}_{\pi_2 (T_{\rho[\ol{\gamma := S}]})})_{\ol{\pi_2 R}})\\ 
+=&~((\mathit{in}_{T^\set_{(\pi_1 \rho)[\ol{\gamma := \pi_1
+        S}]}})_{\ol{\pi_1 R}}, \, (\mathit{in}_{T^\set_{(\pi_2
+    \rho)[\ol{\gamma := \pi_2 S}]}})_{\ol{\pi_2 R}})\\
+\end{split}\]
+Observing that $\pi_1$ and $\pi_2$ are surjective, we therefore have
+that
+\[\begin{split}
+ &~\pi_i(\relsem{\Gamma;\emptyset \,|\,
+  \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi :=
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}}\,\rho\,d)\\
+=&~\pi_i (\lambda \ol{R}\,\ol{S}.\, (\mathit{in}_{T_{\rho[\ol{\gamma :=
+        S}]}})_{\ol{R}}) \\ 
+=&~\lambda \ol{B}\,\ol{C}.\, (\mathit{in}_{T^\set_{(\pi_i
+      \rho)[\ol{\gamma := C}]}})_{\ol{B}} \\
+=&~\setsem{\Gamma;\emptyset \,|\,
+  \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi :=
+    (\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}}\,(\pi_i \rho)\,(\pi_i d)
 \end{split}\]
 \end{itemize}
 \item {\color{blue} RE-DO $\fold$ CASE!!!} We now consider
