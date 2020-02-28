@@ -3093,15 +3093,73 @@ that
     \alpha}.H){\overline \beta}}\,(\pi_i \rho)\,(\pi_i d)
 \end{split}\]
 \end{itemize}
-\item {\color{blue} RE-DO $\fold$ CASE!!!} We now consider
-  $\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
-  \Nat^{\overline\alpha}\,((\mu \phi.\lambda
-  \overline{\beta}.H)\overline{\alpha})\,F$.
+\item We now consider $\Gamma;\emptyset \,|\, \Delta \vdash
+  \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F$.
 \begin{itemize}
 \item To see that $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
-  \fold_{H,F}\, t : \Nat^{\overline\alpha}\,((\mu \phi.\lambda
-  \overline{\beta}.H)\overline{\alpha})\,F}$ is a natural
-  transformation from $\setsem{\Gamma;\Phi \vdash \Delta}$ to
+  \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F}$ is a natural
+  transformation from $\setsem{\Gamma;\emptyset \vdash \Delta}$ to
+  $\setsem{\Gamma;\emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
+    }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}$,
+  since the functorial part $\Phi$ of the type context is empty, we
+  need only show that, for every $\rho : \setenv$,
+  \[\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
+    \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta\;F} \rho\,d\] is a morphism in $\set$
+  from $\setsem{\Gamma;\emptyset \vdash \Delta}\rho$ to
+  $\setsem{\Gamma;\emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
+    }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}\rho$,
+  i.e., that, for any $d : \setsem{\Gamma;\emptyset \vdash \Delta}
+  \rho$, $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+    : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta\;F}\, \rho$ is a natural transformation
+  from \[\lambda \ol{B}\,\ol{C}.\, \setsem{\Gamma;
+    \ol{\beta},\ol{\alpha} \vdash (\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta}\rho[\ol{\beta := B}][\ol{\gamma := C}]\]
+  to \[\lambda \ol{B}\,\ol{C}.\, \setsem{\Gamma;
+    \ol{\beta},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
+      := C}]\] We first observe that, for any $\ol{B}$ and $\ol{C}$,
+  \[(\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+    : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta\;F}\, \rho\,d)_{\ol{B}\,\ol{C}}\] is a
+  morphism from \[\setsem{\Gamma; \ol{\beta},\ol{\alpha} \vdash (\mu
+    \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
+      B}][\ol{\gamma := C}]\] to \[\setsem{\Gamma;
+    \ol{\beta},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
+      := C}]\] Indeed, if $x : \setsem{\Gamma; \ol{\beta},\ol{\alpha}
+    \vdash (\mu \phi.\lambda \overline \alpha.H)\overline
+    \beta}\rho[\ol{\beta := B}][\ol{\gamma := C}] \;=\; (\mu
+  T^\set_{\rho[\ol{\gamma := C}]}) \ol{B}$, then 
+\[\begin{array}{ll}
+ & (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+    : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta\;F}\, \rho\,d)_{\ol{B}\,\ol{C}}\,x\\
+=& (\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
+        C}]}} (\lambda \ol{A}.\, (\setsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash t : \Nat^{\ol \beta, \ol \gamma}\,H[\phi :=
+    F][\ol{\alpha := \beta}]\;F}\rho\,d)_{\ol{A}\,\ol{C}}))_{\ol{B}}\,x\\
+:& \setsem{\Gamma;\ol{\alpha},\ol{\gamma} \vdash F}\rho[\ol{\beta :=
+    B}][\ol{\gamma := C}]
+\end{array}\]
+So 
+\[(\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t
+    : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\;F}\, \rho\,d)_{\ol{B}\,\ol{C}}\] gives a
+family of morphisms from \[\setsem{\Gamma; \ol{\beta},\ol{\alpha}
+  \vdash (\mu \phi.\lambda \overline \alpha.H)\overline
+  \beta}\rho[\ol{\beta := B}][\ol{\gamma := C}]\] to
+\[\setsem{\Gamma;\ol{\alpha},\ol{\gamma} \vdash F}\rho[\ol{\beta :=
+    B}][\ol{\gamma := C}]\]
+
+{\color{red} NEED IH FOR $t$ in above. Used it there, so note it.
+
+Follow structure for $L$-case.}
+
+HERE!!!!
+
+  
   $\setsem{\Nat^{\overline\alpha}\,((\mu \phi.\lambda
     \overline{\beta}.H)\overline{\alpha})\,F}$, since $\Phi$ is empty,
   we need only show that, for every $\rho : \setenv$,
@@ -3118,7 +3176,19 @@ that
   $\setsem{\Gamma;\Phi \vdash \Delta}$ to
   $\setsem{\Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
         \alpha}])\,F}$. Thus, for each $\rho \in \setenv$, we have
-\[\begin{tikzcd}
+
+
+Will also need:
+if $d : \setsem{\Gamma;\emptyset \vdash \Delta}
+  \rho$ then \[\setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F}\,\rho\,d\]
+  is a natural transformation
+
+
+
+
+  \[\begin{tikzcd}
 \setsem{\Gamma;\emptyset \vdash \Delta}\rho \ar[d,
   "{\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
       \Nat^{\overline\alpha}\,(H[\phi := F][\overline{\beta :=
