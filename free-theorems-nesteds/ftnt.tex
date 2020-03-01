@@ -3050,12 +3050,56 @@ $\mathit{in}_{T_{\rho[{\ol \gamma := C'}]}}$ ensures that the bottom
 one commutes. We therefore have that $\lambda
 \ol{B}\,\ol{C}.\,(\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}}$
 is natural in $\ol{B}$ and $\ol{C}$ as desired.
-\item {\color{red} extra properties for nat transfs that are set
-  interps?} 
+\item To see that $\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d$ satisfies the additional property necessary for
+  it to be in \[\setsem{\Gamma;\emptyset \vdash
+    Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}}\,\rho\]
+  let $\ol{R : \rel(B,C)}$ and $\ol{S : \rel(B',C')}$. Then
+\[\begin{array}{ll}
+ & (\,(\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d)_{\ol{B},\ol{C}},\,\\
+ & \hspace*{0.5in}(\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d)_{\ol{B'},\ol{C'}}\,)\\
+=& (\, (\mathit{in}_{T_{\rho[\ol{\gamma := C}]}})_{\ol{B}},
+(\mathit{in}_{T_{\rho[\ol{\gamma := C'}]}})_{\ol{B'}}\,)
+\end{array}\]
+has type
+\[\begin{array}{ll}
+& (\, \setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}] \to\\ 
+& \hspace*{0.5in}\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+  {\overline \alpha}.H){\overline \beta}} \rho[\ol{\beta :=
+    B}][\ol{\gamma := C}],\\
+& \hspace*{0.05in}\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\rho[\ol{\beta := B'}][\ol{\gamma := C'}] \to\\ 
+& \hspace*{0.5in}\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+  {\overline \alpha}.H){\overline \beta}} \rho[\ol{\beta :=
+    B'}][\ol{\gamma := C'}]\,)\\
+= & (\, T_{\rho[\ol{\gamma := C}]}\, (\mu T_{\rho[\ol{\gamma := C}]}) \,
+\ol{B} \to (\mu T_{\rho[\ol{\gamma := C}]}) \, \ol{B}, \, 
+T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]}) \,
+\ol{B'} \to (\mu T_{\rho[\ol{\gamma := C'}]}) \,\ol{B'} \, )\\
+= & \relsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+  \ol{\alpha}.H)\ol{\beta}} \Eq_\rho[\ol{\beta:= R}][\ol{\gamma :=S}]
+\end{array}\]
+as desired.
 \item The proof that the relational interpretation of the same term is a
-  natural transformation of the right type is analogous.
-\item {\color{red} extra properties for nat transfs that are rel
-  interps?}   
+  natural transformation of the right type is analogous. {\color{red}
+    Include proof of additional property?}
 \item Finally, to see that $\pi_i(\relsem{\Gamma;\emptyset \,|\,
   \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi :=
     (\mu \phi.\lambda {\overline \alpha}.H){\overline
@@ -3242,100 +3286,65 @@ therefore have that $\lambda
   \phi.\lambda \overline \alpha.H)\overline
   \beta\;F}\,\rho\,d)_{\ol{B}\,\ol{C}}$ is natural in $\ol{B}$ and
 $\ol{C}$ as desired.
-\item {\color{red} extra properties for nat transfs that are set
-  interps?} To see that, for every $\rho$ and $d$, the components of
-  $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
-  \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-  \alpha.H)\overline \beta\;F}\,\rho\,d$ satisfy the additional
+\item
+To see that, for every set environment $\rho$ and $d \in
+\setsem{\Gamma; \emptyset \vdash \Delta}\rho$,
+\[\setsem{\Gamma;\emptyset \,|\, \Delta \vdash \fold_{H,F}\, t :
+    \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta\;F}\,\rho\,d\] satisfies the additional
   condition necessary for it to be in $\setsem{\Gamma;\emptyset \vdash
     \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-    \alpha.H)\overline \beta\;F}\,\rho$, let $\ol{R : \rel(A,B)}$ and
-  \[\begin{array}{lll}
-  (u,v) & \in & \relsem{\Gamma;\ol{\gamma},\overline{\beta} \vdash
-  (\mu \phi.\lambda \overline \alpha.H)\overline
-    \beta}\Eq_\rho[\overline{\alpha := R}]\\
-  & = &
-(\setsem{\Gamma;\ol{\gamma},\overline{\beta} \vdash (\mu \phi.\lambda
-  \overline \alpha.H)\overline \beta}\rho[\overline{\alpha := A}],\;
-\setsem{\Gamma;\ol{\gamma},\overline{\beta} \vdash (\mu \phi.\lambda
-  \overline \alpha.H)\overline \beta}\rho[\overline{\alpha := B}])
-\end{array}\]
-We show that if $\eta\, \rho\, d$ satisfies the additional condition
-on its components necessary for it to be in $\setsem{\Gamma; \emptyset
-  \vdash \Nat^{\ol{\beta}, \ol{\gamma}}\,(H[\phi := F][\ol{\alpha :=
-      \beta}])\,F} \rho$ --- i.e., if for all $\overline{R :
-  \rel(A,B)}$ and $\ol{S : \rel(C,D)}$ we have
-\[\begin{array}{l}
-((\eta \,\rho\,d)_{\ol{A}\,\ol{C}}\,, (\eta\,\rho\,d)_{\ol{B}\,\ol{D}}) \in
+    \alpha.H)\overline \beta\;F}\,\rho$, let $\ol{R : \rel(B,C)}$ and
+  $\ol{S : \rel(B',C')}$. By the induction hypothesis,
+  \[\eta = \setsem{\Gamma;\emptyset \,|\,
+  \Delta \vdash t : \Nat^{\ol \beta, \ol \gamma}\,H[\phi :=
+    F]\;F[\overline{\beta := \alpha}]}\rho\,d\]
+  satisfies
+  the additional condition necessary for it to be in $\setsem{\Gamma;
+    \emptyset \vdash \Nat^{\ol{\beta}, \ol{\gamma}}\,(H[\phi :=
+      F][\ol{\alpha := \beta}])\,F} \rho$. Thus
+\[\begin{array}{lll}
+ (\eta_{\ol{B}\,\ol{C}}\,,
+\eta_{\ol{B'}\,\ol{C'}}) & \in & 
 \relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash H[\phi := F][\ol{\alpha
       := \beta}]}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}] \to\\
-\hspace*{2in}
+ &  & \hspace*{1in}
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma
+    := S}][\ol{\beta := R}]\\
+& = & T_{\Eq_\rho[\ol{\gamma := S}]}\;
+(\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma :=
+    S}][\ol{\beta := R}]) \to\\ 
+&  & \hspace*{1in}
 \relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma
     := S}][\ol{\beta := R}]
 \end{array}\]
---- then $\lambda d\,\ol{R}\,\ol{S}.\,
-(\mathit{fold}_{T_{\rho[\ol{\gamma := S}]}} (\lambda \ol{V}.\, \eta
-\,\rho\,d)_{\ol{V}\,\ol{S}}))_{\ol{R}}$ satisfies the addition
-condition necessary for it to be in $\setsem{\Gamma;\emptyset\vdash
-  \Nat^{\ol{\gamma},\ol{\beta}} (\mu \phi.\lambda
-  \ol{\alpha}.H)\ol{\beta} \, F}\rho$. We calculate
-
-
-{\color{red} HERE!!!!!!!!}
-
-
-
-  
-{\color{blue}
-  %We now show that if $\eta$ satisfies the additional
-  %condition on its components necessary for it to be in
-  %$\setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,(H[\phi :=
-  %    F][\overline{\beta := \alpha}])\,F}\rho$ --- i.e., if for all
-  %$\overline{R : \rel(A,B)}$ we have $(\eta_{\ol{A}}, \eta_{\ol{B}})
-  %\in \relsem{\Gamma;\ol{\alpha} \vdash H[\phi := F][\overline{\beta
-  %      := \alpha}]}\Eq_\rho[\ol{\alpha := R}] \to \relsem{\Gamma;
-  %  \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := R}]$ --- then
-%
-  %and $(x,y) \in \relsem{\Gamma;\ol{\alpha} \vdash H[\phi
-%    := F][\overline{\beta := \alpha}]}\Eq_\rho[\ol{\alpha := \_}]$ we
-%have that $(\eta_{\ol{A}} x, \eta_{\ol{B}} y) \in \relsem{\Gamma;
-%  \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := \_}]$ --- then
-  %
-  %$\mathit{fold}\,\eta$
-  %
-  %$(\mathit{fold}\,\eta_{\ol{A}},\mathit{fold}\,\eta_{\ol{B}})$
-%satisfies the additional condition necessary for it to be in
-%$\setsem{\Gamma;\emptyset \vdash \Nat^{\overline\alpha}\,((\mu
-  %  \phi.\lambda \overline{\beta}.H)\overline{\alpha})\,F}\rho$.
-
-  To
-show this, note that since $(\eta_{\ol{A}}, \eta_{\ol{B}})$ has type
+so that
 \[\begin{array}{ll}
-  & \relsem{\Gamma;\ol{\alpha} \vdash H[\phi := F][\overline{\beta :=
-      \alpha}]}\Eq_\rho[\ol{\alpha := R}] \to \relsem{\Gamma;
-  \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := R}]\\
-= & T_{\Eq_\rho}\, (\relsem{\Gamma; \ol{\alpha}
-  \vdash F}\Eq_\rho[\ol{\alpha := \_}]) \,\ol{R} \to \relsem{\Gamma;
-  \ol{\alpha} \vdash F}\Eq_\rho[\ol{\alpha := \_}] \,\ol{R}
+ & (\; \lambda \ol{Y}\,\ol{Z}.\,(\mathit{fold}_{T_\rho[\ol{\gamma := Z}]}\,(\lambda
+\ol{X}.\,\eta_{\ol{X}\,\ol{Z}})_{\ol{Y}})_{\ol{B}\,\ol{C}}, \;
+\lambda \ol{Y}\,\ol{Z}.\,(\mathit{fold}_{T_\rho[\ol{\gamma := Z}]}\,(\lambda
+\ol{X}.\,\eta_{\ol{X}\,\ol{Z}})_{\ol{Y}})_{\ol{B'}\,\ol{C'}}\;)\\
+= & (\; \mathit{fold}_{T_\rho[\ol{\gamma := C}]}\,(\lambda
+\ol{X}.\,\eta_{\ol{X}\,\ol{C}})_{\ol{B}}, \;
+\mathit{fold}_{T_\rho[\ol{\gamma := C'}]}\,(\lambda
+\ol{X}.\,\eta_{\ol{X}\,\ol{C'}})_{\ol{B'}}\; )
 \end{array}\]
-we have that $(\mathit{fold}\, \eta)_{\ol{R}} =
-((\mathit{fold}\,\eta)_{\ol{A}}, (\mathit{fold}\,\eta)_{\ol{B}}) =
-(\mathit{fold}\,\eta_{\ol{A}}, \mathit{fold}\,\eta_{\ol{B}})$ has type
+has type
 \[\begin{array}{ll}
-& (\mu T_{\Eq_\rho}) \,\ol{R} \to \relsem{\Gamma;\ol{\alpha} \vdash
-  F}\rho[\ol{\alpha := R}]\\
-= & (\mu T_{\Eq_\rho})\,\ol{\relsem{\Gamma;\ol{\alpha}
-  \vdash \alpha}\Eq_\rho[\ol{\alpha := R}]} \to
-  \relsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := R}]\\
-= & \relsem{\Gamma; \ol{\alpha} \vdash (\mu \phi. \lambda
-  \ol{\beta}. H)\ol{\alpha}}\Eq_\rho[\ol{\alpha := R}] \to
-  \relsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha := R}]
+  & (\mu T_{\Eq_\rho[\ol{\gamma := S}]}) \,\ol{R} \to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & (\mu T_{\Eq_\rho[\ol{\gamma :=
+      S}]})\,\ol{\relsem{\Gamma;\ol{\gamma},\ol{\beta} 
+  \vdash \beta}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}]} \to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & \relsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash (\mu \phi. \lambda
+  \ol{\alpha}. H)\ol{\beta}}\Eq_\rho[\ol{\gamma := S}][\ol{\alpha := R}] \to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]
 \end{array}\]
 as desired.
-
-}
-
-  
 \item The proofs that the relational interpretation of the same term
   has the right type, and that if $\eta$ satisfies the additional
   condition on its components necessary for it to be in
@@ -3345,6 +3354,7 @@ as desired.
   for it to be in $\relsem{\Gamma;\emptyset \vdash
     \Nat^{\overline\alpha}\,((\mu \phi.\lambda
     \overline{\beta}.H)\overline{\alpha})\,F}\rho$, are analogous.
+  {\color{red} Include proof of additional property?}
 
 \vspace*{0.1in}
 
@@ -3385,9 +3395,6 @@ surjective.
 \end{itemize}  
 \end{itemize}
 \end{proof}
-
-\vspace*{1in}
-
 
 The Abstraction Theorem is now the special case of
 Theorem~\ref{thm:at-gen} for closed terms of close type:
@@ -3445,7 +3452,6 @@ these types and their Church encodings in our calculus, that's all.
 We can use the results of Section~\ref{sec:thms} to prove interesting
 results about nested types. To this end, let $\alpha_i$ have arity
 $n_i$ for $i = 1,...,k$,
-%let $R_i : \rel^{n_i} \to \rel$ for $i = 1,...,k$,
 and suppose further that $\emptyset;\bm \alpha \vdash E : \F$, that $F
 = \lambda \bm A. \setsem{\emptyset;\bm \alpha \vdash E}[\bm \alpha :=
   \bm A]$, and that $F^* = \lambda \bm R. \relsem{\emptyset;\bm \alpha
@@ -3468,10 +3474,7 @@ and suppose further that $\emptyset;\bm \alpha \vdash E : \F$, that $F
 %    H^1,F^*H^*)}$. So this is what's happening for type constructor
 %  variables of arity greater than $0$.}
 
-{\color{red} The next proposition is the only place where we use the
-  syntactic structure of $E$.}
-
-{\color{red} Propagate contexts?}
+{\color{red} Propagate contexts}
 \begin{prop}\label{prop:factoid1}
 If $(\beta_i, \gamma_i) \in \Hom_{\rel^{n_i}}(R_i, R_i')$ for $i =
 1,...,k$, then $(F\bm \beta, F \bm \gamma) \in \Hom_\rel(F^* \bm R,
