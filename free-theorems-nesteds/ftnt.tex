@@ -2665,61 +2665,59 @@ term $t$ ensures that
 \Eq_{\rho}[\overline{\alpha := R}]  
 \end{array}\]
 Here, the second equality is by $(*)$.  
-\item {\color{red} Perhaps change this bullet point just to say ``The
-  proofs that $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
-    L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}$ is
-  a natural transformation from $\relsem{\Gamma;\emptyset \vdash
+\item The proofs that $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}$ is a
+  natural transformation from $\relsem{\Gamma;\emptyset \vdash
     \Delta}$ to $\relsem{\Gamma;\emptyset \vdash
     \Nat^{\overline{\alpha}} \,F \,G}$ and that, for all $\rho :
   \relenv$ and $d : \relsem{\Gamma;\emptyset \vdash \Delta}$,
-  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
-    x.t : \Nat^{\overline{\alpha}} \,F \,G}\,\rho\,d$ is a natural
+  \[\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+    x.t : \Nat^{\overline{\alpha}} \,F \,G}\,\rho\,d\] is a natural
   transformation from $\relsem{\Gamma;\ol{\alpha} \vdash
     F}\rho[\ol{\alpha := \_}]$ to $\relsem{\Gamma;\ol{\alpha} \vdash
-    G}\rho[\ol{\alpha := \_}]$ that satisfies the additional condition
-  necessary for it to be in $\relsem{\Gamma;\emptyset \vdash
-    \Nat^{\overline{\alpha}} \,F \,G}\rho$, are analogous.''}  To see that
-  $\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
-  x.t : \Nat^{\overline{\alpha}} \,F \,G}$ is a natural transformation
-  from $\relsem{\Gamma;\emptyset \vdash \Delta}$ to
-  $\relsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}$,
-  since the functorial part $\Phi$ of the type context is empty, we
-  need only show that, for every $\rho : \relenv$,
-  $\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
-    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho$ is a morphism in
-  $\rel$ from $\setsem{\Gamma; \emptyset \vdash \Delta}\rho$ to
-  $\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
-    \,G}\rho$. The proof is similar to that in the previous bullet
-  point for the set semantics. The only difference is in the
-  additional condition on the components of the natural transformation
-\[ \eta \, = \, \curry\, (\relsem{\Gamma;\overline{\alpha}
-  \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\,d\]
-for $d : \relsem{\Gamma;\emptyset \vdash \Delta}\rho$ that must be
-verified to know that $\eta$ is in $\relsem{\Gamma;\emptyset \vdash
-  \Nat^{\overline{\alpha}} \,F \,G}\rho$. For that, let $\overline{R :
-  \rel(A,B)}$ and
-\[(u,v) \in \relsem{\Gamma;\overline{\alpha} \vdash
-  F} \rho[\overline{\alpha := R}] = (\setsem{\Gamma;\overline{\alpha}
-  \vdash F} (\pi_1\rho)[\overline{\alpha := A}],
-\setsem{\Gamma;\overline{\alpha} \vdash F}
-(\pi_2\rho)[\overline{\alpha := B}])\]
-Then the induction hypothesis on the term $t$ ensures that
-\[ \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
-\rho[\overline{\alpha := R}] \,: \, \relsem{\Gamma;\overline{\alpha}
-  \vdash \Delta, x : F} \rho[\overline{\alpha := R}] \to
-\relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha :=
-    R}]\]
-and
-\[\eta_{\ol{R}} = ((\pi_1\eta)_{\ol{A}}, (\pi_1\eta)_{\ol{B}})\]
-so that
-\[\begin{array}{ll}
-  & ((\pi_1\eta)_{\ol{A}} u,(\pi_2\eta)_{\ol{B}} v)\\
-= & \eta_{\ol{R}}(u,v)\\
-= & \curry\,\relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F
-  \vdash t: G} \rho[\overline{\alpha := R}]\,d\,(u,v)\\
-: & \relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha
-    := R}]
-\end{array}\]
+    G}\rho[\ol{\alpha := \_}]$, are analogous.
+  %To see that
+  %$\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+  %  x.t : \Nat^{\overline{\alpha}} \,F \,G}$ is a natural
+  %transformation from $\relsem{\Gamma;\emptyset \vdash \Delta}$ to
+  %$\relsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}$,
+  %since the functorial part $\Phi$ of the type context is empty, we
+  %need only show that, for every $\rho : \relenv$,
+  %$\setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+  %  x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho$ is a morphism in
+  %$\rel$ from $\setsem{\Gamma; \emptyset \vdash \Delta}\rho$ to
+  %$\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
+  %  \,G}\rho$. The proof is similar to that in the previous bullet
+  %point for the set semantics. The only difference is in the
+  %additional condition on the components of the natural transformation
+%\[ \eta \, = \, \curry\, (\relsem{\Gamma;\overline{\alpha}
+%  \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\,d\]
+%for $d : \relsem{\Gamma;\emptyset \vdash \Delta}\rho$ that must be
+%verified to know that $\eta$ is in $\relsem{\Gamma;\emptyset \vdash
+%  \Nat^{\overline{\alpha}} \,F \,G}\rho$. For that, let $\overline{R :
+%  \rel(A,B)}$ and
+%\[(u,v) \in \relsem{\Gamma;\overline{\alpha} \vdash
+%  F} \rho[\overline{\alpha := R}] = (\setsem{\Gamma;\overline{\alpha}
+%  \vdash F} (\pi_1\rho)[\overline{\alpha := A}],
+%\setsem{\Gamma;\overline{\alpha} \vdash F}
+%(\pi_2\rho)[\overline{\alpha := B}])\]
+%Then the induction hypothesis on the term $t$ ensures that
+%\[ \relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F \vdash t: G}
+%\rho[\overline{\alpha := R}] \,: \, \relsem{\Gamma;\overline{\alpha}
+%  \vdash \Delta, x : F} \rho[\overline{\alpha := R}] \to
+%\relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha :=
+%    R}]\]
+%and
+%\[\eta_{\ol{R}} = ((\pi_1\eta)_{\ol{A}}, (\pi_1\eta)_{\ol{B}})\]
+%so that
+%\[\begin{array}{ll}
+%  & ((\pi_1\eta)_{\ol{A}} u,(\pi_2\eta)_{\ol{B}} v)\\
+%= & \eta_{\ol{R}}(u,v)\\
+%= & \curry\,\relsem{\Gamma;\overline{\alpha} \,|\, \Delta, x : F
+%  \vdash t: G} \rho[\overline{\alpha := R}]\,d\,(u,v)\\
+%: & \relsem{\Gamma;\overline{\alpha} \vdash G} \rho[\overline{\alpha
+%    := R}]
+%\end{array}\]
 \item Finally, to see that $\pi_i(\relsem{\Gamma;\emptyset \,|\,
   \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline\alpha} \,F
   \,G}\rho) = \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
@@ -2923,11 +2921,11 @@ that $\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
 \eta_{\setsem{\Gamma;\Phi \vdash \tau}\rho'} \,\circ\,
 \setsem{\Gamma;\Phi \vdash F[\ol{\alpha := \tau}]}f$, as desired.
 
-\item {\color{red} The proof that $\relsem{\Gamma;\Phi \,|\, \Delta
-    \vdash t_{\bf \tau} s: G [\overline{\alpha := \tau}]}$ is a
-  natural transformation from $\relsem{\Gamma;\Phi \vdash \Delta}$ to
-  $\relsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}$
-is analogous.}
+\item The proof that $\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf
+    \tau} s: G [\overline{\alpha := \tau}]}$ is a natural
+  transformation from $\relsem{\Gamma;\Phi \vdash \Delta}$ to
+  $\relsem{\Gamma;\Phi \vdash G [\overline{\alpha := \tau}]}$ is
+  analogous.
 \item Finally, to see that $\pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
   \vdash t_{\bf \tau} s: G [\overline{\alpha := \tau}]}\rho) =
   \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s: G
@@ -3078,7 +3076,7 @@ one commutes.
       {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
     \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
       \beta}}\,\rho\]
-  let $\ol{R : \rel(B,C)}$ and $\ol{S : \rel(B',C')}$. Then
+  let $\ol{R : \rel(B,B')}$ and $\ol{S : \rel(C,C')}$. Then
 \[\begin{array}{ll}
  & (\,(\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash
   \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
@@ -3111,10 +3109,16 @@ has type
 \ol{B} \to (\mu T_{\rho[\ol{\gamma := C}]}) \, \ol{B}, \, 
 T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]}) \,
 \ol{B'} \to (\mu T_{\rho[\ol{\gamma := C'}]}) \,\ol{B'} \, )\\
-= & \relsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
-  \ol{\alpha}.H)\ol{\beta}} \Eq_\rho[\ol{\beta:= R}][\ol{\gamma :=S}]
+= & \relsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\Eq_\rho[\ol{\beta := R}][\ol{\gamma := S}] \to \\
+=& \hspace*{0.5in} \relsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu
+  \phi.\lambda \ol{\alpha}.H)\ol{\beta}} \Eq_\rho[\ol{\beta:=
+    R}][\ol{\gamma :=S}] 
 \end{array}\]
-\item {\color{red} The proofs that $\relsem{\Gamma;\emptyset \,|\,
+
+
+\item The proofs that $\relsem{\Gamma;\emptyset \,|\,
     \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi
       := (\mu \phi.\lambda {\overline \alpha}.H){\overline
         \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
@@ -3136,11 +3140,7 @@ T_{\rho[\ol{\gamma := C'}]}\, (\mu T_{\rho[\ol{\gamma := C'}]}) \,
       := S}]$ to $\lambda \ol{R}\,\ol{S}.\,\relsem{\Gamma;
     \ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda {\overline
       \alpha}.H){\overline \beta}}\rho[\ol{\beta := R}][\ol{\gamma :=
-      S}]$ that satisfies the additional condition necessary for it to
-  be in $\relsem{\Gamma;\emptyset \vdash Nat^{\ol{\beta},\ol{\gamma}}
-    \, H[\phi := (\mu \phi.\lambda {\overline \alpha}.H){\overline
-        \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
-      \alpha}.H){\overline \beta}}\rho$, are analogous.}
+      S}]$, are analogous.
 \item Finally, to see that $\pi_i(\relsem{\Gamma;\emptyset \,|\,
   \emptyset \vdash \tin_H : Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi :=
     (\mu \phi.\lambda {\overline \alpha}.H){\overline
@@ -3311,11 +3311,11 @@ observe that the following diagram commutes for all $\ol{f : B \to
  \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
     C'}][\ol{\beta := B}]\ar[d, "{\setsem{\Gamma;
       \ol{\beta},\ol{\gamma} \vdash F}\id_\rho[\ol{\gamma := 
-    C'}][\ol{\beta := f}]}"]\\
+    \id_{C'}}][\ol{\beta := f}]}"]\\
  (\mu T^\set_{\rho[\ol{\gamma := C'}]})\, \ol{B'} 
 \ar[r,"{(\mathit{fold}_{T^\set_{\rho[\ol{\gamma := C'}]}}\,t_{\ol{C'}})_{\ol{B'}}\,}" ] & 
  \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
-    \id_{C'}}][\ol{\beta := B'}]
+    C'}][\ol{\beta := B'}]
 \end{tikzcd}\]
 Indeed, naturality of $\mathit{fold}$ with respect to its functor and
 function arguments ensures that the top diagram commutes and
@@ -3335,11 +3335,11 @@ To see that, for every set environment $\rho$ and $d \in
     \alpha.H)\overline \beta\;F}\,\rho\,d\] satisfies the additional
   condition necessary for it to be in $\setsem{\Gamma;\emptyset \vdash
     \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-    \alpha.H)\overline \beta\;F}\,\rho$, let $\ol{R : \rel(B,C)}$ and
-  $\ol{S : \rel(B',C')}$. By the induction hypothesis,
+    \alpha.H)\overline \beta\;F}\,\rho$, let $\ol{R : \rel(B,B')}$ and
+  $\ol{S : \rel(C,C')}$. By the induction hypothesis,
   \[\eta = \setsem{\Gamma;\emptyset \,|\,
   \Delta \vdash t : \Nat^{\ol \beta, \ol \gamma}\,H[\phi :=
-    F]\;F[\overline{\beta := \alpha}]}\rho\,d\]
+    F][\ol{\alpha := \beta}]\;F}\rho\,d\]
   satisfies
   the additional condition necessary for it to be in $\setsem{\Gamma;
     \emptyset \vdash \Nat^{\ol{\beta}, \ol{\gamma}}\,(H[\phi :=
@@ -3386,7 +3386,7 @@ has type
     S}][\ol{\beta:= R}]
 \end{array}\]
 as desired.
-\item {\color{red} The proofs that $\relsem{\Gamma;\emptyset \,|\,
+\item The proofs that $\relsem{\Gamma;\emptyset \,|\,
     \Delta \vdash \fold_{H,F}\, t : \Nat^{{\ol{\beta},\ol{\gamma}}
     }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}$ is a
   natural transformation from $\relsem{\Gamma;\emptyset \vdash
@@ -3402,11 +3402,7 @@ as desired.
     \phi.\lambda {\overline \alpha}.H){\overline \beta}}\rho[\ol{\beta
       := R}][\ol{\gamma := S}]$ to\\ $\lambda
   \ol{R}\,\ol{S}.\,\relsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash
-    F}\rho[\ol{\beta := R}][\ol{\gamma := S}]$ that satisfies the
-  additional condition necessary for it to be in $\relsem{\Gamma;
-    \emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
-    \phi.\lambda \overline \alpha.H)\overline \beta\;F}\,\rho$, are
-  analogous.}
+    F}\rho[\ol{\beta := R}][\ol{\gamma := S}]$, are analogous.
 
 \item Finally, to see that
 \[\begin{array}{ll}
