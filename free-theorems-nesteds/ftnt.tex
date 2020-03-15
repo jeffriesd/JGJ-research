@@ -3103,8 +3103,7 @@ this we show that for all $\ol{\eta : \setsem{\Gamma; \emptyset
 : & \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi
       :=_{\ol{\beta}} F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]} \rho
 \end{array}\]
-To this end, we note that, for any $\ol{B}$ and all $\ol{\eta :
-  \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}}$,
+To this end, we note that, for any $\ol{B}$, 
 \[\begin{array}{ll}
   & (\setsem{\Gamma; \emptyset~|~\emptyset \vdash
 \map^{\ol{F},\ol{G}}_H :
@@ -3118,7 +3117,7 @@ is indeed a morphism from
 \[\begin{array}{ll}
   & \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
       := B}]\\
-= & \setsem{\Gamma ;\ol{\gamma}\;\ol{\phi} \vdash H}\rho[\ol{\gamma
+= & \setsem{\Gamma ;\ol{\gamma},\ol{\phi} \vdash H}\rho[\ol{\gamma
       := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
         \ol{\gamma},\ol{\beta} \vdash F}\rho[\ol{\gamma :=
           B}][\ol{\beta := A}]}]
@@ -3127,14 +3126,20 @@ to
 \[\begin{array}{ll}
   & \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
       := B}]\\
-= & \setsem{\Gamma ;\ol{\gamma}\;\ol{\phi} \vdash H}\rho[\ol{\gamma
+= & \setsem{\Gamma ;\ol{\gamma},\ol{\phi} \vdash H}\rho[\ol{\gamma
       := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
         \ol{\gamma},\ol{\beta} \vdash G}\rho[\ol{\gamma :=
           B}][\ol{\beta := A}]}]
 \end{array}\]
-{\color{red} Does this use Enrico's proof that 
-$\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}$ acts like
-  $\mathit{map}$ semantically?}
+{\color{red} since $\setsem{\Gamma ;\ol{\phi}, \ol{\gamma} \vdash H}$
+  is a functor from $\setenv$ to $\set$ by~\cite{jp19} and
+  $\id_{\rho[\ol{\gamma := B}]}[\ol{\phi := \lambda
+      \ol{A}. \eta_{\ol{A}\,\ol{B}}}]$ is a morphism in $\setenv$ from
+  $\rho[\ol{\gamma := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
+        \ol{\gamma},\ol{\beta} \vdash F}\rho[\ol{\gamma :=
+          B}][\ol{\beta := A}]}]$ to $\rho[\ol{\gamma := B}][\ol{\phi
+      := \lambda \ol{A}.\setsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash
+        G}\rho[\ol{\gamma := B}][\ol{\beta := A}]}]$. }
 
 \vspace*{0.1in}
 
@@ -3160,8 +3165,9 @@ $\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H :
 & \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
       := B'}] 
 \end{tikzcd}\]
-This diagram commutes by {\color{red} Enrico's proof that interp of
-  map is natural?} We therefore have that 
+This diagram commutes by {\color{red} the facts that $\setsem{\Gamma;
+    ol{\phi}, \ol{\gamma} \vdash H}$ is a functor from $\setenv$ to
+  $\set$, and that ???} We therefore have that
 \[\lambda \ol{B}.\, \setsem{\Gamma; \emptyset~|~\emptyset \vdash
   \map^{\ol{F},\ol{G}}_H :
   \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\; 
