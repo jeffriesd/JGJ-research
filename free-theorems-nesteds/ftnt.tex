@@ -3603,30 +3603,39 @@ is itself a natural transformation from
 \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma},\ol{\alpha}  
   \vdash H[\phi := F]}\rho[\ol{\beta := B}][\ol{\gamma :=
     C}][\ol{\alpha := B}]\\ 
-= & \lambda \ol{B}\,\ol{C}\,\ol{A}.\, \setsem{\Gamma;
+= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
   \ol{\beta},\ol{\gamma},\ol{\alpha},\phi \vdash H}\rho
 [\ol{\beta := B}][\ol{\gamma :=
     C}][\ol{\alpha := B}]\\
  & \hspace*{0.5in}[\phi := \setsem{\Gamma;\ol{\beta},
     \ol{\gamma},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
-      := C}][\ol{\alpha := B}][\ol{\beta := A}]]\\ 
-= & \lambda \ol{B}\,\ol{C}\,\ol{A}.\, \setsem{\Gamma;
+      := C}][\ol{\alpha := B}][\ol{\beta := A}]])\,{\ol{B}}\\ 
+= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
   \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
     C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
-    \ol{\gamma} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
-      := C}][\ol{\beta := A}]]\\ 
-= & \lambda \ol{B}\,\ol{C}\,\ol{A}.\, \setsem{\Gamma;
+    \ol{\gamma}\vdash F}\rho[\ol{\gamma := C}][\ol{\beta := A}]])\,{\ol{B}}\\ 
+= & \lambda \ol{B}\,\ol{C}.\, \setsem{\Gamma;
   \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
-    C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;
+    C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
+    \ol{\gamma} \vdash F}\rho[\ol{\gamma
+      := C}][\ol{\beta := B}]])\\ 
+%= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
+%  \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
+%    C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
+%    \ol{\gamma} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
+%      := C}][\ol{\beta := A}]])_{\ol{B}}\\ 
+= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
+  \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
+    C}][\ol{\alpha := A}][\phi := \setsem{\Gamma;
     \ol{\gamma},\ol{\beta} \vdash F}\rho[\ol{\gamma := C}][\ol{\beta
-      := A}]]\\ 
+      := B}]])\,{\ol{B}}\\ 
 =& \lambda \ol{B}\,\ol{C}.\,T^\set_{\rho[\ol{\gamma:=
       C}]}\,(\setsem{\Gamma;\ol{\beta},\ol{\gamma} 
-  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}])
+  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}])\, \ol{B}
 \end{array}\]
 to 
 \[\lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma}
-  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}]\] so that if $x :
+  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}]\] Thus, if $x :
 \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
   \overline \alpha.H)\overline \beta}\rho[\ol{\beta := B}][\ol{\gamma
     := C}]\;=\;(\mu T^\set_{\rho[\ol{\gamma := C}]}) \ol{B}$, then
@@ -3636,7 +3645,7 @@ to
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
   (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
   \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\,x\\
-= & (\mathit{fold}_{T^\set_{\rho[{\gamma : C}]}}\,(\lambda
+= & (\mathit{fold}_{T^\set_{\rho[{\gamma := C}]}}\,(\lambda
 \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}\,x\\  
 :&\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\beta :=
     B}][\ol{\gamma := C}]
@@ -3680,12 +3689,11 @@ $\ol{f : B \to B'}$ and $\ol{g : C \to C'}$:
  \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
     C'}][\ol{\beta := B'}]
 \end{tikzcd}\]
-Indeed, naturality of $\mathit{fold}$ with respect to its functor and
-function arguments ensures that the top diagram commutes, and
+Indeed, {\color{red} naturality of $\mathit{fold}$ with respect to its functor and
+function arguments??} ensures that the top diagram commutes, and
 naturality of $\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
-        C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}})$ and
-$\eta_{\ol{B}\,\ol{C'}}$ ensures that the bottom one commutes.  We
-therefore have that
+        C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}})$ ensures that
+the bottom one commutes.  We therefore have that
 \[\lambda \ol{B}\,\ol{C}.\,(\setsem{\Gamma; \emptyset~|~\emptyset
   \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta},
     \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
@@ -3729,7 +3737,6 @@ i.e., since
     := S}][\ol{\beta := R}]
 \end{array}\]
 --- we have that
-{\color{red} FIX!}
 \[\begin{array}{ll}
  & (\,(\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
         C}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}},\,
