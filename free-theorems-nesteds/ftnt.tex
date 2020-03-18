@@ -3580,7 +3580,7 @@ $\eta : \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
   \emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda
   \overline \alpha.H)\overline \beta\,F}\,\rho
 \end{array}\]
-To this end we note that, for any $\ol{B}$ and $\ol{C}$,
+To this end we show that, for any $\ol{B}$ and $\ol{C}$,
 \[(\setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
   \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
@@ -3618,7 +3618,7 @@ is itself a natural transformation from
   \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
     C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
     \ol{\gamma} \vdash F}\rho[\ol{\gamma
-      := C}][\ol{\beta := B}]])\\ 
+      := C}][\ol{\beta := B}]])\\
 = & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
   \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
     C}][\ol{\alpha := A}][\phi := \setsem{\Gamma;
@@ -3626,7 +3626,7 @@ is itself a natural transformation from
       := B}]])\,{\ol{B}}\\ 
 =& \lambda \ol{B}\,\ol{C}.\,T^\set_{\rho[\ol{\gamma:=
       C}]}\,(\setsem{\Gamma;\ol{\beta},\ol{\gamma} 
-  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}])\, \ol{B}
+  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}])\, \ol{B}\\
 \end{array}\]
 to 
 \[\lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma}
