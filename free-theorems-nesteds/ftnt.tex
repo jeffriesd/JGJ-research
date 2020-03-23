@@ -1,4 +1,5 @@
-% For double-blind review submission, w/o CCS and ACM Reference (max submission space)
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
 \documentclass[acmsmall,review,anonymous]{acmart}
 \settopmatter{printfolios=true,printccs=false,printacmref=false}
 %% For double-blind review submission, w/ CCS and ACM Reference
@@ -1691,13 +1692,13 @@ morphism of set environments.
 \begin{gather}\label{eq:subs-const}
 \setsem{\Gamma; \Phi \vdash F[\phi := H]}\rho
 = \setsem{\Gamma; \Phi, \phi \vdash F}\rho
-[\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash
-    H}\rho[\overline{\alpha := \text{--}}]] \\ 
+[\phi := \lambda \ol{A}.\, \setsem{\Gamma;\Phi,\overline{\alpha}\vdash
+    H}\rho[\overline{\alpha := A}]] \\ 
 \intertext{and}\label{eq:subs-const-morph}
 \setsem{\Gamma; \Phi \vdash F[\phi := H]}f
 = \setsem{\Gamma; \Phi, \phi \vdash F}f
-[\phi := \setsem{\Gamma;\Phi,\overline{\alpha}\vdash
-    H}f[\overline{\alpha := \text{--}}]] 
+[\phi := \lambda \ol{A}.\,\setsem{\Gamma;\Phi,\overline{\alpha}\vdash
+    H}f[\overline{\alpha := \id_{\ol{A}}}]] 
 \end{gather}
 \end{itemize}
 Analogous identities hold for relation environments and morphisms
