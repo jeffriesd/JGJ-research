@@ -863,17 +863,37 @@ of morphisms between these (or any) two objects because $\set$ is
 locally small.
 
 In order to make sense of the last clause in
-Definition~\ref{def:set-sem}, we need to know that $T^\set_{\rho}$ is
-an $\omega$-cocontinuous endofunctor on $[\set^k, \set]$, so that it
-admits a fixed point.  Since $T_\rho^\set$ is defined in terms of
-$\setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash H}$, this means that set
-interpretations of types must be functors.  This in turn means that
-the actions of set interpretations of types on objects and on
-morphisms in $\setenv$ are intertwined.  In fact, we know
-from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash \tau :
-\F$, $\setsem{\Gamma; \ol{\alpha} \vdash \tau}$ is actually functorial
-in $\ol{\alpha}$ and $\omega$-cocontinuous.  What remains is to define
-the actions of each of these functors on morphisms between
+Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
+\setenv$, $T^\set_{\rho}$ is an $\omega$-cocontinuous endofunctor on
+$[\set^k, \set]$, and thus admits a fixed point.  Since $T_\rho^\set$
+is defined in terms of $\setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash
+  H}$, this means that set interpretations of types must be
+$\omega$-cocontinuous functors.  This in turn means that the actions
+of set interpretations of types on objects and on morphisms in
+$\setenv$ are intertwined.  In fact, we know from~\cite{jp19} that,
+for every $\Gamma; \ol{\alpha} \vdash \tau : \F$, $\setsem{\Gamma;
+  \ol{\alpha} \vdash \tau}$ is actually functorial in $\ol{\alpha}$
+and $\omega$-cocontinuous.
+
+In fact, for each $\setsem{\Gamma; \Phi, \phi^k, \ol{\alpha} \vdash
+  H}$, the corresponding operator $T^\set$ {\color{blue} Should be
+  $T^\set_H$, really, and similarly throughout.} can be extended to a
+{\em functor} from $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The
+action of $T^\set$ on an object $\rho \in \setenv$ is given by the
+higher-order functor $T_\rho^\set$, whose actions on objects (functors
+from $\set^k$ to $\set$) and morphisms (natural transformations
+between such functors) are as defined in
+Definition~\ref{def:set-sem}. The action of $T^\set$ on a morphism $f
+: \rho \to \rho'$ is the higher-order natural transformation
+{\color{blue} May want to use $T^\set_{H,f}$ rather than $\sigma^\set_f$
+  in final version.} $\sigma^\set_f : T^\set_\rho \to T^\set_{\rho'}$
+whose action on any $F : [\set^k,\set]$ is the natural transformation
+$\sigma^\set_f\, F : T^\set_\rho\,F \to T^\set_{\rho'}\,F$ whose
+component at $\ol{A}$ is
+\[(\sigma^\set_f \, F)_{\ol{A}}  =  \setsem{\Gamma;
+  \Phi,\phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
+    \id_A}]\] The next definition uses this observation to define the
+action of each functor interpreting a type on morphisms between
 environments.
 
 \begin{dfn}\label{def:set-sem-funcs}
@@ -929,10 +949,11 @@ is given as follows:
   \setsem{\Gamma;\Phi \vdash \sigma}f \times \setsem{\Gamma;\Phi \vdash
     \tau}f$.
 \item If $\Gamma;\Phi \vdash (\mu \phi.\lambda
-  \ol{\alpha}. H)\ol{\tau}$ then letting $\sigma^\set_f : T^\set_\rho
-  \to T^\set_{\rho'}$ be the map
-\[ F \mapsto \lambda \ol{A}. \setsem{\Gamma;\Phi,\phi,\ol{\alpha} \vdash
-  H}f[\phi := \id_F][\ol{\alpha := \id_A}] \] 
+  \ol{\alpha}. H)\ol{\tau}$
+%  then letting $\sigma^\set_f : T^\set_\rho
+%  \to T^\set_{\rho'}$ be the map
+%\[ F \mapsto \lambda \ol{A}. \setsem{\Gamma;\Phi,\phi,\ol{\alpha} \vdash
+%  H}f[\phi := \id_F][\ol{\alpha := \id_A}] \] 
 we define
 \[\begin{array}{cl}
  & \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
@@ -971,7 +992,7 @@ commutes:
 \end{equation}
 \end{itemize}
 \end{dfn}
-The interpretation of $\Nat$-types ensures that if $\Gamma \vdash
+The interpretation of $\Nat$ types ensures that if $\Gamma \vdash
 \sigma \to \tau$ then $\setsem{\Gamma\vdash \sigma \to \tau}f =
 \id_{\setsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected.
 
