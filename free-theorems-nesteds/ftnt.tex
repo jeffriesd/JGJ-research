@@ -3613,10 +3613,14 @@ is a morphism from
     \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
     B}][\ol{\gamma := C}]\,=\,(\mu T^\set_{\rho[\ol{\gamma := C}]})
 \ol{B}\] to \[\setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash
-  F}\rho[\ol{\beta := B}][\ol{\gamma := C}]\] To see this, we use
+  F}\rho[\ol{\beta := B}][\ol{\gamma := C}]
+%= (\lambda \ol{A}.\,
+%\setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash
+%  F}\rho[\ol{\beta := A}][\ol{\gamma := C}])\,\ol{B}
+\] To see this, we use
 Equations~\ref{eq:subs-var} and~\ref{eq:subs-const} for the first and
 second equalities below, together with weakening, to see that $\eta$
-is itself a natural transformation from
+is itself a natural transformation from {\color{red} FIX!}
 \[\begin{array}{ll}
  & \lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma; \ol{\beta},\ol{\gamma}
   \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho[\ol{\beta :=
@@ -3625,33 +3629,26 @@ is itself a natural transformation from
 \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma},\ol{\alpha}  
   \vdash H[\phi := F]}\rho[\ol{\beta := B}][\ol{\gamma :=
     C}][\ol{\alpha := B}]\\ 
-= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
+= & \lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma;
   \ol{\beta},\ol{\gamma},\ol{\alpha},\phi \vdash H}\rho
-[\ol{\beta := B}][\ol{\gamma :=
-    C}][\ol{\alpha := B}]\\
- & \hspace*{0.5in}[\phi := \setsem{\Gamma;\ol{\beta},
+[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha := B}]\\
+ & \hspace*{0.5in}[\phi := \lambda \ol{A}.\, \setsem{\Gamma;\ol{\beta},
     \ol{\gamma},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
-      := C}][\ol{\alpha := B}][\ol{\beta := A}]])\,{\ol{B}}\\ 
-= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
-  \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
-    C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
-    \ol{\gamma}\vdash F}\rho[\ol{\gamma := C}][\ol{\beta := A}]])\,{\ol{B}}\\ 
+      := C}][\ol{\alpha := B}][\ol{\beta := A}]]\\ 
 = & \lambda \ol{B}\,\ol{C}.\, \setsem{\Gamma;
   \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
-    C}][\ol{\alpha := B}][\phi := \setsem{\Gamma;\ol{\beta},
-    \ol{\gamma} \vdash F}\rho[\ol{\gamma
-      := C}][\ol{\beta := B}]])\\
-= & \lambda \ol{B}\,\ol{C}\,(\lambda \ol{A}.\, \setsem{\Gamma;
-  \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
-    C}][\ol{\alpha := A}][\phi := \setsem{\Gamma;
-    \ol{\gamma},\ol{\beta} \vdash F}\rho[\ol{\gamma := C}][\ol{\beta
-      := B}]])\,{\ol{B}}\\ 
+    C}][\ol{\alpha := B}][\phi := \lambda \ol{A}.\,
+  \setsem{\Gamma;\ol{\beta}, 
+    \ol{\gamma}\vdash F}\rho[\ol{\gamma := C}][\ol{\beta := A}]]\\ 
 =& \lambda \ol{B}\,\ol{C}.\,T^\set_{\rho[\ol{\gamma:=
-      C}]}\,(\setsem{\Gamma;\ol{\beta},\ol{\gamma} 
-  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}])\, \ol{B}\\
+      C}]}\,(\lambda \ol{A}. \, \setsem{\Gamma;\ol{\beta},\ol{\gamma} 
+  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}]) \, \ol{B}\\
 \end{array}\]
 to 
-\[\lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma}
+\[\lambda \ol{B}\,\ol{C}.\,(\lambda
+\ol{A}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma} 
+  \vdash F}\rho[\ol{\beta := A}][\ol{\gamma := C}]) \ol{B}\;\;= \;\;
+\lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma}
   \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}]\] Thus, if $x :
 \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
   \overline \alpha.H)\overline \beta}\rho[\ol{\beta := B}][\ol{\gamma
@@ -3664,8 +3661,8 @@ to
   \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\,x\\
 = & (\mathit{fold}_{T^\set_{\rho[{\gamma := C}]}}\,(\lambda
 \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}\,x\\  
-:&\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\beta :=
-    B}][\ol{\gamma := C}]
+:& (\lambda \ol{A}.\,\setsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash
+  F}\rho[\ol{\beta := A}][\ol{\gamma := C}])\ol{B}
 \end{array}\]
 i.e., for each $\ol{B}$ and $\ol{C}$
 \[(\setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
