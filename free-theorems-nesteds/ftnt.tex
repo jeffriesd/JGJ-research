@@ -3763,7 +3763,7 @@ on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
 = & \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
 \id_{\rho}[\ol{\beta := f}] [\ol{\gamma := g}][\phi := \lambda
   \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
-    [\ol{\beta := B}]} [\ol{\gamma := g}]] \\ 
+    [\ol{\beta := A}]} [\ol{\gamma := g}]] \\ 
 =& \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} (\id_{\rho
   [\ol{\gamma := C'}] [\phi := \lambda \ol{A}. \setsem{\Gamma;
       \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
@@ -3788,7 +3788,7 @@ on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
   \id_{\rho [\ol{\beta := A}]} [\ol{\gamma := g}]] \\
 = & T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda
 \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
-   [\ol{\beta := B}] [\ol{\gamma := C'}]) \ol{f} \\
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \ol{f} \\
 &\hspace{3em} \circ \big( \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}
    (\lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
    \rho [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}} \\
@@ -3866,7 +3866,7 @@ T^{\set}_{\rho [\ol{\gamma := C}]} (\mu T^{\set}_{\rho [\ol{\gamma :=
     \rho [\ol{\beta := B}] [\ol{\gamma := C'}]) }" description] \\
 && T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda
 \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
-   [\ol{\beta := B}]) \ar[d, "{ \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}
+   [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}
      }" description] \\
 \mu T^{\set}_{\rho [\ol{\gamma := C}]}\ar[r, "{\mu
     \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}}"'] 
@@ -3944,7 +3944,7 @@ T^{\set}_{\rho [\ol{\gamma := C}]} (\mu T^{\set}_{\rho [\ol{\gamma :=
     (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta
         := B}] [\ol{\gamma := C'}]) }" description]\\
 && T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
-  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] ) \ar[d, "{ \lambda
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda
     \ol{A}. \eta_{\ol{A}, \ol{C'}} }" description] \\
 \mu T^{\set}_{\rho [\ol{\gamma := C}]} \ar[r, bend right = 10,
   "{\fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
