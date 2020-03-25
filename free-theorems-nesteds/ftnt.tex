@@ -3620,7 +3620,7 @@ is a morphism from
 \] To see this, we use
 Equations~\ref{eq:subs-var} and~\ref{eq:subs-const} for the first and
 second equalities below, together with weakening, to see that $\eta$
-is itself a natural transformation from {\color{red} FIX!}
+is itself a natural transformation from 
 \[\begin{array}{ll}
  & \lambda \ol{B}\,\ol{C}.\,\setsem{\Gamma; \ol{\beta},\ol{\gamma}
   \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho[\ol{\beta :=
@@ -3642,7 +3642,7 @@ is itself a natural transformation from {\color{red} FIX!}
     \ol{\gamma}\vdash F}\rho[\ol{\gamma := C}][\ol{\beta := A}]]\\ 
 =& \lambda \ol{B}\,\ol{C}.\,T^\set_{\rho[\ol{\gamma:=
       C}]}\,(\lambda \ol{A}. \, \setsem{\Gamma;\ol{\beta},\ol{\gamma} 
-  \vdash F}\rho[\ol{\beta := B}][\ol{\gamma := C}]) \, \ol{B}\\
+  \vdash F}\rho[\ol{\beta := A}][\ol{\gamma := C}]) \, \ol{B}\\
 \end{array}\]
 to 
 \[\lambda \ol{B}\,\ol{C}.\,(\lambda
@@ -3703,12 +3703,318 @@ $\ol{f : B \to B'}$ and $\ol{g : C \to C'}$:
  \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
     C'}][\ol{\beta := B'}]
 \end{tikzcd}\]
-Indeed, {\color{red} naturality of $\mathit{fold}$ with respect to its functor and
-function arguments??} ensures that the top diagram commutes, and
-naturality of $\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
+Indeed, naturality of $\mathit{fold}_{T^\set_{\rho[\ol{\gamma :=
         C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}})$ ensures that
-the bottom one commutes.  We therefore have that
-\[\lambda \ol{B}\,\ol{C}.\,(\setsem{\Gamma; \emptyset~|~\emptyset
+the bottom diagram commutes. To see that the top one commutes is
+considerably more delicate.
+
+\vspace*{0.1in}
+
+To see that the top diagram commutes we first observe that, given a
+natural transformation $\Theta : H \to K : [\set^k, \set] \to [\set^k,
+  \set]$, the fixpoint natural transformation $\mu \Theta : \mu H \to
+\mu K : \set^k \to \set$ is defined to be
+$\textit{fold}_{H}(\Theta\,(\mu K) \circ \textit{in}_{K})$, i.e., the
+unique morphism making the following square commute:\label{page:dia1}
+\[
+\begin{tikzcd}[column sep = large]
+H(\mu H)
+	\ar[dd, "{\textit{in}_H}"']
+	\ar[r, "{H(\mu \Theta)}"]
+& H(\mu K)
+	\ar[d, "{\Theta (\mu K)}"] \\
+& K(\mu K)
+	\ar[d, "{\textit{in}_H}"] \\
+\mu H
+	\ar[r, "{\mu \Theta}"']
+& \mu K
+\end{tikzcd}
+\]
+Taking $\Theta = \sigma^{\set}_{f}: T^{\set}_{\rho} \to
+T^{\set}_{\rho'}$ gives that the following diagram commutes for any
+morphism of set environments $f : \rho \to \rho'$:
+\begin{equation}\label{eq:mu-sigma-def}
+\begin{tikzcd}[column sep = large]
+T^{\set}_{\rho}(\mu T^{\set}_{\rho})
+	\ar[dd, "{\textit{in}_{T^{\set}_{\rho}}}"']
+	\ar[r, "{T^{\set}_{\rho}(\mu \sigma^{\set}_{f})}"]
+& T^{\set}_{\rho}(\mu T^{\set}_{\rho'})
+	\ar[d, "{\sigma^{\set}_{f} (\mu T^{\set}_{\rho'})}"] \\
+& T^{\set}_{\rho'}(\mu T^{\set}_{\rho'})
+	\ar[d, "{\textit{in}_{T^{\set}_{\rho'}}}"] \\
+\mu T^{\set}_{\rho}
+	\ar[r, "{\mu \sigma^{\set}_{f}}"']
+& \mu T^{\set}_{\rho'}
+\end{tikzcd}
+\end{equation}
+
+We next observe that the action of the functor
+\begin{equation*}
+\lambda \ol{B}. \lambda \ol{C}. \setsem{\Gamma; \ol{\alpha},
+  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+        [\ol{\beta := B}] [\ol{\gamma := C}]
+\end{equation*}
+on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\alpha}, \ol{\gamma} \vdash H[\phi :=
+      F][\ol{\alpha := \beta}]} \id_{\rho} [\ol{\beta := f}]
+  [\ol{\gamma := g}]\\  
+= & \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
+\id_{\rho}[\ol{\beta := f}] [\ol{\gamma := g}][\phi := \lambda
+  \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+    [\ol{\beta := B}]} [\ol{\gamma := g}]] \\ 
+=& \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} (\id_{\rho
+  [\ol{\gamma := C'}] [\phi := \lambda \ol{A}. \setsem{\Gamma;
+      \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
+    [\ol{\gamma := C'}]]} [\ol{\beta := f}] \\
+&\hspace{3em} \circ \id_{\rho [\ol{\beta := B}] [\phi := \lambda
+    \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+       [\ol{\beta := A}] [\ol{\gamma := C'}]]} [\ol{\gamma := g}] \\
+&\hspace{3em} \circ \id_{\rho [\ol{\beta := B}] [\ol{\gamma := C}]}
+[\phi := \lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma}
+    \vdash F} \id_{\rho [\ol{\beta := A}]}[\ol{\gamma := g}]] ) \\
+=& \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \id_{\rho
+  [\ol{\gamma := C'}][\phi := \lambda \ol{A}. \setsem{\Gamma;
+      \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
+    [\ol{\gamma := C'}]]} [\ol{\beta := f}] \\
+&\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
+  \vdash H} \id_{\rho [\ol{\beta := B}][\phi := \lambda
+    \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+       [\ol{\beta := A}] [\ol{\gamma := C'}]]} [\ol{\gamma := g}] \\
+&\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
+  \vdash H} \id_{\rho [\ol{\beta := B}] [\ol{\gamma := C}]} [\phi :=
+  \lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+  \id_{\rho [\ol{\beta := A}]} [\ol{\gamma := g}]] \\
+= & T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}] [\ol{\gamma := C'}]) \ol{f} \\
+&\hspace{3em} \circ \big( \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}
+   (\lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+   \rho [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}} \\
+&\hspace{3em} \circ \big( T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda
+   \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+     [\ol{\beta := A}]} [\ol{\gamma := g}]) \big)_{\ol{B}}
+\end{array}\]
+So, if $\eta$ is a natural transformation from
+\[\lambda \ol{B}\,\ol{C}. \setsem{\Gamma; \ol{\alpha},
+  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+          [\ol{\beta := B}] [\ol{\gamma := C}]\]
+          to
+\[\lambda \ol{B}\, \ol{C}. \setsem{\Gamma; \ol{\beta},
+   \ol{\gamma} \vdash F}\rho [\ol{\beta := B}] [\ol{\gamma := C}]\]
+then, by naturality,
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho}
+       [\ol{\beta := f}] [\ol{\gamma := g}] \circ \eta_{\ol{B},
+         \ol{C}} \\ 
+= & \eta_{\ol{B'}, \ol{C'}} \circ \setsem{\Gamma; \ol{\alpha},
+  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]} \id_{\rho}
+[\ol{\beta := f}] [\ol{\gamma := g}] \\ 
+= & \eta_{\ol{B'}, \ol{C'}} \circ T^{\set}_{\rho [\ol{\gamma := C'}]}
+(\lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\rho [\ol{\beta := A}] [\ol{\gamma := C'}]) \ol{f} \\
+& \circ \big( \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}} \\
+& \circ \big( T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda
+   \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+     [\ol{\beta := A}]} [\ol{\gamma := g}]) \big)_{\ol{B}}
+\end{array}\]
+As a special case when $\ol{f = \id_B}$ we have
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho [\ol{\beta
+      := B}]} [\ol{\gamma := g}] \circ \eta_{\ol{B}, \ol{C}} \\ 
+= & \eta_{\ol{B}, \ol{C'}} \circ \big(
+\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}}\\
+ & \hspace*{0.32in} \circ \big(
+   T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda \ol{A}. \setsem{\Gamma;
+     \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho [\ol{\beta := A}]}
+   [\ol{\gamma := g}]) \big)_{\ol{B}}
+\end{array}\]
+i.e., 
+\begin{equation}\label{eq:T-sigma-functor}
+\begin{split}
+  & \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\id_{\rho [\ol{\beta := A}]} [\ol{\gamma := g}] \circ \lambda
+\ol{B}.\eta_{\ol{B}, \ol{C}} \\  
+=\;\;\; & \lambda \ol{B}.\eta_{\ol{B}, \ol{C'}} \circ
+\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \\
+ & \hspace*{0.5in} \circ
+   T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda \ol{A}. \setsem{\Gamma;
+     \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho [\ol{\beta := A}]}
+   [\ol{\gamma := g}]) 
+\end{split}
+\end{equation}
+Now, to see that the top diagram in the diagram on
+page~\pageref{page:dia1} commutes we first note that the diagram
+\[\begin{tikzcd}[column sep = huge, row sep = huge]
+T^{\set}_{\rho [\ol{\gamma := C}]} (\mu T^{\set}_{\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\set}_{\rho [\ol{\gamma := C}]} (
+    \fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+    \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} )}"] \ar[dd,
+  "{\tin_{T^{\set}_{\rho [\ol{\gamma := C}]}}}"']
+&& T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda \ol{B}. \setsem{\Gamma;
+  \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma
+    := C'}]) \ar[d, "{ \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+    \rho [\ol{\beta := B}] [\ol{\gamma := C'}]) }" description] \\
+&& T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}]) \ar[d, "{ \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}
+     }" description] \\
+\mu T^{\set}_{\rho [\ol{\gamma := C}]}\ar[r, "{\mu
+    \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}}"'] 
+&\mu T^{\set}_{\rho [\ol{\gamma := C'}]} \ar[r,
+  "{\fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}})}"']
+& \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\rho [\ol{\beta := B}] [\ol{\gamma := C'}]
+\end{tikzcd}\]
+commutes because
+\[\begin{array}{ll}
+& \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}] [\ol{\gamma := C'}])\\
+& \hspace{3.6em}   \circ T^{\set}_{\rho
+     [\ol{\gamma := C}]} ( \fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}}
+   (\lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+   \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} ) \\
+= & \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}] [\ol{\gamma := C'}]) \\
+&\hspace{3.6em} \circ T^{\set}_{\rho [\ol{\gamma := C}]} (
+   \fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+   \ol{A}. \eta_{\ol{A}, \ol{C'}}) ) \circ T^{\set}_{\rho [\ol{\gamma
+         := C}]} ( \mu \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} )  \\
+= & \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}} \circ T^{\set}_{\rho
+     [\ol{\gamma := C'}]} ( \fold_{T^{\set}_{\rho [\ol{\gamma :=
+           C'}]}} (\lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}) ) \circ
+   \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\mu T^{\set}_{\rho
+     [\ol{\gamma := C'}]}) \circ T^{\set}_{\rho [\ol{\gamma := C}]} (
+   \mu \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} ) \\
+= & \fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \tin_{T^{\set}_{\rho [\ol{\gamma
+        := C'}]}} \circ \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}
+(\mu T^{\set}_{\rho [\ol{\gamma := C'}]}) \circ T^{\set}_{\rho
+  [\ol{\gamma := C}]} ( \mu \sigma^{\set}_{\id_{\rho}[\ol{\gamma :=
+      g}]} ) \\
+= &\fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} \circ
+\tin_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+\end{array}\]
+Here, the first equality is by functoriality of $T^{\set}_{\rho
+  [\ol{\gamma := C}]}$, the second equality is by naturality of
+$\sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}$, the third equality by
+the universal property of $\fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}}
+(\lambda \ol{A}. \eta_{\ol{A}, \ol{C'}})$ and the last equality by
+Equation~\ref{eq:mu-sigma-def}. That is, we have
+\begin{equation}\label{eq:one-side}
+\begin{split}
+ & \fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+\sigma^{\set}_{\Id_{\rho}[\ol{\gamma := g}]}\\
+=\;\;\; & \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} ( \lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+\sigma^{\set}_{\Id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}] [\ol{\gamma := C'}]) )
+\end{split}
+\end{equation}
+Next, we note that the diagram
+\[\begin{tikzcd}[row sep = huge]
+T^{\set}_{\rho [\ol{\gamma := C}]} (\mu T^{\set}_{\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\set}_{\rho [\ol{\gamma := C}]} (
+    \lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+      [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+    \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}}) )}"] \ar[dd, "{\tin_{T^{\set}_{\rho
+        [\ol{\gamma := C}]}}}"']
+&& T^{\set}_{\rho [\ol{\gamma := C}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C'}])
+\ar[d, "{ \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta
+        := B}] [\ol{\gamma := C'}]) }" description]\\
+&& T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] ) \ar[d, "{ \lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}} }" description] \\
+\mu T^{\set}_{\rho [\ol{\gamma := C}]} \ar[r, bend right = 10,
+  "{\fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}})}"'] & \lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C}]
+\ar[r, bend right = 10, "{\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma}
+      \vdash F} \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}]}"'] &
+\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta :=
+    B}] [\ol{\gamma := C'}]
+\end{tikzcd}
+\]
+commutes because
+\begin{align*}
+& \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+  \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+  \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+     [\ol{\beta := B}] [\ol{\gamma := C'}]) \\
+&\hspace{3em} \circ T^{\set}_{\rho [\ol{\gamma := C}]} ( \lambda
+     \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+     \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+     \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+     \ol{A}. \eta_{\ol{A}, \ol{C}}) ) \\
+&= \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+     \sigma^{\set}_{\id_{\rho}[\ol{\gamma := g}]} (\lambda
+     \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+        [\ol{\beta := B}] [\ol{\gamma := C'}]) \\
+&\hspace{3em} \circ T^{\set}_{\rho [\ol{\gamma := C}]} ( \lambda
+        \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+        \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] ) \circ
+        T^{\set}_{\rho [\ol{\gamma := C}]} ( \fold_{T^{\set}_{\rho
+            [\ol{\gamma := C}]}} (\lambda \ol{A}. \eta_{\ol{A},
+          \ol{C}}) ) \\
+ &= \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+        \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] \circ \lambda
+        \ol{A}. \eta_{\ol{A}, \ol{C}} \circ T^{\set}_{\rho [\ol{\gamma
+              := C}]} ( \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+        (\lambda \ol{A}. \eta_{\ol{A}, \ol{C}}) ) \\
+&= \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+        \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+        \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+        \ol{A}. \eta_{\ol{A}, \ol{C}}) \circ \tin_{T^{\set}_{\rho
+            [\ol{\gamma := C}]}}
+\end{align*}
+Here, the first equality is by functoriality of $T^{\set}_{\rho
+  [\ol{\gamma := C}]}$, the second equality is by
+Equation~\ref{eq:T-sigma-functor}, and the last equality is by the
+universal property of $\fold_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+(\lambda \ol{A}. \eta_{\ol{A}, \ol{C}})$. That is, we have
+\begin{equation}\label{eq:other-side}
+\begin{split}
+  & \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\Id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+\fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C}}) \\ 
+= \;\;\;& \fold_{T^{\set}_{\rho [\ol{\gamma := C}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}} \circ
+\sigma^{\set}_{\Id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}] [\ol{\gamma := C'}]) ) 
+\end{split}
+\end{equation}
+Combining Equations~\ref{eq:one-side} and~\ref{eq:other-side} we get
+that
+\[\fold_{T^{\set}_{\rho [\ol{\gamma := C'}]}} (\lambda \ol{A}. \eta_{\ol{A}, \ol{C'}})
+  \circ \mu \sigma^{\set}_{\Id_{\rho}[\ol{\gamma := g}]} = \lambda
+  \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \Id_{\rho
+    [\ol{\beta := B}]} [\ol{\gamma := g}] \circ \fold_{T^{\set}_{\rho
+      [\ol{\gamma := C}]}} (\lambda \ol{A}. \eta_{\ol{A}, \ol{C}})\]
+  i.e., that the top diagram in the diagram on
+  page~\pageref{page:dia1} commutes. We therefore have that
+\[(\setsem{\Gamma; \emptyset~|~\emptyset
   \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta},
     \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
       \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
