@@ -3760,7 +3760,9 @@ on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
  & \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash H[\phi :=
       F][\ol{\alpha := \beta}]} \id_{\rho} [\ol{\beta := f}]
            [\ol{\gamma := g}]\\
-= & \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
+= & \setsem{\Gamma; \ol{\alpha}, \ol{\gamma} \vdash H[\phi :=
+      F]} \id_{\rho} [\ol{\alpha := f}][\ol{\gamma := g}]\\
+           = & \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
 \id_{\rho}[\ol{\alpha := f}] [\ol{\gamma := g}][\phi := \lambda
   \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
     [\ol{\beta := A}]} [\ol{\gamma := g}]] \\ 
