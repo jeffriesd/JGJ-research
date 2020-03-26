@@ -3751,39 +3751,39 @@ T^{\set}_{\rho}(\mu T^{\set}_{\rho})
 
 We next observe that the action of the functor
 \begin{equation*}
-\lambda \ol{B}. \lambda \ol{C}. \setsem{\Gamma; \ol{\alpha},
+\lambda \ol{B}. \lambda \ol{C}. \setsem{\Gamma; \ol{\beta},
   \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
         [\ol{\beta := B}] [\ol{\gamma := C}]
 \end{equation*}
 on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
 \[\begin{array}{ll}
- & \setsem{\Gamma; \ol{\alpha}, \ol{\gamma} \vdash H[\phi :=
+ & \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash H[\phi :=
       F][\ol{\alpha := \beta}]} \id_{\rho} [\ol{\beta := f}]
-  [\ol{\gamma := g}]\\  
+           [\ol{\gamma := g}]\\
 = & \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
-\id_{\rho}[\ol{\beta := f}] [\ol{\gamma := g}][\phi := \lambda
+\id_{\rho}[\ol{\alpha := f}] [\ol{\gamma := g}][\phi := \lambda
   \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
     [\ol{\beta := A}]} [\ol{\gamma := g}]] \\ 
 =& \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} (\id_{\rho
   [\ol{\gamma := C'}] [\phi := \lambda \ol{A}. \setsem{\Gamma;
       \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
-    [\ol{\gamma := C'}]]} [\ol{\beta := f}] \\
-&\hspace{3em} \circ \id_{\rho [\ol{\beta := B}] [\phi := \lambda
+    [\ol{\gamma := C'}]]} [\ol{\alpha := f}]) \\
+&\hspace{3em} \circ \id_{\rho [\ol{\alpha := B}] [\phi := \lambda
     \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
        [\ol{\beta := A}] [\ol{\gamma := C'}]]} [\ol{\gamma := g}] \\
-&\hspace{3em} \circ \id_{\rho [\ol{\beta := B}] [\ol{\gamma := C}]}
+&\hspace{3em} \circ \id_{\rho [\ol{\alpha := B}] [\ol{\gamma := C}]}
 [\phi := \lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma}
     \vdash F} \id_{\rho [\ol{\beta := A}]}[\ol{\gamma := g}]] ) \\
 =& \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \id_{\rho
   [\ol{\gamma := C'}][\phi := \lambda \ol{A}. \setsem{\Gamma;
       \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
-    [\ol{\gamma := C'}]]} [\ol{\beta := f}] \\
+    [\ol{\gamma := C'}]]} [\ol{\alpha := f}] \\
 &\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
-  \vdash H} \id_{\rho [\ol{\beta := B}][\phi := \lambda
+  \vdash H} \id_{\rho [\ol{\alpha := B}][\phi := \lambda
     \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
        [\ol{\beta := A}] [\ol{\gamma := C'}]]} [\ol{\gamma := g}] \\
 &\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
-  \vdash H} \id_{\rho [\ol{\beta := B}] [\ol{\gamma := C}]} [\phi :=
+  \vdash H} \id_{\rho [\ol{\alpha := B}] [\ol{\gamma := C}]} [\phi :=
   \lambda \ol{A}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
   \id_{\rho [\ol{\beta := A}]} [\ol{\gamma := g}]] \\
 = & T^{\set}_{\rho [\ol{\gamma := C'}]} (\lambda
