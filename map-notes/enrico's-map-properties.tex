@@ -1,0 +1,1265 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+\begin{document}
+
+\begin{abstract}
+\end{abstract}
+
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+
+%% Keywords
+%% comma separated list
+%\keywords{keyword1, keyword2, keyword3}  %% \keywords is optional
+
+
+\maketitle
+
+\section{Map}
+
+\begin{dfn}
+Two terms $\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and $\Gamma; \Phi \,|\, \Delta \vdash t' : \tau$
+are semantically equivalent if they have the same set interpretation functor and relational interpretation functor,
+i.e., for every set environment $\rho$, we have that
+\[
+ \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau}\rho
+ = \setsem{\Gamma; \Phi \,|\, \Delta \vdash t' : \tau}\rho
+\]
+and, for every relation environment $\rho$, we have that
+\[
+ \relsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau}\rho
+ = \relsem{\Gamma; \Phi \,|\, \Delta \vdash t' : \tau}\rho
+\]
+and, moreover, the interpretations coincide on  morphisms of environments as well.
+\end{dfn}
+
+When proving two terms semantically equivalent, we shall generally only check that their interpretation functors coincide on objects,
+i.e., on set or relation environments.
+
+We define a composition operation between terms of type $\Nat$
+and an identity term for functorial types,
+as convenient shorthands.
+
+\begin{dfn}
+Let $\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$
+and $\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$
+be terms.
+Then the composition $s \circ t$ of $t$ and $s$ is the term
+$\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x): \Nat^{\overline{\alpha}} F\,H$.
+\end{dfn}
+
+\begin{lemma}\label{lem:comp}
+Let $\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$
+and $\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$
+be terms.
+Then for any set environment $\rho$, the semantic interpretation of the composition is
+\[
+\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t: \Nat^{\overline{\alpha}} F\,H} \rho
+= \setsem{\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \rho
+    \circ \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G} \rho
+\]
+\end{lemma}
+\begin{proof}
+For any set environment $\rho$ and $d : \setsem{\Gamma; \emptyset \vdash \Delta}\rho$, we have that
+\[
+\begin{array}{rl}
+  & \setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t: \Nat^{\overline{\alpha}} F\,H} \rho d \\
+= & \lambda \ol{A}. \lambda x. (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t: \Nat^{\overline{\alpha}} F\,H} \rho d)_{\ol{A}} x \\
+= & \lambda \ol{A}. \lambda x. (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x): \Nat^{\overline{\alpha}} F\,H} \rho d)_{\ol{A}} x \\
+= & \lambda \ol{A}. \lambda x. \setsem{\Gamma; \ol{\alpha} \,|\, \Delta, x: F \vdash s_{\overline{\alpha}}(t_{\overline{\alpha}}x): H} \rho [\ol{\alpha := A}] d x \\
+= & \lambda \ol{A}. \lambda x. (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \rho d)_{\ol{A}}
+    (\setsem{\Gamma; \ol{\alpha} \,|\, \Delta, x: F \vdash t_{\overline{\alpha}}x: H} \rho [\ol{\alpha := A}] d x) \\
+= & \lambda \ol{A}. \lambda x. (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \rho d)_{\ol{A}}
+    ((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G} \rho d)_{\ol{A}} x) \\
+= & \setsem{\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \rho d
+    \circ \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G} \rho d \qedhere
+\end{array}
+\]
+\end{proof}
+
+\begin{dfn}
+Let $\Gamma; \ol{\alpha} \vdash F$ be a type. Then the identity $\Id_F$ of $F$ is the term
+$\Gamma; \emptyset \,|\, \emptyset \vdash L_{\ol{\alpha}} x.x : \Nat^{\ol{\alpha}} F\,F$.
+\end{dfn}
+
+\begin{lemma}\label{lem:interpretation-identity}
+Let $\Gamma; \ol{\alpha} \vdash F$ be a type.
+Then for any set environment $\rho$, the semantic interpretation of the identity is
+\[
+\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \Id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho \ast
+= \Id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho [\ol{\alpha := A}]}
+\]
+\end{lemma}
+\begin{proof}
+For any set environment $\rho$, we have that
+\[
+\begin{array}{rl}
+  & \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \Id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho \ast \\
+= & \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash L_{\ol{\alpha}} x.x : \Nat^{\ol{\alpha}} F\,F} \rho \ast \\
+= & \lambda \ol{A}. \lambda x. \setsem{\Gamma; \ol{\alpha} \,|\, x: F \vdash x : F} \rho [\ol{\alpha := A}] x \\
+= & \lambda \ol{A}. \lambda x. x \\
+= & \lambda \ol{A}. \Id_{\setsem{\Gamma; \ol{\alpha} \vdash F} \rho [\ol{\alpha := A}]} \\
+= & \Id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho [\ol{\alpha := A}]} \qedhere
+\end{array}
+\]
+\end{proof}
+
+The following result shows that terms of type $\Nat$ behave like actual natural transformations with respect to their source and target functorial types.
+
+\begin{lemma}[Naturality]\label{lem:naturality}
+The terms
+\[
+  \Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\,G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  \vdash ((\map_G^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+  \circ (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}} z)
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]
+\]
+% \begin{prooftree}
+%     \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F$}
+%     \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G$}
+%     \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \sigma}$}
+%     \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \tau}$}
+%     \QIC{$\Gamma; \emptyset \,|\, \Delta, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%           \vdash ((\map_G^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})
+%           \circ (L_{\overline{\gamma}} x. \eta_{\overline{\sigma}, \overline{\gamma}} x)
+%           : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]$}
+% \end{prooftree}
+and
+\[
+  \Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  \vdash (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)
+  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]
+\]
+% \begin{prooftree}
+%     \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F$}
+%     \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G$}
+%     \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \sigma}$}
+%     \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \tau}$}
+%     \QIC{$\Gamma; \emptyset \,|\, \Delta, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%           \vdash (L_{\overline{\gamma}} x. \eta_{\overline{\tau}, \overline{\gamma}} x)
+%           \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})
+%           : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]$}
+% \end{prooftree}
+are semantically equivalent.
+%: for any set environment $\rho$, we have that
+%\[
+%\setsem{((\map_G^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+%  \circ (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}} z)}\rho
+%= \setsem{(L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)
+%  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})}\rho
+%\]
+%and, analogously, for any relation environment $\rho$, we have that
+%\[
+%\relsem{((\map_G^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+%  \circ (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}} z)}\rho
+%= \relsem{(L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)
+%  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})}\rho
+%\]
+\end{lemma}
+\begin{proof}
+% The first term is formed through the following derivation tree.
+% \begin{prooftree}
+% \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F$}
+% \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G$}
+% \BIC{$\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}, \overline{\gamma}} F G$}
+% \UIC{$\Gamma; \emptyset \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G
+%       \vdash \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G$}
+% \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F$}
+% \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \sigma}$}
+% \BIC{$\Gamma; \overline{\gamma} \vdash F[\overline{\alpha := \sigma}]$}
+% \BIC{$\Gamma; \overline{\gamma} \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, x \colon F[\overline{\alpha := \sigma}]
+%       \vdash \eta_{\overline{\sigma}, \overline{\gamma}} x
+%       : G[\overline{\alpha := \sigma}]$}
+% \AXC{$\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G$}
+% \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \sigma}$}
+% \AXC{$\overline{\Gamma; \overline{\gamma} \vdash \tau}$}
+% \TIC{$\Gamma; \emptyset \,|\, \emptyset \vdash \map_{G}^{\overline{\sigma}, \overline{\tau}}
+%       :\Nat^{\emptyset} (\overline{\Nat^{\overline{\gamma}} \sigma \tau}) (\Nat^{\overline{\gamma}} G[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}])$}
+% \UIC{$\Gamma; \emptyset \,|\, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash (\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f}
+%       : \Nat^{\overline{\gamma}} G[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]$}
+% \BIC{$\Gamma; \overline{\gamma} \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, x \colon F[\overline{\alpha := \sigma}], \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})_{\overline{\gamma}} (\eta_{\overline{\sigma}, \overline{\gamma}} x)
+%       : G[\overline{\alpha := \tau}]$}
+% \UIC{$\Gamma; \emptyset \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash L_{\overline{\gamma}} x. ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})_{\overline{\gamma}} (\eta_{\overline{\sigma}, \overline{\gamma}} x)
+%       : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]$}
+% \end{prooftree}
+% The second term is formed analogously.
+Let $\eta : \setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}\rho$
+and $\overline{f : \setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\gamma}} \sigma\, \tau}\rho}$.
+The semantic interpretation of the first term is
+\[
+%CAN BE SIMPLIFIED USING LEMMA~\ref{lem:comp}
+\begin{array}{cl}
+  & \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+      \vdash ((\map_G^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y}) \circ (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}} z)
+      : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \eta \overline{f} \\
+= & \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+      \vdash L_{\overline{\gamma}} z. ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})_{\overline{\gamma}} (x_{\overline{\sigma}, \overline{\gamma}} z)
+      : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \eta \overline{f} \\
+= & \lambda \overline{C}. \lambda z. \setsem{\Gamma; \overline{\gamma}
+      \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}, z \colon F[\overline{\alpha := \sigma}]
+      \vdash ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})_{\overline{\gamma}} (x_{\overline{\sigma}, \overline{\gamma}} z)
+      : G[\overline{\alpha := \tau}]}\rho [\overline{\gamma := C}] \eta \overline{f} z \\
+= & \lambda \overline{C}. \lambda z. (\setsem{\Gamma; \emptyset \,|\, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+      \vdash (\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y}
+      : \Nat^{\overline{\gamma}} G[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \overline{f})_{\overline{C}} \\
+  &   (\setsem{\Gamma; \overline{\gamma} \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, z \colon F[\overline{\alpha := \sigma}]
+      \vdash x_{\overline{\sigma}, \overline{\gamma}} z
+      : G[\overline{\alpha := \sigma}]} \rho [\overline{\gamma := C}] \eta z) \\
+= & \lambda \overline{C}. \lambda z. (
+        \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{G}^{\overline{\sigma}, \overline{\tau}}
+        :\Nat^{\emptyset} (\overline{\Nat^{\overline{\gamma}} \sigma\, \tau})\, (\Nat^{\overline{\gamma}} G[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}])}
+        \rho \ast \overline{f}
+      )_{\overline{C}} \\
+  & (
+      \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G \vdash x}\rho \eta
+    )_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{\setsem{\Gamma; \overline{\gamma} \vdash \gamma}\rho [\overline{\gamma := C}]}}
+      \setsem{\Gamma; \overline{\gamma} \,|\, z: F[\overline{\alpha := \sigma}] \vdash z} \rho [\overline{\gamma := C}] z
+    ) \\
+= & \lambda \overline{C}. \lambda z. (
+        \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{G}^{\overline{\sigma}, \overline{\tau}}
+        :\Nat^{\emptyset} (\overline{\Nat^{\overline{\gamma}} \sigma\, \tau})\, (\Nat^{\overline{\gamma}} G[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}])}
+        \rho \ast \overline{f}
+      )_{\overline{C}} \\
+  & (\eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}} z) \\
+= & \lambda \overline{C}. \lambda z.
+      \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+      (\eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}} z) \\
+= & \lambda \overline{C}.
+      \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+      \circ \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}}
+\end{array}
+\]
+By naturality of $\eta: \lambda \ol{A}. \lambda \ol{C}. \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \rho [\overline{\alpha := A}] [\overline{\gamma := C}]
+\to \eta: \lambda \ol{A}. \lambda \ol{C}. \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\alpha := A}] [\overline{\gamma := C}]$
+we have that
+\[
+\setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+  \circ \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}}
+= \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+  \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+\]
+Proceeding analogously for the second term, we have that
+% \begin{multline*}
+%   \lambda \overline{C}. \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+%   \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}] \\
+% = \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+%   \vdash (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z) \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+%   : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho (\eta, \overline{f})
+% \end{multline*}
+\[
+\begin{array}{cl}
+  & \lambda \overline{C}. \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+    \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}] \\
+= & \lambda \overline{C}. \lambda k.
+    \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+    (\setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}] k) \\
+= & \lambda \overline{C}. \lambda k. \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}} \\
+  & ((\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{F}^{\overline{\sigma}, \overline{\tau}}
+      :\Nat^{\emptyset} (\overline{\Nat^{\overline{\gamma}} \sigma\, \tau})\, (\Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, F[\overline{\alpha := \tau}])}
+      \rho \ast \overline{f}
+    )_{\overline{C}} k) \\
+= & \lambda \overline{C}. \lambda k. (
+      \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G \vdash x}\rho \eta
+    )_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{\setsem{\Gamma; \overline{\gamma} \vdash \gamma}\rho [\overline{\gamma := C}]}} \\
+  & \big(
+      (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{F}^{\overline{\sigma}, \overline{\tau}}
+        :\Nat^{\emptyset} (\overline{\Nat^{\overline{\gamma}} \sigma\, \tau})\, (\Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, F[\overline{\alpha := \tau}])}
+        \rho \ast \overline{f}
+      )_{\overline{C}} k \big) \\
+= & \lambda \overline{C}. \lambda k. (
+      \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G \vdash x}\rho \eta
+    )_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{\setsem{\Gamma; \overline{\gamma} \vdash \gamma}\rho [\overline{\gamma := C}]}} \\
+  & \big(
+      (\setsem{\Gamma; \emptyset \,|\, \overline{y: \Nat^{\overline{\gamma}} \sigma\, \tau} \vdash (\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \ol{y}
+        : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, F[\overline{\alpha := \tau}]}
+        \rho \overline{f}
+      )_{\overline{C}} k \big) \\
+= & \lambda \overline{C}. \lambda k. (\setsem{\Gamma; \ol{\gamma} \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, z: F[\ol{\alpha := \tau}]
+    \vdash x_{\ol{\tau}, \ol{\gamma}} z}\rho [\ol{\gamma := C}] \eta ) \\
+  & \big(
+      \setsem{\Gamma; \ol{\gamma} \,|\, \overline{y: \Nat^{\overline{\gamma}} \sigma\, \tau}, k: F[\overline{\alpha := \sigma}]
+        \vdash ( (\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \ol{y} )_{\ol{\gamma}} k
+        : F[\overline{\alpha := \tau}]}
+        \rho [\ol{\gamma := C}] \overline{f} k
+    \big) \\
+= & \lambda \overline{C}. \lambda k. (\setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G \vdash L_{\ol{\gamma}} z. x_{\ol{\tau}, \ol{\gamma}} z}\rho \eta)_{\ol{C}} \\
+  & \big(
+      \setsem{\Gamma; \ol{\gamma} \,|\, \overline{y: \Nat^{\overline{\gamma}} \sigma\, \tau}, k: F[\overline{\alpha := \sigma}]
+        \vdash ( (\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \ol{y} )_{\ol{\gamma}} k
+        : F[\overline{\alpha := \tau}]}
+        \rho [\ol{\gamma := C}] \overline{f} k
+    \big) \\
+= & \lambda \overline{C}. \lambda k.
+    \setsem{\Gamma; \ol{\gamma} \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y: \Nat^{\overline{\gamma}} \sigma\, \tau}, k: F[\overline{\alpha := \sigma}]
+      \vdash (L_{\ol{\gamma}} z. x_{\ol{\tau}, \ol{\gamma}} z)_{\ol{\gamma}} ( ( (\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \ol{y} )_{\ol{\gamma}} k )
+      : G[\overline{\alpha := \tau}]}
+    \rho [\ol{\gamma := C}] \eta \overline{f} k \\
+= & \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  \vdash L_{\overline{\gamma}} k. (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)_{\ol{\gamma}} (((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})_{\ol{\gamma}} k)
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \eta \overline{f} \\
+= & \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  \vdash (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z) \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \eta \overline{f}
+\end{array}
+\]
+So, we conclude that
+\begin{multline*}
+  \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+      \vdash ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})_{\overline{\gamma}} \circ (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}} z)
+      : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho \\
+= \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  \vdash (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z) \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\, G[\overline{\alpha := \tau}]}\rho
+\end{multline*}
+% are functors and $f_{\overline{C}}$ is a function
+% $\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}] \to \setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]$,
+% \[
+% \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+%   \circ \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}}
+% = \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+%   \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+% \]
+
+
+% The semantic interpretation of the second term is, analogously,
+% \[
+% \begin{array}{cl}
+%   & \setsem{\Gamma; \emptyset \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash L_{\overline{\gamma}} x. \eta_{\overline{\tau}, \overline{\gamma}} ((\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})_{\overline{\gamma}} x
+%       : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]}\rho (\eta, \overline{f}) \\
+% = & \lambda \overline{C}.
+%       \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+%       \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+% \end{array}
+% \]
+% By naturality of $\eta$, and the fact that
+% $\setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\gamma := C}] [\overline{\alpha := \_}]$
+% and
+% $\setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\gamma := C}] [\overline{\alpha := \_}]$
+% are functors and $f_{\overline{C}}$ is a function
+% $\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}] \to \setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]$,
+% \[
+% \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+%   \circ \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \sigma}\rho [\overline{\gamma := C}]}, \overline{C}}
+% = \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau}\rho [\overline{\gamma := C}]}, \overline{C}}
+%   \circ \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \Id_{\rho [\overline{\gamma := C}]} [\overline{\alpha := f_{\overline{C}}}]
+% \]
+% So, we can conclude that
+% \[
+% \begin{array}{cl}
+%   & \setsem{\Gamma; \emptyset \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash L_{\overline{\gamma}} x. ((\map_{G}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})_{\overline{\gamma}} (\eta_{\overline{\sigma}, \overline{\gamma}} x)
+%       : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]}\rho (\eta, \overline{f}) \\
+% = & \setsem{\Gamma; \emptyset \,|\, \eta : \Nat^{\overline{\alpha}, \overline{\gamma}} F G, \overline{f : \Nat^{\overline{\gamma}} \sigma \tau}
+%       \vdash L_{\overline{\gamma}} x. \eta_{\overline{\tau}, \overline{\gamma}} ((\map_{F}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{f})_{\overline{\gamma}} x
+%       : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}] G[\overline{\alpha := \tau}]}\rho (\eta, \overline{f})
+% \end{array}
+% \]
+The case for the relational interpretation is analogous.
+\end{proof}
+
+%From Lemma~\ref{lemma:naturality} we can deduce that
+
+We have a special case of Lemma~\ref{lem:naturality} following from
+the naturality of $\tin_H : \Nat^{\ol{\beta},\ol{\gamma}}\,H[\phi :=
+  (\lambda \phi. \lambda \ol{\alpha}. H)\ol{\beta}][\ol{\alpha :=
+    \beta}]\; (\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}$:
+
+\begin{cor}
+Let $\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H$ and  $\ol{\Gamma; \gamma \vdash \sigma}$ and $\ol{\Gamma; \gamma \vdash \tau}$ be types.
+Then the terms
+\begin{align*}
+  \Gamma; \emptyset \,|\, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  &\vdash ((\map_{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y})
+  \circ (L_{\overline{\gamma}} z. (\tin_{H})_{\overline{\sigma}, \overline{\gamma}} z) \\
+  &: \Nat^{\overline{\gamma}} H[\phi := (\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}][\overline{\alpha := \sigma}]\, (\mu \phi. \lambda \overline{\alpha}. H)\overline{\tau}
+\end{align*}
+and
+\begin{align*}
+  \Gamma; \emptyset \,|\, \overline{y : \Nat^{\overline{\gamma}} \sigma\, \tau}
+  &\vdash (L_{\overline{\gamma}} z. (\tin_H)_{\overline{\tau}, \overline{\gamma}} z)
+  \circ ((\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}]}^{\overline{\sigma}, \overline{\tau}})_{\emptyset} \overline{y}) \\
+  &: \Nat^{\overline{\gamma}} H[\phi := (\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}][\overline{\alpha := \sigma}]\, (\mu \phi. \lambda \overline{\alpha}. H)\overline{\tau}
+\end{align*}
+are semantically equivalent.
+\end{cor}
+\begin{proof}
+The two terms are derived from those in Lemma~\ref{lem:naturality} by instantiating the term variable $x$ with
+$\tin_H : \Nat^{\ol{\beta}, \ol{\gamma}} H[\phi := (\mu \phi. \lambda \ol{\alpha}. H)\ol{\beta}][\ol{\alpha := \beta}]\; (\mu \phi. \lambda \ol{\alpha}. H)\ol{\beta}$.
+\end{proof}
+
+The next lemma states that the map of the composition of two functors is
+(equivalent to) the composition of their maps.
+
+\begin{lemma}\label{lemma:sem-funct-comp}
+Let
+\[
+\begin{array}{cccc}
+\Gamma; \ol{\psi}, \ol{\gamma} \vdash H
+&\ol{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}
+&\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+&\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash G}
+\end{array}
+\]
+be types. Then the terms
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash \map_{H[\ol{\psi := K}]}^{\ol{F}, \ol{G}}
+: \Nat^{\emptyset} (\ol{\Nat^{\ol{\alpha}, \ol{\beta}, \ol{\gamma}} F
+  G}) (\Nat^{\ol{\gamma}} H[\ol{\psi := K}][\ol{\phi := F}] \; H[\ol{\psi := K}][\ol{\phi := G}])
+\]
+and
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash \map_H^{\ol{K[\ol{\phi := F}]}, \ol{K[\ol{\phi := G}]}} \circ \ol{\map_K^{\ol{F}, \ol{G}}}
+: \Nat^{\emptyset} (\ol{\Nat^{\ol{\alpha}, \ol{\beta}, \ol{\gamma}} F G}) (\Nat^{\ol{\gamma}} H[\ol{\psi := K[\ol{\phi := F}]}] \;H[\ol{\psi := K[\ol{\phi := G}]}])
+\]
+are semantically equivalent.
+(Notice that $F$ and $G$'s context is extended with the $\ol{\alpha}$ variables by weakening).
+\end{lemma}
+\begin{proof}
+Throughout this proof we shall use the fact that the variables
+$\ol{\alpha}$ can be added to the environment of $F$ and $G$ by
+weakening, even though they do not appear in those types.  As a
+consequence, which is true only because $F$ and $G$ contain no
+$\ol{\alpha}$'s, $H[\ol{\psi :=_{\ol{\alpha}} K[\ol{\phi
+        :=_{\ol{\beta}} F}]}] = H[\ol{\psi :=_{\ol{\alpha}}
+    K}][\ol{\phi :=_{\ol{\beta}} F}]$ and $H[\ol{\psi :=_{\ol{\alpha}}
+    K[\ol{\phi :=_{\ol{\beta}} G}]}] = H[\ol{\psi :=_{\ol{\alpha}}
+    K}][\ol{\phi :=_{\ol{\beta}} G}]$.  Also, observe that a natural
+transformation $\eta : \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\beta}, \ol{\gamma}} F G}\rho$ corresponds, by weakening,
+to a natural transformation $\eta : \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\alpha}, \ol{\beta}, \ol{\gamma}} F G}\rho$ which is
+trivially natural in the $\alpha$'s.  Then for every natural
+transformation $\eta : \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\beta}, \ol{\gamma}} F G}\rho$, $\ol{C : \set}$, and
+$\ast$ the unique element of the singleton, we have that
+\[
+%CAN BE SIMPLIFIED USING LEMMA~\ref{lem:comp}
+\begin{array}{rl}
+& (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_H^{\ol{K[\ol{\phi := F}]}, \ol{K[\ol{\phi := G}]}} \circ \ol{\map_K^{\ol{F}, \ol{G}}}}\rho \ast \ol{\eta})_{\ol{C}} \\
+= & (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_H^{\ol{K[\ol{\phi := F}]}, \ol{K[\ol{\phi := G}]}}} \rho \ast
+	(\ol{\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_K^{\ol{F}, \ol{G}}}\rho \ast \ol{\eta}}))_{\ol{C}} \\
+= & \setsem{\Gamma; \ol{\psi}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\gamma := C}]}
+	[\ol{\psi := \lambda \ol{A}. (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_K^{\ol{F}, \ol{G}}}\rho \ast \ol{\eta})_{\ol{A}, \ol{C}}}] \\
+= & \setsem{\Gamma; \ol{\psi}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\gamma := C}]}
+	[\ol{
+    		\psi := \lambda \ol{A}. \setsem{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}
+		\Id_{\rho [\ol{\alpha := A}] [\ol{\gamma := C}]} [\ol{\phi := \lambda \ol{B}. \eta_{\ol{A}, \ol{B}, \ol{C}}}]
+	}] \\
+= & \setsem{\Gamma; \ol{\psi}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\gamma := C}]}
+	[\ol{
+    		\psi := \lambda \ol{A}. \setsem{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}
+		\Id_{\rho [\ol{\alpha := A}] [\ol{\gamma := C}]} [\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}, \ol{C}}}]
+	}] \\
+= & \setsem{\Gamma; \ol{\psi}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\gamma := C}]}[\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}, \ol{C}}}]
+	[\ol{
+    		\psi := \lambda \ol{A}. \setsem{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}
+		\Id_{\rho [\ol{\alpha := A}] [\ol{\gamma := C}]} [\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}, \ol{C}}}]
+	}] \\
+	% \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_K^{\ol{F}, \ol{G}}}\rho \ast \ol{\eta})_{\ol{A}, \ol{C}}}]
+	% (\ol{\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_K^{\ol{F}, \ol{G}}}\rho \ast \ol{\eta}}) \\
+= & \setsem{\Gamma; \ol{\gamma}, \ol{\phi} \vdash H[\ol{\psi := K}]} Id_{\rho [\ol{\gamma := C}]} [\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}, \ol{C}}}] \\
+= & (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H[\ol{\psi := K}]}^{\ol{F}, \ol{G}}} \rho \ast \ol{\eta})_{\ol{C}}
+\end{array}
+\]
+The case for the relational interpretation is analogous.
+\end{proof}
+
+Type application $\phi \ol{\tau}$ yields a map acting functorially on both the type constructor variable $\phi$ and its  arguments $\ol{\tau}$.
+Such action consists in mapping along the type constructor variable first and the arguments later, or, equivalently,
+the arguments first and the type constructor variable later.
+That the two ways of describing the action are equivalent is due to naturality.
+
+\begin{lemma}[Map of type application]\label{lem:map_type_application}
+Consider the following types
+\[
+\begin{array}{ccccc}
+\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}
+&\Gamma; \overline{\beta}, \overline{\gamma} \vdash H
+&\Gamma; \overline{\beta}, \overline{\gamma} \vdash K
+&\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}
+&\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G}
+\end{array}
+\]
+Let $\overline{I} = \overline{F}, H$
+and $\overline{J} = \overline{G}, K$
+be lists of types.
+Then the terms
+\begin{multline}\label{lem:map-type-app-1}
+    \Gamma; \emptyset \,|\, \emptyset
+    \vdash L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+    x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+    \Big(\big(
+      (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+    \big)_{\overline{\gamma}} z \Big) \\
+    : \Nat^{\emptyset}
+      (\Nat^{\overline{\beta}, \overline{\gamma}} H\;K \times \overline{\Nat^{\overline{\alpha}, \overline{\gamma}} F\, G})\,
+      (\Nat^{\overline{\gamma}} H[\overline{\beta:= \tau}] [\overline{\psi := F}] [\phi := H]\; K[\overline{\beta := \tau}] [\overline{\psi := G}] [\phi := K])
+\end{multline}
+and
+\begin{multline}\label{lem:map-type-app-2}
+    \Gamma; \emptyset \,|\, \emptyset
+    \vdash L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+    \big(
+      (\map_{K}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+    \big)_{\overline{\gamma}}
+    \Big( x_{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}} z \Big) \\
+    : \Nat^{\emptyset}
+      (\Nat^{\overline{\beta}, \overline{\gamma}} H\, K \times \overline{\Nat^{\overline{\alpha}, \overline{\gamma}} F\, G})\,
+      (\Nat^{\overline{\gamma}} H[\overline{\beta:= \tau}] [\overline{\psi := F}] [\phi := H]\; K[\overline{\beta := \tau}] [\overline{\psi := G}] [\phi := K])
+\end{multline}
+are semantically equivalent to $\map_{\phi \overline{\tau}}^{\overline{I}, \overline{J}}$.
+% \begin{prooftree}
+% \AXC{$\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}$}
+% \AXC{$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$}
+% \AXC{$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G}$}
+% \AXC{$\Gamma; \overline{\beta}, \overline{\gamma} \vdash H$}
+% \AXC{$\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$}
+%   \QuinaryInfC{$\begin{array}{c}
+%     \Gamma; \emptyset \,|\, \emptyset
+%     \vdash L_{\emptyset} (\overline{\epsilon}, \eta). L_{\overline{\gamma}} x.
+%     \eta_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+%     \Big(\big(
+%       (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}; \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%       (\overline{(\map_{\tau}^{\overline{F}, H; \overline{G}, K})_{\emptyset} (\overline{\epsilon}, \eta)})
+%     \big)_{\overline{\gamma}} x \Big) \\
+%     : \Nat^{\emptyset}
+%       (\overline{\Nat^{\overline{\alpha}, \overline{\gamma}} F G} \times \Nat^{\overline{\beta}, \overline{\gamma}} H K)
+%       (\Nat^{\overline{\gamma}} H[\overline{\beta:= \tau [\overline{\psi := F}] [\phi := H]}] K[\overline{\beta := \tau [\overline{\psi := G}] [\phi := K]}])
+%     \end{array}$}
+% \end{prooftree}
+% and
+% \begin{prooftree}
+% \AXC{$\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}$}
+% \AXC{$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$}
+% \AXC{$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G}$}
+% \AXC{$\Gamma; \overline{\beta}, \overline{\gamma} \vdash H$}
+% \AXC{$\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$}
+%   \QuinaryInfC{$\begin{array}{c}
+%     \Gamma; \emptyset \,|\, \emptyset
+%     \vdash L_{\emptyset} (\overline{\epsilon}, \eta). L_{\overline{\gamma}} x.
+%     \big(
+%       (\map_{K}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}; \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%       (\overline{(\map_{\tau}^{\overline{F}, H; \overline{G}, K})_{\emptyset} (\overline{\epsilon}, \eta)})
+%     \big)_{\overline{\gamma}}
+%     \Big( \eta_{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}} x \Big) \\
+%     : \Nat^{\emptyset}
+%       (\overline{\Nat^{\overline{\alpha}, \overline{\gamma}} F G} \times \Nat^{\overline{\beta}, \overline{\gamma}} H K)
+%       (\Nat^{\overline{\gamma}} H[\overline{\beta:= \tau [\overline{\psi := F}] [\phi := H]}] K[\overline{\beta := \tau [\overline{\psi := G}] [\phi := K]}])
+%     \end{array}$}
+% \end{prooftree}
+%meaning that, for any set environment $\rho$, we have that
+%\[
+%\begin{array}{rl}
+%  & \setsem{L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+%    x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+%    \Big(\big(
+%      (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+%    \big)_{\overline{\gamma}} x \Big)}\rho \\
+%= & \setsem{L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+%    \big(
+%      (\map_{K}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+%    \big)_{\overline{\gamma}}
+%    \Big( x_{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}} z \Big)}\rho \\
+%= & \setsem{\map_{\phi \overline{\tau}}^{\overline{I}, \overline{J}}}\rho
+%\end{array}
+%\]
+%and, analogously, for any relation environment $\rho$, we have that
+%\[
+%\begin{array}{rl}
+%  & \relsem{L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+%    x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+%    \Big(\big(
+%      (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+%    \big)_{\overline{\gamma}} x \Big)}\rho \\
+%= & \relsem{L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+%    \big(
+%      (\map_{K}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+%    \big)_{\overline{\gamma}}
+%    \Big( x_{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}} z \Big)}\rho \\
+%= & \relsem{\map_{\phi \overline{\tau}}^{\overline{I}, \overline{J}}}\rho
+%\end{array}
+%\]
+\end{lemma}
+\begin{proof}
+% The proof for the second term from the statement is similar.
+To begin with, observe that the terms~\ref{lem:map-type-app-1}
+and~\ref{lem:map-type-app-2} are semantically equivalent.  This
+follows from the fact that the terms
+\begin{multline*}
+    \Gamma; \emptyset \,|\, x, \ol{y}
+    \vdash (L_{\overline{\gamma}} w. x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}} w )
+    \circ
+    \big(
+      (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+    \big) \\
+    : \Nat^{\overline{\gamma}} H[\overline{\beta:= \tau}] [\overline{\psi := F}] [\phi := H]\, K[\overline{\beta := \tau}] [\overline{\psi := G}] [\phi := K]
+\end{multline*}
+and
+\begin{multline*}
+    \Gamma; \emptyset \,|\, x, \ol{y}
+    \vdash
+    \big(
+      (\map_{K}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+      (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})
+    \big)
+    \circ
+    \Big( L_{\overline{\gamma}} z. x_{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}} z \Big) \\
+    : \Nat^{\overline{\gamma}} H[\overline{\beta:= \tau}] [\overline{\psi := F}] [\phi := H]\, K[\overline{\beta := \tau}] [\overline{\psi := G}] [\phi := K]
+\end{multline*}
+are semantically equivalent by Lemma~\ref{lem:naturality}.
+Thus, it will suffice to prove that any of them, say term~\ref{lem:map-type-app-1}, is semantically equivalent to $\map_{\phi \overline{\tau}}^{\overline{I}, \overline{J}}$.
+
+% To begin with, observe that the terms
+% \begin{equation}
+% (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%   \big( \overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})} \big)
+% \end{equation}
+% and
+% \begin{equation}\label{lem:map-type-app-map}
+% (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+% \end{equation}
+% are semantically equivalent because of Lemma~\ref{lemma:sem-funct-comp}.
+If $\rho$ is a set environment and $\ast$ is the unique element of the singleton, we have that
+the interpretation of the term~\ref{lem:map-type-app-1} is given by
+%the semantic interpretation of the first term in the statement is equal to
+\[
+\begin{array}{cl}
+  & \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+      x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+      \big(\big(
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      \big)_{\overline{\gamma}} z \big)}\rho \ast \\
+= & \lambda \eta. \lambda \overline{\epsilon}.
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y}
+      \vdash L_{\overline{\gamma}} z.
+      x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+      \big(\big(
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      \big)_{\overline{\gamma}} z \big)}\rho \eta \overline{\epsilon} \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}. \lambda z.
+    \setsem{\Gamma; \overline{\gamma} \,|\, x, \overline{y}, z \vdash x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+      \big(\big(
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      \big)_{\overline{\gamma}} z \big)}\rho [\overline{\gamma := C}] \eta \overline{\epsilon} z \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}. \lambda z.
+    \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau [\overline{\psi := G}] [\phi := K]} \rho [\overline{\gamma := C}]}, \overline{C}}
+    (
+      \setsem{\Gamma; \overline{\gamma} \,|\, x, \overline{y}, z \vdash \big(
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      \big)_{\overline{\gamma}} z} \rho [\overline{\gamma := C}] \eta \overline{\epsilon} z
+    ) \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}. \lambda z.
+    \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau [\overline{\psi := G}] [\phi := K]} \rho [\overline{\gamma := C}]}, \overline{C}}
+    (
+      (
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash
+          (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+        } \rho \eta \overline{\epsilon}
+      )_{\overline{C}} z
+    ) \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}.
+    \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau [\overline{\psi := G}] [\phi := K]} \rho [\overline{\gamma := C}]}, \overline{C}}
+    \circ
+    (
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      } \rho \eta \overline{\epsilon}
+    )_{\overline{C}}
+\end{array}
+\]
+where the term variables are typed as $x : \Nat^{\overline{\beta}, \overline{\gamma}} H\, K$,
+$\ol{y : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}$,
+and $z : H[\overline{\beta:= \tau}] [\overline{\psi := F}] [\phi := H]$.
+
+Observe that the terms
+\begin{equation*}
+(\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+\end{equation*}
+and
+\begin{equation*}
+(\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+  \big( \overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})} \big)
+\end{equation*}
+are semantically equivalent because of
+Lemma~\ref{lemma:sem-funct-comp}.
+Then for all
+$\eta: \setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\beta}, \overline{\gamma}} H\, K}\rho$
+and
+$\overline{\epsilon: \setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}}\rho$,
+% the interpretation of
+% \[
+% \Gamma; \emptyset \,|\, \overline{\epsilon}, \eta \vdash
+%   (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}; \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+%   (\overline{(\map_{\tau}^{\overline{F}, H; \overline{G}, K})_{\emptyset} (\overline{\epsilon}, \eta)})
+% \]
+% is given by
+we have that
+\[
+\begin{array}{cl}
+  & (
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      } \rho \eta \overline{\epsilon}
+    )_{\overline{C}} \\
+= & \big(
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash
+    (\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}})_{\emptyset}
+    (\overline{(\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})})}
+    \rho  \eta \overline{\epsilon}
+  \big)_{\overline{C}}\\
+= & \big(
+  \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash\map_{H}^{\overline{\tau [\overline{\psi := F}] [\phi := H]}, \overline{\tau [\overline{\psi := G}] [\phi := K]}}} \rho \ast
+  \big(
+    \overline{
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash (\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})}
+      \rho \eta \overline{\epsilon}
+    }
+  \big)
+  \big)_{\overline{C}} \\
+= & \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash H} \Id_{\rho [\overline{\gamma := C}]} [\overline{
+    \beta := (
+      \setsem{\Gamma; \emptyset \,|\, x, \overline{y} \vdash (\map_{\tau}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})}
+      \rho \eta \overline{\epsilon}
+    )_{\overline{C}}
+  }] \\
+= & \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash H} \Id_{\rho [\overline{\gamma := C}]} [\overline{
+    \beta := \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}
+      \Id_{\rho [\overline{\gamma := C}]}
+      [\overline{\psi := \lambda \overline{A}. \epsilon_{\overline{A}, \overline{C}}}]
+      [\phi := \lambda \overline{B}. \eta_{\overline{B}, \overline{C}}]
+    }]
+\end{array}
+\]
+
+Observe that, for each $\tau$,
+\[
+%\eta_{\overline{
+\setsem{\Gamma; \overline{\gamma} \vdash \tau [\overline{\psi := G}] [\phi := K]} \rho [\overline{\gamma := C}]
+%}, \overline{C}}
+\]
+is equal to
+\[
+%\eta_{
+%  \overline{
+    \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau} \rho
+    [\overline{\gamma := C}]
+    [\overline{\psi := \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\gamma := C}][\overline{\alpha := \_}] }]
+    [\phi := \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash K} \rho [\overline{\gamma := C}][\overline{\beta := \_}] ]
+%  },
+%  \overline{C}
+% }
+\]
+because of Lemma~\ref{lem:substitution}  (references lemma in draft document).
+Moreover, observe that $\lambda \ol{B}. \eta_{\ol{B}, \ol{C}}$ is a natural transformation
+\[
+\lambda \ol{B}. \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash H} \rho [\ol{\beta := B}] [\ol{\gamma := C}]
+\Rightarrow
+\lambda \ol{B}. \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash K} \rho [\ol{\beta := B}] [\ol{\gamma := C}]
+\]
+and $\lambda \ol{A}. \epsilon_{\ol{A}, \ol{C}}$ is a natural transformation
+\[
+\lambda \ol{A}. \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \rho [\ol{\alpha := A}] [\ol{\gamma := C}]
+\Rightarrow
+\lambda \ol{A}. \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\ol{\alpha := A}] [\ol{\gamma := C}]
+\]
+for any $\ol{C : \set}$.
+Then we have that
+\[
+\begin{array}{rl}
+  & \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
+      x_{\overline{\tau [\overline{\psi := G}] [\phi := K]}, \overline{\gamma}}
+      \big(\big(
+        (\map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}})_{\emptyset} (x, \overline{y})
+      \big)_{\overline{\gamma}} z \big)}\rho \ast \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}.
+    \eta_{\overline{\setsem{\Gamma; \overline{\gamma} \vdash \tau [\overline{\psi := G}] [\phi := K]} \rho [\overline{\gamma := C}]}, \overline{C}}
+    \circ
+    \big(
+      \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash
+        \map_{H[\overline{\beta := \tau}]}^{\overline{I}, \overline{J}}
+      } \rho \ast \eta \overline{\epsilon}
+    \big)_{\overline{C}} \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}.
+  \eta_{
+  \overline{
+    \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau} \rho
+    [\overline{\gamma := C}]
+    [\overline{\psi := \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\gamma := C}][\overline{\alpha := \_}] }]
+    [\phi := \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash K} \rho [\overline{\gamma := C}][\overline{\beta := \_}] ]
+  },
+  \overline{C}
+  } \\
+  & \circ \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash H} \Id_{\rho [\overline{\gamma := C}]} [\overline{
+    \beta := \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}
+      \Id_{\rho [\overline{\gamma := C}]}
+      [\overline{\psi := \lambda \overline{A}. \epsilon_{\overline{A}, \overline{C}}}]
+      [\phi := \lambda \overline{B}. \eta_{\overline{B}, \overline{C}}]
+    }] \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}.
+  \eta_{
+  \overline{
+    \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau} \rho
+    [\overline{\gamma := C}]
+    [\overline{\psi := \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G} \rho [\overline{\gamma := C}][\overline{\alpha := \_}] }]
+    [\phi := \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash K} \rho [\overline{\gamma := C}][\overline{\beta := \_}] ]
+  },
+  \overline{C}
+  } \\
+  & \circ (\lambda \ol{B}. \setsem{\Gamma; \overline{\beta}, \overline{\gamma} \vdash H} \rho [\overline{\gamma := C}] [\ol{\beta := B}])
+    (\overline{ \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \tau}
+      \Id_{\rho [\overline{\gamma := C}]}
+      [\overline{\psi := \lambda \overline{A}. \epsilon_{\overline{A}, \overline{C}}}]
+      [\phi := \lambda \overline{B}. \eta_{\overline{B}, \overline{C}}]
+    }) \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}.
+      \setsem{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash \phi \overline{\tau}}
+      \Id_{\rho [\overline{\gamma := C}]}
+      [\phi := \lambda \overline{B}. \eta_{\overline{B}, \overline{C}}]
+      [\overline{\psi := \lambda \overline{A}. \epsilon_{\overline{A}, \overline{C}}}] \\
+= & \lambda \eta. \lambda \overline{\epsilon}. \lambda \overline{C}. \big(
+      \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map^{\overline{I}, \overline{J}}_{\phi \overline{\tau}}} \rho \ast \eta \overline{\epsilon}
+    \big)_{\overline{C}} \\
+= & \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map^{\overline{I}, \overline{J}}_{\phi \overline{\tau}}} \rho \ast
+\end{array}
+\]
+where the third equality is given by the definition of functorial
+action of the semantic interpretation for type application, in
+Definition~\ref{set-sem-funcs} (the definition of the action of set
+interpretations of types on morphisms in $\setenv$).
+
+Finally, the proof for the relation interpretation is analogous to the above proof for the set interpretation.
+\end{proof}
+
+\begin{lemma}\label{lemma:in-fold-map-I}
+The terms
+\[
+\Gamma; \emptyset \,|\, x: \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi := F][\overline{\alpha := \beta}]\, F
+\vdash ((\fold_{H, F})_{\emptyset} x) \circ \tin_{H}
+: \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}]\, F
+\]
+and
+\begin{align*}
+\Gamma; \emptyset \,|\, x: \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi := F][\overline{\alpha := \beta}]\, F
+&\vdash x \circ \big( (\map_{H [\ol{\alpha := \beta}]}^{(\mu \phi. \lambda \overline{\alpha} H) \overline{\beta}, F})_{\emptyset} ((\fold_{H, F})_{\emptyset} x) \big) \\
+&: \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}]\, F
+\end{align*}
+are semantically equivalent.
+\end{lemma}
+\begin{proof}
+Let $\rho$ be a set environment, $\ol{B}$ and $\ol{C}$ be sets, and $\eta$ be a natural transformation in
+$\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi := F][\overline{\alpha := \beta}]\, F}\rho$.
+Then we have that
+\[
+\begin{array}{rl}
+  & (\setsem{\Gamma; \emptyset \,|\, x \vdash ((\fold_{H, F})_{\emptyset} x) \circ \tin_{H}} \rho \eta)_{\overline{B}, \overline{C}} \\
+= & (\setsem{\Gamma; \emptyset \,|\, x \vdash (\fold_{H, F})_{\emptyset} x} \rho \eta)_{\overline{B}, \overline{C}}
+    \circ (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \tin_{H}} \rho \ast)_{\overline{B}, \overline{C}} \\
+= & (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \fold_{H, F}} \rho \ast \eta)_{\overline{B}, \overline{C}}
+    \circ (\textit{in}_{T_{\rho [\overline{\gamma := C}]}})_{\overline{B}} \\
+= & (\textit{fold}_{
+      T_{\rho [\overline{\gamma := C}]}
+      % \setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \rho [\overline{\alpha := \_}] [\overline{\gamma := C}]
+    } (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}}) )_{\overline{B}}
+    \circ (\textit{in}_{T_{\rho [\overline{\gamma := C}]}})_{\overline{B}} \\
+= & ((\textit{fold}_{
+      T_{\rho [\overline{\gamma := C}]}
+      %\setsem{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F} \rho [\overline{\alpha := \_}] [\overline{\gamma := C}]
+    } (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}}))
+    \circ \textit{in}_{T_{\rho [\overline{\gamma := C}]}})_{\overline{B}} \\
+= & \big(
+      (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}})
+      \circ (T_{\rho [\overline{\gamma := C}]} (\textit{fold}_{T_{\rho [\overline{\gamma := C}]}} (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}})))
+    \big)_{\overline{B}} \\
+= & (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}})_{\overline{B}}
+      \circ
+    \big(
+      T_{\rho [\overline{\gamma := C}]} (\textit{fold}_{T_{\rho [\overline{\gamma := C}]}} (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}}))
+    \big)_{\overline{B}} \\
+= & \eta_{\overline{B}, \overline{C}}
+      \circ
+    \setsem{\Gamma; \phi, \overline{\alpha}, \overline{\gamma} \vdash H}
+      Id_{\rho [\overline{\alpha := B}] [\overline{\gamma := C}]}
+      [\phi := \textit{fold}_{T_{\rho [\overline{\gamma := C}]}} (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}})] \\
+= & \eta_{\overline{B}, \overline{C}}
+    \circ \setsem{\Gamma; \phi, \overline{\alpha}, \overline{\gamma} \vdash H}
+      Id_{\rho [\overline{\alpha := B}] [\overline{\gamma := C}]}
+      [\phi := \lambda \overline{A'}. (\textit{fold}_{T_{\rho [\overline{\gamma := C}]}} (\lambda \overline{A}. \eta_{\overline{A}, \overline{C}}))_{\overline{A'}}] \\
+= & \eta_{\overline{B}, \overline{C}}
+    \circ \setsem{\Gamma; \phi, \overline{\alpha}, \overline{\gamma} \vdash H}
+      Id_{\rho [\overline{\alpha := B}] [\overline{\gamma := C}]}
+      [\phi := \lambda \overline{A'}. (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \fold_{H}^{F}} \rho \ast \eta)_{\overline{A'}, \overline{C}}] \\
+= & \eta_{\overline{B}, \overline{C}}
+    \circ \setsem{\Gamma; \phi, \overline{\alpha}, \overline{\gamma} \vdash H}
+      Id_{\rho [\overline{\alpha := B}] [\overline{\gamma := C}]}
+      [\phi := \lambda \overline{A'}. (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \fold_{H}^{F}} \rho \ast \eta)_{\overline{A'}, \ol{B}, \overline{C}}] \\
+= & \eta_{\overline{B}, \overline{C}}
+    \circ \big(
+      \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}, F}} \rho \ast
+      (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \fold_{H}^{F}} \rho \ast \eta)
+    \big)_{\overline{B}, \overline{C}} \\
+= & \eta_{\overline{B}, \overline{C}}
+    \circ \big(
+      \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}, F}} \rho \ast
+      (\setsem{\Gamma; \emptyset \,|\, x \vdash (\fold_{H}^{F})_{\emptyset} x} \rho \eta)
+    \big)_{\overline{B}, \overline{C}} \\
+= & (\setsem{\Gamma; \emptyset \,|\, x \vdash x} \rho \eta)_{\overline{B}, \overline{C}}
+    \circ (\setsem{\Gamma; \emptyset \,|\, x \vdash (\map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}, F})_{\emptyset} ((\fold_{H}^{F})_{\emptyset} x) } \rho \eta)_{\overline{B}, \overline{C}} \\
+= & (\setsem{\Gamma; \emptyset \,|\, x \vdash x \circ \big( (\map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}, F})_{\emptyset} ((\fold_{H}^{F})_{\emptyset} x) \big)} \rho \eta)_{\overline{B}, \overline{C}}
+\end{array}
+\]
+where the tenth equality is given by weakening.
+\end{proof}
+
+It is a general property of the semantic $\textit{in}$ to be invertible,
+its inverse being given in terms of $\textit{fold}$.
+We shall prove that this fact holds for the semantic interpretation of the syntactic $\tin$ and $\fold$.
+
+The next lemma states the syntactic analogue of the fact that, for an endofunctor $H$,
+the composition $\textit{in}_H \circ \textit{fold}_H(H \textit{in}_H)$ is the identity on the fixed point $\mu H$.
+
+\begin{lemma}\label{lemma:in-fold-map-II}
+The terms
+\begin{align*}
+\Gamma; \emptyset \,|\, \emptyset
+&\vdash \tin_H 
+\circ (\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H) \\
+&: \Nat^{\overline{\beta}, \overline{\gamma}} (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}\, (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}
+\end{align*}
+and
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash \Id_{(\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}
+: \Nat^{\overline{\beta}, \overline{\gamma}} (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}\, (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}
+\]
+are semantically equivalent.
+\end{lemma}
+\begin{proof}
+Let $\rho$ be a set environment, $\ol{B}$ and $\ol{C}$ be sets, and $\ast$ be the unique element of the singleton.
+Then we have that
+\[
+\begin{array}{rl}
+  &(\setsem{\Gamma; \emptyset \,|\, \emptyset
+\vdash \tin_H 
+\circ (\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H)}\rho \ast)_{\ol{B}, \ol{C}} \\
+= &(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \tin_H}\rho \ast)_{\ol{B}, \ol{C}} \\
+  &\circ (\setsem{\Gamma; \emptyset \,|\, \emptyset
+	\vdash(\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+	((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H)}\rho \ast)_{\ol{B}, \ol{C}} \\
+= &( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B}} \\
+  &\circ \big( \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]} } \rho \ast \\
+  &(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}} \rho \ast
+	(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast)) \big)_{\ol{B}, \ol{C}} \\
+= &( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B}} \\
+  &\circ \big( \textit{fold}_{T^{\set}_{\rho [\ol{\gamma := C}]}} \lambda \ol{A}.
+	(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}} \rho \ast
+		(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast))_{\ol{A}, \ol{C}}
+	\big)_{\ol{B}}
+\end{array}
+\]
+Notice that
+\[
+\begin{array}{rl}
+  &\lambda \ol{A}.
+	(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}} \rho \ast
+		(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast))_{\ol{A}, \ol{C}} \\
+= &\lambda \ol{A}.
+		\setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\alpha := A}][\ol{\gamma := C}]}
+		[\phi := \lambda \ol{B'}. (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast)_{\ol{A}, \ol{B'}, \ol{C}}] \\
+= &\lambda \ol{A}.
+		\setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\alpha := A}][\ol{\gamma := C}]}
+		[\phi := \lambda \ol{B'}. (\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast)_{\ol{B'}, \ol{C}}] \\
+= &\lambda \ol{A}.
+		\setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\alpha := A}][\ol{\gamma := C}]}
+		[\phi := \lambda \ol{B'}. ( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B'}}] \\
+= &\lambda \ol{A}.
+		\setsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \Id_{\rho [\ol{\alpha := A}][\ol{\gamma := C}]}
+		[\phi := \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}}] \\
+= &\lambda \ol{A}.
+	T^{\set}_{\rho [\ol{\gamma := C}]} \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} \ol{A} \\
+= &T^{\set}_{\rho [\ol{\gamma := C}]} \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+\end{array}
+\]
+Then we use the above calculation to compute
+\[
+\begin{array}{rl}
+  &( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B}} \\
+  &\circ \big( \textit{fold}_{T^{\set}_{\rho [\ol{\gamma := C}]}} ( \lambda \ol{A}.
+	(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}} \rho \ast
+		(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash  \tin_H} \rho \ast))_{\ol{A}, \ol{C}}
+	) \big)_{\ol{B}} \\
+= &( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B}}
+	\circ \big( \textit{fold}_{T^{\set}_{\rho [\ol{\gamma := C}]}} (
+		T^{\set}_{\rho [\ol{\gamma := C}]} \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+	) \big)_{\ol{B}} \\
+= &\big( \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+	\circ \textit{fold}_{T^{\set}_{\rho [\ol{\gamma := C}]}} (
+		T^{\set}_{\rho [\ol{\gamma := C}]} \textit{in}_{T^{\set}_{\rho [\ol{\gamma := C}]}}
+	) \big)_{\ol{B}} \\
+= &( \Id_{\mu T^{\set}_{\rho [\ol{\gamma := C}]}} )_{\ol{B}} \\
+= &\Id_{( \mu T^{\set}_{\rho [\ol{\gamma := C}]} )_{\ol{B}}} \\
+= &\Id_{\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash (\mu \phi. \lambda \ol{\alpha}. H)\ol{\beta} }\rho [\ol{\beta := B}][\ol{\gamma := C}]} \\
+= &(\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \Id_{(\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}}}\rho \ast)_{\ol{B}, \ol{C}}
+\end{array}
+\]
+where the first equality follows from the previous calculation,
+the third equality is a semantic property of $\textit{fold}$ and $\textit{in}$,
+and the last equality is by Lemma~\ref{lem:interpretation-identity}.
+
+The proof for the relation interpretation is analogous.
+\end{proof}
+
+The next lemma states the syntactic analogue of the fact that, for an endofunctor $H$,
+the composition $\textit{fold}_H(H \textit{in}_H) \circ \textit{in}_H$ is the identity on the fixed point $H(\mu H)$.
+
+\begin{lemma}\label{lemma:in-fold-map-III}
+The terms
+\begin{align*}
+\Gamma; \emptyset \,|\, \emptyset
+&\vdash (\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H)
+\circ  \tin_H \\
+&: \Nat^{\overline{\beta}, \overline{\gamma}}
+H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]\,
+H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]
+\end{align*}
+and
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash \Id_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]}
+: \Nat^{\overline{\beta}, \overline{\gamma}}
+H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]\,
+H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]
+\]
+are semantically equivalent.
+\end{lemma}
+\begin{proof}
+The term
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash (\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H)
+\circ  \tin_H
+\]
+because of Lemma~\ref{lemma:in-fold-map-I}, is semantically equivalent to
+\begin{multline*}
+\Gamma; \emptyset \,|\, \emptyset
+\vdash ((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H) \\
+\circ (\map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}]})_{\emptyset} \\
+((\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H))
+\end{multline*}
+which, because of functoriality (map notes, pages 1--2), is semantically equivalent to
+\begin{multline*}
+\Gamma; \emptyset \,|\, \emptyset
+\vdash 
+(\map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}, (\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}})_{\emptyset} \\
+(
+\tin_H
+\circ (\fold_{H, H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
+((\map_{H}^{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}], (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}})_{\emptyset} \tin_H))
+\end{multline*}
+which, because of Lemma~\ref{lemma:in-fold-map-II}, is semantically equivalent to
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash 
+(\map_{H}^{(\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}, (\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}})_{\emptyset}
+(\Id_{(\mu \phi. \lambda \overline{\alpha}. H) \overline{\beta}})
+\]
+which, because of functoriality (map notes, page 3), is semantically equivalent to
+\[
+\Gamma; \emptyset \,|\, \emptyset
+\vdash 
+\Id_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]} \qedhere
+\]
+\end{proof}
+
+\bibliography{references}
+
+\end{document}
+
