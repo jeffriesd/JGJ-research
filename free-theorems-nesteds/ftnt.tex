@@ -727,7 +727,7 @@ as follows:
 
 Parametricity requires that set interpretations of types are defined
 simultaneously with their relational interpretations. This is because
-the underlying interpretations of $\Nat$-types must be cut down to
+the underlying interpretations of $\Nat$ types must be cut down to
 include only the ``parametric'' elements, as discussed in,
 e.g.,~\cite{agj14,bfss90,rey83}. Indeed, without this cutting down it
 will not be possible to prove the Identity Extension Lemma
@@ -834,7 +834,7 @@ The interpretations in Definition~\ref{def:set-sem} respect weakening,
 i.e., a type and its weakenings all have the same set interpretations.
 The same holds for the actions of these interpretations on morphisms
 in Definition~\ref{def:set-sem-funcs} below.  Moreover, the
-interpretation of $\Nat$-types ensures that $\setsem{\Gamma \vdash
+interpretation of $\Nat$ types ensures that $\setsem{\Gamma \vdash
   \sigma \to \tau}\rho = \setsem{\Gamma \vdash \sigma} \rho \to
 \setsem{\Gamma \vdash \tau} \rho$, as expected.  If $\rho$ is a set
 environment and $\vdash \tau : \F$ then we may write $\setsem{\vdash
@@ -992,9 +992,6 @@ commutes:
 \end{equation}
 \end{itemize}
 \end{dfn}
-The interpretation of $\Nat$ types ensures that if $\Gamma \vdash
-\sigma \to \tau$ then $\setsem{\Gamma\vdash \sigma \to \tau}f =
-\id_{\setsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected.
 
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
@@ -1428,7 +1425,7 @@ The interpretations in Definition~\ref{def:rel-sem} respect weakening,
 i.e., a type and its weakenings all have the same relational
 interpretations. The same holds for the actions of these
 interpretations on morphisms in Definition~\ref{def:rel-sem-funcs}
-below.  Moreover, the interpretation of $\Nat$-types ensures that
+below.  Moreover, the interpretation of $\Nat$ types ensures that
 $\relsem{\Gamma \vdash \sigma \to \tau}\rho = \relsem{\Gamma \vdash
   \sigma} \rho \to \relsem{\Gamma \vdash \tau} \rho$, as expected. If
 $\rho$ is a relational environment and $\vdash \tau : \F$, then we
@@ -1463,9 +1460,9 @@ Definition~\ref{def:rel-sem-funcs}. The action of $T$ on a morphism $f
 {\color{blue} May want to use $T_{H,f}$ rather than $\sigma_f$ in the
   final version.} $\sigma_f : T_\rho \to T_{\rho'}$ whose action on
 any $F : [\rel^k,\rel]$ is the natural transformation $\sigma_f F :
-T_\rho F \to T_{\rho'} F$ whose compnent at $\ol{R}$ is
+T_\rho F \to T_{\rho'} F$ whose component at $\ol{R}$ is
     \[ (\sigma_f F)_{\ol{R}} = \relsem{\Gamma; \Phi,\phi,\ol{\alpha}
-      \vdash H}f[\phi := \id_F][\ol{\alpha := R}]\] The next
+      \vdash H}f[\phi := \id_F][\ol{\alpha := \id_R}]\] The next
     definition uses this observation to define the action of each
     functor interpreting a type on morphisms between relation
     environments.
@@ -1513,17 +1510,14 @@ is given as follows:
  & \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}} f\\
 = & (\mu \sigma_f)\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho'} \circ
-(\mu T_\rho)\ol{\relsem{\Gamma;\Phi \vdash \tau}f})\\ = &
+(\mu T_\rho)\ol{\relsem{\Gamma;\Phi \vdash \tau}f}\\ = &
 (\mu T_{\rho'})\ol{\relsem{\Gamma;\Phi \vdash \tau}f} \circ (\mu
 \sigma_f)\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho}
 \end{array}\]
 \end{itemize}
 \end{dfn}
 
-The interpretation of $\Nat$-types ensures that if $\Gamma;\emptyset
-\vdash \sigma \to \tau$ then $\relsem{\Gamma \vdash \sigma \to \tau}f
-= \id_{\relsem{\Gamma \vdash \sigma \to \tau}\rho}$, as expected. To
-see that the functors given by Definitions~\ref{def:rel-sem}
+To see that the functors given by Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} are well-defined we must show that $T_\rho
 F$ is a relation transformer for any relation transformer $F$, and
 that $\sigma_f F : T_\rho F \to T_{\rho'} F$ is a morphism of relation
@@ -2626,6 +2620,7 @@ $\Gamma;\Phi \,|\, \Delta \vdash s : \sigma$ then
   \sigma \vdash t : \tau}\rho \,(R, \relsem{\Gamma;\Phi \,|\,
   \Delta\vdash s: \sigma}\rho\,R)$
 \end{itemize}
+
 In addition, direct calculation reveals that the set interpretations
 of terms satisfy
 \begin{itemize}
@@ -2633,9 +2628,9 @@ of terms satisfy
   (L_{\ol{\alpha}}x.t)_{\ol{\tau}}s} = \setsem{\Gamma; \Phi~|~\Delta
   \vdash t [\ol{\alpha := \tau}][x := s]}$
 \end{itemize}
-Moreover, if we define, for $\Gamma; \ol{\alpha} \vdash F$, the term
-$\id_F$ to be $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
-\Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
+Thus, if we define, for $\Gamma; \ol{\alpha} \vdash F$, the term
+$\id_F$ to be $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x
+: \Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
 \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset
 \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$, the {\em
   composition} $s \circ t$ of $t$ and $s$ to be $\Gamma; \emptyset
@@ -2652,6 +2647,9 @@ x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
   \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} 
     \circ \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
       \Nat^{\overline{\alpha}} F\,G}$ 
+\end{itemize}
+Moreover, we have
+\begin{itemize}
 \item $\hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, x :
   \Nat^{\overline{\alpha}, 
     \overline{\gamma}} F\,G, \overline{y : \Nat^{\overline{\gamma}}
@@ -2667,9 +2665,9 @@ x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
   \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
       \sigma}]\, G[\overline{\alpha := \tau}]}$
 \end{itemize}
-The last semantic equality reveals that terms of $\Nat$ type behave as
-natural transformations with respect to their source and target
-functorial types. As the special case when $x = in_H$ we have
+The previous semantic equality reveals that terms of $\Nat$ type
+behave as natural transformations with respect to their source and
+target functorial types. As the special case when $x = in_H$ we have
 \begin{itemize}
 \item $\hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, \overline{y :
     \Nat^{\overline{\gamma}} 
@@ -2705,13 +2703,13 @@ type $\xi = \Nat^{\emptyset} (\ol{\Nat^{\ol{\alpha}, \ol{\beta},
     \ol{\gamma}} F G}) (\Nat^{\ol{\gamma}} H[\ol{\psi := K}][\ol{\phi
     := F}] H[\ol{\psi := K}][\ol{\phi := G}])$
 \item If $\Gamma; \overline{\beta}, \overline{\gamma} \vdash H$,\;
-$\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$,\;
-$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$,\;
-$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash
-  G}$,\; 
-$\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash
-  \tau}$,\; $\overline{I} = \overline{F}, H$,\; and $\overline{J} =
-  \overline{G}, K$, then
+  $\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$,\;
+  $\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash
+  F}$,\; $\overline{\Gamma; \overline{\alpha}, \overline{\gamma}
+  \vdash G}$,\; $\overline{\Gamma; \phi, \overline{\psi},
+  \overline{\gamma} \vdash \tau}$,\; $\overline{I}$ is the sequence
+  $\overline{F}, H$ and $\overline{J}$ is the sequence $\overline{G},
+  K$ then
 \[\hspace*{0.13in}\setsem{\Gamma; \emptyset \,|\, \emptyset
     \vdash L_{\emptyset} (x, \overline{y}). L_{\overline{\gamma}} z.
     x_{\overline{\tau [\overline{\psi := G}] [\phi := K]},
@@ -2761,7 +2759,8 @@ $  = \setsem{\Gamma; \emptyset \,|\, \emptyset
   at type $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}
 (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}\, (\mu
 \phi. \lambda \overline{\alpha}. H)\overline{\beta}$
-\item $\hspace*{0.13in}\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash (\fold_{H,
+\item $\hspace*{0.13in}\setsem{\Gamma; \emptyset \,|\, \emptyset
+  \vdash (\fold_{H, 
     H[\phi := (\mu \phi. \lambda
       \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
   ((\map_{H}^{H[\phi := (\mu \phi. \lambda
@@ -2783,13 +2782,11 @@ H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]$.
 %= k_{\ol{\sigma}\,\ol{\tau}}\, ( \map_H^{\mu H,
 %F}\,(\fold^F_H\,k)_{\ol{\sigma}\,\ol{\tau}}\, t)$ for all
 %$\ol{\sigma}$ and $\ol{\tau}$.
-Analogous results hold for the functorial actions of set
-interpretations of terms, as well as for the actions on objects and
-functorial actions of the relational interpretations of terms.  The
-set and relational interpretations of terms therefore respect the
-congruence closed equational theory obtained by adding these judgments
-to those generating the usual congruence closed equational theory
-induced by the other term formers.
+Analogous results hold for relational interpretations of terms and
+relational environments. The set and relational interpretations of
+terms therefore respect the congruence closed equational theory
+obtained by adding these judgments to those generating the usual
+congruence closed equational theory induced by the other term formers.
 
 If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
 : \tau$, then we write $\setsem{\vdash t : \tau}$ instead of
