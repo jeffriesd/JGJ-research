@@ -252,7 +252,9 @@ $\overline{\alpha}$ be finite subsets of\, $\tvars$. The sets $\T(V)$ of
   %%  \quad (remove \to and \forall)
   %%  \]
   \[{\color{red}\T(V) \; ::= \; V \mid 
-   \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))}\]
+   \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V)) \mid
+   V \ol{\T(V)}
+   }\]
 \noindent
 and 
 \begin{align*}
@@ -328,6 +330,14 @@ set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
 }
 \\
 \\
+{\color{red}
+\AXC{$\phi^k \in \Gamma$}
+\AXC{$\quad\quad\ol{\Gamma;\emptyset \vdash \tau : \T}$}
+\BIC{$\Gamma;\emptyset \vdash \phi^k \ol{\tau} : \T $}
+\DisplayProof
+}
+\\
+\\
 %% {\color{red}
 %% \AXC{$\Gamma,v;\emptyset  \vdash \tau : \T$} 
 %% \UIC{$\Gamma;\emptyset  \vdash \forall v.\, \tau : \T$}
@@ -348,7 +358,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 &
 \AXC{$\phantom{\Gamma;\Phi}$}
-\UIC{$\Gamma;\Phi, v \vdash v : \F$}
+\UIC{$\Gamma;\Phi, v^0 \vdash v^0 : \F$}
 \DisplayProof
 &
 \AXC{\phantom{$\Gamma,\Phi$}}
@@ -361,7 +371,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \end{array}\]
 \[\begin{array}{c}
 {\color{red}
-\AXC{$\phi^k \in \Phi \cup \Gamma$}
+\AXC{$\phi^k \in \Phi$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau} : \mcF $}
 \DisplayProof
@@ -909,7 +919,7 @@ ensures that
 \[\setsem{\Gamma;\Phi \vdash F \ol{\tau}}\rho =
   \setsem{\Gamma;\Phi,\ol{\alpha} \vdash F\ol{\alpha}}
   (\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}}])\] Moreover,
-  the third {\color{red} fourth} clause does indeed define a
+  the second clause does indeed define a
   set. Indeed, local finite presentability of $\set$ and
   $\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$
   ensure that $\{\eta : \setsem{\Gamma;\ol{\alpha} \vdash F}\rho
@@ -1433,7 +1443,7 @@ defined by
 %  \relsem{\Gamma;\emptyset \vdash \sigma \to \tau} \rho &=
 %  \relsem{\Gamma;\emptyset \vdash \sigma} \rho \to
 %  \relsem{\Gamma;\emptyset \vdash \tau} \rho \\ 
- & {\color{red} \mbox{need to interpret forall types if we include them}}\\
+ % & {\color{red} \mbox{need to interpret forall types if we include them}}\\
   \relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}
     \,F\,G}\rho &= \{\eta : \lambda \ol{R}.\,\relsem{\Gamma;
       \ol{\alpha} \vdash F}\rho[\ol{\alpha := R}] \Rightarrow \lambda
@@ -2228,7 +2238,7 @@ By induction on the structure of $\tau$.
 %  \Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho} =
 %  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho}$, where
 %  the second equality is by the induction hypothesis.
-\item {\color{red} $\tau = \forall v.\tau_1$}
+%% \item {\color{red} $\tau = \forall v.\tau_1$}
 \item By definition, $\relsem{\Gamma; \emptyset \vdash
   \Nat^{\overline\alpha} \,F\,G} \Eq_{\rho}$ is the relation on
   $\setsem{\Gamma; \emptyset \vdash \Nat^{\overline\alpha} \,F\,G}
@@ -2480,8 +2490,7 @@ defined as follows:
  & & \hspace*{0.5in} \setsem{\Gamma;\Phi \,|\,
     \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle\\ 
 & & \\
-\color{red} \mbox{Add rules for } \forall \mbox{ if we include
-  it} & & \\
+%% \color{red} \mbox{Add rules for } \forall \mbox{ if we include it} & & \\
 \setsem{\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau} \rho& = &
 \pi_{|\Delta|+1}\\
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho& = &
@@ -2571,8 +2580,7 @@ defined as follows:
  & & \hspace*{0.5in} \relsem{\Gamma;\Phi \,|\,
     \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho \rangle\\ 
 & & \\
-\color{red} \mbox{Add rules for } \forall \mbox{ if we include
-  it} & & \\
+%% \color{red} \mbox{Add rules for } \forall \mbox{ if we include it} & & \\
 \relsem{\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau} \rho& = &
 \pi_{|\Delta|+1}\\
 \relsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho& = &
