@@ -246,9 +246,13 @@ Let $V$ be a finite subset of\, $\V$, and let $\Pos$ and
 $\overline{\alpha}$ be finite subsets of\, $\tvars$. The sets $\T(V)$ of
 {\em type expressions} over $V$ and $\mcF^\Pos(V)$ of {\em type
   constructor expressions} over $V$ are given by:
-\[\T(V) \; ::= \; V \mid \T(V) \to \T(V) \mid
-   {\color{red} \forall v.\, \T(V,v)} \mid
-   \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))\]
+  %% \[\color{red} \T(V) \; ::= \; V \mid \T(V) \to \T(V) \mid
+  %%  {\color{red} \forall v.\, \T(V,v)} \mid
+  %%  \color{red} \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))
+  %%  \quad (remove \to and \forall)
+  %%  \]
+  \[{\color{red}\T(V) \; ::= \; V \mid 
+   \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))}\]
 \noindent
 and 
 \begin{align*}
@@ -293,24 +297,42 @@ substituted by type constructors of arity $0$ --- i.e., type constants
 --- such as Nat or Bool.
 
 \begin{dfn}\label{def:wftypes}
-Let $\Gamma$ be a {\em type context}, i.e., a finite set of type
-variables, and let $\Phi$ be a {\em type constructor context}, i.e., a
-finite set of type constructor variables. The formation rules for the
+  % changes - Gamma can now contain type constructor variables
+  %         (in which the resulting expression is not functorial)
+            
+
+%% Let $\Gamma$ be a {\em type context}, i.e., a finite set of type
+%% variables, and let $\Phi$ be a {\em type constructor context}, i.e., a
+%% finite set of type constructor variables. 
+
+{\color{red}
+  Let $\Gamma$ be a {\em (non-functorial) type context}, i.e., a finite set of type
+variables in which the resulting type is not functorial, and let $\Phi$ be a {\em functorial type context}, i.e., a
+finite set of type variables in which the resulting type is functorial. 
+Note that variables of arity greater than 0, which are interpreted as functors,
+may appear in the non-functorial type context.
+}
+
+
+The formation rules for the
 set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
   type expressions} are 
 \[\begin{array}{cc}
-\AXC{$\phantom{\Gamma;\Phi}$}
-\UIC{$\Gamma,v;\emptyset \vdash v : \T$}
-\DisplayProof
-&
-\\
-\\
+%% \AXC{$\phantom{\Gamma;\Phi}$}
+%% \UIC{$\Gamma,v;\emptyset \vdash v : \T$}
+%% \DisplayProof
 {\color{red}
-\AXC{$\Gamma,v;\emptyset  \vdash \tau : \T$} 
-\UIC{$\Gamma;\emptyset  \vdash \forall v.\, \tau : \T$}
+\AXC{$\phantom{\Gamma;\Phi}$}
+\UIC{$\Gamma,v^0;\emptyset \vdash v^0 : \T$}
 \DisplayProof
 }
-&
+\\
+\\
+%% {\color{red}
+%% \AXC{$\Gamma,v;\emptyset  \vdash \tau : \T$} 
+%% \UIC{$\Gamma;\emptyset  \vdash \forall v.\, \tau : \T$}
+%% \DisplayProof
+%% }
 \AXC{$\Gamma;\ol{\alpha} \vdash \sigma :
   \mcF$}
 \AXC{$\Gamma;\ol{\alpha}  \vdash \tau : \mcF$}
@@ -338,14 +360,16 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 \end{array}\]
 \[\begin{array}{c}
-\AXC{$\phi^k \in \Phi$}
+{\color{red}
+\AXC{$\phi^k \in \Phi \cup \Gamma$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
-\BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau}$}
+\BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau} : \mcF $}
 \DisplayProof
+}
 \\
 \AXC{$\Gamma;\Phi,\ol{\alpha},\phi^k \vdash \tau : \mcF$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
-\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda \ol{\alpha}. \,\tau)\ol{\tau}$}
+\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda \ol{\alpha}. \,\tau)\ol{\tau} : \mcF$}
 \DisplayProof
 \end{array}\]
 \[\begin{array}{cc}
@@ -370,8 +394,19 @@ for well-formed type expressions and type constructor expressions
 hold.  If $\Gamma;\emptyset \vdash \sigma : \T$ and $\Gamma;\emptyset
 \vdash \tau : \T$, then our rules allow formation of the type
 expression $\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$. This
-type can can be thought of as representing the standard arrow type
-$\Gamma \vdash \sigma \to \tau$ in our calculus.  Our formation rules
+type can be thought of as representing the standard arrow type
+$\Gamma \vdash \sigma \to \tau$ in our calculus. 
+
+{\color{red}
+A similar derivation allows one to represent standard for all types
+of the form $\Gamma \vdash \forall \ol\alpha . \tau$ by the type 
+$\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,\tau :\F$.
+Note that whenever $\ol\alpha$ is non-empty, $\tau$ cannot be of the 
+form $\Nat^{\ol\beta} H \, K$ because $\Gamma; \ol\alpha \vdash 
+\Nat^{\ol\beta} H \, K$ is an invalid typing judgment.
+}
+
+Our formation rules
 also allow type constructor expressions like $\List\gamma = (\mu
 \beta. \lambda \alpha. \onet + \alpha \times \beta)\gamma$ either to
 be natural in $\gamma$ or not, according to whether it is well-formed
@@ -382,6 +417,17 @@ derivation of, e.g., $\delta; \emptyset \vdash \Nat^\gamma (\List
 \gamma) \, (\Tree \gamma \delta)$, which represents a natural
 transformation between lists and trees that is natural in $\gamma$ but
 not in $\delta$.
+{\color{red}
+Type constructor expressions may also be functorial in variables
+of arity greater than $0$. For example, the type $\GRose \phi \, \alpha = 
+\mu\beta . \alpha \times \phi \beta$ may be functorial in $\phi$ or not,
+according to which context $\phi$ belongs. This choice of context for $\phi$ determines whether
+one can form types such as $\Nat^\alpha (\GRose \phi \, \alpha) (\List \alpha)$. If $\GRose$ is functorial
+in $\phi$, i.e. $\emptyset; \alpha, \phi \vdash \mu \beta . \alpha \times \phi \beta$, then
+$\GRose$ cannot be used as a (co)domain in $\Nat$ types. This is due to the fact that
+our calculus does not allow naturality in variables of arity greater than $0$.
+}
+
 
 Substitution for first-order type constructor expressions is the usual
 capture-avoiding textual substitution. We write $\tau[\alpha :=
@@ -394,13 +440,31 @@ definition.
 
 {\color{blue} Add subscript notation in next definition and propagate?
   Omit when clear from context?}
+
+
 \begin{dfn}\label{def:second-order-subst}
+
+%% If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
+%% \ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
+%% \{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
+%% F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$, where the operation
+%% $(\cdot)[\phi := H]$ of {\em second-order type constructor
+%%   substitution} is defined by:
+
+{\color{red}
 If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
 \ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
 \{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
-F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$, where the operation
+F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$.
+Similarly, if \,$\Gamma, \phi^k; \Phi \vdash F[\phi] : \F$ and $\Gamma;\Phi,
+\ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
+\{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
+F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$. 
+The operation
 $(\cdot)[\phi := H]$ of {\em second-order type constructor
   substitution} is defined by:
+}
+
 \[\begin{array}{lll}
 \tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
 \onet[\phi := H] & = & \onet\\[0.5ex]
@@ -420,6 +484,7 @@ H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
   H])\, \ol{\tau[\phi := H]}
 \end{array}\]
 \end{dfn}
+
 Note that, since an arity $0$ type constructor is first-order,
 substitution into it is just the usual textual replacement, i.e., is
 the usual notion of substitution, as expected.
@@ -459,19 +524,19 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 %\BIC{$\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$}
 %\DisplayProof
 \\\\
-{\color{red}
-\AXC{$\Gamma,\alpha;\Phi \vdash \tau : \T$}
-\AXC{$\Gamma,\alpha;\Phi \,|\, \Delta \vdash t: \tau$}
-\BIC{$\Gamma;\Phi \,|\, \Delta \vdash \Lambda \alpha.t : \forall \alpha. \tau$}
-\DisplayProof}
-&
-{\color{red}
-\AXC{$\Gamma,\alpha;\Phi \vdash \sigma : \T$}
-\AXC{$\Gamma;\Phi \vdash \tau : \T$}
-\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t: \forall \alpha.\sigma$}
-\TIC{$\Gamma;\Phi \,|\, \Delta \vdash t\tau: \sigma[\alpha := \tau]$}
-\DisplayProof}
-\\\\
+%% {\color{red}
+%% \AXC{$\Gamma,\alpha;\Phi \vdash \tau : \T$}
+%% \AXC{$\Gamma,\alpha;\Phi \,|\, \Delta \vdash t: \tau$}
+%% \BIC{$\Gamma;\Phi \,|\, \Delta \vdash \Lambda \alpha.t : \forall \alpha. \tau$}
+%% \DisplayProof}
+%% &
+%% {\color{red}
+%% \AXC{$\Gamma,\alpha;\Phi \vdash \sigma : \T$}
+%% \AXC{$\Gamma;\Phi \vdash \tau : \T$}
+%% \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t: \forall \alpha.\sigma$}
+%% \TIC{$\Gamma;\Phi \,|\, \Delta \vdash t\tau: \sigma[\alpha := \tau]$}
+%% \DisplayProof}
+%% \\\\
 {\color{red} No\;intro\; \zerot}
 &
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \zerot$}
@@ -796,7 +861,7 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
 %  \setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho &=
 %  \setsem{\Gamma;\emptyset \vdash \sigma} \rho \to
 %  \setsem{\Gamma;\emptyset \vdash \tau} \rho\\ 
- & {\color{red} \mbox{need to interpret forall types if we include them}}\\
+ % & {\color{red} \mbox{need to interpret forall types if we include them}}\\
   \setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}
     \,F\,G}\rho &= \{\eta : \lambda \ol{A}. \,\setsem{\Gamma; \ol{\alpha} \vdash
     F}\rho[\ol{\alpha := A}] 
@@ -4305,6 +4370,22 @@ surjective.
 \end{itemize}  
 \end{itemize}
 \end{proof}
+
+%% It follows immediately from Theorem~\ref{thm:at-gen} that 
+
+%% {\color{red}
+%% \begin{thm}\label{thm:at-gen-rel}
+%% If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
+%%   and if \,$(a, b) \in \relsem{\Gamma; \Phi \vdash \Delta} \rho$,
+%%   then \\
+%%   $(\setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau} (\pi_1 \rho) \,a \, ,
+%%       \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau } (\pi_2 \rho) \,b) \in 
+%%     \relsem{\Gamma; \Phi \vdash \tau} \rho$
+%% \end{thm}
+%% }
+%% \begin{proof}
+%%   Immediate from Theorem~\ref{thm:at-gen}.
+%% \end{proof}
 
 The Abstraction Theorem is now the special case of
 Theorem~\ref{thm:at-gen} for closed terms of close type:
