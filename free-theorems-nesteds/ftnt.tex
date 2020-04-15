@@ -224,28 +224,51 @@ $\omega$-cocontinuous functors from  $\C$ to $\D$.
 \section{The Calculus}
 
 \subsection{Types}
+% For each $k \ge 0$, we assume a countable set $\tvars^k$ of \emph{type
+%   constructor variables of arity $k$}, disjoint for distinct $k$.  We
+% use lower case Greek letters for type constructor variables, and write
+% $\phi^k$ to indicate that $\phi \in \tvars^k$. When convenient we may
+% write $\alpha, \beta$, etc., rather than $\alpha^0, \beta^0$, etc.,
+% for elements of $\tvars^0$. The set of all type constructor variables
+% is $\tvars = \bigcup_{k \ge 0} \tvars^k$.  We further assume an
+% infinite set $\V$ of {\em type variables} disjoint from $\tvars$.  We
+% write $\overline{\zeta}$ for either a set $\{\zeta_1,...,\zeta_n\}$ of
+% type variables or a set of type constructor variables when the
+% cardinality $n$ of the set is unimportant. If $\Pos$ is a set of type
+% constructor variables then we write $\Pos, \overline{\phi}$ for $\Pos
+% \cup \overline{\phi}$ when $\Pos \cap \overline{\phi} = \emptyset$.
+% We omit the boldface for a singleton set, thus writing $\phi$, rather
+% than $\overline{\phi}$, for $\{\phi\}$.
+%
+% \V becomes \tvars^0 \cup \fvars^0
+%
 
-For each $k \ge 0$, we assume a countable set $\tvars^k$ of \emph{type
-  constructor variables of arity $k$}, disjoint for distinct $k$.  We
-use lower case Greek letters for type constructor variables, and write
-$\phi^k$ to indicate that $\phi \in \tvars^k$. When convenient we may
-write $\alpha, \beta$, etc., rather than $\alpha^0, \beta^0$, etc.,
-for elements of $\tvars^0$. The set of all type constructor variables
-is $\tvars = \bigcup_{k \ge 0} \tvars^k$.  We further assume an
-infinite set $\V$ of {\em type variables} disjoint from $\tvars$.  We
-write $\overline{\zeta}$ for either a set $\{\zeta_1,...,\zeta_n\}$ of
-type variables or a set of type constructor variables when the
+For each $k \ge 0$, we assume countable sets {\color{red} $\tvars^k$ of \emph{type
+constructor variables of arity $k$}, $\fvars^k$ of \emph{functorial variables of arity $k$},
+disjoint for distinct $k$ and disjoint from each other.}  
+We use lower case Greek letters for both sets of variables, and write
+$\phi^k$ to indicate that 
+{\color{red} $\phi \in \tvars^k \cup \fvars^k$.}
+When convenient we may write $\alpha, \beta$, etc., rather than $\alpha^0, \beta^0$, etc.,
+for elements of {\color{red} $\tvars^0 \cup \fvars^0$.} 
+{\color{red} The sets of all type constructor variable and functorial variables are 
+$\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars = \bigcup_{k \ge 0} \fvars^k$, respectively. 
+We use the term \emph{type variable} to refer to variables in $\tvars \cup \fvars$.}
+We write $\overline{\zeta}$ for either a set $\{\zeta_1,...,\zeta_n\}$ of
+type constructor variables or a set of functorial variables when the
 cardinality $n$ of the set is unimportant. If $\Pos$ is a set of type
-constructor variables then we write $\Pos, \overline{\phi}$ for $\Pos
+constructor (or functorial) variables then we write $\Pos, \overline{\phi}$ for $\Pos
 \cup \overline{\phi}$ when $\Pos \cap \overline{\phi} = \emptyset$.
-We omit the boldface for a singleton set, thus writing $\phi$, rather
+We omit the vector notation for a singleton set, thus writing $\phi$, rather
 than $\overline{\phi}$, for $\{\phi\}$.
 
 \begin{dfn}
-Let $V$ be a finite subset of\, $\V$, and let $\Pos$ and
-$\overline{\alpha}$ be finite subsets of\, $\tvars$. The sets $\T(V)$ of
+{\color{red} Let $V$ be a finite subset of\, $\tvars$, 
+  let $\Pos$ be a finite subset of\, $\fvars$ (where $\Pos^{~k}$ denotes the set $\Pos \cap \fvars^k$), and 
+let $\overline{\alpha}$ be a finite subset of\, $\fvars^0$, disjoint from $\Pos$. 
+ The sets $\T(V)$ of
 {\em type expressions} over $V$ and $\mcF^\Pos(V)$ of {\em type
-  constructor expressions} over $V$ are given by:
+  constructor expressions} over $V$ are given by: }
   %% \[\color{red} \T(V) \; ::= \; V \mid \T(V) \to \T(V) \mid
   %%  {\color{red} \forall v.\, \T(V,v)} \mid
   %%  \color{red} \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))
@@ -262,9 +285,9 @@ and
 \zerot \mid \onet \mid \Pos\, \ol{\mcF^{\Pos}(V)} 
 \mid \mcF^{\Pos}(V)\! +\, \mcF^{\Pos}(V)
 \mid \mcF^{\Pos}(V)\! \times\, \mcF^{\Pos}(V)\\
-&\mid \left(\mu \phi^{k}. \lambda \alpha_1...\alpha_k.
+  &\color{red} \mid \left(\mu \Pos^{~k}. \lambda \alpha_1...\alpha_k. 
 \mcF^{\Pos,\alpha_1,...,\alpha_k,\phi}(V)\right)
-\ol{\mcF^{\Pos}(V)}
+  \ol{\mcF^{\Pos}(V)}
 \end{align*}
 \end{dfn}
 
@@ -288,15 +311,16 @@ $\sigma$ and $\tau$. Similarly, in a subexpression $\mu \phi^k.\lambda
 variable $\phi$, and the $\lambda$ operator binds all occurrences of
 the variables in $\ol{\alpha}$, in the body $\tau$.
 
-If $\tau \in \mcF^\Pos(V)$, if $\Pos$ contains only type constructor
+If {\color{red} $\tau \in \mcF^\Pos(V) \cup \T(V)$,} {\color{red} $\Pos$ and $V$} contain only 
 variables of arity $0$, and if $k=0$ for every occurrence of $\phi^k$
 bound by $\mu$ in $\tau$, then we say that $\tau$ is {\em
-  first-order}. Otherwise we say that $\tau$ is {\em second-order}.
-The intuition here is that variables in $V$ can be substituted by any
-types, but those in $\Pos$ can only be substituted by type
-constructors, even if of arity $0$. In this case, they'd be
-substituted by type constructors of arity $0$ --- i.e., type constants
---- such as Nat or Bool.
+first-order}. Otherwise we say that $\tau$ is {\em second-order}.
+
+% The intuition here is that variables in $V$ can be substituted by any
+% types, but those in $\Pos$ can only be substituted by type
+% constructors, even if of arity $0$. In this case, they'd be
+% substituted by type constructors of arity $0$ --- i.e., type constants
+% --- such as Nat or Bool.
 
 \begin{dfn}\label{def:wftypes}
   % changes - Gamma can now contain type constructor variables
@@ -308,17 +332,19 @@ substituted by type constructors of arity $0$ --- i.e., type constants
 %% finite set of type constructor variables. 
 
 {\color{red}
-  Let $\Gamma$ be a {\em (non-functorial) type context}, i.e., a finite set of type
-variables in which the resulting type is not functorial, and let $\Phi$ be a {\em functorial type context}, i.e., a
-finite set of type variables in which the resulting type is functorial. 
-Note that variables of arity greater than 0, which are interpreted as functors,
-may appear in the non-functorial type context.
+  Let $\Gamma$ be a type constructor context, i.e., a finite set of type
+variables in which the resulting type is not functorial, and let $\Phi$ be a 
+{\em functorial context}, i.e., a finite set of type variables in 
+which the resulting type is functorial. Note that variables of arity greater 
+than 0, which are interpreted as functors, may appear in either context.
+
+Should we state $\Gamma \subseteq \tvars$ and $\Phi \subseteq \fvars$?
 }
 
 
 The formation rules for the
-set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
-  type expressions} are 
+set {\color{red} $\T \subseteq \bigcup_{V \subseteq \tvars}\T(V)$ of\, {\em well-formed
+type constructor expressions}} are 
 \[\begin{array}{cc}
 %% \AXC{$\phantom{\Gamma;\Phi}$}
 %% \UIC{$\Gamma,v;\emptyset \vdash v : \T$}
@@ -338,6 +364,7 @@ set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
 }
 \\
 \\
+
 %% {\color{red}
 %% \AXC{$\Gamma,v;\emptyset  \vdash \tau : \T$} 
 %% \UIC{$\Gamma;\emptyset  \vdash \forall v.\, \tau : \T$}
@@ -349,9 +376,9 @@ set $\T \subseteq \bigcup_{V \subseteq \V}\T(V)$ of\, {\em well-formed
 \BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\sigma \,\tau : \T$}
 \DisplayProof
 \end{array}\]
-The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
-   \V, \Pos \subseteq \tvars}\F^\Pos(V)$ of\, {\em well-formed type
-   constructor expressions} are
+  The formation rules for the set {\color{red} $\F \subseteq \bigcup_{V \subseteq
+ \tvars, \Pos \subseteq \fvars}\F^\Pos(V)$ of\, {\em well-formed functorial
+  type expressions}} are
 \[\begin{array}{cccc}
 \AXC{$\Gamma;\emptyset \vdash \tau : \T$}
 \UIC{$\Gamma; \emptyset \vdash \tau : \F$}
@@ -371,7 +398,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \end{array}\]
 \[\begin{array}{c}
 {\color{red}
-\AXC{$\phi^k \in \Phi$}
+\AXC{$\phi^k \in \Gamma \cup \Phi$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau} : \mcF $}
 \DisplayProof
@@ -413,7 +440,7 @@ of the form $\Gamma \vdash \forall \ol\alpha . \tau$ by the type
 $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,\tau :\F$.
 Note that whenever $\ol\alpha$ is non-empty, $\tau$ cannot be of the 
 form $\Nat^{\ol\beta} H \, K$ because $\Gamma; \ol\alpha \vdash 
-\Nat^{\ol\beta} H \, K$ is an invalid typing judgment.
+\Nat^{\ol\beta} H \, K$ is an invalid typing judgment (except by weakening).
 }
 
 Our formation rules
@@ -461,15 +488,25 @@ definition.
 %% $(\cdot)[\phi := H]$ of {\em second-order type constructor
 %%   substitution} is defined by:
 
+% I would write \Gamma; \Phi \vdash F[\phi], and \phi \in \Gamma \cup \Phi
+% but then it isn't easy to express the context for F[\phi := H] where
+% the phi is removed. 
+  %
+  %
+  % also current version suggests one rule for t types, one rule for ftypes
+  % with corresponding contexts. 
+  % but I think we need mixing, e.g. the alphas that appear in H
+  % may not need to be all to one side of the semicolon.. 
+% -- Daniel 
 {\color{red}
 If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
 \ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
 \{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
 F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$.
-Similarly, if \,$\Gamma, \phi^k; \Phi \vdash F[\phi] : \F$ and $\Gamma;\Phi,
-\ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
-\{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
-F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$. 
+Similarly, if \,$\Gamma, \phi^k; \emptyset \vdash F[\phi] : \T$ and $\Gamma, 
+\ol\alpha; \emptyset ,  \vdash H : \T$ with $\ol{\alpha} =
+\{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\emptyset \vdash
+F[\phi :=_{\color{red} \ol{\alpha}} H] : \T$. 
 The operation
 $(\cdot)[\phi := H]$ of {\em second-order type constructor
   substitution} is defined by:
@@ -495,11 +532,13 @@ H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
 \end{array}\]
 \end{dfn}
 
-Note that, since an arity $0$ type constructor is first-order,
-substitution into it is just the usual textual replacement, i.e., is
-the usual notion of substitution, as expected.
+% Note that, since an arity $0$ type constructor is first-order,
+% substitution into it is just the usual textual replacement, i.e., is
+% the usual notion of substitution, as expected.
 
 \subsection{Terms}
+
+{\color{red} Need to update to $\tvars$ and $\fvars$}
 
 We assume an infinite set $\cal V$ of term variables disjoint from
 $\tvars$ and $\V$.
@@ -828,14 +867,18 @@ mutual induction.
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
 
 \begin{dfn}
-A {\em set environment} maps each type variable to a set, and each
-type constructor variable of arity $k$ to an element of
-$[\set^k,\set]$. A morphism $f : \rho \to \rho'$ from a set
-environment $\rho$ to a set environment $\rho'$ with $\rho|_\V =
-\rho'|_\V$ maps each type variable $v$ to $\id_{ \rho v}$, and each
-type constructor variable $\phi$ of arity $k$ to a natural
-transformation from the $k$-ary functor $\rho \phi$ on $\set$ to the
-$k$-ary functor $\rho' \phi$ on $\set$. Composition of morphisms on
+{\color{red} A {\em set environment} maps each type variable 
+in $\tvars^k \cup \fvars^k$ to an element of $[\set^k,\set]$.}
+A morphism $f : \rho \to \rho'$ from a set
+environment $\rho$ to a set environment 
+{\color{red} $\rho'$ with $\rho|_\tvars =
+\rho'|_\tvars$ maps each functorial variable $\phi^k \in \fvars$ to a natural transformation from 
+the $k$-ary functor $\rho \phi^k$ on $\set$ to the $k$-ary functor $\rho' \phi^k$ on $\set$,
+and maps each type constructor variable $\psi^k \in \tvars$ to the identity natural
+transformation on $\rho \psi^k = \rho'\psi^k$.
+}
+
+Composition of morphisms on
 set environments is given componentwise, with the identity morphism
 mapping each set environment to itself. This gives a category of set
 environments and morphisms between them, which we denote $\setenv$.
