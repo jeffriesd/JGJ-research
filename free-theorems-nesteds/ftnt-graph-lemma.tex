@@ -1,0 +1,1345 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+\begin{document}
+
+\begin{abstract}
+\end{abstract}
+
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+
+%% Keywords
+%% comma separated list
+%\keywords{keyword1, keyword2, keyword3}  %% \keywords is optional
+
+
+\maketitle
+
+\section{Free Theorems for Nested Types}
+
+Let us recall the standard definition of graph relation of a function.
+
+\begin{dfn}
+If $f : A \to B$ then the relation $\graph{f} : \rel(A,B)$ is defined
+by $(x,y) \in \graph{f}$ iff $fx = y$.
+\end{dfn}
+
+Also, note that we are using an angle-bracket notation
+for both the graph relation of a function
+and for the pairing of functions with the same domain.
+Such notation is in part justified by the relation between the two notions,
+exposed in Remark~\ref{rmk:graph-fn}.
+
+Any set has an associated equality relation over itself,
+and any morphism in $\set$ has an associated graph relation in $\rel$.
+% Analogously, a $k$-ary set-functor has an associated equality relation transformer
+% (we know that already because of the Identity Extension Lemma, Section 3).
+Likewise, for a natural transformation between $k$-ary set functors,
+we shall define an associated $k$-ary relation transformer.
+
+\begin{dfn}\label{dfn:graph-nat-transf}
+    If $F, G: \Set^k \to \Set$ are $k$-ary set functors
+    and $\alpha : F \to G$ is a natural transformation,
+    we define the functor $\graph{\alpha}^*: \rel^k \to \rel$ as follows.
+    Given
+    $R_1 : \rel(A_1, B_1),...,R_k : \rel(A_k,B_k)$,
+    let $\iota_{R_i} : R_i \hookrightarrow A_i \times B_i$,
+    for $i = 1,...,k$, be the inclusion of $R_i$ as a
+    subset of $A_i \times B_i$. By the universal property of the product,
+    there exists a unique $h_{\overline{A \times B}}$ making the diagram
+    \[
+    \begin{tikzcd}[row sep = large]
+        F\overline{A}
+        &F(\overline{A \times B})
+        \ar[l, "{F\overline{\pi_1}}"']
+        \ar[r, "{F\overline{\pi_2}}"]
+        \ar[d, dashed, "{h_{\overline{A \times B}}}"]
+        &F\overline{B}
+        \ar[r, "{\alpha_{B}}"]
+        &G\overline{B} \\
+        &F\overline{A} \times G\overline{B}
+        \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
+    \end{tikzcd}
+    \]
+    commute.
+    Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
+    \times G\overline{B}$ be $h_{\overline{A \times B}} \circ
+    F\overline{\iota_R}$.
+    Define $\alpha^\wedge\overline{R}$ to be the subobject
+    through which $h_{\overline{R}}$ is factorized by the mono-epi
+    factorization system in $\set$, as shown in the following diagram:
+    \[
+    \begin{tikzcd}
+        F\overline{R}
+        \ar[rr, "{h_{\overline{R}}}"]
+        \ar[dr, twoheadrightarrow, "{q_{\alpha^\wedge\overline{R}}}"']
+        &&F\overline{A} \times G\overline{B} \\
+        &\alpha^\wedge\overline{R}
+        \ar[ur, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"']
+    \end{tikzcd}
+    \]
+    %
+    %NO! $Eq_F^* \overline{(A,B,R)} =
+    %(F\overline{A},F\overline{B},Eq_F^*\overline{R})$
+    %Choose a different name for third component above, i.e., for the thing
+    %in Def 22. Maybe $F^\wedge$ on relations, i.e., subsets of domains and
+    %codomains?
+    Note that $\alpha^\wedge\overline{R} : \rel(F\overline{A}, G\overline{B})$
+    by construction, so we can define $\langle \alpha \rangle^* \overline{(A,B,R)} =
+    (F\overline{A}, G\overline{B}, \iota_{\alpha^\wedge \overline{R}}\alpha^\wedge\overline{R})$.
+    Moreover, if
+    $\overline{(\beta, \beta') : (A,B,R) \to (C,D,S)}$ are morphisms in
+    $\rel$, then we define $\graph{\alpha}^*\overline{(\beta, \beta')}$ to be
+    $(F\overline\beta, G\overline\beta')$.
+\end{dfn}
+
+We now show that the above data yield a relation transformer.
+
+\begin{lemma}\label{lem:graph-reln-functors}
+If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$,
+i.e., a natural transformation between $\omega$-cocontinuous functors,
+then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
+\end{lemma}
+\begin{proof}
+    Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous,
+    so $\graph{\alpha}^* : [\rel^k,\rel]$.
+
+    Now, consider $\overline{(\beta, \beta') : R \to S}$, where
+    $\overline{R : \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.  We want
+    to show that there exists a morphism $\epsilon : \alpha^\wedge\overline{R}
+    \to \alpha^\wedge\overline{S}$ such that
+    \[
+    \begin{tikzcd}
+        \alpha^\wedge\overline{R}
+        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+        \ar[d, "{\epsilon}"']
+        & F\overline{A} \times G\overline{B}
+        \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+        \alpha^\wedge\overline{S}
+        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+        & F\overline{C} \times G\overline{D}
+    \end{tikzcd}
+    \]
+    commutes.
+    Since $\ol{(\beta,\beta') : R \to S}$, there exist $\overline{\gamma : R \to S}$
+    such that each diagram
+    \[
+    \begin{tikzcd}
+        R_i
+        \ar[d, "{\gamma_i}"']
+        \ar[r, hookrightarrow, "{\iota_{R_i}}"]
+        &A_i \times B_i
+        \ar[d, "{\beta_i \times \beta'_i}"] \\
+        S_i
+        \ar[r, hookrightarrow, "{\iota_{S_i}}"]
+        &C_i \times D_i
+    \end{tikzcd}
+    \]
+    commutes. Now note that both
+    $h_{\overline{C \times D}} \circ F(\overline{\beta \times \beta'})$
+    and
+    $(F\overline{\beta} \times G\overline{\beta'}) \circ h_{\overline{A \times B}}$
+    make
+      \[
+      \begin{tikzcd}[row sep = large]
+          F\overline{C}
+          &F\overline{C} \times F\overline{D}
+          \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+          &F\overline{D}
+          \ar[r, "{\alpha_{D}}"]
+          &G\overline{D}\\
+          &F(\overline{A \times B})
+          \ar[u, dashed, "{\exists !}"]
+          \ar[ul, "{F\pi_1 \circ F(\overline{\beta \times \beta'})}"]
+          \ar[urr, "{\alpha_{D} \circ F\pi_2 \circ F(\overline{\beta \times \beta'})}"']
+      \end{tikzcd}
+      \]
+      commute, so they must be equal. We therefore get that the right-hand
+      square below commutes, and thus that the entire following diagram does
+      as well:
+      \[
+      \begin{tikzcd}
+          F\overline{R}
+          \ar[d, "{F\overline{\gamma}}"']
+          \ar[r, hookrightarrow, "{F\overline{\iota_R}}"]
+          \ar[rr, bend left, "{h_{\overline{R}}}"]
+          &F(\overline{A \times B})
+          \ar[d, "{F(\overline{\beta \times \beta'})}"]
+          \ar[r, "{h_{\overline{A \times B}}}"]
+          &F\overline{A} \times G\overline{B}
+          \ar[d, "{F\overline{\beta} \times F\overline{\beta'}}"] \\
+          F\overline{S}
+          \ar[r, hookrightarrow, "{F\overline{\iota_S}}"']
+          \ar[rr, bend right, "{h_{\overline{S}}}"']
+          &F(\overline{C \times D})
+          \ar[r, "{h_{\overline{C \times D}}}"']
+          &F\overline{C} \times G\overline{D}
+      \end{tikzcd}
+      \]
+      Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
+      with respect to $\iota_{F^\wedge\overline{S}}$ given by the epi-mono
+      factorization system, there exists an $\epsilon$ such that the diagram
+      \[
+      \begin{tikzcd}
+          F\overline{R}
+          \ar[d, "{F\overline{\gamma}}"']
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{R}}}"]
+          &\alpha^\wedge\overline{R}
+          \ar[d, dashed, "{\epsilon}"]
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+          &F\overline{A} \times G\overline{B}
+          \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+          F\overline{S}
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{S}}}"']
+          &\alpha^\wedge\overline{S}
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+          &F\overline{C} \times G\overline{D}
+      \end{tikzcd}
+      \]
+      commutes.
+\end{proof}
+
+\begin{rmk}\label{rmk:graph-fn}
+Let $f : A \to B$ be a function with graph relation $\graph{f} = (A, B, \graph{f}^*)$.
+Consider the function $\langle \id_{A}, f \rangle : A \to A \times B$.
+Then $\langle \id_{A}, f \rangle\, A = \graph{f}^*$.
+Moreover, if $\iota_{\graph{f}} : \graph{f}^* \hookrightarrow A \times B$
+is the inclusion of $\graph{f}^*$ into $A \times B$,
+there is an isomorphism of subobjects
+\[
+\begin{tikzcd}
+A \ar[rr, "{\cong}"] \ar[dr, "{\langle \id_{A}, f \rangle}"']
+&&{\graph{f}^*} \ar[dl, "{\iota_{\graph{f}}}"]\\
+&A \times B
+\end{tikzcd}
+\]
+\end{rmk}
+
+\begin{rmk}
+	If $f : A \to B$ is a function
+	seen as a natural transformation between 0-ary functors,
+	then $\graph{f}$ is (the 0-ary relation transformer associated with) the graph relation of $f$.
+	Indeed, we need to apply Definition~\ref{dfn:graph-nat-transf} with $k = 0$,
+	i.e., to the degenerate relation $\ast : \rel(\ast, \ast)$.
+	As degenerate $0$-ary functors, $A$ and $B$ are constant functors,
+	i.e., $A\, \ast = A$ and $B\, \ast = B$.
+	By the universal property of the product,
+    there exists a unique $h$ making the diagram
+    \[
+    \begin{tikzcd}[row sep = large]
+        A
+        &A
+        \ar[l, equal]
+        \ar[r, equal]
+        \ar[d, dashed, "{h}"]
+        &A
+        \ar[r, "{f}"]
+        &B \\
+        &A \times B
+        \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
+    \end{tikzcd}
+    \]
+    commute.
+    Notice that $\iota_\ast : \ast \to \ast$ is the identity on $\ast$,
+    and $A\, \id_{\ast} = \id_{A}$, so $h_{\ast} = h$.
+%    Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
+%    \times G\overline{B}$ be $h_{\overline{A \times B}} \circ
+%    F\overline{\iota_R}$.
+	Notice that $h_{\overline{A \times B}} = \langle \id_{A}, f \rangle$
+	is a monomorphism in $\set$ because $\id_{A}$ is.
+	Then, $\iota_{f^\wedge\ast} = \langle \id_{A}, f \rangle$
+	and $f^\wedge\ast = A$,
+	from which we deduce that
+	$\iota_{f^\wedge\ast} f^\wedge\ast = \langle \id_{A}, f \rangle\, A = \graph{f}^*$,
+	meaning that the graph of $f$ as a 0-ary natural transformation coincides with the graph of $f$ as a function.
+%	Finally, observe that $\langle \id_{A}, f \rangle A$ is a subset of \(A \times B\)
+%	and isomorphic to $\graph{f}^*$. 
+\end{rmk}
+
+Just as the equality relation $\Eq_B$ on a set $B$ coincides with $\graph{\id_B}$, the graph of the identity on the set,
+%i.e., for any $B : \set$, we have that $\graph{\id_B} = \Eq_B$,
+we can define the equality relation transformer
+to be the graph of the identity natural transformation.
+
+\begin{dfn}
+Let $F : [\set^k, \set]$.
+Define the equality relation transformer on $F$ as $\Eq_F = \graph{\id_{F}}$.
+Then, $Eq_F = (F, F, \Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$.
+\end{dfn}
+
+% Notice that the equality relation transformer associated to a $k$-ary set functor
+% corresponds to the relation transformer associated to the identity natural transformation on the set functor.
+% Thus, the notion of graph relation transformer of a natural transformation of set functors
+% is a generalization of the notion of equality relation of a set functor.
+
+Next, we show a useful formula to compute the graph relation transformer on a graph relation.
+
+\begin{lemma}\label{lem:eq-reln-equalities}
+If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
+and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$,
+then $\graph{\alpha}^* \graph{\overline{f}}
+= \langle G f \circ \alpha_{\ol{A}} \rangle
+= \langle \alpha_{\ol{B}} \circ F f \rangle$.
+\end{lemma}
+\begin{proof}
+    Since $h_{\overline{A \times B}}$ is the unique
+    morphism making the bottom triangle of the diagram
+    \[
+    \begin{tikzcd}[row sep = large]
+        &F\overline{A}
+        \ar[d, "{F \overline{\langle \id_A, f \rangle}}" description]
+        \ar[dl, equal]
+        \ar[dr, "{Ff}"]\\
+        F\overline{A}
+        &F(\overline{A \times B})
+        \ar[l, "{F\overline{\pi_1}}"']
+        \ar[r, "{F\overline{\pi_2}}"]
+        \ar[d, "{h_{\overline{A \times B}}}"]
+        &F\overline{B}
+        \ar[r, "{\alpha_B}"]
+        &G\overline{B}\\
+        &F\overline{A} \times G\overline{B}
+        \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
+    \end{tikzcd}
+    \]
+    commute,
+    and since $h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F \iota_{\graph{f}} = h_{\overline{A \times B}} \circ F \overline{\langle \id_A, f \rangle}$ (the last equality being by Remark~\ref{rmk:graph-fn}),
+    the universal property of the product
+      \[
+      \begin{tikzcd}[row sep = large]
+          F\overline{A}
+          &F\overline{A} \times G\overline{B}
+          \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+          &G\overline{B}\\
+          &F\overline{A}
+          \ar[u, dashed, "{\exists !}"]
+          \ar[ul, equal]
+          \ar[r, "{F\ol{f}}"']
+          &F{\ol{B}}
+          \ar[u, "{\alpha_{\ol{B}}}"']
+      \end{tikzcd}
+      \]
+      gives that $h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle : F \ol{A} \to F \ol{A} \times G \ol{B}$.
+      Moreover, $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle$ is a monomorphism in $\set$ because $\id_{F \ol{A}}$ is,
+      so its epi-mono factorization gives that
+      $\iota_{\alpha^\wedge \graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle$,
+      and thus that $\alpha^\wedge \graph{\overline{f}}$, the domain of $\iota_{\alpha^\wedge \graph{\overline{f}}}$
+      is equal to $F\overline{A}$.
+%     the image of $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle$ is equal to the image of $\iota_{\alpha^\wedge \graph{\overline{f}}}$,
+      Then, $\iota_{\alpha^\wedge \graph{\overline{f}}} \alpha^\wedge \graph{\overline{f}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle (F \ol{A}) = \graph{ \alpha_{\ol{B}} \circ F\ol{f} }^*$ (where the last equality is by Remark~\ref{rmk:graph-fn}).
+      Therefore, we deduce that $\graph{ \alpha }^* \graph{ \overline{f} }
+      = (F\overline{A}, G\overline{B}, \iota_{\alpha^\wedge \graph{\overline{f}}}\,
+      \alpha^\wedge \graph{\overline{f}})
+      = (F\overline{A}, G\overline{B}, \graph{ \alpha_{\ol{B}} \circ F\ol{f} }^*)
+      = \graph{ \alpha_{\ol{B}} \circ F\ol{f} }$.
+
+      Finally, notice that
+      $\alpha_{\ol{B}} \circ F\ol{f} = G\ol{f} \circ \alpha_{\ol{A}}$
+      by naturality of $\alpha$.
+\end{proof}
+
+We have an immediate corollary of the previous result.
+
+\begin{cor}
+If $F : [\set^k, \set]$ and $\ol{A : \set}$,
+then $\Eq^*_F \ol{\Eq_A} = \Eq_{F\ol{A}}$.
+\end{cor}
+\begin{proof}
+We have that
+\[
+\Eq^*_F \ol{\Eq_A}
+= \graph{\id_F}^* \graph{\id_{\ol{A}}}
+= \graph{F \id_{\ol{A}} \circ (\id_F)_{\ol{A}}}  %by your Lemma 5
+= \graph{\id_{F\ol{A}} \circ \id_{F\ol{A}}}
+%= \graph{\id_F \ol{A} \circ \id_{\ol{A}}}
+= \graph{\id_{F\ol{A}}}
+= \Eq_{F\ol{A}}
+\]
+where the second identity is by Lemma~\ref{lem:eq-reln-equalities}.
+\end{proof}
+
+We can extend the previous notions of graph of a natural transformation
+and equality relation transformer to environments.
+
+\begin{definition}
+Let $f : \rho \to \rho'$ is a morphism of set environments.
+Then, we define a graph relation environment $\graph{f}$ pointwise,
+i.e., for any variable $\phi$, we define $\graph{f} \phi = \graph{f \phi}$.
+Notice that $\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$.
+
+Likewise, if $\rho$ is a set environment,
+we define the equality relation environment $\Eq_\rho$ as $\graph{\id_{\rho}}$.
+\end{definition}
+
+With the previous definitions, we can prove an Identity Extension Lemma
+for our interpretations.
+
+{\color{red} Insert Identity Extension Lemma here}
+
+Moreover, by making use of the Identity Extension Lemma we can also prove a Graph Lemma.
+
+\begin{lemma}[Graph Lemma]\label{lem:graph}
+If $f : \rho \to \rho'$ is a morphism of set environments
+and $\Gamma; \Phi \vdash F : \F$,
+then $\graph{\setsem{\Gamma; \Phi \vdash F} f} = \relsem{\Gamma; \Phi \vdash F}\graph{f}$
+\end{lemma}
+\begin{proof}
+First observe that $(f, \id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$
+and $(\id_{\rho}, f) : \Eq_{\rho} \to \graph{f}$
+are morphisms of relation environments.
+Applying Lemma~\ref{lem:rel-transf-morph} to each of these observations gives that
+\begin{equation}\label{eq:graph-one}
+(\setsem{\Gamma; \Phi \vdash F}f, \setsem{\Gamma; \Phi \vdash F}\id_{\rho'})
+= \relsem{\Gamma; \Phi \vdash F} (f, \id_{\rho'})
+: \relsem{\Gamma; \Phi \vdash F}\graph{f} \to \relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'}
+\end{equation}
+and
+\begin{equation}\label{eq:graph-two}
+(\setsem{\Gamma; \Phi \vdash F}\id_{\rho}, \setsem{\Gamma; \Phi \vdash F}f)
+= \relsem{\Gamma; \Phi \vdash F} (\id_{\rho}, f)
+: \relsem{\Gamma; \Phi \vdash F}\Eq_{\rho} \to \relsem{\Gamma; \Phi \vdash F}\graph{f}
+\end{equation}
+Expanding Equation~\ref{eq:graph-one} gives that if
+$(x,y) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$
+then
+\[
+(\setsem{\Gamma; \Phi \vdash F} f\, x, \setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y) \in \relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'}
+\]
+Observe that
+$\setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y = \id_{\setsem{\Gamma; \Phi \vdash F}\rho'}\, y = y$
+and
+$\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} = \Eq_{\relsem{\Gamma; \Phi \vdash F}\rho'}$
+So, if
+$(x,y) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$
+then
+$(\setsem{\Gamma; \Phi \vdash F} f\, x, y) \in \Eq_{\relsem{\Gamma; \Phi \vdash F}\rho'}$,
+i.e.,
+$\setsem{\Gamma; \Phi \vdash F} f\, x = y$,
+i.e.,
+$(x, y) \in \graph{\setsem{\Gamma; \Phi \vdash F} f}$.
+So, we have that
+$\relsem{\Gamma; \Phi \vdash F}\graph{f} \subseteq \graph{\setsem{\Gamma; \Phi \vdash F}f}$
+
+Expanding Equation~\ref{eq:graph-two} gives that, for any
+$x \in \setsem{\Gamma; \Phi \vdash F}\rho$,
+then
+\[
+(\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}
+\]
+Observe that
+$\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x = \id_{\setsem{\Gamma; \Phi \vdash F}\rho} x = x$
+so, for any $x \in \setsem{\Gamma; \Phi \vdash F}\rho$,
+we have that
+$(x, \setsem{\Gamma; \Phi \vdash F}f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+Moreover, $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
+if and only if $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$
+and, if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
+then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \setsem{\Gamma; \Phi \vdash F} \graph{f}$,
+so if $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$
+then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \setsem{\Gamma; \Phi \vdash F} \graph{f}$,
+i.e.,
+$\graph{\setsem{\Gamma; \Phi \vdash F}f} \subseteq \setsem{\Gamma; \Phi \vdash F} \graph{f}$.
+
+%For a generic $x \in \setsem{\Gamma; \Phi \vdash F}\rho$,
+%the pair $(x, \setsem{\Gamma; \Phi \vdash F} f\, x)$
+%is the generic element in $\graph{\setsem{\Gamma; \Phi \vdash F} f}$,
+%so we have that
+%$\graph{\setsem{\Gamma; \Phi \vdash F}f} \subseteq \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+
+So, we conclude that
+$\relsem{\Gamma; \Phi \vdash F}\graph{f} = \graph{\setsem{\Gamma; \Phi \vdash F}f}$.
+\end{proof}
+
+% \begin{thm}\label{thm:graph-lemma}
+% If $f_i : A_i \to B_i$ for $i = 1,...,k$ then $F^* {\graph
+%   f_1}...{\graph f_k} = \graph{F f_1 ... f_k}$.
+% \end{thm}
+% \begin{proof}
+%   First observe that
+%   \[((f_1,...,f_k),(\id_{B_1},...,\id_{B_k})) \in
+%   \Hom_{\rel^k}(\bm {\graph f}, \bm {\Eq_{B_i}})\]
+%   \noindent
+%   and
+%   \[((\id_{A_1},...,\id_{A_k}),(f_1,...,f_k)) \in \Hom_{\rel^k}(\bm
+%   {\Eq_{A_i}},\bm {\graph f})\] Applying
+%   Proposition~\ref{prop:factoid1} to each of these observations gives
+%   that
+%     \begin{equation}\label{eq:one}
+%     (F \bm f, F \bm \id_{B_i}) \in \Hom_\rel(F^* \bm
+%         {\graph{f}}, F^* \bm {\Eq_{B_i}})
+%         \end{equation}
+%       and
+%       \begin{equation}\label{eq:two}
+%         (F \bm \id_{A_i},F \bm f) \in \Hom_\rel(F^* \bm
+%         {\Eq_{A_i}},F^* \bm {\graph{f}})
+%         \end{equation}
+%       \noindent
+%       Expanding Equation~\ref{eq:one} gives that if $(x,y) \in F^* \bm
+%       {\graph{f}}$ then $(F {\bm f} x, F {\bm \id_{B_i}} y) \in F^*
+%       \bm \Eq_{B_i} = \relsem{E}[\bm \alpha := \bm \Eq_{B_i}] =
+%       \Eq_{\setsem{E}[\bm \alpha := \bm B_i]} = \Eq_{F \bm B}$, where
+%       the penultimate equality holds by Theorem~\ref{thm:iel}. That
+%       is, if $(x,y) \in F^* \bm {\graph{f}}$ then $(F \bm f x, y) \in
+%       \Eq_{F \bm B}$, i.e., if $(x,y) \in F^* \bm {\graph{f}}$ then
+%       $F\bm f x = y$, i.e., if $(x,y) \in F^* \bm {\graph{f}}$ then
+%       ($x, y) \in \graph{F \bm f}$. Thus $F^* \bm {\graph{f}}
+%       \subseteq \graph{F \bm f}$.
+
+%       Similar analysis of Equation~\ref{eq:two} gives that $\graph{F
+%         \bm f} \subseteq F^* \bm {\graph{f}}$.
+% \end{proof}
+
+% Inlining the definitions of $F$ and $F^*$ in the statement of
+% Theorem~\ref{thm:graph-lemma} gives
+
+% \begin{equation}\label{eq:three}
+% \relsem{E}[\bm \alpha := \bm {\graph{f}}] = \graph{\setsem{E}[\bm
+%     \alpha:= \bm f]}
+% \end{equation}
+% \noindent
+% We can use Equation~\ref{eq:three} to prove that the set
+% interpretation of a closed term of (closed) type $\Nat^{\bm
+%   \alpha}\,F\,G$ is a natural transformation.
+% %To see this, write $\fmap\, \bm f$ for $\setsem{F} \bm
+% %f = \setsem{F}[\bm \alpha := \bm f]$ and $\gmap\, \bm f$ for
+% %$\setsem{G} \bm f = \setsem{G}[\bm \alpha := \bm f]$.
+
+% \begin{thm}
+% If $\vdash t : \Nat^{\bm \alpha}\,F\,G$ and $\bm f : \bm A \to \bm B$,
+% then $\setsem{t}_{\bm B} \circ \setsem{F}[\bm \alpha := \bm f]
+% %Fmap \bm f = Gmap \bm f
+% = \setsem{G}[\bm \alpha := \bm f] \circ \setsem{t}_{\bm A}$.
+% \end{thm}
+% \begin{proof}
+% Theorem~\ref{thm:abstraction} ensures that $(\setsem{t},\setsem{t})
+% \in \relsem{\Nat^{\bm \alpha}\,F\,G}$, i.e., that for all $\bm R :
+% \rel(\bm A,\bm B)$, $x : F\bm A$, and $x': F\bm B$, if $(x,x') \in
+% \relsem{F}[\bm \alpha := \bm R]$ then $(\setsem{t}_{\bm A}
+% x,\setsem{t}_{\bm B} x') \in \relsem{G}[\bm \alpha := \bm R]$. If $\bm
+% f : \bm A \to \bm B$, then taking $\bm R = \bm {\graph{f}}$ and
+% instantiating gives that if $(x,x') \in \relsem{F}[\bm \alpha := \bm
+%   {\graph{f}}]$ then $(\setsem{t}_{\bf A} x,\setsem{t}_{\bf B} x') \in
+% \relsem{G}[\bm \alpha := \bm {\graph{f}}]$. By Equation~\ref{eq:three}
+% this is the same as the requirement that if $(x,x') \in
+% \graph{\setsem{F}[\bm \alpha := \bm f]}$ then $(\setsem{t}_{\bm A}
+% x,\setsem{t}_{\bm B} x') \in \graph{\setsem{G}[\bm \alpha := \bm f]}$
+% i.e., that if $x' = \setsem{F}[\bm \alpha := \bm f]x$ then
+% $\setsem{t}_{\bm B} x' = \setsem{G}[\bm \alpha := \bm
+%   f](\setsem{t}_{\bm A})$, i.e., that $\setsem{t}_{\bm B}
+% (\setsem{F}[\bm \alpha := \bm f]x) = \setsem{G}[\bm \alpha := \bm f]
+% (\setsem{t}_{\bm A} x)$ for all $x : F\bm A$, i.e., that
+% $\setsem{t}_{\bm B} \circ \setsem{F}[\bm \alpha := \bm f] =
+% \setsem{G}[\bm \alpha := \bm f] \circ \setsem{t}_{\bm A}$.
+% \end{proof}
+
+\bibliography{bibfile}
+
+
+\end{document}
+
+
+
+
+
+
+
+First, some preliminaries. For $F \in \F$ define $\lift{F}$ as in Agda
+code file. This is the syntactic reflection of $\relsem{F}$, we think.
+
+\begin{lemma}
+%For $F \in \F$, if $\lift{F} \,\graph{f} \subseteq \graph{Ff}$ then
+%$(Ff, \id) : \rel(\lift{F} \,\graph{f}, \id)$.  
+For $F \in \F$, if $\relsem{F} \,\graph{f} \subseteq \graph{\setsem{F}f}$ then
+$(\setsem{F}f, \id) : \rel(\relsem{F} \,\graph{f}, \id)$.  
+\end{lemma}
+\begin{proof}
+If $\relsem{F} \, \graph{f} \subseteq \graph{\setsem{F}f}$ then $(a,b) \in
+    \relsem{F}\,\graph{f}$ implies $(a,b) \in \graph{\setsem{F}f}$,
+    i.e., $b = \setsem{F}fa$, i.e., $(\setsem{F}fa, b) \in \id$, i.e.,
+    $(\setsem{F}f,\id) \in \rel(\relsem{F}\,\graph{f}, \id)$.
+\end{proof}
+
+
+\begin{lemma}\label{lem:props}
+If $\bm \alpha = \{\alpha_1,...,\alpha_k\}$, $t : \Nat^{\bm
+  \alpha}\,F\,G$, and $f_i : A_i \to B_i$ for $i = 1,...,k$, then
+%\begin{itemize}
+%\item
+$(t_{A_1,...A_k},t_{B_1...B_k}) : \lift{F} \, \graph{f} \to
+  \lift{G}\,\graph{f}$ in $\rel$.
+%\item $(t_{A_1,...A_k},t_{B_1...B_k}) : \graph{\setsem{F}map \, f} \to
+%  \graph{\setsem{G}map \, f}$ in $\rel$.
+%\end{itemize}
+\end{lemma}
+\begin{proof}
+  %The first
+This is proved by noting that $\graph{f_i} : \rel(A_i,B_i)$ and
+$t = \Lambda \alpha. \lambda x : F\alpha.\, v[x]$, and inducting on
+the structure of $v$. {\color{red} Check!}
+\end{proof}
+
+If we knew that {\color{red} for more than one $\alpha$?}
+\begin{prop}
+  If $\emptyset; \alpha~|~\emptyset \vdash F \in \F$,
+  %$\gamma$ is a set
+%environment, $\ol{\gamma}$ is the relation environment mapping each
+%type variable $\beta$ to the identity relation on $\beta \gamma$, each
+%type constructor variable $\beta$ of arity $0$ to the identity
+%relation on $\beta \gamma$, and each type constructor variable to the
+  %identity relation transformer,
+  and $f : A \to B$ then
+  $\relsem{F}%\ol{\gamma}
+  [\alpha := \graph{f}] = \graph{(\setsem{F}map)
+    %\gamma map)
+  \,f}$. 
+\end{prop}
+\noindent
+then we'd get as a corollary the following useful free theorem:
+
+\begin{cor}
+Let $\bm \alpha = \{\alpha_1,...,\alpha_k\}$, $\vdash t : \Nat^{\bm
+  \alpha}\,F\,G$, and $f_i : A_i \to B_i$ for $i = 1,...,k$. If
+$\emptyset; \bm \alpha~|~\emptyset \vdash s : \setsem{F}[\alpha_1 :=
+  A_1]...[\alpha_k := A_k]$ then $t_{B_1...B_k}
+\,((\setsem{F}map)\,f_1\,...\,f_k\,s) = (\setsem{G}map) \,
+f_1\,...\,f_k\,(t_{A_1...A_k} s)$.
+\end{cor}
+\begin{proof}
+By part 2 of Lemma~\ref{lem:props} we have that for all $(s,s') \in
+\relsem{F}[\bm \alpha := \bm {\graph{f}}]$, $(t_{A_1...A_k} s,
+t_{B_1...B_k}s') \in \relsem{G}[\bm \alpha := \bm {\graph{f}}]$, i.e.,
+for all $(s,s') \in \graph{\setsem{F}map \,\bm f}$, $(t_{A_1...A_k} s,
+t_{B_1...B_k}s') \in \graph{\setsem{G}map\,\bm f}$ {\color{red} by a
+  suitable proposition above}, i.e., $t_{B_1...B_k}
+\,((\setsem{F}map)\,f_1\,...\,f_k\,s) = (\setsem{G}map) \,
+f_1\,...\,f_k\,(t_{A_1...A_k} s)$.
+
+
+An alternative proof might be: See p.1,15 july
+\end{proof}
+
+
+
+
+
+
+  
+
+
+
+
+
+
+\section{Conclusion}
+
+Can do everything in abstract locally presentable cartesian closed
+category. 
+
+Give definitions for arb lpccc, but compute free theorems in Set/Rel.
+
+
+
+\bibliography{references}
+
+\end{document}
+
+
+
+\begin{lemma}\label{lem:rel-transf}
+For any \,$\Gamma;\Phi \vdash \tau : \F$ and any relation environment
+$\rho$,
+\[\relsem{\Gamma;\Phi \vdash \tau}\rho :
+\rel(\setsem{\Gamma;\Phi \vdash \tau} (\pi_1 \rho),
+\setsem{\Gamma;\Phi \vdash \tau} (\pi_2 \rho))\]
+\end{lemma}
+\begin{proof}
+By induction on the structure of $\tau$. The only interesting case is
+when $\tau = (\mu \phi. \lambda
+\overline{\alpha}. H)\overline{\tau}$. We first observe that $T_\rho$
+is an endofunctor on $RT$, i.e., that, for any relation transformer $F
+= (F^0, F^1, F^*)$, the triple $T_{\rho} F = (T^\set_{\pi_1 \rho}F^0,
+T^\set_{\pi_2 \rho}F^1, T^\rel_{\rho}F)$ is also a relation
+transformer.  Indeed, for every $R_j : \rel(A_j, B_j)$, $j = 1, \dots,
+k$, and for $i = 1, 2$, we have
+\[\begin{split}
+\pi_i(T^\rel_{\rho}\,F\,\overline{R})
+&= \pi_i(\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi := F]\overline{[\alpha := R]}) \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H} (\pi_i (\rho[\phi := F]\overline{[\alpha := R]})) \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H} (\pi_i \rho)[\phi := \pi_i F]\overline{[\alpha := \pi_i R]}) \\
+&= T^\set_{\pi_i \rho} (\pi_i F) (\overline{\pi_i R})
+\end{split}\]
+and 
+\[\begin{split}
+\pi_i(T^\rel_{\rho}\,F\,(\overline{\gamma_1}, \overline{\gamma_2}))
+&= \pi_i(\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi
+  := F]\overline{[\alpha := (\overline{\gamma_1}, \overline{\gamma_2})]}) \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H} (\pi_i (\rho[\phi := F]\overline{[\alpha := (\gamma_1,\gamma_2)]})) \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H} (\pi_i \rho)[\phi := \pi_i F]\overline{[\alpha := \pi_i \gamma_i]}) \\
+&= T^\set_{\pi_i \rho} (\pi_i F) (\overline{\pi_i \gamma_i})
+\end{split}\]
+Here, the second equality in each of the above chains of equalities is
+by the induction hypothesis. The upshot is that
+$T^\rel_{\rho}F^*\overline{R} : \rel( T^\set_{\pi_1\rho} F^0
+\overline{A}, T^\set_{\pi_2\rho} F^1 \overline{B} )$, and, in
+particular, that
+\begin{equation}\label{eq:rel-transf-T}
+\pi_i (T_\rho F) = T^\set_{\pi_i \rho} (\pi_i F)
+\end{equation}
+We now show that, for every morphism $\delta = (\delta^0, \delta^1) :
+F \to G$ in $RT$, $T_\rho \delta : T_\rho F \to T_\rho G$ is a
+morphism in $RT$. That is, we show that for all $\overline{R : \rel(A,
+  B)}$ and $(x, y) \in (T_\rho F)^* \overline{R}$, we have that
+$((T_\rho \delta)^0_{\overline A} \,x, (T_\rho \delta)^1_{\overline
+  B}\, y) \in (T_\rho G)^* \overline{R}$, i.e., that
+$((T^\set_{\pi_1\rho} \delta^0)_{\overline A}\, x, (T^\set_{\pi_2
+  \rho} \delta^1)_{\overline B}\, y) \in (T_\rho G)^*
+\overline{R}$. Let $\overline{R : \rel(A, B)}$ and $(x, y) \in (T_\rho
+F)^* \overline{R} = \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash
+  H}\rho[\phi := F]\overline{[\alpha := R]}$.  Since
+$\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  \text{--}]\overline{[\alpha := R]}$ is a functor from $\relenv$ to
+$RT$ by the induction hypothesis, we have that
+\[\begin{array}{ll}
+ & \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  \delta]\overline{[\alpha := R]}\\
+: & \relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  F]\overline{[\alpha := R]} \to
+\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  G]\overline{[\alpha := R]}
+\end{array}\]
+is a morphism in $\rel$. Therefore,
+\[\begin{array}{ll}
+ &\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  \delta]\overline{[\alpha := R]} (x, y) \\
+=& ( (\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  \delta]\overline{[\alpha := R]})^0 x,
+(\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}\rho[\phi :=
+  \delta]\overline{[\alpha := R]})^1 y)\\
+= &( \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}(\pi_1
+\rho)[\phi := \delta^0]\overline{[\alpha := A]} x, 
+\setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}(\pi_2 \rho)[\phi
+  := \delta^1]\overline{[\alpha := B]} y) \\ 
+= & ((T^\set_{\pi_1\rho} \delta^0)_{\overline A} x, (T^\set_{\pi_2
+  \rho} \delta^1)_{\overline B} y) 
+\end{array}\]
+is in $(T_\rho G)^* \overline{R}$.  Here, the second equality is by
+Lemma~\ref{lem:rel-transf-morph}.  This concludes the proof that
+$T_\rho$ is an endofunctor on $RT$.
+
+Next, we prove by induction on natural numbers that, for every $n :
+\nat$ and for every relation transformer $F = (F^0, F^1, F^*)$, the
+triple $T_{\rho}^n F = ({(T^\set_{\pi_1 \rho})}^n F^0, {(T^\set_{\pi_2
+    \rho})}^n F^1, {(T^\rel_{\rho})}^n F^*)$ is a relation transformer
+and, in particular, that
+\begin{equation}\label{eq:rel-transf-T-iter}
+\pi_i(T_{\rho}^n F) = {(T^\set_{\pi_i \rho})}^{n} (\pi_i F)
+\end{equation}
+for $i = 1, 2$.
+Indeed, the base case $n = 0$ is obvious, and the inductive step is proven by
+\[\begin{split}
+\pi_i(T_{\rho}^{n+1} F)
+&= \pi_i(T_{\rho}^{n} (T_{\rho} F))\\
+&= {(T^\set_{\pi_i \rho})}^{n} ( \pi_i(T_{\rho} F) )\\
+&= {(T^\set_{\pi_i \rho})}^{n} ( T^\set_{\pi_i \rho} (\pi_i F) ) \\
+&= {(T^\set_{\pi_i \rho})}^{n+1} (\pi_i F)
+\end{split}\]
+The second equality is by the induction hypothesis, and the third is
+by Equation~\ref{eq:rel-transf-T}. We can now prove that the triple
+$\mu T_{\rho} = (\mu T^\set_{\pi_1 \rho}, \mu T^\set_{\pi_2 \rho}, \mu
+T^\rel_\rho)$ is a relation transformer and, in particular, that
+\begin{equation}\label{eq:rel-transf-T-limit}
+\pi_i ( \mu T_\rho ) = \mu T^\set_{\pi_i \rho}
+\end{equation}
+for $i = 1, 2$. Moreover,
+\[\begin{split}
+\pi_i(\mu T_{\rho})
+&= \pi_i( \lim_{\xrightarrow[n]{}} \, T_{\rho}^n K_0 )  \\
+&= \lim_{\xrightarrow[n]{}} \, \pi_i ( T_{\rho}^n K_0 )  \\
+&= \lim_{\xrightarrow[n]{}} \, {(T^\set_{\pi_i \rho})}^n (\pi_i K_0)  \\
+&= \lim_{\xrightarrow[n]{}} \, {(T^\set_{\pi_i \rho})}^n K^\set_0  \\
+&= \mu T^\set_{\pi_i \rho}
+\end{split}\]
+The third equality above is by
+Equation~\ref{eq:rel-transf-T-iter}. Finally, we can prove the lemma
+we seek for the $\mu$ case.  For $i = 1, 2$ we have
+\[
+\begin{split}
+\pi_i(\relsem{\Gamma;\Phi \vdash (\mu \phi. \lambda \overline{\alpha}. H) \overline{\tau}}\rho)
+&= \pi_i( \mu T_\rho (\overline{\relsem{\Gamma;\Phi \vdash \tau}\rho})) \\
+&= \pi_i(\mu T_{\rho}) (\overline{\pi_i(\relsem{\Gamma;\Phi \vdash \tau}\rho})) \\
+&= \mu T^\set_{\pi_i\rho} (\overline{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}) \\
+&= \setsem{\Gamma;\Phi \vdash (\mu \phi. \lambda \overline\alpha. H) \overline{\tau}}(\pi_i\rho)
+\end{split}
+\]
+The third equality is by Equation ~\ref{eq:rel-transf-T-limit} and
+induction on $\tau$.
+\end{proof}
+
+\noindent
+
+%%% We don't currently need this, but it should be true.
+%\begin{lemma}
+%\label{lem:rel-transf-uniqueness}
+%In a relation transformer $(H^0, H^1, H^*)$, the $\set$-functors $H^0$ and $H^1$ are uniquely determined by the $\rel$-functor $H^*$.
+%%A functor \(H^* : \rel^k \to \rel\) carries at most one relation transformer structure \((H^0, H^1, H^*)\).
+%\end{lemma}
+%\begin{proof}
+%Notice that, for any $\bar{A} \in \set^k$, there exists a $\bar{R} \in \rel^k$ such that $\pi_i(\bar{R}) = \bar{A}\) for \(i = 1, 2$.
+%In particular, $\bar{R}$ can be taken to be the equality relation $\delta_{\bar{A}}$ on $\bar{A}$.
+%Then, $H^i$ is uniquely determined by $H^i(\bar{A}) = H^i(\pi_i(\delta_{\bar{A}})) = \pi_i(H^*(\delta_{\bar{A}}))$.
+%\end{proof}
+
+Since a well-formed type involves only finitely many (free) variables,
+when convenient we identify relation environments with finite tuples
+containing the relations to which the environment maps those
+variables.  With this convention we also see by induction on the
+structure of $\tau$ that in fact the following morphism counterpart to
+Lemma~\ref{lem:rel-transf} also holds:
+
+
+{\color{red} This makes the ``morphism counterpart'' comment clear. We
+  actually need more than what is proved in
+  Lemma~\ref{lem:rel-transf-morph} to conclude that the black version
+  of this theorem holds, no?
+\begin{lemma}
+  For any \,$\Gamma;\Phi \vdash \tau : \F$ and any morphism $f : \rho
+  \to \rho'$ between relation environments $\rho$ and $\rho'$,
+\[\relsem{\Gamma;\Phi \vdash \tau}f :
+\rel(\setsem{\Gamma;\Phi \vdash \tau} (\pi_1 f),
+\setsem{\Gamma;\Phi \vdash \tau} (\pi_2 f))\]
+\end{lemma}}
+
+\begin{lemma}\label{lem:rel-transf-morph}
+$\sem{\Gamma;\Phi \vdash \tau} = (\setsem{\Gamma;\Phi \vdash
+    \tau},\setsem{\Gamma;\Phi \vdash \tau},\relsem{\Gamma;\Phi \vdash
+    \tau})$ is a relation transformer.
+\end{lemma}
+\begin{proof}
+By induction on the structure of $\tau$. Let $ i = 1,2$.
+\begin{itemize}
+\item When $\tau = v$, $\tau = \sigma_1 \to \sigma_2$, or $\tau =
+  \Nat^{\bm \alpha}\,F\,G$, then the result follows from the fact
+  that
+\[\begin{array}{lll}
+       \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}f)
+ & = & \id_{\pi_i(\setsem{\Gamma;\emptyset \vdash \tau}\rho)}\\
+ & = & \id_{\setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho)}\\
+ & = & \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i f)
+\end{array}\]
+The third equality is by Lemma~\ref{lem:rel-transf}.
+\item When $\tau = 0$, $\tau = 1$, $\tau = \sigma_1 + \sigma_2$, or
+  $\tau = \sigma \times \sigma_2$, the result follows from the
+  definitions of the initial and terminal objects, and the definitions
+  of sums and products, in $\rel$.
+\item When $\tau = \Gamma; \Phi \vdash \phi^k\tau_1...\tau_k$, we have    
+\[\begin{array}{lll}
+&   & \pi_i \relsem{\Gamma; \Phi \vdash \phi^k\tau_1...\tau_k}f\\
+& = & \pi_i ((f\phi)_{\overline{\relsem{\Gamma; \Phi \vdash \tau}\rho'}})
+\circ \pi_i((\rho\phi)({\overline{\relsem{\Gamma; \Phi \vdash \tau}f}}))\\
+& = & (\pi_i (f\phi))_{\overline{\pi_i (\relsem{\Gamma; \Phi \vdash \tau}\rho')}}
+\circ \pi_i(\rho\phi)({\overline{\pi_i (\relsem{\Gamma; \Phi \vdash \tau}f}}))\\
+& = & ((\pi_i f)\phi)_{\overline{\setsem{\Gamma; \Phi \vdash \tau}(\pi_i\rho')}}
+\circ ((\pi_i\rho)\phi)({\overline{\setsem{\Gamma; \Phi \vdash \tau}(\pi_i f)}})\\
+& = & \setsem{\Gamma; \Phi \vdash \phi^k\tau_1...\tau_k}(\pi_i f)
+\end{array}\]
+\item When $\tau = (\mu \phi. \lambda \overline\alpha. H)
+  \overline{\tau}$, we first observe that if $F = (F^0,F^1, F^*)$ is a
+  relation transformer, then so is the triple $\sigma_f F =
+  (\sigma^\set_{\pi_i f} F^0,\sigma^\set_{\pi_2 f} F^1,\sigma^\rel_f
+  F^*)$. Moreover, for any relation transformer $F = (F^0,F^1,F^*)$,
+  we have that
+\begin{equation}\label{eq:rel-transf-sigma}
+\pi_i(\sigma_f F) = \sigma^\set_{\pi_i f} (\pi_i F)
+\end{equation}
+Indeed, for every $R_j : \rel(A_j, B_j)$ and $j = 1, \dots, k$
+\[
+\begin{split}
+\pi_i (\sigma_f \,F \,\overline{R})
+&= \pi_i (\relsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}f[\phi
+  := \id_F]\overline{[\alpha := \id_R]}) \\ 
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}(\pi_i(f[\phi := \id_F]\overline{[\alpha := \id_R]})) \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}(\pi_i f)[\phi := \pi_i\id_F]\overline{[\alpha := \pi_i\id_R]} \\
+&= \setsem{\Gamma;\Phi,\phi,\overline{\alpha} \vdash H}(\pi_i f)[\phi := \id_{\pi_i F}]\overline{[\alpha := \id_{\pi_i R}]} \\
+&= \sigma^\set_{\pi_i f} (\pi_i F) (\overline{\pi_i R})
+\end{split}
+\]
+Next, we prove by induction on natural numbers, for every $n : \nat$
+and for every relation transformer $F = (F^0,F^1,F^*)$, the triple
+$\sigma_f^n F = ((\sigma^\set_{\pi_1 f})^n F^0,(\sigma^\set_{\pi_2
+  f})^n F^1, (\sigma^\rel_f)^n F^*)$ is a relation transformer. In
+particular,
+\begin{equation}\label{eq:rel-transf-sigma-iter}
+\pi_i(\sigma_f^n F) = {(\sigma^\set_{\pi_i f})}^n (\pi_i F)
+\end{equation}
+for $i = 1, 2$.
+Indeed, the base case $n = 0$ is obvious, and the inductive step is proven by
+\[
+\begin{split}
+\pi_i(\sigma_f^{n+1} F)
+&= \pi_i(\sigma_f^n (\sigma_f F) ) \\
+&= {(\sigma^\set_{\pi_i f})}^n (\pi_i(\sigma_f F)) \\
+&= {(\sigma^\set_{\pi_i f})}^n (\sigma^\set_{\pi_i f} (\pi_i F)) \\
+&= {(\sigma^\set_{\pi_i f})}^{n+1} (\pi_i F)
+\end{split}
+\]
+The third equality is by Equation~\ref{eq:rel-transf-sigma}.
+Now we prove that
+\begin{equation}\label{eq:rel-transf-sigma-limit}
+\pi_i ( \mu \sigma_f ) = \mu \sigma^\set_{\pi_i f}
+\end{equation}
+for $i = 1, 2$.
+Indeed,
+\[
+\begin{split}
+\pi_i ( \mu \sigma_f )
+&= \pi_i( \lim_{\xrightarrow[n]{}} \,\sigma_{f}^n K_0 )  \\
+&= \lim_{\xrightarrow[n]{}} \, \pi_i( \sigma_{f}^n K_0 )  \\
+&= \lim_{\xrightarrow[n]{}} \, (\sigma^\set_{\pi_i f})^n (\pi_i K_0)  \\
+&= \lim_{\xrightarrow[n]{}} \, (\sigma^\set_{\pi_i f})^n K^\set_0  \\
+&= \mu \sigma^\set_{\pi_i f}
+\end{split}
+\]
+The third equality is by Equation~\ref{eq:rel-transf-sigma-iter}.
+Finally, we can prove the lemma we seek for the $\mu$ case. We have
+\[
+\begin{split}
+\pi_i(\relsem{\Gamma;\Phi \vdash (\mu \phi. \lambda
+  \overline\alpha. H)\overline{\tau}}f) 
+&= \pi_i(\mu T_{\rho'}(\overline{\relsem{\Gamma;\Phi \vdash
+    \tau}f}) \circ (\mu \sigma_f)_{\overline{\relsem{\Gamma;\Phi
+      \vdash \tau}\rho}}) \\ 
+&= \pi_i(\mu T_{\rho'}(\overline{\relsem{\Gamma;\Phi \vdash
+    \tau}f})) \circ \pi_i((\mu
+\sigma_f)_{\overline{\relsem{\Gamma;\Phi \vdash \tau}\rho}}) \\  
+&= \pi_i(\mu T_{\rho'})(\pi_i(\overline{\relsem{\Gamma;\Phi
+    \vdash \tau}f})) \circ \pi_i(\mu
+\sigma_f)_{\pi_i(\overline{\relsem{\Gamma;\Phi \vdash 
+      \tau}\rho})} \\ 
+&= (\mu T^\set_{\pi_i \rho'})(\overline{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i f)}) \circ (\mu \sigma^\set_{\pi_i f})_{\overline{\setsem{\Gamma;\Phi \vdash \tau}\pi_i(\rho)}} \\
+&= \setsem{\Gamma;\Phi \vdash (\mu \phi. \lambda \overline\alpha. H)\overline{\tau}}(\pi_i f).
+\end{split}
+\]
+for $i = 1, 2$.
+The fourth equality is by~\ref{eq:rel-transf-T-limit},
+\ref{eq:rel-transf-sigma-limit}, and induction on $\tau$.
+\end{itemize}
+\end{proof}
+
+
+
+
+\begin{thm}\label{thm:at}
+Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : \tau$ induces
+a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
+$\sem{\Gamma; \Phi \vdash \tau}$, i.e., a triple of natural
+transformations 
+\[(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
+\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau},
+\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau})\] such that, for all
+$\rho : \relenv$,
+\[\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho =
+(\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_1 \rho),
+\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_2 \rho))\]
+\end{thm}
+\begin{proof}
+We proceed by induction on the judgement
+$\Gamma;\Phi~|~\Delta \vdash t : \tau$, proving that
+\[
+\pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho)
+= \setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}(\pi_i\rho)
+\]
+for $i = 1, 2$.
+We will use Definitions~\ref{def:set-interp} and~\ref{def:rel-interp}, together
+with the facts that the cartesian structure of $\rel$ is derived from
+that of $\set$ and that initial algebras in $\rel$ are computed in
+terms of initial algebras in $\set$.
+\begin{itemize}
+\item for $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho) \\
+    &= \pi_i(
+      \pi_{|\Delta|+1}: \relsem{\Gamma;\emptyset \vdash \Delta}\rho
+      \times \relsem{\Gamma;\emptyset \vdash \tau}\rho
+      \to \relsem{\Gamma;\emptyset \vdash \tau}\rho
+    ) \\
+    &= \pi_{|\Delta|+1}: \pi_i(\relsem{\Gamma;\emptyset \vdash \Delta}\rho)
+      \times \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho)
+      \to \pi_i(\relsem{\Gamma;\emptyset \vdash \tau}\rho) \\
+    &= \pi_{|\Delta|+1}: \setsem{\Gamma;\emptyset \vdash \Delta}(\pi_i\rho)
+      \times \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho)
+      \to \setsem{\Gamma;\emptyset \vdash \tau}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho) \\
+    &= \pi_i(\curry (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
+    &= \curry(\pi_i (\relsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}\rho)) \\
+    &= \curry(\setsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t : \tau}(\pi_i \rho)) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}(\pi_i \rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash st: \tau$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho) \\
+    &= \pi_i(\eval \circ \langle \relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
+    \tau}\rho, \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho) \\
+    &= \eval \circ \langle
+       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}\rho),
+       \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho)
+     \rangle \\
+    &= \eval \circ \langle
+       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to \tau}(\pi_i\rho),
+       \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}(\pi_i\rho)
+     \rangle \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} (\pi_i \rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash
+  L_{\overline \alpha} x.t: \Nat^{\overline\alpha} \,F \,G$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
+      : \Nat^{\overline\alpha} \,F \,G}\rho) \\
+    &= \pi_i(\curry (\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      \rho[\overline{\alpha := \_}])) \\
+    &= \curry (\pi_i(\relsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      \rho[\overline{\alpha := \_}])) \\
+    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      (\pi_i(\rho[\overline{\alpha := \_}]))) \\
+    &= \curry (\setsem{\Gamma;\overline \alpha\,|\, \Delta, x : F \vdash t: G}
+      (\pi_i\rho)[\overline{\alpha := \_}]) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t
+      : \Nat^{\overline\alpha} \,F \,G}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash
+  t_{\bf \tau} s: G [\overline{\alpha := \tau}]$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+      G [\overline{\alpha := \tau}]}\rho) \\
+    &= \pi_i( \eval \circ \langle
+        (\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
+          \vdash \tau}\rho}},
+        \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho
+      \rangle) \\ 
+    &= \eval \circ \langle
+        \pi_i((\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho\; \_)_{\overline{\relsem{\Gamma;\Phi
+          \vdash \tau}\rho}}),
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
+      \rangle \\ 
+    &= \eval \circ \langle
+        (\pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}\rho)\; \_)_{\overline{\pi_i(\relsem{\Gamma;\Phi
+          \vdash \tau}\rho)}},
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}\rho)
+      \rangle \\ 
+    &= \eval \circ \langle
+        (\setsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+          \Nat^{\overline{\alpha}} \,F \,G}(\pi_i\rho)\; \_)_{\overline{\setsem{\Gamma;\Phi
+          \vdash \tau}(\pi_i\rho)}},
+        \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha := \tau}]}(\pi_i\rho)
+      \rangle \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\bf \tau} s:
+      G [\overline{\alpha := \tau}]}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$ is analogous to
+  $\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau$.
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau} \rho)
+    &= \pi_i(!^0_{\relsem{\Gamma;\Phi \vdash \tau}\rho}
+      \circ \relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
+    &= !^0_{\pi_i(\relsem{\Gamma;\Phi \vdash \tau}\rho)}
+      \circ \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho) \\
+    &= !^0_{\setsem{\Gamma;\Phi \vdash \tau}(\pi_i\rho)}
+      \circ \setsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau}(\pi_i\rho) 
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$ is analogous to
+  $\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t : \tau$
+\item for $\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} \rho)
+    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho
+      \times \relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
+    &= \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} \rho)
+      \times \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} \rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma} (\pi_i\rho)
+      \times \setsem{\Gamma;\Phi \,|\, \Delta \vdash t: \tau} (\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : \sigma \times \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} \rho)
+    &= \pi_i(\pi_1 \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
+    &= \pi_1 \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}\rho) \\
+    &= \pi_1 \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \sigma \times \tau}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : \sigma$
+  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : \sigma$.
+\item for $\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}\rho) \\
+    &= \pi_i(\eval \circ \langle
+        \curry \,[
+          \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho,
+          \relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho
+        ],
+        \relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho
+      \rangle) \\
+    &= \eval \circ \langle
+        \curry \,[
+          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}\rho),
+          \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}\rho)
+        ],
+        \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau} \rho)
+      \rangle \\
+    &= \eval \circ \langle
+        \curry \,[
+          \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma}(\pi_i\rho),
+          \setsem{\Gamma;\Phi \,|\, \Delta, y: \tau \vdash r : \gamma}(\pi_i\rho)
+        ],
+        \setsem{\Gamma;\Phi \,|\, \Delta \vdash t :\sigma + \tau}(\pi_i\rho)
+      \rangle \\
+    &= \setsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r}: \gamma}(\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau$ we have
+  \[
+  \begin{split}
+    \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} \rho)
+    &=\pi_i(\inl \circ \relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
+    &=\inl \circ \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho) \\
+    &=\inl \circ \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: \sigma + \tau} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau$
+  is analogous to $\Gamma;\Phi \,|\, \Delta \vdash \inl \,t: \sigma + \tau$.
+\item for $\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta
+      \vdash \tin\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} \rho) \\
+    &= \pi_i(\mathit{in} \circ
+      \relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
+    &= \mathit{in} \circ
+      \pi_i(\relsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} \rho) \\
+    &= \mathit{in} \circ
+      \setsem{\Gamma;\Phi \,|\, \Delta \vdash t : H[\phi := \mu
+      \phi.\lambda {\overline \alpha}.H][\overline{\alpha := \tau}]} (\pi_i\rho) \\
+    &= \setsem{\Gamma;\Phi \,|\, \Delta
+      \vdash \tin_H\,t : (\mu \phi.\lambda {\overline \alpha}.H){\overline \tau}} (\pi_i\rho)
+  \end{split}
+  \]
+\item for $\Gamma;\emptyset \,|\, \Delta \vdash \fold^F_H\, t
+  : \Nat^{\overline \alpha}\, ((\mu\phi.\lambda \overline \beta.H)\overline \alpha)\,F$ we have
+  \[
+  \begin{split}
+    &\hspace{-0.3in} \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash
+      \fold^F_H\, t : \Nat^{\overline \alpha}\,((\mu
+      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}\rho) \\
+    &= \pi_i(\mathit{fold} \circ \relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
+    &= \mathit{fold} \circ \pi_i(\relsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}\rho) \\
+    &= \mathit{fold} \circ \setsem{\Gamma;\emptyset \,|\, \Delta \vdash t : 
+      \Nat^{\overline \alpha}\,(H[\phi := F][\overline{\beta := \alpha}])\,F}(\pi_i\rho) \\
+    &= \setsem{\Gamma;\emptyset \,|\, \Delta \vdash
+      \fold^F_H\, t : \Nat^{\overline \alpha}\,((\mu
+      \phi.\lambda \overline \beta.H)\overline \alpha)\,F}(\pi_i\rho) \qedhere
+  \end{split}
+  \]
+\end{itemize}
+\end{proof}
