@@ -226,7 +226,7 @@ we shall define an associated $k$-ary relation transformer.
         \ar[r, "{F\overline{\pi_2}}"]
         \ar[d, dashed, "{h_{\overline{A \times B}}}"]
         &F\overline{B}
-        \ar[r, "{\alpha_{B}}"]
+        \ar[r, "{\alpha_{\ol{B}}}"]
         &G\overline{B} \\
         &F\overline{A} \times G\overline{B}
         \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
@@ -317,12 +317,12 @@ then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
           &F\overline{C} \times F\overline{D}
           \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
           &F\overline{D}
-          \ar[r, "{\alpha_{D}}"]
+          \ar[r, "{\alpha_{\ol{D}}}"]
           &G\overline{D}\\
           &F(\overline{A \times B})
           \ar[u, dashed, "{\exists !}"]
-          \ar[ul, "{F\pi_1 \circ F(\overline{\beta \times \beta'})}"]
-          \ar[urr, "{\alpha_{D} \circ F\pi_2 \circ F(\overline{\beta \times \beta'})}"']
+          \ar[ul, "{F\ol{\pi_1} \circ F(\overline{\beta \times \beta'})}"]
+          \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
       \end{tikzcd}
       \]
       commute, so they must be equal. We therefore get that the right-hand
@@ -449,8 +449,8 @@ Next, we show a useful formula to compute the graph relation transformer on a gr
 If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
 and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$,
 then $\graph{\alpha}^* \graph{\overline{f}}
-= \langle G f \circ \alpha_{\ol{A}} \rangle
-= \langle \alpha_{\ol{B}} \circ F f \rangle$.
+= \langle G \ol{f} \circ \alpha_{\ol{A}} \rangle
+= \langle \alpha_{\ol{B}} \circ F \ol{f} \rangle$.
 \end{lemma}
 \begin{proof}
     Since $h_{\overline{A \times B}}$ is the unique
@@ -460,21 +460,21 @@ then $\graph{\alpha}^* \graph{\overline{f}}
         &F\overline{A}
         \ar[d, "{F \overline{\langle \id_A, f \rangle}}" description]
         \ar[dl, equal]
-        \ar[dr, "{Ff}"]\\
+        \ar[dr, "{F\ol{f}}"]\\
         F\overline{A}
         &F(\overline{A \times B})
         \ar[l, "{F\overline{\pi_1}}"']
         \ar[r, "{F\overline{\pi_2}}"]
         \ar[d, "{h_{\overline{A \times B}}}"]
         &F\overline{B}
-        \ar[r, "{\alpha_B}"]
+        \ar[r, "{\alpha_{\ol{B}}}"]
         &G\overline{B}\\
         &F\overline{A} \times G\overline{B}
         \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
     \end{tikzcd}
     \]
     commute,
-    and since $h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F \iota_{\graph{f}} = h_{\overline{A \times B}} \circ F \overline{\langle \id_A, f \rangle}$ (the last equality being by Remark~\ref{rmk:graph-fn}),
+    and since $h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F \,\ol{\iota_{\graph{f}}} = h_{\overline{A \times B}} \circ F \overline{\langle \id_A, f \rangle}$ (the last equality being by Remark~\ref{rmk:graph-fn}),
     the universal property of the product
       \[
       \begin{tikzcd}[row sep = large]
@@ -579,11 +579,11 @@ then
 Observe that
 $\setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y = \id_{\setsem{\Gamma; \Phi \vdash F}\rho'}\, y = y$
 and
-$\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} = \Eq_{\relsem{\Gamma; \Phi \vdash F}\rho'}$
+$\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} = \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$
 So, if
 $(x,y) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$
 then
-$(\setsem{\Gamma; \Phi \vdash F} f\, x, y) \in \Eq_{\relsem{\Gamma; \Phi \vdash F}\rho'}$,
+$(\setsem{\Gamma; \Phi \vdash F} f\, x, y) \in \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$,
 i.e.,
 $\setsem{\Gamma; \Phi \vdash F} f\, x = y$,
 i.e.,
@@ -605,11 +605,11 @@ $(x, \setsem{\Gamma; \Phi \vdash F}f\, x) \in \relsem{\Gamma; \Phi \vdash F}\gra
 Moreover, $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
 if and only if $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$
 and, if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
-then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \setsem{\Gamma; \Phi \vdash F} \graph{f}$,
+then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F} \graph{f}$,
 so if $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$
-then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \setsem{\Gamma; \Phi \vdash F} \graph{f}$,
+then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F} \graph{f}$,
 i.e.,
-$\graph{\setsem{\Gamma; \Phi \vdash F}f} \subseteq \setsem{\Gamma; \Phi \vdash F} \graph{f}$.
+$\graph{\setsem{\Gamma; \Phi \vdash F}f} \subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.
 
 %For a generic $x \in \setsem{\Gamma; \Phi \vdash F}\rho$,
 %the pair $(x, \setsem{\Gamma; \Phi \vdash F} f\, x)$
