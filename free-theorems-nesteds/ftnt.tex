@@ -243,39 +243,39 @@ $\omega$-cocontinuous functors from  $\C$ to $\D$.
 % \V becomes \tvars^0 \cup \fvars^0
 %
 
-For each $k \ge 0$, we assume countable sets {\color{red} $\tvars^k$ of \emph{type
+For each $k \ge 0$, we assume countable sets {\color{purple} $\tvars^k$ of \emph{type
 constructor variables of arity $k$}, $\fvars^k$ of \emph{functorial variables of arity $k$},
 disjoint for distinct $k$ and disjoint from each other.}  
 We use lower case Greek letters for both sets of variables, and write
 $\phi^k$ to indicate that 
-{\color{red} $\phi \in \tvars^k \cup \fvars^k$.}
+{\color{purple} $\phi \in \tvars^k \cup \fvars^k$.}
 When convenient we may write $\alpha, \beta$, etc., rather than $\alpha^0, \beta^0$, etc.,
-for elements of {\color{red} $\tvars^0 \cup \fvars^0$.} 
-{\color{red} The sets of all type constructor variable and functorial variables are 
+for elements of {\color{purple} $\tvars^0 \cup \fvars^0$.} 
+{\color{purple} The sets of all type constructor variable and functorial variables are 
 $\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars = \bigcup_{k \ge 0} \fvars^k$, respectively. 
 We use the term \emph{type variable} to refer to variables in $\tvars \cup \fvars$.}
 We write $\overline{\zeta}$ for either a set $\{\zeta_1,...,\zeta_n\}$ of
 type constructor variables or a set of functorial variables when the
 cardinality $n$ of the set is unimportant. If $\Pos$ is a set of type
-constructor (or functorial) variables then we write $\Pos, \overline{\phi}$ for $\Pos
+variables then we write $\Pos, \overline{\phi}$ for $\Pos
 \cup \overline{\phi}$ when $\Pos \cap \overline{\phi} = \emptyset$.
 We omit the vector notation for a singleton set, thus writing $\phi$, rather
 than $\overline{\phi}$, for $\{\phi\}$.
 
 \begin{dfn}
-{\color{red} Let $V$ be a finite subset of\, $\tvars$, 
-  let $\Pos$ be a finite subset of\, $\fvars$ (where $\Pos^{~k}$ denotes the set $\Pos \cap \fvars^k$), and 
-let $\overline{\alpha}$ be a finite subset of\, $\fvars^0$, disjoint from $\Pos$. 
+{\color{purple} Let $V$ be a finite subset of\, $\tvars$, 
+  let $\Pos$ be a finite subset of\, $\fvars$, 
+let $\overline{\alpha}$ be a finite subset of\, $\fvars^0$ disjoint from $\Pos$, and let $\phi^k \in \fvars^k \setminus \Pos$.
  The sets $\T(V)$ of
-{\em type expressions} over $V$ and $\mcF^\Pos(V)$ of {\em type
-  constructor expressions} over $V$ are given by: }
+  {\em {\color{red} type constructor expressions}} over $V$ and $\mcF^\Pos(V)$ of {\em {\color{red} 
+  functorial expressions}} over $V$ are given by: }
   %% \[\color{red} \T(V) \; ::= \; V \mid \T(V) \to \T(V) \mid
   %%  {\color{red} \forall v.\, \T(V,v)} \mid
   %%  \color{red} \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V))
   %%  \quad (remove \to and \forall)
   %%  \]
-  \[{\color{red}\T(V) \; ::= \; V \mid 
-   \Nat^{\ol{\alpha}}(\mcF^{\overline{\alpha}}(V),\mcF^{\ol{\alpha}}(V)) \mid
+  \[{\color{purple}\T(V) \; ::= \; V \mid 
+   \Nat^{\ol{\alpha}} \, \mcF^{\overline{\alpha}}(V) \; \mcF^{\ol{\alpha}}(V) \mid
    V \ol{\T(V)}
    }\]
 \noindent
@@ -284,27 +284,27 @@ and
 \mcF^\Pos(V) \; ::= \; \T(V) &\mid
 \zerot \mid \onet 
 \mid \Pos\, \ol{\mcF^{\Pos}(V)}  \,
-\mid {\color{red} V\, \ol{\mcF^{\Pos}(V)}  }
-\mid \mcF^{\Pos}(V)\! +\, \mcF^{\Pos}(V)
-\mid \mcF^{\Pos}(V)\! \times\, \mcF^{\Pos}(V)\\
-&\color{red} \mid \left(\mu \Pos^{~k}. \lambda \alpha_1...\alpha_k. 
+\mid {\color{purple} V\, \ol{\mcF^{\Pos}(V)}  }
+\mid \mcF^{\Pos}(V) + \mcF^{\Pos}(V)
+\mid \mcF^{\Pos}(V) \times \mcF^{\Pos}(V)\\
+&\mid \left(\mu \phi^{~k}. \lambda \alpha_1...\alpha_k. 
 \mcF^{\Pos,\alpha_1,...,\alpha_k,\phi}(V)\right)
   \ol{\mcF^{\Pos}(V)}
 \end{align*}
 \end{dfn}
 
 The above notation entails that an application $\tau\tau_1...\tau_k$
-is allowed only when $\tau$ is a type constructor variable of arity
+is allowed only when $\tau$ is a type variable of arity
 $k$, or $\tau$ is a subexpression of the form $(\mu \phi^{k}. \lambda
 \alpha_1...\alpha_k.\tau) \tau_1...\tau_k$. Moreover, if $\tau$ has
 arity $k$ then $\tau$ must be applied to exactly $k$ arguments.
 Accordingly, an overbar indicates a sequence of subexpressions whose
-length matches the arity of the functorial expression applied to it.
-The fact that functorial expressions are always in \emph{$\eta$-long
+length matches the arity of the {\color{red} type expression} applied to it.
+The fact that {\color{red} type expressions} are always in \emph{$\eta$-long
   normal form} avoids having to consider $\beta$-conversion at the
 level of type constructors, and the fact that the standard type
-formers are all defined pointwise avoids having to relate functorial
-expressions at different kinds.
+formers are all defined pointwise avoids having to relate {\color{red} type 
+expressions} at different kinds.
 
 In a subexpression $\Nat^{\ol{\alpha}}\,\sigma\,\tau$, the $\Nat$
 operator binds all occurrences of the variables in $\ol{\alpha}$ in
@@ -313,8 +313,8 @@ $\sigma$ and $\tau$. Similarly, in a subexpression $\mu \phi^k.\lambda
 variable $\phi$, and the $\lambda$ operator binds all occurrences of
 the variables in $\ol{\alpha}$, in the body $\tau$.
 
-If {\color{red} $\tau \in \mcF^\Pos(V) \cup \T(V)$,} {\color{red} $\Pos$ and $V$} contain only 
-variables of arity $0$, and if $k=0$ for every occurrence of $\phi^k$
+If {\color{purple} $\tau \in \mcF^\Pos(V) \cup \T(V)$,} {\color{purple} $\Pos$ and $V$} contain only 
+type variables of arity $0$, and if $k=0$ for every occurrence of $\phi^k$
 bound by $\mu$ in $\tau$, then we say that $\tau$ is {\em
 first-order}. Otherwise we say that $\tau$ is {\em second-order}.
 
@@ -333,32 +333,29 @@ first-order}. Otherwise we say that $\tau$ is {\em second-order}.
 %% variables, and let $\Phi$ be a {\em type constructor context}, i.e., a
 %% finite set of type constructor variables. 
 
-{\color{red}
+{\color{purple}
   Let $\Gamma$ be a type constructor context, i.e., a finite set of type
-variables in which the resulting type is not functorial, and let $\Phi$ be a 
-{\em functorial context}, i.e., a finite set of type variables in 
-which the resulting type is functorial. Note that variables of arity greater 
-than 0, which are interpreted as functors, may appear in either context.
-
-Should we state $\Gamma \subseteq \tvars$ and $\Phi \subseteq \fvars$?
+constructor variables in which the resulting type is not intended to be functorial, and let $\Phi$ be a 
+{\em functorial context}, i.e., a finite set of functorial variables in 
+which the resulting type is intended to be functorial. Note that type variables of arity greater 
+than 0 may appear in either context.
 }
 
-
 The formation rules for the
-set {\color{red} $\T \subseteq \bigcup_{V \subseteq \tvars}\T(V)$ of\, {\em well-formed
+set {\color{purple} $\T \subseteq \bigcup_{V \subseteq \tvars}\T(V)$ of\, {\em well-formed
 type constructor expressions}} are 
 \[\begin{array}{cc}
 %% \AXC{$\phantom{\Gamma;\Phi}$}
 %% \UIC{$\Gamma,v;\emptyset \vdash v : \T$}
 %% \DisplayProof
-{\color{red}
+{\color{purple}
 \AXC{$\phantom{\Gamma;\Phi}$}
 \UIC{$\Gamma,v^0;\emptyset \vdash v^0 : \T$}
 \DisplayProof
 }
 \\
 \\
-{\color{red}
+{\color{purple}
 \AXC{$\phi^k \in \Gamma$}
 \AXC{$\quad\quad\ol{\Gamma;\emptyset \vdash \tau : \T}$}
 \BIC{$\Gamma;\emptyset \vdash \phi^k \ol{\tau} : \T $}
@@ -378,9 +375,9 @@ type constructor expressions}} are
 \BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\sigma \,\tau : \T$}
 \DisplayProof
 \end{array}\]
-  The formation rules for the set {\color{red} $\F \subseteq \bigcup_{V \subseteq
+  The formation rules for the set {\color{purple} $\F \subseteq \bigcup_{V \subseteq
  \tvars, \Pos \subseteq \fvars}\F^\Pos(V)$ of\, {\em well-formed functorial
-  type expressions}} are
+  expressions}} are
 \[\begin{array}{cccc}
 \AXC{$\Gamma;\emptyset \vdash \tau : \T$}
 \UIC{$\Gamma; \emptyset \vdash \tau : \F$}
@@ -399,7 +396,7 @@ type constructor expressions}} are
 \DisplayProof
 \end{array}\]
 \[\begin{array}{c}
-{\color{red}
+{\color{purple}
 \AXC{$\phi^k \in \Gamma \cup \Phi$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash \tau : \mcF}$}
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{\tau} : \mcF $}
@@ -429,14 +426,14 @@ type constructor expressions}} are
   discussions below.}
 
 Definition~\ref{def:wftypes} ensures that the expected weakening rules
-for well-formed type expressions and type constructor expressions
+for well-formed {\color{red} type expressions} % and type constructor expressions
 hold.  If $\Gamma;\emptyset \vdash \sigma : \T$ and $\Gamma;\emptyset
 \vdash \tau : \T$, then our rules allow formation of the type
 expression $\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$. This
 type can be thought of as representing the standard arrow type
 $\Gamma \vdash \sigma \to \tau$ in our calculus. 
 
-{\color{red}
+{\color{purple}
 A similar derivation allows one to represent standard for all types
 of the form $\Gamma \vdash \forall \ol\alpha . \tau$ by the type 
 $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,\tau :\F$.
@@ -446,7 +443,7 @@ form $\Nat^{\ol\beta} H \, K$ because $\Gamma; \ol\alpha \vdash
 }
 
 Our formation rules
-also allow type constructor expressions like $\List\gamma = (\mu
+also allow {\color{red} type expressions} like $\List\gamma = (\mu
 \beta. \lambda \alpha. \onet + \alpha \times \beta)\gamma$ either to
 be natural in $\gamma$ or not, according to whether it is well-formed
 in the context $\emptyset; \gamma$ or $\gamma;\emptyset$. If the
@@ -456,8 +453,8 @@ derivation of, e.g., $\delta; \emptyset \vdash \Nat^\gamma (\List
 \gamma) \, (\Tree \gamma \delta)$, which represents a natural
 transformation between lists and trees that is natural in $\gamma$ but
 not in $\delta$.
-{\color{red}
-Type constructor expressions may also be functorial in variables
+{\color{purple}
+{\color{red} Type expressions} may also be functorial in variables
 of arity greater than $0$. For example, the type $\GRose \phi \, \alpha = 
 \mu\beta . \alpha \times \phi \beta$ may be functorial in $\phi$ or not,
 according to which context $\phi$ belongs. This choice of context for $\phi$ determines whether
@@ -468,13 +465,13 @@ our calculus does not allow naturality in variables of arity greater than $0$.
 }
 
 
-Substitution for first-order type constructor expressions is the usual
+Substitution for first-order {\color{red} type expressions} is the usual
 capture-avoiding textual substitution. We write $\tau[\alpha :=
   \sigma]$ for the result of substituting $\sigma$ for $\alpha$ in
 $\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k := \tau_k]$, or
 $\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
   \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$.  Substitution
-for second-order type constructor expressions is given in the next
+for second-order {\color{red} type expressions} is given in the next
 definition.
 
 {\color{blue} Add subscript notation in next definition and propagate?
@@ -490,38 +487,48 @@ definition.
 %% $(\cdot)[\phi := H]$ of {\em second-order type constructor
 %%   substitution} is defined by:
 
-% I would write \Gamma; \Phi \vdash F[\phi], and \phi \in \Gamma \cup \Phi
-% but then it isn't easy to express the context for F[\phi := H] where
-% the phi is removed. 
-  %
-  %
-  % also current version suggests one rule for t types, one rule for ftypes
-  % with corresponding contexts. 
-  % but I think we need mixing, e.g. the alphas that appear in H
-  % may not need to be all to one side of the semicolon.. 
-% -- Daniel 
+%% % I would write \Gamma; \Phi \vdash F[\phi], and \phi \in \Gamma \cup \Phi
+%% % but then it isn't easy to express the context for F[\phi := H] where
+%% % the phi is removed. 
+%% {\color{red}
+%% If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
+%% \ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
+%% \{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
+%% F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$.
+%% Similarly, if \,$\Gamma, \phi^k; \emptyset \vdash F[\phi] : \T$ and $\Gamma, 
+%% \ol\alpha; \emptyset ,  \vdash H : \T$ with $\ol{\alpha} =
+%% \{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\emptyset \vdash
+%% F[\phi :=_{\color{red} \ol{\alpha}} H] : \T$. 
+%% The operation
+%% $(\cdot)[\phi := H]$ of {\em second-order type constructor
+%%   substitution} is defined by:
+%% }
+
 {\color{red}
-If \,$\Gamma; \Phi, \phi^k \vdash F[\phi] : \F$ and $\Gamma;\Phi,
-\ol{\alpha} \vdash H : \F$ with $\ol{\alpha} =
-\{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\Phi \vdash
-F[\phi :=_{\color{red} \ol{\alpha}} H] : \F$.
-Similarly, if \,$\Gamma, \phi^k; \emptyset \vdash F[\phi] : \T$ and $\Gamma, 
-\ol\alpha; \emptyset ,  \vdash H : \T$ with $\ol{\alpha} =
-\{\alpha_1,...,\alpha_k\}$ and $k \geq 1$, then $\Gamma;\emptyset \vdash
-F[\phi :=_{\color{red} \ol{\alpha}} H] : \T$. 
+If \,$\Gamma; \Phi \vdash F[\phi] : \F$, 
+$\phi^k \in \Gamma \cup \Phi$, $k \geq 1$, and
+$\Gamma, \ol\beta;\Phi,  \ol{\alpha} \vdash H : \F$ 
+with $|\ol\alpha| + |\ol\beta| = k$,
+then $\Gamma \setminus \phi^k;\Phi \setminus \phi^k\vdash
+  F[\phi :=_{\ol{\alpha}, \ol\beta} H] : \F$.
 The operation
 $(\cdot)[\phi := H]$ of {\em second-order type constructor
   substitution} is defined by:
 }
 
+
 \[\begin{array}{lll}
-\tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
+\color{red} 
+  (\Nat^{\ol\beta} F \,G)[\phi := H] & = & \color{red} \Nat^{\ol\beta} F[\phi := H] \,G[\phi := H] \\
+% \tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
 \onet[\phi := H] & = & \onet\\[0.5ex]
 \zerot[\phi := H] & = & \zerot\\[0.25ex]
 (\psi \ol{\tau})[\phi := H] & = &
 \left\{\begin{array}{ll}
 \psi \,\ol{\tau[\phi := H]} & \mbox{if } \psi \not = \phi\\
-H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
+  H[\ol{\alpha  := \tau[\phi := H]}] 
+  {\color{red}  [\ol{\beta := \tau[\phi := H]}]} 
+  & \mbox{if } \psi = \phi
 \end{array}\right.\\
 \\[-0.25ex]
 (\sigma + \tau)[\phi := H] & = & \sigma[\phi := H]
@@ -539,20 +546,17 @@ H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
 % the usual notion of substitution, as expected.
 
 \subsection{Terms}
-
-{\color{red} Need to update to $\tvars$ and $\fvars$}
-
 We assume an infinite set $\cal V$ of term variables disjoint from
-$\tvars$ and $\V$.
+$\tvars$ and {\color{red} $\fvars$.}
 
 \begin{dfn}
-Let $\Gamma$ be a type context and $\Phi$ be a type constructor
-context. A {\em term context for $\Gamma$ and $\Phi$} is a finite set of
+  Let $\Gamma$ be a {\color{red} type constructor context} and $\Phi$ be a {\color{red} functorial 
+  context.} A {\em term context for $\Gamma$ and $\Phi$} is a finite set of
 bindings of the form $x : \tau$, where $x \in {\cal V}$ and $\Gamma;
 \Phi \vdash \tau : \F$.
 \end{dfn}
 We adopt the same conventions for denoting disjoint unions in term
-contexts as in type contexts and type constructor contexts.
+contexts as in {\color{red} type constructor contexts and functorial contexts.}
 
 \begin{dfn}\label{def:well-formed-terms}
 Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
@@ -691,14 +695,14 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
 occurrences of the type variables in $\ol{\alpha}$ in the type of the
 term variable $x$ and in the body $t$, as well as all occurrences of
-$x$ in $t$. In the rule for $t_\tau s$ there is one type constructor
-expression $\tau$ for every type constructor variable $\alpha$. In the
-rule for $\map^{\ol{F},\ol{G}}_H$ there is one type constructor expression $F$
-and one type constructor expression $G$ for each type constructor
-variable $\phi$. Moreover, for each $\phi$ the number of type
-constructor variables $\beta$ in the judgments for its corresponding
+$x$ in $t$. In the rule for $t_{\ol\tau} s$ there is one {\color{red} functorial 
+expression} $\tau$ for every {\color{red}functorial} variable $\alpha$. In the
+rule for $\map^{\ol{F},\ol{G}}_H$ there is one {\color{red} functorial expression} $F$
+and one {\color{red} functorial expression} $G$ for each {\color{red} functorial}
+variable $\phi$. Moreover, for each $\phi$ the number of 
+{\color{red} functorial} variables $\beta$ in the judgments for its corresponding
 $F$ and $G$ is the same as its arity. In the rules for $\tin_H$ and
-$\fold^F_H$, the type constructor variables in $\ol{\beta}$ are fresh
+$\fold^F_H$, the {\color{red} functorial} variables in $\ol{\beta}$ are fresh
 with respect to $H$, and there is one $\beta$ for every
 $\alpha$. (Recall from above that, in order for the types of $\tin_H$
 and $\fold^F_H$ to be well-formed, the number of $\alpha$s must equal
@@ -709,7 +713,7 @@ capture-avoiding textual substitution.
 Definition~\ref{def:well-formed-terms} ensures that the expected
 weakening rules for well-formed terms hold.
 
-{\color{blue} The presence of the ``extra'' type constructor variables
+{\color{blue} The presence of the ``extra'' {\color{red} functorial} variables
   in $\ol{\gamma}$ in the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and
   $\fold^F_H$ allows us to, e.g., map or fold polymorphic functions
   over data types. For example, consider the function
@@ -718,7 +722,7 @@ weakening rules for well-formed terms hold.
   trees to lists. Even without the ``extra'' $\gamma$s the term
   representing the mapping of each {\em instance} of
   $\mathtt{flatten}$ acting on perfect trees and lists of types
-  involving no type constructor variables is well-typed:
+  involving no {\color{red} functorial} variables is well-typed:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha \vdash \mathtt{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \sigma \hspace*{0.3in} \Gamma;\emptyset
@@ -737,7 +741,7 @@ But because the functorial contexts for the expressions instantiating
 $F$ and $G$ in the rule for $\map^{F,G}_H$ are necessarily empty, the
 term representing the mapping of the polymorphic function
 $\mathtt{flatten}$ is not. Indeed, the polymorphic function
-$\mathtt{flatten}$, whose type contains the type constructor variable
+$\mathtt{flatten}$, whose type contains the {\color{red} functorial} variable
 $\beta$, say, cannot have a type of the form $\Nat^\emptyset\, F'\,
 G'$ for any $F'$ and $G'$ as is required in the conclusion of the rule
 for $\map^{F,G}_{\mathtt{List}\,\alpha}$. However, in a polymorphic
@@ -875,9 +879,9 @@ A morphism $f : \rho \to \rho'$ from a set
 environment $\rho$ to a set environment 
 {\color{red} $\rho'$ with $\rho|_\tvars =
 \rho'|_\tvars$ maps each functorial variable $\phi^k \in \fvars$ to a natural transformation from 
-the $k$-ary functor $\rho \phi^k$ on $\set$ to the $k$-ary functor $\rho' \phi^k$ on $\set$,
+the $k$-ary functor $\rho \phi^k$ on $\set$ to the $k$-ary functor $\rho' \phi^k$ on $\set$
 and maps each type constructor variable $\psi^k \in \tvars$ to the identity natural
-transformation on $\rho \psi^k = \rho'\psi^k$.
+transformation on $\rho \psi^k = \rho'\psi^k$. 
 }
 
 Composition of morphisms on
@@ -887,17 +891,18 @@ environments and morphisms between them, which we denote $\setenv$.
 \end{dfn}
 When convenient we identify a functor $F : [\set^0, \set]$ with the
 set that is its codomain.  With this convention, a set environment
-maps a type constructor variable of arity $0$ to an
+maps a {\color{red} type} variable of arity $0$ to an
 $\omega$-cocontinuous functor from $\set^0$ to $\set$ --- i.e., to a
-set --- just as it does a type variable. If $\ol{\alpha} =
+set. % --- just as it does a type variable. 
+If $\ol{\alpha} =
 \{\alpha_1,...,\alpha_k\}$ and $\ol{A} = \{A_1,...,A_k\}$, then we
 write $\rho[\ol{\alpha := A}]$ for the set environment $\rho'$ such
 that $\rho' \alpha_i = A_i$ for $i = 1,...,k$ and $\rho' \alpha = \rho
 \alpha$ if $\alpha \not \in \{\alpha_1,...,\alpha_k\}$.
 
 If $\rho$ is a set environment we write $\Eq_\rho$ for the relation
-environment such that $\Eq_\rho v = \Eq_{\rho v}$ for every type
-variable or type constructor variable $v$; see
+environment such that $\Eq_\rho v = \Eq_{\rho v}$ for every {\color{red} type
+variable } $v$; see
 Definition~\ref{def:reln-env} below for the complete definition of a
 relation environment. The relational interpretations referred to in
 the condition on the natural transformations in the clause of
@@ -912,7 +917,8 @@ Let $\rho$ be a set environment. The {\em set interpretation}
 $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
 \begin{align*}
   \setsem{\Gamma;\emptyset \vdash v} \rho &= \rho v \mbox{
-    if } v \in \V\\ 
+    if } {\color{red} v \in \tvars^0} \\ 
+  \color{red} \setsem{\Gamma; \emptyset \vdash \phi\ol\tau} \rho &= (\rho \phi) \ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} \\
 %  \setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho &=
 %  \setsem{\Gamma;\emptyset \vdash \sigma} \rho \to
 %  \setsem{\Gamma;\emptyset \vdash \tau} \rho\\ 
@@ -964,7 +970,7 @@ ensures that
 \[\setsem{\Gamma;\Phi \vdash F \ol{\tau}}\rho =
   \setsem{\Gamma;\Phi,\ol{\alpha} \vdash F\ol{\alpha}}
   (\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash \tau}}])\] Moreover,
-  the second clause does indeed define a
+  the {\color{red} third} clause does indeed define a
   set. Indeed, local finite presentability of $\set$ and
   $\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$
   ensure that $\{\eta : \setsem{\Gamma;\ol{\alpha} \vdash F}\rho
@@ -1018,12 +1024,14 @@ set environments.
 
 \begin{dfn}\label{def:set-sem-funcs}
 Let $f: \rho \to \rho'$ for set environments $\rho$ and $\rho'$ such
-that $\rho|_\V = \rho'|_\V$. The action $\setsem{\Gamma;\Phi \vdash
+  that {\color{red} $\rho|_\tvars = \rho'|_\tvars$.} The action $\setsem{\Gamma;\Phi \vdash
   \tau}f$ of\, $\setsem{\Gamma;\Phi \vdash \tau}$ on the morphism $f$
 is given as follows:
 \begin{itemize}
 \item If $\Gamma,v;\emptyset \vdash v$ then
   $\setsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$.
+
+{\color{red} \item If $\Gamma; \emptyset \vdash \phi\ol\tau$ then $\setsem{\Gamma; \emptyset \vdash \phi\ol\tau}f = \id_{(\rho\phi) \ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} }$. }
 %\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
 %  $\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
 %  \id_{\setsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
@@ -1059,6 +1067,14 @@ is given as follows:
   \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
 \end{CD}
 \end{equation}
+
+{\color{red} Note that the second bullet in this definition is a special case of this rule
+in which $\rho \phi = \rho' \phi$ and $f \phi = \id_{\rho\phi}$. Due to these
+restrictions the naturality condition is trivial. The intuition here is that
+the functor given by $\setsem{\Gamma; \emptyset \vdash \tau} : \, [\setenv, \set]$ 
+acts as a discrete functor for any \,$\tau$ that is well-formed in this context.
+}
+
 \item If $\Gamma;\Phi \vdash \sigma + \tau$ then $\setsem{\Gamma;\Phi
   \vdash \sigma + \tau}f$ is defined by $\setsem{\Gamma;\Phi \vdash
   \sigma + \tau}f(\inl\,x) = \inl\,(\setsem{\Gamma;\Phi \vdash
@@ -1103,13 +1119,15 @@ commutes:
  (\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} @> (\mu
   \sigma^\set_f)_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}} >> (\mu
   T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} \\ 
- @V(\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}f})VV @V  (\mu
+ @V(\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}f}VV @V  (\mu
  T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}f} VV \\ 
 (\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'} @>(\mu
  \sigma^\set_f)_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}}>> (\mu
  T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
 \end{CD}
 \end{equation}
+
+
 \end{itemize}
 \end{dfn}
 
@@ -1400,31 +1418,38 @@ a morphism in $RT_k$ unless $T$ is $\omega$-cocontinuous.
   $T_\rho F$ when $F : [\rel^k,\rel]$.}
 
 \begin{dfn}\label{def:reln-env}
-A {\em relation environment} maps each type variable to a relation,
-and each type constructor variable of arity $k$ to an
+A {\em relation environment} maps each % type variable to a relation, and
+  each {\color{red} type variable in $\tvars^k \cup \fvars^k$ } to an
 $\omega$-cocontinuous $k$-ary relation transformer.  A morphism $f :
 \rho \to \rho'$ from a relation environment $\rho$ to a relation
-environment $\rho'$ such that $\rho|_\V = \rho'|_\V$ maps each type
-variable $v$ to $\id_{\rho v}$ and each type constructor variable
-$\phi$ of arity $k$ to a natural transformation from the $k$-ary
-relation transformer $\rho \phi$ to the $k$-ary relation transformer
-$\rho' \phi$. Composition of morphisms on relation environments is
+  environment $\rho'$ such that {\color{red}$\rho|_\tvars = \rho'|_\tvars$} 
+{\color{red}
+maps each functorial variable $\phi^k \in \fvars$ to a natural transformation
+from the $k$-ary relation transformer $\rho \phi$ to the $k$-ary relation transformer
+$\rho' \phi$ and maps each type constructor variable $\psi^k \in \tvars$ to the identity
+natural transformation on $\rho \psi^k = \rho' \psi^k$.
+}
+Composition of morphisms on relation environments is
 given componentwise, with the identity morphism mapping each relation
 environment to itself. This gives a category of relation environments
 and morphisms between them, which we denote $\relenv$.
 \end{dfn}
 When convenient we identify a $0$-ary relation transformer with the
 relation (transformer) that is its codomain.  With this convention, a
-relation environment maps a type constructor variable of arity $0$ to
-a $0$-ary relation transformer --- i.e., to a relation --- just as it
-does a type variable.  We write $\rho[\ol{\alpha := R}]$ for the
+relation environment maps a {\color{red} type} variable of arity $0$ to
+a $0$-ary relation transformer --- i.e., to a relation. % --- just as it does a type variable.  
+We write $\rho[\ol{\alpha := R}]$ for the
 relation environment $\rho'$ such that $\rho' \alpha_i \, = R_i$ for
 $i = 1,...,k$ and $\rho' \alpha = \rho\alpha$ if $\alpha \not \in
-\{\alpha_1,...,\alpha_k\}$. If $\rho$ is a relation environment, we
-write $\pi_1 \rho$ for the set environment mapping each type variable
-$\beta$ to $\pi_1 (\rho \beta)$ and each type constructor variable
+\{\alpha_1,...,\alpha_k\}$. 
+If $\rho$ is a relation environment, we
+{\color{red} 
+write $\pi_1 \rho$ for the set environment mapping each 
+% type variable $\beta$ to $\pi_1 (\rho \beta)$ and each type constructor variable
+type variable 
 $\phi$ to the functor $(\rho\phi)^0$. The set environment $\pi_2 \rho$
 is defined analogously.
+}
 
 We define, for each $k$, the notion of an $\omega$-cocontinuous
 functor from $\relenv$ to $RT_k$:
@@ -1468,7 +1493,7 @@ following Definition~\ref{def:RT-functor}:
   Definition~\ref{def:relenv-functor}. 
 \end{enumerate}
 
-Considering $\relenv$ as a product $\Pi_{\phi^k \in \V \cup \tvars}
+Considering $\relenv$ as a product $\Pi_{\phi^k \in {\color{red} \tvars \cup \fvars}}
 RT_k$, we extend Lemma~\ref{lem:colimits} to compute colimits in
 $\relenv$ componentwise, and similarly extend
 Definition~\ref{def:omega-cocont} to give a componentwise notion of
@@ -1484,7 +1509,8 @@ Let $\rho$ be a relation environment. The {\em relation
 defined by
 \begin{align*}
   \relsem{\Gamma;\emptyset \vdash v}\rho &= \rho v \mbox{ if
-  } v \in \V\\ 
+  } v \in {\color{red} \tvars^0} \\ 
+  \color{red} \relsem{\Gamma; \emptyset \vdash \phi\ol\tau} \rho &= (\rho \phi) \ol{\relsem{\Gamma; \emptyset \vdash \tau} \rho} \\
 %  \relsem{\Gamma;\emptyset \vdash \sigma \to \tau} \rho &=
 %  \relsem{\Gamma;\emptyset \vdash \sigma} \rho \to
 %  \relsem{\Gamma;\emptyset \vdash \tau} \rho \\ 
@@ -1589,12 +1615,14 @@ T_\rho F \to T_{\rho'} F$ whose component at $\ol{R}$ is
 
 \begin{dfn}\label{def:rel-sem-funcs}
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
-such that $\rho|_\V = \rho'|_\V$. The action $\relsem{\Gamma;\Phi
+  such that {\color{red} $\rho|_\tvars = \rho'|_\tvars$.} The action $\relsem{\Gamma;\Phi
   \vdash \tau}f$ of $\relsem{\Gamma;\Phi \vdash \tau}$ on the morphism $f$
 is given as follows:
 \begin{itemize}
 \item If $\Gamma,v;\emptyset \vdash v$ then
   $\relsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$.
+\item 
+  {\color{red} \item If $\Gamma; \emptyset \vdash \phi\ol\tau$ then $\relsem{\Gamma; \emptyset \vdash \phi\ol\tau}f = \id_{(\rho\phi) \ol{\relsem{\Gamma; \emptyset \vdash \tau} \rho} }$. }
 %\item If $\Gamma;\emptyset \vdash \sigma \to \tau$ then
 %  $\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}f =
 %  \id_{\relsem{\Gamma;\emptyset \vdash \sigma \to \tau}\rho}$.
@@ -1860,7 +1888,7 @@ analogous, so we just prove the former. Likewise, we only prove
 Equations~\ref{eq:subs-var} and~\ref{eq:subs-const}, since the proofs
 for Equations~\ref{eq:subs-var-morph} and~\ref{eq:subs-const-morph}
 are again analogous. Finally, we prove Equation~\ref{eq:subs-var} for
-substitution for just a single type or type constructor variable since
+  substitution for just a single {\color{red} type variable} since
 the proof for multiple simultaneous substitutions proceeds similarly.
 
 Although Equation~\ref{eq:subs-var} is a special case of
@@ -1869,8 +1897,8 @@ Equation~\ref{eq:subs-var} first, and then use it to prove
 Equation~\ref{eq:subs-const}. We prove Equation~\ref{eq:subs-var} by
 induction on the structure of $F$ as follows:
 \begin{itemize}
-\item If $\Gamma, \emptyset \vdash F : \T$, or if $F$ is $\onet$ or
-  $\zerot$, then $F$ does not contain any type constructor variables
+\item If $\Gamma; \emptyset \vdash F : \T$, or if $F$ is $\onet$ or
+  $\zerot$, then $F$ does not contain any {\color{red} functorial} variables
   to replace, so there is nothing to prove.
 \item If $F$ is $F_1 \times F_2$ or $F_1 + F_2$, then the substitution
   distributes over the product or coproduct as appropriate, so the
@@ -1919,8 +1947,8 @@ Here, the third equality is by the induction hypothesis and weakening.
 We now prove Equation~\ref{eq:subs-const}, again by induction on the
 structure of $F$.
 \begin{itemize}
-\item If $\Gamma, \emptyset \vdash F : \T$, or if $F$ is $\onet$ or
-  $\zerot$, then $F$ does not contain any type constructor variables
+\item If $\Gamma; \emptyset \vdash F : \T$, or if $F$ is $\onet$ or
+  $\zerot$, then $F$ does not contain any {\color{red} functorial} variables
   to replace, so there is nothing to prove.
 \item If $F$ is $F_1 \times F_2$ or $F_1 + F_2$, then the substitution
   distributes over the product or coproduct as appropriate, so the
@@ -2261,7 +2289,7 @@ We now show that the Identity Extension Lemma holds for the
 interpretations given in Definitions~\ref{def:set-sem}
 and~\ref{def:rel-sem}. If $\rho$ is a set environment, define
 $\Eq_\rho$ to be the relation environment such that $\Eq_\rho v =
-\Eq_{\rho v}$ for all $v \in \V \cup \tvars$. This is exactly the same
+\Eq_{\rho v}$ for all $v \in {\color{red} \tvars \cup \fvars}$. This is exactly the same
 definition that was given informally in Section~\ref{sec:set-interp}.
 The Identity Extension Lemma can then be stated and proved as follows:
 
@@ -2965,7 +2993,7 @@ cases.
   natural transformation from $\setsem{\Gamma;\emptyset \vdash
     \Delta}$ to $\setsem{\Gamma;\emptyset \vdash
     \Nat^{\overline{\alpha}} \,F \,G}$, since the functorial part
-  $\Phi$ of the type context is empty, we need only show that, for
+  $\Phi$ of the context is empty, we need only show that, for
   every $\rho : \setenv$, $\setsem{\Gamma;\emptyset \,|\, \Delta
     \vdash L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F
     \,G}\rho$ is a morphism in $\set$ from $\setsem{\Gamma; \emptyset
@@ -3367,7 +3395,7 @@ that $\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
   $\setsem{\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
   (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
       :=_{\ol{\beta}} G}])}$, since the functorial part $\Phi$ of the
-  type context is empty, we need only show that, for every $\rho :
+  context is empty, we need only show that, for every $\rho :
   \setenv$,
   \[\setsem{\Gamma; \emptyset~|~\emptyset \vdash
   \map^{\ol{F},\ol{G}}_H :
@@ -3842,7 +3870,7 @@ that
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
     (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
     \alpha.H)\overline \beta\,F}\] since the functorial part $\Phi$ of
-  the type context is empty, we need only show that, for every $\rho :
+  the context is empty, we need only show that, for every $\rho :
   \setenv$,
 \[\setsem{\Gamma; \emptyset~|~\emptyset \vdash
   \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
