@@ -1,0 +1,317 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+\begin{document}
+
+\begin{abstract}
+\end{abstract}
+
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+
+%% Keywords
+%% comma separated list
+%\keywords{keyword1, keyword2, keyword3}  %% \keywords is optional
+
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times \phi \beta) #1}
+\newcommand{\filtype}{\Nat^\emptyset 
+  \, (\Nat^\emptyset \, \alpha \, Bool) (\Nat^\emptyset \, List \, \alpha \, List \, \alpha)}
+\newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha \vdash List \, \alpha} \rho[\alpha := A]}}
+
+\maketitle
+%% sstart 
+Let $List \, \alpha = \listt{\alpha}$, 
+and let $map = \maplist$.
+
+\begin{lemma}\label{lem:list-graph}
+  If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B, \graph{g})$, then
+    $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \graph{map \, g}$
+\end{lemma}
+\begin{proof}
+% show by direct calculation
+  \begin{align*}
+    &\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho  \\
+    &= \mu T_{\rho} (\relsem{\alpha; \emptyset \vdash \alpha} \rho) \\    % def 19
+    &= \mu T_{\rho} (A, B \graph{g}) \\   
+    &= (\mu T_{\pi_1\rho} A, \mu T_{\pi_2\rho} B, \colim{n \in \nat}{(T_{\rho}^n K_0)^*} (A, B, \graph{g})) \\ % eq 3, after dfn 15
+    &= (\List \,A, \List \,B, \colim{n \in \nat}{\Sigma_{i = 0}^n (A, B, \graph{g})^i}) \\ % below (*)
+    &= (\List \,A, \List \,B, \List (A, B, \graph{g})) \\ % definition of List
+    &= (\List \,A, \List \,B, \graph{map \, g}) % below (**)
+  \end{align*}
+
+  The first equality is by Definition~\ref{def:rel-sem}, the third equality is by Equation~\ref{eq:mu}, 
+  and the fourth and sixth equalities are by Equations~\ref{eq:T-list} and \ref{eq:List-graph-map} below.
+
+  % (*)
+  \noindent
+  The following sequence of equalities shows 
+  \begin{equation}\label{eq:T-list}
+  (T_{\rho}^n K_0)^* \,R = \Sigma_{i=0}^n R^i
+  \end{equation}
+  by induction on $n$: \\
+  \begin{align*}
+    &  (T_{\rho}^n K_0)^* \,R \\
+    &= T_{\rho}^\rel (T_{\rho}^{n-1} K_0)^* \,R \\
+    &= \setsem{\alpha; \phi, \beta \vdash \onet + \beta \times \phi \beta} \rho 
+          [\phi := (T_\rho^{n-1} K_0)^*] [\beta := R] \\
+    &= \onet + R \times (T_\rho^{n-1} K_0)^* \, R \\
+    &= \onet + R \times (\Sigma_{i=0}^{n-1} R^i) \\
+    &= \Sigma_{i= 0}^n R^i
+  \end{align*}
+
+  \noindent
+  The following reasoning shows 
+  \begin{equation}\label{eq:List-graph-map}
+    \List (A, B, \graph{g}) = \graph{map \,g}
+  \end{equation}
+  By showing that $(xs, xs') \in \List (A, B, \graph{g})$ if and only if $(xs, xs') \in \graph{map \,g}$:
+  \begin{align*}
+    &  (xs, xs') \in \List (A, B, \graph{g}) \\
+    & \iff \forall i. (xs_i, xs'_i) \in \graph{g} \\
+    & \iff \forall i. xs'_i = g (xs_i) \\
+    & \iff xs'= map \,g \, xs \\
+    & \iff (xs, xs') \in \graph{map \,g}
+  \end{align*}
+\end{proof}
+
+
+
+
+\begin{thm}\label{thm:at-gen-rel}
+If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
+  and if \,$(a, b) \in \relsem{\Gamma; \Phi \vdash \Delta} \rho$,
+  then \\
+  $(\setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau} (\pi_1 \rho) \,a \, ,
+      \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau } (\pi_2 \rho) \,b) \in 
+    \relsem{\Gamma; \Phi \vdash \tau} \rho$
+\end{thm}
+\begin{proof}
+  Immediate from Theorem~\ref{thm:at-gen} (at-gen).
+\end{proof}
+
+
+\begin{thm} 
+  If $g : A \to B$, 
+  $\rho : \relenv$, 
+  $\rho \alpha = (A, B, \graph{g})$,
+  $(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, 
+  $(s \circ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, Bool} \rho$,
+  and, for some well-formed term $filter$, \\
+  $$t = \setsem{\alpha; \emptyset \,|\, \Delta \vdash filter : \filtype} \emph{, then }$$
+  \begin{align*}
+  map \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ map \,g
+  \end{align*}
+\end{thm}
+\begin{proof}
+  By Theorem~\ref{thm:at-gen-rel},
+  $(t (\pi_1 \rho) a, t (\pi_2 \rho) b) \in \relsem{\alpha; \emptyset \vdash \filtype} \rho$.
+  Thus if 
+  $(s, s') \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, Bool} \rho = \rho\alpha \to \Eq_{Bool}$,
+  then 
+  \begin{align*}
+    (t (\pi_1 \rho) \,a \,p, t (\pi_2 \rho) \,b \,p) &\in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset List \, \alpha \, List \, \alpha} \rho \\
+   &= \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \to \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \\
+  \end{align*}
+  So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$ then,
+  \begin{equation}\label{eq:filter-thm}
+  (t (\pi_1\rho) \,a \,s \,xs, t (\pi_2\rho) \,b \,s' \,xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
+  \end{equation}
+
+  Consider the case in which $\rho\alpha = (A, B, \graph{g})$. Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
+  = \graph{map \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{map \,g}$ 
+  implies $xs' = map \,g \,xs$. We also have that 
+  $(s, s') \in \graph{g} \to \Eq_{Bool}$ implies 
+  $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
+  $s = s' \circ g$ due to the definition of morphisms between relations.
+  %% TODO show (s, s') \in <g> -> Bool implies s = s' \circ g %% 
+  With these instantiations, Equation~\ref{eq:filter-thm} becomes
+  \begin{align*}
+    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(map \,g \,xs)) \in \graph{map \,g}, \\ 
+    & i.e., \\ 
+    &map \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) = t (\pi_2\rho) \,b \,s' \,(map \,g \,xs), \\ 
+    & i.e., \\
+    &map \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ map \,g
+  \end{align*}
+  as desired.
+
+
+\end{proof}
+
+
+
+
+
+
+\end{document}
