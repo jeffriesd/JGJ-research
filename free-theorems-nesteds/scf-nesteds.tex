@@ -225,7 +225,7 @@ then we have that, for every $B \in H
 \begin{proof}
 We first note that the type of $g$ is well-formed since
 $\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
-that $\phi,\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
+that $\phi;\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
 \F$, so that $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \T$
 and $\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \T$.
 Then $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \F$ and
@@ -256,10 +256,8 @@ of $a$ and $b$ gives that
   (\phi\alpha)}\rho \to \rho \phi
 \end{array}\]
 \noindent
-where $H^\rel : [\rel,\rel] \to [\rel,\rel]$ is defined by
-$H^\rel\,f\,x = \relsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
-  f][\alpha := x]$. So if $(A, B) \in \relsem{\phi;\emptyset\vdash
-  \Nat^\alpha F\, (\phi\alpha)}\rho$ then
+So if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho$ then
 \[\begin{array}{lll}
 (G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) & \in & \rho \phi
 \end{array}\]
@@ -272,15 +270,15 @@ and consider the instantiation
 A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
 B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
 \setsem{\emptyset;\alpha \vdash K}\\
-\rho \beta &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
+\rho \phi &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
   \color{red} \mbox{a graph of a natural transformation, defined in
     Enrico's notes}} 
 \end{array}\]
 (Note that all the types here are well-formed.) This gives
 \[\begin{array}{lll}
-\pi_1 \rho \beta &=& \mu H\\
-\pi_2 \rho \beta &=& \setsem{\emptyset;\alpha\vdash K}\\
-\rho \beta &:& \rel(\pi_1 \rho \beta, \pi_2 \rho \beta)\\
+\pi_1 \rho \phi &=& \mu H\\
+\pi_2 \rho \phi &=& \setsem{\emptyset;\alpha\vdash K}\\
+\rho \phi &:& \rel(\pi_1 \rho \phi, \pi_2 \rho \phi)\\
 A & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
   F \, (\phi \alpha)} (\pi_1 \rho)\\
 B & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
@@ -336,7 +334,7 @@ G\,(\pi_2 \rho)\,B\]
 \vspace*{0.1in}
 
 \noindent
-Since $\beta$ is the only free variable in $G$, this simplifies to
+Since $\phi$ is the only free variable in $G$, this simplifies to
 \[\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\emptyset;\alpha\vdash K}\,B\]  
 \end{proof}
