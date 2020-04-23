@@ -187,7 +187,7 @@ Nested Types} %% [Short Title] is optional;
 \newcommand{\tb}[1]{~~ \mbox{#1} ~~}
 \newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times \phi \beta) #1}
 \newcommand{\filtype}{\Nat^\emptyset 
-  \, (\Nat^\emptyset \, \alpha \, Bool) (\Nat^\emptyset \, List \, \alpha \, List \, \alpha)}
+  \, (\Nat^\emptyset \, \alpha \, \mathit{Bool}) (\Nat^\emptyset \, (List \, \alpha) \, (List \, \alpha))}
 \newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha \vdash List \, \alpha} \rho[\alpha := A]}}
 
 \maketitle
@@ -204,7 +204,7 @@ and let $map = \maplist$.
   \begin{align*}
     &\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho  \\
     &= \mu T_{\rho} (\relsem{\alpha; \emptyset \vdash \alpha} \rho) \\    % def 19
-    &= \mu T_{\rho} (A, B \graph{g}) \\   
+    &= \mu T_{\rho} (A, B, \graph{g}) \\   
     &= (\mu T_{\pi_1\rho} A, \mu T_{\pi_2\rho} B, \colim{n \in \nat}{(T_{\rho}^n K_0)^*} (A, B, \graph{g})) \\ % eq 3, after dfn 15
     &= (\List \,A, \List \,B, \colim{n \in \nat}{\Sigma_{i = 0}^n (A, B, \graph{g})^i}) \\ % below (*)
     &= (\List \,A, \List \,B, \List (A, B, \graph{g})) \\ % definition of List
@@ -267,9 +267,9 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   $\rho : \relenv$, 
   $\rho \alpha = (A, B, \graph{g})$,
   $(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, 
-  $(s \circ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, Bool} \rho$,
-  and, for some well-formed term $filter$, \\
-  $$t = \setsem{\alpha; \emptyset \,|\, \Delta \vdash filter : \filtype} \emph{, then }$$
+  $(s \circ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho$,
+  and, for some well-formed term $\mathit{filter}$, \\
+  $$t = \setsem{\alpha; \emptyset \,|\, \Delta \vdash \mathit{filter} : \filtype} \emph{, then }$$
   \begin{align*}
   map \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ map \,g
   \end{align*}
@@ -278,10 +278,10 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   By Theorem~\ref{thm:at-gen-rel},
   $(t (\pi_1 \rho) a, t (\pi_2 \rho) b) \in \relsem{\alpha; \emptyset \vdash \filtype} \rho$.
   Thus if 
-  $(s, s') \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, Bool} \rho = \rho\alpha \to \Eq_{Bool}$,
+  $(s, s') \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to \Eq_{\mathit{Bool}}$,
   then 
   \begin{align*}
-    (t (\pi_1 \rho) \,a \,p, t (\pi_2 \rho) \,b \,p) &\in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset List \, \alpha \, List \, \alpha} \rho \\
+    (t (\pi_1 \rho) \,a \,s, t (\pi_2 \rho) \,b \,s') &\in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset (List \, \alpha) \, (List \, \alpha)} \rho \\
    &= \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \to \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \\
   \end{align*}
   So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$ then,
@@ -292,10 +292,10 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   Consider the case in which $\rho\alpha = (A, B, \graph{g})$. Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
   = \graph{map \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{map \,g}$ 
   implies $xs' = map \,g \,xs$. We also have that 
-  $(s, s') \in \graph{g} \to \Eq_{Bool}$ implies 
+  $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
   $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
   $s = s' \circ g$ due to the definition of morphisms between relations.
-  %% TODO show (s, s') \in <g> -> Bool implies s = s' \circ g %% 
+  %% TODO show (s, s') \in <g> -> \mathit{Bool} implies s = s' \circ g %% 
   With these instantiations, Equation~\ref{eq:filter-thm} becomes
   \begin{align*}
     &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(map \,g \,xs)) \in \graph{map \,g}, \\ 
