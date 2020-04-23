@@ -189,119 +189,137 @@ Nested Types} %% [Short Title] is optional;
 
 \maketitle
 
-\section{Short Cut Fusion for Arbitrary ADTs}
+\section{Short Cut Fusion for Arbitrary Nested Types}
 
 \vspace*{0.2in}
 
+{\color{red} Can take $\emptyset;\alpha \vdash c$ with
+  $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
+  can take $c$ to denote a constant $C$. We then get a free theorem
+  whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu H \;
+  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.}
+
 \begin{thm}
-Let $\ol{\vdash \tau : \F}$, let $\vdash \tau' : \F$, let $\ol{\alpha}; \beta
-\vdash F : \F$, and let $\beta; \emptyset  \,|\,
-\emptyset \vdash g : \Nat^{\emptyset} (\Nat^{\emptyset} F[\ol{\alpha
-    := \tau}]\, \beta)\, \beta$.  If we regard
+Let $\emptyset;\phi,\alpha \vdash F : \F$, let $\emptyset; \alpha
+\vdash K : \F$, and let $\phi ;\emptyset\,|\,\emptyset\vdash g :
+\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
+(\Nat^\alpha\,\onet \, (\phi\alpha))$. If we let $H :
+    [\set,\set] \to [\set,\set]$ be defined by
 \[\begin{array}{lll}
-H & = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha :=
-      \tau}]}\\
-G & = & \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
-  \Nat^{\emptyset} (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}]\,
-  \beta)\, \beta}
+H\,f\,x & = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
+  f][\alpha := x]\\
 \end{array}\]
-as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
-\rightarrow \setsem{\vdash \tau'}$ we have
-\[\textit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B \]   
+and let
+\[G = \setsem{\phi;\emptyset\,|\,\emptyset \vdash g :
+\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))\,(\Nat^\alpha\,\onet 
+\, (\phi\alpha))}\] 
+then we have that, for every $B \in H
+\setsem{\emptyset;\alpha \vdash K} \rightarrow \setsem{\emptyset;
+  \alpha \vdash K}$, 
+\[\textit{fold}_{H}\, B \, (G\; \mu H \; in_{H}) = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B \]
 \end{thm}
 
 \vspace*{0.2in}
 
 \begin{proof}
-  We first note that the type of $g$ is well-formed, since
-  $\emptyset;\beta \vdash F[\ol{\alpha := \tau}] : \F$ so our
-  promotion theorem gives that $\beta;\emptyset\vdash F[\ol{\alpha :=
-      \tau}] : \F$, and $\emptyset;\beta\vdash\beta : \F$ so that our
-  promotion theorem gives $\beta;\emptyset\vdash\beta : \F$. From
-  these facts we deduce that $\beta;\emptyset \vdash
-  \Nat^\emptyset\,F[\ol{\alpha := \tau}]\,\beta : \T$, and thus that
-  $\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  F[\ol{\alpha := \tau}]\, \beta)\, \beta : \T$.
-
-  Theorem~\ref{thm:abstraction} gives that, for any relation environment
-$\rho$ and any $(a, b) \in \relsem{\beta; \emptyset \vdash
+We first note that the type of $g$ is well-formed since
+$\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
+that $\phi,\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
+\F$, so that $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \T$
+and $\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \T$.
+Then $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \F$ and
+$\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \F$ also
+hold, and, finally, 
+$\phi ;\emptyset\vdash 
+\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
+(\Nat^\alpha\,\onet \, (\phi\alpha)) : \T$
+  
+Theorem~\ref{thm:abstraction} gives that, for any relation environment
+$\rho$ and any $(a, b) \in \relsem{\phi,\alpha;\emptyset \vdash
   \emptyset}\rho = 1$, eliding the only possible instantiations
 of $a$ and $b$ gives that
-\[(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
-\in \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  F[\ol{\alpha := \tau}]\, \beta)\, \beta} \rho\]
-Since
-\[\begin{array}{rl}
- & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-  (\Nat^{\emptyset} F[\ol{\alpha := \tau}]\, \beta)\, \beta} \rho\\  
-=& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} F[\ol{\alpha :=
-      \tau}] \, \beta} \rho \to \rho\beta \\ 
+\[\begin{array}{lll}
+(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
+& \in & \relsem{\phi;\emptyset\vdash \Nat^{\emptyset} (\Nat^\alpha
+  F\, (\phi\alpha))\, (\Nat^\alpha\,\onet \, (\phi\alpha))}
+\rho\\ 
+& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho \to \relsem{\phi;\emptyset\vdash
+  \Nat^\alpha\,\onet \, (\phi\alpha)}\rho\\ 
+& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho \to (\,\lambda A. 1 \Rightarrow \lambda A.\,(\rho
+\phi) A\,)\\   
+& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho \to (1 \Rightarrow \rho \phi)\\ 
+& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho \to \rho \phi
 \end{array}\]
-we have that if $(A, B) \in \relsem{\beta; \emptyset \vdash
-  \Nat^{\emptyset} F[\ol{\alpha := \tau}] \, \beta} \rho$
-then
-\[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B)
-\in \rho \beta\]
+\noindent
+where $H^\rel : [\rel,\rel] \to [\rel,\rel]$ is defined by
+$H^\rel\,f\,x = \relsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
+  f][\alpha := x]$. So if $(A, B) \in \relsem{\phi;\emptyset\vdash
+  \Nat^\alpha F\, (\phi\alpha)}\rho$ then
+\[\begin{array}{lll}
+(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) & \in & \rho \phi
+\end{array}\]
 Now note that
-\[\setsem{\vdash \fold_{F[\ol{\alpha := \tau}]}^{\tau'} :
-  \Nat^{\emptyset}\, (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}][\beta
-    := \tau'] \, \tau')\, (\Nat^{\emptyset} \,(\mu
-  \beta. F[\ol{\alpha := \tau}] \, \tau')} =
-\textit{fold}_H\]
-and consider the instantiation
+\[\setsem{\vdash \fold_F^K :
+  \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha ((\mu
+  \phi.\lambda\alpha.F)\alpha)\,K)} = \textit{fold}_H\]
+and consider the instantiation 
 \[\begin{array}{lll}
-A &=& \mathit{in}_H :  H (\mu H) \to \mu H\\
-B & : & H\setsem{\vdash \tau'} \to \setsem{\vdash \tau'}\\
-\rho \beta &=& \graph{\textit{fold}_H\, B}
+A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
+B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
+\setsem{\emptyset;\alpha \vdash K}\\
+\rho \beta &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
+  \color{red} \mbox{a graph of a natural transformation, defined in
+    Enrico's notes}} 
 \end{array}\]
-(Note that all the types here are well-formed.)  This gives
+(Note that all the types here are well-formed.) This gives
 \[\begin{array}{lll}
-\pi_1 \rho \beta &=& \setsem{\vdash \mu \beta. F[\ol{\alpha := \tau}]}
-\; = \; \mu H\\
-\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
+\pi_1 \rho \beta &=& \mu H\\
+\pi_2 \rho \beta &=& \setsem{\emptyset;\alpha\vdash K}\\
 \rho \beta &:& \rel(\pi_1 \rho \beta, \pi_2 \rho \beta)\\
-A & : & \setsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-  F[\ol{\alpha := \tau}] \, \beta} (\pi_1 \rho)\\
-B & : & \setsem{\beta; \emptyset \vdash \Nat^{\emptyset} F[\ol{\alpha
-      := \tau}] \, \beta}(\pi_2 \rho)\\
+A & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
+  F \, (\phi \alpha)} (\pi_1 \rho)\\
+B & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
+  F \, (\phi \alpha)} (\pi_2 \rho)\\
 \end{array}\]
 since
 \[\begin{array}{lll}
-A \; = \; \mathit{in}_H & : & H(\mu H) \to \mu H\\
- & = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}(\mu
-\setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}) \to \mu
-\setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}\\
-& = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha :=
-      \tau}]}(\pi_1\rho) \to \setsem{\emptyset;\beta \vdash
-  \beta}(\pi_1 \rho)\\
-& = & \setsem{\beta;\emptyset \vdash F[\ol{\alpha :=
-      \tau}]}(\pi_1\rho) \to \setsem{\beta; \emptyset \vdash
-  \beta}(\pi_1 \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's
-    trick; now a theorem}} \\ 
-& = & \setsem{\beta;\emptyset \vdash \Nat^\emptyset F[\ol{\alpha :=
-      \tau}]\,\beta}(\pi_1 \rho) 
+A \; = \; \mathit{in}_H & : & H(\mu H) \Rightarrow \mu H\\
+& = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi := \mu
+  \setsem{\emptyset; \phi, \alpha \vdash F}] \Rightarrow \mu
+  \setsem{\emptyset; \phi, \alpha \vdash F}\\  
+& = & \setsem{\emptyset; \phi, \alpha \vdash F}(\pi_1\rho)
+  \Rightarrow \setsem{\emptyset; \phi,\alpha \vdash \phi\alpha}(\pi_1 \rho)\\
+& = & \setsem{\phi; \alpha \vdash F}(\pi_1\rho)
+  \Rightarrow \setsem{\phi;\alpha \vdash \phi\alpha}(\pi_1
+  \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's trick; now a theorem}}\\
+& = & \setsem{\phi;\emptyset \vdash \Nat^\alpha F
+    \,(\phi\alpha)}(\pi_1\rho) 
 \end{array}\]
-{\color{red} where ``Daniel's trick'' is the observation that a
-  functor can be seen as non-functorial when we only care about its
-  action on objects. This is now a theorem.}  We also have
+We also have
 \[\begin{array}{lll}
-(A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\beta; \emptyset \vdash
-  \Nat^{\emptyset} F[\ol{\alpha := \tau}] \, \beta} \rho \\
- & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\rho[\beta := \graph{\textit{fold}_H\, B}] \to
-\graph{\textit{fold}_H\, B}\\
- & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\graph{\textit{fold}_H\, B} \to
-\graph{\textit{fold}_H\, B}\\
- & = & \relsem{\emptyset; \beta\vdash F[\ol{\alpha :=
-      \tau}]}\graph{\textit{fold}_H\, B} \to
-\graph{\textit{fold}_H\, B} \hspace*{0.35in} {\color{red}
+(A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\phi;\emptyset\vdash
+  \Nat^\alpha F\, (\phi\alpha)}\rho\\
+ & = & \lambda A. \relsem{\phi;\alpha\vdash F}\rho[\alpha := A]
+\Rightarrow \lambda A. (\rho\phi) A\\
+& = & \lambda A. \relsem{\phi;\alpha\vdash F}[\phi :=
+  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
+\graph{\textit{fold}_H\, B} \\ 
+& = & \lambda A. \relsem{\emptyset;\phi,\alpha\vdash F}[\phi :=
+  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
+\graph{\textit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
   \mbox{Daniel's trick; now a theorem}}\\  
-& = & \graph{\setsem{\emptyset; \beta \vdash F[\ol{\alpha :=
-      \tau}]}\,(\textit{fold}_H\, B)} \to
-\graph{\textit{fold}_H\, B} \hspace*{0.25in} {\color{red} \mbox{by the
-    graph lemma}}\\ 
-& = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \to
+& = & \relsem{\emptyset;\phi,\alpha\vdash F}
+  \graph{\textit{fold}_H\, B} \Rightarrow \graph{\textit{fold}_H\,
+    B}\\
+  & = & \graph{\setsem{\emptyset;\phi,\alpha\vdash F}
+    \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\textit{fold}_H\, B}
+\hspace*{0.25in} {\color{red} \mbox{Graph Lemma}}\\
+  & = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \Rightarrow
 \graph{\textit{fold}_H\, B}\\
 \end{array}\]
 since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
@@ -310,7 +328,7 @@ $\textit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\, (\mathit{map}_H
 \,(\mathit{fold}_H\,B) \, x)$ by the definition of $\mathit{fold}_H$
 as a (indeed, the unique) morphism from $\mathit{in}_H$ to $B$. Thus,
 \[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) \in
-\graph{\textit{fold}_H\, B}\]
+\graph{\textit{fold}_H\, B}\] 
 i.e.,
 \[\textit{fold}_H \, B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) =
 G\,(\pi_2 \rho)\,B\] 
@@ -320,21 +338,7 @@ G\,(\pi_2 \rho)\,B\]
 \noindent
 Since $\beta$ is the only free variable in $G$, this simplifies to
 \[\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\vdash \tau'}\,B\]  
-%i.e.,
-%\[\begin{array}{ll}
-%&\textit{fold}_{\setsem{\beta; \emptyset \vdash
-%      F[\ol{\alpha := \tau}]}[\beta := \_]}\, B \, (\setsem{\beta;
-%  \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-%  (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}]\, \beta)\, \beta}\; \mu
-%F[\ol{\alpha := \setsem{\vdash \tau}}] \;
-%\mathit{in}_{\setsem{\beta;\emptyset \vdash F[\ol{\alpha :=
-%        \tau}]}[\beta := \_]})\\  
-%= & \setsem{\beta;
-%  \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-%  (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}]\, \beta)\,
-%  \beta}\,\setsem{\vdash \tau'}\,B)
-%\end{array}\]
+G\,\setsem{\emptyset;\alpha\vdash K}\,B\]  
 \end{proof}
 
 
