@@ -1,0 +1,485 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+\begin{document}
+\maketitle
+\section{Demotion Theorems}
+
+\begin{thm}
+If $\Gamma; \Phi, \phi \vdash \tau : \F$, then one can derive
+$\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]$, 
+where $\tau[\phi :== \psi]$ is the textual replacement of $\phi$ in $\tau$.
+In other words, all occurences of $\phi\ol\sigma$ in $\tau$ become $\psi\ol\sigma$.
+\end{thm}
+\begin{proof}
+By induction on the structure of $\tau$.
+\begin{itemize}
+  \item There is nothing to prove for $\Nat$ types because their functorial contexts
+        must be empty.
+  \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. We must
+    derive $\Gamma, \beta; \Phi \vdash \beta : \F$. Note that $\Gamma$ and $\Phi$
+    are present in the original judgment by weakening, and we can also use weakening
+    in the derivation of $\Gamma, \beta; \Phi \vdash \beta : \F$
+    
+    \[\begin{array}{c}
+    \AXC{$\Gamma, \beta; \emptyset \vdash \beta : \T$}
+    \UIC{$\Gamma, \beta; \emptyset \vdash \beta : \F$}
+    \UIC{$\Gamma, \beta; \Phi   \vdash \beta : \F$}
+    \DP
+    \end{array}\]  \\
+
+  \item Case $\Gamma; \Phi, \phi \vdash \onet :\F$,  $\Gamma; \Phi, \phi \vdash \zerot :\F$, or
+        $\Gamma; \Phi, \alpha \vdash \beta :\F$.
+        By weakening. \\
+
+  \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. We must derive 
+    $\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi] : \F$. The induction hypothesis 
+    gives that $\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F$ for each $\tau$. 
+
+    \[\begin{array}{c}
+    \AXC{$\psi \in \{ \Gamma, \psi \} \cup \Phi : \F$}
+      \AXC{$\ol{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F}$}
+      \BIC{$\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]} : \F$}
+    \UIC{$\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi] :\F$}
+    \DP
+    \end{array}\]  
+    The case for $\Gamma; \Phi, \varphi \vdash \phi \ol\tau : \F$, i.e., the case in which
+    the variable being ``demoted'' only appears in the arguments, 
+    works by the same induction. \\
+
+  \item Case $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau : \F$. 
+    We must derive $\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda \ol\alpha. H)
+     \ol\tau)[\phi :== \psi] : \F$. The induction hypothesis gives that 
+     $\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F$ for each $\tau$ and
+     $\Gamma, \psi; \Phi, \ol\alpha, \phi' \vdash H[\phi :== \psi] : \F$.
+
+    \[\begin{array}{c}
+      \AXC{$\Gamma, \psi; \Phi, \ol\alpha, \phi' \vdash H[\phi :== \psi] : \F$}
+      \AXC{$\ol{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F}$}
+      \BIC{$\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda \ol\alpha. H[\phi :== \psi])
+        \ol{\tau[\phi :== \psi]} : \F$}
+      \UIC{$\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda \ol\alpha. H)\ol\tau)[\phi :== \psi] : \F$}
+    \DP
+    \end{array}\]  \\
+
+  \item Case $\Gamma; \Phi, \phi \vdash \sigma \times \tau : \F$. We must derive
+    $\Gamma, \psi; \Phi \vdash (\sigma \times \tau) [\phi :== \psi] : \F$. 
+    The induction hypothesis gives that
+    $\Gamma, \psi; \Phi \vdash \sigma [\phi :== \psi]: \F$ and
+    $\Gamma, \psi; \Phi \vdash \tau [\phi :== \psi]: \F$. 
+
+    \[\begin{array}{c}
+      \AXC{$\Gamma, \psi; \Phi \vdash \sigma [\phi :== \psi]: \F$}
+      \AXC{$\Gamma, \psi; \Phi \vdash \tau   [\phi :== \psi]: \F$}
+      \BIC{$\Gamma, \psi; \Phi \vdash \sigma [\phi :== \psi] \times \tau [\phi :== \psi]: \F$}
+      \UIC{$\Gamma, \psi; \Phi \vdash (\sigma \times \tau) [\phi :== \psi]: \F$}
+    \DP
+    \end{array}\]  
+
+  The case for $\sigma + \tau$ is analogous.
+
+\end{itemize}
+
+\end{proof}
+
+      % $$
+      % \setsem{\Gamma; \Phi, \phi \vdash ____ : \F} \rho = 
+      % $$
+
+Note that the next two theorems are proven by 
+simultaneous induction.
+\begin{thm}\label{thm:demotion-objects}
+If $\Gamma; \Phi, \phi \vdash  \tau : \F$, $\rho : \setenv$, and $\rho \phi = \rho \psi$, then
+  $$\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho $$
+
+Analogously, if $\rho :\relenv$, and $\rho \phi = \rho \psi$, then
+$$\relsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \relsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho $$
+
+\end{thm}
+\begin{proof}
+We prove the case for $\set$ by induction on the structure of $\tau$.
+The case for $\rel$ proceeds analogously.
+\begin{itemize}
+  \item There is nothing to prove for $\Nat$ types because their functorial contexts must be empty.
+  \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. Given that $\rho \alpha = \rho \beta$, 
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \alpha \vdash \alpha } \rho \\
+    = \; & \rho \alpha \\
+    = \; & \rho \beta \\
+    = \; & \setsem{\Gamma, \beta; \Phi \vdash \beta } \rho
+    \end{align*}
+
+  \item Case $\Gamma; \Phi, \phi \vdash \onet :\F$,  $\Gamma; \Phi, \phi \vdash \zerot :\F$.
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \phi \vdash \onet } \rho \\
+    = \; & 1 \\
+    = \; & \setsem{\Gamma, \psi; \Phi \vdash \onet } \rho
+    \end{align*}
+
+  \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. The induction hypothesis gives that 
+    $$\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho
+      = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho$$ 
+    for each $\tau$.
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau } \rho \\
+      = \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho} \\
+      = \; & (\rho \phi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho} \\
+      = \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho} \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]} } \rho \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi] } \rho
+    \end{align*}
+  
+    The first and fifth equalities above are by Definition~\ref{def:set-sem}. The fourth equality
+    is by equality of the functors $\rho \phi$ and $\rho \psi$.  \\
+
+  \item Case $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau : \F$. 
+      The induction hypothesis gives that 
+      $$\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } \rho
+        = \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi] } \rho$$ 
+      and 
+      $$\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho
+        = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho$$ 
+      for each $\tau$. 
+
+      \begin{align*}
+        & \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau } \rho \\
+        %% = \; & (\mu T_{\rho}^\set) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \text{\quad(T contains $\phi$)} \\ 
+        % = \; & (\mu T_{\rho}^\set) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \text{\quad(T contains $\phi$)} \\ 
+        = \; & (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \\
+        = \; & (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \\
+        % = \; &  (\mu (
+        %     \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+        %   ) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \\
+        = \; &  (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho} \\
+        = \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } \rho \\
+        = \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda \ol\alpha. H) \ol\tau)[\phi :== \psi] } \rho 
+      \end{align*} 
+      The first and fifth equalities are by Definition~\ref{def:set-sem}.
+      The third equality follows from the following equality:
+      \begin{align*}
+        &\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\
+        & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+      \end{align*}
+      These two functors have the same action on objects by the induction hypothesis on $H$, and the fact
+      that the extended environment $\rho[\phi' := F][\ol{\alpha := A}]$ satisfies the required
+      hypothesis. These two functors have the same action on morphisms by the induction hypothesis
+      on $H$ from Theorem~\ref{thm:demotion-morph}. Thus they are the same functor with the same fixed point.
+
+  \item Case $\Gamma; \Phi, \phi \vdash \sigma \times \tau : \F$. The induction hypothesis gives that 
+      $$\setsem{\Gamma; \Phi, \phi \vdash \sigma } \rho
+        = \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :== \psi] } \rho$$ 
+        and
+      $$\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho
+        = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho$$ 
+
+    \begin{align*}
+           & \setsem{\Gamma; \Phi, \phi \vdash \sigma \times \tau} \rho \\
+      = \; & \setsem{\Gamma; \Phi, \phi \vdash \sigma} \rho \times \setsem{\Gamma; \Phi, \phi \vdash \tau} \rho\\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :== \psi]} \rho \times \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho\\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :==\psi] \times \tau[\phi :== \psi]} \rho \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash (\sigma \times \tau)[\phi :== \psi]} \rho
+    \end{align*}
+
+    The case for $\sigma + \tau$ is analogous.
+\end{itemize}
+\end{proof}
+
+\begin{thm}\label{thm:demotion-morph}
+If $\Gamma; \Phi, \phi \vdash \tau : \F$, and if 
+$f : \rho \to \rho'$, is a morphism of set environments such that
+  $\rho \phi = \rho \psi = \rho' \phi = \rho' \psi$, and
+   $f \phi = f \psi = \id_{\rho \phi}$, then
+
+  $$\setsem{\Gamma; \Phi, \phi \vdash \tau} f 
+    = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f $$
+
+Analogously, if
+$f : \rho \to \rho'$, is a morphism of relation environments such that
+  $\rho \phi = \rho \psi = \rho' \phi = \rho' \psi$, and
+   $f \phi = f \psi = \id_{\rho \phi}$, then
+
+  $$\relsem{\Gamma; \Phi, \phi \vdash \tau} f 
+    = \relsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f $$
+
+\end{thm}
+
+\begin{proof}
+We prove the case for $\set$ by induction on the structure of $\tau$.
+The case for $\rel$ proceeds analogously.
+
+\begin{itemize}
+
+  \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. Given that $\rho \alpha = \rho \beta$, 
+      
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \alpha \vdash \alpha } f \\
+      = \; & \id_{\rho \alpha} \\
+      = \; & \id_{\rho \beta}  \\
+      = \; & \setsem{\Gamma, \beta; \Phi \vdash \beta } f
+    \end{align*}
+
+  \item Case $\Gamma; \Phi, \phi \vdash \onet :\F$,  $\Gamma; \Phi, \phi \vdash \zerot :\F$.
+
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \phi \vdash \onet } f \\
+      = \; & \id_1 \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \onet } f
+    \end{align*}
+
+  \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. The induction hypothesis gives that 
+    $$\setsem{\Gamma; \Phi, \phi \vdash \tau} f = 
+      \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f$$
+    for each $\tau$.
+
+    \begin{align*}
+         & \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau} f \\
+      = \; & (f \phi)_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
+              \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+      = \; & (\id_{\rho \phi})_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
+              \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+      = \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+      = \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+      = \; & (\id_{\rho \psi})_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}}
+              \circ (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+      = \; & (f \psi)_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}}
+              \circ (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]}} f \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi]} f
+    \end{align*}
+
+  \item Case $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau : \F$. 
+      The induction hypothesis gives that 
+      $$\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } f
+        = \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi] } f$$ 
+      and 
+      $$\setsem{\Gamma; \Phi, \phi \vdash \tau } f
+        = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } f$$ 
+      for each $\tau$. 
+
+      \begin{align*}
+        & \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau } f \\
+        % = \; & (\mu \sigma^\set_f)_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}}
+        %         \circ (\mu T^\set_\rho) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+        = \; & 
+           (\mu (
+             \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}]
+           ))_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} \\
+          \; & \circ
+          (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} f} \\
+        = \; & 
+           (\mu (
+             \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}]
+           ))_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}} \\
+          \; & \circ
+          (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+        = \; & 
+           (\mu (
+              \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha := \id_A}]
+           ))_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}} \\
+          \; & \circ
+          (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+        = \; & 
+           (\mu (
+              \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha := \id_A}]
+           ))_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}} \\
+          \; & \circ
+          (\mu (
+            \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+          )
+        ) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+        % = \; & (\mu \sigma^\set_f)_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} \rho'}}
+        %         \circ (\mu T^\set_\rho) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\
+        = \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } f \\
+        = \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda \ol\alpha. H) \ol\tau)[\phi :== \psi] } f
+      \end{align*} 
+
+      \noindent
+      The first and fifth equalities are by Definition~\ref{def:set-sem}.
+      The third equality is by the equality of the arguments to the first $\mu$ operator. 
+      \begin{align*}
+        & \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}] \\
+        & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha := \id_A}]
+      \end{align*}
+      These two natural transformations are equal by the induction hypothesis on $H$ and the fact that the morphism $f[\phi' := \id_F][\ol{\alpha := \id_A}]
+      : \rho[\phi' := F][\ol{\alpha := A}] \to \rho'[\phi' := F][\ol{\alpha := A}]$
+      still satisfies the required hypotheses.
+      The fourth equality is by the equality of the arguments to the second $\mu$ operator. 
+      \begin{align*}
+        & \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\
+        & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
+      \end{align*}
+
+      These two functors have the same action on objects by the induction hypothesis on $H$ from Theorem~\ref{thm:demotion-objects},
+      and they have the same action on morphisms by the induction hypothesis on $H$ from this theorem. 
+      Thus they are the same functor with the same fixed point.
+
+  \item Case $\Gamma; \Phi, \phi \vdash \sigma \times \tau : \F$. The induction hypothesis gives that 
+      $$\setsem{\Gamma; \Phi, \phi \vdash \sigma } f
+        = \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :== \psi] } f$$ 
+        and
+      $$\setsem{\Gamma; \Phi, \phi \vdash \tau } f
+        = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } f$$ 
+
+    \begin{align*}
+           & \setsem{\Gamma; \Phi, \phi \vdash \sigma \times \tau} f \\
+      = \; & \setsem{\Gamma; \Phi, \phi \vdash \sigma} f \times \setsem{\Gamma; \Phi, \phi \vdash \tau} f \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :== \psi]} f \times \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash \sigma[\phi :==\psi] \times \tau[\phi :== \psi]} f \\
+      = \; & \setsem{\Gamma, \psi; \Phi \vdash (\sigma \times \tau)[\phi :== \psi]} f
+    \end{align*}
+
+
+    The case for $\sigma + \tau$ is analogous.
+\end{itemize}
+\end{proof}
+\end{document}
+
+\end{itemize}
+
+
+\end{proof}
+
+\end{document}
+
