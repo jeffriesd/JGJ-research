@@ -98,9 +98,6 @@
 \newcommand{\A}{\mathcal{A}}
 \renewcommand{\id}{\mathit{id}}
 \newcommand{\map}{\mathsf{map}}
-% Trick to have a \Lan operator overriding the previous definition of \Lan (left Kan extension)
-\renewcommand{\Lan}{\TypeLan}
-\DeclareMathOperator{\TypeLan}{Lan}
 \DeclareMathOperator{\subst}{subst}
 \DeclareMathOperator{\build}{build}
 \DeclareMathOperator{\nil}{nil}
@@ -214,38 +211,38 @@ We already know, as a general fact, that
       \sigma}]\, G[\overline{\alpha := \tau}]}
 \end{multline}
 In particular, if we instantiate $x$ with any term $\subst$ of type
-$\vdash \Nat^{\alpha} (\Lan(\alpha + \onet) \times \Lan\alpha)\, \Lan\alpha$
+$\vdash \Nat^{\alpha} (\Lam(\alpha + \onet) \times \Lam\alpha)\, \Lam\alpha$
 (and thus there is a single $\alpha$ and no $\gamma$'s)
 we have
 \begin{multline}
 \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lan\alpha}^{\sigma, \tau})_{\emptyset} y)
+  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
   \circ (L_{\emptyset} z. \subst_{\sigma} z)
-  : \Nat^{\emptyset} (\Lan(\sigma + \onet) \times \Lan\sigma)\, \Lan\tau } \\
+  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau } \\
 = \setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
   \vdash
   (L_{\emptyset} z. \subst_{\tau} z)
-  \circ ((\map_{\Lan(\alpha + \onet) \times \Lan\alpha}^{\sigma, \tau})_{\emptyset} y)
-  : \Nat^{\emptyset} (\Lan(\sigma + \onet) \times \Lan\sigma)\, \Lan\tau }
+  \circ ((\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
+  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau }
 \end{multline}
 Thus, for any set environment $\rho$ and any function
-$f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma; \emptyset \vdash \tau}\rho$,
+$f : \setsem{\Gamma; \emptyset \vdash  \Nat^{\emptyset} \sigma\, \tau}\rho$,
 we have that
 \begin{multline}
 \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lan\alpha}^{\sigma, \tau})_{\emptyset} y)
+  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
   \circ (L_{\emptyset} z. \subst_{\sigma} z)
-  : \Nat^{\emptyset} (\Lan(\sigma + \onet) \times \Lan\sigma)\, \Lan\tau } \rho f \\
-\setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lan\alpha}^{\sigma, \tau})_{\emptyset} y)} \rho f
+  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau } \rho f \\
+= \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
+  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)} \rho f
   \circ
   \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
   \vdash L_{\emptyset} z. \subst_{\sigma} z} \rho f \\
 = \setsem{\Gamma; \emptyset \,|\, \emptyset
-  \vdash \map_{\Lan\alpha}^{\overline{\sigma}, \overline{\tau}}} \rho f
+  \vdash \map_{\Lam\alpha}^{\overline{\sigma}, \overline{\tau}}} \rho f
   \circ \setsem{\Gamma; \emptyset \,|\, \emptyset
   \vdash L_{\emptyset} z. \subst_{\sigma} z} \rho \\
-= \map_{\setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+= \map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
   \circ
   (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}
 \end{multline}
@@ -255,49 +252,49 @@ and
   \vdash
   (L_{\emptyset} z. \subst_{\tau} z)
   \circ
-  ((\map_{\Lan(\alpha + \onet) \times \Lan\alpha}^{\sigma, \tau})_{\emptyset} y)
-  : \Nat^{\emptyset} (\Lan(\sigma + \onet) \times \Lan\sigma)\, \Lan\tau
+  ((\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
+  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau
 } \rho f \\
 = \setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
   \vdash L_{\emptyset} z. \subst_{\tau} z
 } \rho f
 \circ
 \setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash (\map_{\Lan(\alpha + \onet) \times \Lan\alpha}^{\sigma, \tau})_{\emptyset} y
+  \vdash (\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y
 } \rho f \\
 = \setsem{ \Gamma; \emptyset \,|\, \emptyset
   \vdash L_{\emptyset} z. \subst_{\tau} z
 } \rho
 \circ
 \setsem{ \Gamma; \emptyset \,|\, \emptyset
-  \vdash \map_{\Lan(\alpha + \onet) \times \Lan\alpha}^{\sigma, \tau}
+  \vdash \map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau}
 } \rho f \\
 = (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
 \circ
-\map_{\setsem{\emptyset; \alpha \vdash \Lan(\alpha + \onet) \times \Lan\alpha} [\alpha := \_]} f \\
+\map_{\setsem{\emptyset; \alpha \vdash \Lam(\alpha + \onet) \times \Lam\alpha} [\alpha := \_]} f \\
 = (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
 \circ
 (
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} (f + \onet)
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
 \times
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
 )
 \end{multline}
 So, we can conclude that
 \begin{multline}
-\map_{\setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+\map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
   \circ
   (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \sigma} \rho} \\
 = (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
 \circ
 (
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} (f + \onet)
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
 \times
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
 )
 \end{multline}
 Moreover, for any $A, B: \set$,
@@ -305,23 +302,25 @@ we can choose $\sigma = v$ and $\tau = w$ to be variables such that
 $\rho v = A$ and $\rho w = B$.
 Then for any function $f : A \to B$ we have that
 \begin{multline}
-\map_{\setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+\map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
   \circ
   (\setsem{\vdash \subst})_{A} \\
 = (\setsem{\vdash \subst})_{B}
 \circ
 (
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} (f + \onet)
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
 \times
 \map_{
-  \setsem{\emptyset; \alpha \vdash \Lan\alpha} [\alpha := \_]} f
+  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
 )
 \end{multline}
 
 \begin{rmk}
-The above discussion does not depend on the definition of type $\Lan$.
-Indeed the result holds for any type, and thus it is just a consequence of naturality.
+The free theorem for a type is always independent of the particular term of that type, so the above proof is independent of the choice of function $\subst$.
+In addition, the above proof is independent of the particular data type --- in this case, $\Lam$ --- over which $\subst$ acts.
+%The above discussion does not depend on the definition of type $\Lam$.
+Indeed, the result holds for any data type, and thus it is just a consequence of naturality.
 \end{rmk}
 
 \bibliography{references}
