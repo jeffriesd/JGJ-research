@@ -130,20 +130,19 @@ Nested Types} %% [Short Title] is optional;
 \section{Demotion Theorems}
 
 \begin{thm}
-If $\Gamma; \Phi, \phi \vdash \tau : \F$, then one can derive
-$\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]$, 
+
+If $\Gamma; \Phi, \phi^k \vdash \tau : \F$, then one can derive
+$\Gamma, \psi^k; \Phi \vdash \tau[\phi^k :== \psi^k]$, 
 where $\tau[\phi :== \psi]$ is the textual replacement of $\phi$ in $\tau$.
 In other words, all occurences of $\phi\ol\sigma$ in $\tau$ become $\psi\ol\sigma$.
 \end{thm}
 \begin{proof}
 By induction on the structure of $\tau$.
 \begin{itemize}
-  \item There is nothing to prove for $\Nat$ types because their functorial contexts
+  \item There is nothing to prove for types in $\T$ because their functorial contexts
         must be empty.
   \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. We must
-    derive $\Gamma, \beta; \Phi \vdash \beta : \F$. Note that $\Gamma$ and $\Phi$
-    are present in the original judgment by weakening, and we can also use weakening
-    in the derivation of $\Gamma, \beta; \Phi \vdash \beta : \F$
+    derive $\Gamma, \beta; \Phi \vdash \beta : \F$. 
     
     \[\begin{array}{c}
     \AXC{$\Gamma, \beta; \emptyset \vdash \beta : \T$}
@@ -152,9 +151,8 @@ By induction on the structure of $\tau$.
     \DP
     \end{array}\]  \\
 
-  \item Case $\Gamma; \Phi, \phi \vdash \onet :\F$,  $\Gamma; \Phi, \phi \vdash \zerot :\F$, or
-        $\Gamma; \Phi, \alpha \vdash \beta :\F$.
-        By weakening. \\
+  \item Case $\Gamma; \Phi, \phi \vdash \onet :\F$,  $\Gamma; \Phi, \phi \vdash \zerot :\F$.
+        We can immediately form the required judgments. \\
 
   \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. We must derive 
     $\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi] : \F$. The induction hypothesis 
@@ -167,7 +165,8 @@ By induction on the structure of $\tau$.
     \UIC{$\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi] :\F$}
     \DP
     \end{array}\]  
-    The case for $\Gamma; \Phi, \varphi \vdash \phi \ol\tau : \F$, i.e., the case in which
+
+    The case for $\Gamma; \Phi, \phi' \vdash \phi \ol\tau : \F$, i.e., the case in which
     the variable being ``demoted'' only appears in the arguments, 
     works by the same induction. \\
 
@@ -211,7 +210,11 @@ By induction on the structure of $\tau$.
       % $$
 
 Note that the next two theorems are proven by 
-simultaneous induction.
+simultaneous induction. We are actually only interested in using Theorem~\ref{thm:demotion-objects}, 
+but in order to prove the $\mu$ case for this theorem, we need Theorem~\ref{thm:demotion-morph} 
+to show that two functors have equal actions on morphisms.
+
+
 \begin{thm}\label{thm:demotion-objects}
 If $\Gamma; \Phi, \phi \vdash  \tau : \F$, $\rho : \setenv$, and $\rho \phi = \rho \psi$, then
   $$\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } \rho $$
@@ -224,7 +227,8 @@ $$\relsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \relsem{\Gamma, \psi; \Phi \vda
 We prove the case for $\set$ by induction on the structure of $\tau$.
 The case for $\rel$ proceeds analogously.
 \begin{itemize}
-  \item There is nothing to prove for $\Nat$ types because their functorial contexts must be empty.
+  \item There is nothing to prove for types in $\T$ because their functorial contexts
+        must be empty.
   \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. Given that $\rho \alpha = \rho \beta$, 
     \begin{align*}
          & \setsem{\Gamma; \Phi, \alpha \vdash \alpha } \rho \\
@@ -239,6 +243,8 @@ The case for $\rel$ proceeds analogously.
     = \; & 1 \\
     = \; & \setsem{\Gamma, \psi; \Phi \vdash \onet } \rho
     \end{align*}
+
+    Similarly for $\zerot$.
 
   \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. The induction hypothesis gives that 
     $$\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho
@@ -288,7 +294,7 @@ The case for $\rel$ proceeds analogously.
         = \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda \ol\alpha. H) \ol\tau)[\phi :== \psi] } \rho 
       \end{align*} 
       The first and fifth equalities are by Definition~\ref{def:set-sem}.
-      The third equality follows from the following equality:
+      The second equality follows from the following equality:
       \begin{align*}
         &\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\
         & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
@@ -341,7 +347,8 @@ We prove the case for $\set$ by induction on the structure of $\tau$.
 The case for $\rel$ proceeds analogously.
 
 \begin{itemize}
-
+  \item There is nothing to prove for types in $\T$ because their functorial contexts
+        must be empty.
   \item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. Given that $\rho \alpha = \rho \beta$, 
       
     \begin{align*}
@@ -358,6 +365,7 @@ The case for $\rel$ proceeds analogously.
       = \; & \id_1 \\
       = \; & \setsem{\Gamma, \psi; \Phi \vdash \onet } f
     \end{align*}
+    Similarly for $\zerot$.
 
   \item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. The induction hypothesis gives that 
     $$\setsem{\Gamma; \Phi, \phi \vdash \tau} f = 
@@ -388,7 +396,6 @@ The case for $\rel$ proceeds analogously.
       $$\setsem{\Gamma; \Phi, \phi \vdash \tau } f
         = \setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] } f$$ 
       for each $\tau$. 
-
       \begin{align*}
         & \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda \ol\alpha. H)\ol\tau } f \\
         % = \; & (\mu \sigma^\set_f)_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}}
@@ -437,15 +444,15 @@ The case for $\rel$ proceeds analogously.
 
       \noindent
       The first and fifth equalities are by Definition~\ref{def:set-sem}.
-      The third equality is by the equality of the arguments to the first $\mu$ operator. 
+      The third equality is by the equality of the arguments to the first $\mu$ operator:
       \begin{align*}
         & \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}] \\
         & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha := \id_A}]
       \end{align*}
-      These two natural transformations are equal by the induction hypothesis on $H$ and the fact that the morphism $f[\phi' := \id_F][\ol{\alpha := \id_A}]
+      By the induction hypothesis on $H$ and the fact that the morphism $f[\phi' := \id_F][\ol{\alpha := \id_A}]
       : \rho[\phi' := F][\ol{\alpha := A}] \to \rho'[\phi' := F][\ol{\alpha := A}]$
       still satisfies the required hypotheses.
-      The fourth equality is by the equality of the arguments to the second $\mu$ operator. 
+      The fourth equality is by the equality of the arguments to the second $\mu$ operator:
       \begin{align*}
         & \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\
         & = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha := A}]
