@@ -121,6 +121,11 @@
   (List \, \alpha) \, (List \, \alpha))} 
 \newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha
       \vdash List \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+
+
 
 \title[Free Theorems for Nested Types]{Free Theorems for 
 Nested Types} %% [Short Title] is optional;
@@ -199,7 +204,60 @@ Abstract goes here
 \section{Introduction}\label{sec:intro}
 
 Reynolds, parametricity, Abstraction Theorem vs logical relations,
-etc. 
+etc.
+
+
+To illustrate, consider the nested type of perfect trees, coded in
+Agda as
+\[\begin{array}{l}
+\mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
+\hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
+\end{array}\]
+and the following $\mathtt{reversePTree}$ function that performs a
+``deep reverse'' of them:
+\[\begin{array}{l}
+\mathtt{reversePTree : \forall \{A : Set\}  \rightarrow
+PTree\; A \rightarrow PTree \;A}\\ 
+\mathtt{reversePTree \; \{A\} = foldPTree \; \{A\}\; \{PTree\}\;
+pleaf\; ( \lambda p \rightarrow pnode\; (mapPTree\; swap\; p) )}\\
+%\end{array}\]
+%where
+%\[\begin{array}{l}
+\\
+\mathtt{foldPTree : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow Set \}
+ \rightarrow ( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow
+ (\{B : Set\} \rightarrow F (B \times B) \rightarrow F B)}\\
+\hspace*{2in}\mathtt{\rightarrow PTree \;A \rightarrow F\;A}\\
+\mathtt{foldPTree\; n\; c\; (pleaf\; x) = n \;x}\\
+\mathtt{foldPTree\; n\; c \;(pnode\; p) = c\; (foldPTree \;n \;c \;p)}\\
+\\
+\mathtt{mapPTree : \forall \{A\, B : Set\} \rightarrow (A \rightarrow B)
+  \rightarrow PLeaves\; A \rightarrow PLeaves\; B}\\ 
+\mathtt{mapPTree \;f\; (pleaf \;x) = pleaf\; (f\; x)}\\
+\mathtt{mapPTree\; f \;(pnode\; p) = pnode\; (mapPTree \;(\lambda (x,y)
+  \rightarrow (f x, f y))\; p)}\\ 
+\\
+\mathtt{swap : \forall \{A : Set\} \rightarrow (A \times A)
+  \rightarrow (A \times A)}\\ 
+\mathtt{swap \;(x,y) = (y,x)}
+\end{array}\]
+
+Intuitively, it is not hard to see that $\mathtt{reversePTree}$
+commutes with $\mathtt{reversePTree}$. To prove this formally, we
+would proceed by induction on the structure of the input perfect tree
+--- something that would probably have been done in practice, but is
+now is entirely justified in the wake of~\cite{jp19}.
+
+
+
+
+
+
+
+
+The issue is not just {\em how} to prove properties, but also knowing
+{\em that they hold at all}.
 
 To prove properties of functions on ADTs we usually induct on the
 structure of the data type. After~\cite{jp20}, we can now do the same
@@ -449,7 +507,15 @@ constructor expression or a well-formed functorial expression.
 
 {\color{blue} Include some examples of types, e.g., lists and perfect
   trees and bushes, etc. Include those that will be used in
-  discussions below.}
+  discussions below.
+
+  Note that we cannot write as folds functions --- such as concat ::
+  PTree a -> PTree a -> PTree a --- that take as input more than one
+  non-algebraic nested type. This is because the restriction on the
+  contexts in which $\Nat$-types can be formed conflicts with the need
+  to feed $\fold$s algebras. (Can't fold over pairs to get the right
+  functions; can't get them by using continuation style because of the
+  aforementioned typing conflict.)}
 
 If $\tau$ is a closed type we may write $\vdash \tau$, rather than
 $\emptyset;\emptyset \vdash \tau$, for the judgment that it is
@@ -491,9 +557,8 @@ greater than $0$.
 
 \subsection{A Demotion Theorem}
 
-{\color{blue} Move statement of theorem earlier? Remove most of
-  proof. Only interesting cases are var, app, and $\mu$-cases.} There
-is a subtlety in the well-formedness rules for types.
+{\color{blue} Move statement of theorem earlier?} There is a subtlety
+in the well-formedness rules for types.
 
 \begin{thm}
 If $\Gamma; \Phi, \phi^k \vdash \tau : \F$, then one can derive
@@ -829,7 +894,8 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma; \Phi \vdash \tau,\sigma : \F$}
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \sigma + \tau$}
 \AXC{$\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma \hspace{0.3in} \Gamma;\Phi \,|\, \Delta, y : \tau \vdash r : \gamma$}
-\TIC{$\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r} : \gamma$}
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \case{t}{{\color{red} \mathsf{inl
+        \,}} x \mapsto l}{{\color{red} \mathsf{inr \,}} y \mapsto r} : \gamma$}
 \DisplayProof
 \end{array}\]
 
@@ -923,6 +989,57 @@ Substitution for terms is the obvious extension of the usual
 capture-avoiding textual substitution.
 Definition~\ref{def:well-formed-terms} ensures that the expected
 weakening rules for well-formed terms hold.
+
+{\color{blue} Let $\PLeaves$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \alpha + \phi(\alpha \times \alpha))\beta$.
+We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\PLeaves\,\beta)\,(\PLeaves\,\beta)$.
+
+To begin with, define the term $\swap$ as
+\[
+	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
+\]
+and consider the map for $\PLeaves$
+\[
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}
+	: \Nat^{\emptyset}
+	(\Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta))\;
+	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,(\beta \times \beta)))
+\]
+Then we get a term
+\[
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
+	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\,(\beta \times \beta))
+\]
+
+Define the term $s$ as
+\[
+\begin{array}{l}
+	\vdash L_{\beta} t. \case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,( \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap\, t' )} \\
+	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\;  (\beta + \PLeaves\,(\beta \times \beta))
+\end{array}
+\]
+and consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
+\[
+	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)}
+	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\, \beta)
+\]
+Then we get a term
+\[
+	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)} \circ s
+	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta)
+\]
+
+Finally, consider the fold for $\PLeaves$
+\[
+	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\,\beta}
+	: \Nat^{\emptyset}
+	(\Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta))\;
+	(\Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta))
+\]
+then we define the $\reverse$ function as
+\[
+	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta} (\tin_{\alpha + \phi(\alpha \times \alpha)} \circ s)
+	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta)
+\]  }
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
 the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
@@ -5283,7 +5400,18 @@ G\,\setsem{\vdash \tau'}\,B\]
   $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
   can take $c$ to denote a constant $C$. We then get a free theorem
   whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu H \;
-  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.}
+  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
+
+  Can do Hinze's bit-reversal protocol in our system with
+
+  cat :: $\alpha; \emptyset \vdash \Nat^\emptyset (\Nat^\emptyset
+  (\List \alpha) (\List \alpha)) (\List \alpha)$
+
+  zip :: $\alpha; \emptyset \vdash \Nat^\emptyset (\Nat^\emptyset
+  (\List \alpha) (\List \beta)) (\List (\alpha \times \beta))$
+
+  ?}
+
 
 \begin{thm}
 Let $\emptyset;\phi,\alpha \vdash F : \F$, let $\emptyset; \alpha

@@ -1,0 +1,229 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+
+\begin{document}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times \phi \beta) #1}
+\newcommand{\filtype}{\Nat^\emptyset 
+  \, (\Nat^\emptyset \, \alpha \, \mathit{Bool}) (\Nat^\emptyset \, (\GRose\, \psi\, \alpha) \, (\GRose\, \psi\, (\alpha + \onet)))}
+\newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha \vdash List \, \alpha} \rho[\alpha := A]}}
+
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+
+\maketitle
+
+\section{$\reverse$ function for $\PLeaves$}
+
+Let $\PLeaves$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \alpha + \phi(\alpha \times \alpha))\beta$.
+We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\PLeaves\,\beta)\,(\PLeaves\,\beta)$.
+
+To begin with, define the term $\swap$ as
+\[
+	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
+\]
+and consider the map for $\PLeaves$
+\[
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}
+	: \Nat^{\emptyset}
+	(\Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta))\;
+	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,(\beta \times \beta)))
+\]
+Then we get a term
+\[
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
+	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\,(\beta \times \beta))
+\]
+
+Define the term $s$ as
+\[
+\begin{array}{l}
+	\vdash L_{\beta} t. \case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,( \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap\, t' )} \\
+	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\;  (\beta + \PLeaves\,(\beta \times \beta))
+\end{array}
+\]
+and consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
+\[
+	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)}
+	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\, \beta)
+\]
+Then we get a term
+\[
+	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)} \circ s
+	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta)
+\]
+
+Finally, consider the fold for $\PLeaves$
+\[
+	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\,\beta}
+	: \Nat^{\emptyset}
+	(\Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta))\;
+	(\Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta))
+\]
+then we define the $\reverse$ function as
+\[
+	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta} (\tin_{\alpha + \phi(\alpha \times \alpha)} \circ s)
+	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta)
+\]
+
+
+
+\end{document}
