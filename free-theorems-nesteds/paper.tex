@@ -203,27 +203,106 @@ Abstract goes here
 
 \section{Introduction}\label{sec:intro}
 
-Reynolds, parametricity, Abstraction Theorem vs logical relations,
-etc.
+Suppose we wanted to prove some property of programs over an ADT such
+as that of lists, coded in Agda\footnote{All code appearing in this
+  paper are written in Agda.} as
+\[\begin{array}{l}
+\mathtt{data\; List \;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{nil\;:\; List\;A}\\
+\hspace*{0.4in}\mathtt{Cons\;:\;A \rightarrow List\;A \rightarrow List\;A}
+\end{array}\]
+A natural approach to the problem uses structural induction on the
+input data structure in question. This requires knowing not just the
+definition of the data type of which the input is an instance, but
+also the program text for the programs involved in the properties. For
+example, to prove by induction that map then reverse is the same as
+reverse then map, we need to have the program text for both the
+reverse and the map functions. An alternative is to use parametricity,
+popularized by Wadler as the folksy party trick known as ``theorems
+for free''~\cite{wad89}. Parametricity allows the deduction of many
+properties of programs solely from their types, with no knowledge
+whatsoever of the text of the programs involved. It does this
+by.....????? Although most of the theorems in Wadler's original paper
+are essentially naturality properties, it has subsequently been used
+%it can also be used 
+to prove properties, like correctness of the program optimization for
+lists and other ADTs known as short cut
+fusion~\cite{glpj93,joh??,???}, that aren't. In various contexts,
+parametricity has further been used to prove i) {\em properties of
+  programs}, e.g., that they perform no illegal operations, satisfy
+certain security criteria~\cite{ep03,rp10}, or are observationally
+equivalent to their compiled forms~\cite{bh09,hd11}; ii) {\em
+  whole-language properties}, e.g., that they support data abstraction
+and modularity via representation independence,
+\cite{bm05,dr04,jac99,kat11,mr92}, enforce information flow
+policies~\cite{ss01,ts04}, or guarantee privacy~\cite{rp10}; and iii)
+{\em properties of implementations}, e.g., compiler
+correctness~\cite{ab08,bh09,hd11, glpj93}. Parametricity is thus an
+important tool for reasoning about programs in polymorphic calculi
+supporting algebraic data types.
 
-
-To illustrate, consider the nested type of perfect trees, coded in
-Agda as
+An algebraic data type is a family of inductive types, one inductive
+type for each input type. For example, the $\mathtt{List}$ data type
+definition above defines a collection of data types $\mathtt{List\;
+  A}$, $\mathtt{List\; A}$, $\mathtt{List\; C}$, etc., each
+independent of all the others. By contrast, a nested type~\cite{bm98}
+is an inductive family of data types that is defined over, or is
+defined mutually recursively with, (other) such data types. Since the
+structures of the data type at one type can depend on structures at
+other types, the entire family must be defined at once. Examples of
+nested types include, trivially, ordinary ADTs; simple nested types,
+such as the type
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
 \hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
 \end{array}\]
-and the following $\mathtt{reversePTree}$ function that performs a
-``deep reverse'' of them:
+of perfect trees, whose recursive occurrences never appear below their
+own type constructors; and truly\footnote{Nested types that are
+  defined over themselves are known as {\em truly nested types}.}
+nested types, such as the type
+{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
+\[\begin{array}{l}
+\mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
+\hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
+  \rightarrow Bush\;A} 
+\end{array}\]
+of bushes (also called {\em bootstrapped heaps} by
+Okasaki~\cite{oka99}), whose recursive occurrences do appear below
+their own type constructors.
+
+Now, suppose we wanted to prove properties of functions over nested
+types. For example, suppose we have 
+%Now, suppose we wanted to prove properties of functions over nested
+%types. For example, suppose we have the nested type of perfect trees
+%and the truly nested type of bushes~\cite{bm98} coded in Agda as
+%\[\begin{array}{l}
+%\mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
+%\hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
+%\hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
+%\end{array}\]
+%and
+%{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
+%\[\begin{array}{l}
+%\mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
+%\hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
+%\hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
+%  \rightarrow Bush\;A} 
+%\end{array}\]
+%respectively, together with the
+functions $\mathtt{reversePTree}$ and $\mathtt{reverseBush}$ in
+Figure~\ref{fig:funs} that act on these data types by reversing the
+data at the leaves of perfect trees and ?????  on bushes, and 
+\begin{figure*}
+\centering
+\resizebox{.4\linewidth}{!}{
+  \begin{minipage}[b]{.6\textwidth}
 \[\begin{array}{l}
 \mathtt{reversePTree : \forall \{A : Set\}  \rightarrow
 PTree\; A \rightarrow PTree \;A}\\ 
 \mathtt{reversePTree \; \{A\} = foldPTree \; \{A\}\; \{PTree\}\;
 pleaf\; ( \lambda p \rightarrow pnode\; (mapPTree\; swap\; p) )}\\
-%\end{array}\]
-%where
-%\[\begin{array}{l}
 \\
 \mathtt{foldPTree : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow Set \}
  \rightarrow ( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow
@@ -235,19 +314,93 @@ pleaf\; ( \lambda p \rightarrow pnode\; (mapPTree\; swap\; p) )}\\
 \mathtt{mapPTree : \forall \{A\, B : Set\} \rightarrow (A \rightarrow B)
   \rightarrow PLeaves\; A \rightarrow PLeaves\; B}\\ 
 \mathtt{mapPTree \;f\; (pleaf \;x) = pleaf\; (f\; x)}\\
-\mathtt{mapPTree\; f \;(pnode\; p) = pnode\; (mapPTree \;(\lambda (x,y)
-  \rightarrow (f x, f y))\; p)}\\ 
+\mathtt{mapPTree\; f \;(pnode\; p) = pnode\; (mapPTree \;(\lambda p
+  \rightarrow (f (\pi_1 \,p), f (\pi_2\,p)))\; p)}\\ 
 \\
 \mathtt{swap : \forall \{A : Set\} \rightarrow (A \times A)
   \rightarrow (A \times A)}\\ 
-\mathtt{swap \;(x,y) = (y,x)}
+\mathtt{swap \;(x,y) = (y,x)}\\
+\\
+\mathtt{bushreverse : \forall \{A : Set\} \rightarrow Bush\; A
+  \rightarrow Bush\; A}\\ 
+\mathtt{bushreverse \;\{A\} = bfold\; \{A\}\; \{Bush\}\; bnil \;balg}\\
+\\
+\mathtt{bfold : \{A : Set\} \rightarrow \{F : Set \rightarrow Set\}
+  \rightarrow (\{B : Set\} \rightarrow F B) \rightarrow (\{B : Set\}
+  \rightarrow B \rightarrow F\; (F\; B) \rightarrow F\; B) \rightarrow
+  Bush\; A \rightarrow F \;A}\\
+\mathtt{bfold\; bn\; bc\; bnil = bn}\\
+\mathtt{bfold \;bn \;bc \;(bcons\; x \;bb) = bc\; x \;(bfold \;bn\; bc
+  \;(bmap \;(bfold\; bn\; bc) \;bb))}\\
+\\
+\mathtt{balg : \forall \{B : Set\} \rightarrow B \rightarrow Bush
+  \;(Bush\; B) \rightarrow Bush\; B}\\
+\mathtt{balg \;x \;bnil = bcons\; x \;bnil}\\
+\mathtt{balg \;x\; (bcons \;bnil \;bbbx) = bcons\; x \;(bcons \;bnil\; bbbx)}\\
+\mathtt{balg\; x \;(bcons \;(bcons\; y \;bx)\; bbbx) = bcons\; y\;
+  (bcons\; (bcons \;x \;bx) \;bbbx)} 
 \end{array}\]
+\caption{$\mathtt{reversePTree}$, $\mathtt{reverseBush}$, and their
+  auxiliary functions}\label{fig:funs}
+\end{minipage}}
+\end{figure*}
+want to prove that $\mathtt{reversePTree}$ commutes with
+$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
+$\mathtt{mapBush}$. It is not hard to convince oneself of the former:
+a few well-chosen examples show clearly why mapping a polymorphic
+function over a perfect tree and then reversing the data at the leaves
+of the resulting perfect tree is indeed the same result as mapping
+that same function over the result of reversing the data at the leaves
+of the original perfect tree. But can the analogous argument can be
+made for the latter? It turns out that it can, although this is
+nowhere near as intuitively plausible.
 
-Intuitively, it is not hard to see that $\mathtt{reversePTree}$
-commutes with $\mathtt{reversePTree}$. To prove this formally, we
-would proceed by induction on the structure of the input perfect tree
---- something that would probably have been done in practice, but is
-now is entirely justified in the wake of~\cite{jp19}.
+To formally establish results such as these we might take inspiration
+from the situation for ADTs and try a proof by induction on the input
+data structure. For perfect trees we could actually prove this in Coq
+or Agda, since it is necessary to induct only over the top-level
+perfect tree in the recursive position, leaving any data internal to
+that tree untouched. For bushes the story is different, however, since
+a proof by induction must recursively induct over the bushes that are
+internal to the top-level bush in the recursive position. This is
+sufficiently delicate that no induction rule for bushes or other truly
+nested types was known until very recently, when the {\em deep
+  induction rules} of~\cite{jp20} finally gave a way to induct over
+{\em all} of the structured data present in a structure. Deep
+induction thus not only gave the first principled, data type generic,
+and practically useful structural induction rules for bushes and other
+truly nested types, but has also opened the way for incorporating
+automatic generation of useful induction rules for (truly) nested data
+types --- and, eventually, even GADTs --- into modern proof
+assistants.
+
+But recalling that inductive proofs over ADTs can sometimes be
+circumvented in the presence of parametricity, we might naturally ask
+if it isn't possible to prove properties of functions over nested
+types via parametricity. This paper answers this question in the
+affirmative, thus extending Wadler's party trick from ADTs to the
+richer family of nested types. To achieve this, we first introduce in
+Section~\ref{sec:caclculus} a polymorphic calculus supporting nested
+types as generated by the grammar of~\cite{jp19}. At the type level,
+the calculus is
+%(because it also has $\Nat$-types),
+the level-2-truncated version of the data type calculus
+from~\cite{jp19}; the class of nested types it supports is very robust
+and includes all (truly) nested types known from the literature.  We
+then construct a parametric model for our calculus. Our
+interpretations of types rely on the result from~\cite{jp19} ensuring
+that all of the data types that can be represented in our calculus
+have well-defined semantics appropriately structured categories. Our
+term calculus is, as far as we know, entirely new. It features
+primitive constructs for functors, their initial algebras, and
+structured recursion ($\map$, $\tin$, and $\fold$, respectively), but
+does not support general recursion at the term level. It is strongly
+normalizing. Finally, we formulate in our calculus, and prove, a
+variety of free theorems for nested types. We prove not only
+{\color{blue} actually one generic theorem} naturality-style free
+theorems in Section~\ref{}, including those described above, but also
+give a formal proof of the short cut fusion for nested types first
+proposed in~\cite{gj07} in Section~\ref{}.
 
 
 
@@ -256,31 +409,10 @@ now is entirely justified in the wake of~\cite{jp19}.
 
 
 
-The issue is not just {\em how} to prove properties, but also knowing
-{\em that they hold at all}.
+Reynolds, parametricity, Abstraction Theorem vs logical relations,
+etc.
 
-To prove properties of functions on ADTs we usually induct on the
-structure of the data type. After~\cite{jp20}, we can now do the same
-for (truly) nested types. This requires knowing not just the
-definition of the data type, but also the definition of the function
-whose properties are to be proved.
 
-But often for ADTs we get such results by parametricity instead. In
-this case, we do not need to know the explicit definition of the
-function. In this paper we show that this party trick can be extended
-to (truly) nested types. We do this by constructing a parametric model
-of a calculus for (truly) nested types. At the type level, the
-calculus is, at its core (because it also has $\Nat$-types), a
-level-2-truncated version of the data type calculus --- with fixed
-points at the type level --- from~\cite{jp19}. As shown there, this
-ensures that all of the data types that can be represented in our
-calculus have well-defined semantics appropriately structured
-categories. The term calculus is, as far as we know, entirely new. It
-features primitive constructs for functors, their initial algebras,
-and structured recursion ($\map$, $\tin$, and $\fold$, respectively),
-but does not support general recursion at the term level. It is
-strongly normalizing. (This is a level-2 version of the ADL sought by
-OGI all those years ago.)
 
 Restriction of recursion to that expressible via $\fold$ limits the
 functions that can be written, but also provides strong termination
@@ -324,14 +456,13 @@ presentable base and total categories with the locally presentable
 structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
-
-All this infrastructure could serve as a basis for adding nested types
-to, say, Coq.
-
 {\color{red} Compare with Bob's paper.  What's new?}
 
-
 \subsection{Preliminaries}\label{sec:prelims}
+
+We begin with some categorical preliminaries. For a more detailed
+treatment of definitions and conventions the reader is referred
+to~\cite{}.
 
 We write $\set$ for the category of sets and functions.
 
@@ -358,7 +489,7 @@ the {\em equality relation} on $A$.
 If $\C$ and $\D$ are categories, we write $[\C,\D]$ for the set of
 $\omega$-cocontinuous functors from  $\C$ to $\D$.
 
-\section{The Calculus}
+\section{The Calculus}\ref{sec:calculus}
 
 \subsection{Types}
 
