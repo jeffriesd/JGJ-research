@@ -127,7 +127,7 @@
 
 
 
-\title[Free Theorems for Nested Types]{Free Theorems for 
+\title[Free Theorems for Nested Types]{Parametricity and Free Theorems for 
 Nested Types} %% [Short Title] is optional;
                                         %% when present, will be used in
                                         %% header instead of Full Title.
@@ -203,111 +203,135 @@ Abstract goes here
 
 \section{Introduction}\label{sec:intro}
 
-Suppose we wanted to prove some property of programs over an ADT such
-as that of lists, coded in Agda\footnote{All code appearing in this
-  paper are written in Agda.} as
+Suppose we wanted to prove some property of programs over an algebraic
+data type (ADT) such as that of lists, coded in Agda
+%\footnote{All code appearing in this paper are written in Agda.}
+as
+{\small
 \[\begin{array}{l}
 \mathtt{data\; List \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{nil\;:\; List\;A}\\
 \hspace*{0.4in}\mathtt{Cons\;:\;A \rightarrow List\;A \rightarrow List\;A}
-\end{array}\]
+\end{array}\]}
 A natural approach to the problem uses structural induction on the
 input data structure in question. This requires knowing not just the
-definition of the data type of which the input is an instance, but
-also the program text for the programs involved in the properties. For
-example, to prove by induction that map then reverse is the same as
-reverse then map, we need to have the program text for both the
-reverse and the map functions. An alternative is to use parametricity,
-popularized by Wadler as the folksy party trick known as ``theorems
-for free''~\cite{wad89}. Parametricity allows the deduction of many
-properties of programs solely from their types, with no knowledge
-whatsoever of the text of the programs involved. It does this
-by.....????? Although most of the theorems in Wadler's original paper
-are essentially naturality properties, it has subsequently been used
-%it can also be used 
-to prove properties, like correctness of the program optimization for
-lists and other ADTs known as short cut
-fusion~\cite{glpj93,joh??,???}, that aren't. In various contexts,
-parametricity has further been used to prove i) {\em properties of
-  programs}, e.g., that they perform no illegal operations, satisfy
-certain security criteria~\cite{ep03,rp10}, or are observationally
-equivalent to their compiled forms~\cite{bh09,hd11}; ii) {\em
-  whole-language properties}, e.g., that they support data abstraction
-and modularity via representation independence,
+definition of the ADT of which the input data structure is an
+instance, but also the program text for the functions involved in the
+properties to be proved. For example, to prove by induction that
+mapping a polymorphic function over a list and then reversing the
+resulting list is the same as reversing the original list and then
+mapping the function over the result, we unwind the (recursive)
+definitions of the $\mathtt{reverse}$ and $\mathtt{map}$ functions
+over lists to according to the inductive structure of the input
+list. Such data-driven induction proofs over ADTs are so routine that
+they are often included in, say, undergraduate functional programming
+courses.
+
+An alternative technique for proving results like the above
+$\mathtt{map}$-$\mathtt{reverse}$ property for lists is to use
+parametricity, a formalization of extensional type-uniformity in
+polymorphic languages. Parametricity was originally put forth by
+Reynolds~\cite{rey83} for System F~\cite{gr89}, the formal calculus at
+the core of all polymorphic functional languages. It was later
+popularized --- for an informal Haskell-like language that is
+essentially System F augmented with list types defined natively as
+type-level fixpoints --- by Wadler as his so-called ``theorems for
+free''~\cite{wad89} because it allows the deduction of many properties
+of programs in such languages solely from their types. In particular,
+the deductions require no knowledge whatsoever of the text of the
+programs involved. While most of the free theorems appearing in
+Wadler's paper are essentially naturality properties of polymorphic
+functions, parametricity can also be used to prove properties, like
+correctness of the program optimization for lists and other ADTs known
+as {\em short cut fusion}~\cite{glp93,joh02,joh03}, that go beyond
+simple naturality. In addition, parametricity in the presence of ADTs
+{\color{blue} check!}  has further been used to prove i) {\em
+  properties of programs}, e.g., that they perform no illegal
+operations, satisfy certain security criteria~\cite{ep03,rp10}, or are
+observationally equivalent to their compiled forms~\cite{bh09,hd11};
+ii) {\em whole-language properties}, e.g., that they support data
+abstraction and modularity via representation independence,
 \cite{bm05,dr04,jac99,kat11,mr92}, enforce information flow
 policies~\cite{ss01,ts04}, or guarantee privacy~\cite{rp10}; and iii)
 {\em properties of implementations}, e.g., compiler
-correctness~\cite{ab08,bh09,hd11, glpj93}. Parametricity is thus an
-important tool for reasoning about programs in polymorphic calculi
-supporting algebraic data types.
+correctness~\cite{ab08,bh09,hd11,glpj93}. Parametricity is thus an
+important tool for reasoning about programs in polymorphic languages
+that natively support ADTs. {\color{blue} Be clear about what this
+  means. Re-word?}
 
-An algebraic data type is a family of inductive types, one inductive
-type for each input type. For example, the $\mathtt{List}$ data type
-definition above defines a collection of data types $\mathtt{List\;
-  A}$, $\mathtt{List\; A}$, $\mathtt{List\; C}$, etc., each
-independent of all the others. By contrast, a nested type~\cite{bm98}
-is an inductive family of data types that is defined over, or is
-defined mutually recursively with, (other) such data types. Since the
-structures of the data type at one type can depend on structures at
-other types, the entire family must be defined at once. Examples of
-nested types include, trivially, ordinary ADTs; simple nested types,
-such as the type
+This paper is about parametricity for a polymorphic language
+supporting not just ADTs, but nested types as well. An ADT defines a
+{\em family of inductive data types}, one for each input type. For
+example, the $\mathtt{List}$ data type definition above defines a
+collection of data types $\mathtt{List\; A}$, $\mathtt{List\; B}$,
+$\mathtt{List\; (A \times B)}$, $\mathtt{List\; (\List\;A)}$, etc.,
+each independent of all the others. By contrast, a nested
+type~\cite{bm98} is an {\em inductive family of data types} that is
+defined over, or is defined mutually recursively with, (other) such
+data types. Since the structures of the data type at one type can
+depend on those at other types, the entire family of types must be
+defined at once. Examples of nested types include, trivially, ordinary
+ADTs, such as list and tree types; simple nested types, such as the
+data type
+{\small
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
 \hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
-\end{array}\]
-of perfect trees, whose recursive occurrences never appear below their
-own type constructors; and truly\footnote{Nested types that are
-  defined over themselves are known as {\em truly nested types}.}
-nested types, such as the type
-{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
+\end{array}\]}
+\hspace{-0.04in}of perfect trees, whose recursive occurrences never
+appear below other type constructors; ``deep'' nested
+types~\cite{jp20}, such as the data type {\small
+\[\begin{array}{l}
+\mathtt{data\; Forest\;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{fempty\;:\;Forest\;A}\\
+\hspace*{0.4in}\mathtt{fnode\;:\; A \rightarrow PTree\;(Forest\;A)}
+\end{array}\]}
+\hspace{-0.04in}of perfect forests, whose recursive occurrences appear
+below type constructors for other nested types; and truly nested
+types\footnote{Nested types that are defined over themselves are known
+  as {\em truly nested types}.}, such as the data type {\small
 \[\begin{array}{l}
 \mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
 \hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
   \rightarrow Bush\;A} 
-\end{array}\]
-of bushes (also called {\em bootstrapped heaps} by
-Okasaki~\cite{oka99}), whose recursive occurrences do appear below
-their own type constructors.
+\end{array}\]}
+\hspace{-0.04in}of bushes (also called {\em bootstrapped heaps}
+in~\cite{oka99}), whose recursive occurrences appear below their own
+type constructors.
 
-Now, suppose we wanted to prove properties of functions over nested
-types. For example, suppose we have 
-%Now, suppose we wanted to prove properties of functions over nested
-%types. For example, suppose we have the nested type of perfect trees
-%and the truly nested type of bushes~\cite{bm98} coded in Agda as
-%\[\begin{array}{l}
-%\mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
-%\hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
-%\hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
-%\end{array}\]
-%and
-%{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
-%\[\begin{array}{l}
-%\mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
-%\hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
-%\hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
-%  \rightarrow Bush\;A} 
-%\end{array}\]
-%respectively, together with the
-functions $\mathtt{reversePTree}$ and $\mathtt{reverseBush}$ in
-Figure~\ref{fig:funs} that act on these data types by reversing the
-data at the leaves of perfect trees and ?????  on bushes, and 
+Suppose we wanted to prove properties of functions over nested
+types. We might, for example, want to prove a
+$\mathtt{map}$-$\mathtt{reverse}$ property for the functions on
+perfect trees in Figure~\ref{fig:funs} or those on bushes in
+Figure~\ref{fig:funs2}. A few well-chosen examples quickly convince us
+that such a property should indeed hold for perfect trees and, taking
+inspiration from the ADT world, we could construct a proof by
+induction on the input perfect tree. In fact, to formally establish
+this result, we could prove it in Coq or Agda; indeed, both actually
+generate an induction rule for $\mathtt{PTree}$s, and the generated
+rule gives the expected result because proving properties of perfect
+trees requires only that we induct over the top-level perfect tree in
+the recursive position, leaving any data internal to the input tree
+untouched.
 \begin{figure*}
-\centering
-\resizebox{.4\linewidth}{!}{
-  \begin{minipage}[b]{.6\textwidth}
+\hspace*{-0.5in}
+\resizebox{0.35\linewidth}{!}{
+\begin{minipage}[t]{0.5\textwidth}
 \[\begin{array}{l}
-\mathtt{reversePTree : \forall \{A : Set\}  \rightarrow
-PTree\; A \rightarrow PTree \;A}\\ 
-\mathtt{reversePTree \; \{A\} = foldPTree \; \{A\}\; \{PTree\}\;
-pleaf\; ( \lambda p \rightarrow pnode\; (mapPTree\; swap\; p) )}\\
+\mathtt{reversePTree : \forall \{A : Set\}  \rightarrow PTree\; A
+  \rightarrow PTree \;A}\\  
+\mathtt{reversePTree \; \{A\} = foldPTree \; \{A\}\; \{PTree\}}\\
+\hspace*{1.3in} \mathtt{pleaf}\\
+\hspace*{1.3in} \mathtt{( \lambda p \rightarrow pnode\; (mapPTree\;
+  swap\; p) )}\\  
 \\
 \mathtt{foldPTree : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow Set \}
- \rightarrow ( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow
- (\{B : Set\} \rightarrow F (B \times B) \rightarrow F B)}\\
-\hspace*{2in}\mathtt{\rightarrow PTree \;A \rightarrow F\;A}\\
+  \rightarrow}\\
+\hspace*{0.8in} \mathtt{( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow}\\
+\hspace*{0.8in} \mathtt{(\{B : Set\} \rightarrow F (B \times B) \rightarrow F B)}\\
+\hspace*{0.8in}\mathtt{\rightarrow PTree \;A \rightarrow F\;A}\\
 \mathtt{foldPTree\; n\; c\; (pleaf\; x) = n \;x}\\
 \mathtt{foldPTree\; n\; c \;(pnode\; p) = c\; (foldPTree \;n \;c \;p)}\\
 \\
@@ -319,48 +343,62 @@ pleaf\; ( \lambda p \rightarrow pnode\; (mapPTree\; swap\; p) )}\\
 \\
 \mathtt{swap : \forall \{A : Set\} \rightarrow (A \times A)
   \rightarrow (A \times A)}\\ 
-\mathtt{swap \;(x,y) = (y,x)}\\
-\\
-\mathtt{bushreverse : \forall \{A : Set\} \rightarrow Bush\; A
+\mathtt{swap \;(x,y) = (y,x)}
+\end{array}\]
+\caption{$\mathtt{reversePTree}$ and auxiliary functions in Agda}\label{fig:funs} 
+\end{minipage}}
+\quad\quad\quad\quad\quad\quad\quad\quad
+\resizebox{0.35\linewidth}{!}{
+\begin{minipage}[t]{0.5\textwidth}
+\[\begin{array}{l}
+  \mathtt{reverseBush : \forall \{A : Set\} \rightarrow Bush\; A
   \rightarrow Bush\; A}\\ 
-\mathtt{bushreverse \;\{A\} = bfold\; \{A\}\; \{Bush\}\; bnil \;balg}\\
+\mathtt{reverseBush \;\{A\} = bfold\; \{A\}\; \{Bush\}\; bnil \;balg}\\
 \\
-\mathtt{bfold : \{A : Set\} \rightarrow \{F : Set \rightarrow Set\}
-  \rightarrow (\{B : Set\} \rightarrow F B) \rightarrow (\{B : Set\}
-  \rightarrow B \rightarrow F\; (F\; B) \rightarrow F\; B) \rightarrow
-  Bush\; A \rightarrow F \;A}\\
+\mathtt{bfold : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow
+  Set\} \rightarrow}\\
+\hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow F B) \rightarrow}\\
+\hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow B \rightarrow F\;
+  (F\; B) \rightarrow F\; B) \rightarrow}\\ 
+\hspace*{0.5in} \mathtt{Bush\; A \rightarrow F \;A}\\
 \mathtt{bfold\; bn\; bc\; bnil = bn}\\
-\mathtt{bfold \;bn \;bc \;(bcons\; x \;bb) = bc\; x \;(bfold \;bn\; bc
+\mathtt{bfold \;bn \;bc \;(bcons\; x \;bb) =}\\
+\hspace*{0.5in} \mathtt{bc\; x \;(bfold \;bn\; bc
   \;(bmap \;(bfold\; bn\; bc) \;bb))}\\
 \\
 \mathtt{balg : \forall \{B : Set\} \rightarrow B \rightarrow Bush
   \;(Bush\; B) \rightarrow Bush\; B}\\
 \mathtt{balg \;x \;bnil = bcons\; x \;bnil}\\
 \mathtt{balg \;x\; (bcons \;bnil \;bbbx) = bcons\; x \;(bcons \;bnil\; bbbx)}\\
-\mathtt{balg\; x \;(bcons \;(bcons\; y \;bx)\; bbbx) = bcons\; y\;
-  (bcons\; (bcons \;x \;bx) \;bbbx)} 
+\mathtt{balg\; x \;(bcons \;(bcons\; y \;bx)\; bbbx) =}\\
+\hspace*{0.5in} \mathtt{bcons\; y\; (bcons\; (bcons \;x \;bx) \;bbbx)} 
 \end{array}\]
-\caption{$\mathtt{reversePTree}$, $\mathtt{reverseBush}$, and their
-  auxiliary functions}\label{fig:funs}
+\caption{$\mathtt{reverseBush}$ and auxiliary
+  functions in Agda}\label{fig:funs2} 
 \end{minipage}}
 \end{figure*}
-want to prove that $\mathtt{reversePTree}$ commutes with
-$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
-$\mathtt{mapBush}$. It is not hard to convince oneself of the former:
-a few well-chosen examples show clearly why mapping a polymorphic
-function over a perfect tree and then reversing the data at the leaves
-of the resulting perfect tree is indeed the same result as mapping
-that same function over the result of reversing the data at the leaves
-of the original perfect tree. But can the analogous argument can be
-made for the latter? It turns out that it can, although this is
-nowhere near as intuitively plausible.
+%want to prove that $\mathtt{reversePTree}$ commutes with
+%$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
+%$\mathtt{mapBush}$. It is not hard to convince oneself of the former:
+%a few well-chosen examples show clearly why mapping a polymorphic
+%%function over a perfect tree and then reversing the data at the leaves
+%of the resulting perfect tree is indeed the same result as mapping
+%that same function over the result of reversing the data at the leaves
+%of the original perfect tree.
+It is nowhere near as clear that analogous plausibility or inductive
+arguments can be made for the analogous property for bushes, since a
+proof by induction must recursively induct over the bushes that are
+internal to the top-level bush in the recursive position,
 
-To formally establish results such as these we might take inspiration
-from the situation for ADTs and try a proof by induction on the input
-data structure. For perfect trees we could actually prove this in Coq
-or Agda, since it is necessary to induct only over the top-level
-perfect tree in the recursive position, leaving any data internal to
-that tree untouched. For bushes the story is different, however, since
+
+but it turns
+out they can.
+
+
+
+
+
+since
 a proof by induction must recursively induct over the bushes that are
 internal to the top-level bush in the recursive position. This is
 sufficiently delicate that no induction rule for bushes or other truly
@@ -373,6 +411,9 @@ truly nested types, but has also opened the way for incorporating
 automatic generation of useful induction rules for (truly) nested data
 types --- and, eventually, even GADTs --- into modern proof
 assistants.
+
+{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
+
 
 But recalling that inductive proofs over ADTs can sometimes be
 circumvented in the presence of parametricity, we might naturally ask
@@ -457,6 +498,24 @@ structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
 {\color{red} Compare with Bob's paper.  What's new?}
+
+
+
+mention Pitts
+categorical/denotational vs. operational semantics
+
+
+
+Mention that we don't have full polymorphism but just one level of
+foralls, but most free theorems only use that anyway (even short cut).
+We do have fixpoints at the term level, though --- even h-o ones.
+
+
+
+
+It's the ADTs that make free theorems interesting. Pitts considered
+lists in parpoe. I extended Pitts' to all polynomial such types.
+
 
 \subsection{Preliminaries}\label{sec:prelims}
 
@@ -1223,6 +1282,28 @@ mapping of polymorphic $\mathit{flatten}$ is typeable as follows:
 \end{array}\]
 
 \section{Interpreting Types}\label{sec:type-interp}
+
+The key idea underlying 
+parametricity is to give each type $T(\alpha)$ with a free type
+variable $\alpha$ both an {\em object interpretation} $T_0$ taking
+sets to sets and a \emph{relational interpretation} $T_1$ taking
+relations $R \subseteq A \times B$ to relations $T_1(R) \subseteq
+T_0(A) \times T_0(B)$, and to interpret each term $\alpha\,|\, x :
+S(\alpha) \vdash t(\alpha,x) : T(\alpha)$ as a map $t_0$ associating
+to each set $A$ a function $t_0(A) : S_0(A) \to T_0(A)$. These
+interpretations were to be given inductively on the structure of $T$
+and $t$ in such a way that they imply two key theorems: an
+\emph{Identity Extension Lemma}, stating that if $R$ is the equality
+relation on $A$ then $T_1(R)$ is the equality relation on $T_0(A)$;
+and an \emph{Abstraction Theorem}, stating that, for any relation $R
+\subseteq A \times B$, $t_0(A)$ and $t_0(B)$ map arguments related by
+$S_1(R)$ to results related by $T_1(R)$. Similar results hold for
+types and terms with any number of free variables.
+
+Free theorems are just instantiations of the Abstraction
+Theorem. 
+
+
 
 Parametricity requires that set interpretations of types are defined
 simultaneously with their relational interpretations. This is because
@@ -5699,6 +5780,12 @@ category.
 Give definitions for arb lpccc, but compute free theorems in Set/Rel.
 
 Future Work (in progress): extend calculus to GADTs
+
+Add more polymorphisms (all foralls), even though most free theorems
+only use one level (or maybe two, like short cut).
+
+
+fixed points at term level ala Pitts
 
 \bibliography{references}
 
