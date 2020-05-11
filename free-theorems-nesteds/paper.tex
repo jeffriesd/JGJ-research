@@ -230,50 +230,55 @@ courses.
 An alternative technique for proving results like the above
 $\mathtt{map}$-$\mathtt{reverse}$ property for lists is to use
 parametricity, a formalization of extensional type-uniformity in
-polymorphic languages. Parametricity was originally put forth by
-Reynolds~\cite{rey83} for System F~\cite{gr89}, the formal calculus at
-the core of all polymorphic functional languages. It was later
-popularized --- for an informal Haskell-like language that is
-essentially System F augmented with list types defined natively as
-type-level fixpoints --- by Wadler as his so-called ``theorems for
-free''~\cite{wad89} because it allows the deduction of many properties
-of programs in such languages solely from their types. In particular,
-the deductions require no knowledge whatsoever of the text of the
-programs involved. While most of the free theorems appearing in
-Wadler's paper are essentially naturality properties of polymorphic
-functions, parametricity can also be used to prove properties, like
-correctness of the program optimization for lists and other ADTs known
-as {\em short cut fusion}~\cite{glp93,joh02,joh03}, that go beyond
-simple naturality. In addition, parametricity in the presence of ADTs
-{\color{blue} check!}  has further been used to prove i) {\em
-  properties of programs}, e.g., that they perform no illegal
-operations, satisfy certain security criteria~\cite{ep03,rp10}, or are
-observationally equivalent to their compiled forms~\cite{bh09,hd11};
-ii) {\em whole-language properties}, e.g., that they support data
-abstraction and modularity via representation independence,
-\cite{bm05,dr04,jac99,kat11,mr92}, enforce information flow
-policies~\cite{ss01,ts04}, or guarantee privacy~\cite{rp10}; and iii)
-{\em properties of implementations}, e.g., compiler
-correctness~\cite{ab08,bh09,hd11,glpj93}. Parametricity is thus an
-important tool for reasoning about programs in polymorphic languages
-that natively support ADTs. {\color{blue} Be clear about what this
-  means. Re-word?}
+polymorphic languages. Parametricity captures the intuition that a
+polymorphic program must act uniformly on all of its possible type
+instantiations; it is formalized as the requirement that every
+polymorphic program preserves all relations between any pair of types
+that it is instantiated with.  Parametricity was originally put forth
+by Reynolds~\cite{rey83} for System F~\cite{gr89}, the formal calculus
+at the core of all polymorphic functional languages. It was later
+popularized {\color{blue} for System F with a primitive list types}
+%augmented with list types defined natively as type-level fixpoints 
+as Wadler's so-called ``theorems for free''~\cite{wad89} because it
+allows the deduction of many properties of programs in such languages
+solely from their types, i.e., with no knowledge whatsoever of the
+text of the programs involved. While most of the free theorems derived
+by Wadler's are essentially {\color{blue} naturality properties} of
+polymorphic list-processing functions, parametricity can also be used
+to prove naturality properties for non-list ADTs, as well as
+%used to prove
+properties, like correctness of the program optimization
+%for lists and other ADTs
+known as {\em short cut fusion}~\cite{glp93,joh02,joh03}, that go
+beyond simple naturality.
+%In addition, parametricity in the presence of ADTs
+%{\color{blue} check!}  has further been used to prove i) {\em
+%  properties of programs}, e.g., that they perform no illegal
+%operations, satisfy certain security criteria~\cite{ep03,rp10}, or are
+%observationally equivalent to their compiled forms~\cite{bh09,hd11};
+%ii) {\em whole-language properties}, e.g., that they support data
+%abstraction and modularity via representation independence,
+%\cite{bm05,dr04,jac99,kat11,mr92}, enforce information flow
+%policies~\cite{ss01,ts04}, or guarantee privacy~\cite{rp10}; and iii)
+%{\em properties of implementations}, e.g., compiler
+%correctness~\cite{ab08,bh09,hd11,glpj93}. Parametricity is thus an
+%important tool for reasoning about programs in polymorphic languages
+%that natively support ADTs. {\color{blue} Be clear about what this
+%  means. Re-word?}
 
-This paper is about parametricity for a polymorphic language
-supporting not just ADTs, but nested types as well. An ADT defines a
-{\em family of inductive data types}, one for each input type. For
-example, the $\mathtt{List}$ data type definition above defines a
-collection of data types $\mathtt{List\; A}$, $\mathtt{List\; B}$,
-$\mathtt{List\; (A \times B)}$, $\mathtt{List\; (\List\;A)}$, etc.,
-each independent of all the others. By contrast, a nested
-type~\cite{bm98} is an {\em inductive family of data types} that is
-defined over, or is defined mutually recursively with, (other) such
-data types. Since the structures of the data type at one type can
-depend on those at other types, the entire family of types must be
-defined at once. Examples of nested types include, trivially, ordinary
-ADTs, such as list and tree types; simple nested types, such as the
-data type
-{\small
+This paper is about parametricity for a variant of System F supporting
+not just ADTs, but nested types as well. An ADT defines a {\em family
+  of inductive data types}, one for each input type. For example, the
+$\mathtt{List}$ data type definition above defines a collection of
+data types $\mathtt{List\; A}$, $\mathtt{List\; B}$, $\mathtt{List\;
+  (A \times B)}$, $\mathtt{List\; (\List\;A)}$, etc., each independent
+of all the others. By contrast, a nested type~\cite{bm98} is an {\em
+  inductive family of data types} that is defined over, or is defined
+mutually recursively with, (other) such data types. Since the
+structures of the data type at one type can depend on those at other
+types, the entire family of types must be defined at once. Examples of
+nested types include, trivially, ordinary ADTs, such as list and tree
+types; simple nested types, such as the data type {\small
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
@@ -285,7 +290,8 @@ types~\cite{jp20}, such as the data type {\small
 \[\begin{array}{l}
 \mathtt{data\; Forest\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{fempty\;:\;Forest\;A}\\
-\hspace*{0.4in}\mathtt{fnode\;:\; A \rightarrow PTree\;(Forest\;A)}
+\hspace*{0.4in}\mathtt{fnode\;:\; A \rightarrow PTree\;(Forest\;A) \to
+Forest\;A}
 \end{array}\]}
 \hspace{-0.04in}of perfect forests, whose recursive occurrences appear
 below type constructors for other nested types; and truly nested
@@ -301,20 +307,21 @@ types\footnote{Nested types that are defined over themselves are known
 in~\cite{oka99}), whose recursive occurrences appear below their own
 type constructors.
 
-Suppose we wanted to prove properties of functions over nested
+{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$ in figure.}
+Suppose we now want to prove properties of functions over nested
 types. We might, for example, want to prove a
 $\mathtt{map}$-$\mathtt{reverse}$ property for the functions on
-perfect trees in Figure~\ref{fig:funs} or those on bushes in
+perfect trees in Figure~\ref{fig:funs}, or for those on bushes in
 Figure~\ref{fig:funs2}. A few well-chosen examples quickly convince us
-that such a property should indeed hold for perfect trees and, taking
-inspiration from the ADT world, we could construct a proof by
-induction on the input perfect tree. In fact, to formally establish
-this result, we could prove it in Coq or Agda; indeed, both actually
-generate an induction rule for $\mathtt{PTree}$s, and the generated
-rule gives the expected result because proving properties of perfect
-trees requires only that we induct over the top-level perfect tree in
-the recursive position, leaving any data internal to the input tree
-untouched.
+that such a property should indeed hold for perfect trees, and,
+drawing inspiration from the situation for ADTs, we easily construct a
+proof by induction on the input perfect tree. To formally establish
+this result, we could even prove it in Coq or Agda: each of these
+provers actually generates an induction rule for perfect trees and the
+generated rule gives the expected result because proving properties of
+perfect trees requires only that we induct over the top-level perfect
+tree in the recursive position, leaving any data internal to the input
+tree untouched.
 \begin{figure*}
 \hspace*{-0.5in}
 \resizebox{0.35\linewidth}{!}{
@@ -385,96 +392,82 @@ untouched.
 %of the resulting perfect tree is indeed the same result as mapping
 %that same function over the result of reversing the data at the leaves
 %of the original perfect tree.
-It is nowhere near as clear that analogous plausibility or inductive
-arguments can be made for the analogous property for bushes, since a
-proof by induction must recursively induct over the bushes that are
-internal to the top-level bush in the recursive position,
 
+Unfortunately, it is nowhere near as clear that analogous intuitive or
+formal inductive arguments can be made for the
+$\mathtt{map}$-$\mathtt{reverse}$ property for bushes. Indeed, a proof
+by induction on the input bush must recursively induct over the bushes
+that are internal to the top-level bush in the recursive position.
+This is sufficiently delicate that no induction rule for bushes or
+other truly nested types was known until very recently, when {\em deep
+  induction}~\cite{jp20} was developed as a way to induct over {\em
+  all} of the structured data present in an input. Deep induction thus
+not only gave the first principled and practically useful structural
+induction rules for bushes and other truly nested types, and has also
+opened the way for incorporating automatic generation of such rules
+for (truly) nested data types --- and, eventually, even GADTs --- into
+modern proof assistants.
 
-but it turns
-out they can.
-
-
-
-
-
-since
-a proof by induction must recursively induct over the bushes that are
-internal to the top-level bush in the recursive position. This is
-sufficiently delicate that no induction rule for bushes or other truly
-nested types was known until very recently, when the {\em deep
-  induction rules} of~\cite{jp20} finally gave a way to induct over
-{\em all} of the structured data present in a structure. Deep
-induction thus not only gave the first principled, data type generic,
-and practically useful structural induction rules for bushes and other
-truly nested types, but has also opened the way for incorporating
-automatic generation of useful induction rules for (truly) nested data
-types --- and, eventually, even GADTs --- into modern proof
-assistants.
-
-{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$}
-
-
-But recalling that inductive proofs over ADTs can sometimes be
-circumvented in the presence of parametricity, we might naturally ask
-if it isn't possible to prove properties of functions over nested
-types via parametricity. This paper answers this question in the
-affirmative, thus extending Wadler's party trick from ADTs to the
-richer family of nested types. To achieve this, we first introduce in
-Section~\ref{sec:caclculus} a polymorphic calculus supporting nested
-types as generated by the grammar of~\cite{jp19}. At the type level,
-the calculus is
+Of course it is great to know that we {\em can}, at last, prove
+properties of programs over (truly) nested types by induction.  But
+recalling that inductive proofs over ADTs can sometimes be
+circumvented in the presence of parametricity, we might naturally ask:
+\begin{verse}
+{\em Can we prove properties of functions over (truly) nested types
+  via paramertricity?}
+\end{verse}
+%if it isn't possible to prove properties of functions over (truly) nested
+%types via parametricity, too.
+This paper answers the above question in the affirmative.
+% thus extending Wadler's party trick from ADTs to the richer family
+%of nested types.
+To achieve this, we first introduce in Section~\ref{sec:calculus} a
+polymorphic calculus supporting nested types as generated by the
+grammar of~\cite{jp19}. At the type level, the calculus is
 %(because it also has $\Nat$-types),
-the level-2-truncated version of the data type calculus
-from~\cite{jp19}; the class of nested types it supports is very robust
-and includes all (truly) nested types known from the literature.  We
-then construct a parametric model for our calculus. Our
-interpretations of types rely on the result from~\cite{jp19} ensuring
-that all of the data types that can be represented in our calculus
-have well-defined semantics appropriately structured categories. Our
-term calculus is, as far as we know, entirely new. It features
-primitive constructs for functors, their initial algebras, and
-structured recursion ($\map$, $\tin$, and $\fold$, respectively), but
-does not support general recursion at the term level. It is strongly
-normalizing. Finally, we formulate in our calculus, and prove, a
-variety of free theorems for nested types. We prove not only
-{\color{blue} actually one generic theorem} naturality-style free
-theorems in Section~\ref{}, including those described above, but also
-give a formal proof of the short cut fusion for nested types first
-proposed in~\cite{gj07} in Section~\ref{}.
-
-
-
-
-
-
-
-
-Reynolds, parametricity, Abstraction Theorem vs logical relations,
-etc.
-
-
-
-Restriction of recursion to that expressible via $\fold$ limits the
-functions that can be written, but also provides strong termination
-guarantees.
+the level-2-truncated version of the calculus from~\cite{jp19}; the
+class of data types it includes as primitives
+%supports
+is very robust and includes all (truly) nested types known from the
+literature. At the term level, our calculus features primitive
+constructs for functors, their initial algebras, and structured
+recursion ($\map$, $\tin$, and $\fold$, respectively). While our
+calculus does not support general recursion at the term level, it does
+provide strong termination guarantees since it is strongly
+normalizing, {\color{blue} and it moves us toward the practical
+  programming language based on ... sought by Wadler.} Next, in
+Sections~\ref{sec:type-interp} and~\ref{sec:term-interp}, we construct
+set and relational interpretations of our types and terms,
+respectively.  Along the way, we prove that the model so constructed
+is parametric, i.e., that it satisfies an Identity Extension Lemma
+(Theorem~\ref{thm:iel}) and an Abstraction Theorem
+(Theorem~\ref{thm:abstraction}). Our interpretations of types rely on
+the result from~\cite{jp19} ensuring that all of the data types that
+can be represented in our calculus have well-defined semantics
+appropriately structured categories.  Finally, in Section~{sec:ftnt},
+we formulate and prove in our calculus a variety of free theorems for
+nested types. We prove not only {\color{blue} actually one generic
+  theorem} naturality-style free theorems in Section~\ref{}, including
+those described above, but also give a formal proof of the short cut
+fusion for nested types first proposed in~\cite{gj07} in
+Section~\ref{}.
 
 In fact, we do much more than just build a parametric model for this
 calculus. The relationship between parametricity and naturality has
 long been of interest. By incorporating explicit $\Nat$-types at the
 object level and interpreting them as natural transformations, our
-calculus allows us to clearly distinguish between what standard
-consequences of parametricity --- like most of Wadler's --- are really
-consequences of naturality and which --- like free theorems for the
+calculus allows us to clearly delineate those standard consequences of
+parametricity --- like most of Wadler's --- that are really
+consequences of naturality and those --- like free theorems for the
 type of filter for lists, ADTs, and even nested types, or the standard
 short cut fusion for ADTs and its extension, new here, to nested
 types, or non-existence of terms of bottom type, or uniqueness of
-terms of the type of the polymorphic identity function --- actually go
-beyond naturality. This is made explicit in Enrico's subst theorem,
-which is an equality that is simply a consequence of our semantics and
-would hold even in a non-parametric model (i.e., one that didn't
-include the extra condition in the $\set$ interpretation of
-$\Nat$-types), and does not in any way reply on the abstraction
+terms of the type of the polymorphic identity function --- that
+actually go beyond naturality. This is made explicit in Enrico's subst
+theorem, which is an equality that is simply a consequence of our
+semantics and would hold even in a non-parametric model (i.e., one
+that didn't include the extra condition in the $\set$ interpretation
+of $\Nat$-types), and does not in any way reply on the abstraction
 theorem. (We will undoubtedly have to mention Bernardy et al. if we
 mention internalizing parametricity...)
 
@@ -497,79 +490,48 @@ presentable base and total categories with the locally presentable
 structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
-{\color{red} Compare with Bob's paper.  What's new?}
+{\color{red} Compare with Bob's paper.  What's new? No ADTs, etc., at
+  type level; no intro/elim rules for them at term level. Treatment of
+in Secs 4.4 and 4.5 therefore hand-wavey. Similar ideas, but
+hand-wavey. (Only gets one half of graph lemma, too.}
 
 
 
-mention Pitts
-categorical/denotational vs. operational semantics
+mention Pitts categorical/denotational vs. operational
+semantics. Pitts has ADTs as primitives.
 
 
 
-Mention that we don't have full polymorphism but just one level of
-foralls, but most free theorems only use that anyway (even short cut).
-We do have fixpoints at the term level, though --- even h-o ones.
+Mention that we don't have full polymorphism (like Bob) but just one
+level of foralls, but most free theorems only use that anyway (even
+short cut).  We do have fixpoints at the term level, though --- even
+h-o ones.
 
 
-
-
-It's the ADTs that make free theorems interesting. Pitts considered
-lists in parpoe. I extended Pitts' to all polynomial such types.
-
-
-\subsection{Preliminaries}\label{sec:prelims}
-
-We begin with some categorical preliminaries. For a more detailed
-treatment of definitions and conventions the reader is referred
-to~\cite{}.
-
-We write $\set$ for the category of sets and functions.
-
-\begin{dfn}\label{def:rel}
-The category $\rel$ is defined as follows.
-\begin{itemize}
-\item An object of $\rel$ is a triple $(A,B,R)$ where $R$ is a
-  relation between the objects $A$ and $B$ in $\set$, i.e., a subset
-  of $A \times B$. We write $R : \rel(A,B)$ when convenient.
-\item A morphism between objects $R : \rel(A,B)$ and $R' :
-  \rel(A',B')$ of $\rel$ is a pair $(f : A \to A',g : B \to B')$ of
-  morphisms in $\set$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in
-  R$.
-  \end{itemize}
-\end{dfn}
-
-If $R : \rel(A,B)$ we write $\pi_1 R$ and $\pi_2 R$ for the {\em
-  domain} $A$ of $R$ and the {\em codomain} $B$ of $R$, respectively.
-If $A : \set$, then we write $\Eq_A = (A,A,\{(x,x)~|~ x \in A\})$ for
-the {\em equality relation} on $A$.
-
-\vspace*{0.1in}
-
-If $\C$ and $\D$ are categories, we write $[\C,\D]$ for the set of
-$\omega$-cocontinuous functors from  $\C$ to $\D$.
-
-\section{The Calculus}\ref{sec:calculus}
+\section{The Calculus}\label{sec:calculus}
 
 \subsection{Types}
 
 For each $k \ge 0$, we assume countable sets $\tvars^k$ of \emph{type
-  constructor variables of arity $k$}, $\fvars^k$ of \emph{functorial
-  variables of arity $k$}, disjoint for distinct $k$ and disjoint from
-each other.  We use lower case Greek letters for both sets of
-variables, and write $\phi^k$ to indicate that $\phi \in \tvars^k \cup
-\fvars^k$.  When convenient we may write $\alpha, \beta$, etc., rather
-than $\alpha^0, \beta^0$, etc., for elements of $\tvars^0 \cup
-\fvars^0$. The sets of all type constructor variables and functorial
-variables are $\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars =
-\bigcup_{k \ge 0} \fvars^k$, respectively, and a \emph{type variable}
-is any element of $\tvars \cup \fvars$. We write $\overline{\zeta}$
-for either a set $\{\zeta_1,...,\zeta_n\}$ of type constructor
-variables or a set of functorial variables when the cardinality $n$ of
-the set is unimportant. If $\Pos$ is a set of type variables then we
-write $\Pos, \overline{\phi}$ for $\Pos \cup \overline{\phi}$ when
-$\Pos \cap \overline{\phi} = \emptyset$.  We omit the vector notation
-for a singleton set, thus writing $\phi$, instead of
-$\overline{\phi}$, for $\{\phi\}$.
+  constructor variables of arity $k$} and $\fvars^k$ of
+\emph{functorial variables of arity $k$}, all mutually disjoint.
+%disjoint for distinct $k$ and disjoint from each other.
+The sets of all type constructor variables and functorial variables
+are $\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars = \bigcup_{k \ge
+  0} \fvars^k$, respectively, and a \emph{type variable} is any
+element of $\tvars \cup \fvars$.  We use lower case Greek letters for
+type variables, writing $\phi^k$ to indicate that $\phi \in \tvars^k
+\cup \fvars^k$, and omitting the arity indicator $k$ when convenient,
+unimportant, or clear from context. We reserve letters from the
+beginning of the alphabet to denote type variables of arity $0$, i.e.,
+elements of $\tvars^0 \cup \fvars^0$. We write $\overline{\zeta}$ for
+either a set $\{\zeta_1,...,\zeta_n\}$ of type constructor variables
+or a set of functorial variables when the cardinality $n$ of the set
+is unimportant or clear from context. If $\Pos\,$ is a set of type
+variables we write $\Pos, \overline{\phi}$ for $\Pos\, \cup
+\overline{\phi}$ when $\Pos\, \cap \overline{\phi} = \emptyset$.  We
+omit the vector notation for a singleton set, thus writing $\phi$,
+instead of $\overline{\phi}$, for $\{\phi\}$.
 
 \begin{dfn}
 Let $V$ be a finite subset of\, $\tvars$, let $\Pos$ be a finite
@@ -603,16 +565,15 @@ A \emph{type} over $\Pos$ and $V$ is any element of $\T(V) \cup
 The notation for types entails that an application
 $\tau\tau_1...\tau_k$ is allowed only when $\tau$ is a type variable
 of arity $k$, or $\tau$ is a subexpression of the form $\mu
-\phi^{k}. \lambda \alpha_1...\alpha_k.\tau'$. Moreover, if $\tau$ has
+\phi^{k}.\lambda \alpha_1...\alpha_k.\tau'$. Moreover, if $\tau$ has
 arity $k$ then $\tau$ must be applied to exactly $k$ arguments.
 Accordingly, an overbar indicates a sequence of subexpressions whose
 length matches the arity of the type applied to it.  The fact that
 types are always in \emph{$\eta$-long normal form} avoids having to
-consider $\beta$-conversion at the level of type constructors.
-
-In a subexpression $\Nat^{\ol{\alpha}}\,\sigma\,\tau$, the $\Nat$
-operator binds all occurrences of the variables in $\ol{\alpha}$ in
-$\sigma$ and $\tau$. Similarly, in a subexpression $\mu \phi^k.\lambda
+consider $\beta$-conversion at the level of types. In a subexpression
+$\Nat^{\ol{\alpha}}\sigma\,\tau$, the $\Nat$ operator binds all
+occurrences of the variables in $\ol{\alpha}$ in $\sigma$ and
+$\tau$. Similarly, in a subexpression $\mu \phi^k.\lambda
 \ol{\alpha}.\tau$, the $\mu$ operator binds all occurrences of the
 variable $\phi$, and the $\lambda$ operator binds all occurrences of
 the variables in $\ol{\alpha}$, in the body $\tau$.
@@ -622,8 +583,8 @@ constructor variables, and a {\em functorial context} is a finite set
 $\Phi$ of functorial variables. In Definition~\ref{def:wftypes}, a
 judgment of the form $\Gamma;\Phi \vdash \tau : \T$ or $\Gamma;\Phi
 \vdash \tau : \F$ indicates that the type $\tau$ is intended to be
-non-functorial in the variables in $\Gamma$ and functorial in the
-variables in $\Phi$.
+functorial in the variables in $\Phi$ but not necessarily in the
+variables in $\Gamma$.
 
 \begin{dfn}\label{def:wftypes}
 The formation rules for the set $\T \subseteq \bigcup_{V \subseteq
@@ -695,326 +656,101 @@ A type $\tau$ is {\em well-formed} if it is either a well-formed type
 constructor expression or a well-formed functorial expression.
 \end{dfn}
 
-{\color{blue} Include some examples of types, e.g., lists and perfect
-  trees and bushes, etc. Include those that will be used in
-  discussions below.
-
-  Note that we cannot write as folds functions --- such as concat ::
-  PTree a -> PTree a -> PTree a --- that take as input more than one
-  non-algebraic nested type. This is because the restriction on the
-  contexts in which $\Nat$-types can be formed conflicts with the need
-  to feed $\fold$s algebras. (Can't fold over pairs to get the right
-  functions; can't get them by using continuation style because of the
-  aforementioned typing conflict.)}
-
 If $\tau$ is a closed type we may write $\vdash \tau$, rather than
 $\emptyset;\emptyset \vdash \tau$, for the judgment that it is
 well-formed.  Definition~\ref{def:wftypes} ensures that the expected
-weakening rules for well-formed types hold. (Note, however, that
-weakening does not change the contexts in which $\Nat$-types can be
-formed.) If $\Gamma;\emptyset \vdash \sigma : \T$ and
-$\Gamma;\emptyset \vdash \tau : \T$, then our rules allow formation of
-the type $\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$. This
-type can be thought of as representing the standard arrow type $\Gamma
-\vdash \sigma \to \tau$ in our calculus. We can similarly represent a
-standard $\forall$-type $\Gamma; \emptyset \vdash \forall \ol\alpha
-. \tau$ as the well-formed type $\Gamma; \emptyset \vdash
-\Nat^{\ol\alpha} \,\onet \,\tau :\F$.  However, if $\ol\alpha$ is
-non-empty then $\tau$ cannot be of the form $\Nat^{\ol\beta} H \, K$;
-indeed, $\Gamma; \ol\alpha \vdash \Nat^{\ol\beta} H \, K$ is an
-invalid typing judgment in our calculus (except by weakening).
+weakening rules for well-formed types hold --- although weakening does
+not change the contexts in which $\Nat$-types can be formed. If
+$\Gamma;\emptyset \vdash \sigma : \T$ and $\Gamma;\emptyset \vdash
+\tau : \T$, then our rules allow formation of the type
+$\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$. Since a type
+$\Gamma; \emptyset \vdash \Nat^{\ol \alpha}\sigma\,\tau$ represents a
+natural transformation in $\ol \alpha$ from $\sigma$ to $\tau$, the
+type $\Gamma;\emptyset \vdash \Nat^\emptyset\sigma \,\tau$ represents
+the standard arrow type $\Gamma \vdash \sigma \to \tau$ in our
+calculus. We similarly represent a standard $\forall$-type $\Gamma;
+\emptyset \vdash \forall \ol\alpha . \tau$ as $\Gamma; \emptyset
+\vdash \Nat^{\ol\alpha} \,\onet \,\tau :\F$ in our calculus.  However,
+if $\ol\alpha$ is non-empty then $\tau$ cannot be of the form
+$\Nat^{\ol\beta} H \, K$ since $\Gamma; \ol\alpha \vdash
+\Nat^{\ol\beta} H \, K$ is not a valid type judgment in our calculus
+(except by weakening).
 
-Our formation rules also allow a type like $\List\gamma = (\mu
-\beta. \lambda \alpha. \onet + \alpha \times \beta)\gamma$ either to
-be natural in $\gamma$ or not, according to whether it is well-formed
-in the context $\emptyset; \gamma$ or $\gamma;\emptyset$. If the
-former, then the type $\vdash \Nat^\gamma \onet\, (\List\gamma) : \T$
-is well-formed; if the latter, then it is not. Our formation rules
-also allow the derivation of, e.g., $\delta; \emptyset \vdash
-\Nat^\gamma (\List \gamma) \, (\Tree \gamma \delta)$, which represents
-a natural transformation between lists and trees that is natural in
-$\gamma$ but not in $\delta$.  We explicitly note that types can be
-functorial in variables of arity greater than $0$. For example, the
-type $\GRose \phi \, \alpha = \mu\beta . \alpha \times \phi \beta$ can
-be functorial in $\phi$ or not according to whether $\phi \in \Gamma$
-or $\phi \in \Phi$. This choice of context for $\phi$ determines
-whether types such as $\Nat^\alpha (\GRose \phi \, \alpha)\, (\List
-\alpha)$ are well-formed. If $\GRose$ is functorial in $\phi$, i.e. if
-$\emptyset; \alpha, \phi \vdash \mu \beta . \alpha \times \phi \beta$,
-then $\GRose$ cannot be used as a (co)domain in $\Nat$ types.  This is
-because our calculus does not allow naturality in variables of arity
-greater than $0$.
+Definition~\ref{def:wftypes} allows the formation of all of the
+(closed) nested types from the introduction:
+\[\begin{array}{lll}
+\mathit{List}\, \alpha & = & \mu \beta. \,\onet + \alpha \times
+\beta\; = \; (\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
+\beta)\,\alpha\\ 
+\mathit{PTree}\,\alpha & = & (\mu \phi. \lambda \beta.\,\beta +
+\phi\,(\beta \times \beta))\,\alpha\\
+\mathit{Forest}\,\alpha & = & (\mu \phi. \lambda \beta. \,\onet +
+\beta \times PTree(\phi \, \beta))\,\alpha\\ 
+\mathit{Bush}\,\alpha & = & (\mu \phi.\lambda \beta. \,\onet + \beta
+\times \phi\,(\phi\,\beta))\,\alpha 
+\end{array}\]
+Each of these types can either be natural in $\alpha$ or not,
+according to whether $\alpha \in \Gamma$ or $\alpha \in \Phi$. 
+%it is well-formed in the context $\emptyset;
+%\alpha$ or $\alpha;\emptyset$.
+For example, if $\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then
+the type $\vdash \Nat^\alpha \onet\, (\mathit{List}\,\alpha) : \T$ is
+well-formed; If $\alpha;\emptyset \vdash \List \,\alpha$, then it is
+not. Definition~\ref{def:wftypes} also allows the derivation of, e.g.,
+the type $\alpha; \emptyset \vdash \Nat^\alpha (\mathit{List}\,
+\alpha) \, ({\color{blue} \mathit{Tree}}\, \alpha\, \gamma)$
+representing a natural transformation from lists to trees that is
+natural in $\alpha$ but not necessarily in $\gamma$. We emphasize that
+types can be functorial in variables of arity greater than $0$. For
+example, the type $\mathit{GRose}\, \phi \, \alpha = \mu\beta . \alpha
+\times \phi \beta$ can be functorial in $\phi$ if $\phi \in \Phi$. As
+usual, whether $\phi \in \Gamma$ or $\phi \in \Phi$ determines whether
+types such as $\Nat^\alpha ({\color{blue} \mathit{GRose}} \, \phi \,
+\alpha)\, (List \alpha)$ are well-formed. But even if $\mathit{GRose}$
+is functorial in $\phi$, it still cannot be the (co)domain of a $\Nat$
+type representing a natural transformation in $\phi$. This is because
+our calculus does not allow naturality in variables of arity greater
+than $0$.
 
-\subsection{A Demotion Theorem}
+Definition~\ref{def:wftypes} explicitly considers types in $\T$ to be
+types in $\F$ that are functorial in no variables. It is not hard to
+see that this definition also supports the demotion of functorial
+variables in a well-formed type $\tau$ to non-functorial status. The
+proof is by induction on the structure of $\tau$.
 
-{\color{blue} Move statement of theorem earlier?} There is a subtlety
-in the well-formedness rules for types.
-
-\begin{thm}
-If $\Gamma; \Phi, \phi^k \vdash \tau : \F$, then one can derive
-$\Gamma, \psi^k; \Phi \vdash \tau[\phi^k :== \psi^k]$, where
-$\tau[\phi :== \psi]$ is the textual replacement of $\phi$ in $\tau$.
-In other words, all occurences of $\phi\ol\sigma$ in $\tau$ become
+\begin{lemma}
+If\, $\Gamma; \Phi, \phi^k \vdash \tau : \F$, then $\Gamma, \psi^k;
+\Phi \vdash \tau[\phi^k :== \psi^k]$ is also derivable. Here,
+$\tau[\phi :== \psi]$ is the textual replacement of $\phi$ in $\tau$,
+meaning that all occurences of $\phi\ol\sigma$ in $\tau$ become
 $\psi\ol\sigma$.
-\end{thm}
-\begin{proof}
-By induction on the structure of $\tau$.
-\begin{itemize}
-\item Case $\Gamma; \Phi, \alpha \vdash \alpha : \F$. We must derive
-  $\Gamma, \beta; \Phi \vdash \beta : \F$.
-\[\begin{array}{c}
-\AXC{$\Gamma, \beta; \emptyset \vdash \beta : \T$}
-\UIC{$\Gamma, \beta; \emptyset \vdash \beta : \F$}
-\UIC{$\Gamma, \beta; \Phi   \vdash \beta : \F$}
-\DP
-\end{array}\]  
-\item Case $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$. We must
-  derive $\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi] :
-  \F$. The induction hypothesis gives that $\Gamma, \psi; \Phi \vdash
-  \tau[\phi :== \psi] : \F$ for each $\tau$.
-\[\begin{array}{c}
-\AXC{$\psi \in \{ \Gamma, \psi \} \cup \Phi : \F$}
-\AXC{$\ol{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F}$}
-\BIC{$\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]} : \F$}
-\UIC{$\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi] :\F$}
-\DP
-\end{array}\]  
-The case for $\Gamma; \Phi, \phi' \vdash \phi \ol\tau : \F$, i.e., the
-case in which the variable being ``demoted'' only appears in the
-arguments, works by the same induction. \\
-\item Case $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
-  \ol\alpha. H)\ol\tau : \F$.  We must derive $\Gamma, \psi; \Phi
-  \vdash ((\mu \phi'. \lambda \ol\alpha. H) \ol\tau)[\phi :== \psi] :
-  \F$. The induction hypothesis gives that $\Gamma, \psi; \Phi \vdash
-  \tau[\phi :== \psi] : \F$ for each $\tau$ and $\Gamma, \psi; \Phi,
-  \ol\alpha, \phi' \vdash H[\phi :== \psi] : \F$.
-\[\begin{array}{c}
-\AXC{$\Gamma, \psi; \Phi, \ol\alpha, \phi' \vdash H[\phi :== \psi] : \F$}
-\AXC{$\ol{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi] : \F}$}
-\BIC{$\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda \ol\alpha. H[\phi :== \psi])
-       \ol{\tau[\phi :== \psi]} : \F$}
-\UIC{$\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda
-  \ol\alpha. H)\ol\tau)[\phi := = \psi] : \F$}
-\DP
-\end{array}\] 
-\end{itemize}
-\end{proof}
+\end{lemma}
 
-The next two theorems are proven by simultaneous induction. We are
-actually only interested in using Theorem~\ref{thm:demotion-objects},
-but in order to prove the $\mu$ case for this theorem, we need
-Theorem~\ref{thm:demotion-morph} to show that two functors have equal
-actions on morphisms.
-
-\begin{thm}\label{thm:demotion-objects}
-Let $\Gamma; \Phi, \phi \vdash \tau : \F$. If $\rho, \rho' : \setenv$
-are such that $\rho \phi = \rho \psi = \rho' \phi = \rho' \psi$, and
-if $f : \rho \to \rho'$ is a morphism of set environments such that $f
-\phi = f \psi = \id_{\rho \phi}$, then
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \setsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi] } \rho\]
-and
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau} f = \setsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi]} f\]
-
-\vspace*{0.1in}
-
-\noindent
-Analogously, if $\rho, \rho' : \relenv$ are such that $\rho \phi =
-\rho \psi = \rho' \phi = \rho' \psi$, and if $f : \rho \to \rho'$ is a
-morphism of relation environments such that $f \phi = f \psi =
-\id_{\rho \phi}$, then
-\[\relsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \relsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi] } \rho\]
-and
-\[\relsem{\Gamma; \Phi, \phi \vdash \tau} f = \relsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi]} f\]
-\end{thm}
-\begin{proof}
-We prove the result for set interpretations by induction on the
-structure of $\tau$.  The case for relational interpretations proceeds
-analogously. Since the only interesting cases are the application case
-and the $\mu$-case, we elide the others.
-\begin{itemize}
-\item If $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$, then the
-  induction hypothesis gives that  
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho = \setsem{\Gamma,
-  \psi; \Phi \vdash \tau[\phi :== \psi] } \rho\] 
-and
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau} f = \setsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi]} f\]
-for each $\tau$. Then
-\begin{align*}
- & \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau } \rho \\
-= \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho} \\
-= \; & (\rho \phi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-      \psi] } \rho} \\ 
-= \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-      \psi] } \rho} \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]}
-} \rho \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi]
-} \rho 
-\end{align*}
-Here, the first and fifth equalities are by
-Definition~\ref{def:set-sem}, and the fourth equality is by equality
-of the functors $\rho \phi$ and $\rho \psi$. We also have that
-\begin{align*}
-& \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau} f \\
-= \; & (f \phi)_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
-    \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
-= \; & (\id_{\rho \phi})_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
-    \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
-= \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
-= \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-      \psi]} f} \\ 
-= \; & (\id_{\rho \psi})_{\ol{\setsem{\Gamma, \psi; \Phi \vdash
-      \tau[\phi :== \psi]} \rho'}} \circ (\rho \psi)
-\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\ 
-= \; & (f \psi)_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-        \psi]} \rho'}} \circ (\rho \psi) \ol{\setsem{\Gamma, \psi;
-    \Phi \vdash \tau[\phi :== \psi]} f} \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]}} f \\
-= \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi]} f
-\end{align*}
-\item If $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
-  \ol\alpha. H)\ol\tau : \F$, then the induction hypothesis gives that
-\[\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } \rho =
-\setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]
-} \rho\]
-and 
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho = \setsem{\Gamma,
-  \psi; \Phi \vdash \tau[\phi :== \psi] } \rho\]
-as well as that
-\[\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } f =
-\setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]
-} f\]
-and 
-\[\setsem{\Gamma; \Phi, \phi \vdash \tau } f = \setsem{\Gamma, \psi;
-  \Phi \vdash \tau[\phi :== \psi] } f\]
-for each $\tau$. Then
-\begin{align*}
-& \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
-    \ol\alpha. H)\ol\tau } \rho \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
-  \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]))
-\ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
-  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
-  F][\ol{\alpha := A}])) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau}
-  \rho} \\ 
-= \; &  (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
-  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
-  F][\ol{\alpha := A}])\ol{\setsem{ \Gamma, \psi; \Phi \vdash
-    \tau[\phi :== \psi]} \rho} \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda
-  \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } \rho \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda
-  \ol\alpha. H) \ol\tau)[\phi :== \psi] } \rho   
-\end{align*} 
-The first and fifth equalities are by Definition~\ref{def:set-sem}.
-The second equality follows from the following equality:
-\begin{align*}
-&\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
-    \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\ 
-& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
-    \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha
-      := A}] 
-\end{align*}
-These two maps have the same actions on objects and morphisms by the
-induction hypothesis on $H$, and the fact that the extended
-environment $\rho[\phi' := F][\ol{\alpha := A}]$ satisfies the
-required hypothesis. They are thus equal as functors and so have the
-same fixed point. We also have that 
-\begin{align*}
-& \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
-    \ol\alpha. H)\ol\tau } f \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
-  \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha :=
-    \id_A}]))_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} \\ 
-\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
-  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
-    A}])) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} f} \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
-  \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha :=
-    \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-        \psi]} \rho'}} \\ 
-\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
-  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
-    A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]}
-  f} \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
-  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' :=
-  \id_F][\ol{\alpha := \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi
-      \vdash \tau[\phi :== \psi]} \rho'}} \\ 
-\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
-  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
-    A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]}
-  f} \\ 
-= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
-  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' :=
-  \id_F][\ol{\alpha := \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi
-      \vdash \tau[\phi :== \psi]} \rho'}} \\ 
-\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi;
-  \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
-  F][\ol{\alpha := A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash
-    \tau[\phi :== \psi]} f} \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda
-  \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } f \\ 
-= \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda
-  \ol\alpha. H) \ol\tau)[\phi :== \psi] } f 
-\end{align*} 
-The first and fifth equalities are by Definition~\ref{def:set-sem}.
-The third equality is by the equality of the arguments to the first
-$\mu$ operator:
-\begin{align*}
-& \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
-    \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}] \\ 
-& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
-    \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha
-      := \id_A}] 
-\end{align*}
-By the induction hypothesis on $H$ and the fact that the morphism
-$f[\phi' := \id_F][\ol{\alpha := \id_A}] : \rho[\phi' := F][\ol{\alpha
-    := A}] \to \rho'[\phi' := F][\ol{\alpha := A}]$ still satisfies
-the required hypotheses.  The fourth equality is by the equality of
-the arguments to the second $\mu$ operator:
-\begin{align*}
-& \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
-    \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\ 
-& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
-    \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha
-      := A}] 
-\end{align*}
-By the same reasoning as above, these two maps are equal as functors,
-and thus have the same fixed point.
-\end{itemize}
-\end{proof}
-
-\subsection{Substitution for Types}
-
-If $\tau$ is a type, $\Pos$ and $V$ contain only type variables of
-arity $0$, and $k=0$ for every occurrence of $\phi^k$ bound by $\mu$
-in $\tau$, then we say that $\tau$ is {\em first-order}. Otherwise we
-say that $\tau$ is {\em second-order}.  Substitution for first-order
-types is the usual capture-avoiding textual substitution. We write
-$\tau[\alpha := \sigma]$ for the result of substituting $\sigma$ for
-$\alpha$ in $\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k :=
-  \tau_k]$, or $\tau[\ol{\alpha := \tau}]$ when convenient, for
-$\tau[\alpha_1 := \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$.
-Substitution for second-order types is defined as follows.
+In addition to textual replacement, we also have a proper substitution
+operation on types. If $\tau$ is a type over $P$ and $V$, if $\Pos$
+and $V$ contain only type variables of arity $0$, and if $k=0$ for
+every occurrence of $\phi^k$ bound by $\mu$ in $\tau$, then we say
+that $\tau$ is {\em first-order}; otherwise we say that $\tau$ is {\em
+  second-order}.  Substitution for first-order types is the usual
+capture-avoiding textual substitution. We write $\tau[\alpha :=
+  \sigma]$ for the result of substituting $\sigma$ for $\alpha$ in
+$\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k := \tau_k]$, or
+$\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
+  \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$. Substitution
+for second-order types is defined below, where we adopt a similar
+notational convention for vectors of types.
 
 \begin{dfn}\label{def:second-order-subst}
-If \,$\Gamma; \Phi \vdash F[\phi] : \F$, $\phi^k \in \Gamma \cup
-\Phi$, $k \geq 1$, and $\Gamma, \ol\beta;\Phi, \ol{\alpha} \vdash H :
-\F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
-\phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol\beta,\ol{\alpha}} H]
-: \F$.  The operation $(\cdot)[\phi := H]$ of {\em second-order type
-  substitution} is defined by:
+  If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
+  \vdash F : \F$, and if\, $\Gamma, \ol\beta;\Phi, \ol{\alpha} \vdash
+  H : \F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
+  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol\beta,\ol{\alpha}}
+    H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
+    second-order type substitution} is defined by:
 \[\begin{array}{lll}
 (\Nat^{\ol\gamma} G \,K)[\phi :=_{\ol\beta,\ol{\alpha}} H]
-& = & \Nat^{\ol\gamma} G[\phi :=_{\ol\beta,\ol{\alpha}} H] \,K[\phi
-  :=_{\ol\beta,\ol{\alpha}} H] \\
+& = & \Nat^{\ol\gamma}\, (G[\phi :=_{\ol\beta,\ol{\alpha}} H]) \,(K[\phi
+  :=_{\ol\beta,\ol{\alpha}} H]) \\
 \onet[\phi :=_{\ol\beta,\ol{\alpha}} H] & = & \onet\\[0.5ex]
 \zerot[\phi :=_{\ol\beta,\ol{\alpha}} H] & = & \zerot\\[0.25ex]
 (\psi\ol{\sigma}\ol{\tau})[\phi :=_{\ol\beta,\ol{\alpha}} H] & = &
@@ -1035,22 +771,19 @@ If \,$\Gamma; \Phi \vdash F[\phi] : \F$, $\phi^k \in \Gamma \cup
   H])\, \ol{\tau[\phi :=_{\ol\beta,\ol{\alpha}} H]}
 \end{array}\]
 \end{dfn}
-
+\noindent
 We omit the variable subscripts in second-order type constructor
-substitution when clear from context or otherwise convenient.
+substitution when convenient.
 
 \subsection{Terms}
 We assume an infinite set $\cal V$ of term variables disjoint from
-$\tvars$ and $\fvars$.
-
-\begin{dfn}
-Let $\Gamma$ be a type constructor context and $\Phi$ be a functorial
-context. A {\em term context for $\Gamma$ and $\Phi$} is a finite set
-of bindings of the form $x : \tau$, where $x \in {\cal V}$ and
-$\Gamma; \Phi \vdash \tau : \F$.
-\end{dfn}
-We adopt the same conventions for denoting disjoint unions in term
-contexts as for type constructor contexts and functorial contexts.
+$\tvars$ and $\fvars$. If $\Gamma$ be a type constructor context and
+$\Phi$ is a functorial context, then a {\em term context for $\Gamma$
+  and $\Phi$} is a finite set of bindings of the form $x : \tau$,
+where $x \in {\cal V}$ and $\Gamma; \Phi \vdash \tau : \F$. We adopt
+the same conventions for denoting disjoint unions and for vectors in
+term contexts as for type constructor contexts and functorial
+contexts.
 
 \begin{dfn}\label{def:well-formed-terms}
 Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
@@ -1173,74 +906,67 @@ and $\fold^F_H$, the functorial variables in $\ol{\beta}$ are fresh
 with respect to $H$, and there is one $\beta$ for every
 $\alpha$. (Recall from above that, in order for the types of $\tin_H$
 and $\fold^F_H$ to be well-formed, the number of $\alpha$s must equal
-the arity of $\phi$.)
-
-Substitution for terms is the obvious extension of the usual
-capture-avoiding textual substitution.
+the arity of $\phi$.)  Substitution for terms is the obvious extension
+of the usual capture-avoiding textual substitution, and
 Definition~\ref{def:well-formed-terms} ensures that the expected
 weakening rules for well-formed terms hold.
 
-{\color{blue} Let $\PLeaves$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \alpha + \phi(\alpha \times \alpha))\beta$.
-We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\PLeaves\,\beta)\,(\PLeaves\,\beta)$.
+Definition~\ref{def:well-formed-terms} lets us represent, e.g., the
+$\mathtt{reversePTree}$ function from Figure~\ref{fig:funs} in our
+calculus as
+\[\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\PTree\,
+  \alpha} \, (\tin_{\beta + \phi(\beta \times \beta)} \circ s) :
+\Nat^{\alpha} (\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)\] 
+where
+\[\begin{array}{lll}
+\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,\alpha} &
+: & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+\alpha)) \; (\mathit{PTree}\,\alpha))\; (\Nat^{\alpha}
+(\mathit{PTree}\,\alpha) \; (\mathit{PTree}\,\alpha))\\
+\vdash \tin_{\beta + \phi(\beta \times \beta)} & : & \Nat^{\alpha}
+(\alpha + \mathit{PTree}\,(\alpha \times \alpha)) \; (\mathit{PTree}\,
+\alpha)\\ 
+\vdash \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
+  \alpha} & : & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha \times \alpha)\,
+(\alpha \times \alpha))\; (\Nat^{\alpha} (\mathit{PTree}\,(\alpha \times
+\alpha))\, (\mathit{PTree}\,(\alpha \times \alpha)))
+\end{array}\]
+and 
+$\mathit{swap}$ and $s$ are the terms
+\[ \vdash L_{\alpha} p.\, (\pi_2 p, \pi_1 p) :
+\Nat^{\alpha} (\alpha \times \alpha)\, (\alpha \times \alpha)\]
+and
+\[\begin{array}{l}
+\vdash L_{\alpha} t. \,\case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,(
+  \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times \alpha}\,
+  \mathit{swap}\, t' )} : \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+\alpha))\; (\alpha + \mathit{PTree}\,(\alpha \times \alpha))
+\end{array}\]
+respectively. We can similarly represent the $\mathtt{reverseBush}$
+function from Figure~\ref{fig:funs2} as {\color{blue} code goes here}.
 
-To begin with, define the term $\swap$ as
-\[
-	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
-\]
-and consider the map for $\PLeaves$
-\[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}
-	: \Nat^{\emptyset}
-	(\Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta))\;
-	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,(\beta \times \beta)))
-\]
-Then we get a term
-\[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
-	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\,(\beta \times \beta))
-\]
+Unfortunately, we cannot write functions, such as $\mathit{concat}
+: \mathit{PTree}\, \alpha \to \mathit{PTree} \,\alpha \to
+\mathit{PTree}\, \alpha$, that take as input more than one
+non-algebraic nested type. This is because the restriction on the
+contexts in which $\Nat$-types can be formed conflicts with the need
+to feed $\fold$s algebras. (Can't fold over pairs to get the right
+functions; can't get them by using continuation style because of the
+aforementioned typing conflict.) {\color{blue} Add Daniel's commentary
+  about ``real'' involution reverse for bushes, too. Massage
+  paragraph. Not a good restriction.}
 
-Define the term $s$ as
-\[
-\begin{array}{l}
-	\vdash L_{\beta} t. \case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,( \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap\, t' )} \\
-	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\;  (\beta + \PLeaves\,(\beta \times \beta))
-\end{array}
-\]
-and consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
-\[
-	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)}
-	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\, \beta)
-\]
-Then we get a term
-\[
-	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)} \circ s
-	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta)
-\]
-
-Finally, consider the fold for $\PLeaves$
-\[
-	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\,\beta}
-	: \Nat^{\emptyset}
-	(\Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta))\;
-	(\Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta))
-\]
-then we define the $\reverse$ function as
-\[
-	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta} (\tin_{\alpha + \phi(\alpha \times \alpha)} \circ s)
-	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta)
-\]  }
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
 the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
-merit special mention. It allows us to, e.g., map or fold polymorphic
-functions over data types. For example, consider the function
+merit special mention. They allows us to map or fold polymorphic
+functions over nested types. Consider, for example, the function
 $\mathit{flatten} : \Nat^\beta
 (\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ that maps perfect
-trees to lists. Even without the ``extra'' $\gamma$s the term
-representing the mapping of each {\em instance} of $\mathit{flatten}$
-acting on perfect trees and lists of types involving no functorial
-variables is well-typed:
+trees to lists. Even in the absence of extra variables the term
+representing the mapping of each {\em monomorphic instance} of
+$\mathit{flatten}$ at types involving no functorial variables is
+well-typed:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \sigma \hspace*{0.3in} \Gamma;\emptyset
@@ -1255,17 +981,23 @@ variables is well-typed:
   \tau)))$}
 \DisplayProof
 \end{array}\]
-But because the functorial contexts for the expressions instantiating
-$F$ and $G$ in the rule for $\map^{F,G}_H$ are necessarily empty, the
-term representing the mapping of the polymorphic function
-$\mathit{flatten}$ is not. Indeed, the polymorphic function
-$\mathit{flatten}$, whose type contains the functorial variable
-$\beta$, say, cannot have a type of the form $\Nat^\emptyset F'\, G'$
-for any $F'$ and $G'$ as is required in the conclusion of the rule for
-$\map^{F,G}_{\mathtt{List}}$. However, in a polymorphic calculus of
+
+
+
+so that $\map \,\mathit{flatten}$ is as well.
+
+
+But because the functorial contexts for the expressions $F$ and $G$ in
+the rule for $\map^{F,G}_H$ are necessarily empty, the term
+representing the mapping of the {\em polymorphic} $\mathit{flatten}$
+function is not. Indeed, the polymorphic $\mathit{flatten}$ function,
+whose type contains the functorial variable $\beta$, say, cannot have
+a type of the form $\Nat^\emptyset F'\, G'$ for any $F'$ and $G'$ as
+is required in the conclusion of the rule for
+$\map^{F,G}_{\mathit{List}}$. However, in a polymorphic calculus of
 course we want to be able to manipulate terms representing polymorphic
 functions in their entirety rather than just their monomorphic
-instantiations. The rules with the ``extra'' $\gamma$s recover this
+instances. The rules with the ``extra'' $\gamma$s recover this
 capability. For example, with these rules the term representing the
 mapping of polymorphic $\mathit{flatten}$ is typeable as follows:
 \[\begin{array}{l}
@@ -1281,7 +1013,42 @@ mapping of polymorphic $\mathit{flatten}$ is typeable as follows:
 \DisplayProof
 \end{array}\]
 
+\vspace*{0.05in}
+
 \section{Interpreting Types}\label{sec:type-interp}
+
+\subsection{Preliminaries}\label{sec:prelims}
+
+We begin with some categorical preliminaries. For a more detailed
+treatment of definitions and conventions the reader is referred
+to~\cite{}.
+
+We write $\set$ for the category of sets and functions.
+
+\begin{dfn}\label{def:rel}
+The category $\rel$ is defined as follows.
+\begin{itemize}
+\item An object of $\rel$ is a triple $(A,B,R)$ where $R$ is a
+  relation between the objects $A$ and $B$ in $\set$, i.e., a subset
+  of $A \times B$. We write $R : \rel(A,B)$ when convenient.
+\item A morphism between objects $R : \rel(A,B)$ and $R' :
+  \rel(A',B')$ of $\rel$ is a pair $(f : A \to A',g : B \to B')$ of
+  morphisms in $\set$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in
+  R$.
+  \end{itemize}
+\end{dfn}
+
+If $R : \rel(A,B)$ we write $\pi_1 R$ and $\pi_2 R$ for the {\em
+  domain} $A$ of $R$ and the {\em codomain} $B$ of $R$, respectively.
+If $A : \set$, then we write $\Eq_A = (A,A,\{(x,x)~|~ x \in A\})$ for
+the {\em equality relation} on $A$.
+
+\vspace*{0.1in}
+
+If $\C$ and $\D$ are categories, we write $[\C,\D]$ for the set of
+$\omega$-cocontinuous functors from  $\C$ to $\D$.
+
+
 
 The key idea underlying 
 parametricity is to give each type $T(\alpha)$ with a free type
@@ -1302,6 +1069,9 @@ types and terms with any number of free variables.
 
 Free theorems are just instantiations of the Abstraction
 Theorem. 
+
+Abstraction Theorem vs ``just'' logical relations, etc.
+
 
 
 
@@ -2183,6 +1953,206 @@ presentable, and that colimits in $\relenv$ are computed
 componentwise, together with Corollary~12 of~\cite{jp19}.
 \end{itemize}
 \end{proof}
+
+
+---
+The next two theorems are proven by simultaneous induction. We are
+actually only interested in using Theorem~\ref{thm:demotion-objects},
+but in order to prove the $\mu$ case for this theorem, we need
+Theorem~\ref{thm:demotion-morph} to show that two functors have equal
+actions on morphisms.
+
+\begin{thm}\label{thm:demotion-objects}
+Let $\Gamma; \Phi, \phi \vdash \tau : \F$. If $\rho, \rho' : \setenv$
+are such that $\rho \phi = \rho \psi = \rho' \phi = \rho' \psi$, and
+if $f : \rho \to \rho'$ is a morphism of set environments such that $f
+\phi = f \psi = \id_{\rho \phi}$, then
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \setsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi] } \rho\]
+and
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau} f = \setsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi]} f\]
+
+\vspace*{0.1in}
+
+\noindent
+Analogously, if $\rho, \rho' : \relenv$ are such that $\rho \phi =
+\rho \psi = \rho' \phi = \rho' \psi$, and if $f : \rho \to \rho'$ is a
+morphism of relation environments such that $f \phi = f \psi =
+\id_{\rho \phi}$, then
+\[\relsem{\Gamma; \Phi, \phi \vdash \tau} \rho = \relsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi] } \rho\]
+and
+\[\relsem{\Gamma; \Phi, \phi \vdash \tau} f = \relsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi]} f\]
+\end{thm}
+\begin{proof}
+We prove the result for set interpretations by induction on the
+structure of $\tau$.  The case for relational interpretations proceeds
+analogously. Since the only interesting cases are the application case
+and the $\mu$-case, we elide the others.
+\begin{itemize}
+\item If $\Gamma; \Phi, \phi \vdash \phi \ol\tau : \F$, then the
+  induction hypothesis gives that  
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho = \setsem{\Gamma,
+  \psi; \Phi \vdash \tau[\phi :== \psi] } \rho\] 
+and
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau} f = \setsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi]} f\]
+for each $\tau$. Then
+\begin{align*}
+ & \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau } \rho \\
+= \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho} \\
+= \; & (\rho \phi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+      \psi] } \rho} \\ 
+= \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+      \psi] } \rho} \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]}
+} \rho \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau)[\phi :== \psi]
+} \rho 
+\end{align*}
+Here, the first and fifth equalities are by
+Definition~\ref{def:set-sem}, and the fourth equality is by equality
+of the functors $\rho \phi$ and $\rho \psi$. We also have that
+\begin{align*}
+& \setsem{\Gamma; \Phi, \phi \vdash \phi \ol\tau} f \\
+= \; & (f \phi)_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
+    \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+= \; & (\id_{\rho \phi})_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} 
+    \circ (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+= \; & (\rho \phi) \ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} f} \\
+= \; & (\rho \psi) \ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+      \psi]} f} \\ 
+= \; & (\id_{\rho \psi})_{\ol{\setsem{\Gamma, \psi; \Phi \vdash
+      \tau[\phi :== \psi]} \rho'}} \circ (\rho \psi)
+\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]} f} \\ 
+= \; & (f \psi)_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+        \psi]} \rho'}} \circ (\rho \psi) \ol{\setsem{\Gamma, \psi;
+    \Phi \vdash \tau[\phi :== \psi]} f} \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash \psi \ol{\tau[\phi :== \psi]}} f \\
+= \; & \setsem{\Gamma, \psi; \Phi \vdash (\phi \ol\tau) [\phi :== \psi]} f
+\end{align*}
+\item If $\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
+  \ol\alpha. H)\ol\tau : \F$, then the induction hypothesis gives that
+\[\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } \rho =
+\setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]
+} \rho\]
+and 
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau } \rho = \setsem{\Gamma,
+  \psi; \Phi \vdash \tau[\phi :== \psi] } \rho\]
+as well as that
+\[\setsem{\Gamma; \Phi, \phi', \ol{\alpha}, \phi \vdash H } f =
+\setsem{\Gamma, \psi; \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]
+} f\]
+and 
+\[\setsem{\Gamma; \Phi, \phi \vdash \tau } f = \setsem{\Gamma, \psi;
+  \Phi \vdash \tau[\phi :== \psi] } f\]
+for each $\tau$. Then
+\begin{align*}
+& \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
+    \ol\alpha. H)\ol\tau } \rho \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
+  \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}]))
+\ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} \rho} \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
+  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
+  F][\ol{\alpha := A}])) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau}
+  \rho} \\ 
+= \; &  (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
+  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
+  F][\ol{\alpha := A}])\ol{\setsem{ \Gamma, \psi; \Phi \vdash
+    \tau[\phi :== \psi]} \rho} \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda
+  \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } \rho \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda
+  \ol\alpha. H) \ol\tau)[\phi :== \psi] } \rho   
+\end{align*} 
+The first and fifth equalities are by Definition~\ref{def:set-sem}.
+The second equality follows from the following equality:
+\begin{align*}
+&\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
+    \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\ 
+& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
+    \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha
+      := A}] 
+\end{align*}
+These two maps have the same actions on objects and morphisms by the
+induction hypothesis on $H$, and the fact that the extended
+environment $\rho[\phi' := F][\ol{\alpha := A}]$ satisfies the
+required hypothesis. They are thus equal as functors and so have the
+same fixed point. We also have that 
+\begin{align*}
+& \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
+    \ol\alpha. H)\ol\tau } f \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
+  \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha :=
+    \id_A}]))_{\ol{\setsem{\Gamma; \Phi, \phi \vdash \tau} \rho'}} \\ 
+\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
+  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
+    A}])) \ol{\setsem{ \Gamma; \Phi, \phi \vdash \tau} f} \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi',
+  \ol{\alpha}, \phi \vdash H} f [\phi' := \id_F][\ol{\alpha :=
+    \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+        \psi]} \rho'}} \\ 
+\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
+  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
+    A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]}
+  f} \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
+  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' :=
+  \id_F][\ol{\alpha := \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi
+      \vdash \tau[\phi :== \psi]} \rho'}} \\ 
+\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi,
+  \phi', \ol{\alpha}, \phi \vdash H} \rho[\phi' := F][\ol{\alpha :=
+    A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash \tau[\phi :== \psi]}
+  f} \\ 
+= \; & (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi,
+  \phi', \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' :=
+  \id_F][\ol{\alpha := \id_A}]))_{\ol{\setsem{\Gamma, \psi; \Phi
+      \vdash \tau[\phi :== \psi]} \rho'}} \\ 
+\; & \circ (\mu (\lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi;
+  \Phi, \phi', \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' :=
+  F][\ol{\alpha := A}])) \ol{\setsem{ \Gamma, \psi; \Phi \vdash
+    \tau[\phi :== \psi]} f} \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash (\mu \phi'. \lambda
+  \ol\alpha. H[\phi :== \psi]) \ol{\tau[\phi :== \psi]} } f \\ 
+= \; & \setsem{\Gamma, \psi; \Phi \vdash ((\mu \phi'. \lambda
+  \ol\alpha. H) \ol\tau)[\phi :== \psi] } f 
+\end{align*} 
+The first and fifth equalities are by Definition~\ref{def:set-sem}.
+The third equality is by the equality of the arguments to the first
+$\mu$ operator:
+\begin{align*}
+& \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
+    \phi \vdash H} f [\phi' := \id_F][\ol{\alpha := \id_A}] \\ 
+& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
+    \ol{\alpha} \vdash H[\phi :== \psi]} f [\phi' := \id_F][\ol{\alpha
+      := \id_A}] 
+\end{align*}
+By the induction hypothesis on $H$ and the fact that the morphism
+$f[\phi' := \id_F][\ol{\alpha := \id_A}] : \rho[\phi' := F][\ol{\alpha
+    := A}] \to \rho'[\phi' := F][\ol{\alpha := A}]$ still satisfies
+the required hypotheses.  The fourth equality is by the equality of
+the arguments to the second $\mu$ operator:
+\begin{align*}
+& \lambda F. \lambda \ol{A}. \setsem{\Gamma; \Phi, \phi', \ol{\alpha},
+    \phi \vdash H} \rho[\phi' := F][\ol{\alpha := A}] \\ 
+& = \lambda F. \lambda \ol{A}. \setsem{\Gamma, \psi; \Phi, \phi',
+    \ol{\alpha} \vdash H[\phi :== \psi]} \rho[\phi' := F][\ol{\alpha
+      := A}] 
+\end{align*}
+By the same reasoning as above, these two maps are equal as functors,
+and thus have the same fixed point.
+\end{itemize}
+\end{proof}
+
+---
+
+
+
+
+
 
 The following lemma ensures that substitution interacts well with type
 interpretations.  It is a consequence of
@@ -3458,7 +3428,7 @@ relational environments. {\color{blue} The set and relational
   generating the usual congruence closed equational theory induced by
   the other term formers.}
 
-\section{Free Theorems for Nested Types}
+\section{Free Theorems for Nested Types}\label{sec:ftnt}
 
 \subsection{Free Theorems Derived from Naturality}\label{sec:ft-nat}
 
@@ -5772,7 +5742,7 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B\]
 
 
 
-\section{Conclusion}
+\section{Conclusion}\label{sec:conclusion}
 
 Can do everything in abstract locally presentable cartesian closed
 category. 
