@@ -963,10 +963,9 @@ merit special mention. They allows us to map or fold polymorphic
 functions over nested types. Consider, for example, the function
 $\mathit{flatten} : \Nat^\beta
 (\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ that maps perfect
-trees to lists. Even in the absence of extra variables the term
-representing the mapping of each {\em monomorphic instance} of
-$\mathit{flatten}$ at types involving no functorial variables is
-well-typed:
+trees to lists. Even in the absence of extra variables the instance of
+$\map$ required to map each non-functorial monomorphic instantiation
+of $\mathit{flatten}$ over a list of perfect trees is well-typed:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \sigma \hspace*{0.3in} \Gamma;\emptyset
@@ -974,32 +973,34 @@ well-typed:
 \AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,\sigma \hspace*{0.3in}
   \Gamma;\emptyset \vdash \mathit{List}\,\tau$}
 \TIC{$\Gamma;\emptyset \,|\, \emptyset \vdash
-  \map^{F,G}_{\mathit{List}} :
-  \Nat^\emptyset\;(\Nat^\emptyset(\mathit{PTree}\,
-  \sigma)\,(\mathit{List}\, \tau))\; (\Nat^\emptyset(\mathit{List}\,
+  \map^{\mathit{PTree}\,\sigma, \,\mathit{List}\,\tau}_{\mathit{List}\,\alpha} :
+  \Nat^\emptyset\;(\Nat^\emptyset\,(\mathit{PTree}\,
+  \sigma)\,(\mathit{List}\, \tau))\; (\Nat^\emptyset\,(\mathit{List}\,
   (\mathit{PTree}\, \sigma))\,(\mathit{List}\, (\mathit{List}\,
   \tau)))$}
 \DisplayProof
 \end{array}\]
-
-
-
-so that $\map \,\mathit{flatten}$ is as well.
-
-
-But because the functorial contexts for the expressions $F$ and $G$ in
-the rule for $\map^{F,G}_H$ are necessarily empty, the term
-representing the mapping of the {\em polymorphic} $\mathit{flatten}$
-function is not. Indeed, the polymorphic $\mathit{flatten}$ function,
-whose type contains the functorial variable $\beta$, say, cannot have
-a type of the form $\Nat^\emptyset F'\, G'$ for any $F'$ and $G'$ as
-is required in the conclusion of the rule for
-$\map^{F,G}_{\mathit{List}}$. However, in a polymorphic calculus of
-course we want to be able to manipulate terms representing polymorphic
-functions in their entirety rather than just their monomorphic
-instances. The rules with the ``extra'' $\gamma$s recover this
-capability. For example, with these rules the term representing the
-mapping of polymorphic $\mathit{flatten}$ is typeable as follows:
+But in the absence of $\ol \gamma$, the instance
+\[\Gamma;\emptyset \,|\, \emptyset \vdash
+\map^{\mathit{PTree}\,\beta,\mathit{List}\,\beta}_{\mathit{List}\,\alpha}
+: \Nat^\emptyset\;(\Nat^\beta(\mathit{PTree}\,
+\beta)\,(\mathit{List}\, \beta))\; (\Nat^\beta\,(\mathit{List}\,
+(\mathit{PTree}\, \beta))\,(\mathit{List}\, (\mathit{List}\,
+\beta)))\] of $\mathtt{map}$ required to map the {\em polymorphic}
+$\mathit{flatten}$ function over a list of perfect trees is not: in
+that setting the functorial contexts for $F$ and $G$ in the rule for
+$\map^{F,G}_H$ would have to be empty, but the fact that the
+polymorphic $\mathit{flatten}$ function is functorial in some
+variable, say $\delta$, means that it cannot possibly have a type of
+the form $\Nat^\emptyset F\, G$ that would be required for it to be
+the function input to $\map$. Since untypeability of this instance of
+$\map$ is unsatisfactory in a polymorphic calculus, where we naturally
+expect to be able to manipulate entire polymorphic functions rather
+than just their monomorphic instances, we use the ``extra'' variables
+in $\ol \gamma$ to remedy the situation. Specifrically, the rules from
+Definition~\ref{def:well-formed-terms} ensure that the instance of
+$\map$ needed to map the polymorphic $\mathit{flatten}$ function is
+typeable as follows:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha,\beta \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\beta \vdash \mathit{PTree}\,\beta \hspace*{0.3in}
@@ -1012,6 +1013,9 @@ mapping of polymorphic $\mathit{flatten}$ is typeable as follows:
   \beta)))$}
 \DisplayProof
 \end{array}\]
+Similar remarks explain the appearance of $\ol \gamma$ in the typing
+rules for $\tin$ and $\fold$.
+
 
 \vspace*{0.05in}
 
