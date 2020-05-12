@@ -124,8 +124,8 @@
 \newcommand{\PLeaves}{\mathsf{PLeaves}}
 \newcommand{\swap}{\mathsf{swap}}
 \newcommand{\reverse}{\mathsf{reverse}}
-
-
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
 
 \title[Free Theorems for Nested Types]{Parametricity and Free Theorems for 
 Nested Types} %% [Short Title] is optional;
@@ -441,16 +441,17 @@ set and relational interpretations of our types and terms,
 respectively.  Along the way, we prove that the model so constructed
 is parametric, i.e., that it satisfies an Identity Extension Lemma
 (Theorem~\ref{thm:iel}) and an Abstraction Theorem
-(Theorem~\ref{thm:abstraction}). Our interpretations of types rely on
-the result from~\cite{jp19} ensuring that all of the data types that
-can be represented in our calculus have well-defined semantics
-appropriately structured categories.  Finally, in Section~{sec:ftnt},
-we formulate and prove in our calculus a variety of free theorems for
-nested types. We prove not only {\color{blue} actually one generic
-  theorem} naturality-style free theorems in Section~\ref{}, including
-those described above, but also give a formal proof of the short cut
-fusion for nested types first proposed in~\cite{gj07} in
-Section~\ref{}.
+(Theorem~\ref{thm:abstraction}). {\color{blue} Free theorems are just
+  instantiations of the Abstraction Theorem.} Our interpretations of
+types rely on the result from~\cite{jp19} ensuring that all of the
+data types that can be represented in our calculus have well-defined
+semantics appropriately structured categories.  Finally, in
+Section~{sec:ftnt}, we formulate and prove in our calculus a variety
+of free theorems for nested types. We prove not only {\color{blue}
+  actually one generic theorem} naturality-style free theorems in
+Section~\ref{}, including those described above, but also give a
+formal proof of the short cut fusion for nested types first proposed
+in~\cite{gj07} in Section~\ref{}.
 
 In fact, we do much more than just build a parametric model for this
 calculus. The relationship between parametricity and naturality has
@@ -905,16 +906,16 @@ functorial expresssions $F$ and $G$ is $k$. In the rules for $\tin_H$
 and $\fold^F_H$, the functorial variables in $\ol{\beta}$ are fresh
 with respect to $H$, and there is one $\beta$ for every
 $\alpha$. (Recall from above that, in order for the types of $\tin_H$
-and $\fold^F_H$ to be well-formed, the number of $\alpha$s must equal
-the arity of $\phi$.)  Substitution for terms is the obvious extension
+and $\fold^F_H$ to be well-formed, the length of $\alpha$ must equal
+the arity of $\phi$.) Substitution for terms is the obvious extension
 of the usual capture-avoiding textual substitution, and
 Definition~\ref{def:well-formed-terms} ensures that the expected
 weakening rules for well-formed terms hold.
 
-Definition~\ref{def:well-formed-terms} lets us represent, e.g., the
+Using Definition~\ref{def:well-formed-terms} we can represent the
 $\mathtt{reversePTree}$ function from Figure~\ref{fig:funs} in our
 calculus as
-\[\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\PTree\,
+\[\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,
   \alpha} \, (\tin_{\beta + \phi(\beta \times \beta)} \circ s) :
 \Nat^{\alpha} (\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)\] 
 where
@@ -943,15 +944,85 @@ and
 \alpha))\; (\alpha + \mathit{PTree}\,(\alpha \times \alpha))
 \end{array}\]
 respectively. We can similarly represent the $\mathtt{reverseBush}$
-function from Figure~\ref{fig:funs2} as {\color{blue} code goes here}.
+function from Figure~\ref{fig:funs2} as
+\[\vdash \fold_{\onet + \beta \times
+\phi (\phi\beta)}^{\mathit{Bush}\,\alpha}\, ( \tin_{\onet + \beta \times
+  \phi (\phi\beta)} \circ (\onet + t \circ i \circ i') ) :
+\Nat^{\alpha} (\mathit{Bush}\,\alpha)\,(\mathit{Bush}\,\alpha)\] 
+where
+\[\begin{array}{lll}
+\vdash \fold_{\onet + \beta \times \phi
+  (\phi\beta)}^{\mathit{Bush}\,\alpha} : \Nat^{\emptyset}\, (\Nat^{\alpha}\, 
+(\onet + \alpha \times \mathit{Bush}\, (\mathit{Bush}\, \alpha))) \;
+(\mathit{Bush}\,\alpha))\; (\Nat^{\alpha} \,(\mathit{Bush}\,\alpha) \;
+(\mathit{Bush}\,\alpha))\\ 
+\vdash \tin_{\onet + \beta \times \phi (\phi\beta)} : \Nat^{\alpha}\,
+(\onet + \alpha \times \mathit{Bush}\, (\mathit{Bush} \, \alpha))
+\;(\mathit{Bush}\, \alpha)\\
+\end{array}\]
+and $\mathit{bnil}$, $\mathit{bcons}$, $\tin^{-1}_{\onet + \beta
+  \times \phi (\phi\beta)}$, $t$, $i$, and 
+$i'$ are the terms
+\[\begin{array}{l}
+\vdash \tin_{\onet + \beta \times \phi (\phi\beta)} \circ (
+L_{\alpha}\, x.\, \inl\, x) \; : \; \Nat^{\alpha}\, \onet\;
+(\mathit{Bush}\,\alpha)\\ 
+\vdash \tin_{\onet + \beta \times \phi (\phi\beta)} \circ (
+L_{\alpha}\, x.\, \inr\, x ) \; : \; \Nat^{\alpha}\, (\alpha \times
+\mathit{Bush}\,(\mathit{Bush}\,\alpha))\; (\mathit{Bush}\,\alpha)\\
+\vdash \fold_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta
+  \times \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha]}\,
+(\map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
+  \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha][\beta := \alpha],
+  \mathit{Bush}\,\alpha}\, \tin_{\onet + \beta \times \phi
+  (\phi\beta)})\\
+\hspace*{0.2in} : \Nat^{\alpha}\, (\mathit{Bush}\,\alpha)\; (\onet +
+\alpha \times \mathit{Bush}\,(\mathit{Bush}\,\alpha))\\ 
+\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\, \{ \hspace*{0.21in}\ast \mapsto
+\mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
+\hspace*{1in}(s', u) \mapsto \mathsf{case}\;s' \{\hspace*{0.35in}\ast
+\mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
+  \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
+\hspace*{2in} (b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
+(\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
+b\, u )\, u')\}\}\\
+\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
+\times \mathit{Bush}\, (\mathit{Bush} \, \alpha))) \times
+\mathit{Bush}\, (\mathit{Bush} \, (\mathit{Bush}\, \alpha))) \;
+(\alpha \times \mathit{Bush}\, (\mathit{Bush} \, \alpha))\\
+\vdash \alpha \times (\onet + \tin^{-1}_{\onet + \beta \times \phi
+  (\phi\beta)} \times \mathit{Bush}\, (\mathit{Bush} \,
+(\mathit{Bush}\, \alpha)))\\
+\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + \mathit{Bush}
+\, \alpha \times \mathit{Bush}\,( \mathit{Bush} \, (\mathit{Bush}\,
+\alpha))))\\
+\hspace*{0.57in}(\alpha \times (\onet + (\onet + \alpha \times
+\mathit{Bush}\, (\mathit{Bush} \, \alpha)) \times \mathit{Bush}\,
+(\mathit{Bush} \, (\mathit{Bush}\, \alpha))))\\
+\vdash \alpha \times (L_{\alpha}\,x.\, (\tin^{-1}_{\onet +
+  \beta \times \phi (\phi\beta)})_{\mathit{Bush}\,\alpha}\, x)\\
+\hspace{0.2in} : \Nat^{\alpha} (\alpha
+\times \mathit{Bush} \, (\mathit{Bush}\, \alpha)) \; (\alpha \times (\onet
++ \mathit{Bush} \, (\alpha \times \mathit{Bush}\, (\mathit{Bush} \,
+(\mathit{Bush}\, \alpha)))))
+\end{array}\]
+respectively. Here, $\Gamma; \emptyset \,|\, \Delta \vdash \sigma +
+\eta : \Nat^{\ol{\alpha}} (\sigma + F)\; (\sigma + G)$ and $\Gamma;
+\emptyset \,|\, \Delta \vdash \sigma \times \eta : \Nat^{\ol{\alpha}}
+(\sigma \times F)\; (\sigma \times G)$ for $\sigma + \eta :=
+L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto \inl\, s}{t \mapsto \inr\,
+  (\eta_{\ol{\alpha}} t)}$ and $\sigma \times \eta := L_{\ol{\alpha}}\,
+x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
+\,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
+\ol{\alpha} \vdash \sigma : \F$.
 
-Unfortunately, we cannot write functions, such as $\mathit{concat}
-: \mathit{PTree}\, \alpha \to \mathit{PTree} \,\alpha \to
+Unfortunately, we cannot write functions, such as $\mathit{concat} :
+\mathit{PTree}\, \alpha \to \mathit{PTree} \,\alpha \to
 \mathit{PTree}\, \alpha$, that take as input more than one
-non-algebraic nested type. This is because the restriction on the
-contexts in which $\Nat$-types can be formed conflicts with the need
-to feed $\fold$s algebras. (Can't fold over pairs to get the right
-functions; can't get them by using continuation style because of the
+non-algebraic nested type. This is because $\Nat$-types must be formed
+in empty functorial contexts, and this conflicts with the need to feed
+$\fold$s algebras. (Can't fold over pairs to get the right functions;
+can't get them by using continuation style because of the
 aforementioned typing conflict.) {\color{blue} Add Daniel's commentary
   about ``real'' involution reverse for bushes, too. Massage
   paragraph. Not a good restriction.}
@@ -1021,94 +1092,71 @@ rules for $\tin$ and $\fold$.
 
 \section{Interpreting Types}\label{sec:type-interp}
 
-\subsection{Preliminaries}\label{sec:prelims}
+We denote the category of sets and functions by $\set$. The category
+$\rel$ has as its objects triples $(A,B,R)$ where $R$ is a relation
+between the objects $A$ and $B$ in $\set$, i.e., a subset of $A \times
+B$, and has as its morphisms from $(A,B,R)$ to $(A',B',R')$ pairs $(f
+: A \to A',g : B \to B')$ of morphisms in $\set$ such that $(f a,g\,b)
+\in R'$ whenever $(a,b) \in R$. We write $R : \rel(A,B)$ in place of
+$(A,B,R)$ when convenient.  If $R : \rel(A,B)$ we write $\pi_1 R$ and
+$\pi_2 R$ for the {\em domain} $A$ of $R$ and the {\em codomain} $B$
+of $R$, respectively.  If $A : \set$, then we write $\Eq_A =
+(A,A,\{(x,x)~|~ x \in A\})$ for the {\em equality relation} on $A$.
 
-We begin with some categorical preliminaries. For a more detailed
-treatment of definitions and conventions the reader is referred
-to~\cite{}.
+If $\C$ and $\D$ are locally finitely presentable
+categories~\cite{ar94}, write $[\C,\D]$ for the set of
+$\omega$-cocontinuous functors from $\C$ to $\D$. Both $\set$ and
+$\rel$ are locally finitely presentable.
 
-We write $\set$ for the category of sets and functions.
+The key idea underlying Reynolds' parametricity is to give each type
+$\tau(\alpha)$ with one free variable $\alpha$ both an {\em object
+  interpretation} $\tau_0$ taking sets to sets and a \emph{relational
+  interpretation} $\tau_1$ taking relations $R : \rel(A,B)$ to
+relations $\tau_1 (R) : \rel(\tau_0 (A), \tau_0 (B))$, and to
+interpret each term $t(\alpha,x) : \tau(\alpha)$ with one free term
+variable $x : \sigma(\alpha)$ as a map $t_0$ associating to each set
+$A$ a function $t_0(A) : \sigma_0(A) \to \tau_0(A)$. These
+interpretations are to be given inductively on the structures of
+$\tau$ and $t$ in such a way that they imply two fundamental
+theorems. The first is an \emph{Identity Extension Lemma}, which
+states that if $R$ is the equality relation on $A$ then $\tau_1(R)$ is
+the equality relation on $\tau_0(A)$, and is the essential property
+that makes a model relationally parametric, rather than just induced
+by a logical relation. The second is an \emph{Abstraction Theorem},
+which states that, for any $R :\rel(A, B)$, $(t_0(A),t_0(B))$ is a
+morphism in $\rel$ from $(\sigma_0(A),\sigma_0(B),\sigma_1(R))$ to
+$(\tau_0(A),\tau_0(B),\tau_1(R))$. The Identity Extension Lemma is
+similar to the Abstraction Theorem except that it applies to, and thus
+can be used to reason about, {\em all} elements of a type's
+interpretation, not just those that are interpretations of terms.
+%i.e., $t_0(A)$ and $t_0(B)$ map related arguments to
+%related results.
+Similar results are expected to hold for types and terms with any
+number of free variables.
 
-\begin{dfn}\label{def:rel}
-The category $\rel$ is defined as follows.
-\begin{itemize}
-\item An object of $\rel$ is a triple $(A,B,R)$ where $R$ is a
-  relation between the objects $A$ and $B$ in $\set$, i.e., a subset
-  of $A \times B$. We write $R : \rel(A,B)$ when convenient.
-\item A morphism between objects $R : \rel(A,B)$ and $R' :
-  \rel(A',B')$ of $\rel$ is a pair $(f : A \to A',g : B \to B')$ of
-  morphisms in $\set$ such that $(fa,g\,b) \in R'$ whenever $(a,b) \in
-  R$.
-  \end{itemize}
-\end{dfn}
-
-If $R : \rel(A,B)$ we write $\pi_1 R$ and $\pi_2 R$ for the {\em
-  domain} $A$ of $R$ and the {\em codomain} $B$ of $R$, respectively.
-If $A : \set$, then we write $\Eq_A = (A,A,\{(x,x)~|~ x \in A\})$ for
-the {\em equality relation} on $A$.
-
-\vspace*{0.1in}
-
-If $\C$ and $\D$ are categories, we write $[\C,\D]$ for the set of
-$\omega$-cocontinuous functors from  $\C$ to $\D$.
-
-
-
-The key idea underlying 
-parametricity is to give each type $T(\alpha)$ with a free type
-variable $\alpha$ both an {\em object interpretation} $T_0$ taking
-sets to sets and a \emph{relational interpretation} $T_1$ taking
-relations $R \subseteq A \times B$ to relations $T_1(R) \subseteq
-T_0(A) \times T_0(B)$, and to interpret each term $\alpha\,|\, x :
-S(\alpha) \vdash t(\alpha,x) : T(\alpha)$ as a map $t_0$ associating
-to each set $A$ a function $t_0(A) : S_0(A) \to T_0(A)$. These
-interpretations were to be given inductively on the structure of $T$
-and $t$ in such a way that they imply two key theorems: an
-\emph{Identity Extension Lemma}, stating that if $R$ is the equality
-relation on $A$ then $T_1(R)$ is the equality relation on $T_0(A)$;
-and an \emph{Abstraction Theorem}, stating that, for any relation $R
-\subseteq A \times B$, $t_0(A)$ and $t_0(B)$ map arguments related by
-$S_1(R)$ to results related by $T_1(R)$. Similar results hold for
-types and terms with any number of free variables.
-
-Free theorems are just instantiations of the Abstraction
-Theorem. 
-
-Abstraction Theorem vs ``just'' logical relations, etc.
-
-
-
-
-Parametricity requires that set interpretations of types are defined
-simultaneously with their relational interpretations. This is because
-the underlying interpretations of $\Nat$ types must be cut down to
-include only the ``parametric'' elements, as discussed in,
-e.g.,~\cite{agj14,bfss90,rey83}. Indeed, without this cutting down it
-will not be possible to prove the Identity Extension Lemma
-(Theorem~\ref{thm:iel}), which is the key property that makes a model
-relationally parametric, rather than just induced by a logical
-relation. The Identity Extension Lemma is similar to the Abstraction
-Theorem (Theorem~\ref{thm:abstraction}), except that it applies to
-{\em all} elements of a type's interpretation, not just those that are
-interpretations of terms. It can therefore be used to reason about
-arbitrary elements of a type's interpretation, not just those that are
-interpretations of terms.
-
-In this section we give the set interpretations for types; in the next
-section we give their relational interpretations. While the set
-interpretations are relatively straightforward, their relation
-interpretations are less so, mainly because of the cocontinuity
-conditions we must impose to ensure that they are well-behaved. We
-take some effort to develop these in Section~\ref{sec:rel-interp},
-which separates Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in
-space, but otherwise has no impact on the fact that they are given by
-mutual induction.
+As usual, parametricity in our setting requires that set
+interpretations of types are defined simultaneously with their
+relational interpretations. This allows us to cut down the
+interpretations of $\Nat$ types to include only the ``parametric''
+elements, as discussed in, e.g.,~\cite{agj14,atk??,bfss90,rey83},
+which is crucial to obtaining an Identity Extension Lemma
+(Theorem~\ref{thm:iel}) in the present setting.  We give set
+interpretations for our types in Section~\ref{sec:set-interp} and give
+their relational interpretations in Section~\ref{sec:rel-interp}.
+While the set interpretations are relatively straightforward, their
+relation interpretations are less so, mainly because of the
+cocontinuity conditions we must impose to ensure that they are
+well-behaved. We take some effort to develop conditions in
+Section~\ref{sec:rel-interp}, which separates
+Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in space, but
+otherwise has no impact on the fact that they are given by mutual
+induction.
 
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
 
 To ensure that we stay in the setting of~\cite{jp19} --- and thus to
 ensure that all of the types in our calculus have well-defined
-intepretations in $\set$ and $\rel$ --- we interpret all type
+intepretations in the $\set$ and $\rel$ --- we interpret all type
 variables as $\omega$-cocontinuous functors in
 Definitions~\ref{def:set-env} and~\ref{def:reln-env}.
 
@@ -1129,7 +1177,7 @@ between them, which we denote $\setenv$.
 When convenient we identify a functor $F : [\set^0, \set]$ with the
 set that is its codomain.  With this convention, a set environment
 maps a type variable of arity $0$ to an $\omega$-cocontinuous functor
-from $\set^0$ to $\set$ --- i.e., to a set.  If $\ol{\alpha} =
+from $\set^0$ to $\set$, i.e., to a set.  If $\ol{\alpha} =
 \{\alpha_1,...,\alpha_k\}$ and $\ol{A} = \{A_1,...,A_k\}$, then we
 write $\rho[\ol{\alpha := A}]$ for the set environment $\rho'$ such
 that $\rho' \alpha_i = A_i$ for $i = 1,...,k$ and $\rho' \alpha = \rho
@@ -1139,12 +1187,10 @@ If $\rho$ is a set environment we write $\Eq_\rho$ for the relation
 environment such that $\Eq_\rho v = \Eq_{\rho v}$ for every type
 variable $v$; see Definition~\ref{def:reln-env} below for the complete
 definition of a relation environment. The relational interpretations
-referred to in the condition on the natural transformations in the
-clause of Definition~\ref{def:set-sem} for types of the form
-$\Nat^{\ol{\alpha}}\,F\,G$ are given in full in
-Definition~\ref{def:rel-sem}. As usual, this condition ensures that
-the interpretations of such types are sufficiently uniform to ensure
-parametricity.
+in the second clause of Definition~\ref{def:set-sem} are given in
+Definition~\ref{def:rel-sem}.
+%As usual, this condition ensures that the interpretations of such
+%types are sufficiently uniform to ensure parametricity.
 
 \begin{dfn}\label{def:set-sem}
 Let $\rho$ be a set environment. The {\em set interpretation}
@@ -1176,11 +1222,11 @@ $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined by
   \setsem{\Gamma;\Phi \vdash \tau}\rho\\ 
   \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{\tau}}\rho &= (\mu
-    T^\set_{\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}\\
-    \text{where } T^\set_{\rho} F & = \lambda
+    T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}\\
+    \text{where } T^\set_{H,\rho}\,F & = \lambda
   \ol{A}. \setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash
     H}\rho[\phi :=  F][\ol{\alpha := A}]\\
-  \text{and } T^\set_{\rho} \eta &= \lambda
+  \text{and } T^\set_{H,\rho}\,\eta &= \lambda
   \ol{A}. \setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
@@ -1195,17 +1241,17 @@ interpretation of $\Nat$ types ensures that $\setsem{\Gamma \vdash
 environment and $\vdash \tau : \F$ then we may write $\setsem{\vdash
   \tau}$ instead of $\setsem{\vdash \tau}\rho$ since the environment
 is immaterial. We note that the second clause of
-Definition~\ref{def:set-sem} does indeed define a set. Indeed, local
-finite presentability of $\set$ and $\omega$-cocontinuity of
+Definition~\ref{def:set-sem} does indeed define a set: local finite
+presentability of $\set$ and $\omega$-cocontinuity of
 $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$ ensure that $\{\eta :
 \setsem{\Gamma;\ol{\alpha} \vdash F}\rho \Rightarrow
 \setsem{\Gamma;\ol{\alpha} \vdash G}\rho\}$ (which contains
 $\setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho$) is a
 subset of
-\[\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
+$\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
     S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha :=
-      S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and }
-S_i \mbox{ is a finite set for } i = 1,...,|\ol{\alpha}|\big\}\] There
+      S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and }$
+$S_i \mbox{ is a finite set for } i = 1,...,|\ol{\alpha}|\big\}$. There
 are countably many choices for tuples $\ol{S}$, and each of these
 gives rise to a morphism from ${\setsem{\Gamma;\ol{\alpha} \vdash
     F}\rho[ \ol{\alpha := S}]}$ to ${\setsem{\Gamma;\ol{\alpha} \vdash
@@ -1215,37 +1261,32 @@ locally small.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
-\setenv$, $T^\set_{\rho}$ is an $\omega$-cocontinuous endofunctor on
-$[\set^k, \set]$, and thus admits a fixed point.  Since $T_\rho^\set$
-is defined in terms of $\setsem{\Gamma;\Phi,\phi, \ol{\alpha} \vdash
-  H}$, this means that set interpretations of types must be
-$\omega$-cocontinuous functors.  This in turn means that the actions
-of set interpretations of types on objects and on morphisms in
-$\setenv$ are intertwined.  In fact, we know from~\cite{jp19} that,
-for every $\Gamma; \ol{\alpha} \vdash \tau : \F$, $\setsem{\Gamma;
-  \ol{\alpha} \vdash \tau}$ is actually functorial in $\ol{\alpha}$
-and $\omega$-cocontinuous.
-
-Indeed, for each $\setsem{\Gamma; \Phi, \phi^k, \ol{\alpha} \vdash
-  H}$, the corresponding operator $T^\set$ {\color{blue} Should be
-  $T^\set_H$, really, and similarly throughout.} can be extended to a
-{\em functor} from $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The
-action of $T^\set$ on an object $\rho \in \setenv$ is given by the
-higher-order functor $T_\rho^\set$, whose actions on objects (functors
-from $\set^k$ to $\set$) and morphisms (natural transformations
-between such functors) are as defined in
-Definition~\ref{def:set-sem}. The action of $T^\set$ {\color{blue}
-  $T_H^\set$} on a morphism $f : \rho \to \rho'$ is the higher-order
-natural transformation {\color{blue} May want to use $T^\set_{H,f}$
-  rather than $\sigma^\set_f$ in final version.} $\sigma^\set_f :
-T^\set_\rho \to T^\set_{\rho'}$ whose action on any $F :
-[\set^k,\set]$ is the natural transformation $\sigma^\set_f\, F :
-T^\set_\rho\,F \to T^\set_{\rho'}\,F$ whose component at $\ol{A}$ is
-\[(\sigma^\set_f \, F)_{\ol{A}}  =  \setsem{\Gamma;
-  \Phi,\phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
-    \id_A}]\] The next definition uses this observation to define the
-action of each functor interpreting a type on morphisms between set
-environments.
+\setenv$, $T^\set_{H,\rho}$ is an $\omega$-cocontinuous endofunctor on
+$[\set^k, \set]$, and thus admits a fixed point.  Since
+$T_{H,\rho}^\set$ is defined in terms of $\setsem{\Gamma;\Phi,\phi,
+  \ol{\alpha} \vdash H}$, this means that interpretations of types
+must be such functors, which in turn means that the actions of set
+interpretations of types on objects and on morphisms in $\setenv$ are
+intertwined. Fortunately, we know from~\cite{jp19} that, for every
+$\Gamma; \ol{\alpha} \vdash \tau : \F$, $\setsem{\Gamma; \ol{\alpha}
+  \vdash \tau}$ is actually in $[\set^k,\set]$ where $k = |\ol
+\alpha|$. This means that for each $\setsem{\Gamma; \Phi, \phi^k,
+  \ol{\alpha} \vdash H}$, the corresponding operator $T^\set_{H}$ can
+be extended to a {\em functor} from $\setenv$ to
+$[[\set^k,\set],[\set^k,\set]]$. The action of $T^\set_H$ on an object
+$\rho \in \setenv$ is given by the higher-order functor
+$T_{H,\rho}^\set$, whose actions on objects (functors in $[\set^k,
+  \set]$) and morphisms (natural transformations between such
+functors) are as defined in Definition~\ref{def:set-sem}. The action
+of $T^\set_H$ on a morphism $f : \rho \to \rho'$ is the higher-order
+natural transformation $T^\set_{H,f} : T^\set_{H,\rho} \to
+T^\set_{H,\rho'}$ whose action on $F : [\set^k,\set]$ is the natural
+transformation $T^\set_{H,f}\, F : T^\set_{H,\rho}\,F \to
+T^\set_{H,\rho'}\,F$ whose component at $\ol{A}$ is $(T^\set_{H,f}\,
+F)_{\ol{A}} = \setsem{\Gamma; \Phi,\phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_A}]$. The next definition uses the functor
+$T^\set_H$ to define the actions of functors interpreting types on
+morphisms between set environments.
 
 \begin{dfn}\label{def:set-sem-funcs}
 Let $f: \rho \to \rho'$ for set environments $\rho$ and $\rho'$ (so
@@ -1298,38 +1339,37 @@ morphism $f$ is given as follows:
     \tau}f$.
 \item If $\Gamma;\Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}$ we define
-\[\begin{array}{cl}
+  \[\begin{array}{cl}
  & \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}} f\\
  : & \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{\tau}} \rho \,\to \,\setsem{\Gamma;\Phi \vdash (\mu
   \phi.\lambda\ol{\alpha}. H)\ol{\tau}} \rho'\\
- = & (\mu T^\set_\rho)\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}\, \to \, (\mu
-T^\set_{\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
+ = & (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}\,
+ \to \, (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
 \end{array}\]
 \noindent
 by
 \[\begin{array}{ll}
-& (\mu \sigma^\set_f)\ol{\setsem{\Gamma;\Phi \vdash
-  \tau}\rho'} \circ (\mu T^\set_\rho)\ol{\setsem{\Gamma;\Phi \vdash \tau}f}\\
-= & (\mu T^\set_{\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}f} \circ (\mu
-\sigma^\set_f)\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} 
+& (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash
+  \tau}\rho'} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}f}\\
+= & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}f} \circ (\mu
+T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} 
 \end{array}\]
-Again, this equality holds because $\mu T^\set_\rho$ and $\mu
-T^\set_{\rho'}$ are functors and $\mu \sigma_f^\set : \mu T_\rho^\set
-\to \mu T_{\rho'}^\set$ is a
-natural transformation, so that the following naturality square
-commutes:
+This equality holds because $\mu T^\set_{H,\rho}$ and $\mu
+T^\set_{H,\rho'}$ are functors and $\mu T_{H,f}^\set : \mu
+T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a natural transformation,
+so that the following naturality square commutes:
 \begin{equation}\label{eq:cd3}
 \begin{CD}
- (\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} @> (\mu
-  \sigma^\set_f)_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}} >> (\mu
-  T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} \\ 
- @V(\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}f}VV @V  (\mu
- T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}f} VV \\ 
-(\mu T^\set_\rho) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'} @>(\mu
- \sigma^\set_f)_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}}>> (\mu
- T^\set_{\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
+ (\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} @> (\mu
+  T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho}} >> (\mu
+  T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} \\ 
+ @V(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi \vdash \tau}f}VV @V  (\mu
+ T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}f} VV \\ 
+(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'} @>(\mu
+ T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}}>> (\mu
+ T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
 \end{CD}
 \end{equation}
 \end{itemize}
@@ -1347,15 +1387,14 @@ then $F^* \ol{(\alpha, \beta)} = (F^1 \ol{\alpha}, F^2 \ol{\beta})$.
 We define $F\overline{R}$ to be $F^*\overline{R}$ and
 $F\overline{(\alpha,\beta)}$ to be $F^*\overline{(\alpha,\beta)}$.
 \end{dfn}
-Expanding the last clause of Definition~\ref{def:rel-transf} is
-equivalent to: if $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b)
-  \in S}$ then $(c,d) \in F^*\ol{R}$ implies $(F^1 \ol{\alpha}\,c,F^2
-\ol{\beta}\,d) \in F^*\ol{S}$.
-
-When convenient we identify a $0$-ary relation transformer $(A,B,R)$
-with $R : \rel(A,B)$. We may also write $F^1$ and $F^2$ for $\pi_1 F$
-and $\pi_2 F$. We extend these conventions to relation environments,
-introduced in Definition~\ref{def:reln-env} below, as well.
+The last clause of Definition~\ref{def:rel-transf} expands to: if
+$\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b) \in S}$ then
+$(c,d) \in F^*\ol{R}$ implies $(F^1 \ol{\alpha}\,c,F^2 \ol{\beta}\,d)
+\in F^*\ol{S}$. When convenient we identify a $0$-ary relation
+transformer $(A,B,R)$ with $R : \rel(A,B)$. We may also write $\pi_1
+F$ for $F^1$ and $\pi_2 F$ for $F^2$. We further extend these
+conventions to relation environments, introduced in
+Definition~\ref{def:reln-env} below.
 
 \begin{dfn}
 The category $RT_k$ of $k$-ary relation transformers is given by the
@@ -1367,8 +1406,8 @@ following data:
   $\delta^1 : G^1 \to H^1$, $\delta^2 : G^2 \to H^2$ such that, for
   all $\ol{R : \rel(A, B)}$, if $(x, y) \in G^*\ol{R}$ then
   $(\delta^1_{\ol{A}}x, \delta^2_{\ol{B}}y) \in H^*\ol{R}$.
-  {\color{blue} Comment that this is basically a fibred natural
-    transformation, but for heterogeneous relations.}
+%  {\color{blue} Comment that this is basically a fibred natural
+%    transformation, but for heterogeneous relations.}
 \item Identity morphisms and composition are inherited from the
   category of functors on $\set$.
 \end{itemize}
@@ -1391,26 +1430,29 @@ An endofunctor $H$ on $RT_k$ is a triple $H = (H^1,H^2,H^*)$, where
   $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$
 \end{itemize}
 \end{dfn}
-Since the results of applying $H$ to $k$-ary relation transformers and
-morphisms between them must again be $k$-ary relation transformers and
-morphisms between them, respectively, Definition~\ref{def:RT-functor}
-implicitly requires that the following three conditions hold:
+Since the results of applying an endofunctor $H$ to $k$-ary relation
+transformers and morphisms between them must again be $k$-ary relation
+transformers and morphisms between them, respectively,
+Definition~\ref{def:RT-functor} implicitly requires that the following
+three conditions hold:
 \begin{enumerate}
 \item if $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
-  \[H^*(F^1,F^2,F^*) \ol{R} : \rel(H^1F^1 \ol{A}, H^2F^2 
-  \ol{B})\] In other words, $\pi_1 (H^*(F^1,F^2,F^*) \ol{R}) = H^1F^1
-  \ol{A}$ and $\pi_2 (H^*(F^1,F^2,F^*) \ol{R}) = H^2F^2 \ol{B}$.
+  $H^*(F^1,F^2,F^*) \ol{R} : \rel(H^1F^1 \ol{A}, H^2F^2 
+  \ol{B})$
+  %In other words, $\pi_1 (H^*(F^1,F^2,F^*) \ol{R}) = H^1F^1
+  %\ol{A}$ and $\pi_2 (H^*(F^1,F^2,F^*) \ol{R}) = H^2F^2 \ol{B}$.
 \item if $(\alpha_1, \beta_1) \in \Homrel(R_1,S_1),..., (\alpha_k,
   \beta_k) \in \Homrel(R_k,S_k)$, then
-  \[H^*(F^1,F^2,F^*) \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha}, H^2F^2
-  \ol{\beta})\] In other words, $\pi_1 (H^*(F^1,F^2,F^*) \ol{(\alpha,
-    \beta)}) = H^1F^1 \ol{\alpha}$ and $\pi_2 (H^*(F^1,F^2,F^*) 
-      \ol{(\alpha, \beta)}) = H^2F^2 \ol{\beta}$.
+  \[H^*(F^1,F^2,F^*)\, \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha}, H^2F^2
+  \ol{\beta})\]
+  %In other words, $\pi_1 (H^*(F^1,F^2,F^*) \ol{(\alpha,
+  %  \beta)}) = H^1F^1 \ol{\alpha}$ and $\pi_2 (H^*(F^1,F^2,F^*) 
+  %    \ol{(\alpha, \beta)}) = H^2F^2 \ol{\beta}$.
 \item if $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ and
   $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
   \[\mbox{ if }(x, y) \in H^*(F^1,F^2,F^*)\ol{R} \mbox{ then }
   ((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
-  H^*(G^1,G^2,G^*)\ol{R}\] Note, however, that this condition is
+  H^*(G^1,G^2,G^*)\ol{R}\] Of course this condition is
   automatically satisfied because it is implied by the third bullet
   point of Definition~\ref{def:RT-functor}.
 \end{enumerate}
@@ -1420,9 +1462,9 @@ If $H$ and $K$ are endofunctors on $RT_k$, then a {\em natural
   transformation} $\sigma : H \to K$ is a pair $\sigma = (\sigma^1,
 \sigma^2)$, where $\sigma^1 : H^1 \to K^1$ and $\sigma^2 : H^2 \to
 K^2$ are natural transformations between endofunctors on
-$[\set^k,\set]$ and the component of $\sigma$ at the $k$-ary relation
-transformer $F$ is given by $\sigma_F = (\sigma^1_{F^1},
-\sigma^2_{F^2})$.
+$[\set^k,\set]$ and the component of $\sigma$ at $F
+%= (F^1,F^2,F^*)
+\in RT_k$ is given by $\sigma_F = (\sigma^1_{F^1}, \sigma^2_{F^2})$.
 \end{dfn}
 Definition~\ref{def:RT-nat-trans} entails that $\sigma^i_{F^i}$ must
 be natural in $F^i : [\set^k,\set]$, and, for every $F$, both
@@ -1433,74 +1475,85 @@ transformers must be morphisms of $k$-ary relation transformers,
 Definition~\ref{def:RT-nat-trans} implicitly requires that
 $(\sigma_F)_{\overline{R}} = ( (\sigma^1_{F^1})_{\overline{A}},
 (\sigma^2_{F^2})_{\overline{B}})$ is a morphism in $\rel$ for any
-$k$-tuple of relations $\overline{R : \rel(A, B)}$, i.e., if $(x, y)
-\in H^*F\overline{R}$, then $((\sigma^1_{F^1})_{\overline{A}} x,
+$k$-tuple of relations $\overline{R : \rel(A, B)}$, i.e., that if $(x,
+y) \in H^*F\overline{R}$, then $((\sigma^1_{F^1})_{\overline{A}} x,
 (\sigma^2_{F^2})_{\overline{B}} y) \in K^*F\overline{R}$.
 
 \vspace*{0.1in}
 
-Next, we see that we can compute colimits in $RT_k$.
+Next, we observe that we can compute {\color{blue} $\omega$-directed}
+colimits in $RT_k$. It is straightforward to check that if $\cal D$ is
+an $\omega$-directed set, then $\colim{d \in {\cal D}}{(F^1_d,
+  F^2_d,F^*_d)} = (\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal
+    D}}{F^2_d}, \colim{d \in {\cal D}}{F^*_d})$.
 
-\begin{lemma}\label{lem:colimits}
-$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
-      D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
-      D}}{F^*_d})$
-\end{lemma}
-\begin{proof}
-We first observe that $(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in
-  {\cal D}}{F^2_d}, \colim{d \in {\cal D}}{F^*_d})$ is in $RT_k$.  If
-$R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then $\colim{d \in \cal
-  D}{F^*_d\ol{R}} : \rel(\colim{d \in {\cal D}}{F^1_d\ol{A}},
-\,\colim{d \in {\cal D}}{F^2_d\ol{B}})$ because of how colimits are
-computed in $\rel$. Moreover, if $(\alpha_1, \beta_1) \in
-\Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$, then
-\[\begin{array}{ll}
-  & (\colim{d \in \cal D}{F_d^*})\ol{(\alpha,\beta)}\\
-= & \colim{d \in \cal D}{F_d^*\ol{(\alpha,\beta)}}\\
-= & \colim{d \in \cal D}{(F_d^1\ol{\alpha},\, F_d^2\ol{\beta})}\\
-= & (\colim{d \in \cal D}{F^1_d \ol{\alpha}}, \,\colim{d \in \cal D}{
-  F^2_d \ol{\beta}})
-\end{array}\]
-so $(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d},
-\colim{d \in {\cal D}}{F^*_d})$ actually is in $RT_k$.
+%\begin{lemma}\label{lem:colimits}
+%$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
+%      D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
+%      D}}{F^*_d})$
+%\end{lemma}
+%\begin{proof}
+%We first observe that $(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in
+%  {\cal D}}{F^2_d}, \colim{d \in {\cal D}}{F^*_d})$ is in $RT_k$.  If
+%$R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then $\colim{d \in \cal
+%  D}{F^*_d\ol{R}} : \rel(\colim{d \in {\cal D}}{F^1_d\ol{A}},
+%\,\colim{d \in {\cal D}}{F^2_d\ol{B}})$ because of how colimits are
+%computed in $\rel$. Moreover, if $(\alpha_1, \beta_1) \in
+%\Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$, then
+%\[\begin{array}{ll}
+%  & (\colim{d \in \cal D}{F_d^*})\ol{(\alpha,\beta)}\\
+%= & \colim{d \in \cal D}{F_d^*\ol{(\alpha,\beta)}}\\
+%= & \colim{d \in \cal D}{(F_d^1\ol{\alpha},\, F_d^2\ol{\beta})}\\
+%= & (\colim{d \in \cal D}{F^1_d \ol{\alpha}}, \,\colim{d \in \cal D}{
+%  F^2_d \ol{\beta}})
+%\end{array}\]
+%so $(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d},
+%\colim{d \in {\cal D}}{F^*_d})$ actually is in $RT_k$.
+%
+%Now to see that $\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} =
+%(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d},
+%\colim{d \in {\cal D}}{F^*_d})$, let $\gamma^1_d : F^1_d \to \colim{d
+%  \in {\cal D}}{F^1_d}$ and $\gamma^2_d : F^2_d \to \colim{d \in {\cal
+%    D}}{F^2_d}$ be the injections for the colimits $\colim{d \in {\cal
+%    D}}{F^1_d}$ and $\colim{d \in {\cal D}}{F^2_d}$,
+%respectively. Then $(\gamma^1_d, \gamma^2_d) : (F^1_d, F^2_d,F^*_d)
+%\to \colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)}$ is a morphism in
+%$RT_k$ because, for all $\ol{R : \rel(A, B)}$,
+%$((\gamma^1_d)_{\ol{A}}, (\gamma^2_d)_{\ol{B}}) : F^*_d \ol{R} \to
+%\colim{d \in {\cal D}}{F^*_d \ol{R}}$ is a morphism in $\rel$. So
+%$\{(\gamma^1_d, \gamma^2_d)\}_{d \in {\cal D}}$ are the mediating
+%morphisms of a cocone in $RT_k$ with vertex $\colim{d \in {\cal
+%    D}}{(F^1_d, F^2_d,F^*_d)}$. To see that this cocone is a
+%colimiting cocone, let $C = (C^1,C^2,C^*)$ be the vertex of a cocone
+%for $\{(F^1_d,F^2_d,F^*_d)\}_{d \in {\cal D}}$ with injections
+%$(\delta^1_d,\delta^2_d) : (F^1_d,F^2_d,F^*_d) \to C$. If $\eta^1 :
+%\colim{d \in {\cal D}}{F^1_d} \to C^1$ and $\eta^2 : \colim{d \in
+%  {\cal D}}{F^2_d} \to C^2$ are the mediating morphisms in
+%$[\set^k,\set]$, then $\eta^1$ and $\eta^2$ are unique such that
+%$\delta^1_d = \eta^1 \circ \gamma^1_d$ and $\delta^2_d = \eta^2 \circ
+%\gamma^2_d$.  We therefore have that $(\eta^1,\eta^2) : \colim{d \in
+%  {\cal D}}{(F^1_d, F^2_d,F^*_d)} \to C$ is the mediating morphism in
+%$RT_k$. Indeed, for all $\ol{R : \rel(A,B)}$ and $(x,y) \in \colim{d
+%  \in {\cal D}}{F^*_d \ol{R}}$, there exist $d$ and $(x',y') \in
+%F^*_d\ol{R}$ such that $(\gamma^1_d)_{\ol{A}}x' = x$ and
+%$(\gamma^2_d)_{\ol{B}}y' = y$. But then $(\eta^1_{\ol{A}}x,
+%\eta^2_{\ol{B}}y) = (\eta^1_{\ol{A}}((\gamma^1_d)_{\ol{A}}x'),
+%\eta^2_{\ol{B}}((\gamma^2_d)_{\ol{B}}y')) = ((\delta^1_d)_{\ol{A}}x',
+%(\delta^2_d)_{\ol{B}}y')$, and this pair is in $C^*\ol{R}$ because
+%$(\delta^1_d, \delta^2_d)$ is a morphism from $(F^1_d,F^2_d,F^*_d)$ to
+%$C$ in $RT_k$.
+%\end{proof}
 
-Now to see that $\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} =
-(\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d},
-\colim{d \in {\cal D}}{F^*_d})$, let $\gamma^1_d : F^1_d \to \colim{d
-  \in {\cal D}}{F^1_d}$ and $\gamma^2_d : F^2_d \to \colim{d \in {\cal
-    D}}{F^2_d}$ be the injections for the colimits $\colim{d \in {\cal
-    D}}{F^1_d}$ and $\colim{d \in {\cal D}}{F^2_d}$,
-respectively. Then $(\gamma^1_d, \gamma^2_d) : (F^1_d, F^2_d,F^*_d)
-\to \colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)}$ is a morphism in
-$RT_k$ because, for all $\ol{R : \rel(A, B)}$,
-$((\gamma^1_d)_{\ol{A}}, (\gamma^2_d)_{\ol{B}}) : F^*_d \ol{R} \to
-\colim{d \in {\cal D}}{F^*_d \ol{R}}$ is a morphism in $\rel$. So
-$\{(\gamma^1_d, \gamma^2_d)\}_{d \in {\cal D}}$ are the mediating
-morphisms of a cocone in $RT_k$ with vertex $\colim{d \in {\cal
-    D}}{(F^1_d, F^2_d,F^*_d)}$. To see that this cocone is a
-colimiting cocone, let $C = (C^1,C^2,C^*)$ be the vertex of a cocone
-for $\{(F^1_d,F^2_d,F^*_d)\}_{d \in {\cal D}}$ with injections
-$(\delta^1_d,\delta^2_d) : (F^1_d,F^2_d,F^*_d) \to C$. If $\eta^1 :
-\colim{d \in {\cal D}}{F^1_d} \to C^1$ and $\eta^2 : \colim{d \in
-  {\cal D}}{F^2_d} \to C^2$ are the mediating morphisms in
-$[\set^k,\set]$, then $\eta^1$ and $\eta^2$ are unique such that
-$\delta^1_d = \eta^1 \circ \gamma^1_d$ and $\delta^2_d = \eta^2 \circ
-\gamma^2_d$.  We therefore have that $(\eta^1,\eta^2) : \colim{d \in
-  {\cal D}}{(F^1_d, F^2_d,F^*_d)} \to C$ is the mediating morphism in
-$RT_k$. Indeed, for all $\ol{R : \rel(A,B)}$ and $(x,y) \in \colim{d
-  \in {\cal D}}{F^*_d \ol{R}}$, there exist $d$ and $(x',y') \in
-F^*_d\ol{R}$ such that $(\gamma^1_d)_{\ol{A}}x' = x$ and
-$(\gamma^2_d)_{\ol{B}}y' = y$. But then $(\eta^1_{\ol{A}}x,
-\eta^2_{\ol{B}}y) = (\eta^1_{\ol{A}}((\gamma^1_d)_{\ol{A}}x'),
-\eta^2_{\ol{B}}((\gamma^2_d)_{\ol{B}}y')) = ((\delta^1_d)_{\ol{A}}x',
-(\delta^2_d)_{\ol{B}}y')$, and this pair is in $C^*\ol{R}$ because
-$(\delta^1_d, \delta^2_d)$ is a morphism from $(F^1_d,F^2_d,F^*_d)$ to
-$C$ in $RT_k$.
-\end{proof}
+
+
+
+
+
+
 
 \begin{dfn}\label{def:omega-cocont}
 An endofunctor $T = (T^1,T^2,T^*)$ on $RT_k$ is {\em
-  $\omega$-cocontinuous} if $T^1$ and $T^2$ are $\omega$-cocontinuous
+$\omega$-cocontinuous} if $T^1$ and $T^2$ are $\omega$-cocontinuous
 endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
 functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
 $[RT_k,[\rel^k,\rel]]$.
@@ -1569,7 +1622,7 @@ denote $\relenv$.
 When convenient we identify a $0$-ary relation transformer with the
 relation (transformer) that is its codomain.  With this convention, a
 relation environment maps a type variable of arity $0$ to a $0$-ary
-relation transformer --- i.e., to a relation.  We write
+relation transformer, i.e., to a relation.  We write
 $\rho[\ol{\alpha := R}]$ for the relation environment $\rho'$ such
 that $\rho' \alpha_i \, = R_i$ for $i = 1,...,k$ and $\rho' \alpha =
 \rho\alpha$ if $\alpha \not \in \{\alpha_1,...,\alpha_k\}$.  If $\rho$
@@ -2712,9 +2765,8 @@ By induction on the structure of $\tau$.
 \item The application case is proved by the following sequence of
   equalities, where the second equality is by the induction hypothesis
   and the definition of the relation environment $\Eq_\rho$, the third
-  is by the definition of application of relation transformers from
-  Definition~\ref{def:rel-transf}, and the fourth is by
-  Lemma~\ref{lem:eq-reln-equalities}:
+  is by the definition of application of relation transformers, and
+  the fourth is by Lemma~\ref{lem:eq-reln-equalities}:
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\Eq_{\rho} &=
