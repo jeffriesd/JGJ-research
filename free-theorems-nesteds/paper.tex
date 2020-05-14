@@ -493,9 +493,17 @@ structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
 {\color{red} Compare with Bob's paper.  What's new? No ADTs, etc., at
-  type level; no intro/elim rules for them at term level. Treatment of
-in Secs 4.4 and 4.5 therefore hand-wavey. Similar ideas, but
-hand-wavey. (Only gets one half of graph lemma, too.}
+  type level; no intro/elim rules for them at term level, i.e., no
+  term calculus for nested types. Treatment of in Secs 4.4 and 4.5
+  therefore hand-wavey. Similar ideas, but hand-wavey. (Only gets one
+  half of graph lemma, too.
+
+Bob has relation transformers, but since he has no $\mu$-types, there
+is no need for $\omega$-cocont, and this need not be propagated
+through entire semantic set up. This is what takes most of the effort
+in our setting.
+
+We merge Bob and~\cite{jp219}.}
 
 
 
@@ -1026,7 +1034,8 @@ $\fold$s algebras. (Can't fold over pairs to get the right functions;
 can't get them by using continuation style because of the
 aforementioned typing conflict.) {\color{blue} Add Daniel's commentary
   about ``real'' involution reverse for bushes, too. Massage
-  paragraph. Not a good restriction.}
+  paragraph. Not a good restriction. Also, generalized folds don't
+  help much.}
 
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
@@ -1633,17 +1642,17 @@ it is not clear how we could define it for $F : [\rel^k,\rel]$.
 
 \begin{dfn}\label{def:reln-env}
 A {\em relation environment} maps each each type variable in $\tvars^k
-\cup \fvars^k$ to an $\omega$-cocontinuous $k$-ary relation
-transformer.  A morphism $f : \rho \to \rho'$ for relation
-environments $\rho$ and $\rho'$ with $\rho|_\tvars = \rho'|_\tvars$
-maps each type constructor variable $\psi^k \in \tvars$ to the
-identity morphism on $\rho \psi^k = \rho' \psi^k$ and each functorial
-variable $\phi^k \in \fvars$ to a morphism from the $k$-ary relation
-transformer $\rho \phi$ to the $k$-ary relation transformer $\rho'
-\phi$. Composition of morphisms on relation environments is given
-componentwise, with the identity morphism mapping each relation
-environment to itself. This gives a category of relation environments
-and morphisms between them, which we denote $\relenv$.
+\cup \fvars^k$ to a $k$-ary relation transformer.  A morphism $f :
+\rho \to \rho'$ for relation environments $\rho$ and $\rho'$ with
+$\rho|_\tvars = \rho'|_\tvars$ maps each type constructor variable
+$\psi^k \in \tvars$ to the identity morphism on $\rho \psi^k = \rho'
+\psi^k$ and each functorial variable $\phi^k \in \fvars$ to a morphism
+from the $k$-ary relation transformer $\rho \phi$ to the $k$-ary
+relation transformer $\rho' \phi$. Composition of morphisms on
+relation environments is given componentwise, with the identity
+morphism mapping each relation environment to itself. This gives a
+category of relation environments and morphisms between them, which we
+denote $\relenv$.
 \end{dfn}
 When convenient we identify a $0$-ary relation transformer with the
 relation (transformer) that is its codomain and consider
@@ -2506,34 +2515,30 @@ hypothesis and weakening.
 \end{proof}
 \end{comment}
 
-\subsection{The Identity Extension Lemma}
+\section{The Identity Extension Lemma}
 
-The standard definition of graph relation of a morphism in $\set$ is
+{\color{blue} Compare against Sec 3.3, 3.4 of Bob. R\&R refl graphs
+  are our elts of $RT_0$. Bob defines equality relations starting from
+  refl graphs by induction on kind structure. We do it as a special
+  case of graphs.}
 
-\begin{dfn}\label{def:graph}
-If $f : A \to B$ then the relation $\graph{f} : \rel(A,B)$ is defined
-by $(x,y) \in \graph{f}$ iff $fx = y$.
-\end{dfn}
-Here, we are using angle bracket notation for both the graph relation
-of a function and for the pairing of functions with the same domain.
-This is justified by the relationship between the two notions observed
-immediately after Lemma~\ref{dfn:graph-reln-functors}.
-
-We extend the notion of a graph to natural transformations
-between $k$-ary set functors by defining an associated $k$-ary
-relation transformer. 
+The standard definition of the {\em graph} of a morphism $f : A \to B$
+in $\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y)
+\in \graph{f}$ iff $fx = y$. This definition naturally generalizes to
+associate to each natural transformation between $k$-ary functors on
+$\set$ a $k$-ary relation transformer as follows:
 
 \begin{dfn}\label{dfn:graph-nat-transf}
-    If $F, G: \Set^k \to \Set$ are $k$-ary set functors and $\alpha :
-    F \to G$ is a natural transformation, we define the functor
-    $\graph{\alpha}^*: \rel^k \to \rel$ as follows.  Given $R_1 :
-    \rel(A_1, B_1),...,R_k : \rel(A_k,B_k)$, let $\iota_{R_i} : R_i
-    \hookrightarrow A_i \times B_i$, for $i = 1,...,k$, be the
-    inclusion of $R_i$ as a subset of $A_i \times B_i$. By the
-    universal property of the product, there exists a unique
-    $h_{\overline{A \times B}}$ making the diagram
-    \[
-    \begin{tikzcd}[row sep = large]
+If $F, G: \Set^k \to \Set$
+%are $k$-ary functors
+and $\alpha : F \to G$ is a natural transformation, then the functor
+$\graph{\alpha}^*: \rel^k \to \rel$ is defined as follows. Given $R_1
+: \rel(A_1, B_1),...,R_k : \rel(A_k,B_k)$, let $\iota_{R_i} : R_i
+\hookrightarrow A_i \times B_i$, for $i = 1,...,k$, be the inclusion
+of $R_i$ as a subset of $A_i \times B_i$,
+%. By the universal property of the product, there exists a
+let $h_{\overline{A \times B}}$ be the unique morphism making the diagram
+\[\begin{tikzcd}[row sep = large]
         F\overline{A}
         &F(\overline{A \times B})
         \ar[l, "{F\overline{\pi_1}}"']
@@ -2544,51 +2549,45 @@ relation transformer.
         &G\overline{B} \\
         &F\overline{A} \times G\overline{B}
         \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
-    \end{tikzcd}
-    \]
-    commute.
-    Let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
-    \times G\overline{B}$ be $h_{\overline{A \times B}} \circ
-    F\overline{\iota_R}$.
-    Define $\alpha^\wedge\overline{R}$ to be the subobject
-    through which $h_{\overline{R}}$ is factorized by the mono-epi
-    factorization system in $\set$, as shown in the following diagram:
-    \[
-    \begin{tikzcd}
+\end{tikzcd}\]
+commute, and let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
+\times G\overline{B}$ be $h_{\overline{A \times B}} \circ
+F\overline{\iota_R}$. Further, let $\alpha^\wedge\overline{R}$ be the
+subobject through which $h_{\overline{R}}$ is factorized by the
+mono-epi factorization system in $\set$, as shown in the
+following diagram:
+\[\begin{tikzcd}
         F\overline{R}
         \ar[rr, "{h_{\overline{R}}}"]
         \ar[dr, twoheadrightarrow, "{q_{\alpha^\wedge\overline{R}}}"']
         &&F\overline{A} \times G\overline{B} \\
         &\alpha^\wedge\overline{R}
         \ar[ur, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"']
-    \end{tikzcd}
-    \]
-    Since $\alpha^\wedge\overline{R} : \rel(F\overline{A},
-    G\overline{B})$ by construction, we define $\langle \alpha
-    \rangle^* \overline{(A,B,R)} = (F\overline{A}, G\overline{B},
-    \iota_{\alpha^\wedge \overline{R}}\alpha^\wedge\overline{R})$.
-    Moreover, if $\overline{(\beta, \beta') : (A,B,R) \to (C,D,S)}$
-    are morphisms in $\rel$, then we define
-    $\graph{\alpha}^*\overline{(\beta, \beta')}$ to be
-    $(F\overline\beta, G\overline\beta')$.
+\end{tikzcd}\]
+Then $\alpha^\wedge\overline{R} : \rel(F\overline{A}, G\overline{B})$
+by construction, so the action of $\langle \alpha \rangle^*$ on
+objects can be given by $\langle \alpha \rangle^* \overline{(A,B,R)} =
+(F\overline{A}, G\overline{B}, \iota_{\alpha^\wedge
+  \overline{R}}\alpha^\wedge\overline{R})$. Its action on morphisms is
+given by $\graph{\alpha}^*\overline{(\beta, \beta')} =
+(F\overline\beta, G\overline\beta')$.
 \end{dfn}
 
 The data in Definition~\ref{dfn:graph-nat-transf} yield a relation
-transformer. 
+transformer $\graph{\alpha} = (F, G, \graph{\alpha}^*)$, called the
+{\em graph relation transformer for $\alpha$}.
 
 \begin{lemma}\label{lem:graph-reln-functors}
-If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$,
-i.e., a natural transformation between $\omega$-cocontinuous functors,
-then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
+If $F,G : [\set^k,\set]$ and $\alpha : F \to G$ is a natural
+transformation, then $\graph{\alpha}$ is in $RT_k$.
 \end{lemma}
 \begin{proof}
-    Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous,
-    so $\graph{\alpha}^* : [\rel^k,\rel]$.
-
-    Now, consider $\overline{(\beta, \beta') : R \to S}$, where
-    $\overline{R : \rel(A, B)}$ and $\overline{S : \rel(C, D)}$.  We want
-    to show that there exists a morphism $\epsilon : \alpha^\wedge\overline{R}
-    \to \alpha^\wedge\overline{S}$ such that
+Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous, so
+$\graph{\alpha}^* : [\rel^k,\rel]$. Now, suppose $\overline{R :
+  \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and $\overline{(\beta,
+  \beta') : R \to S}$. We want to show that there exists a morphism
+$\epsilon : \alpha^\wedge\overline{R} \to \alpha^\wedge\overline{S}$
+such that
     \[
     \begin{tikzcd}
         \alpha^\wedge\overline{R}
@@ -2616,7 +2615,7 @@ then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
         &C_i \times D_i
     \end{tikzcd}
     \]
-    commutes. Now note that both
+    commutes. Moreover, since both
     $h_{\overline{C \times D}} \circ F(\overline{\beta \times \beta'})$
     and
     $(F\overline{\beta} \times G\overline{\beta'}) \circ h_{\overline{A \times B}}$
@@ -2635,9 +2634,9 @@ then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
           \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
       \end{tikzcd}
       \]
-      commute, so they must be equal. We therefore get that the right-hand
-      square below commutes, and thus that the entire following diagram does
-      as well:
+      commute, they must be equal. We therefore get that the
+      right-hand square below commutes, and thus that the entire
+      following diagram does as well:
       \[
       \begin{tikzcd}
           F\overline{R}
@@ -2659,7 +2658,8 @@ then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
       \]
       Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
       with respect to $\iota_{F^\wedge\overline{S}}$ given by the epi-mono
-      factorization system, there exists an $\epsilon$ such that the diagram
+      factorization system, there exists an $\epsilon$ such that the
+      following diagram commutes:
       \[
       \begin{tikzcd}
           F\overline{R}
@@ -2677,10 +2677,17 @@ then $\graph{\alpha} = (F, G, \graph{\alpha}^*)$ is in $RT_k$.
           &F\overline{C} \times G\overline{D}
       \end{tikzcd}
       \]
-      commutes.
 \end{proof}
 
-If $f : A \to B$ be a function with graph relation $\graph{f} = (A, B,
+It is not hard to see that if $f : A \to B$ is a morphism in $\set$
+then the standard definition of its graph $\langle f \rangle$ in
+$\rel$ coincides with the its definition as the graph relation
+transformer for $f$ as a natural transformation between the $0$-ary
+functors $A$ and $B$. Graph relation transformers are thus a
+reasonable generalization of graphs in $\rel$.
+\begin{comment}
+
+If $f : A \to B$ is a function with graph relation $\graph{f} = (A, B,
 \graph{f}^*)$, then $\langle \id_{A}, f \rangle : A \to A \times B$
 and $\langle \id_{A}, f \rangle\, A = \graph{f}^*$.  Moreover, if
 $\iota_{\graph{f}} : \graph{f}^* \hookrightarrow A \times B$ is the
@@ -2734,8 +2741,10 @@ Let $F : [\set^k, \set]$.  The equality relation transformer on $F$ is
 defined to be $\Eq_F = \graph{\id_{F}}$. This entails that $Eq_F = (F,
 F, \Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$.
 \end{dfn}
+\end{comment}
 
-The graph relation transformer on a graph relation is easily computed:
+The action of a graph relation transformer on a graph relation is
+easily computed:
 
 \begin{lemma}\label{lem:eq-reln-equalities}
 If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
@@ -2746,7 +2755,7 @@ then $\graph{\alpha}^* \graph{\overline{f}}
 \end{lemma}
 \begin{proof}
 Since $h_{\overline{A \times B}}$ is the unique morphism making the
-bottom triangle of the following diagram commute
+bottom triangle of this diagram commute
 \[\begin{tikzcd}[row sep = large]
         &F\overline{A}
         \ar[d, "{F \overline{\langle \id_A, f \rangle}}" description]
@@ -2783,35 +2792,35 @@ the universal property of the product
           \ar[u, "{\alpha_{\ol{B}}}"']
       \end{tikzcd}
       \]
-gives that $h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}},
+gives $h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}},
 \alpha_{\ol{B}} \circ F\ol{f} \rangle : F \ol{A} \to F \ol{A} \times G
 \ol{B}$.  Moreover, $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ
 F\ol{f} \rangle$ is a monomorphism in $\set$ because $\id_{F \ol{A}}$
-is, so its epi-mono factorization gives that $\iota_{\alpha^\wedge
+is, so its epi-mono factorization gives $\iota_{\alpha^\wedge
   \graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}}
-\circ F\ol{f} \rangle$, and thus that $\alpha^\wedge
-\graph{\overline{f}}$, the domain of $\iota_{\alpha^\wedge
-  \graph{\overline{f}}}$ is equal to $F\overline{A}$.  Then,
-$\iota_{\alpha^\wedge \graph{\overline{f}}} \alpha^\wedge
-\graph{\overline{f}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ
-F\ol{f} \rangle (F \ol{A}) = \graph{ \alpha_{\ol{B}} \circ F\ol{f}
-}^*$.
+\circ F\ol{f} \rangle$, and thus $\alpha^\wedge \graph{\overline{f}} =
+%the domain of $\iota_{\alpha^\wedge \graph{\overline{f}}}$, is equal
+%to
+F\overline{A}$.  Then $\iota_{\alpha^\wedge
+  \graph{\overline{f}}} \alpha^\wedge \graph{\overline{f}} = \langle
+\id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f} \rangle (F \ol{A}) =
+\graph{ \alpha_{\ol{B}} \circ F\ol{f} }^*$,
 %(where the last equality is by Remark~\ref{rmk:graph-fn}).
-We therefore conclude that $\graph{ \alpha }^* \graph{ \overline{f} }
-= (F\overline{A}, G\overline{B}, \iota_{\alpha^\wedge
-  \graph{\overline{f}}}\, \alpha^\wedge \graph{\overline{f}}) =
-(F\overline{A}, G\overline{B}, \graph{ \alpha_{\ol{B}} \circ F\ol{f}
-}^*) = \graph{ \alpha_{\ol{B}} \circ F\ol{f} }$.
-
-Finally, note that $\alpha_{\ol{B}} \circ F\ol{f} = G\ol{f} \circ
-\alpha_{\ol{A}}$ by naturality of $\alpha$.
+%We therefore conclude that
+so that $\graph{ \alpha }^* \graph{ \overline{f} } = (F\overline{A},
+G\overline{B}, \iota_{\alpha^\wedge \graph{\overline{f}}}\,
+\alpha^\wedge \graph{\overline{f}}) = (F\overline{A}, G\overline{B},
+\graph{ \alpha_{\ol{B}} \circ F\ol{f} }^*) = \graph{ \alpha_{\ol{B}}
+  \circ F\ol{f} }$.  Finally, $\alpha_{\ol{B}} \circ F\ol{f} = G\ol{f}
+\circ \alpha_{\ol{A}}$ by naturality of $\alpha$.
 \end{proof}
 
-As an immediate corollary we have
-\begin{cor}
-If $F : [\set^k, \set]$ and $\ol{A : \set}$,
-then $\Eq^*_F \ol{\Eq_A} = \Eq_{F\ol{A}}$.
-\end{cor}
+The {\em equality relation transformer} on $F : [\set^k,\set]$ is
+defined to be $\Eq_F = \graph{\id_{F}}$. Specifically, $Eq_F = (F, F,
+\Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$, and
+Lemma~\ref{lem:eq-reln-equalities} ensures that $\Eq^*_F \,\ol{\Eq_A}
+= \Eq_{F\ol{A}}$ for all $\ol{A : \set}$.
+\begin{comment}
 \begin{proof}
 We have that
 \[
@@ -2825,27 +2834,50 @@ We have that
 \]
 The second identity here is by Lemma~\ref{lem:eq-reln-equalities}.
 \end{proof}
-
-We can extend the notions of the graph of a natural transformation
-and the equality relation transformer to environments as follows:
-
-\begin{definition}
-Let $f : \rho \to \rho'$ is a morphism of set environments.  The graph
-relation environment $\graph{f}$ is defined pointwise, i.e., for any
-variable $\phi$, we define $\graph{f} \phi = \graph{f \phi}$. This
-ensures that $\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$.
-Then the equality relation environment $\Eq_\rho$ for any set
-environment $\rho$ is then defined to be $\graph{\id_{\rho}}$.
-\end{definition}
-
-With this definition in hand, we can prove an Identity Extension Lemma
-for our type interpretations.
-
-\begin{thm}\label{thm:iel}
-  If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$,
-  then $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho =
-  \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}$.
+\end{comment}
+Graph relation transformers in general, and equality relation
+transformers in particular, extend to relation environments in the
+obvious ways.
+%\begin{definition}
+Indeed, if $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$, then the
+{\em graph relation environment} $\graph{f}$ is defined pointwise by
+$\graph{f} \phi = \graph{f \phi}$ for every $\phi$. This entails that
+$\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$. In particular,
+the {\em equality relation environment} $\Eq_\rho$ is defined to be
+$\graph{\id_{\rho}}$. This entails that $\Eq_\rho \phi = \Eq_{\rho
+  \phi}$ for every $\phi$.
+%\end{definition}
+With these definitions in hand, we can state and prove both an
+Identity Extension Lemma and a Graph Lemma for our calculus.
+\begin{thm}[IEL]\label{thm:iel}
+  If $\rho : \setenv$ and $\Gamma; \Phi \vdash \tau : \F$ then
+  $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho = \Eq_{\setsem{\Gamma;
+      \Phi \vdash \tau}\rho}$.
 \end{thm}
+The proof is by induction on the structure of $\tau$. Only the
+application and fixpoint cases are non-routine. Both use
+Lemma~\ref{lem:eq-reln-equalities}. The latter also uses the
+observation that, for every $n \in \nat$, the following intermediate
+results can be proved by simultaneous induction {\color{blue} with
+  Theorem~\ref{thm:iel}}:
+%\begin{equation}\label{eq:iel-fix-point-intermediate1}
+$T^n_{\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
+      \tau}\rho}} = (\Eq_{(T^\set_\rho)^n K_0})^*
+\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}$\;
+%\end{equation}
+and\;
+%\begin{equation}\label{eq:iel-fix-point-intermediate2}
+%\begin{split}
+$ \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+  := T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_{\setsem{\Gamma;
+        \Phi \vdash \tau}\rho}]} =$\\
+$\relsem{\Gamma; \Phi, \phi,
+  \ol{\alpha} \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_\rho)^n K_0}]
+\overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}$.
+%\end{split}
+%\end{equation}
+
+\begin{comment}
 \begin{proof}
 By induction on the structure of $\tau$.
 \begin{itemize}
@@ -3045,16 +3077,68 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
       \Phi \vdash \sigma \times \tau}\rho}$
 \end{itemize}
 \end{proof}
-It follows from Theorem~\ref{thm:iel} that $\relsem{\Gamma \vdash
-  \sigma \to \tau} \Eq_{\rho} = \Eq_{\setsem{\Gamma \vdash \sigma \to
-    \tau}\rho}$, as expected.  Moreover, the Identity Extension Lemma
-also allows us to prove a Graph Lemma.
+\end{comment}
 
+%It follows from Theorem~\ref{thm:iel} that $\relsem{\Gamma \vdash
+%  \sigma \to \tau} \Eq_{\rho} = \Eq_{\setsem{\Gamma \vdash \sigma \to
+%    \tau}\rho}$, as expected.  Moreover,
+
+%\vspace*{0.05in}
+%
+%The Graph Lemma appropriate to our setting is now easily obtained:
 \begin{lemma}[Graph Lemma]\label{lem:graph}
-If $f : \rho \to \rho'$ is a morphism of set environments and $\Gamma;
-\Phi \vdash F : \F$, then $\graph{\setsem{\Gamma; \Phi \vdash F} f} =
-\relsem{\Gamma; \Phi \vdash F}\graph{f}$
+If $\rho, \rho' : \setenv$, $f : \rho \to \rho'$, and $\Gamma; \Phi
+\vdash F : \F$, then $\graph{\setsem{\Gamma; \Phi \vdash F} f} =
+\relsem{\Gamma; \Phi \vdash F}\graph{f}$.
 \end{lemma}
+\begin{proof}
+Applying Lemma~\ref{lem:rel-transf-morph} to the morphisms $(f,
+\id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$ and $(\id_{\rho}, f) :
+\Eq_{\rho} \to \graph{f}$ of relation environments gives that
+$(\setsem{\Gamma; \Phi \vdash F}f, \setsem{\Gamma; \Phi \vdash
+  F}\id_{\rho'}) = \relsem{\Gamma; \Phi \vdash F} (f, \id_{\rho'}) :
+\relsem{\Gamma; \Phi \vdash F}\graph{f} \to \relsem{\Gamma; \Phi
+  \vdash F}\Eq_{\rho'}$ and $(\setsem{\Gamma; \Phi \vdash
+  F}\id_{\rho}, \setsem{\Gamma; \Phi \vdash F}f) = \relsem{\Gamma;
+  \Phi \vdash F} (\id_{\rho}, f) : \relsem{\Gamma; \Phi \vdash
+  F}\Eq_{\rho} \to \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+Expanding the first equation gives that if $(x,y) \in \relsem{\Gamma;
+  \Phi \vdash F}\graph{f}$ then $(\setsem{\Gamma; \Phi \vdash F} f\,
+x, \setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y) \in \relsem{\Gamma;
+  \Phi \vdash F}\Eq_{\rho'}$.  Then $\setsem{\Gamma; \Phi \vdash
+  F}\id_{\rho'}\, y = \id_{\setsem{\Gamma; \Phi \vdash F}\rho'}\, y =
+y$ and $\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} =
+\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$, so if $(x,y) \in
+\relsem{\Gamma; \Phi \vdash F}\graph{f}$ then $(\setsem{\Gamma; \Phi
+  \vdash F} f\, x, y) \in \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$,
+i.e., $\setsem{\Gamma; \Phi \vdash F} f\, x = y$, i.e., $(x, y) \in
+\graph{\setsem{\Gamma; \Phi \vdash F} f}$.  So, we have that
+$\relsem{\Gamma; \Phi \vdash F}\graph{f} \subseteq
+\graph{\setsem{\Gamma; \Phi \vdash F}f}$.  Expanding the second
+equation gives that if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$ then
+$(\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x, \setsem{\Gamma; \Phi
+  \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.  Then
+$\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x = \id_{\setsem{\Gamma;
+    \Phi \vdash F}\rho} x = x$, so for any $x \in \setsem{\Gamma; \Phi
+  \vdash F}\rho$ we have that $(x, \setsem{\Gamma; \Phi \vdash F}f\,
+x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.  Moreover, $x \in
+\setsem{\Gamma; \Phi \vdash F}\rho$ if and only if $(x,
+\setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi
+    \vdash F}f}$ and, if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
+then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma;
+  \Phi \vdash F} \graph{f}$, so if $(x, \setsem{\Gamma; \Phi \vdash F}
+f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$ then $(x,
+\setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash
+  F} \graph{f}$, i.e., $\graph{\setsem{\Gamma; \Phi \vdash F}f}
+\subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.
+
+
+\end{proof}
+
+
+
+\begin{comment}
+
 \begin{proof}
 First observe that $(f, \id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$ and
 $(\id_{\rho}, f) : \Eq_{\rho} \to \graph{f}$ are morphisms of relation
@@ -3080,7 +3164,7 @@ then
 Observe that $\setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y =
 \id_{\setsem{\Gamma; \Phi \vdash F}\rho'}\, y = y$ and
 $\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} = \Eq_{\setsem{\Gamma; \Phi
-    \vdash F}\rho'}$ So, if $(x,y) \in \relsem{\Gamma; \Phi \vdash
+    \vdash F}\rho'}$. So, if $(x,y) \in \relsem{\Gamma; \Phi \vdash
   F}\graph{f}$ then $(\setsem{\Gamma; \Phi \vdash F} f\, x, y) \in
 \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$, i.e., $\setsem{\Gamma;
   \Phi \vdash F} f\, x = y$, i.e., $(x, y) \in \graph{\setsem{\Gamma;
@@ -3110,8 +3194,15 @@ then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma;
 conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \graph{\setsem{\Gamma; \Phi \vdash F}f}$ as desired.
 \end{proof}
+\end{comment}
 
 \section{Interpreting Terms}\label{sec:term-interp}
+
+{\color{blue} Here, we are using angle bracket notation for both the
+  graph relation of a function and for the pairing of functions with
+  the same domain. This is justified by the relationship between the
+  two notions observed immediately after
+  Lemma~\ref{lem:graph-reln-functors}.}
 
 If $\Delta = x_1 : \tau_1,...,x_n : \tau_n$ is a term context for $\Gamma$
 and $\Phi$, then the interpretations $\setsem{\Gamma;\Phi \vdash \Delta}$ and
