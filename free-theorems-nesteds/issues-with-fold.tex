@@ -1,0 +1,255 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+\begin{document}
+
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+%% sstart 
+\section{Limitations of folds and issues defining \texttt{bushreverse}}
+
+We would like to define a function \texttt{bushreverse} which reverses a bush. 
+Bushes are not linear, so it is not immediately clear what reversing a bush should even mean. 
+First consider the flattening of bushes as a natural transformation from Bush to List (see bush2list). 
+The flattening of a reversed bush should be the reversal (on lists) of the flattening of the original bush, 
+i.e., \texttt{forall b. bush2list (bushreverse b) = reverse (bush2list b)} 
+or \texttt{bush2list $\circ$ bushreverse = reverse $\circ$ bush2list}.
+We would also like \texttt{bushreverse} to be an involution on bushes. 
+
+Clearly this function will have a recursive definition, so to define it in our calculus we will use a fold. 
+Before defining \texttt{bushreverse} as a fold, let's consider how to define list reversal as a fold. There are several ways to do this. 
+One method is to replace nil with nil and replace cons with a function which inserts an element at the back of a list.
+This cons replacement function can be defined in several ways, e.g.,
+
+  \texttt{$\lambda \; x \; xs \to$ xs ++ [ x ]}, or
+
+  \texttt{$\lambda \; x \to$ foldr (::) [ x ] }.
+
+The first version makes use of the append function on lists. 
+The second version simply replaces the nil constructor with a singleton list. 
+The first cannot be defined in our system because we cannot define an append function for bushes (see next section). 
+The second cannot be defined because the fold for bushes requires a fully polymorphic algebra, 
+so the only possible replacement for bnil is bnil in this context. Writing the insertion function with foldr is
+much simpler than the case for bushes because there is only one nil constructor in a list, but a bush
+can have many occurences of bnil.
+We can also give a recursive definition without using append or foldr:
+\begin{align*}
+  &\texttt{insert : $\forall$ \{A : Set\} $\to$ A $\to$ List A $\to$ List A} \\
+  &\texttt{insert x [] = [ x ] } \\
+  &\texttt{insert x (y :: ys) = y :: (insert x xs) } 
+\end{align*}
+
+and we can define an analogous function for bushes:
+\begin{align*}
+  &\texttt{binsert : $\forall$ \{A : Set\} $\to$ A $\to$ Bush (Bush A) $\to$ Bush A} \\
+  &\texttt{binsert x bnil = bcons x bnil } \\
+  &\texttt{binsert x (bcons bnil bbbx) = bcons x (binsert bnil bbbx)} \\
+  &\texttt{binsert x (bcons (bcons y bx) bbbx) = bcons y (binsert (binsert x bx) bbbx)}
+\end{align*}
+and feed this as an argument to the fold for bushes to get a reversal function: 
+\begin{align*}
+  &\texttt{bushreverse : $\forall$ \{A : Set\} $\to$ Bush A $\to$ Bush A} \\
+  &\texttt{bushreverse \{A\} = bfold \{A\} \{Bush\} bnil binsert}
+\end{align*}
+
+Note that the first explicit argument to bfold is completely determined by the types. 
+The argument must have type \texttt{($\forall$ \{A : Set\} $\to$ Bush A)} and the only inhabitant of this type is bnil.
+Folds for (non first-order) nested types will require arguments of the form \texttt{($\forall$ \{A : Set\} $\to$ F A)} whenever 
+the type has constructors with no arguments, and due to the universal quantification, the only inhabitants of this type 
+will be these constructors themselves (e.g. pnil, bnil) with some other possible combinations 
+if there are constructors of type \texttt{($\forall$ \{A : Set\} $\to$ F A $\to$ F A $\to$ F A)}, for example.
+
+This restriction means that the behavior of our reversal function must be specified entirely by binsert. 
+The question is, can we define binsert without arbitrary term level recursion? 
+If we try to define it as a fold over the \texttt{Bush (Bush A)} parameter, then we have no 
+way to include x in that (fully polymorphic) fold. We could even try to define it as a fold over a 
+bush built up from x such as \texttt{(bcons x bnil)}, but the same issue arises. 
+
+The fundamental issue here is that the binsert function takes two arguments, 
+and there is no way to combine them together with a single fold. We can fold
+over each argument separately, but then we still have results to combine. 
+
+\subsection{What can we define with folds over nested types?}
+These issues are not specific to the Bush datatype; they are inherent limitations of folds
+over nested types. In fact we are quite restricted in the types of functions we can define recursively. 
+To define a function using a fold, its domain must be a fixed point, therefore
+types such as \texttt{($\forall$ \{A : Set\} $\to$ (Bush A $\times$ Bush A) $\to$ Bush A)} cannot be defined as
+a fold over the pair. Of course, we can fold over each bush in the pair individually, but we cannot interleave
+the computations in any way because the polymorphism required by the folds prohibits this.
+
+Additionally, the
+return type of the result of the fold must be a functor. So even if we curry the previous type to get
+\texttt{($\forall$ \{A : Set\} $\to$ Bush A $\to$ (Bush A $\to$ Bush A))}, we can not define it as a fold
+over the first bush because \texttt{(Bush A $\to$ Bush A)} is not a functor.
+These two restrictions indicate that we cannot define many interesting functions which have
+multiple nested types as arguments.
+
+The restriction stretches even further though, because sometimes the algebras supplied to a fold
+must have a recursive definition involving nested types. This is the case with \texttt{bushreverse}
+because even though it has a suitable type, \texttt{($\forall$ \{A : Set\} $\to$ Bush A $\to$ Bush A)},
+the binsert function has a type which makes it incompatible with fold. 
+
+\subsection{Generalized Folds}
+We can make our calculus slightly more expressive using generalized folds \cite{?}.
+However, these generalized folds are mostly helpful for defining \textit{reductions}, 
+functions which take data of a monomorphic type as input and have a monomorphic return type. 
+Specifically, generalized folds relax the constraint on the domain of the function being defined as a fold.
+Instead of requiring the domain to be a fixed point, the domain can be a fixed point composed with another functor. 
+However, this does not help us in defining functions which have multiple nested types as arguments.
+
+\end{document}
