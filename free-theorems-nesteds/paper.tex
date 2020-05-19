@@ -537,18 +537,22 @@ accommodate fixpoint recursion at the level of types. Only list types
 are added in~\cite{pit00}, although other ADTs are easily accommodated
 as in~\cite{pit98}. Pitts considers only polynomial data types, all of
 which can all be modeled as fixpoints of {\em first-order}
-functors. However, since Pitts' semantics is operational rather than
-categorical, any discussion of functoriality and cocontinuity is again
-unnecessary and therefore absent.
+functors. It would be interesting to see how his operational model
+would need to be extended to accommodate nested types and other data
+types that are modeled as fixpoints of higher-order functors ---
+especially to discern the analogues of the required functoriality and
+cocontinuity are in his operational setting.
 
 There is, of course, a long line of work on categorical models of
 parametricity for System F; see, for
-example,~\cite{bfss??,dr??,has??,jab99,rr??,more}. Although the
-present paper draws on this rich tradition, we emphasize that our
-calculus does not have the impedicative polymorphism of full System
-F. On the other hand, as far as we know all of the free theorems
-derived in practice, even for ADTs, need only the polymorphism
-supported by our system.
+example,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}. Some
+of these even extend System F with fixpoints for certain classes of
+functors {\color{blue} MORE??, usually those with (universal)
+  strength}.  Although the present paper draws on this rich tradition,
+we emphasize that our calculus does not have the impedicative
+polymorphism of full System F. On the other hand, as far as we know
+all of the free theorems derived in practice, even for ADTs, need only
+the polymorphism supported by our system.
 
 \section{The Calculus}\label{sec:calculus}
 
