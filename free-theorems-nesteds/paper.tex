@@ -238,20 +238,17 @@ polymorphic program preserves all relations between any pair of types
 that it is instantiated with.  Parametricity was originally put forth
 by Reynolds~\cite{rey83} for System F~\cite{gr89}, the formal calculus
 at the core of all polymorphic functional languages. It was later
-popularized {\color{blue} for System F with a primitive list types}
-%augmented with list types defined natively as type-level fixpoints 
-as Wadler's so-called ``theorems for free''~\cite{wad89} because it
+popularized as Wadler's ``theorems for free''~\cite{wad89} because it
 allows the deduction of many properties of programs in such languages
 solely from their types, i.e., with no knowledge whatsoever of the
-text of the programs involved. While most of the free theorems derived
-by Wadler's are essentially {\color{blue} naturality properties} of
-polymorphic list-processing functions, parametricity can also be used
-to prove naturality properties for non-list ADTs, as well as
-%used to prove
-properties, like correctness of the program optimization
-%for lists and other ADTs
-known as {\em short cut fusion}~\cite{glp93,joh02,joh03}, that go
-beyond simple naturality.
+text of the programs involved. To get interesting free theorems,
+Wadler's calculus included, implicitly, built-in list types; indeed,
+most of the free theorems in~\cite{wad89} are consequences of
+naturality for polymorphic list-processing functions. However,
+parametricity can also be used to prove naturality properties for
+non-list ADTs, as well as results, like correctness of program
+optimizations like {\em short cut fusion}~\cite{glp93,joh02,joh03},
+that go beyond simple naturality.
 %In addition, parametricity in the presence of ADTs
 %{\color{blue} check!}  has further been used to prove i) {\em
 %  properties of programs}, e.g., that they perform no illegal
@@ -267,19 +264,20 @@ beyond simple naturality.
 %that natively support ADTs. {\color{blue} Be clear about what this
 %  means. Re-word?}
 
-This paper is about parametricity for a variant of System F supporting
-not just ADTs, but nested types as well. An ADT defines a {\em family
-  of inductive data types}, one for each input type. For example, the
-$\mathtt{List}$ data type definition above defines a collection of
-data types $\mathtt{List\; A}$, $\mathtt{List\; B}$, $\mathtt{List\;
-  (A \times B)}$, $\mathtt{List\; (\List\;A)}$, etc., each independent
-of all the others. By contrast, a nested type~\cite{bm98} is an {\em
-  inductive family of data types} that is defined over, or is defined
-mutually recursively with, (other) such data types. Since the
-structures of the data type at one type can depend on those at other
-types, the entire family of types must be defined at once. Examples of
-nested types include, trivially, ordinary ADTs, such as list and tree
-types; simple nested types, such as the data type {\small
+This paper is about parametricity and free theorems for a polymorphic
+calculus with explicit syntax not just for ADTs, but for nested types
+as well. An ADT defines a {\em family of inductive data types}, one
+for each input type. For example, the $\mathtt{List}$ data type
+definition above defines a collection of data types $\mathtt{List\;
+  A}$, $\mathtt{List\; B}$, $\mathtt{List\; (A \times B)}$,
+$\mathtt{List\; (\List\;A)}$, etc., each independent of all the
+others. By contrast, a nested type~\cite{bm98} is an {\em inductive
+  family of data types} that is defined over, or is defined mutually
+recursively with, (other) such data types. Since the structures of the
+data type at one type can depend on those at other types, the entire
+family of types must be defined at once. Examples of nested types
+include, trivially, ordinary ADTs, such as list and tree types; simple
+nested types, such as the data type {\small
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
@@ -308,11 +306,13 @@ types\footnote{Nested types that are defined over themselves are known
 in~\cite{oka99}), whose recursive occurrences appear below their own
 type constructors.
 
-{\color{blue} Mention $\mathtt{ \{-\# TERMINATING \#-\} }$ in figure.}
 Suppose we now want to prove properties of functions over nested
 types. We might, for example, want to prove a
 $\mathtt{map}$-$\mathtt{reverse}$ property for the functions on
-perfect trees in Figure~\ref{fig:funs}, or for those on bushes in
+perfect trees in Figure~\ref{fig:funs}, or for those on
+bushes\footnote{To define the $\mathtt{foldBush}$ and
+  $\mathtt{mapBush}$ functions in Figure~\ref{fig:funs2} it is
+  necessary to turn off Agda's termination checker.} in
 Figure~\ref{fig:funs2}. A few well-chosen examples quickly convince us
 that such a property should indeed hold for perfect trees, and,
 drawing inspiration from the situation for ADTs, we easily construct a
@@ -338,8 +338,9 @@ tree untouched.
 \mathtt{foldPTree : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow Set \}
   \rightarrow}\\
 \hspace*{0.8in} \mathtt{( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow}\\
-\hspace*{0.8in} \mathtt{(\{B : Set\} \rightarrow F (B \times B) \rightarrow F B)}\\
-\hspace*{0.8in}\mathtt{\rightarrow PTree \;A \rightarrow F\;A}\\
+\hspace*{0.8in} \mathtt{(\{B : Set\} \rightarrow F (B \times B)
+  \rightarrow F B) \rightarrow}\\
+\hspace*{0.8in}\mathtt{PTree \;A \rightarrow F\;A}\\
 \mathtt{foldPTree\; n\; c\; (pleaf\; x) = n \;x}\\
 \mathtt{foldPTree\; n\; c \;(pnode\; p) = c\; (foldPTree \;n \;c \;p)}\\
 \\
@@ -361,25 +362,31 @@ tree untouched.
 \[\begin{array}{l}
   \mathtt{reverseBush : \forall \{A : Set\} \rightarrow Bush\; A
   \rightarrow Bush\; A}\\ 
-\mathtt{reverseBush \;\{A\} = bfold\; \{A\}\; \{Bush\}\; bnil \;balg}\\
+\mathtt{reverseBush \;\{A\} = foldBush\; \{A\}\; \{Bush\}\; bnil \;balg}\\
 \\
-\mathtt{bfold : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow
+\mathtt{foldBush : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow
   Set\} \rightarrow}\\
 \hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow F B) \rightarrow}\\
 \hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow B \rightarrow F\;
   (F\; B) \rightarrow F\; B) \rightarrow}\\ 
 \hspace*{0.5in} \mathtt{Bush\; A \rightarrow F \;A}\\
-\mathtt{bfold\; bn\; bc\; bnil = bn}\\
-\mathtt{bfold \;bn \;bc \;(bcons\; x \;bb) =}\\
-\hspace*{0.5in} \mathtt{bc\; x \;(bfold \;bn\; bc
-  \;(bmap \;(bfold\; bn\; bc) \;bb))}\\
+\mathtt{foldBush\; bn\; bc\; bnil = bn}\\
+\mathtt{foldBush \;bn \;bc \;(bcons\; x \;bb) =}\\
+\hspace*{0.5in} \mathtt{bc\; x \;(foldBush \;bn\; bc
+  \;(mapBush \;(foldBush\; bn\; bc) \;bb))}\\
+\\
+\mathtt{mapBush : \forall \{A \,B : Set\} \to (A \to B) \to (Bush\, A) \to
+  (Bush\, B)}\\ 
+\mathtt{mapBush\; \_ \; bnil = bnil}\\
+\mathtt{mapBush\; f\; (bcons\; x \;bb) = bcons \;(f\, x) \; (mapBush\;
+  (mapBush\, f) \; bb)}\\ 
 \\
 \mathtt{balg : \forall \{B : Set\} \rightarrow B \rightarrow Bush
   \;(Bush\; B) \rightarrow Bush\; B}\\
 \mathtt{balg \;x \;bnil = bcons\; x \;bnil}\\
 \mathtt{balg \;x\; (bcons \;bnil \;bbbx) = bcons\; x \;(bcons \;bnil\; bbbx)}\\
 \mathtt{balg\; x \;(bcons \;(bcons\; y \;bx)\; bbbx) =}\\
-\hspace*{0.5in} \mathtt{bcons\; y\; (bcons\; (bcons \;x \;bx) \;bbbx)} 
+\hspace*{0.5in} \mathtt{bcons\; y\; (bcons\; (bcons \;x \;bx) \;bbbx)}\\
 \end{array}\]
 \caption{$\mathtt{reverseBush}$ and auxiliary
   functions in Agda}\label{fig:funs2} 
@@ -414,109 +421,134 @@ properties of programs over (truly) nested types by induction.  But
 recalling that inductive proofs over ADTs can sometimes be
 circumvented in the presence of parametricity, we might naturally ask:
 \begin{verse}
-{\em Can we prove properties of functions over (truly) nested types
-  via paramertricity?}
+{\em Can we derive properties of functions over (truly) nested types
+  from paramertricity?}
 \end{verse}
-%if it isn't possible to prove properties of functions over (truly) nested
-%types via parametricity, too.
-This paper answers the above question in the affirmative.
-% thus extending Wadler's party trick from ADTs to the richer family
-%of nested types.
-To achieve this, we first introduce in Section~\ref{sec:calculus} a
-polymorphic calculus supporting nested types as generated by the
-grammar of~\cite{jp19}. At the type level, the calculus is
+This paper answers the above question in the affirmative, by showing
+how to construct a parametric model for a polymorphic calculus with
+{\em explicit syntax} for nested types. We introduce our calculus in
+Section~\ref{sec:calculus}.
+%To achieve this, we first introduce in
+%Section~\ref{sec:calculus} a polymorphic calculus supporting nested
+%types.
+At the type level, it is
 %(because it also has $\Nat$-types),
-the level-2-truncated version of the calculus from~\cite{jp19}; the
-class of data types it includes as primitives
-%supports
-is very robust and includes all (truly) nested types known from the
-literature. At the term level, our calculus features primitive
-constructs for functors, their initial algebras, and structured
-recursion ($\map$, $\tin$, and $\fold$, respectively). While our
-calculus does not support general recursion at the term level, it does
-provide strong termination guarantees since it is strongly
-normalizing, {\color{blue} and it moves us toward the practical
-  programming language based on ... sought by Wadler.} Next, in
-Sections~\ref{sec:type-interp} and~\ref{sec:term-interp}, we construct
-set and relational interpretations of our types and terms,
-respectively.  Along the way, we prove that the model so constructed
-is parametric, i.e., that it satisfies an Identity Extension Lemma
-(Theorem~\ref{thm:iel}) and an Abstraction Theorem
-(Theorem~\ref{thm:abstraction}). {\color{blue} Free theorems are just
-  instantiations of the Abstraction Theorem.} Our interpretations of
-types rely on the result from~\cite{jp19} ensuring that all of the
-data types that can be represented in our calculus have well-defined
-semantics appropriately structured categories.  Finally, in
-Section~{sec:ftnt}, we formulate and prove in our calculus a variety
-of free theorems for nested types. We prove not only {\color{blue}
-  actually one generic theorem} naturality-style free theorems in
-Section~\ref{}, including those described above, but also give a
-formal proof of the short cut fusion for nested types first proposed
-in~\cite{gj07} in Section~\ref{}.
+the level-2-truncation of the higher-kinded calculus from~\cite{jp19},
+augmented with a primitive type of natural transformations. To
+represent nested types, it constructs type expressions not just from
+type variables, as for expressions representing ADTs, but from
+variables representing type constructors of various arities as
+well. It also includes an explicit $\mu$-construct to represent
+type-level recursion with respect to these type constructor
+variables. The class of nested types thus represented is very robust
+and includes all (truly) nested types known from the literature. In
+Section~\ref{sec:type-interp} we construct set and relational
+interpretations of the types in our calculus. As usual in parametric
+models, types are interpreted as functors from environments
+interpreting their type variable contexts to set or relations, as
+appropriate. But in order to ensure that these functors satisfy the
+cocontinuity properties needed to know that the fixpoints interpreting
+$\mu$-types exist, set environments must map each $k$-ary type
+constructor variable to an appropriately cocontinuous $k$-ary functor
+on sets, and relation environments must map each $k$-ary type
+constructor variable to an appropriately cocontinuous $k$-ary relation
+transformer, and the cocontinuity conditions must be threaded
+throughout our construction in such a way that the resulting model
+still satisfies an appropriate Identity Extension Lemma
+(Theorem~\ref{thm:iel}) can be proved. This turns out to be both
+subtle and challenging, and Section~\ref{sec:iel}, where it is done,
+is where the bulk of the work in our model construction lies.
+%
+%When constructing categorical models of parametricity of System F, it
+%is standard to interpret types (judgments) as functors and terms as
+%natural transformations. To accommodate $\mu$-types, these functors
+%must be appropriately continuous to ensure existence of fixpoints. The
+%required continuity properties must be propagated throughout the
+%construction of the model. This must also be the case for the
+%higher-order functors that underlie the interpretations of nested
+%types. Ensuring sufficient cocontinuity is where the delicacy in our
+%construction lies.
+%
+At the term level, our calculus includes constructs representing the
+actions on morphisms of the functors interpreting types, initial
+algebras of these functors, and structured recursion over elements of
+these initial algebras (i.e., $\map$, $\tin$, and $\fold$ constructs,
+respectively). While our calculus does not support general recursion
+at the term level, it is strongly normalizing, so does provide strong
+termination guarantees, and thus edges us toward the kind of practical
+programming language supporting only restricted forms of recursion
+proposed at the end of~\cite{wad89}. In Section~\ref{sec:term-interp},
+we construct set and relational interpretations of the terms of our
+calculus. As usual in parametric models, terms are interpreted as
+natural transformations, from interpretations of the term contexts in
+which they are formed to the interpretations of their types, that
+cohere in what is essentially a fibrational way~\cite{gjfor15}.
+Immediately from the definition of our interpretation we prove in
+Section~\ref{sec:ft-nat} a scheme for deriving free theorems that are
+consequences of naturality for functions polymorphic over nested
+types. This scheme is very general, is parameterized over both the
+data type and the polymorphic function in question, and has the
+$\mathtt{map}$-$\mathtt{reverse}$ results described above as
+instances. The relationship between naturality and parametricity has
+long been of interest, and our inclusion of a primitive type of
+natural transformations lets us clearly delineate free theorems that
+are consequences of naturality, and thus would hold even in a
+non-parametric model of such types, from those that use the full power
+of the Abstraction Theorem to go beyond naturality. In
+Section~\ref{sec:thms} we prove that our model satisfies an
+Abstraction Theorem (Theorem~\ref{thm:abstraction}), which is the
+basis for deriving more general free theorems. Finally, in
+Section~\ref{sec:ftnt} we formulate and prove in our calculus a
+variety of free theorems for nested types. We prove (non-)inhabitation
+results in Sections~\ref{sec:bottom} and~\ref{sec:identity}, prove a
+free theorem for the type of a filter function on generalized rose
+trees in Section~\ref{sec:filter-grose}, and state and prove the
+correctness of short cut fusion for nested types in
+Section~\ref{sec:short-cut-nested}.
 
-In fact, we do much more than just build a parametric model for this
-calculus. The relationship between parametricity and naturality has
-long been of interest. By incorporating explicit $\Nat$-types at the
-object level and interpreting them as natural transformations, our
-calculus allows us to clearly delineate those standard consequences of
-parametricity --- like most of Wadler's --- that are really
-consequences of naturality and those --- like free theorems for the
-type of filter for lists, ADTs, and even nested types, or the standard
-short cut fusion for ADTs and its extension, new here, to nested
-types, or non-existence of terms of bottom type, or uniqueness of
-terms of the type of the polymorphic identity function --- that
-actually go beyond naturality. This is made explicit in Enrico's subst
-theorem, which is an equality that is simply a consequence of our
-semantics and would hold even in a non-parametric model (i.e., one
-that didn't include the extra condition in the $\set$ interpretation
-of $\Nat$-types), and does not in any way reply on the abstraction
-theorem. (We will undoubtedly have to mention Bernardy et al. if we
-mention internalizing parametricity...)
+We are not the first to consider parametricity at higher
+kinds. Atkey~\cite{atk12} constructs a parametric model for full
+System F$\omega$, but within the impredicative Calculus of Inductive
+Constructions (iCIC) rather than in a semantic category. Although
+Atkey's construction is similar to ours, his focus is on higher kinds
+rather than on modeling advanced data types directly. Specifically,
+Atkey constructs a syntactic model and is not concerned with modeling
+$\mu$-types, so he need not be concerned with functors or the
+existence of their fixpoints. As a result, his relation transformers
+include no cocontinuity conditions, and no such conditions need be
+propagated throughout his model construction. But while Atkey does not
+consider explicit syntax for nested types, or even ADTs, his model
+does verify the existence of initial algebras for (syntactic
+representations of) functors, provided they are {\em given}, together
+with an identity- and composition-preserving $\mathit{fmap}_F$
+function (which is not required to act like a true map
+function). Atkey's ``functors'' are therefore postulated rather than
+constructed, and need not have the expected functorial actions on
+morphisms, and is it not at all clear which data types can be
+represented in this way in System F$\omega$ or what free theorems for
+such an extended system would look like, although we suspect that
+making this explicit would result in a higher-kinded extension of our
+calculus. By contrast, our calculus gives a specific syntax
+delineating the nested types it is guaranteed to support, and all such
+are functorial {\em by construction}.
 
-Enrico's subst theorem is actually very general. Generic over data
-types, functors over which data types are built in $\Nat$-types, and
-functions of $\Nat$-type.
+Pitts~\cite{pit98,pit00} extends parametricity from pure System F to
+accommodate fixpoint recursion at the level of types. Only list types
+are added in~\cite{pit00}, although other ADTs are easily accommodated
+as in~\cite{pit98}. Pitts considers only polynomial data types, all of
+which can all be modeled as fixpoints of {\em first-order}
+functors. However, since Pitts' semantics is operational rather than
+categorical, any discussion of functoriality and cocontinuity is again
+unnecessary and therefore absent.
 
-Foralls in $\Nat$-types are at the object level, whereas the foralls
-in contexts are at the meta-level. So par results in subst theorem
-internalize parametricity in the calculus, whereas those parametricity
-results that do not follow from the interpretation of $\Nat$-types are
-externalized at the meta-level
-
-Couldn't do this before~\cite{jp19} because we didn't know before that
-nested types (and then some) always have well-defined interpretations
-in locally finitely presentable categories like $\set$ and $\rel$. In
-fact, could extend results here to ``locally presentable fibrations'',
-where these are yet to be defined, but would at least have locally
-presentable base and total categories with the locally presentable
-structure preserved by the fibration and appropriate reflection of the
-total category in the base (as in Alex's effects paper?).
-
-{\color{red} Compare with Bob's paper.  What's new? No ADTs, etc., at
-  type level; no intro/elim rules for them at term level, i.e., no
-  term calculus for nested types. Treatment of in Secs 4.4 and 4.5
-  therefore hand-wavey. Similar ideas, but hand-wavey. (Only gets one
-  half of graph lemma, too.
-
-Bob has relation transformers, but since he has no $\mu$-types, there
-is no need for $\omega$-cocont, and this need not be propagated
-through entire semantic set up. This is what takes most of the effort
-in our setting.
-
-We merge Bob and~\cite{jp219}.}
-
-
-
-mention Pitts categorical/denotational vs. operational
-semantics. Pitts has ADTs as primitives.
-
-
-
-Mention that we don't have full polymorphism (like Bob) but just one
-level of foralls, but most free theorems only use that anyway (even
-short cut).  We do have fixpoints at the term level, though --- even
-h-o ones.
-
+There is, of course, a long line of work on categorical models of
+parametricity for System F; see, for
+example,~\cite{bfss??,dr??,has??,jab99,rr??,more}. Although the
+present paper draws on this rich tradition, we emphasize that our
+calculus does not have the impedicative polymorphism of full System
+F. On the other hand, as far as we know all of the free theorems
+derived in practice, even for ADTs, need only the polymorphism
+supported by our system.
 
 \section{The Calculus}\label{sec:calculus}
 
@@ -602,14 +634,14 @@ The formation rules for the set $\T \subseteq \bigcup_{V \subseteq
 are
 \[\begin{array}{cc}
 \AXC{$\phantom{\Gamma;\Phi}$}
-\UIC{$\Gamma,v^0;\emptyset \vdash v^0 : \T$}
+\UIC{$\Gamma,\alpha^0;\emptyset \vdash \alpha^0 : \T$}
 \DisplayProof
 \\
 \\
-\AXC{$\Gamma;\ol{\alpha} \vdash \sigma :
+\AXC{$\Gamma;\ol{\alpha^0} \vdash \sigma :
   \mcF$}
-\AXC{$\Gamma;\ol{\alpha}  \vdash \tau : \mcF$}
-\BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\sigma \,\tau : \T$}
+\AXC{$\Gamma;\ol{\alpha^0}  \vdash \tau : \mcF$}
+\BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha^0}}\sigma \,\tau : \T$}
 \DisplayProof
 \end{array}\]
 
@@ -625,7 +657,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 &
 \AXC{$\phantom{\Gamma;\Phi}$}
-\UIC{$\Gamma;\Phi, v^0 \vdash v^0 : \F$}
+\UIC{$\Gamma;\Phi, \alpha^0 \vdash \alpha^0 : \F$}
 \DisplayProof
 &
 \AXC{\phantom{$\Gamma,\Phi$}}
@@ -1124,11 +1156,11 @@ $A$ a function $t_0(A) : \sigma_0(A) \to \tau_0(A)$. These
 interpretations are to be given inductively on the structures of
 $\tau$ and $t$ in such a way that they imply two fundamental
 theorems. The first is an \emph{Identity Extension Lemma}, which
-states that $\tau_1(\Eq_A) = \Eq_{\tau_0(A)}$, and is the essential
-property that makes a model relationally parametric rather than just
-induced by a logical relation. The second is an \emph{Abstraction
-  Theorem}, which states that, for any $R :\rel(A, B)$,
-$(t_0(A),t_0(B))$ is a morphism in $\rel$ from
+states that $\tau_1(\Eq_A) = \Eq_{\tau_0(A)}$, {\color{blue} and is
+  the essential property that makes a model relationally parametric
+  rather than just induced by a logical relation.} The second is an
+\emph{Abstraction Theorem}, which states that, for any $R :\rel(A,
+B)$, $(t_0(A),t_0(B))$ is a morphism in $\rel$ from
 $(\sigma_0(A),\sigma_0(B),\sigma_1(R))$ to
 $(\tau_0(A),\tau_0(B),\tau_1(R))$. The Identity Extension Lemma is
 similar to the Abstraction Theorem except that it holds for {\em all}
@@ -2515,7 +2547,7 @@ hypothesis and weakening.
 \end{proof}
 \end{comment}
 
-\section{The Identity Extension Lemma}
+\section{The Identity Extension Lemma}\label{sec:iel}
 
 {\color{blue} Compare against Sec 3.3, 3.4 of Bob. R\&R refl graphs
   are our elts of $RT_0$. Bob defines equality relations starting from
@@ -3709,9 +3741,14 @@ relational environments. {\color{blue} The set and relational
   generating the usual congruence closed equational theory induced by
   the other term formers.}
 
-\section{Free Theorems for Nested Types}\label{sec:ftnt}
-
 \subsection{Free Theorems Derived from Naturality}\label{sec:ft-nat}
+
+Foralls in $\Nat$-types are at the object level, whereas the foralls
+in contexts are at the meta-level. So par results in subst theorem
+internalize parametricity in the calculus, whereas those parametricity
+results that do not follow from the interpretation of $\Nat$-types are
+externalized at the meta-level.
+
 
 {\color{red} Make this not about $\subst$}
 Note that the free theorem for a type is always independent of the
@@ -5385,9 +5422,10 @@ $\mu$-terms in our calculus. We just don't have an equivalence of
 these types and their Church encodings in our calculus, that's all.
 }
 
-\section{Free Theorems for Nested Types}
+\section{Free Theorems for Nested Types}\label{sec:ftnt}
 
-\subsection{Free Theorem for Type of Polymorphic Bottom}
+\subsection{Free Theorem for Type of Polymorphic
+  Bottom}\label{sec:bottom} 
 
 Suppose $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $G^\set =
 \setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$, and let $G^\rel =
@@ -5412,7 +5450,8 @@ transformation can exist in $\set$, and thus no term $\vdash g :
 calculus does not admit any terms with the closed type $\Nat^\alpha
 \onet \,\alpha$ of the polymorphic bottom.
 
-\subsection{Free Theorem for Type of Polymorphic Identity}
+\subsection{Free Theorem for Type of Polymorphic
+  Identity}\label{sec:identity} 
 
 Suppose $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, let $G^\set =
 \setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and let $G^\rel =
@@ -5566,7 +5605,8 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 
 \end{proof}
 
-\subsection{Free Theorem for Type of $\mathit{filter}$ for $\GRose$}
+\subsection{Free Theorem for Type of $\mathit{filter}$ for
+  $\GRose$}\label{sec:filter-grose} 
 
 \begin{thm} 
   Let $g : A \to B$ be a function,
@@ -5628,7 +5668,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 
 \end{proof}
 
-\subsection{Short Cut Fusion for Lists}
+\subsection{Short Cut Fusion for Lists}\label{sec:short-cut}
 
 \begin{thm}
 Let $\vdash \tau : \F$, $\vdash \tau' : \F$, and 
@@ -5724,7 +5764,7 @@ i.e., that
 
 
 
-\subsection{Short Cut Fusion for Arbitrary ADTs}
+\subsection{Short Cut Fusion for Arbitrary ADTs}\label{sec:short-cut-adt}
 
 \begin{thm}
 Let $\ol{\vdash \tau : \F}$, let $\vdash \tau' : \F$, let $\ol{\alpha}; \beta
@@ -5857,7 +5897,7 @@ G\,\setsem{\vdash \tau'}\,B\]
 \end{proof}
 
 
-\subsection{Short Cut Fusion for Arbitrary Nested Types}
+\subsection{Short Cut Fusion for Arbitrary Nested Types}\label{sec:short-cut-nested}
 
 {\color{red} Can take $\emptyset;\alpha \vdash c$ with
   $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
@@ -6023,7 +6063,7 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B\]
 
 
 
-\section{Conclusion}\label{sec:conclusion}
+\section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
 Can do everything in abstract locally presentable cartesian closed
 category. 
@@ -6034,6 +6074,15 @@ Future Work (in progress): extend calculus to GADTs
 
 Add more polymorphisms (all foralls), even though most free theorems
 only use one level (or maybe two, like short cut).
+
+Couldn't do this before~\cite{jp19} because we didn't know before that
+nested types (and then some) always have well-defined interpretations
+in locally finitely presentable categories like $\set$ and $\rel$. In
+fact, could extend results here to ``locally presentable fibrations'',
+where these are yet to be defined, but would at least have locally
+presentable base and total categories with the locally presentable
+structure preserved by the fibration and appropriate reflection of the
+total category in the base (as in Alex's effects paper?).
 
 
 fixed points at term level ala Pitts
