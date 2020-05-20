@@ -550,17 +550,18 @@ example,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}. Much
 of this work does ultimately extend parametricity to data types that
 are modeled as fixpoints of first-order functors, but to our knowledge
 this has never been done by building the data types directly into the
-calculus whose parametricity is to be modeled categorically.  Indeed,
-all models we know of are constructed using the categorical equivalent
-of Atkey's approach, i.e., by verifying in the just-constructed
-parametric model the existence of initial algebras for type
-constructors obtained by reflecting back into syntax the functors
-induced by the data types' Church encodings and supporting
-self-related universal strengths. The present paper draws on this rich
-tradition of categorical models of parametricity for System F, but
-takes care to ensure that the functoriality needed to support
-primitive nested types interacts nicely with System F's full
-impredicative polymorphism.
+calculus whose parametricity is to be modeled categorically. Indeed,
+all extensions we know of use the categorical equivalent of Atkey's
+approach. That is, they verify in the just-constructed parametric
+model the existence of initial algebras for type constructors obtained
+by reflecting back into syntax the functors induced by the data types'
+Church encodings and supporting self-related universal strengths. The
+present paper draws on the rich tradition of categorical models of
+parametricity for System F, but it extends parametricity to primitive
+nested types {\em as the model is being constructed} by taking care to
+ensure that System F's full impredicative polymorphism does not
+interfere with the functoriality needed to support primitive nested
+types.
 %We have all forall types and can make types like List^\alpha
 %(Nat^\emptyset 1 tau), i.e., List (forall alpha.tau).
 
