@@ -422,137 +422,147 @@ recalling that inductive proofs over ADTs can sometimes be
 circumvented in the presence of parametricity, we might naturally ask:
 \begin{verse}
 {\em Can we derive properties of functions over (truly) nested types
-  from paramertricity?}
+  from parametricity?}
 \end{verse}
-This paper answers the above question in the affirmative, by showing
-how to construct a parametric model for a polymorphic calculus with
-{\em explicit syntax} for nested types. We introduce our calculus in
-Section~\ref{sec:calculus}.
-%To achieve this, we first introduce in
-%Section~\ref{sec:calculus} a polymorphic calculus supporting nested
-%types.
-At the type level, it is
-%(because it also has $\Nat$-types),
-the level-2-truncation of the higher-kinded calculus from~\cite{jp19},
-augmented with a primitive type of natural transformations. To
-represent nested types, it constructs type expressions not just from
-type variables, as for expressions representing ADTs, but from
-variables representing type constructors of various arities as
-well. It also includes an explicit $\mu$-construct to represent
-type-level recursion with respect to these type constructor
-variables. The class of nested types thus represented is very robust
-and includes all (truly) nested types known from the literature. In
-Section~\ref{sec:type-interp} we construct set and relational
-interpretations of the types in our calculus. As usual in parametric
-models, types are interpreted as functors from environments
-interpreting their type variable contexts to set or relations, as
-appropriate. But in order to ensure that these functors satisfy the
-cocontinuity properties needed to know that the fixpoints interpreting
-$\mu$-types exist, set environments must map each $k$-ary type
-constructor variable to an appropriately cocontinuous $k$-ary functor
-on sets, and relation environments must map each $k$-ary type
-constructor variable to an appropriately cocontinuous $k$-ary relation
-transformer, and the cocontinuity conditions must be threaded
-throughout our construction in such a way that the resulting model
-still satisfies an appropriate Identity Extension Lemma
-(Theorem~\ref{thm:iel}) can be proved. This turns out to be both
-subtle and challenging, and Section~\ref{sec:iel}, where it is done,
-is where the bulk of the work in our model construction lies.
-%
-%When constructing categorical models of parametricity of System F, it
-%is standard to interpret types (judgments) as functors and terms as
-%natural transformations. To accommodate $\mu$-types, these functors
-%must be appropriately continuous to ensure existence of fixpoints. The
-%required continuity properties must be propagated throughout the
-%construction of the model. This must also be the case for the
-%higher-order functors that underlie the interpretations of nested
-%types. Ensuring sufficient cocontinuity is where the delicacy in our
-%construction lies.
-%
-At the term level, our calculus includes constructs representing the
-actions on morphisms of the functors interpreting types, initial
-algebras of these functors, and structured recursion over elements of
-these initial algebras (i.e., $\map$, $\tin$, and $\fold$ constructs,
-respectively). While our calculus does not support general recursion
-at the term level, it is strongly normalizing, so does provide strong
-termination guarantees, and thus edges us toward the kind of practical
-programming language supporting only restricted forms of recursion
-proposed at the end of~\cite{wad89}. In Section~\ref{sec:term-interp},
-we construct set and relational interpretations of the terms of our
-calculus. As usual in parametric models, terms are interpreted as
-natural transformations, from interpretations of the term contexts in
-which they are formed to the interpretations of their types, that
-cohere in what is essentially a fibrational way~\cite{gjfor15}.
-Immediately from the definition of our interpretation we prove in
-Section~\ref{sec:ft-nat} a scheme for deriving free theorems that are
-consequences of naturality for functions polymorphic over nested
-types. This scheme is very general, is parameterized over both the
-data type and the polymorphic function in question, and has the
-$\mathtt{map}$-$\mathtt{reverse}$ results described above as
-instances. The relationship between naturality and parametricity has
-long been of interest, and our inclusion of a primitive type of
-natural transformations lets us clearly delineate free theorems that
-are consequences of naturality, and thus would hold even in a
-non-parametric model of such types, from those that use the full power
-of the Abstraction Theorem to go beyond naturality. In
+This paper answers the above question in the affirmative by
+constructing a parametric model for a polymorphic calculus that
+provides primitives for constructing nested types.
+%{\color{blue} that provides nested types as primitives (rather than
+%  via Church encodings)}.
+%{\color{blue} with nested types as primitives}.
+%{\color{blue} with explicit syntax for built-in nested types}.
+
+We introduce our calculus in Section~\ref{sec:calculus}.  At the type
+level, it is the level-2-truncation of the higher-kinded calculus
+from~\cite{jp19}, augmented with a primitive type of natural
+transformations. To represent nested types, it constructs type
+expressions not just from standard type variables, but also from type
+constructor variables of various arities. In addition, it includes an
+explicit $\mu$-construct to represent type-level recursion with
+respect to these variables. The class of nested types thus represented
+is very robust and includes all (truly) nested types known from the
+literature. In Section~\ref{sec:type-interp} we construct set and
+relational interpretations for the types From
+Section~\ref{sec:calculus}. As is usual when modeling parametricity,
+types are interpreted as functors from environments interpreting their
+type variable contexts to set or relations, as appropriate. But in
+order to ensure that these functors satisfy the cocontinuity
+properties needed to know that the fixpoints interpreting $\mu$-types
+exist, set environments must map each $k$-ary type constructor
+variable to an appropriately cocontinuous $k$-ary functor on sets and
+relation environments must map each $k$-ary type constructor variable
+to an appropriately cocontinuous $k$-ary relation transformer, and
+these cocontinuity conditions must be threaded throughout our type
+interpretations in such a way that the resulting model satisfies an
+appropriate Identity Extension Lemma (Theorem~\ref{thm:iel}). Properly
+progagating cocontinuity turns out to be both subtle and challenging,
+and Section~\ref{sec:iel}, where it is done, is where the bulk of the
+work in our model construction lies.  At the term level, our calculus
+includes constructs representing the actions on morphisms of functors
+interpreting types, initial algebras for fixpoints of these functors,
+and structured recursion over elements of these initial algebras
+(i.e., $\map$, $\tin$, and $\fold$ constructs, respectively). While
+our calculus does not support general recursion at the term level, it
+is strongly normalizing, so does perhaps edge us toward the kind of
+provably total practical programming language proposed at the end
+of~\cite{wad89}. In Section~\ref{sec:term-interp}, we construct set
+and relational interpretations for the terms of our calculus. As usual
+in parametric models, terms are interpreted as natural transformations
+from interpretations of the term contexts in which they are formed to
+the interpretations of their types, and these must cohere in what is
+essentially a fibrational way~\cite{gjfor15}.  Immediately from the
+definition of our interpretation we prove in Section~\ref{sec:ft-nat}
+a scheme deriving free theorems that are consequences of naturality of
+functions that are polymorphic over nested types. This scheme is very
+general, is parameterized over both the data type and the polymorphic
+function at hand, and it has all of the above
+$\mathtt{map}$-$\mathtt{reverse}$ results as instances. The
+relationship between naturality and parametricity has long been of
+interest, and our inclusion of a primitive type of natural
+transformations makes it possible for us clearly delineate those free
+theorems that are consequences of naturality, and thus would hold even
+in non-parametric models of our calculus, from those that use the full
+power of parametricity to go beyond naturality. In
 Section~\ref{sec:thms} we prove that our model satisfies an
-Abstraction Theorem (Theorem~\ref{thm:abstraction}), which is the
-basis for deriving more general free theorems. Finally, in
-Section~\ref{sec:ftnt} we formulate and prove in our calculus a
-variety of free theorems for nested types. We prove (non-)inhabitation
-results in Sections~\ref{sec:bottom} and~\ref{sec:identity}, prove a
-free theorem for the type of a filter function on generalized rose
-trees in Section~\ref{sec:filter-grose}, and state and prove the
-correctness of short cut fusion for nested types in
+Abstraction Theorem (Theorem~\ref{thm:abstraction}), from which we
+derive several of this latter kind of free theorem in
+Section~\ref{sec:ftnt}. Specifically, we state and prove
+(non-)inhabitation results in Sections~\ref{sec:bottom}
+and~\ref{sec:identity}, a free theorem for the type of a filter
+function on generalized rose trees in Section~\ref{sec:filter-grose},
+and the correctness of short cut fusion for nested types in
 Section~\ref{sec:short-cut-nested}.
 
 We are not the first to consider parametricity at higher
 kinds. Atkey~\cite{atk12} constructs a parametric model for full
 System F$\omega$, but within the impredicative Calculus of Inductive
 Constructions (iCIC) rather than in a semantic category. Although
-Atkey's construction is similar to ours, his focus is on higher kinds
-rather than on modeling advanced data types directly. Specifically,
-Atkey constructs a syntactic model and is not concerned with modeling
-$\mu$-types, so he need not be concerned with functors or the
-existence of their fixpoints. As a result, his relation transformers
-include no cocontinuity conditions, and no such conditions need be
-propagated throughout his model construction. But while Atkey does not
-consider explicit syntax for nested types, or even ADTs, his model
-does verify the existence of initial algebras for (syntactic
-representations of) functors, provided they are {\em given}, together
-with an identity- and composition-preserving $\mathit{fmap}_F$
-function (which is not required to act like a true map
-function). Atkey's ``functors'' are therefore postulated rather than
-constructed, and need not have the expected functorial actions on
-morphisms, and is it not at all clear which data types can be
-represented in this way in System F$\omega$ or what free theorems for
-such an extended system would look like, although we suspect that
-making this explicit would result in a higher-kinded extension of our
-calculus. By contrast, our calculus gives a specific syntax
-delineating the nested types it is guaranteed to support, and all such
-are functorial {\em by construction}.
+Atkey's construction is similar to ours, he does nor provide
+primitives for constructing data types, so he is not concerned that
+his type constructors represent functors or that fixpoints for these
+functors exist. As a result, his relation transformers include no
+cocontinuity conditions, and no such conditions are propagated
+throughout his model construction. Atkey does, however, verify the
+existence of initial algebras in iCIC for (what are intended to be)
+syntactic reflections of functors, provided each is {\em given},
+together with an identity- and composition-preserving $\mathit{fmap}$
+function. (Unfortunately, the $\mathit{fmap}$ function given with $F$
+is not otherwise required to behave like the functorial action of
+$F$.)  Atkey's ``functors'' are therefore postulated rather than
+constructed.  He also does not in any way indicate which type
+constructors can be endowed with the required $\mathit{fmap}$
+functions,
+%or what free theorems for such an extended system would look like,
+and we suspect that doing so would essentially result in a
+higher-kinded extension of the results presented here for a calculus
+giving an explicit syntax for the higher-kinded types it guarantees
+are properly functorial by construction.
 
-Pitts~\cite{pit98,pit00} extends parametricity from pure System F to
-accommodate fixpoint recursion at the level of types. Only list types
-are added in~\cite{pit00}, although other ADTs are easily accommodated
-as in~\cite{pit98}. Pitts considers only polynomial data types, all of
-which can all be modeled as fixpoints of {\em first-order}
-functors. It would be interesting to see how his operational model
-would need to be extended to accommodate nested types and other data
-types that are modeled as fixpoints of higher-order functors ---
-especially to discern the analogues of the required functoriality and
-cocontinuity are in his operational setting.
+Like us, Pitts~\cite{pit98,pit00} extends parametricity from pure
+System F to accommodate direct representations of data types. Only
+list types are added in~\cite{pit00}, although other ADTs are easily
+accommodated as in~\cite{pit98}. But even there, Pitts considers only
+polynomial data types, all of which can all be modeled as fixpoints of
+{\em first-order} functors. Part of Pitts' motivation is to show that
+ADTs and their Church encodings have the same operational behavior in
+his system, which he accomplishes via an operational analogue of short
+cut fusion for ADTs. (We cannot even ask this question about our
+system, since it does not support Church encodings of nested types, or
+even of ADTs such as list types, or even of pair or sum types.)
+Particularly interesting would be the operational analogues of
+functoriality and cocontinuity required to extend Pitts' parametricity
+results to a calculus supplying primitives for constructing nested
+types and other data types modeled as fixpoints of {\em higher-order}
+functors.
+%in which nested types and other data
+%types that are modeled as fixpoints of {\em higher-order} functors are
+%taken as primitive.
+%, especially to discern the operational
+%analogues of the required functoriality and cocontinuity in his
+%operational setting.
+%, and to uncover the modifications needed to ensure that these are
+%also operationally equivalent to their Church encodings (i.e., to get
+%the operational analogue of our short cut for nested types).
 
-There is, of course, a long line of work on categorical models of
+Finally, there is a long line of work on categorical models of
 parametricity for System F; see, for
-example,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}. Some
-of these even extend System F with fixpoints for certain classes of
-functors {\color{blue} MORE??, usually those with (universal)
-  strength}.  Although the present paper draws on this rich tradition,
-we emphasize that our calculus does not have the impedicative
-polymorphism of full System F. On the other hand, as far as we know
-all of the free theorems derived in practice, even for ADTs, need only
-the polymorphism supported by our system.
+example,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}. Much
+of this work does ultimately extend parametricity to data types that
+are modeled as fixpoints of first-order functors, but to our knowledge
+this has never been done by building the data types directly into the
+calculus whose parametricity is to be modeled categorically.  Indeed,
+all models we know of are constructed using the categorical equivalent
+of Atkey's approach, i.e., by verifying in the just-constructed
+parametric model the existence of initial algebras for type
+constructors obtained by reflecting back into syntax the functors
+induced by the data types' Church encodings and supporting
+self-related universal strengths. The present paper draws on this rich
+tradition of categorical models of parametricity for System F, but
+takes care to ensure that the functoriality needed to support
+primitive nested types interacts nicely with System F's full
+impredicative polymorphism.
+%We have all forall types and can make types like List^\alpha
+%(Nat^\emptyset 1 tau), i.e., List (forall alpha.tau).
 
 \section{The Calculus}\label{sec:calculus}
 
@@ -722,6 +732,8 @@ $\Nat^{\ol\beta} H \, K$ since $\Gamma; \ol\alpha \vdash
 \Nat^{\ol\beta} H \, K$ is not a valid type judgment in our calculus
 (except by weakening).
 
+
+{\color{blue} Can have list of forall types or arrows.}
 Definition~\ref{def:wftypes} allows the formation of all of the
 (closed) nested types from the introduction:
 \[\begin{array}{lll}
@@ -1178,16 +1190,16 @@ number of free variables.
 The key to proving the Identity Extension Lemma
 (Theorem~\ref{thm:iel}) in our setting is a familiar ``cutting down''
 of the interpretations of universally quantified types, such as our
-$\Nat$-types, to include only the ``parametric'' elements.  (See,
-e.g.,~\cite{agj14,atk??,bfss90,rey83}). This requires that set
-interpretations of types are defined simultaneously with their
-relational interpretations. We give set interpretations for our types
-in Section~\ref{sec:set-interp} and give their relational
-interpretations in Section~\ref{sec:rel-interp}.  While the set
-interpretations are relatively straightforward, their relation
-interpretations are less so, mainly because of the cocontinuity
-conditions we must impose to ensure that they are well-defined. We
-take some effort to develop conditions in
+$\Nat$-types, to include only the ``parametric'' elements.
+%(See, e.g.,~\cite{atk12,bfss90,gjfor15,rey83}).
+This requires that set interpretations of types are defined
+simultaneously with their relational interpretations. We give set
+interpretations for our types in Section~\ref{sec:set-interp} and give
+their relational interpretations in Section~\ref{sec:rel-interp}.
+While the set interpretations are relatively straightforward, their
+relation interpretations are less so, mainly because of the
+cocontinuity conditions we must impose to ensure that they are
+well-defined. We take some effort to develop conditions in
 Section~\ref{sec:rel-interp}, which separates
 Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in space, but
 otherwise has no impact on the fact that they are given by mutual
@@ -3596,7 +3608,9 @@ for lists) or short cut fusion.
 \subsection{Properties of Initial Algebraic Constructs}
 
 We first observe that $\map$-terms are interpreted as semantic
-$\semmap$s:
+$\semmap$s: {\color{blue} Contrast with Bob's $fmaps_F$s, which are
+  not required to be the functorial action of $F$, only to preserve
+  identities and compositions.}
 
 Let \(\Gamma; \ol{\phi}, \ol{\gamma} \vdash H : \F\),
 \(\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F : \F}\)
@@ -5417,14 +5431,6 @@ If $\,\vdash \tau : \F$ and $\vdash t : \tau$, then $(\setsem{\vdash t
   : \tau},\setsem{\vdash t : \tau}) \in \relsem{\vdash \tau}$.
 \end{thm}
 
-{\color{blue}
-Our calculus does not support Church encodings of data types like pair
-or sum or list types because all of the ``forall''s in our calculus
-must be at the top level.  Nevertheless, our calculus does admit
-actual sum and product and list types because they are coded by
-$\mu$-terms in our calculus. We just don't have an equivalence of
-these types and their Church encodings in our calculus, that's all.
-}
 
 \section{Free Theorems for Nested Types}\label{sec:ftnt}
 
@@ -5901,7 +5907,19 @@ G\,\setsem{\vdash \tau'}\,B\]
 \end{proof}
 
 
-\subsection{Short Cut Fusion for Arbitrary Nested Types}\label{sec:short-cut-nested}
+\subsection{Short Cut Fusion for Arbitrary Nested
+  Types}\label{sec:short-cut-nested} 
+
+fold/build rule shows that Church encodings for nested types are iso
+(have the same interp) as the nested types themselves. Just like Ex
+2.8 in parpoe, but categorical rather than operational semantics. But
+built-in data types are more versatile in implementations. They can be
+inducted on, e.g. And they are stored in the heap, not the run-time
+stack, and are therefore more efficient.
+
+``Most higher order type languages meant for human programmers eschew
+fully impredicative polymorphism'' says Andy on p322.
+
 
 {\color{red} Can take $\emptyset;\alpha \vdash c$ with
   $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
@@ -6068,6 +6086,9 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B\]
 
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
+
+We have forall-types.
+
 
 Can do everything in abstract locally presentable cartesian closed
 category. 
