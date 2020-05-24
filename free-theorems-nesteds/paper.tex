@@ -1082,27 +1082,42 @@ x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
 \ol{\alpha} \vdash \sigma : \F$.
 
 {\color{blue} Because our system is designed to ensure functoriality,
-  and functoriality does not interact as well as we would like with
-  polymorphism, our system cannot express nontrivial recursive
-  functions, such as $\mathit{concat} : \mathit{PTree}\, \alpha \to
-  \mathit{PTree} \,\alpha \to \mathit{PTree}\, \alpha$, that take any
-  nontrivial arguments other than just a single non-algebraic nested
-  type as input. Indeed, since recursion is only expressible via
-  folds, the type of the function would have to be expressed in
-  curried form. But since a fold applied to an algebra must be a
-  natural transformation from a $\mu$-type to another functor, the
-  codomain of the function's curried type would have to be a functor,
-  which clearly is not the case if the function has more than one
-  input. Moreover, even some recursive functions of a single
-  non-algebraic nested type --- e.g., a $\mathtt{reverseBush}$
-  function that is a true involution --- cannot be expressed as
-  folds. This is because $\Nat$-types must be formed in empty
-  functorial contexts, and this conflicts with the fact that the
-  algebra arguments to folds must be polymorphic. Unfortunately,
-  generalized folds don't mitigate these difficulties. We emphasize
-  that this is a fundamental fact about the interaction of
-  functoriality and polymorphism, and not some peculiarity of our
-  system.}
+  and ensuring functoriality does not interact with polymorphism as
+  well as might be hoped, our system cannot express nontrivial
+  recursive functions such as $\mathtt{combine} : \mathtt{PTree}\,
+  \alpha \to \mathtt{PTree} \,\alpha \to \mathtt{PTree}\, \alpha$ that
+  take not just one nested type functorial in a variable $\alpha$ as
+  input, but other inputs functorial in $\alpha$ as well. The
+  fundamental issue is that recursion is expressible only via folds. A
+  fold over a nested type must take a natural transformation as an
+  argument and return a natural transformation, but the polymorphism
+  natural transformations entail leaves no nontrivial way to
+  incorporate data from the second argument to a function with a type
+  like that above
+%$\mathtt{combine}$'s
+  into a fold over its first
+  argument. Currying the type also does not help, because the codomain
+  of a fold applied to an algebra
+  %--- and thus of the function so expressed ---
+  must be
+  a functor, and this clearly is not the case for a function
+%with a type like $\mathtt{combine}$'s.
+  that takes more than one input involving the same type variable.
+  Even some recursive functions of a single non-algebraic nested type
+  --- e.g., a $\mathtt{reverseBush}$ function that is a true
+  involution --- cannot be expressed as folds because the algebra
+  arguments needed to define them are themselves recursive functions
+%  cannot be defined. This happens, for
+%  example, when the algebra argument to a fold must be a recursive
+%  function
+%, and thus must itself be defined as a fold
+  whose type signatures have the same problematic form discussed
+  above.  More sophisticated combinators for stylized recursion (e.g.,
+  generalized folds)
+%  ~\cite{bp99})
+  don't mitigate these difficulties, either. Indeed, they appear to be a
+  fundamental consequence of the interaction of functoriality and
+  polymorphism, not just some peculiarity of our particular calculus.}
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
 the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
