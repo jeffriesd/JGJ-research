@@ -1081,46 +1081,42 @@ x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
 \,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
 \ol{\alpha} \vdash \sigma : \F$.
 
-{\color{blue} Because our system is designed to ensure functoriality,
-  and ensuring functoriality does not interact with polymorphism as
-  well as might be hoped, our system cannot express nontrivial
-  recursive functions such as $\mathtt{combine} : \mathtt{PTree}\,
-  \alpha \to \mathtt{PTree} \,\alpha \to \mathtt{PTree}\, \alpha$ that
-  take not just one nested type functorial in a variable $\alpha$ as
-  input, but other inputs functorial in $\alpha$ as well. The
-  fundamental issue is that recursion is expressible only via folds. A
-  fold over a nested type must take a natural transformation as an
-  argument and return a natural transformation, but the polymorphism
-  natural transformations entail leaves no nontrivial way to
-  incorporate data from the second argument to a function with a type
-  like that above
-%$\mathtt{combine}$'s
-  into a fold over its first
-  argument. Currying the type also does not help, because the codomain
-  of a fold applied to an algebra
-  %--- and thus of the function so expressed ---
-  must be
-  a functor, and this clearly is not the case for a function
-%with a type like $\mathtt{combine}$'s.
-  that takes more than one input involving the same type variable.
-  Even some recursive functions of a single non-algebraic nested type
-  --- e.g., a $\mathtt{reverseBush}$ function that is a true
-  involution --- cannot be expressed as folds because the algebra
-  arguments needed to define them are themselves recursive functions
+Because our system is designed to ensure functoriality, and ensuring
+functoriality does not interact with polymorphism as well as might be
+hoped, our system cannot express nontrivial recursive functions, such
+as a concatenation function for perfect trees,
+%$\mathtt{combine} : \mathtt{PTree}\, \alpha \to \mathtt{PTree}
+%\,\alpha \to \mathtt{PTree}\, \alpha$
+that take not just one nested type functorial in a variable $\alpha$
+as input, but other inputs functorial in $\alpha$ as well. The
+fundamental issue is that recursion is expressible only via folds. A
+fold over a nested type must take a natural transformation as an
+argument and return a natural transformation, but the polymorphism
+natural transformations entail leaves no nontrivial way to incorporate
+data from the second argument to a function with a type like that
+above into a fold over its first argument. Currying the type also does
+not help, because the codomain of a fold applied to an algebra
+%--- and thus of the function so expressed ---
+must be a functor, and this clearly is not the case for a function
+that takes more than one input involving the same type variable.  Even
+some recursive functions of a single non-algebraic nested type ---
+e.g., a $\mathtt{reverseBush}$ function that is a true involution ---
+cannot be expressed as folds because the algebra arguments needed to
+define them are themselves recursive functions
 %  cannot be defined. This happens, for
 %  example, when the algebra argument to a fold must be a recursive
 %  function
 %, and thus must itself be defined as a fold
-  whose type signatures have the same problematic form discussed
-  above.  More sophisticated combinators for stylized recursion (e.g.,
-  generalized folds)
+whose type signatures have the same problematic form discussed above.
+More sophisticated combinators for stylized recursion (e.g.,
+generalized folds)
 %  ~\cite{bp99})
-  don't mitigate these difficulties, either. Indeed, they appear to be a
-  fundamental consequence of the interaction of functoriality and
-  polymorphism, not just some peculiarity of our particular calculus.}
+don't mitigate these difficulties, either. Indeed, they appear to be a
+fundamental consequence of the interaction of functoriality and
+polymorphism, not just some peculiarity of our particular calculus.
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
-the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
+the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$ also
 merit special mention. They allows us to map or fold polymorphic
 functions over nested types. Consider, for example, the function
 $\mathit{flatten} : \Nat^\beta
@@ -1592,15 +1588,15 @@ y) \in H^*F\overline{R}$, then $((\sigma^1_{F^1})_{\overline{A}} x,
 
 %{\color{blue} More context? Weave cocontinuity requirement for fixed
 %  points through text better.}
-Critically, we can compute $\omega$-directed colimits in $RT_k$:
-indeed, if $\cal D$ is an $\omega$-directed set, then $\colim{d \in
-  {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal D}}{F^1_d},
-\colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal D}}{F^*_d})$.  We
-then define an endofunctor $T = (T^1,T^2,T^*)$ on $RT_k$ to be {\em
-  $\omega$-cocontinuous} if $T^1$ and $T^2$ are $\omega$-cocontinuous
-endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
-functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
-$[RT_k,[\rel^k,\rel]]$.
+Critically, we can compute $\omega$-directed colimits in $RT_k$: it is
+not hard to see that if $\cal D$ is an $\omega$-directed set then
+$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
+    D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
+    D}}{F^*_d})$.  We define an endofunctor $T = (T^1,T^2,T^*)$ on
+$RT_k$ to be {\em $\omega$-cocontinuous} if $T^1$ and $T^2$ are
+$\omega$-cocontinuous endofunctors on $[\set^k,\set]$ and $T^*$ is an
+$\omega$-cocontinuous functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is
+in $[RT_k,[\rel^k,\rel]]$.
 %\begin{lemma}\label{lem:colimits}
 %$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
 %      D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
@@ -1666,10 +1662,10 @@ functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
 $[RT_k,[\rel^k,\rel]]$.
 \end{dfn}
 \end{comment}
-Now, for any $k$ and $R : \rel(A, B)$, let $K^\rel_R$ be the
-constantly $R$-valued functor from $\rel^k$ to $\rel$, and for any $k$
-and set $A$, let $K^\set_A$ be the constantly $A$-valued functor from
-$\set^k$ to $\set$, and let $0$ denote either the initial object of
+Now, for any $k$, any $A : \set$, and any $R : \rel(A, B)$, let
+$K^\set_A$ be the constantly $A$-valued functor from $\set^k$ to
+$\set$ and $K^\rel_R$ be the constantly $R$-valued functor from
+$\rel^k$ to $\rel$.  Also let $0$ denote either the initial object of
 $\set$ or the initial object of $\rel$, as appropriate.  Observing
 that, for every $k$, $K^\set_0$ is initial in $[\set^k,\set]$, and
 $K^\rel_0$ is initial in $[\rel^k,\rel]$, we have that, for each $k$,
@@ -1962,7 +1958,9 @@ The proof is a straightforward induction on the structure of $\tau$,
 %  \tau}, \setsem{\Gamma;\Phi \vdash \tau},\relsem{\Gamma;\Phi \vdash
 %  \tau})$ is indeed a functor from $\relenv$ to $RT_0$, and then uses
 using an appropriate result from~\cite{jp19} to deduce
-$\omega$-cocontinuity of $\sem{\Gamma;\Phi \vdash \tau}$ in each case.
+$\omega$-cocontinuity of $\sem{\Gamma;\Phi \vdash \tau}$ in each case,
+together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} in the
+$\mu$-case.
 
 \begin{comment}
 \begin{proof}
@@ -2598,18 +2596,21 @@ hypothesis and weakening.
 
 \section{The Identity Extension Lemma}\label{sec:iel}
 
-{\color{blue} Rather than taking equality relations as given, e.g., by
-  reflexive graphs, and using them to define graph relations, as is
-  traditionally done, we give a categorical definition of graph
-  relations that works for morphisms between functors (i.e., natural
-  transformations) and derive equality relations as particular graph
-  relations. FUNCTORIALITY IS ESSENTIAL TO THIS CONSTRUCTION. HOW MUCH
-  OF THIS COULD BE DONE IN AN ARBITRARY (``COCONTINUOUS'') FIBRATIONAL
-  SETTING?}
+In most treatments of parametricity, equality relations on sets are
+given --- either directly as diagonal relations, or perhaps via
+reflexive graphs if kinds are also being tracked --- and the graph
+relations used to validate existence of initial algebras are defined
+in terms of them. We take a different approach here, giving a
+categorical definition of graph relations for morphisms (i.e., natural
+transformations) between functors and define equality relations as
+particular graph relations. Our definitions specialize to the usual
+ones for the graph relation for a morphism between sets and the
+equality relation for a set. In light of its novelty, we spell out our
+construction in detail.
 
-The standard definition of the {\em graph} for a morphism $f : A \to
-B$ in $\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y)
-\in \graph{f}$ iff $fx = y$. This definition naturally generalizes to
+The standard definition of the graph for a morphism $f : A \to B$ in
+$\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
+\graph{f}$ iff $fx = y$. This definition naturally generalizes to
 associate to each natural transformation between $k$-ary functors on
 $\set$ a $k$-ary relation transformer as follows:
 
@@ -2658,9 +2659,12 @@ given by $\graph{\alpha}^*\overline{(\beta, \beta')} =
 (F\overline\beta, G\overline\beta')$.
 \end{dfn}
 
-The data in Definition~\ref{dfn:graph-nat-transf} yield a relation
-transformer $\graph{\alpha} = (F, G, \graph{\alpha}^*)$, called the
-{\em graph relation transformer for $\alpha$}.
+The data in Definition~\ref{dfn:graph-nat-transf} yield the {\em graph relation
+transformer for $\alpha$}, denoted $\graph{\alpha} = (F, G,
+\graph{\alpha}^*)$.
+% yield a relation transformer $\graph{\alpha} = (F, G,
+%\graph{\alpha}^*)$, called the {\em graph relation transformer for
+%$\alpha$}.
 
 \begin{lemma}\label{lem:graph-reln-functors}
 If $F,G : [\set^k,\set]$, and if $\alpha : F \to G$ is a natural
@@ -2764,12 +2768,11 @@ such that
       \]
 \end{proof}
 
-It is not hard to see that if $f : A \to B$ is a morphism in $\set$
-then the standard definition of its graph $\langle f \rangle$ in
-$\rel$ coincides with the definition the graph relation transformer
-for $f$ as a natural transformation between the $0$-ary functors $A$
-and $B$. Graph relation transformers are thus a reasonable
-generalization of graph relations in $\rel$.
+If $f : A \to B$ is a morphism in $\set$ then the definition of the
+graph relation transformer $\langle f \rangle$ for $f$ as a natural
+transformation between $0$-ary functors $A$ and $B$ coincides with its
+standard definition.  Graph relation transformers are thus a
+reasonable extension of graph relations to functors.
 \begin{comment}
 
 If $f : A \to B$ is a function with graph relation $\graph{f} = (A, B,
