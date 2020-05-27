@@ -1351,27 +1351,26 @@ The same holds for the actions of these interpretations on morphisms
 in Definition~\ref{def:set-sem-funcs} below.  Moreover, the
 interpretation of $\Nat$ types ensures that $\setsem{\Gamma \vdash
   \sigma \to \tau}\rho = \setsem{\Gamma \vdash \sigma} \rho \to
-\setsem{\Gamma \vdash \tau} \rho$, as expected.  If $\rho$ is a set
-environment and $\vdash \tau : \F$ then we may write $\setsem{\vdash
-  \tau}$ instead of $\setsem{\vdash \tau}\rho$ since the environment
-is immaterial. We note that the second clause of
+\setsem{\Gamma \vdash \tau} \rho$, as expected {\color{blue} by IEL}.
+If $\rho$ is a set environment and $\vdash \tau : \F$ then we may
+write $\setsem{\vdash \tau}$ instead of $\setsem{\vdash \tau}\rho$
+since the environment is immaterial. We note that the second clause of
 Definition~\ref{def:set-sem} does indeed define a set: local finite
 presentability of $\set$ and $\omega$-cocontinuity of
 $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$ ensure that $\{\eta :
 \setsem{\Gamma;\ol{\alpha} \vdash F}\rho \Rightarrow
 \setsem{\Gamma;\ol{\alpha} \vdash G}\rho\}$ (which contains
 $\setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho$) is a
-subset of
-$\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
-    S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha :=
-      S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and }$
-$S_i \mbox{ is a finite set for } i = 1,...,|\ol{\alpha}|\big\}$. There
-are countably many choices for tuples $\ol{S}$, and each of these
-gives rise to a morphism from ${\setsem{\Gamma;\ol{\alpha} \vdash
-    F}\rho[ \ol{\alpha := S}]}$ to ${\setsem{\Gamma;\ol{\alpha} \vdash
-    G}\rho[\ol{\alpha := S}]}$. But there are only $\set$-many choices
-of morphisms between these (or any) two objects because $\set$ is
-locally small.
+subset of $\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha
+      := S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha
+      := S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and
+}$ $S_i \mbox{ is a finite set for } i =
+1,...,|\ol{\alpha}|\big\}$. There are countably many choices for
+tuples $\ol{S}$, and each of these gives rise to a morphism from
+${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
+${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
+there are only $\set$-many choices of morphisms between these (or any)
+two objects because $\set$ is locally small.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
@@ -3665,19 +3664,17 @@ If $\xi = \Nat^{\overline{\gamma}} H[\phi := (\mu \phi. \lambda
   : \xi}
 \end{array}\]
 \end{thm}
-
+\noindent
 Analogous results hold for relational interpretations of terms and
 relational environments.
 
-As we observe in Section~\ref{sec:ft-nat}, Theorem~\ref{thm:subst}
-gives a family of free theorems that are consequences of naturality,
-and thus do not require the full power of parametricity. Most,
-although not all, of the free theorems derived in~\cite{wad89} are in
-this family.
-%, for example, but
-%not the free theorem for filter (even for lists) or short cut fusion.
+Theorem~\ref{thm:subst} gives a family of free theorems that are
+consequences of naturality, and thus do not require the full power of
+parametricity. Specific instances of Theorem~\ref{thm:ft-nat} include
+{\color{blue} Wadler free theorems, map-reverse theorems from intro,
+  ???}
 
-\subsection{Properties of Initial Algebraic Constructs}
+\subsection{Properties of Initial Algebraic Constructs}\label{sec:iaps}
 
 Our semantics interprets $\map$ terms as semantic $\mathit{map}$
 functions. Indeed, if \(\Gamma; \ol{\phi}, \ol{\gamma} \vdash H :
@@ -3830,24 +3827,44 @@ then
 Analogous results hold for relational interpretations of terms and
 relational environments.
 
+\begin{comment}
 \subsection{Free Theorems Derived from Naturality}\label{sec:ft-nat}
 
-Foralls in $\Nat$-types are at the object level, whereas the foralls
-in contexts are at the meta-level. So par results in subst theorem
-internalize parametricity in the calculus, whereas those parametricity
-results that do not follow from the interpretation of $\Nat$-types are
-externalized at the meta-level.
+In our setting, free theorems of a certain familiar form are derivable
+directly from the semantic properties of $\Nat$-types. Indeed, the
+following theorem is immediate from Theorem~\ref{thm:subst}, by taking
+$\gamma$ to be empty, expanding the interpretations on the left- and
+right-hand sides, and using the fact from Section~\ref{sec:iaps} that
+$\map$ terms are interpreted as semantic $\mathit{map}$ functions:
+\begin{thm}\label{thm:ft-nat}
+If\, $\Gamma; \ol\alpha \vdash F : \F$,\, $\Gamma; \ol\alpha \vdash G :
+\F$, $\rho : \setenv$, $x \in \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol\alpha} F\, G } \rho$, and, for vectors of length
+$|\ol\alpha|$, \, $\ol{\Gamma; \emptyset \vdash \sigma : \F}$,\,
+$\ol{\Gamma; \emptyset \vdash \tau: \F}$, and $\ol{y \in
+  \setsem{\Gamma; \emptyset \vdash \Nat^{\emptyset} \sigma\, \tau }
+  \rho}$, then
+\[\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
+  \circ x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}} =
+  x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} } \circ
+  \mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash F} \rho[\ol{\alpha :=
+        \_}]} \, \ol{y}\]
+\end{thm}
+\noindent
+%INCORRECT
+%In particular, for $\ol{A, B: \set}$, variables $\ol{v}$ and $\ol{w}$
+%with $\ol{\rho v = A}$ and $\ol{\rho w = B}$, and functions $\ol{f : A
+%  \to B}$, the following holds: $\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash G}
+%  \rho[\ol{\alpha := \_}]} \ol{f} \circ x_{\ol{A}} = x_{\ol{B}} \circ
+%\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash F} \rho[\ol{\alpha :=
+%      \_}]} \, \ol{f}$.
+A similar result holds for relational interpretations.
 
+Specific instances of Theorem~\ref{thm:ft-nat} include {\color{blue}
+  Wadler free theorems, map-reverse theorems from intro, ???}
+\end{comment}
 
-{\color{red} Make this not about $\subst$}
-Note that the free theorem for a type is always independent of the
-particular term of that type, so the proof below is independent of the
-choice of function $\subst$.  In addition, it is independent of the
-particular data type --- in this case, $\Lam$ --- over which $\subst$
-acts. Also independent of the functor arguments --- in this case
-$+\onet$ and $\id$ --- to the data type. Indeed, the following result
-is just a consequence of naturality.
-
+\begin{comment}
 We already know from Theorem~\ref{thm:subst} that 
 \begin{multline}
 \setsem{\Gamma; \emptyset \,|\, x :
@@ -3866,111 +3883,120 @@ We already know from Theorem~\ref{thm:subst} that
   \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
       \sigma}]\, G[\overline{\alpha := \tau}]}
 \end{multline}
-In particular, if we instantiate $x$ with any term $\subst$ of type
-$\vdash \Nat^{\alpha} (\Lam(\alpha + \onet) \times \Lam\alpha)\, \Lam\alpha$
-(and thus there is a single $\alpha$ and no $\gamma$'s)
-we have
+
+In particular, for any set environment $\rho$, natural transformation 
+$x \in \setsem{\Gamma; \emptyset \vdash \Nat^{\ol\alpha} F\, G } \rho$, and functions
+$\ol{y \in \setsem{\Gamma; \emptyset \vdash \Nat^{\emptyset} \sigma\, \tau } \rho}$
+(thus specializing to the case where there are no $\gamma$’s), we have
 \begin{multline}
-\setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
-  \circ (L_{\emptyset} z. \subst_{\sigma} z)
-  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau } \\
-= \setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash
-  (L_{\emptyset} z. \subst_{\tau} z)
-  \circ ((\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
-  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau }
+\setsem{\Gamma; \emptyset \,|\, x :
+  \Nat^{\overline{\alpha}} F\,G, \overline{y : \Nat^{\emptyset}
+    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
+    \overline{\tau}})_{\emptyset} \overline{y}) \circ
+  (L_{\emptyset} z. x_{\overline{\sigma}}
+  z) : \Nat^{\emptyset} F[\overline{\alpha := \sigma}]\,
+  G[\overline{\alpha := \tau}]} \rho (x, \ol{y}) \\
+= \setsem{ \Gamma; \emptyset \,|\, x
+  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
+    \Nat^{\emptyset} \sigma\, \tau} \vdash
+  (L_{\emptyset} z. x_{\overline{\tau}} z)
+  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
+  \overline{y}) : \Nat^{\emptyset} F[\overline{\alpha :=
+      \sigma}]\, G[\overline{\alpha := \tau}]} \rho (x, \ol{y})
 \end{multline}
-Thus, for any set environment $\rho$ and any function
-$f : \setsem{\Gamma; \emptyset \vdash  \Nat^{\emptyset} \sigma\, \tau}\rho$,
-we have that
+
+Unwinding these interpretations yields
 \begin{multline}
-\setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
-  \circ (L_{\emptyset} z. \subst_{\sigma} z)
-  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau } \rho f \\
-= \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash ((\map_{\Lam\alpha}^{\sigma, \tau})_{\emptyset} y)} \rho f
-  \circ
-  \setsem{\Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash L_{\emptyset} z. \subst_{\sigma} z} \rho f \\
-= \setsem{\Gamma; \emptyset \,|\, \emptyset
-  \vdash \map_{\Lam\alpha}^{\overline{\sigma}, \overline{\tau}}} \rho f
-  \circ \setsem{\Gamma; \emptyset \,|\, \emptyset
-  \vdash L_{\emptyset} z. \subst_{\sigma} z} \rho \\
-= \map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-  \circ
-  (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}
+\setsem{\Gamma; \emptyset \,|\, x :
+  \Nat^{\overline{\alpha}} F\,G, \overline{y : \Nat^{\emptyset}
+    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
+    \overline{\tau}})_{\emptyset} \overline{y}) \circ
+  (L_\emptyset z. x_{\overline{\sigma}}
+  z) : \Nat^{\emptyset} F[\overline{\alpha := \sigma}]\,
+  G[\overline{\alpha := \tau}]} \rho \, (x , \ol{y}) \\
+= 
+\setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G, 
+  \overline{y : \Nat^{\emptyset}
+    \sigma\, \tau} \vdash (\map_G^{\overline{\sigma},
+    \overline{\tau}})_{\emptyset} \overline{y} } \rho \, (x, \ol{y})
+   \circ
+  \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G 
+   , \overline{y : \Nat^{\emptyset}
+      \sigma\, \tau} \vdash
+   L_{\emptyset} z. x_{\overline{\sigma}}
+  z } \rho \, (x, \ol{y}) \\
+= 
+\setsem{\Gamma; \emptyset \,|\, \overline{y : \Nat^{\emptyset}
+    \sigma\, \tau} \vdash (\map_G^{\overline{\sigma},
+    \overline{\tau}})_{\emptyset} \overline{y} } \rho \, \ol{y}
+   \circ
+  \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G \vdash
+    L_{\emptyset} z. x_{\overline{\sigma}}
+  z } \rho \, x \\
+= \map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
+  \circ 
+  x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}}
 \end{multline}
-and
+
+
+and 
 \begin{multline}
-\setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash
-  (L_{\emptyset} z. \subst_{\tau} z)
-  \circ
-  ((\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y)
-  : \Nat^{\emptyset} (\Lam(\sigma + \onet) \times \Lam\sigma)\, \Lam\tau
-} \rho f \\
-= \setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash L_{\emptyset} z. \subst_{\tau} z
-} \rho f
-\circ
-\setsem{ \Gamma; \emptyset \,|\, y : \Nat^{\emptyset} \sigma\, \tau
-  \vdash (\map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau})_{\emptyset} y
-} \rho f \\
-= \setsem{ \Gamma; \emptyset \,|\, \emptyset
-  \vdash L_{\emptyset} z. \subst_{\tau} z
-} \rho
-\circ
-\setsem{ \Gamma; \emptyset \,|\, \emptyset
-  \vdash \map_{\Lam(\alpha + \onet) \times \Lam\alpha}^{\sigma, \tau}
-} \rho f \\
-= (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
-\circ
-\map_{\setsem{\emptyset; \alpha \vdash \Lam(\alpha + \onet) \times \Lam\alpha} [\alpha := \_]} f \\
-= (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
-\circ
-(
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
-\times
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-)
+\setsem{ \Gamma; \emptyset \,|\, x
+  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
+    \Nat^{\emptyset} \sigma\, \tau} \vdash
+  (L_{\emptyset} z. x_{\overline{\tau}} z)
+  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
+  \overline{y}) : \Nat^{\emptyset} F[\overline{\alpha :=
+      \sigma}]\, G[\overline{\alpha := \tau}]} \rho (x, \ol{y}) \\
+=
+\setsem{ \Gamma; \emptyset \,|\, x
+  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
+    \Nat^{\emptyset} \sigma\, \tau} \vdash
+  L_{\emptyset} z. x_{\overline{\tau}} z)} \rho (x, \ol{y})
+  \circ 
+  \setsem{\Gamma; \emptyset
+  \,|\, x : \Nat^{\overline{\alpha}} F\, G, \overline{y :
+    \Nat^{\emptyset} \sigma\, \tau} \vdash 
+  (\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
+  \overline{y} } \rho (x, \ol{y}) \\
+= \setsem{\Gamma; \emptyset \,|\, x
+  : \Nat^{\overline{\alpha}} F\, G \vdash 
+  L_{\emptyset} z. x_{\overline{\tau}} z} \rho \, x
+  \circ 
+  \setsem{\Gamma;\emptyset \,|\, \overline{y :
+    \Nat^{\emptyset} \sigma\, \tau} \vdash
+    (\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
+  \overline{y} } \rho \, \ol{y}  \\
+  = x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} }
+  \circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
+    \rho[\ol{\alpha := \_}]} \, \ol{y}
 \end{multline}
+
+
 So, we can conclude that
-\begin{multline}
-\map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-  \circ
-  (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \sigma} \rho} \\
-= (\setsem{\vdash \subst})_{\setsem{\Gamma; \emptyset \vdash \tau}\rho}
-\circ
-(
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
-\times
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-)
-\end{multline}
-Moreover, for any $A, B: \set$,
-we can choose $\sigma = v$ and $\tau = w$ to be variables such that
-$\rho v = A$ and $\rho w = B$.
-Then for any function $f : A \to B$ we have that
-\begin{multline}
-\map_{\setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-  \circ
-  (\setsem{\vdash \subst})_{A} \\
-= (\setsem{\vdash \subst})_{B}
-\circ
-(
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} (f + \onet)
-\times
-\map_{
-  \setsem{\emptyset; \alpha \vdash \Lam\alpha} [\alpha := \_]} f
-)
-\end{multline}
+\begin{equation}
+\map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
+  \circ 
+  x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}}
+= x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} }
+\circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
+  \rho[\ol{\alpha := \_}]} \, \ol{y}
+\end{equation}
+
+Moreover, for any $\ol{A, B: \set}$,
+we can choose $\ol{\sigma = v}$ and $\ol{\tau = w}$ to be variables such that
+$\ol{\rho v = A}$ and $\ol{\rho w = B}$.
+Then for any functions $\ol{f : A \to B}$ we have that
+\begin{equation}
+\map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{f}
+  \circ 
+  x_{\ol{A}}
+  = x_{\ol{B}}
+\circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
+  \rho[\ol{\alpha := \_}]} \, \ol{f}
+\end{equation}
+\end{proof}
+\end{comment}
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
@@ -4493,13 +4519,112 @@ that $\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}f \,\circ\,
 %  [\overline{\alpha := \tau}]}(\pi_i\rho)
 %\end{array}\]
 
-HERE!!!!!
-
-\item $\underline{\Gamma;\emptyset~|~\emptyset \vdash 
+\item $\underline{\Gamma;\emptyset~|~\emptyset \vdash
   \map^{\ol{F},\ol{G}}_H :
   \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
   (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}$.
+      :=_{\ol{\beta}} G}])}$\; Since $\Phi$ is empty, to see that
+  $\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+  : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}$ is a natural transformation from
+  $\setsem{\Gamma;\emptyset \vdash \emptyset}$ to
+  $\setsem{\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}$ we need only show that, for all $\rho :
+  \setenv$, the unique $d : \setsem{\Gamma;\emptyset \vdash
+    \emptyset} \rho$,
+%  we have that $\setsem{\Gamma;
+%    \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H :
+%    \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%        :=_{\ol{\beta}} G}])}\,\rho\,d$ is a morphism from
+%  $\ol{\setsem{\Gamma; \emptyset
+%      \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$ to
+%  $\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi
+%        :=_{\ol{\beta}} F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]} \rho$,
+%  i.e.,
+  and all $\ol{\eta : \setsem{\Gamma; \emptyset
+      \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$, we have
+  $\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}
+  :$\\ $\setsem{\Gamma; \emptyset \vdash
+    \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}]} \rho$. For this, we first note that
+  $\setsem{\Gamma ;\ol{\phi}, \ol{\gamma} \vdash H}$ is a functor from
+  $\setenv$ to $\set$ and, for any $\ol B$, $\id_{\rho[\ol{\gamma :=
+        B}]}[\ol{\phi := \lambda \ol{A}. \eta_{\ol{A}\,\ol{B}}}]$ is a
+  morphism in $\setenv$ from \[\rho[\ol{\gamma := B}][\ol{\phi :=
+      \lambda \ol{A}.\setsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash
+        F}\rho[\ol{\gamma := B}][\ol{\beta := A}]}]\] to
+  \[\rho[\ol{\gamma := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
+        \ol{\gamma},\ol{\beta} \vdash G}\rho[\ol{\gamma :=
+          B}][\ol{\beta := A}]}]\] so that
+$(\setsem{\Gamma; \emptyset~|~\emptyset \vdash
+\map^{\ol{F},\ol{G}}_H :
+\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+(\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+    :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta})_{\ol{B}}$
+$=  \setsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho[\ol{\gamma
+      := B}]}[\ol{\phi := \lambda \ol{A}. \eta_{\ol{A}\,\ol{B}}}]$
+is indeed a morphism from
+$\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := B}]$
+%= & \setsem{\Gamma ;\ol{\gamma},\ol{\phi} \vdash H}\rho[\ol{\gamma
+%      := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
+%        \ol{\gamma},\ol{\beta} \vdash F}\rho[\ol{\gamma :=
+%          B}][\ol{\beta := A}]}]
+to 
+$ \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := B}]$.
+%= & \setsem{\Gamma ;\ol{\gamma},\ol{\phi} \vdash H}\rho[\ol{\gamma
+%      := B}][\ol{\phi := \lambda \ol{A}.\setsem{\Gamma;
+%        \ol{\gamma},\ol{\beta} \vdash G}\rho[\ol{\gamma :=
+%          B}][\ol{\beta := A}]}]
+This family of morphisms is natural in $\ol B$: if $\ol{f : B \to B'}$
+then, writing $t$ for $\setsem{\Gamma; \emptyset~|~\emptyset \vdash
+  \map^{\ol{F},\ol{G}}_H :
+  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}$, naturality of each
+$\eta$, together with the fact that composition of environments is
+computed componentwise, ensure that the following naturality diagram
+for $t$ commutes:
+\[\begin{tikzcd}
+\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := B}] \ar[r,
+  "{\;\;\;t_{\ol{B}}\;\;\; }"]
+\ar[d, "{\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi :=
+          F}]}\id_{\rho}[\ol{\gamma := f}]}"']
+& \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := B}]
+\ar[d, "{\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi :=
+          G}]}\id_{\rho}[\ol{\gamma := f}]}"]\\
+\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := B'}] \ar[r,
+  "{t_{\ol{B'}}}"]
+& \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := B'}] 
+\end{tikzcd}\]
+That, for all $\rho : \setenv$ and $d :
+  \setsem{\Gamma;\emptyset \vdash \emptyset}\rho$, and all $\ol{\eta :
+    \setsem{\Gamma; \emptyset \vdash
+      \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho}$,
+\[ \setsem{\Gamma; \emptyset~|~\emptyset \vdash
+  \map^{\ol{F},\ol{G}}_H :
+  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}\] satisfies the
+additional condition necessary for it to be in $\setsem{\Gamma;
+  \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}}
+      F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]}\rho$, follows from the fact
+that each $\eta$ satisfies the extra condition necessary for it to be
+in its corresponding $\setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho$.
+
+\begin{comment}  
 \begin{itemize}
 \item To see that $\setsem{\Gamma; \emptyset~|~\emptyset \vdash
   \map^{\ol{F},\ol{G}}_H :
@@ -4531,8 +4656,8 @@ is a morphism in $\set$
 $\ol{\setsem{\Gamma; \emptyset
     \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$ to
 $\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi
-      :=_{\ol{\beta}} F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]} \rho$.  For
-this we show that for all $\ol{\eta : \setsem{\Gamma; \emptyset
+      :=_{\ol{\beta}} F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]} \rho$.
+For this we show that for all $\ol{\eta : \setsem{\Gamma; \emptyset
     \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$ we have
 \[\begin{array}{ll}
   & \setsem{\Gamma; \emptyset~|~\emptyset \vdash
@@ -4636,7 +4761,8 @@ We therefore have that
   (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
       :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta})_{\ol{B}}\]
   is natural in $\ol{B}$ as desired.
-\item To see that, for every $\rho : \setenv$ and $d :
+\item
+  To see that, for every $\rho : \setenv$ and $d :
   \setsem{\Gamma;\emptyset \vdash \emptyset}\rho$, and all $\ol{\eta :
     \setsem{\Gamma; \emptyset \vdash
       \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho}$,
@@ -4683,73 +4809,76 @@ has type
       G}]}\Eq_\rho[\ol{\gamma := R}]
 \end{array}\]
 as desired.
-\item The proofs that 
-\[\relsem{\Gamma; \emptyset~|~\emptyset \vdash
-  \map^{\ol{F},\ol{G}}_H :
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\]
-is a natural transformation from $\relsem{\Gamma;\emptyset \vdash
-  \emptyset}$ to 
-\[\relsem{\Gamma; \emptyset \vdash
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\]
-and that, for every $\rho : \relenv$ and the unique $d :
-\relsem{\Gamma;\emptyset \vdash \emptyset}\rho$,
-\[\relsem{\Gamma; \emptyset~|~\emptyset \vdash
-  \map^{\ol{F},\ol{G}}_H :
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\,\rho\,d\] is a morphism from
-$\ol{\relsem{\Gamma; \emptyset \vdash
-    \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}}\,\rho$ to $\relsem{\Gamma;
-  \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}}
-      F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]}\,\rho$, are analogous.
-\item Finally, to see that 
-  \[\begin{array}{ll}
-  & \pi_i (\relsem{\Gamma; \emptyset~|~\emptyset \vdash
-    \map_H^{\ol{F}\,\ol{G}} : 
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\,\rho)\\
-= & \setsem{\Gamma; \emptyset~|~\emptyset \vdash
-    \map_H^{\ol{F}\,\ol{G}} : 
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\,(\pi_i \rho)
-\end{array}\]
-we compute
-  \[\begin{array}{ll}
-  & \pi_i (\relsem{\Gamma; \emptyset~|~\emptyset \vdash
-    \map_H^{\ol{F}\,\ol{G}} : 
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\,\rho)\\
-  = & \pi_i \, (\lambda e\, \ol{\nu}\,\ol{R}.\, \relsem{
-    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{\rho[\ol{\gamma :=
-        R}]}[\ol{\phi := \lambda \ol{S}.\nu_{\ol{S}\,\ol{R}}}])\\
-  = & \lambda e\, \ol{\nu}\,\ol{R}.\, \setsem{
-    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{(\pi_i \rho)[\ol{\gamma :=
-        \pi_i R}]}[\ol{\phi := \lambda \ol{S}.(\pi_i \nu)_{\ol{\pi_i
-          S}\,\ol{\pi_i R}}}]\\
-  = & \lambda d\, \ol{\eta}\,\ol{B}.\, \setsem{
-    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{(\pi_i \rho)[\ol{\gamma :=
-        B}]}[\ol{\phi := \lambda \ol{A}.\eta_{\ol{A}\,\ol{B}}}]\\
-  = & \setsem{\Gamma; \emptyset~|~\emptyset \vdash
-    \map_H^{\ol{F}\,\ol{G}} : 
-  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}])}\,(\pi_i \rho)
-  \end{array}\]
-\end{itemize}
+\end{comment}
 
 
-$\bullet$\;
+%\item The proofs that 
+%\[\relsem{\Gamma; \emptyset~|~\emptyset \vdash
+%  \map^{\ol{F},\ol{G}}_H :
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\]
+%is a natural transformation from $\relsem{\Gamma;\emptyset \vdash
+%  \emptyset}$ to 
+%\[\relsem{\Gamma; \emptyset \vdash
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\]
+%and that, for every $\rho : \relenv$ and the unique $d :
+%\relsem{\Gamma;\emptyset \vdash \emptyset}\rho$,
+%\[\relsem{\Gamma; \emptyset~|~\emptyset \vdash
+%  \map^{\ol{F},\ol{G}}_H :
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\,\rho\,d\] is a morphism from
+%$\ol{\relsem{\Gamma; \emptyset \vdash
+%    \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}}\,\rho$ to $\relsem{\Gamma;
+%  \emptyset \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}}
+%      F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]}\,\rho$, are analogous.
+%\item Finally, to see that 
+%  \[\begin{array}{ll}
+%  & \pi_i (\relsem{\Gamma; \emptyset~|~\emptyset \vdash
+%    \map_H^{\ol{F}\,\ol{G}} : 
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\,\rho)\\
+%= & \setsem{\Gamma; \emptyset~|~\emptyset \vdash
+%    \map_H^{\ol{F}\,\ol{G}} : 
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\,(\pi_i \rho)
+%\end{array}\]
+%we compute
+%  \[\begin{array}{ll}
+%  & \pi_i (\relsem{\Gamma; \emptyset~|~\emptyset \vdash
+%    \map_H^{\ol{F}\,\ol{G}} : 
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\,\rho)\\
+%  = & \pi_i \, (\lambda e\, \ol{\nu}\,\ol{R}.\, \relsem{
+%    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{\rho[\ol{\gamma :=
+%        R}]}[\ol{\phi := \lambda \ol{S}.\nu_{\ol{S}\,\ol{R}}}])\\
+%  = & \lambda e\, \ol{\nu}\,\ol{R}.\, \setsem{
+%    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{(\pi_i \rho)[\ol{\gamma :=
+%        \pi_i R}]}[\ol{\phi := \lambda \ol{S}.(\pi_i \nu)_{\ol{\pi_i
+%          S}\,\ol{\pi_i R}}}]\\
+%  = & \lambda d\, \ol{\eta}\,\ol{B}.\, \setsem{
+%    \Gamma; \ol{\phi},\ol{\gamma} \vdash H} \id_{(\pi_i \rho)[\ol{\gamma :=
+%        B}]}[\ol{\phi := \lambda \ol{A}.\eta_{\ol{A}\,\ol{B}}}]\\
+%  = & \setsem{\Gamma; \emptyset~|~\emptyset \vdash
+%    \map_H^{\ol{F}\,\ol{G}} : 
+%  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+%  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}])}\,(\pi_i \rho)
+%  \end{array}\]
+%\end{itemize}
+
+HERE!!!!!
+\item
 $\underline{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
   Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
     {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
-  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}$.
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}$\;
 \begin{itemize}
 \item To see that if $d : \setsem{\Gamma;\emptyset \vdash \emptyset}
   \rho$ then \[\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
@@ -4972,7 +5101,7 @@ that
 \end{itemize}
 
 
-$\bullet$\; 
+\item
 $\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H
   : \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
   :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
