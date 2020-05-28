@@ -3605,28 +3605,27 @@ satisfy
 
 \subsection{Properties of Terms of $\Nat$-Type}
 
-Define, for $\Gamma; \ol{\alpha} \vdash F$, the term
-{\color{blue} $\id_F$} to be $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x
-: \Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
-\Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset
-\,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$, the {\em
-  composition} $s \circ t$ of $t$ and $s$ to be $\Gamma; \emptyset
-\,|\, \Delta \vdash L_{\overline{\alpha}}
+Define, for $\Gamma; \ol{\alpha} \vdash F$, the term {\color{blue}
+  $\id_F$} to be $\Gamma;\emptyset~|~\emptyset \vdash
+L_{\ol{\alpha}}x.x : \Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma;
+\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and
+$\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}}
+G\,H$, the {\em composition} $s \circ t$ of $t$ and $s$ to be $\Gamma;
+\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
 x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
-\Nat^{\overline{\alpha}} F\,H$. Then
-\[\begin{array}{l}
-\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \id_{F} :
-  \Nat^{\ol{\alpha}} F\,F} \rho\, \ast = \id_{\lambda
-  \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho [\ol{\alpha :=
-      A}]} \, \mbox{ for any set environment } \rho\\
-\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
-  \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset
-  \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} 
-    \circ \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
-      \Nat^{\overline{\alpha}} F\,G}
-\end{array}\]
-Moreover, terms of $\Nat$ type behave as natural transformations with
-respect to their source and target functorial types, i.e., 
+\Nat^{\overline{\alpha}} F\,H$. Then $\setsem{\Gamma; \emptyset \,|\,
+  \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
+\id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho
+  [\ol{\alpha := A}]}$ for any set environment $\rho$, and
+$\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
+  \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
+\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
+  \Nat^{\overline{\alpha}} F\,G}$.  Straightforward calculation using
+these equalities shows that terms of $\Nat$ type behave as
+natural transformations with respect to their source and target
+functorial types, i.e.,
+\begin{thm}\label{eq:ft-from-nat}
 \[\begin{array}{l}
 \hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, x :
   \Nat^{\overline{\alpha}, 
@@ -3644,13 +3643,14 @@ respect to their source and target functorial types, i.e.,
   \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
       \sigma}]\, G[\overline{\alpha := \tau}]}
 \end{array}\]
-In particular, when $x = in_H$ the above equality specializes to 
-\begin{thm}\label{thm:subst}
-If $\xi = \Nat^{\overline{\gamma}} H[\phi := (\mu \phi. \lambda
-  \overline{\alpha}. H) \overline{\beta}][\overline{\alpha :=
-    \sigma}]\, (\mu \phi. \lambda
-\overline{\alpha}. H)\overline{\tau}$ then
-  \[\begin{array}{l}
+\end{thm}
+When $x = in_H$ and $\xi = \Nat^{\overline{\gamma}} H[\phi := (\mu
+  \phi. \lambda \overline{\alpha}. H)
+  \overline{\beta}][\overline{\alpha := \sigma}]\, (\mu \phi. \lambda
+\overline{\alpha}. H)\overline{\tau}$ Theorem~\ref{eq:ft-from-nat}
+specializes to
+\begin{equation}\label{thm:subst}
+\begin{array}{l}
 \hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, \overline{y :
     \Nat^{\overline{\gamma}} 
     \sigma\, \tau} \vdash ((\map_{(\mu \phi. \lambda
@@ -3665,17 +3665,83 @@ If $\xi = \Nat^{\overline{\gamma}} H[\phi := (\mu \phi. \lambda
       \overline{\beta}]}^{\overline{\sigma},
     \overline{\tau}})_{\emptyset} \overline{y}) 
   : \xi}
-\end{array}\]
-\end{thm}
+\end{array}
+\end{equation}
 \noindent
-Analogous results hold for relational interpretations of terms and
-relational environments.
-
-Theorem~\ref{thm:subst} gives a family of free theorems that are
+Theorem~\ref{eq:ft-from-nat} gives a family of free theorems that are
 consequences of naturality, and thus do not require the full power of
-parametricity. Specific instances of Theorem~\ref{thm:ft-nat} include
-{\color{blue} Wadler free theorems, map-reverse theorems from intro,
-  ???}
+parametricity. Other specific instances include the three
+$\mathtt{map}$/$\mathtt{reverse}$ theorems from
+Section~\ref{sec:intro}. In our setting, the
+$\mathtt{map}$/$\mathtt{reverse}$ theorem for bushes, e.g., becomes
+{\color{blue} CHECK!}
+\begin{align*}
+  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
+    \vdash ((\map_{\mathit{Bush}\,\alpha}^{{\sigma},
+      {\tau}})_{\emptyset} {y}) \circ (L_{{\emptyset}}
+    z. \mathit{reverseBush}_{\sigma} z) : \Nat^{{\emptyset}}
+    (\mathit{Bush} \, \sigma) \, (\mathit{Bush} \, \tau) }\\ =\;
+  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
+    \vdash (L_{\emptyset} z. \mathit{reverseBush}_{\tau} z) \circ
+    ((\map_{\mathit{Bush} \, \alpha}^{{\sigma}, {\tau}})_{\emptyset}
+           {y}) : \Nat^{\emptyset} (\mathit{Bush} \, \sigma ) \,
+           (\mathit{Bush} \, \tau)}
+\end{align*}
+for any term $\vdash \mathit{reverseBush} : \Nat^\alpha (\mathit{Bush}
+\,\alpha) \, (\mathit{Bush} \, \alpha)$. We can also prove a theorem
+for the data type $\emptyset;\alpha,\gamma \vdash
+\mathit{Tree}\,\alpha\,\gamma$ from Section~\ref{sec:calculus} that is
+similar but only maps along some of its functorial variables:
+%  \begin{align*}
+%  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
+%    \vdash ((\map_{\mathit{PTree}\,\alpha}^{{\sigma},
+%      {\tau}})_{\emptyset} {y}) \circ (L_{{\emptyset}}
+%    z. \mathit{reverse}_{\sigma} z) : \Nat^{{\emptyset}}
+%    (\mathit{PTree} \, \sigma) \, (\mathit{PTree} \, \tau) }\\ =\;
+%  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
+%    \vdash (L_{\emptyset} z. \mathit{reverse}_{\tau} z) \circ
+%    ((\map_{\mathit{PTree} \, \alpha}^{{\sigma}, {\tau}})_{\emptyset} {y}) :
+%    \Nat^{\emptyset} (\mathit{PTree} \, \sigma ) \, (\mathit{PTree} \,
+%    \tau)}
+%\end{align*}
+%for any term $\vdash \mathit{reverse} : \Nat^\alpha (\mathit{PTree}
+%\,\alpha) \, (\mathit{PTree} \, \alpha)$,
+if $\vdash \mathit{reverseTree} : \Nat^{\alpha, \gamma} (\mathit{Tree}
+\,\alpha \, \gamma) \, (\mathit{Tree} \, \alpha \, \gamma)$ then
+\begin{align*}
+  &\setsem{\emptyset; \alpha,\gamma~|~y : \Nat^\emptyset \sigma \,
+    \tau \vdash ((\map_{\mathit{Tree}\,\alpha \, \gamma}^{{\sigma},
+      {\tau}})_{\emptyset} {y}) \circ (L_{{\gamma}}
+    z. \mathit{reverseTree}_{\sigma, \gamma} z) : \Nat^{{\gamma}}
+    (\mathit{Tree} \, \sigma \, \gamma) \, (\mathit{Tree} \, \tau \,
+    \gamma) }\\ = &\setsem{\emptyset; \alpha,\gamma~|~y :
+    \Nat^\emptyset \sigma \, \tau \vdash (L_{\gamma}
+    z. \mathit{reverseTree}_{\tau, \gamma} z) \circ
+    ((\map_{\mathit{Tree} \, \alpha\, \gamma}^{{\sigma},
+      {\tau}})_{\emptyset} {y}) : \Nat^{\gamma} (\mathit{Tree} \,
+    \sigma \, \gamma) \, (\mathit{Tree} \, \tau\, \gamma)}
+\end{align*}
+\noindent
+%Note this instance uses the following version of map:
+%$$\map_{\mathit{Tree} \,\alpha \, \gamma}^{\sigma, \tau} : 
+%\Nat^{\emptyset} (\Nat^\gamma \, \sigma \,\tau)\,
+%(\Nat^\gamma(\mathit{Tree}\,\sigma\,\gamma)\,(\mathit{Tree}\,\tau\,\gamma))$$
+%as opposed to 
+%$$\map_{\mathit{Tree} \,\alpha \, \gamma}^{\sigma, \sigma', \tau, \tau'} : 
+%\Nat^{\emptyset} ((\Nat^\emptyset \, \sigma \,\tau) \times
+%(\Nat^\emptyset\,\sigma'\,\tau')) \,
+%(\Nat^\emptyset\,(\mathit{Tree}\,\sigma\,\sigma')\,(\mathit{Tree}\,\tau\,\tau'))$$
+Finally,
+in Section~\ref{sec:calculus} we observed that $\emptyset; \phi,
+\alpha \vdash \mathit{GRose}\,\phi\,\alpha$ cannot appear as the
+(co)domain in a $\Nat$ type. As a result, there are no instances of,
+say, a $\mathtt{map}$/$\mathtt{reverse}$ free theorem for this data
+type. But $\phi; \alpha \vdash \mathit{GRose}\,\phi\,\alpha$ does
+support a $\mathtt{map}$/$\mathtt{reverse}$ theorem similar to those
+from Section~\ref{sec:intro}.
+
+As usual, analogous reuslts hold for relation environments and
+relational interpretations.
 
 \subsection{Properties of Initial Algebraic Constructs}\label{sec:iaps}
 
@@ -3835,7 +3901,7 @@ relational environments.
 
 In our setting, free theorems of a certain familiar form are derivable
 directly from the semantic properties of $\Nat$-types. Indeed, the
-following theorem is immediate from Theorem~\ref{thm:subst}, by taking
+following theorem is immediate from Equation~\ref{thm:subst}, by taking
 $\gamma$ to be empty, expanding the interpretations on the left- and
 right-hand sides, and using the fact from Section~\ref{sec:iaps} that
 $\map$ terms are interpreted as semantic $\mathit{map}$ functions:
@@ -3868,7 +3934,7 @@ Specific instances of Theorem~\ref{thm:ft-nat} include {\color{blue}
 \end{comment}
 
 \begin{comment}
-We already know from Theorem~\ref{thm:subst} that 
+We already know from Equation~\ref{thm:subst} that 
 \begin{multline}
 \setsem{\Gamma; \emptyset \,|\, x :
   \Nat^{\overline{\alpha}, 
