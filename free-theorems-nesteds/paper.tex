@@ -118,10 +118,14 @@
 \newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
   \phi \beta) #1} 
 \newcommand{\filtype}{\Nat^\emptyset 
-  \, (\Nat^\emptyset \, \alpha \, \mathit{Bool}) (\Nat^\emptyset \,
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
   (List \, \alpha) \, (List \, \alpha))} 
-\newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha
-      \vdash List \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
 \newcommand{\PLeaves}{\mathsf{PLeaves}}
 \newcommand{\swap}{\mathsf{swap}}
 \newcommand{\reverse}{\mathsf{reverse}}
@@ -2126,7 +2130,7 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 We can also prove by induction that our interpretations of types
 interact well with demotion of functorial variables and
 substitution. Indeed, we have 
-\begin{lemma}\label{thm:demotion-objects}
+\begin{lemma}\label{lem:demotion-objects}
 Let $\rho, \rho' : \setenv$ be such that $\rho \phi = \rho \psi =
 \rho' \phi = \rho' \psi$, and let $f : \rho \to \rho'$ be a morphism
 of set environments such that $f \phi = f \psi = \id_{\rho \phi}$.  If
@@ -6046,21 +6050,23 @@ Theorem~\ref{thm:abstraction}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho))
 = G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
 instantiations of $a$ and $b$ gives that
-\[\begin{array}{lll}
-(G^\set,G^\set) \;= \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))
-& \in & \relsem{\vdash \Nat^\alpha \,\onet\,\alpha}\rho\\
-& = & \{\eta : K_1 \Rightarrow \id\}\\
-& = & \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
-\id)\}\\ 
-\end{array}\]
+%\[\begin{array}{lll}
+$(G^\set,G^\set) \;= \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$
+$ \in  \relsem{\vdash \Nat^\alpha \,\onet\,\alpha}\rho$
+$ =  \{\eta : K_1 \Rightarrow \id\}$
+$ =  \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
+\id)\}$ 
+%\end{array}\]
 That is, $G^\set$ is a natural transformation from the constantly
 $1$-valued functor to the identity functor in $\set$. In particular,
 for every $S : \set$, $G^\set_S : 1 \to S$. Note, however, that if $S
 = \emptyset$, then there can be no such morphism, so no such natural
-transformation can exist in $\set$, and thus no term $\vdash g :
-\Nat^\alpha \onet \,\alpha$ can exist in our calculus. That is, our
-calculus does not admit any terms with the closed type $\Nat^\alpha
-\onet \,\alpha$ of the polymorphic bottom.
+transformation can exist,
+%in $\set$,
+and thus no term $\vdash g : \Nat^\alpha \onet \,\alpha$ can exist.
+%in our calculus.
+That is, our calculus does not admit any terms with the closed type
+$\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom.
 
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
@@ -6072,89 +6078,98 @@ Theorem~\ref{thm:abstraction}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho))
 = G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
 instantiations of $a$ and $b$ gives that
-\[\begin{array}{lll}
-(G^\set, G^\set) \; = \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))
-& \in & \relsem{\vdash \Nat^\alpha \,\alpha\,\alpha}\rho\\
-& = & \{\eta : \id \Rightarrow \id\}\\
-& = & \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
-\id)\}\\ 
-\end{array}\]
+%\[\begin{array}{lll}
+$(G^\set, G^\set) \; = \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$
+$ \in \relsem{\vdash \Nat^\alpha \,\alpha\,\alpha}\rho$
+$ =  \{\eta : \id \Rightarrow \id\}$
+$ =  \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
+\id)\}$
+%\end{array}\]
 That is, $G^\set$ is a natural transformation from the identity
-functor on $\set$ to itself.
+functor on $\set$ to itself. Now let $S$ be any set.  If $S =
+\emptyset$, then there is exactly one morphism $\id_S: S \to S$, so
+$G^\set_S : S \to S$ must be $\id_S$. If $S \not = \emptyset$, then if
+$a$ is any element of $S$ and $K_a :S \to S$ is the constantly
+$a$-valued morphism on $S$, then instantiating the naturality square
+implied by the above equality gives that $G^\set_S \circ K_a = K_a
+\circ G^\set_S$, i.e., $G^\set_S \, a = a$, i.e., $G^\set_S = \id_S$.
+Putting these two cases together we have that for every $S : \set$,
+$G^\set_S = \id_S$, i.e., $G^\set$ is the identity natural
+transformation for the identity functor on $\set$. So every closed
+term $g$ of closed type $\Nat^\alpha\alpha\,\alpha$ always denotes the
+identity natural transformation for the identity functor on $\set$,
+i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
+denotes the polymorphic identity function.
 
+\subsection{Free Theorems for polymorphic functions over ADTs}
 
-Now let $S$ be any set.  If $S = \emptyset$, then there is exactly one
-morphism $\id_S: S \to S$, so $G^\set_S : S \to S$ must be $\id_S$. If
-$S \not = \emptyset$, then if $a$ is any element of $S$ and $K_a :S
-\to S$ is the constantly $a$-valued morphism on $S$, then
-instantiating the naturality square implied by the above equality
-gives that $G^\set_S \circ K_a = K_a \circ G^\set_S$, i.e., $G^\set_S
-\, a = a$, i.e., $G^\set_S = \id_S$.  Putting these two cases together
-we have that for every $S : \set$, $G^\set_S = \id_S$, i.e., $G^\set$
-is the identity natural transformation for the identity functor on
-$\set$. So every closed term $g$ of closed type
-$\Nat^\alpha\alpha\,\alpha$ always denotes the identity natural
-transformation for the identity functor on $\set$, i.e., every closed
-term $g$ of type $\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic
-identity function.
-
-\subsection{Free Theorem for Type of $\mathit{filter}$ for Lists}
-
-Let $List \, \alpha = \listt{\alpha}$, 
-and let $map = \maplist$.
+We can derive in our system even those free theorems for polymorphic
+functions over ADTs that are not consequences of naturality.  We can,
+e.g., prove the free theorem for $\mathit{filter}$'s type as follows:
 
 \begin{lemma}\label{lem:list-graph}
-  If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B, \graph{g})$, then
-    $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \graph{map \, g}$
+If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B,
+\graph{g})$, then $\relsem{\alpha; \emptyset \vdash List \, \alpha}
+\rho = \graph{map_{\mathit{List}} \, g}$.
 \end{lemma}
 \begin{proof}
-% show by direct calculation
-  \begin{align*}
-    &\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho  \\
-    &= \mu T_{\rho} (\relsem{\alpha; \emptyset \vdash \alpha} \rho) \\    % def 19
-    &= \mu T_{\rho} (A, B, \graph{g}) \\   
-    &= (\mu T_{\pi_1\rho} A, \mu T_{\pi_2\rho} B, \colim{n \in \nat}{(T_{\rho}^n K_0)^*} (A, B, \graph{g})) \\ % eq 3, after dfn 15
-    &= (\List \,A, \List \,B, \colim{n \in \nat}{\Sigma_{i = 0}^n (A, B, \graph{g})^i}) \\ % below (*)
-    &= (\List \,A, \List \,B, \List (A, B, \graph{g})) \\ % definition of List
-    &= (\List \,A, \List \,B, \graph{map \, g}) % below (**)
-  \end{align*}
-
-  The first equality is by Definition~\ref{def:rel-sem}, the third equality is by Equation~\ref{eq:mu}, 
-  and the fourth and sixth equalities are by Equations~\ref{eq:T-list} and \ref{eq:List-graph-map} below.
-
-  % (*)
-  \noindent
-  The following sequence of equalities shows 
-  \begin{equation}\label{eq:T-list}
-  (T_{\rho}^n K_0)^* \,R = \Sigma_{i=0}^n R^i
-  \end{equation}
-  by induction on $n$: \\
-  \begin{align*}
-    &  (T_{\rho}^n K_0)^* \,R \\
-    &= T_{\rho}^\rel (T_{\rho}^{n-1} K_0)^* \,R \\
-    &= \setsem{\alpha; \phi, \beta \vdash \onet + \beta \times \phi \beta} \rho 
-          [\phi := (T_\rho^{n-1} K_0)^*] [\beta := R] \\
-    &= \onet + R \times (T_\rho^{n-1} K_0)^* \, R \\
-    &= \onet + R \times (\Sigma_{i=0}^{n-1} R^i) \\
-    &= \Sigma_{i= 0}^n R^i
-  \end{align*}
-
-  \noindent
-  The following reasoning shows 
-  \begin{equation}\label{eq:List-graph-map}
-    \List (A, B, \graph{g}) = \graph{map \,g}
-  \end{equation}
-  By showing that $(xs, xs') \in \List (A, B, \graph{g})$ if and only if $(xs, xs') \in \graph{map \,g}$:
-  \begin{align*}
-    &  (xs, xs') \in \List (A, B, \graph{g}) \\
-    & \iff \forall i. (xs_i, xs'_i) \in \graph{g} \\
-    & \iff \forall i. xs'_i = g (xs_i) \\
-    & \iff xs'= map \,g \, xs \\
-    & \iff (xs, xs') \in \graph{map \,g}
-  \end{align*}
+The result follows by straightforward calculation using
+Definition~\ref{def:rel-sem} and Equation~\ref{eq:mu}, together with
+the facts that $\mathit{List} \,(A, B, \graph{g}) =
+\graph{\mathit{map}_{\mathit{List}} \,g}$ and, if $H = \onet + \beta
+\times\phi \beta$ {\color{blue} Why not $H = \onet + \alpha \times
+  \beta$? Does it matter?}, then $(T_{H,\rho}^n K_0)^* R =
+\Sigma_{i=0}^n R^i$ for all $n \in \nat$ and $R \in \rel$ by induction
+on $n$.
 \end{proof}
 
-
+\begin{thm} 
+If $g : A \to B$, $\rho : \relenv$, $\rho \alpha = (A, B, \graph{g})$,
+$(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, $(s \circ
+g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
+  \mathit{Bool}} \rho$, and
+%$\alpha; \emptyset \,|\, \Delta \vdash t :
+%\filtype$, if
+$\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
+  \filtype}$ for some $t$, then
+\[  \mathit{map}_{\mathit{List}} \,g \circ \mathit{filter} \, (\pi_1
+\rho) \, a \, (s \circ g) = \mathit{filter}\, (\pi_2\rho) \, b \, s
+\circ \mathit{map}_{\mathit{List}} \,g\]
+\end{thm}
+\begin{proof}
+By Theorem~\ref{thm:at-gen-rel}, $(\mathit{filter}\, (\pi_1 \rho)\, a,
+\mathit{filter}\, (\pi_2 \rho)\, b) \in \relsem{\alpha; \emptyset
+  \vdash \filtype} \rho$, so if $(s, s') \in \relsem{\alpha; \emptyset
+  \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to
+\Eq_{\mathit{Bool}}$ and $(xs, xs') \in \relsem{\alpha; \emptyset
+  \vdash List \, \alpha} \rho$ then
+% then
+%  \begin{align*}
+%    (t (\pi_1 \rho) \,a \,s, t (\pi_2 \rho) \,b \,s') &\in \relsem{\alpha; \emptys%et \vdash \Nat^\emptyset (List \, \alpha) \, (List \, \alpha)} \rho \\
+%   &= \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \to \relsem{\alpha; \e%mptyset \vdash List \, \alpha} \rho \\
+%  \end{align*}
+%  So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$ then,
+\begin{equation}\label{eq:filter-thm-list}
+  (\mathit{filter}\, (\pi_1\rho) \,a \,s \,xs, \mathit{filter} \,
+  (\pi_2\rho) \,b \,s' \,xs') \in \relsem{\alpha; \emptyset \vdash
+    \mathit{List} \, \alpha} \rho
+\end{equation}
+If $\rho\alpha = (A, B, \graph{g})$, then $\relsem{\alpha; \emptyset
+  \vdash \mathit{List} \, \alpha} \rho =
+\graph{\mathit{map}_{\mathit{List}} \, g}$ by
+Lemma~\ref{lem:list-graph}. Moreover, $xs' =
+\mathit{map}_{\mathit{List}} \,g \,xs$ and $(s', s) \in \graph{g} \to
+\Eq_{\mathit{Bool}}$, so $s' = s \circ g$, so instantiating
+Equation~\ref{eq:filter-thm-list} gives the desired result.
+% \begin{align*}
+%    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map%}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
+%    & i.e., \\ 
+%    &\mathit{map}_{\mathit{List}} \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) =% t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs), \\ 
+%    & i.e., \\
+%    &\mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = %t (\pi_2\rho) \, b \, s' \circ \mathit{map}_{\mathit{List}} \,g
+%  \end{align*}
+%  as desired.
+\end{proof}
 
 \begin{comment}
 \begin{thm}\label{thm:at-gen-rel}
@@ -6170,6 +6185,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 \end{proof}
 \end{comment}
 
+\begin{comment}
 \begin{thm} 
   If $g : A \to B$, 
   $\rho : \relenv$, 
@@ -6179,7 +6195,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   and, for some well-formed term $\mathit{filter}$, \\
   $$t = \setsem{\alpha; \emptyset \,|\, \Delta \vdash \mathit{filter} : \filtype} \emph{, then }$$
   \begin{align*}
-  map \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ map \,g
+  \mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ \mathit{map}_{\mathit{List}} \,g
   \end{align*}
 \end{thm}
 \begin{proof}
@@ -6198,184 +6214,152 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   \end{equation}
 
   Consider the case in which $\rho\alpha = (A, B, \graph{g})$. Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
-  = \graph{map \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{map \,g}$ 
-  implies $xs' = map \,g \,xs$. We also have that 
+  = \graph{\mathit{map}_{\mathit{List}} \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{\mathit{map}_{\mathit{List}} \,g}$ 
+  implies $xs' = \mathit{map}_{\mathit{List}} \,g \,xs$. We also have that 
   $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
   $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
   $s = s' \circ g$ due to the definition of morphisms between relations.
   %% TODO show (s, s') \in <g> -> \mathit{Bool} implies s = s' \circ g %% 
   With these instantiations, Equation~\ref{eq:filter-thm} becomes
   \begin{align*}
-    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(map \,g \,xs)) \in \graph{map \,g}, \\ 
+    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
     & i.e., \\ 
-    &map \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) = t (\pi_2\rho) \,b \,s' \,(map \,g \,xs), \\ 
+    &\mathit{map}_{\mathit{List}} \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) = t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs), \\ 
     & i.e., \\
-    &map \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ map \,g
+    &\mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ \mathit{map}_{\mathit{List}} \,g
   \end{align*}
   as desired.
-
-
 \end{proof}
+\end{comment}
 
 \subsection{Free Theorem for Type of $\mathit{filter}$ for
   $\GRose$}\label{sec:filter-grose} 
 
+{\color{blue} Check this!}
+Using an analog of Lemma~\ref{lem:list-graph} for generalized rose
+trees we can prove
 \begin{thm} 
-  Let $g : A \to B$ be a function,
-  $\eta : F \to G$ a natural transformation of $\set$ functors,
-  $\rho : \relenv$,
-  $\rho \alpha = (A, B, \graph{g})$,
-  $\rho \psi = (F, G, \graph{\eta})$,
-  $(a, b) \in \relsem{\alpha, \psi ;\emptyset \vdash \Delta} \rho$, 
-  and $(s \circ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho$.
-  Then, for any well-formed term $\mathit{filter}$, if we call
-  \[
-    t = \setsem{\alpha, \psi; \emptyset \,|\, \Delta \vdash \mathit{filter} : \filtype}
-  \]
-  we have that
-  \begin{align*}
-  \semmap\, \eta\, (g + 1) \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ \semmap\, \eta\, g
-  \end{align*}
+ If $g : A \to B$, $\eta : F \to G$ in $\set$, $\rho : \relenv$, $\rho \alpha =
+ (A, B, \graph{g})$, $\rho \psi = (F, G, \graph{\eta})$, $(a, b) \in
+ \relsem{\alpha, \psi ;\emptyset \vdash \Delta} \rho$, $(s \circ
+ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
+   \mathit{Bool}} \rho$, and
+ \[ \mathit{filter} = \setsem{\alpha, \psi; \emptyset \,|\, \Delta
+      \vdash t : \filtypeGRose}  \]
+for some $t$, then
+\[ \semmap_{\mathit{GRose}}\, \eta\, (g + 1) \circ \mathit{filter} \,
+(\pi_1 \rho) \, a \, (s \circ g) = \mathit{filter} \, (\pi_2\rho) \, b
+\, s \circ 
+\semmap_{\mathit{GRose}}\, \eta\, g\]
 \end{thm}
-\begin{proof}
-  By Theorem~\ref{thm:at-gen-rel},
-  \[
-  (t (\pi_1 \rho) a, t (\pi_2 \rho) b) \in \relsem{\alpha, \psi; \emptyset \vdash \filtype} \rho
-  \]
-  Thus if 
-  $(s, s') \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to \Eq_{\mathit{Bool}}$,
-  then 
-  \begin{align*}
-    (t (\pi_1 \rho) \,a \,s, t (\pi_2 \rho) \,b \,s')
-    &\in \relsem{\alpha, \psi; \emptyset \vdash \Nat^\emptyset \, (\GRose\, \psi\, \alpha) \, (\GRose\, \psi\, (\alpha + \onet))} \rho \\
-    &= \relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, \alpha} \rho \to \relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
-  \end{align*}
-  So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash \GRose\, \psi\, \alpha} \rho$ then,
-  \begin{equation}\label{eq:filter-thm}
-    (t (\pi_1\rho) \,a \,s \,xs, t (\pi_2\rho) \,b \,s' \,xs')
-    \in \relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
-  \end{equation}
-
-  Since $\rho\alpha = (A, B, \graph{g})$ and $\rho\psi = (F, G, \graph{\psi})$,
-  then $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, \alpha} \rho
-  = \graph{\semmap \, \eta g}$
-  and $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
-  = \graph{\semmap \, \eta (g + 1)}$,
-  by Lemma~\ref{lem:list-graph}.
-  Moreover, $(xs, xs') \in \graph{\semmap \, \eta\, g}$ implies $xs' = \semmap\, \eta\, g\, xs$.
-  We also have that
-  $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
-  $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
-  $s = s' \circ g$ due to the definition of morphisms between relations.
-  %% TODO show (s, s') \in <g> -> \mathit{Bool} implies s = s' \circ g %% 
-  With these instantiations, Equation~\ref{eq:filter-thm} becomes
-  \begin{align*}
-    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\semmap \,\eta\, g \,xs)) \in \graph{\semmap \,\eta\, (g+1)}, \\ 
-    & i.e., \\ 
-    &\semmap \,\eta\,(g+1) \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) = t (\pi_2\rho) \,b \,s' \,(\semmap \,\eta\, g \,xs), \\ 
-    & i.e., \\
-    &\semmap \,\eta\,(g+1) \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ \semmap \,\eta\, g
-  \end{align*}
-  as desired.
-
-\end{proof}
 
 \subsection{Short Cut Fusion for Lists}\label{sec:short-cut}
 
+We can recover standard short cut fusion for lists in our system:
 \begin{thm}
-Let $\vdash \tau : \F$, $\vdash \tau' : \F$, and 
-$\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta$. 
-If \[G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
+If $\vdash \tau : \F$, $\vdash \tau' : \F$, and 
+%$\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
+%(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta$. 
+%If
+$G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
   \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + \tau \times \beta)\,
-  \beta)\, \beta}\] then
-\[\textit{fold}_{1 + \tau \times \_}\, n\, c\; (G\; (\List
+  \beta)\, \beta}$ for some $g$, then
+\[\textit{fold}_{1 + \tau \times \_}\, n\, c\; (G\; (\mathit{List}\,
 \setsem{\vdash \tau})\,\mathit{nil} \,\mathit{cons}) = G \,\setsem{\vdash
   \tau'}\, n\, c \]
 \end{thm}
-
-\vspace*{0.2in}
-
 \begin{proof}
-Let $\vdash \tau : \F$ and $\vdash \tau' : \F$, let
-\[\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta\]
-and let
-\[G = \setsem{\beta; \emptyset \,|\, \emptyset
-  \vdash g : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + \tau \times
-  \beta)\, \beta)\, \beta}\] Then Theorem~\ref{thm:abstraction} gives
-that, for any relation environment $\rho$ and any $(a, b) \in
-\relsem{\beta; \emptyset \vdash \emptyset}\rho = 1$, then (eliding the
-only possible instantiations of $a$ and $b$) we have
-\[(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
-\in \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\]
-Since
-\[\begin{array}{rl}
- & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-  (\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\\  
-=& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\onet +
-  \tau \times \beta)\, \beta} \rho \to \rho\beta \\ 
-=& (\relsem{\beta; \emptyset \vdash \onet + \tau \times \beta}
-\rho \to \rho\beta) \to \rho\beta \\ 
-=& ((\onet + \relsem{\vdash \tau} \rho \times
-\rho\beta) \to \rho\beta) \to \rho\beta \\ 
-\cong& (((\relsem{\vdash \tau} \rho \times
+%Let $\vdash \tau : \F$ and $\vdash \tau' : \F$, let
+%\[\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
+%(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta\]
+%and let
+%\[G = \setsem{\beta; \emptyset \,|\, \emptyset
+%  \vdash g : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + \tau \times
+  %  \beta)\, \beta)\, \beta}\] Then
+Theorem~\ref{thm:abstraction} gives
+that, for any $\rho : \relenv$,
+%and any $(a, b) \in
+%\relsem{\beta; \emptyset \vdash \emptyset}\rho = 1$, then (eliding the
+%only possible instantiations of $a$ and $b$) we have
+\[\begin{array}{lll}
+(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
+ & \in & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
+  (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\\
+& \cong& (((\relsem{\vdash \tau} \rho \times
 \rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta 
 \end{array}\]
-we have that if $(c', c) \in \relsem{\vdash \tau} \rho \times
-\rho\beta \to \rho\beta$ and $(n', n) \in \rho\beta$, then
-\[(G \,(\pi_1 \rho)\, n'\, c', G\, (\pi_2 \rho)\, n\, c)
-\in \rho \beta\]
-
-Now note that
+%Since
+%\[\begin{array}{rl}
+% & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset}
+%  (\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\\  
+%=& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\onet +
+%  \tau \times \beta)\, \beta} \rho \to \rho\beta \\ 
+%=& (\relsem{\beta; \emptyset \vdash \onet + \tau \times \beta}
+%\rho \to \rho\beta) \to \rho\beta \\ 
+%=& ((\onet + \relsem{\vdash \tau} \rho \times
+%\rho\beta) \to \rho\beta) \to \rho\beta \\ 
+%\cong& (((\relsem{\vdash \tau} \rho \times
+%\rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta 
+%\end{array}\]
+%we have that
+so if $(c', c) \in \relsem{\vdash \tau} \rho \times
+\rho\beta \to \rho\beta$ and $(n', n) \in \rho\beta$ then
+$(G \,(\pi_1 \rho)\, n'\, c', G\, (\pi_2 \rho)\, n\, c)
+\in \rho \beta$.
+In addition,
 \[\setsem{\vdash \fold_{\onet + \tau
     \times \beta}^{\tau'} : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet
   + \tau \times \tau')\, \tau')\, (\Nat^{\emptyset} (\mu \alpha. \onet
   + \tau \times \alpha)\, \tau')} =
-\textit{fold}_{1 + \tau \times \_}\] and observe that if $c \in
+\textit{fold}_{1 + \tau \times \_}\] so that if $c \in
 \setsem{\vdash \tau} \,\times\, \setsem{\vdash \tau'} \to
 \setsem{\vdash \tau'}$ and $n \in \setsem{\vdash \tau'}$, then
-\[(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + \tau \times \tau')\,
-  \tau'}\]  Consider the instantiation:
-\[\begin{array}{rcl}
-\pi_1 \rho \beta &=& \setsem{\vdash \mu \alpha. \onet + \tau \times
-  \alpha} \;=\;\List\,\setsem{\vdash \tau}\\   
-\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
-\rho \beta &=& \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c} :
-\rel(\pi_1 \rho \beta, \pi_2 \rho \beta) \\ 
-c' &=& \mathit{cons}\\
-n' &=& \mathit{nil}
-\end{array}\]
-Clearly, $(\mathit{nil}, n) \in \rho\beta =
-\graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}$ because $
-\textit{fold}_{1 + \tau \times \_}\, n\, c \,\mathit{nil} = n$.  Moreover,
-$(\mathit{cons}, c) \in \relsem{\vdash \tau} \,\times\, \rho\beta \to
-\rho\beta$ since if $(x, x') \in \relsem{\vdash \tau}$, i.e., $x =
-x'$, and if $(y, y') \in \rho\beta =
-\graph{\textit{fold}_{1 + \tau \times \_} n\, c}$, i.e., $y' =
-\textit{fold}_{1 + \tau \times \_} n\, c\, y$, then
-\[(\mathit{cons}\, x\, y, c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\,
-c\, y)) \in \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}\]
-i.e.,
-\[c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\, c\, y)
-= \textit{fold}_{1 + \tau \times \_}\, n\, c\, (\mathit{cons} \,x\, y)\]
-holds by definition of $\textit{fold}_{1 + \tau \times \_}$.  We
-therefore conclude that
-\[(G \;(\List\,\setsem{\vdash \tau})\,\mathit{nil} \,\mathit{cons}, G \,\setsem{\vdash
-  \tau'} \, n\, c) \in \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}\]
-i.e., that
-\[\textit{fold}_{1 + \tau \times \_}\, n\, c\; (G\;
-(\List\,\setsem{\vdash \tau})\, \mathit{nil}\, \mathit{cons}) = G \,\setsem{\vdash
-  \tau'}\, n\, c \] 
+$(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + \tau \times \tau')\,
+  \tau'}$. The instantiation
+$\pi_1 \rho \beta = \setsem{\vdash \mu \alpha. \onet + \tau \times
+  \alpha}=\mathit{List}\,\setsem{\vdash \tau}$,\, 
+$\pi_2 \rho \beta = \setsem{\vdash \tau'}$,\,
+$\rho \beta = \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c} :
+\rel(\pi_1 \rho \beta, \pi_2 \rho \beta)$,\,
+$c' = \mathit{cons}$,\, and 
+$n' = \mathit{nil}$
+%Consider the instantiation:
+%\[\begin{array}{rcl}
+%\pi_1 \rho \beta &=& \setsem{\vdash \mu \alpha. \onet + \tau \times
+%  \alpha} \;=\;\List\,\setsem{\vdash \tau}\\   
+%\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
+%\rho \beta &=& \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c} :
+%\rel(\pi_1 \rho \beta, \pi_2 \rho \beta) \\ 
+%c' &=& \mathit{cons}\\
+%n' &=& \mathit{nil}
+%\end{array}\]
+%Clearly, $(\mathit{nil}, n) \in \rho\beta =
+%\graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}$ because $
+%\textit{fold}_{1 + \tau \times \_}\, n\, c \,\mathit{nil} = n$.  Moreover,
+%$(\mathit{cons}, c) \in \relsem{\vdash \tau} \,\times\, \rho\beta \to
+%\rho\beta$ since if $(x, x') \in \relsem{\vdash \tau}$, i.e., $x =
+%x'$, and if $(y, y') \in \rho\beta =
+%\graph{\textit{fold}_{1 + \tau \times \_} n\, c}$, i.e., $y' =
+%\textit{fold}_{1 + \tau \times \_} n\, c\, y$, then
+%\[(\mathit{cons}\, x\, y, c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\,
+%c\, y)) \in \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}\]
+%i.e.,
+%\[c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\, c\, y)
+%= \textit{fold}_{1 + \tau \times \_}\, n\, c\, (\mathit{cons} \,x\, y)\]
+%holds by definition of $\textit{fold}_{1 + \tau \times \_}$.  We
+%therefore conclude that
+thus gives that $(G \;(\mathit{List}\,\setsem{\vdash
+  \tau})\,\mathit{nil} \,\mathit{cons}, G \,\setsem{\vdash \tau'} \,
+n\, c) \in \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}$, i.e.,
+that $\textit{fold}_{1 + \tau \times \_}\, n\, c\; (G\;
+(\mathit{List}\,\setsem{\vdash \tau})\, \mathit{nil}\, \mathit{cons})
+= G \,\setsem{\vdash \tau'}\, n\, c$.
 \end{proof}
 
+Using Equation~\ref{thm:demotion-objects} {\color{blue} CHECK!}, we
+can actually prove short cut fusion results for arbitrary ADTs.
 
-
-
-
-
-
+\begin{comment}
 \subsection{Short Cut Fusion for Arbitrary ADTs}\label{sec:short-cut-adt}
 
 \begin{thm}
@@ -6392,7 +6376,7 @@ G & = & \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
 \end{array}\]
 as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
 \rightarrow \setsem{\vdash \tau'}$ we have
-\[\textit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B \]   
+\[\textit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B\]
 \end{thm}
 
 \vspace*{0.2in}
@@ -6408,10 +6392,10 @@ as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
   $\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
   F[\ol{\alpha := \tau}]\, \beta)\, \beta : \T$.
 
-  Theorem~\ref{thm:abstraction} gives that, for any relation environment
-$\rho$ and any $(a, b) \in \relsem{\beta; \emptyset \vdash
-  \emptyset}\rho = 1$, eliding the only possible instantiations
-of $a$ and $b$ gives that
+  Theorem~\ref{thm:abstraction} gives that, for any $\rho : \relenv$
+  and any $(a, b) \in \relsem{\beta; \emptyset \vdash \emptyset}\rho =
+  1$, eliding the only possible instantiations of $a$ and $b$ gives
+  that
 \[(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
 \in \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
   F[\ol{\alpha := \tau}]\, \beta)\, \beta} \rho\]
@@ -6507,79 +6491,61 @@ Since $\beta$ is the only free variable in $G$, this simplifies to
 \[\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\vdash \tau'}\,B\]  
 \end{proof}
-
+\end{comment}
 
 \subsection{Short Cut Fusion for Arbitrary Nested
   Types}\label{sec:short-cut-nested} 
 
-fold/build rule shows that Church encodings for nested types are iso
-(have the same interp) as the nested types themselves. Just like Ex
-2.8 in parpoe, but categorical rather than operational semantics. But
-built-in data types are more versatile in implementations. They can be
-inducted on, e.g. And they are stored in the heap, not the run-time
-stack, and are therefore more efficient.
+%fold/build rule shows that Church encodings for nested types are iso
+%(have the same interp) as the nested types themselves. Just like Ex
+%2.8 in parpoe, but categorical rather than operational semantics. But
+%built-in data types are more versatile in implementations. They can be
+%inducted on, e.g. And they are stored in the heap, not the run-time
+%stack, and are therefore more efficient.
+%``Most higher order type languages meant for human programmers eschew
+%fully impredicative polymorphism'' says Andy on p322.
 
-``Most higher order type languages meant for human programmers eschew
-fully impredicative polymorphism'' says Andy on p322.
-
-
-{\color{red} Can take $\emptyset;\alpha \vdash c$ with
-  $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
-  can take $c$ to denote a constant $C$. We then get a free theorem
-  whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu H \;
-  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
-
-  Can do Hinze's bit-reversal protocol in our system with
-
-  cat :: $\alpha; \emptyset \vdash \Nat^\emptyset (\Nat^\emptyset
-  (\List \alpha) (\List \alpha)) (\List \alpha)$
-
-  zip :: $\alpha; \emptyset \vdash \Nat^\emptyset (\Nat^\emptyset
-  (\List \alpha) (\List \beta)) (\List (\alpha \times \beta))$
-
-  ?}
-
-
+Short cut fusion can, in fact, be generalized from ADTs to nested
+types. Indeed, we have:
 \begin{thm}
-Let $\emptyset;\phi,\alpha \vdash F : \F$, let $\emptyset; \alpha
-\vdash K : \F$, and let $\phi ;\emptyset\,|\,\emptyset\vdash g :
-\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
-(\Nat^\alpha\,\onet \, (\phi\alpha))$. If we let $H :
-    [\set,\set] \to [\set,\set]$ be defined by
+If $\emptyset;\phi,\alpha \vdash F : \F$, \,$\emptyset; \alpha
+\vdash K : \F$, \,
+%let $\phi ;\emptyset\,|\,\emptyset\vdash g :
+%\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
+%(\Nat^\alpha\,\onet \, (\phi\alpha))$. If we let
+$H : [\set,\set] \to [\set,\set]$ is defined by
 \[\begin{array}{lll}
 H\,f\,x & = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
   f][\alpha := x]\\
 \end{array}\]
-and let
+and 
 \[G = \setsem{\phi;\emptyset\,|\,\emptyset \vdash g :
-\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))\,(\Nat^\alpha\,\onet 
-\, (\phi\alpha))}\] 
-then we have that, for every $B \in H
+\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))\,(\Nat^\alpha\,\onet \,
+(\phi\alpha))}\] for some $g$, then, for every $B \in H
 \setsem{\emptyset;\alpha \vdash K} \rightarrow \setsem{\emptyset;
-  \alpha \vdash K}$, 
-\[\textit{fold}_{H}\, B \, (G\; \mu H \; in_{H}) = G
-\,\setsem{\emptyset;\alpha \vdash K}\, B \]
+  \alpha \vdash K}$,
+$\textit{fold}_{H}\, B \, (G\; \mu H \; in_{H}) = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B$.
 \end{thm}
 
-\vspace*{0.2in}
-
 \begin{proof}
-We first note that the type of $g$ is well-formed since
-$\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
-that $\phi;\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
-\F$, so that $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \T$
-and $\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \T$.
-Then $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \F$ and
-$\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \F$ also
-hold, and, finally, 
-$\phi ;\emptyset\vdash 
-\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
-(\Nat^\alpha\,\onet \, (\phi\alpha)) : \T$
-  
-Theorem~\ref{thm:abstraction} gives that, for any relation environment
-$\rho$ and any $(a, b) \in \relsem{\phi,\alpha;\emptyset \vdash
-  \emptyset}\rho = 1$, eliding the only possible instantiations
-of $a$ and $b$ gives that
+%We first note that the type of $g$ is well-formed since
+%$\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
+%that $\phi;\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
+%\F$, so that $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \T$
+%and $\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \T$.
+%Then $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \F$ and
+%$\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \F$ also
+%%%hold, and, finally, 
+%$\phi ;\emptyset\vdash 
+%\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
+%(\Nat^\alpha\,\onet \, (\phi\alpha)) : \T$
+%  
+Theorem~\ref{thm:abstraction} gives that, for any 
+$\rho : \relenv$,
+%and any $(a, b) \in \relsem{\phi,\alpha;\emptyset \vdash
+%  \emptyset}\rho = 1$, eliding the only possible instantiations
+%of $a$ and $b$ gives that
 \[\begin{array}{lll}
 (G \,(\pi_1 \rho), G\, (\pi_2 \rho))
 & \in & \relsem{\phi;\emptyset\vdash \Nat^{\emptyset} (\Nat^\alpha
@@ -6588,109 +6554,111 @@ of $a$ and $b$ gives that
 & = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho \to \relsem{\phi;\emptyset\vdash
   \Nat^\alpha\,\onet \, (\phi\alpha)}\rho\\ 
-& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-  (\phi\alpha)}\rho \to (\,\lambda A. 1 \Rightarrow \lambda A.\,(\rho
-\phi) A\,)\\   
-& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-  (\phi\alpha)}\rho \to (1 \Rightarrow \rho \phi)\\ 
+%& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+%  (\phi\alpha)}\rho \to (\,\lambda A. 1 \Rightarrow \lambda A.\,(\rho
+%\phi) A\,)\\   
+%& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+%  (\phi\alpha)}\rho \to (1 \Rightarrow \rho \phi)\\ 
 & = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho \to \rho \phi
 \end{array}\]
 \noindent
-So if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-  (\phi\alpha)}\rho$ then
-\[\begin{array}{lll}
-(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) & \in & \rho \phi
-\end{array}\]
-Now note that
+so if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
+  (\phi\alpha)}\rho$ then $(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\,
+B) \in \rho \phi$.
+In addition,
 \[\setsem{\vdash \fold_F^K :
-  \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha ((\mu
-  \phi.\lambda\alpha.F)\alpha)\,K)} = \textit{fold}_H\]
-and consider the instantiation 
-\[\begin{array}{lll}
-A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
-B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
-\setsem{\emptyset;\alpha \vdash K}\\
-\rho \phi &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
-  \color{red} \mbox{a graph of a natural transformation, defined in
-    Enrico's notes}} 
-\end{array}\]
-(Note that all the types here are well-formed.) This gives
-\[\begin{array}{lll}
-\pi_1 \rho \phi &=& \mu H\\
-\pi_2 \rho \phi &=& \setsem{\emptyset;\alpha\vdash K}\\
-\rho \phi &:& \rel(\pi_1 \rho \phi, \pi_2 \rho \phi)\\
-A & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
-  F \, (\phi \alpha)} (\pi_1 \rho)\\
-B & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
-  F \, (\phi \alpha)} (\pi_2 \rho)\\
-\end{array}\]
-since
-\[\begin{array}{lll}
-A \; = \; \mathit{in}_H & : & H(\mu H) \Rightarrow \mu H\\
-& = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi := \mu
-  \setsem{\emptyset; \phi, \alpha \vdash F}] \Rightarrow \mu
-  \setsem{\emptyset; \phi, \alpha \vdash F}\\  
-& = & \setsem{\emptyset; \phi, \alpha \vdash F}(\pi_1\rho)
-  \Rightarrow \setsem{\emptyset; \phi,\alpha \vdash \phi\alpha}(\pi_1 \rho)\\
-& = & \setsem{\phi; \alpha \vdash F}(\pi_1\rho)
-  \Rightarrow \setsem{\phi;\alpha \vdash \phi\alpha}(\pi_1
-  \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's trick; now a theorem}}\\
-& = & \setsem{\phi;\emptyset \vdash \Nat^\alpha F
-    \,(\phi\alpha)}(\pi_1\rho) 
-\end{array}\]
-We also have
+  \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha
+  ((\mu \phi.\lambda\alpha.F)\alpha)\,K)} = \textit{fold}_H\] Consider
+the instantiation $A = \mathit{in}_H : H (\mu H) \Rightarrow \mu H$,\,
+$B : H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
+\setsem{\emptyset;\alpha \vdash K}$,\, $\rho \phi =
+\graph{\mathit{fold}_H\, B}$,\, $\pi_1 \rho \phi = \mu H$,\, $\pi_2
+\rho \phi = \setsem{\emptyset;\alpha\vdash K}$,\, $\rho \phi :
+\rel(\pi_1 \rho \phi, \pi_2 \rho \phi)$,\, $A : \setsem{\phi;
+  \emptyset \vdash \Nat^\alpha F \, (\phi \alpha)} (\pi_1 \rho)$,\,
+and $B : \setsem{\phi; \emptyset \vdash \Nat^\alpha F \, (\phi
+  \alpha)} (\pi_2 \rho)$.
+%\[\begin{array}{lll}
+%A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
+%B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
+%\setsem{\emptyset;\alpha \vdash K}\\
+%\rho \phi &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
+%  \color{red} \mbox{a graph of a natural transformation, defined in
+%    Enrico's notes}} 
+%\end{array}\]
+%(Note that all the types here are well-formed.) This gives
+%\[\begin{array}{lll}
+%\pi_1 \rho \phi &=& \mu H\\
+%\pi_2 \rho \phi &=& \setsem{\emptyset;\alpha\vdash K}\\
+%\rho \phi &:& \rel(\pi_1 \rho \phi, \pi_2 \rho \phi)\\
+%A & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
+%  F \, (\phi \alpha)} (\pi_1 \rho)\\
+%B & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
+%  F \, (\phi \alpha)} (\pi_2 \rho)\\
+%\end{array}\]
+%since
+Equation~\ref{thm:demotion-objects} ensures that $A = \mathit{in}_H :
+H(\mu H) \Rightarrow \mu H = \setsem{\phi;\emptyset \vdash \Nat^\alpha
+  F \,(\phi\alpha)}(\pi_1\rho)$,
+%\[\begin{array}{lll}
+%A \; = \; \mathit{in}_H & : & H(\mu H) \Rightarrow \mu H\\
+%& = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi := \mu
+%  \setsem{\emptyset; \phi, \alpha \vdash F}] \Rightarrow \mu
+%  \setsem{\emptyset; \phi, \alpha \vdash F}\\  
+%& = & \setsem{\emptyset; \phi, \alpha \vdash F}(\pi_1\rho)
+%  \Rightarrow \setsem{\emptyset; \phi,\alpha \vdash \phi\alpha}(\pi_1 \rho)\\
+%& = & \setsem{\phi; \alpha \vdash F}(\pi_1\rho)
+%  \Rightarrow \setsem{\phi;\alpha \vdash \phi\alpha}(\pi_1
+%  \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's trick; now a theorem}}\\
+%& = & \setsem{\phi;\emptyset \vdash \Nat^\alpha F
+%    \,(\phi\alpha)}(\pi_1\rho) 
+%\end{array}\]
+and Equation~\ref{thm:demotion-objects} and Lemma~\ref{lem:graph}
+together give that
 \[\begin{array}{lll}
 (A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\phi;\emptyset\vdash
   \Nat^\alpha F\, (\phi\alpha)}\rho\\
- & = & \lambda A. \relsem{\phi;\alpha\vdash F}\rho[\alpha := A]
-\Rightarrow \lambda A. (\rho\phi) A\\
+% & = & \lambda A. \relsem{\phi;\alpha\vdash F}\rho[\alpha := A]
+%\Rightarrow \lambda A. (\rho\phi) A\\
 & = & \lambda A. \relsem{\phi;\alpha\vdash F}[\phi :=
   \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
-\graph{\textit{fold}_H\, B} \\ 
-& = & \lambda A. \relsem{\emptyset;\phi,\alpha\vdash F}[\phi :=
-  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
-\graph{\textit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
-  \mbox{Daniel's trick; now a theorem}}\\  
+ \graph{\textit{fold}_H\, B} \\ 
+%& = & \lambda A. \relsem{\emptyset;\phi,\alpha\vdash F}[\phi :=
+%  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
+%\graph{\textit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
+%  \mbox{Daniel's trick; now a theorem}}\\  
 & = & \relsem{\emptyset;\phi,\alpha\vdash F}
   \graph{\textit{fold}_H\, B} \Rightarrow \graph{\textit{fold}_H\,
     B}\\
   & = & \graph{\setsem{\emptyset;\phi,\alpha\vdash F}
-    \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\textit{fold}_H\, B}
-\hspace*{0.25in} {\color{red} \mbox{Graph Lemma}}\\
+    \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\textit{fold}_H\, B}\\
+%\hspace*{0.25in} {\color{red} \mbox{Graph Lemma}}\\
   & = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \Rightarrow
 \graph{\textit{fold}_H\, B}\\
 \end{array}\]
 since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
-i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$, then
-$\textit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\, (\mathit{map}_H
-\,(\mathit{fold}_H\,B) \, x)$ by the definition of $\mathit{fold}_H$
-as a (indeed, the unique) morphism from $\mathit{in}_H$ to $B$. Thus,
-\[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) \in
-\graph{\textit{fold}_H\, B}\] 
-i.e.,
-\[\textit{fold}_H \, B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) =
-G\,(\pi_2 \rho)\,B\] 
-
-\vspace*{0.1in}
-
-\noindent
-Since $\phi$ is the only free variable in $G$, this simplifies to
-\[\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\emptyset;\alpha\vdash K}\,B\]  
+%i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$,
+then $\textit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
+(\mathit{map}_H \,(\mathit{fold}_H\,B) \, x)$ by the definition of
+$\mathit{fold}_H$ as a (indeed, the unique) morphism from
+$\mathit{in}_H$ to $B$.  Thus, $(G \,(\pi_1 \rho)\, A, G\, (\pi_2
+\rho)\, B) \in \graph{\textit{fold}_H\, B}$, i.e., $\textit{fold}_H \,
+B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
+since $\phi$ is the only free variable in $G$, this simplifies to
+$\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
+G\,\setsem{\emptyset;\alpha\vdash K}\,B$.
 \end{proof}
 
-
-
-
-
-
-
+{\color{red} Can take $\emptyset;\alpha \vdash c$ with
+  $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
+  can take $c$ to denote a constant $C$. We then get a free theorem
+  whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu H \;
+  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$ as in~\cite{gj??}.}
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
-We have forall-types.
-
+We have forall-types but not all.
 
 Can do everything in abstract locally presentable cartesian closed
 category. 
@@ -6712,7 +6680,46 @@ structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
 
-fixed points at term level ala Pitts
+fixed points at term level ala Pitts:
+
+I'm not sure if we actually want to do this or not (because not all fixed
+points will necessarily exist, and this will have consequences, and because
+of the restriction to strict functions it will entail and the fact that I
+haven't yet thought about how those will thread through our calculus), but
+another idea we might consider is adding fixed points at the term level. This
+is done for System F in Wadler's section 7. [It is also done in Pitts'
+Parametric Polymorphism and Operational Equivalence paper, where the term
+introduction rule is SEE SOURCE
+
+%Gamma \vdash F : \tau \to \tau
+%-------------------------------
+%Gamma \vdash fix (F) : tau
+
+But of course the model there is entirely operational rather than
+categorical.]
+
+On the other hand, check out the last paragraph of Wadler's paper, which
+suggests that (at least in 1989) there was some interest in calculi like
+ours:
+
+"The desire to derive theorems from types therefore suggests that it would be
+valuable to explore programming languages that prohibit recursion or only
+allow its restricted use. In theory, this is well understood; we have already
+noted that any computable function that is provably total in second-order
+Peano arithmetic can be defined in the pure polymorphic lambda calculus,
+without using the fixpoint as a primitive. However, practical languages based
+on this notion remain terra incognita."
+
+Of course we are not working in System F, but perhaps the same desire applies
+here, and we do get the same kinds of theorems as Wadler, many just as a
+consequence of our interpretation, without invoking parametricity.
+
+In any case, I guess Wadler could be cited as justifying restricting our
+attention to our calculus since it could be seen as a way to have a practical
+language that ensures that all programs are terminating.
+
+
+
 
 \bibliography{references}
 
