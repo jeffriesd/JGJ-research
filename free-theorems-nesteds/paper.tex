@@ -1350,12 +1350,11 @@ is defined by
 \end{align*}
 \end{dfn}
 The interpretations in Definition~\ref{def:set-sem} respect weakening,
-i.e., a type and its weakenings all have the same set interpretations.
+i.e., a type and its weakenings have the same set interpretations.
 The same holds for the actions of these interpretations on morphisms
-in Definition~\ref{def:set-sem-funcs} below.  Moreover, the
-interpretation of $\Nat$ types ensures that $\setsem{\Gamma \vdash
-  \sigma \to \tau}\rho = \setsem{\Gamma \vdash \sigma} \rho \to
-\setsem{\Gamma \vdash \tau} \rho$, as expected {\color{blue} by IEL}.
+in Definition~\ref{def:set-sem-funcs} below.
+%= \setsem{\Gamma \vdash \sigma} \rho \to
+%\setsem{\Gamma \vdash \tau} \rho$, as expected {\color{blue} by IEL}.
 If $\rho$ is a set environment and $\vdash \tau : \F$ then we may
 write $\setsem{\vdash \tau}$ instead of $\setsem{\vdash \tau}\rho$
 since the environment is immaterial. We note that the second clause of
@@ -1373,8 +1372,13 @@ subset of $\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha
 tuples $\ol{S}$, and each of these gives rise to a morphism from
 ${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
 ${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
-there are only $\set$-many choices of morphisms between these (or any)
-two objects because $\set$ is locally small.
+there are only $\set$-many choices of morphisms between any
+%these (or any)
+two objects since $\set$ is locally small. Finally, interpretations of
+$\Nat$ types in Definitions~\ref{def:set-sem} and~\ref{def:rel-sem}
+ensure $\setsem{\Gamma \vdash \sigma \to \tau}$ and
+$\setsem{\Gamma \vdash \forall \alpha. \tau}$ are as expected in any
+parametric model.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
@@ -1854,15 +1858,18 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 \end{dfn}
 
 The interpretations in Definition~\ref{def:rel-sem}, as well as in
-Definition~\ref{def:rel-sem-funcs} below, respect weakening.
-Definition~\ref{def:rel-sem} also ensures that $\relsem{\Gamma \vdash
-  \sigma \to \tau}\rho = \relsem{\Gamma \vdash \sigma} \rho \to
-\relsem{\Gamma \vdash \tau} \rho$. If $\rho$ is a relational
-environment and $\vdash \tau : \F$, then we write $\relsem{\vdash \tau
-}$ instead of $\relsem{\vdash \tau }\rho$ as for set interpretations.
-For the last clause in Definition~\ref{def:rel-sem} to be
-well-defined, we need to know that $T_{\rho}$ is an
-$\omega$-cocontinuous endofunctor on $RT$ so that, by
+Definition~\ref{def:rel-sem-funcs} below, respect weakening, and also
+ensure that $\relsem{\Gamma \vdash \sigma \to \tau}$ and
+$\relsem{\Gamma \vdash \forall \alpha. \tau}$ are as expected in any
+parametric model.
+%$\relsem{\Gamma \vdash
+%  \sigma \to \tau}\rho = \relsem{\Gamma \vdash \sigma} \rho \to
+%\relsem{\Gamma \vdash \tau} \rho$.
+If $\rho$ is a relational environment and $\vdash \tau : \F$, then we
+write $\relsem{\vdash \tau }$ instead of $\relsem{\vdash \tau }\rho$
+as for set interpretations.  For the last clause in
+Definition~\ref{def:rel-sem} to be well-defined we need $T_{\rho}$ to
+be an $\omega$-cocontinuous endofunctor on $RT$ so that, by
 Lemma~\ref{lem:fp}, it admits a fixed point. Since $T_\rho$ is defined
 in terms of $\relsem{\Gamma;\Phi,\phi^k, \ol{\alpha} \vdash H}$, this
 means that relational interpretations of types must be
