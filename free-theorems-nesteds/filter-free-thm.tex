@@ -195,56 +195,61 @@ Nested Types} %% [Short Title] is optional;
 Let $List \, \alpha = \listt{\alpha}$, 
 and let $map = \maplist$.
 
-\begin{lemma}\label{lem:list-graph}
-  If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B, \graph{g})$, then
-    $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \graph{map \, g}$
-\end{lemma}
-\begin{proof}
-% show by direct calculation
-  \begin{align*}
-    &\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho  \\
-    &= \mu T_{\rho} (\relsem{\alpha; \emptyset \vdash \alpha} \rho) \\    % def 19
-    &= \mu T_{\rho} (A, B, \graph{g}) \\   
-    &= (\mu T_{\pi_1\rho} A, \mu T_{\pi_2\rho} B, \colim{n \in \nat}{(T_{\rho}^n K_0)^*} (A, B, \graph{g})) \\ % eq 3, after dfn 15
-    &= (\List \,A, \List \,B, \colim{n \in \nat}{\Sigma_{i = 0}^n (A, B, \graph{g})^i}) \\ % below (*)
-    &= (\List \,A, \List \,B, \List (A, B, \graph{g})) \\ % definition of List
-    &= (\List \,A, \List \,B, \graph{map \, g}) % below (**)
-  \end{align*}
+%Observe that, if $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B, \graph{g})$, then
+%$\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \graph{map \, g}$.
+%Indeed,
+%$\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \relsem{\emptyset; \alpha \vdash List \, \alpha} \rho = \relsem{\emptyset; \alpha \vdash List \, \alpha} [\alpha:=\graph{g}]$, which, by the Graph Lemma (Lemma~\ref{lem:graph}), is equal to $\graph{\setsem{\emptyset; \alpha \vdash List \, \alpha} [\alpha := g]}$, i.e., $\graph{map\, g}$.
 
-  The first equality is by Definition~\ref{def:rel-sem}, the third equality is by Equation~\ref{eq:mu}, 
-  and the fourth and sixth equalities are by Equations~\ref{eq:T-list} and \ref{eq:List-graph-map} below.
-
-  % (*)
-  \noindent
-  The following sequence of equalities shows 
-  \begin{equation}\label{eq:T-list}
-  (T_{\rho}^n K_0)^* \,R = \Sigma_{i=0}^n R^i
-  \end{equation}
-  by induction on $n$: \\
-  \begin{align*}
-    &  (T_{\rho}^n K_0)^* \,R \\
-    &= T_{\rho}^\rel (T_{\rho}^{n-1} K_0)^* \,R \\
-    &= \setsem{\alpha; \phi, \beta \vdash \onet + \beta \times \phi \beta} \rho 
-          [\phi := (T_\rho^{n-1} K_0)^*] [\beta := R] \\
-    &= \onet + R \times (T_\rho^{n-1} K_0)^* \, R \\
-    &= \onet + R \times (\Sigma_{i=0}^{n-1} R^i) \\
-    &= \Sigma_{i= 0}^n R^i
-  \end{align*}
-
-  \noindent
-  The following reasoning shows 
-  \begin{equation}\label{eq:List-graph-map}
-    \List (A, B, \graph{g}) = \graph{map \,g}
-  \end{equation}
-  By showing that $(xs, xs') \in \List (A, B, \graph{g})$ if and only if $(xs, xs') \in \graph{map \,g}$:
-  \begin{align*}
-    &  (xs, xs') \in \List (A, B, \graph{g}) \\
-    & \iff \forall i. (xs_i, xs'_i) \in \graph{g} \\
-    & \iff \forall i. xs'_i = g (xs_i) \\
-    & \iff xs'= map \,g \, xs \\
-    & \iff (xs, xs') \in \graph{map \,g}
-  \end{align*}
-\end{proof}
+%\begin{lemma}\label{lem:list-graph}
+%  If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B, \graph{g})$, then
+%    $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho = \graph{map \, g}$
+%\end{lemma}
+%\begin{proof}
+%% show by direct calculation
+%  \begin{align*}
+%    &\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho  \\
+%    &= \mu T_{\rho} (\relsem{\alpha; \emptyset \vdash \alpha} \rho) \\    % def 19
+%    &= \mu T_{\rho} (A, B, \graph{g}) \\   
+%    &= (\mu T_{\pi_1\rho} A, \mu T_{\pi_2\rho} B, \colim{n \in \nat}{(T_{\rho}^n K_0)^*} (A, B, \graph{g})) \\ % eq 3, after dfn 15
+%    &= (\List \,A, \List \,B, \colim{n \in \nat}{\Sigma_{i = 0}^n (A, B, \graph{g})^i}) \\ % below (*)
+%    &= (\List \,A, \List \,B, \List (A, B, \graph{g})) \\ % definition of List
+%    &= (\List \,A, \List \,B, \graph{map \, g}) % below (**)
+%  \end{align*}
+%
+%  The first equality is by Definition~\ref{def:rel-sem}, the third equality is by Equation~\ref{eq:mu}, 
+%  and the fourth and sixth equalities are by Equations~\ref{eq:T-list} and \ref{eq:List-graph-map} below.
+%
+%  % (*)
+%  \noindent
+%  The following sequence of equalities shows 
+%  \begin{equation}\label{eq:T-list}
+%  (T_{\rho}^n K_0)^* \,R = \Sigma_{i=0}^n R^i
+%  \end{equation}
+%  by induction on $n$: \\
+%  \begin{align*}
+%    &  (T_{\rho}^n K_0)^* \,R \\
+%    &= T_{\rho}^\rel (T_{\rho}^{n-1} K_0)^* \,R \\
+%    &= \setsem{\alpha; \phi, \beta \vdash \onet + \beta \times \phi \beta} \rho 
+%          [\phi := (T_\rho^{n-1} K_0)^*] [\beta := R] \\
+%    &= \onet + R \times (T_\rho^{n-1} K_0)^* \, R \\
+%    &= \onet + R \times (\Sigma_{i=0}^{n-1} R^i) \\
+%    &= \Sigma_{i= 0}^n R^i
+%  \end{align*}
+%
+%  \noindent
+%  The following reasoning shows 
+%  \begin{equation}\label{eq:List-graph-map}
+%    \List (A, B, \graph{g}) = \graph{map \,g}
+%  \end{equation}
+%  By showing that $(xs, xs') \in \List (A, B, \graph{g})$ if and only if $(xs, xs') \in \graph{map \,g}$:
+%  \begin{align*}
+%    &  (xs, xs') \in \List (A, B, \graph{g}) \\
+%    & \iff \forall i. (xs_i, xs'_i) \in \graph{g} \\
+%    & \iff \forall i. xs'_i = g (xs_i) \\
+%    & \iff xs'= map \,g \, xs \\
+%    & \iff (xs, xs') \in \graph{map \,g}
+%  \end{align*}
+%\end{proof}
 
 
 
@@ -289,9 +294,20 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   (t (\pi_1\rho) \,a \,s \,xs, t (\pi_2\rho) \,b \,s' \,xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
   \end{equation}
 
-  Consider the case in which $\rho\alpha = (A, B, \graph{g})$. Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
-  = \graph{map \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{map \,g}$ 
-  implies $xs' = map \,g \,xs$. We also have that 
+  Consider the case in which $\rho\alpha = (A, B, \graph{g})$.
+  Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
+  = \graph{map \, g}$.
+  Indeed,
+  $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$
+  is equal to
+  $\relsem{\emptyset; \alpha \vdash List \, \alpha} [\alpha:=\graph{g}]$,
+  which is equal to
+  $\graph{\setsem{\emptyset; \alpha \vdash List \, \alpha} [\alpha := g]}$
+  by the Graph Lemma (Lemma~\ref{lem:graph}),
+  i.e., $\graph{map\, g}$.
+  We also have that $(xs, xs') \in \graph{map \,g}$ 
+  implies $xs' = map \,g \,xs$,
+  and that 
   $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
   $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
   $s = s' \circ g$ due to the definition of morphisms between relations.

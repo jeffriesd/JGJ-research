@@ -2143,7 +2143,9 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 We can also prove by induction that our interpretations of types
 interact well with demotion of functorial variables and
 substitution. Indeed, we have that, for any $\rho,\rho'$ and
-$f: \rho \to \rho'$ in $\setenv$,
+$f: \rho \to \rho'$ in $\setenv$, {\color{blue} Do we ever use (5)
+  anywhere? Or explicitly refer to (6) - (9) in what's included in
+  this (proof-suppressed) paper?} 
 \begin{gather}
 \label{thm:demotion-objects}
 \setsem{\Gamma; \Phi, \phi \vdash F} \rho = \setsem{\Gamma, \psi; \Phi
@@ -6182,7 +6184,7 @@ By Theorem~\ref{thm:at-gen-rel}, \[(\mathit{filter}\, (\pi_1 \rho)\, a,
 If $\rho\alpha = (A, B, \graph{g})$, then $\relsem{\alpha; \emptyset
   \vdash \mathit{List} \, \alpha} \rho =
 \graph{\mathit{map}_{\mathit{List}} \, g}$ by Lemma~\ref{lem:graph}
-since demotion preserves interpretations.  Moreover, $xs' =
+and Equation~\ref{thm:demotion-objects}.  Moreover, $xs' =
 \mathit{map}_{\mathit{List}} \,g \,xs$ and $(s', s) \in \graph{g} \to
 \Eq_{\mathit{Bool}}$, so $s' = s \circ g$. Instantiating
 Equation~\ref{eq:filter-thm-list} thus gives the desired result.
@@ -6534,7 +6536,7 @@ G\,\setsem{\vdash \tau'}\,B\]
 
 Short cut fusion can, in fact, be generalized from ADTs to nested
 types. Indeed, we have:
-\begin{thm}
+\begin{thm}\label{thm:short-cut-nested}
 If $\emptyset;\phi,\alpha \vdash F : \F$, \,$\emptyset; \alpha
 \vdash K : \F$, \,
 %let $\phi ;\emptyset\,|\,\emptyset\vdash g :
@@ -6674,14 +6676,15 @@ $\mathit{in}_H$ to $B$.  Thus, $(G \,(\pi_1 \rho)\, A, G\, (\pi_2
 B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
 since $\phi$ is the only free variable in $G$, this simplifies to
 $\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\emptyset;\alpha\vdash K}\,B$.
+G\,\setsem{\emptyset;\alpha\vdash K}\,B$. 
 \end{proof}
 
-{\color{red} Can take $\emptyset;\alpha \vdash c$ with
-  $\setsem{\emptyset;\alpha \vdash c}\rho = C$ for all $\rho$, i.e.,
-  can take $c$ to denote a constant $C$. We then get a free theorem
-  whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu H \;
-  in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$ as in~\cite{gj??}.}
+As in~\cite{jg10}, replacing $\onet$ with any term $\emptyset;\alpha
+\vdash c$ generalizes
+%with $\setsem{\emptyset;\alpha \vdash c}\rho = C$
+Theorem~\ref{thm:short-cut-nested} to deliver more general a free
+theorem whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu
+H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 

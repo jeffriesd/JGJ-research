@@ -231,12 +231,14 @@ Nested Types} %% [Short Title] is optional;
     \in \relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
   \end{equation}
 
-  Since $\rho\alpha = (A, B, \graph{g})$ and $\rho\psi = (F, G, \graph{\psi})$,
-  then $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, \alpha} \rho
-  = \graph{\semmap \, \eta g}$
-  and $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
-  = \graph{\semmap \, \eta (g + 1)}$,
-  by Lemma~\ref{lem:list-graph}.
+  We know that $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, \alpha} \rho$
+  is equal to $\relsem{\emptyset; \alpha, \psi \vdash \GRose\, \psi\, \alpha} \rho$,
+  which, since $\rho\alpha = (A, B, \graph{g})$ and $\rho\psi = (F, G, \graph{\eta})$,
+  is equal to $\graph{ \setsem{\emptyset; \alpha, \psi \vdash \GRose\, \psi\, \alpha}\, [\alpha := g]\, [\psi := \eta]}$
+  by the Graph Lemma (Lemma~\ref{lem:graph}),
+  i.e., $\graph{\semmap \eta\, g}$.
+  Analogously, $\relsem{\alpha, \psi; \emptyset \vdash \GRose\, \psi\, (\alpha + \onet)} \rho
+  = \graph{\semmap \, \eta (g + 1)}$.
   Moreover, $(xs, xs') \in \graph{\semmap \, \eta\, g}$ implies $xs' = \semmap\, \eta\, g\, xs$.
   We also have that
   $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
