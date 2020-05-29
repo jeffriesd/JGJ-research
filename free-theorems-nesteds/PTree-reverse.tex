@@ -165,63 +165,62 @@ Nested Types} %% [Short Title] is optional;
   \, (\Nat^\emptyset \, \alpha \, \mathit{Bool}) (\Nat^\emptyset \, (\GRose\, \psi\, \alpha) \, (\GRose\, \psi\, (\alpha + \onet)))}
 \newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha \vdash List \, \alpha} \rho[\alpha := A]}}
 
-\newcommand{\PLeaves}{\mathsf{PLeaves}}
 \newcommand{\swap}{\mathsf{swap}}
 \newcommand{\reverse}{\mathsf{reverse}}
 
 \maketitle
 
-\section{$\reverse$ function for $\PLeaves$}
+\section{$\reverse$ function for $\Ptree$}
 
-Let $\PLeaves$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \alpha + \phi(\alpha \times \alpha))\beta$.
-We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\PLeaves\,\beta)\,(\PLeaves\,\beta)$.
+Let $\Ptree$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \onet + \alpha \times \phi(\alpha \times \alpha))\beta$.
+We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\Ptree\,\beta)\,(\Ptree\,\beta)$.
 
 To begin with, define the term $\swap$ as
 \[
 	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
 \]
-and consider the map for $\PLeaves$
+and consider the map for $\Ptree$
 \[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}
+	\vdash \map_{\Ptree\,\beta}^{\beta \times \beta, \beta \times \beta}
 	: \Nat^{\emptyset}
 	(\Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta))\;
-	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,(\beta \times \beta)))
+	(\Nat^{\beta} (\Ptree\,(\beta \times \beta))\, (\Ptree\,(\beta \times \beta)))
 \]
 Then we get a term
 \[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
-	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\,(\beta \times \beta))
+	\vdash \map_{\Ptree\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
+	: \Nat^{\beta} (\Ptree\,(\beta \times \beta))\; (\Ptree\,(\beta \times \beta))
 \]
 
 Define the term $s$ as
 \[
 \begin{array}{l}
-	\vdash L_{\beta} t. \case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,( (\map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap)_{\beta}\, t' )} \\
-	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\;  (\beta + \PLeaves\,(\beta \times \beta))
+	\vdash L_{\beta} t. \case{t}{u \mapsto \inl\, u}{t' \mapsto \inr\,(\pi_1\, t', (\map_{\Ptree\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap)_{\beta}\, (\pi_2\, t') )} \\
+	\hspace*{0.5in} : \Nat^{\beta} (\onet + \beta \times \Ptree\,(\beta \times \beta))\;  (\onet + \beta \times \Ptree\,(\beta \times \beta))
 \end{array}
 \]
-and consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
+and consider the mediating morphism $\tin$ of the initial algebra defining $\Ptree$
 \[
-	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)}
-	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\, \beta)
+	\vdash \tin_{\onet + \alpha \times \phi(\alpha \times \alpha)}
+	: \Nat^{\beta} (\onet + \beta \times \Ptree\,(\beta \times \beta)) \; (\Ptree\, \beta)
 \]
 Then we get a term
 \[
-	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)} \circ s
-	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta)
+	\vdash \tin_{\onet + \alpha \times \phi(\alpha \times \alpha)} \circ s
+	: \Nat^{\beta} (\onet + \beta \times \Ptree\,(\beta \times \beta)) \; (\Ptree\,\beta)
 \]
 
-Finally, consider the fold for $\PLeaves$
+Finally, consider the fold for $\Ptree$
 \[
-	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\,\beta}
+	\vdash \fold_{\onet + \alpha \times \phi(\alpha \times \alpha)}^{\Ptree\,\beta}
 	: \Nat^{\emptyset}
-	(\Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta))\;
-	(\Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta))
+	(\Nat^{\beta} (\onet + \beta \times \Ptree\,(\beta \times \beta)) \; (\Ptree\,\beta))\;
+	(\Nat^{\beta} (\Ptree\,\beta) \; (\Ptree\,\beta))
 \]
 then we define the $\reverse$ function as
 \[
-	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta} (\tin_{\alpha + \phi(\alpha \times \alpha)} \circ s)
-	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta)
+	\vdash \fold_{\onet + \alpha \times \phi(\alpha \times \alpha)}^{\Ptree\, \beta} (\tin_{\onet + \alpha \times \phi(\alpha \times \alpha)} \circ s)
+	: \Nat^{\beta} (\Ptree\,\beta) \; (\Ptree\,\beta)
 \]
 
 

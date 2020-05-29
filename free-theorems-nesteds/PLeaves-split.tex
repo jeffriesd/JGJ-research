@@ -166,49 +166,43 @@ Nested Types} %% [Short Title] is optional;
 \newcommand{\maplist}{\map_{\lambda A. \setsem{\emptyset; \alpha \vdash List \, \alpha} \rho[\alpha := A]}}
 
 \newcommand{\PLeaves}{\mathsf{PLeaves}}
-\newcommand{\swap}{\mathsf{swap}}
-\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\PLsplit}{\mathsf{split}}
 
 \maketitle
 
-\section{$\reverse$ function for $\PLeaves$}
+\section{$\PLsplit$ function for $\PLeaves$}
 
 Let $\PLeaves$ be the type $\emptyset; \beta \vdash (\mu \phi. \lambda \alpha. \alpha + \phi(\alpha \times \alpha))\beta$.
-We will define a $\reverse$ function with type $\vdash \reverse : \Nat^{\beta} (\PLeaves\,\beta)\,(\PLeaves\,\beta)$.
+We will define a $\PLsplit$ function with type $\vdash \PLsplit : \Nat^{\beta} (\PLeaves\,\beta))\,(\PLeaves\,\beta \times \PLeaves\,\beta)$.
 
-To begin with, define the term $\swap$ as
+%To begin with, define the term $\swap$ as
+%\[
+%	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
+%\]
+Consider the map for $\PLeaves$
 \[
-	\vdash L_{\beta} p.\, (\pi_2 p, \pi_1 p) : \Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta)
-\]
-and consider the map for $\PLeaves$
-\[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta}
 	: \Nat^{\emptyset}
-	(\Nat^{\beta} (\beta \times \beta)\, (\beta \times \beta))\;
-	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,(\beta \times \beta)))
+	(\Nat^{\beta} (\beta \times \beta)\, \beta)\;
+	(\Nat^{\beta} (\PLeaves\,(\beta \times \beta))\, (\PLeaves\,\beta))
 \]
 Then we get a term
 \[
-	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap
-	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\,(\beta \times \beta))
+	\vdash \map_{\PLeaves\,\beta}^{\beta \times \beta, \beta}\, \pi_1
+	: \Nat^{\beta} (\PLeaves\,(\beta \times \beta))\; (\PLeaves\, \beta)
 \]
 
-Define the term $s$ as
-\[
-\begin{array}{l}
-	\vdash L_{\beta} t. \case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,( (\map_{\PLeaves\,\beta}^{\beta \times \beta, \beta \times \beta}\, \swap)_{\beta}\, t' )} \\
-	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\;  (\beta + \PLeaves\,(\beta \times \beta))
-\end{array}
-\]
-and consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
+Consider the mediating morphism $\tin$ of the initial algebra defining $\PLeaves$
 \[
 	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)}
 	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\, \beta)
 \]
-Then we get a term
+and define the term $s_1$ as
 \[
-	\vdash \tin_{\alpha + \phi(\alpha \times \alpha)} \circ s
-	: \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta)
+\begin{array}{l}
+	\vdash L_{\beta} t. \case{t}{b \mapsto (\tin_{\alpha + \phi(\alpha \times \alpha)})_{\beta} (\inl\, b)}{t' \mapsto (\map_{\PLeaves\,\beta}^{\beta \times \beta, \beta}\, \pi_1)_{\beta}\, t'} \\
+	\hspace*{0.5in} : \Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta))\; (\PLeaves\,\beta)
+\end{array}
 \]
 
 Finally, consider the fold for $\PLeaves$
@@ -218,12 +212,18 @@ Finally, consider the fold for $\PLeaves$
 	(\Nat^{\beta} (\beta + \PLeaves\,(\beta \times \beta)) \; (\PLeaves\,\beta))\;
 	(\Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta))
 \]
-then we define the $\reverse$ function as
+then we define the $\PLsplit_1$ function as
 \[
-	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta} (\tin_{\alpha + \phi(\alpha \times \alpha)} \circ s)
+	\vdash \fold_{\alpha + \phi(\alpha \times \alpha)}^{\PLeaves\, \beta}\, s_1
 	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta)
 \]
 
+Analogously, we can define $\PLsplit_2$ by using the second projection;
+then we can pair $\PLsplit_1$ and $\PLsplit_2$ to get $\PLsplit$ as
+\[
+	\vdash L_{\beta} x. ((\PLsplit_1)_{\beta} x, (\PLsplit_2)_{\beta} x)
+	: \Nat^{\beta} (\PLeaves\,\beta) \; (\PLeaves\,\beta \times \PLeaves\,\beta)
+\]
 
 
 \end{document}

@@ -790,7 +790,7 @@ $\tau$.
 
 \begin{lemma}
 If\, $\Gamma; \Phi, \phi^k \vdash \tau : \F$, then $\Gamma, \psi^k;
-\Phi \vdash \tau[\phi^k :== \psi^k]$ is also derivable. Here,
+\Phi \vdash \tau[\phi^k :== \psi^k] : \F$ is also derivable. Here,
 $\tau[\phi :== \psi]$ is the textual replacement of $\phi$ in $\tau$,
 meaning that all occurences of $\phi\ol\sigma$ in $\tau$ become
 $\psi\ol\sigma$.
@@ -1374,11 +1374,10 @@ ${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
 ${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
 there are only $\set$-many choices of morphisms between any
 %these (or any)
-two objects since $\set$ is locally small. Finally, interpretations of
-$\Nat$ types in Definitions~\ref{def:set-sem} and~\ref{def:rel-sem}
-ensure $\setsem{\Gamma \vdash \sigma \to \tau}$ and
-$\setsem{\Gamma \vdash \forall \alpha. \tau}$ are as expected in any
-parametric model.
+two objects since $\set$ is locally small. Finally, interpretations of $\Nat$
+types in Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} ensure
+$\setsem{\Gamma \vdash \sigma \to \tau}$ and $\setsem{\Gamma \vdash
+  \forall \alpha. \tau}$ are as expected in any parametric model.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
@@ -1859,9 +1858,8 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 
 The interpretations in Definition~\ref{def:rel-sem}, as well as in
 Definition~\ref{def:rel-sem-funcs} below, respect weakening, and also
-ensure that $\relsem{\Gamma \vdash \sigma \to \tau}$ and
-$\relsem{\Gamma \vdash \forall \alpha. \tau}$ are as expected in any
-parametric model.
+ensure that $\relsem{\Gamma \vdash \forall \alpha. \tau}$ are as
+expected in any parametric model.
 %$\relsem{\Gamma \vdash
 %  \sigma \to \tau}\rho = \relsem{\Gamma \vdash \sigma} \rho \to
 %\relsem{\Gamma \vdash \tau} \rho$.
@@ -2134,23 +2132,41 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 \end{proof}
 \end{comment}
 
+%We need
+%$\relsem{\Gamma; \Phi, \phi \vdash \tau}\rho$ $=
+%\relsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+%    \psi]}\rho[\psi:=\rho\phi]$, and that $\relsem{\Gamma \vdash
+%  \sigma \to \tau}$ and
+%$\setsem{\Gamma; \Phi, \phi \vdash \tau}\rho$ $=
+%\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
+%    \psi]}\rho[\psi:=\rho\phi]$. 
 We can also prove by induction that our interpretations of types
 interact well with demotion of functorial variables and
-substitution. Indeed, we have 
-\begin{lemma}\label{lem:demotion-objects}
-Let $\rho, \rho' : \setenv$ be such that $\rho \phi = \rho \psi =
-\rho' \phi = \rho' \psi$, and let $f : \rho \to \rho'$ be a morphism
-of set environments such that $f \phi = f \psi = \id_{\rho \phi}$.  If
-\, $\Gamma; \Phi, \phi^k \vdash F : \F$, $\Gamma;\Phi,\ol{\alpha}
-\vdash G$ $\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$, and
-$\Gamma;\Phi \vdash \tau$, then
+substitution. Indeed, we have that, for any $\rho,\rho'$ and
+$f: \rho \to \rho'$ in $\setenv$,
 \begin{gather}
 \label{thm:demotion-objects}
 \setsem{\Gamma; \Phi, \phi \vdash F} \rho = \setsem{\Gamma, \psi; \Phi
-  \vdash F[\phi :== \psi] } \rho\\
+  \vdash F[\phi :== \psi] } \rho{\color{blue}[\psi := \rho \phi]}\\
 \label{thm:demotion-morphisms}
 \setsem{\Gamma; \Phi, \phi \vdash F} f = \setsem{\Gamma, \psi; \Phi
-  \vdash F[\phi :== \psi]} f\\
+  \vdash F[\phi :== \psi]} f{\color{blue}[\psi \mapsto f\phi]}
+\end{gather}
+Moreover,
+%\begin{lemma}\label{lem:demotion-objects}
+if $\rho, \rho' : \setenv$ are such that $\rho \phi = \rho \psi =
+\rho' \phi = \rho' \psi$, \,$f : \rho \to \rho'$ in $\setenv$ is such
+that $f \phi = f \psi = \id_{\rho \phi}$,\, \, $\Gamma; \Phi, \phi^k
+\vdash F : \F$, $\Gamma;\Phi,\ol{\alpha} \vdash G$
+$\Gamma;\Phi,\alpha_1...\alpha_k \vdash H$, and $\Gamma;\Phi \vdash
+\tau$, then
+\begin{gather}
+%\label{thm:demotion-objects}
+%\setsem{\Gamma; \Phi, \phi \vdash F} \rho = \setsem{\Gamma, \psi; \Phi
+%  \vdash F[\phi :== \psi] } \rho{\color{blue}[\psi := \rho \phi]}\\
+%\label{thm:demotion-morphisms}
+%\setsem{\Gamma; \Phi, \phi \vdash F} f = \setsem{\Gamma, \psi; \Phi
+%  \vdash F[\phi :== \psi]} f{\color{blue}[\psi \mapsto f\phi]}\\
 \label{eq:subs-var}
 \setsem{\Gamma;\Phi \vdash G[\ol{\alpha := \tau}]}\rho =
 \setsem{\Gamma;\Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
@@ -2170,8 +2186,9 @@ $\Gamma;\Phi \vdash \tau$, then
 [\phi := \lambda \ol{A}.\,\setsem{\Gamma;\Phi,\overline{\alpha}\vdash
     H}f[\overline{\alpha := \id_{\ol{A}}}]] 
 \end{gather}
-Analogous identities hold for relational interpretations.
-\end{lemma}
+Identities analogous to (\ref{thm:demotion-objects}) through
+(\ref{eq:subs-const-morph}) hold for relational interpretations as well.
+%\end{lemma}
 
 
 \begin{comment}
@@ -6108,27 +6125,28 @@ identity natural transformation for the identity functor on $\set$,
 i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
 denotes the polymorphic identity function.
 
-\subsection{Free Theorems for polymorphic functions over ADTs}
+\subsection{Standard Free Theorems for ADTs and Their Analogues for
+  Nested types}
 
 We can derive in our system even those free theorems for polymorphic
 functions over ADTs that are not consequences of naturality.  We can,
 e.g., prove the free theorem for $\mathit{filter}$'s type as follows:
 
-\begin{lemma}\label{lem:list-graph}
-If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B,
-\graph{g})$, then $\relsem{\alpha; \emptyset \vdash List \, \alpha}
-\rho = \graph{map_{\mathit{List}} \, g}$.
-\end{lemma}
-\begin{proof}
-The result follows by straightforward calculation using
-Definition~\ref{def:rel-sem} and Equation~\ref{eq:mu}, together with
-the facts that $\mathit{List} \,(A, B, \graph{g}) =
-\graph{\mathit{map}_{\mathit{List}} \,g}$ and, if $H = \onet + \beta
-\times\phi \beta$ {\color{blue} Why not $H = \onet + \alpha \times
-  \beta$? Does it matter?}, then $(T_{H,\rho}^n K_0)^* R =
-\Sigma_{i=0}^n R^i$ for all $n \in \nat$ and $R \in \rel$ by induction
-on $n$.
-\end{proof}
+%\begin{lemma}\label{lem:list-graph}
+%If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B,
+%\graph{g})$, then $\relsem{\alpha; \emptyset \vdash List \, \alpha}
+%\rho = \graph{map_{\mathit{List}} \, g}$.
+%\end{lemma}
+%\begin{proof}
+%The result follows by straightforward calculation using
+%Definition~\ref{def:rel-sem} and Equation~\ref{eq:mu}, together with
+%the facts that $\mathit{List} \,(A, B, \graph{g}) =
+%\graph{\mathit{map}_{\mathit{List}} \,g}$ and, if $H = \onet + \beta
+%\times\phi \beta$ {\color{blue} Why not $H = \onet + \alpha \times
+%  \beta$? Does it matter?}, then $(T_{H,\rho}^n K_0)^* R =
+%\Sigma_{i=0}^n R^i$ for all $n \in \nat$ and $R \in \rel$ by induction
+%on $n$.
+%\end{proof}
 
 \begin{thm} 
 If $g : A \to B$, $\rho : \relenv$, $\rho \alpha = (A, B, \graph{g})$,
@@ -6144,9 +6162,9 @@ $\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
 \circ \mathit{map}_{\mathit{List}} \,g\]
 \end{thm}
 \begin{proof}
-By Theorem~\ref{thm:at-gen-rel}, $(\mathit{filter}\, (\pi_1 \rho)\, a,
+By Theorem~\ref{thm:at-gen-rel}, \[(\mathit{filter}\, (\pi_1 \rho)\, a,
 \mathit{filter}\, (\pi_2 \rho)\, b) \in \relsem{\alpha; \emptyset
-  \vdash \filtype} \rho$, so if $(s, s') \in \relsem{\alpha; \emptyset
+  \vdash \filtype} \rho\] so if $(s, s') \in \relsem{\alpha; \emptyset
   \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to
 \Eq_{\mathit{Bool}}$ and $(xs, xs') \in \relsem{\alpha; \emptyset
   \vdash List \, \alpha} \rho$ then
@@ -6163,11 +6181,11 @@ By Theorem~\ref{thm:at-gen-rel}, $(\mathit{filter}\, (\pi_1 \rho)\, a,
 \end{equation}
 If $\rho\alpha = (A, B, \graph{g})$, then $\relsem{\alpha; \emptyset
   \vdash \mathit{List} \, \alpha} \rho =
-\graph{\mathit{map}_{\mathit{List}} \, g}$ by
-Lemma~\ref{lem:list-graph}. Moreover, $xs' =
+\graph{\mathit{map}_{\mathit{List}} \, g}$ by Lemma~\ref{lem:graph}
+since demotion preserves interpretations.  Moreover, $xs' =
 \mathit{map}_{\mathit{List}} \,g \,xs$ and $(s', s) \in \graph{g} \to
-\Eq_{\mathit{Bool}}$, so $s' = s \circ g$, so instantiating
-Equation~\ref{eq:filter-thm-list} gives the desired result.
+\Eq_{\mathit{Bool}}$, so $s' = s \circ g$. Instantiating
+Equation~\ref{eq:filter-thm-list} thus gives the desired result.
 % \begin{align*}
 %    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map%}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
 %    & i.e., \\ 
@@ -6239,12 +6257,14 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 \end{proof}
 \end{comment}
 
-\subsection{Free Theorem for Type of $\mathit{filter}$ for
-  $\GRose$}\label{sec:filter-grose} 
+%\subsection{Free Theorem for Type of $\mathit{filter}$ for
+%  $\GRose$}\label{sec:filter-grose} 
 
-{\color{blue} Check this!}
-Using an analog of Lemma~\ref{lem:list-graph} for generalized rose
-trees we can prove
+{\color{blue} But rose trees are essentially first-order. Not for
+  perfect trees or bushes... Say more?}
+
+A similar proof establishes the analogous result for, say, generalized
+rose trees:
 \begin{thm} 
  If $g : A \to B$, $\eta : F \to G$ in $\set$, $\rho : \relenv$, $\rho \alpha =
  (A, B, \graph{g})$, $\rho \psi = (F, G, \graph{\eta})$, $(a, b) \in
