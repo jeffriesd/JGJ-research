@@ -495,8 +495,9 @@ several of this latter kind of free theorem from it in
 Section~\ref{sec:ftnt}. Specifically, we state and prove
 (non-)inhabitation results in Sections~\ref{sec:bottom}
 and~\ref{sec:identity}, a free theorem for the type of a filter
-function on generalized rose trees in Section~\ref{sec:filter-grose},
-and the correctness of short cut fusion for nested types in
+function on generalized rose trees in Section~\ref{sec:ft-adt}, the
+correctness of short cut fusion for lists in
+Section~\ref{sec:short-cut}, and its generaliation to nested types in
 Section~\ref{sec:short-cut-nested}.
 
 There is a long line of work on categorical models of parametricity
@@ -758,13 +759,12 @@ Each of these types can be considered either functorial in $\alpha$ or
 not, according to whether $\alpha \in \Gamma$ or $\alpha \in \Phi$.
 %it is well-formed in the context $\emptyset;
 %\alpha$ or $\alpha;\emptyset$.
-For example, {\color{blue} if $\emptyset;\alpha \vdash \mathit{List}
-  \,\alpha$, then the type $\vdash \Nat^\alpha \onet\,
-  (\mathit{List}\,\alpha) : \T$ is well-formed; if $\alpha;\emptyset
-  \vdash \List \,\alpha$, then it is not}. If
-$\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta \times
-\gamma \times \beta$, then Definition~\ref{def:wftypes} also allows
-the derivation of, e.g., the type $\gamma; \emptyset \vdash
+For example, if $\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then
+the type $\vdash \Nat^\alpha \onet\, (\mathit{List}\,\alpha) : \T$ is
+well-formed; if $\alpha;\emptyset \vdash \List \,\alpha$, then it is
+not. If $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta
+\times \gamma \times \beta$, then Definition~\ref{def:wftypes} also
+allows the derivation of, e.g., the type $\gamma; \emptyset \vdash
 \Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\,
 \gamma)$ representing a natural transformation from lists to trees
 that is natural in $\alpha$ but not necessarily in $\gamma$. We
@@ -2140,19 +2140,17 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 %$\setsem{\Gamma; \Phi, \phi \vdash \tau}\rho$ $=
 %\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
 %    \psi]}\rho[\psi:=\rho\phi]$. 
-We can also prove by induction that our interpretations of types
-interact well with demotion of functorial variables and
-substitution. Indeed, we have that, for any $\rho,\rho'$ and
-$f: \rho \to \rho'$ in $\setenv$, {\color{blue} Do we ever use (5)
-  anywhere? Or explicitly refer to (6) - (9) in what's included in
-  this (proof-suppressed) paper?} 
+We can also prove by simultaneous induction that our interpretations
+of types interact well with demotion of functorial variables. Indeed,
+we have that, for any $\rho,\rho'$ and $f: \rho \to \rho'$ in
+$\setenv$, 
 \begin{gather}
 \label{thm:demotion-objects}
 \setsem{\Gamma; \Phi, \phi \vdash F} \rho = \setsem{\Gamma, \psi; \Phi
-  \vdash F[\phi :== \psi] } \rho{\color{blue}[\psi := \rho \phi]}\\
+  \vdash F[\phi :== \psi] } \rho[\psi := \rho \phi]\\
 \label{thm:demotion-morphisms}
 \setsem{\Gamma; \Phi, \phi \vdash F} f = \setsem{\Gamma, \psi; \Phi
-  \vdash F[\phi :== \psi]} f{\color{blue}[\psi \mapsto f\phi]}
+  \vdash F[\phi :== \psi]} f[\psi \mapsto f\phi]
 \end{gather}
 Moreover,
 %\begin{lemma}\label{lem:demotion-objects}
@@ -2994,7 +2992,7 @@ The proof is by induction on the structure of $\tau$. Only the
 application and fixpoint cases are non-routine. Both use
 Lemma~\ref{lem:eq-reln-equalities}. The latter also uses the
 observation that, for every $n \in \nat$, the following intermediate
-results can be proved by simultaneous induction {\color{blue} with
+results can be proved {\color{blue} by simultaneous induction with
   Theorem~\ref{thm:iel}}:
 %\begin{equation}\label{eq:iel-fix-point-intermediate1}
 $T^n_{\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
@@ -3334,11 +3332,13 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 
 \section{Interpreting Terms}\label{sec:term-interp}
 
-{\color{blue} Here, we are using angle bracket notation for both the
-  graph relation of a function and for the pairing of functions with
-  the same domain. This is justified by the relationship between the
-  two notions observed immediately after
-  Lemma~\ref{lem:graph-reln-functors}.}
+{\color{blue} Double use of brackets confusing? (Graphs and pairing
+  morphisms)} 
+%  Here, we are using angle bracket notation for both the
+%  graph relation of a function and for the pairing of functions with
+%  the same domain. This is justified by the relationship between the
+%  two notions observed immediately after
+%  Lemma~\ref{lem:graph-reln-functors}.}
 
 If $\Delta = x_1 : \tau_1,...,x_n : \tau_n$ is a term context for $\Gamma$
 and $\Phi$, then the interpretations $\setsem{\Gamma;\Phi \vdash \Delta}$ and
@@ -3704,7 +3704,6 @@ parametricity. Other specific instances include the three
 $\mathtt{map}$/$\mathtt{reverse}$ theorems from
 Section~\ref{sec:intro}. In our setting, the
 $\mathtt{map}$/$\mathtt{reverse}$ theorem for bushes, e.g., becomes
-{\color{blue} CHECK!}
 \begin{align*}
   &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
     \vdash ((\map_{\mathit{Bush}\,\alpha}^{{\sigma},
@@ -6128,7 +6127,7 @@ i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
 denotes the polymorphic identity function.
 
 \subsection{Standard Free Theorems for ADTs and Their Analogues for
-  Nested types}
+  Nested types}\label{sec:ft-adt}
 
 We can derive in our system even those free theorems for polymorphic
 functions over ADTs that are not consequences of naturality.  We can,
@@ -6154,7 +6153,7 @@ e.g., prove the free theorem for $\mathit{filter}$'s type as follows:
 If $g : A \to B$, $\rho : \relenv$, $\rho \alpha = (A, B, \graph{g})$,
 $(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, $(s \circ
 g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
-  \mathit{Bool}} \rho$, and
+  \mathit{Bool}} \rho$, and % for $s : A \to \mathit{Bool}$, and
 %$\alpha; \emptyset \,|\, \Delta \vdash t :
 %\filtype$, if
 $\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
@@ -6268,7 +6267,9 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 A similar proof establishes the analogous result for, say, generalized
 rose trees:
 \begin{thm} 
- If $g : A \to B$, $\eta : F \to G$ in $\set$, $\rho : \relenv$, $\rho \alpha =
+  If $g : A \to B$,
+$F, G : \set \to \set$,
+  $\eta : F \to G$ in $\set$, $\rho : \relenv$, $\rho \alpha =
  (A, B, \graph{g})$, $\rho \psi = (F, G, \graph{\eta})$, $(a, b) \in
  \relsem{\alpha, \psi ;\emptyset \vdash \Delta} \rho$, $(s \circ
  g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
@@ -6284,7 +6285,8 @@ for some $t$, then
 
 \subsection{Short Cut Fusion for Lists}\label{sec:short-cut}
 
-We can recover standard short cut fusion for lists in our system:
+We can recover standard short cut fusion for lists~\cite{glp93} in our
+system: 
 \begin{thm}
 If $\vdash \tau : \F$, $\vdash \tau' : \F$, and 
 %$\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
@@ -6385,8 +6387,8 @@ that $\textit{fold}_{1 + \tau \times \_}\, n\, c\; (G\;
 = G \,\setsem{\vdash \tau'}\, n\, c$.
 \end{proof}
 
-Using Equation~\ref{thm:demotion-objects} {\color{blue} CHECK!}, we
-can actually prove short cut fusion results for arbitrary ADTs.
+Using Equation~\ref{thm:demotion-objects} we can extend short
+cut fusion results to arbitrary ADTs, as in~\cite{joh02}.
 
 \begin{comment}
 \subsection{Short Cut Fusion for Arbitrary ADTs}\label{sec:short-cut-adt}
@@ -6534,8 +6536,9 @@ G\,\setsem{\vdash \tau'}\,B\]
 %``Most higher order type languages meant for human programmers eschew
 %fully impredicative polymorphism'' says Andy on p322.
 
-Short cut fusion can, in fact, be generalized from ADTs to nested
-types. Indeed, we have:
+Using our system we can, finally, formally prove correctness of the
+categorically inspired short cut fusion for nested types
+from~\cite{jg10}. Indeed, we have:
 \begin{thm}\label{thm:short-cut-nested}
 If $\emptyset;\phi,\alpha \vdash F : \F$, \,$\emptyset; \alpha
 \vdash K : \F$, \,
@@ -6687,6 +6690,9 @@ theorem whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu
 H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
+
+We don't need to verify exuistence of initial algebras (as is usual)
+since this is built into our system.
 
 We have forall-types but not all.
 
