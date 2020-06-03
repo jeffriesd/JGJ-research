@@ -6691,6 +6691,17 @@ H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
+Term-level fixpoints from Daniel: In order to interpret term-level
+fixpoints, we would need to add some sort of domain structure to the
+sets and relations which are currently being used to interpret types.
+With this added structure, we should be able to interpret recursive
+function definitions in the usual way (as least fixed points with
+respect to the domain structure).  An obvious way to add this
+structure might be to replace Set with the category of omega-CPOs in
+our model, but this category is not locally finitely presentable as is
+required.
+
+
 We don't need to verify exuistence of initial algebras (as is usual)
 since this is built into our system.
 
