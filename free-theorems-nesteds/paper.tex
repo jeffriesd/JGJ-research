@@ -810,35 +810,44 @@ $\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
 for second-order types is defined below, where we adopt a similar
 notational convention for vectors of types.
 
+
 \begin{dfn}\label{def:second-order-subst}
+{\color{blue} Def 4 changed again; not correct to substitute along
+  non-functorial variables.}
   If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
-  \vdash F : \F$, and if\, $\Gamma, \ol\beta;\Phi, \ol{\alpha} \vdash
-  H : \F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
-  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol\beta,\ol{\alpha}}
+  \vdash F : \F$, and if\, $\Gamma;\Phi, \ol{\alpha} \vdash
+  H : \F$ with $|\ol\alpha| = k$, then $\Gamma \setminus
+  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol{\alpha}}
     H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
     second-order type substitution} is defined by:
+%  If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
+%  \vdash F : \F$, and if\, $\Gamma, \ol \beta;\Phi, \ol{\alpha} \vdash
+%  H : \F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
+%  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol\beta,\ol{\alpha}}
+%    H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
+%    second-order type substitution} is defined by:
 \[\begin{array}{lll}
-(\Nat^{\ol\gamma} G \,K)[\phi :=_{\ol\beta,\ol{\alpha}} H]
-& = & \Nat^{\ol\gamma}\, (G[\phi :=_{\ol\beta,\ol{\alpha}} H]) \,(K[\phi
-  :=_{\ol\beta,\ol{\alpha}} H]) \\
-\onet[\phi :=_{\ol\beta,\ol{\alpha}} H] & = & \onet\\[0.5ex]
-\zerot[\phi :=_{\ol\beta,\ol{\alpha}} H] & = & \zerot\\[0.25ex]
-(\psi\ol{\sigma}\ol{\tau})[\phi :=_{\ol\beta,\ol{\alpha}} H] & = &
+(\Nat^{\ol\gamma} G \,K)[\phi :=_{\ol{\alpha}} H]
+& = & \Nat^{\ol\gamma}\, (G[\phi :=_{\ol{\alpha}} H]) \,(K[\phi
+  :=_{\ol{\alpha}} H]) \\
+\onet[\phi :=_{\ol{\alpha}} H] & = & \onet\\[0.5ex]
+\zerot[\phi :=_{\ol{\alpha}} H] & = & \zerot\\[0.25ex]
+(\psi\ol{\tau})[\phi :=_{\ol{\alpha}} H] & = &
 \left\{\begin{array}{ll}
-\psi \,\ol{\tau[\phi :=_{\ol\beta,\ol{\alpha}} H]} & \mbox{if } \psi \not = \phi\\
-  H[\ol{\alpha  := \tau[\phi :=_{\ol\beta,\ol{\alpha}} H]}] 
-  [\ol{\beta := \sigma[\phi :=_{\ol\beta,\ol{\alpha}} H]}]
+\psi \,\ol{\tau[\phi :=_{\ol{\alpha}} H]} & \mbox{if } \psi \not = \phi\\
+  H[\ol{\alpha  := \tau[\phi :=_{\ol{\alpha}} H]}] 
+%  [\ol{\beta := \sigma[\phi :=_{\ol\beta,\ol{\alpha}} H]}]
   & \mbox{if } \psi = \phi
 \end{array}\right.\\
 \\[-0.25ex]
-(\sigma + \tau)[\phi :=_{\ol\beta,\ol{\alpha}} H] & = & \sigma[\phi
-  :=_{\ol\beta,\ol{\alpha}} H] + \tau[\phi :=_{\ol\beta,\ol{\alpha}} H]\\[0.5ex] 
-(\sigma \times \tau)[\phi :=_{\ol\beta,\ol{\alpha}} H] & = &
-\sigma[\phi :=_{\ol\beta,\ol{\alpha}} H] \times \tau[\phi
-  :=_{\ol\beta,\ol{\alpha}} H]\\[0.5ex]   
-((\mu \psi. \lambda \ol{\gamma}.\, G)\ol{\tau})[\phi :=_{\ol\beta,\ol{\alpha}}
-  H] & = & (\mu \psi. \lambda \ol{\gamma}. \,G[\phi :=_{\ol\beta,\ol{\alpha}}
-  H])\, \ol{\tau[\phi :=_{\ol\beta,\ol{\alpha}} H]}
+(\sigma + \tau)[\phi :=_{\ol{\alpha}} H] & = & \sigma[\phi
+  :=_{\ol{\alpha}} H] + \tau[\phi :=_{\ol{\alpha}} H]\\[0.5ex] 
+(\sigma \times \tau)[\phi :=_{\ol{\alpha}} H] & = &
+\sigma[\phi :=_{\ol{\alpha}} H] \times \tau[\phi
+  :=_{\ol{\alpha}} H]\\[0.5ex]   
+((\mu \psi. \lambda \ol{\gamma}.\, G)\ol{\tau})[\phi :=_{\ol{\alpha}}
+  H] & = & (\mu \psi. \lambda \ol{\gamma}. \,G[\phi :=_{\ol{\alpha}}
+  H])\, \ol{\tau[\phi :=_{\ol{\alpha}} H]}
 \end{array}\]
 \end{dfn}
 \noindent
