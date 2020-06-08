@@ -811,16 +811,19 @@ for second-order types is defined below, where we adopt a similar
 notational convention for vectors of types. We note that it is not
 correct to substitute along non-functorial variables.
 
-
 \begin{dfn}\label{def:second-order-subst}
 If \,$\Gamma; \Phi,\phi^k \vdash F : \F$ with $k \geq 1$, and if\,
 $\Gamma;\Phi, \ol{\alpha} \vdash H : \F$ with $|\ol\alpha| = k$, then
-$\Gamma;\Phi \vdash F[\phi :=_{\ol{\alpha}} H] : \F$, {\color{blue}
-  Similarly, if \,$\Gamma, \phi^k; \emptyset \vdash F : \T$ with $k
-  \geq 1$, and if\, $\Gamma; \Phi,\ol{\alpha} \vdash H : \F$ with
-  $|\ol\alpha| = k$, then $\Gamma,\Phi;\emptyset \vdash F[\phi
-    :=_{\ol{\alpha}} H] : \T$.} Here, the operation $(\cdot)[\phi :=
-  H]$ of {\em second-order type substitution} is defined by:
+$\Gamma;\Phi \vdash F[\phi :=_{\ol{\alpha}} H] : \F$. {\color{blue}
+  Similarly, if \,$\Gamma, \phi^k; \Phi \vdash F : \F$ with $k \geq
+  1$, and if\, $\Gamma; \Psi,\ol{\alpha} \vdash H : \F$ with
+  $|\ol\alpha| = k$ and $\Phi \cap \Psi = \emptyset$, then
+  $\Gamma,\Psi;\Phi \vdash F[\phi :=_{\ol{\alpha}} H] : \F$, and if
+  \,$\Gamma, \phi^k; \emptyset \vdash F : \T$ with $k \geq 1$, and
+  if\, $\Gamma; \Phi,\ol{\alpha} \vdash H : \F$ with $|\ol\alpha| =
+  k$, then $\Gamma,\Phi;\emptyset \vdash F[\phi :=_{\ol{\alpha}} H] :
+  \T$.}  Here, the operation $(\cdot)[\phi := H]$ of {\em second-order
+  type substitution} is defined by:
 %\[\begin{array}{lll}
 %\tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
 %\onet[\phi := H] & = & \onet\\[0.5ex]
@@ -2654,16 +2657,16 @@ hypothesis and weakening.
 \section{The Identity Extension Lemma}\label{sec:iel}
 
 In most treatments of parametricity, equality relations on sets are
-given --- either directly as diagonal relations, or perhaps via
-reflexive graphs if kinds are also being tracked --- and the graph
-relations used to validate existence of initial algebras are defined
-in terms of them. We take a different approach here, giving a
+taken as {\em given} --- either directly as diagonal relations, or
+perhaps via reflexive graphs if kinds are also being tracked --- and
+the graph relations used to validate existence of initial algebras are
+defined in terms of them. We take a different approach here, giving a
 categorical definition of graph relations for morphisms (i.e., natural
-transformations) between functors and define equality relations as
-particular graph relations. Our definitions specialize to the usual
-ones for the graph relation for a morphism between sets and the
-equality relation for a set. In light of its novelty, we spell out our
-construction in detail.
+transformations) between functors and {\em constructing} equality
+relations as particular graph relations. Our definitions specialize to
+the usual ones for the graph relation for a morphism between sets and
+the equality relation for a set. In light of its novelty, we spell out
+our construction in detail.
 
 The standard definition of the graph for a morphism $f : A \to B$ in
 $\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
