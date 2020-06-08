@@ -808,18 +808,37 @@ $\tau$, and $\tau[\alpha_1 := \tau_1,...,\alpha_k := \tau_k]$, or
 $\tau[\ol{\alpha := \tau}]$ when convenient, for $\tau[\alpha_1 :=
   \tau_1][\alpha_2 := \tau_2,...,\alpha_k := \tau_k]$. Substitution
 for second-order types is defined below, where we adopt a similar
-notational convention for vectors of types.
+notational convention for vectors of types. We note that it is not
+correct to substitute along non-functorial variables.
 
 
 \begin{dfn}\label{def:second-order-subst}
-{\color{blue} Def 4 changed again; not correct to substitute along
-  non-functorial variables.}
-  If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
-  \vdash F : \F$, and if\, $\Gamma;\Phi, \ol{\alpha} \vdash
-  H : \F$ with $|\ol\alpha| = k$, then $\Gamma \setminus
-  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol{\alpha}}
-    H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
-    second-order type substitution} is defined by:
+If \,$\Gamma; \Phi,\phi^k \vdash F : \F$ with $k \geq 1$, and if\,
+$\Gamma;\Phi, \ol{\alpha} \vdash H : \F$ with $|\ol\alpha| = k$, then
+$\Gamma;\Phi \vdash F[\phi :=_{\ol{\alpha}} H] : \F$, {\color{blue}
+  Similarly, if \,$\Gamma, \phi^k; \emptyset \vdash F : \T$ with $k
+  \geq 1$, and if\, $\Gamma; \Phi,\ol{\alpha} \vdash H : \F$ with
+  $|\ol\alpha| = k$, then $\Gamma,\Phi;\emptyset \vdash F[\phi
+    :=_{\ol{\alpha}} H] : \T$.} Here, the operation $(\cdot)[\phi :=
+  H]$ of {\em second-order type substitution} is defined by:
+%\[\begin{array}{lll}
+%\tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
+%\onet[\phi := H] & = & \onet\\[0.5ex]
+%\zerot[\phi := H] & = & \zerot\\[0.25ex]
+%(\psi \ol{\tau})[\phi := H] & = &
+%\left\{\begin{array}{ll}
+%\psi \,\ol{\tau[\phi := H]} & \mbox{if } \psi \not = \phi\\
+%H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
+%\end{array}\right.\\
+%\\[-0.25ex]
+%(\sigma + \tau)[\phi := H] & = & \sigma[\phi := H]
+%+ \tau[\phi := H]\\[0.5ex] 
+%(\sigma \times \tau)[\phi := H] & = & \sigma[\phi := H] \times \tau[\phi
+%  := H]\\[0.5ex]  
+%((\mu \psi. \lambda \ol{\beta}.\, G)\ol{\tau}[\phi :=
+%  H] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=
+%  H])\, \ol{\tau[\phi := H]}
+%\end{array}\]
 %  If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
 %  \vdash F : \F$, and if\, $\Gamma, \ol \beta;\Phi, \ol{\alpha} \vdash
 %  H : \F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
@@ -827,9 +846,11 @@ notational convention for vectors of types.
 %    H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
 %    second-order type substitution} is defined by:
 \[\begin{array}{lll}
-(\Nat^{\ol\gamma} G \,K)[\phi :=_{\ol{\alpha}} H]
-& = & \Nat^{\ol\gamma}\, (G[\phi :=_{\ol{\alpha}} H]) \,(K[\phi
-  :=_{\ol{\alpha}} H]) \\
+%\tau[\phi :=_{\ol\alpha} H] & = & \tau \mbox{ if } \tau \in \T
+%    {\color{red} superceded below??????}\\[0.5ex]
+{\color{blue} (\Nat^{\ol\beta} G \,K)[\phi :=_{\ol{\alpha}} H]}
+& = & {\color{blue} \Nat^{\ol\beta}\, (G[\phi :=_{\ol{\alpha}} H]) \,(K[\phi
+  :=_{\ol{\alpha}} H])}\\
 \onet[\phi :=_{\ol{\alpha}} H] & = & \onet\\[0.5ex]
 \zerot[\phi :=_{\ol{\alpha}} H] & = & \zerot\\[0.25ex]
 (\psi\ol{\tau})[\phi :=_{\ol{\alpha}} H] & = &
@@ -845,8 +866,8 @@ notational convention for vectors of types.
 (\sigma \times \tau)[\phi :=_{\ol{\alpha}} H] & = &
 \sigma[\phi :=_{\ol{\alpha}} H] \times \tau[\phi
   :=_{\ol{\alpha}} H]\\[0.5ex]   
-((\mu \psi. \lambda \ol{\gamma}.\, G)\ol{\tau})[\phi :=_{\ol{\alpha}}
-  H] & = & (\mu \psi. \lambda \ol{\gamma}. \,G[\phi :=_{\ol{\alpha}}
+((\mu \psi. \lambda \ol{\beta}.\, G)\ol{\tau})[\phi :=_{\ol{\alpha}}
+  H] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=_{\ol{\alpha}}
   H])\, \ol{\tau[\phi :=_{\ol{\alpha}} H]}
 \end{array}\]
 \end{dfn}
