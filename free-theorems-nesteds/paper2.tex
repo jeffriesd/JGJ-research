@@ -177,7 +177,34 @@
 \begin{document}
 
 \begin{abstract}
-Abstract goes here
+This paper considers parametricity and its consequent free theorems
+for nested data types.  Rather than representing nested types via
+their Church encodings into a higher-kinded extension of System F, we
+adopt a functional programming perspective and design a polymorphic
+calculus that provides primitives for constructing a robust class of
+nested types, including ADTs and all (truly) nested types appearing in
+the literature, directly as fixpoints \`{a} la Pitts' PolyPCF.  At the
+term level, our calculus supports the usual pattern matching, map
+functions, and stylized recursion via folds for all such types. Using
+a variation on Atkey's 2012 construction
+%of a parametric model
+for $F_\omega$,
+%that explicitly constructs equality operators rather than merely
+%postulating them,
+we construct a parametric model for our calculus. However, to ensure
+the existence of the fixpoints interpreting nested types, cocontinuity
+conditions on the functors underlying these fixpoints must be threaded
+throughout our model construction. This turns out to be both delicate
+and challenging. Overall, this paper offers a blueprint for
+constructing parametric models for practical programming languages,
+such as Haskell and Agda, that directly construct nested types as
+fixpoints rather than encoding them. It also shows how parametric
+models can be used to derive useful free theorems for programs over
+nested types. Like their counterparts for ADTs, the free theorems our
+model derives provide, in particular, a principled alternative to
+proving properties of programs over nested types using, e.g., the deep
+induction rules for nested types recently developed by Johann and
+Polonsky. This is illustrated with several examples.
 \end{abstract}
 
 %\begin{CCSXML}
@@ -213,6 +240,9 @@ Suppose we wanted to prove some property of programs over an algebraic
 data type (ADT) such as that of lists, coded in Agda
 %\footnote{All code appearing in this paper are written in Agda.}
 as
+
+\vspace*{-0.15in}
+
 {\small
 \[\begin{array}{l}
 \mathtt{data\; List \;(A : Set)\;:\;Set\;where}\\
@@ -323,11 +353,35 @@ that such a property should indeed hold for perfect trees, and,
 drawing inspiration from the situation for ADTs, we easily construct a
 proof by induction on the input perfect tree. To formally establish
 this result, we could even prove it in Coq or Agda: each of these
-provers actually generates an induction rule for perfect trees and the
-generated rule gives the expected result because proving properties of
-perfect trees requires only that we induct over the top-level perfect
-tree in the recursive position, leaving any data internal to the input
-tree untouched.
+provers actually generates an induction rule for perfect trees, and
+the rule it generats gives the expected result because proving
+properties of perfect trees requires only that we induct over the
+top-level perfect tree in the recursive position, leaving any data
+internal to the input tree untouched.
+
+%want to prove that $\mathtt{reversePTree}$ commutes with
+%$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
+%$\mathtt{mapBush}$. It is not hard to convince oneself of the former:
+%a few well-chosen examples show clearly why mapping a polymorphic
+%%function over a perfect tree and then reversing the data at the leaves
+%of the resulting perfect tree is indeed the same result as mapping
+%that same function over the result of reversing the data at the leaves
+%of the original perfect tree.
+
+Unfortunately, it is nowhere near as clear that analogous intuitive or
+formal inductive arguments can be made for the
+$\mathtt{map}$-$\mathtt{reverse}$ property for bushes. Indeed, a proof
+by induction on the input bush must recursively induct over the bushes
+that are internal to the top-level bush in the recursive position.
+This is sufficiently delicate that no induction rule for bushes or
+other truly nested types was known until very recently, when {\em deep
+  induction}~\cite{jp20} was developed as a way to induct over {\em
+  all} of the structured data present in an input. Deep induction thus
+not only gave the first principled and practically useful structural
+induction rules for bushes and other truly nested types, and has also
+opened the way for incorporating automatic generation of such rules
+for (truly) nested data types --- and, eventually, even GADTs --- into
+modern proof assistants.
 \begin{figure*}
 \hspace*{-0.5in}
 \resizebox{0.35\linewidth}{!}{
@@ -397,29 +451,8 @@ tree untouched.
   functions in Agda}\label{fig:funs2} 
 \end{minipage}}
 \end{figure*}
-%want to prove that $\mathtt{reversePTree}$ commutes with
-%$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
-%$\mathtt{mapBush}$. It is not hard to convince oneself of the former:
-%a few well-chosen examples show clearly why mapping a polymorphic
-%%function over a perfect tree and then reversing the data at the leaves
-%of the resulting perfect tree is indeed the same result as mapping
-%that same function over the result of reversing the data at the leaves
-%of the original perfect tree.
 
-Unfortunately, it is nowhere near as clear that analogous intuitive or
-formal inductive arguments can be made for the
-$\mathtt{map}$-$\mathtt{reverse}$ property for bushes. Indeed, a proof
-by induction on the input bush must recursively induct over the bushes
-that are internal to the top-level bush in the recursive position.
-This is sufficiently delicate that no induction rule for bushes or
-other truly nested types was known until very recently, when {\em deep
-  induction}~\cite{jp20} was developed as a way to induct over {\em
-  all} of the structured data present in an input. Deep induction thus
-not only gave the first principled and practically useful structural
-induction rules for bushes and other truly nested types, and has also
-opened the way for incorporating automatic generation of such rules
-for (truly) nested data types --- and, eventually, even GADTs --- into
-modern proof assistants.
+\vspace*{-0.2in}
 
 Of course it is great to know that we {\em can}, at last, prove
 properties of programs over (truly) nested types by induction.  But
@@ -485,27 +518,25 @@ the data type and the polymorphic function at hand, and has each of
 the above $\mathtt{map}$-$\mathtt{reverse}$ theorems as instances. The
 relationship between naturality and parametricity has long been of
 interest, and our inclusion of a primitive type of natural
-transformations makes it possible to clearly delineate those free
-theorems that are consequences of naturality, and thus would hold even
-in non-parametric models of polymorphic calculi, from those that use
-the full power of parametricity to go beyond naturality. In
-Section~\ref{sec:thms} we prove that our model satisfies an
-Abstraction Theorem (Theorem~\ref{thm:abstraction}), and we derive
-several of this latter kind of free theorem from it in
+transformations allows us to clearly delineate those free theorems
+that are consequences of naturality, and thus hold even in
+non-parametric models, from those that require the full power of
+parametricity. In Section~\ref{sec:thms} we prove that our model
+satisfies an Abstraction Theorem (Theorem~\ref{thm:abstraction}), and
+we derive several of this latter kind of free theorem from it in
 Section~\ref{sec:ftnt}. Specifically, we state and prove
 (non-)inhabitation results in Sections~\ref{sec:bottom}
 and~\ref{sec:identity}, a free theorem for the type of a filter
 function on generalized rose trees in Section~\ref{sec:ft-adt}, the
 correctness of short cut fusion for lists in
-Section~\ref{sec:short-cut}, and its generaliation to nested types in
+Section~\ref{sec:short-cut}, and its generalization to nested types in
 Section~\ref{sec:short-cut-nested}.
 
 There is a long line of work on categorical models of parametricity
-for System F; see, for
-example,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}.
-{\color{blue} To our knowledge, all categorical models that treat
-  (algebraic) data types do so via their Church encodings}, verifying
-in the
+for System F; see,
+e.g.,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}.  To our
+knowledge, all categorical models that treat (algebraic) data types do
+so via their Church encodings, verifying in the
 %Much of this work does ultimately extend parametricity to data types
 %that are modeled as fixpoints of first-order functors, but to our
 %knowledge this has never been done by building the data types directly
@@ -523,9 +554,9 @@ constructor from which its Church encoding was constructed.
 %described above.
 The present paper draws on this rich tradition of categorical models
 of parametricity for System F, but treats nested types as well as
-ADTs, and {\color{blue} is the first to} treat data types by direct
-construction via primitives rather than by Church encodings. This
-requires that we modify the type calculus to ensure that
+ADTs, and is the first to treat these types by direct construction via
+primitives rather than by Church encodings. This requires that we
+modify the type calculus to ensure that
 %System F's full impredicative polymorphism interacts reasonably with
 %functoriality,
 functoriality is guaranteed syntactically, and that functoriality is
@@ -536,29 +567,31 @@ the fixpoints by which nested types are to be interpreted is ensured.
 %impredicative polymorphism does not interfere with the functoriality
 %needed to support primitive nested types.
 
-Like us, Pitts~\cite{pit98,pit00} extends parametricity from pure
-System F to System F augmented with primitives for constructing data
-types directly. Only list types are added in~\cite{pit00}, but other
-polynomial ADTs are easily included as in~\cite{pit98}. Part of Pitts'
-motivation is to show that ADTs and their Church encodings have the
-same operational behavior in his system. We cannot even ask this
-question about our system, which cannot express Church encodings of
-even simple ADTs such as list, or pair, or sum types, since these are
-not functorial; nevertheless, we do prove the correctness of short cut
-fusion for nested types, whose operational analogue is the means by
-which Pitts proves his equivalence result. It would be particularly
-interesting to know what operational analogues of functoriality and
-cocontinuity are needed to extend Pitts' parametricity results from a
-calculus with primitives for constructing data types modeled as
-fixpoints of first-order functors to one that also provides such
-primitives for data types modeled as fixpoints of higher-order
-functors.
+Like our calculus, Pitts' PolyPCF~\cite{pit98,pit00}
+%extends parametricity from pure System F to System F augmented with
+%to a calculus that
+includes primitives for constructing data types directly. Only list
+types are added in~\cite{pit00}, but other polynomial ADTs are easily
+included as in~\cite{pit98}. Part of Pitts' motivation is to show that
+ADTs and their Church encodings have the same operational behavior in
+his calculus. We cannot even ask this question about our calculus,
+which cannot express Church encodings of even simple ADTs such as
+list, or pair, or sum types, since these are not functorial;
+nevertheless, we do prove the correctness of short cut fusion for
+nested types, whose operational analogue is valid in the parametric
+model Pitts constructs and is the means by which he proves his
+equivalence result. It would be interesting to know what operational
+analogues of functoriality and cocontinuity are needed to extend
+Pitts' parametricity results from a calculus with primitives for
+constructing data types modeled as fixpoints of first-order functors
+to one that also provides such primitives for data types modeled as
+fixpoints of higher-order functors.
 
 We are not the first to consider parametricity at higher
 kinds. Atkey~\cite{atk12} constructs a parametric model for full
-System F$\omega$, but within the impredicative Calculus of Inductive
-Constructions (iCIC) rather than in a semantic category.  Atkey's
-construction is similar to ours in some ways, but he represents data
+System $F_\omega$, but within the impredicative Calculus of Inductive
+Constructions (iCIC) rather than in a semantic category. His
+construction is in some ways similar to ours, but it represents data
 types using Church encodings rather than constructing them via
 primitives. Since his model is entirely syntactic, his syntactic
 ``functors'', whose associated $\mathit{fmap}$ functions representing
@@ -567,12 +600,12 @@ underlying type constructors, cannot be interpreted as semantic
 functors. The associated Church encodings therefore cannot be
 interpreted as their fixpoints, so Atkey need not, and does not,
 impose cocontinuity conditions on his model to ensure that these
-fixpoints exist. Nevertheless, he does verify the existence of initial
-algebras for his ``functors'' in iCIC. Atkey does not indicate which
+fixpoints exist.  Nevertheless, Atkey does verify the existence of
+initial algebras for ``functors'' in iCIC. He does not indicate which
 type constructors support the kinds of $\mathit{fmap}$ functions
-needed to turn them into ``functors'', but we suspect spelling this
+needed to ensure they are ``functors'', but we suspect spelling this
 out explicitly would result in a full higher-kinded extension of the
-calculus like the one presented here.
+calculus presented here.
 
 \section{The Calculus}\label{sec:calculus}
 
@@ -598,19 +631,12 @@ variables we write $\Pos, \overline{\phi}$ for $\Pos\, \cup
 \overline{\phi}$ when $\Pos\, \cap \overline{\phi} = \emptyset$.  We
 omit the vector notation for a singleton set, thus writing $\phi$,
 instead of $\overline{\phi}$, for $\{\phi\}$.
-
 \begin{dfn}
-Let $V$ be a finite subset of\, $\tvars$, let $\Pos$ be a finite
-subset of\, $\fvars$, let $\overline{\alpha}$ be a finite subset of\,
-$\fvars^0$ disjoint from $\Pos$, and let $\phi^k \in \fvars^k
+Let $V$ be a finite subset of\, $\tvars$, $\Pos$ be a finite
+subset of\, $\fvars$, $\overline{\alpha}$ be a finite subset of\,
+$\fvars^0$ disjoint from $\Pos$, and $\phi^k \in \fvars^k
 \setminus \Pos$.  The set $\mcF^\Pos(V)$ of {\em functorial
   expressions} over $\Pos$ and $V$ are given by
-%\[\T(V) \; ::= \; V \mid 
-%   \Nat^{\ol{\alpha}} \, \mcF^{\overline{\alpha}}(V) \;
-%   \mcF^{\ol{\alpha}}(V) \mid V \ol{\T(V)}
-%\]
-%\noindent
-%and 
 \begin{align*}
   \mcF^\Pos(V) \; ::= \; %\T(V)
   &\mid
@@ -619,9 +645,9 @@ $\fvars^0$ disjoint from $\Pos$, and let $\phi^k \in \fvars^k
 \mcF^{P,\ol{\alpha}}(V) %\mid V \ol{\T(V)}
 \mid \Pos\; \ol{\mcF^\Pos(V)}  \,
 \mid V\, \ol{\mcF^\Pos(V)}  
-\mid \mcF^{\Pos}(V) + \mcF^\Pos(V)
-\mid \mcF^{\Pos}(V) \times \mcF^\Pos(V)\\
-&\mid \left(\mu \phi^{~k}. \lambda \alpha_1...\alpha_k. 
+\mid \mcF^{\Pos}(V) + \mcF^\Pos(V)\\
+&\mid \mcF^{\Pos}(V) \times \mcF^\Pos(V) \mid \left(\mu
+\phi^{~k}. \lambda \alpha_1...\alpha_k.  
 \mcF^{\Pos,\alpha_1,...,\alpha_k,\phi}(V)\right)
   \ol{\mcF^{\Pos}(V)}
 \end{align*}
@@ -652,44 +678,14 @@ $\Phi$ of functorial variables. In Definition~\ref{def:wftypes}, a
 judgment of the form $\Gamma;\Phi \vdash \tau$ indicates that the
 type $\tau$ is intended to be functorial in the variables in $\Phi$
 but not necessarily in those in $\Gamma$.
-
 \begin{dfn}\label{def:wftypes}
-%The formation rules for the set $\T \subseteq \bigcup_{V \subseteq
-%  \tvars}\T(V)$ of\, {\em well-formed type constructor expressions}
-%are
-%\[\begin{array}{cc}
-%\AXC{$\phantom{\Gamma;\Phi}$}
-%\UIC{$\Gamma,\alpha^0;\emptyset \vdash \alpha^0 : \T$}
-%\DisplayProof
-%\\
-%\\
-%\AXC{$\Gamma;\ol{\alpha^0} \vdash \sigma :
-%  \mcF$}
-%\AXC{$\Gamma;\ol{\alpha^0}  \vdash \tau : \mcF$}
-%\BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha^0}}\sigma \,\tau : \T$}
-%\DisplayProof
-%\end{array}\]
-%
-%\vspace*{0.1in}
-%
-%\noindent
 The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
   \tvars, \Pos\, \subseteq \fvars}\F^\Pos(V)$ of\, {\em well-formed
-  %  functorial
   type expressions} are
-%\vspace*{-0.2in}
+
+\vspace*{-0.2in}
+
 \[\begin{array}{cc}
-%\AXC{$\Gamma;\emptyset \vdash \tau : \T$}
-%\UIC{$\Gamma; \emptyset \vdash \tau : \F$}
-%\DisplayProof
-%\AXC{$\phantom{\Gamma;\Phi}$}
-%\UIC{$\Gamma, \alpha^0; \Phi \vdash \alpha^0$}
-%\DisplayProof
-%&
-%\AXC{$\phantom{\Gamma;\Phi}$}
-%\UIC{$\Gamma;\Phi, \alpha^0 \vdash \alpha^0$}
-%\DisplayProof
-%&
 \AXC{\phantom{$\Gamma,\Phi$}}
 \UIC{$\Gamma;\Phi \vdash \zerot$}
 \DisplayProof
@@ -698,9 +694,6 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \UIC{$\Gamma;\Phi \vdash \onet$}
 \DisplayProof
 \end{array}\]
-
-%\vspace*{-0.13in}
-
 \[\begin{array}{c}
 \AXC{$\Gamma;\ol{\alpha^0} \vdash \sigma$}
 \AXC{$\Gamma;\Phi,\ol{\alpha^0}  \vdash \tau$}
@@ -718,7 +711,8 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 \end{array}\]
 
-%\vspace*{-0.1in}
+
+\vspace*{0.08in}
 
 \[\begin{array}{cc}
 \AXC{$\Gamma;\Phi \vdash \sigma$}
@@ -736,22 +730,21 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 %either a well-formed type constructor expression or a
 %well-formed functorial expression.
 \end{dfn}
-
 If $\tau$ is a closed type we may write $\vdash \tau$, rather than
 $\emptyset;\emptyset \vdash \tau$, for the judgment that it is
 well-formed.  Definition~\ref{def:wftypes} ensures that the expected
-weakening rules for well-formed types hold --- although weakening does
+weakening rules for well-formed types hold, although weakening does
 not change the contexts in which $\Nat$-types can be formed. If
 $\Gamma;\emptyset \vdash \sigma$ and $\Gamma;\emptyset \vdash \tau$,
 then our rules allow formation of the type $\Gamma;\emptyset \vdash
-\Nat^\emptyset\sigma \,\tau$. Since a type $\Gamma; \emptyset \vdash
+\Nat^\emptyset\sigma \,\tau$. Since $\Gamma; \emptyset \vdash
 \Nat^{\ol \alpha}\sigma\,\tau$ represents a natural transformation in
 $\ol \alpha$ from $\sigma$ to $\tau$, the type $\Gamma;\emptyset
-\vdash \Nat^\emptyset\sigma \,\tau$ represents the standard arrow type
-$\Gamma \vdash \sigma \to \tau$ in our calculus. We similarly
-represent a standard $\forall$-type $\Gamma; \emptyset \vdash \forall
-\ol\alpha . \tau$ as $\Gamma; \emptyset \vdash \Nat^{\ol\alpha}
-\,\onet \,\tau$ in our calculus.
+\vdash \Nat^\emptyset\sigma \,\tau$ represents the arrow type
+$\Gamma \vdash \sigma \to \tau$ in our calculus. Our calculus
+similarly represents the $\forall$-type $\Gamma; \emptyset
+\vdash \forall \ol\alpha . \tau$ as $\Gamma; \emptyset \vdash
+\Nat^{\ol\alpha} \,\onet \,\tau$.
 %However, if $\ol\alpha$ is non-empty then $\tau$ cannot be of the
 %form $\Nat^{\ol\beta} H \, K$ since $\Gamma; \ol\alpha \vdash
 %\Nat^{\ol\beta} H \, K$ is not a valid type judgment in our calculus
@@ -759,9 +752,6 @@ represent a standard $\forall$-type $\Gamma; \emptyset \vdash \forall
 
 Definition~\ref{def:wftypes} allows the formation of all of the
 (closed) nested types from the introduction:
-
-\pagebreak
-
 \[\begin{array}{lll}
 \mathit{List}\, \alpha & = & \mu \beta. \,\onet + \alpha \times
 \beta\; = \; (\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
@@ -835,52 +825,20 @@ $\Gamma;\Phi \vdash F[\phi :=_{\ol{\alpha}} H]$.  Similarly, if
 \,$\Gamma, \phi^k; \Phi \vdash F$ with $k \geq 1$, and if\, $\Gamma;
 \Psi,\ol{\alpha} \vdash H$ with $|\ol\alpha| = k$ and $\Phi \cap \Psi
 = \emptyset$, then $\Gamma,\Psi;\Phi \vdash F[\phi :=_{\ol{\alpha}}
-  H]$.
-%, and if \,$\Gamma, \phi^k; \emptyset \vdash F$ with $k \geq 1$,
-%and if\, $\Gamma; \Phi,\ol{\alpha} \vdash H$ with $|\ol\alpha| = k$,
-%then $\Gamma,\Phi;\emptyset \vdash F[\phi :=_{\ol{\alpha}} H]$.
-Here, the operation $(\cdot)[\phi := H]$ of {\em second-order type
-  substitution} is defined by:
-%\[\begin{array}{lll}
-%\tau[\phi := H] & = & \tau \mbox{ if } \tau \in \T\\[0.5ex] 
-%\onet[\phi := H] & = & \onet\\[0.5ex]
-%\zerot[\phi := H] & = & \zerot\\[0.25ex]
-%(\psi \ol{\tau})[\phi := H] & = &
-%\left\{\begin{array}{ll}
-%\psi \,\ol{\tau[\phi := H]} & \mbox{if } \psi \not = \phi\\
-%H[\ol{\alpha := \tau[\phi := H]}] & \mbox{if } \psi = \phi
-%\end{array}\right.\\
-%\\[-0.25ex]
-%(\sigma + \tau)[\phi := H] & = & \sigma[\phi := H]
-%+ \tau[\phi := H]\\[0.5ex] 
-%(\sigma \times \tau)[\phi := H] & = & \sigma[\phi := H] \times \tau[\phi
-%  := H]\\[0.5ex]  
-%((\mu \psi. \lambda \ol{\beta}.\, G)\ol{\tau}[\phi :=
-%  H] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=
-%  H])\, \ol{\tau[\phi := H]}
-%\end{array}\]
-%  If $\phi^k \in \Gamma \cup \Phi$ with $k \geq 1$, if \,$\Gamma; \Phi
-%  \vdash F : \F$, and if\, $\Gamma, \ol \beta;\Phi, \ol{\alpha} \vdash
-%  H : \F$ with $|\ol\alpha| + |\ol\beta| = k$, then $\Gamma \setminus
-%  \phi^k;\Phi \setminus \phi^k\vdash F[\phi :=_{\ol\beta,\ol{\alpha}}
-%    H] : \F$, where the operation $(\cdot)[\phi := H]$ of {\em
-%    second-order type substitution} is defined by:
+  H]$. Here, the operation $(\cdot)[\phi := H]$ of {\em second-order
+  type substitution} is defined by:
 \[\begin{array}{lll}
-%\tau[\phi :=_{\ol\alpha} H] & = & \tau \mbox{ if } \tau \in \T
-%    {\color{red} superceded below??????}\\[0.5ex]
+\zerot[\phi :=_{\ol{\alpha}} H] & = & \zerot\\[0.5ex]
+\onet[\phi :=_{\ol{\alpha}} H] & = & \onet\\[0.25ex]
 (\Nat^{\ol\beta} G \,K)[\phi :=_{\ol{\alpha}} H]
 & = & \Nat^{\ol\beta}\, (G[\phi :=_{\ol{\alpha}} H]) \,(K[\phi
   :=_{\ol{\alpha}} H])\\
-\onet[\phi :=_{\ol{\alpha}} H] & = & \onet\\[0.5ex]
-\zerot[\phi :=_{\ol{\alpha}} H] & = & \zerot\\[0.25ex]
 (\psi\ol{\tau})[\phi :=_{\ol{\alpha}} H] & = &
 \left\{\begin{array}{ll}
 \psi \,\ol{\tau[\phi :=_{\ol{\alpha}} H]} & \mbox{if } \psi \not = \phi\\
   H[\ol{\alpha  := \tau[\phi :=_{\ol{\alpha}} H]}] 
-%  [\ol{\beta := \sigma[\phi :=_{\ol\beta,\ol{\alpha}} H]}]
   & \mbox{if } \psi = \phi
-\end{array}\right.\\
-\\[-0.25ex]
+\end{array}\right.\\[2.8ex]
 (\sigma + \tau)[\phi :=_{\ol{\alpha}} H] & = & \sigma[\phi
   :=_{\ol{\alpha}} H] + \tau[\phi :=_{\ol{\alpha}} H]\\[0.5ex] 
 (\sigma \times \tau)[\phi :=_{\ol{\alpha}} H] & = &
@@ -916,13 +874,13 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \UIC{$\Gamma;\Phi \,|\, \Delta,x :\tau \vdash x : \tau$}
 \DisplayProof
 &
-\AXC{$\phantom{\Gamma;\Phi}$}
-\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$}
-\DisplayProof
-&
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \zerot$}
 \AXC{$\Gamma;\Phi \vdash \tau$}
 \BIC{$\Gamma;\Phi \,|\, \Delta \vdash \bot_\tau t  : \tau$}
+\DisplayProof
+&
+\AXC{$\phantom{\Gamma;\Phi}$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$}
 \DisplayProof\\\\
 \end{array}\]
 \[\begin{array}{cc}
@@ -981,7 +939,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
   G[\overline{\alpha := \tau}]$}
 \DisplayProof
 \\\\
-\AXC{$\Gamma; \ol{\phi},\ol{\gamma} \vdash H$}
+\AXC{$\Gamma; \ol{\phi}, \ol{\gamma} \vdash H$}
 \AXC{$\ol{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}$}
 \AXC{$\ol{\Gamma; \Phi, \ol{\beta},\ol{\gamma} \vdash G}$}
 \TIC{$\Gamma; \Phi
@@ -1054,8 +1012,8 @@ where
 \vdash \tin_{\beta + \phi(\beta \times \beta)} & : & \Nat^{\alpha}
 (\alpha + \mathit{PTree}\,(\alpha \times \alpha)) \; (\mathit{PTree}\,
 \alpha)\\ 
-\vdash \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
-  \alpha} & : & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha \times \alpha)\,
+{\color{red} \vdash \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
+  \alpha}} & : & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha \times \alpha)\,
 (\alpha \times \alpha))\; (\Nat^{\alpha} (\mathit{PTree}\,(\alpha \times
 \alpha))\, (\mathit{PTree}\,(\alpha \times \alpha)))
 \end{array}\]
@@ -1065,9 +1023,10 @@ $\mathit{swap}$ and $s$ are the terms
 \Nat^{\alpha} (\alpha \times \alpha)\, (\alpha \times \alpha)\]
 and
 \[\begin{array}{l}
-\vdash L_{\alpha} t. \,\case{t}{b \mapsto \inl\, b}{t' \mapsto \inr\,(
-  \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times \alpha}\,
-  \mathit{swap}\, t' )} : \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+\vdash L_{\alpha} t. \,\case{t}{b \mapsto {\color{blue} \inl}\, b}{t'
+  \mapsto {\color{blue} \inr}\,( 
+  {\color{red} \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times \alpha}\,
+  \mathit{swap}\, t'} )} : \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
 \alpha))\; (\alpha + \mathit{PTree}\,(\alpha \times \alpha))
 \end{array}\]
 respectively. We can similarly represent the $\mathtt{reverseBush}$
@@ -1099,18 +1058,20 @@ L_{\alpha}\, x.\, \inr\, x ) \; : \; \Nat^{\alpha}\, (\alpha \times
 \mathit{Bush}\,(\mathit{Bush}\,\alpha))\; (\mathit{Bush}\,\alpha)\\
 \vdash \fold_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta
   \times \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha]}\,
-(\map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
+({\color{red} \map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
   \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha][\beta := \alpha],
   \mathit{Bush}\,\alpha}\, \tin_{\onet + \beta \times \phi
-  (\phi\beta)})\\
+  (\phi\beta)}})\\
 \hspace*{0.2in} : \Nat^{\alpha}\, (\mathit{Bush}\,\alpha)\; (\onet +
 \alpha \times \mathit{Bush}\,(\mathit{Bush}\,\alpha))\\ 
-\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\, \{ \hspace*{0.21in}\ast \mapsto
+\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\, \{ \hspace*{0.21in}
+       {\color{blue} \inl}\,\ast \mapsto
 \mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
-\hspace*{1in}(s', u) \mapsto \mathsf{case}\;s' \{\hspace*{0.35in}\ast
+\hspace*{1in}{\color{blue} \inr}\,(s', u) \mapsto \mathsf{case}\;s'
+\{\hspace*{0.35in}{\color{blue} \inl}\, \ast
 \mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
   \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
-\hspace*{2in} (b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
+\hspace*{2in} {\color{blue} \inr}\, (b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
 (\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
 b\, u )\, u')\}\}\\
 \hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
@@ -1137,69 +1098,98 @@ respectively. Here, $\Gamma; \emptyset \,|\, \Delta \vdash \sigma +
 \eta : \Nat^{\ol{\alpha}} (\sigma + F)\; (\sigma + G)$ and $\Gamma;
 \emptyset \,|\, \Delta \vdash \sigma \times \eta : \Nat^{\ol{\alpha}}
 (\sigma \times F)\; (\sigma \times G)$ for $\sigma + \eta :=
-L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto \inl\, s}{t \mapsto \inr\,
+L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto {\color{blue} \inl}\, s}{t
+  \mapsto {\color{blue} \inr}\, 
   (\eta_{\ol{\alpha}} t)}$ and $\sigma \times \eta := L_{\ol{\alpha}}\,
 x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
 \,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
 \ol{\alpha} \vdash \sigma$.
 
-{\color{blue} There's a difference between which folds we can write
-  for ADTs when viewed as nesteds and when viewed as f-o (i.e., as
-  ADTs) since the arity of $\phi$ must equal the number of arguments
-  to which $\mu \phi. \lambda \ol \alpha. \tau$ is applied in $\fold$
-  rule. This is precisely what allows us to have one nested type and
-  as many ADTs as we want as arguments. See next paragraph.}
-
-{\color{blue} Double-check this paragraph.}
-Because our system is designed to ensure functoriality, and ensuring
+Because our system is designed to ensure functoriality, and
 functoriality does not interact with polymorphism as well as might be
 hoped, our system cannot express nontrivial recursive functions, such
-as a concatenation function for perfect trees,
-%$\mathtt{combine} : \mathtt{PTree}\, \alpha \to \mathtt{PTree}
-%\,\alpha \to \mathtt{PTree}\, \alpha$
-that take not just one nested type functorial in a variable $\alpha$
-as input, but other inputs functorial in $\alpha$ as well. The
-fundamental issue is that recursion is expressible only via folds. A
-fold over a nested type must take a natural transformation as an
-argument and return a natural transformation, but the polymorphism
-natural transformations entail leaves no nontrivial way to incorporate
-data from the second argument to a function with a type like that
-above into a fold over its first argument. Currying the type also does
-not help, because the codomain of a fold applied to an algebra
-%--- and thus of the function so expressed ---
-must be a functor, and this clearly is not the case for a function
-that takes more than one input involving the same type variable.  Even
-some recursive functions of a single non-algebraic nested type ---
-e.g., a $\mathtt{reverseBush}$ function that is a true involution ---
-cannot be expressed as folds because the algebra arguments needed to
-define them are themselves recursive functions
+as a concatenation function for perfect trees, that take not just one
+nested type parameterized over a variable $\alpha$ as input, but other
+inputs parameterized over $\alpha$ as well. The fundamental issue is
+that recursion is expressible only via folds, and it is well-known
+that a fold over a nested type must take a natural transformation as
+an argument and return a natural transformation as its result.
+%and, unfortunately, the polymorphism natural transformations entail
+%leaves no nontrivial way to incorporate data from the second argument
+%to a function with a type like that above into a fold over its first
+%argument.
+Even for ADTs there is a difference between which folds over them we
+can write when ADTs are viewed as proper nested types --- i.e., as
+fixpoints of types interpreted as first-order functors --- and which
+ones we can write when ADTs are viewed as nested types --- i.e., as
+fixpoints of types that are interpreted as higher-order functors. This
+is because enforcing functoriality requires that the arity of the
+recursion variable $\phi$ in the fixpoint in the return type of
+$\fold$ must equal the number of variables bound by its $\Nat$
+construct. For ADTs this number can be $0$, making it possible to
+write as folds functions of types such as $\alpha; \emptyset \vdash
+\Nat^\emptyset \ (\List\,\alpha)\,(\Nat^\emptyset \alpha\,(\List
+    {\color{blue} \nat}))$, all of whose argument types are
+    parameterized over the same type $\alpha$. This is not possible
+    for nested types, even when those nested types are semantically
+    equivalent to ADTs.
+%Currying the type of the function does not help either, since the
+%codomain of a fold applied to an algebra must be a functor, and this
+%clearly is not the case for a function on nested types that takes
+%more than one input involving the same type variable.
+We can, however, represent types of functions that take as arguments
+one proper nested type and as many other (possibly proper) nested
+types as we wish, provided the types of those arguments are
+parameterized over disjoint sets of type variables. The return type of
+the function can be parameterized over any or all of the type
+variables occurring in its argument types.
+%A well-known deeper limitation on folds is that a fold over a nested
+%type must take a natural transformation as an argument and return a
+%natural transformation; this issue is discussed in more detail in
+%Section~\ref{sec:conclusion},
+%Unfortunately, the polymorphism natural transformations
+%entail leaves no nontrivial way to incorporate data from the second
+%argument to a function with a type like that above into a fold over
+%its first argument.
+Note, however, that even some recursive functions of a single proper
+nested type --- e.g., a $\mathtt{reverseBush}$ function that is a true
+involution --- cannot be expressed as folds because the algebra
+arguments needed to define them are again recursive functions
 %  cannot be defined. This happens, for
 %  example, when the algebra argument to a fold must be a recursive
 %  function
 %, and thus must itself be defined as a fold
-whose type signatures have the same problematic form discussed above.
-More sophisticated combinators for stylized recursion (e.g.,
-generalized folds)
-%  ~\cite{bp99})
-don't mitigate these difficulties, either. Indeed, they appear to be a
-fundamental consequence of the interaction of functoriality and
-polymorphism, not just some peculiarity of our particular calculus.
+with type signatures of the same problematic forms.
+%More sophisticated combinators for stylized recursion (e.g.,
+%generalized folds)
+%%  ~\cite{bp99})
+%don't mitigate these difficulties, either. Indeed, they appear to be a
+%fundamental consequence of the interaction of functoriality and
+%polymorphism, not just some peculiarity of our particular calculus.
+Adding combinators for more sophisticated stylized recursion may
+ultimately enhance the expressivity of our calculus but, as discussed
+in Section~\ref{sec:conclusion}, the expressivity issue for folds for
+nested types long pre-dates, and is somewhat orthogonal to, the issue
+of parametricity for languages that construct nested types as
+fixpoints studied here.
+%, and is orthogonal to, our focus on
+%constructing parametric models for calculi in which nested types are
+%constructed as fixpoints.
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
-the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$ also
-merit special mention. They allows us to map or fold polymorphic
-functions over nested types. Consider, for example, the function
-$\mathit{flatten} : \Nat^\beta
-(\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ that maps perfect
-trees to lists. Even in the absence of extra variables the instance of
-$\map$ required to map each non-functorial monomorphic instantiation
-of $\mathit{flatten}$ over a list of perfect trees is well-typed:
+the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
+merit special mention. They allow us to map or fold polymorphic
+functions over nested types. Consider, for example, the polymorphic
+function $\mathit{flatten} : \Nat^\beta
+(\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ that uniformly maps
+perfect trees to lists. Even in the absence of extra variables the
+instance of $\map$ required to map each non-functorial monomorphic
+instantiation of $\mathit{flatten}$ over a list of perfect trees is
+well-typed:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
-\AXC{$\Gamma;\emptyset \vdash \sigma \hspace*{0.3in} \Gamma;\emptyset
-  \vdash \tau$}
-\AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,\sigma \hspace*{0.3in}
-  \Gamma;\emptyset \vdash \mathit{List}\,\tau$}
+\AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,\sigma$}
+\AXC{$\Gamma;\emptyset \vdash \mathit{List}\,\tau$}
 \TIC{$\Gamma;\emptyset \,|\, x : \Nat^\emptyset\,(\mathit{PTree}\,
   \sigma)\,(\mathit{List}\, \tau)\; \vdash
   \map^{\mathit{PTree}\,\sigma, \,\mathit{List}\,\tau}_{\mathit{List}\,\alpha} \,x
@@ -1208,7 +1198,7 @@ of $\mathit{flatten}$ over a list of perfect trees is well-typed:
   \tau))$}
 \DisplayProof
 \end{array}\]
-{\color{blue} REVISE! But in the absence of $\ol \gamma$, the instance
+But in the absence of $\ol \gamma$, the instance
 \[\Gamma;\emptyset \,|\, x : \Nat^\beta(\mathit{PTree}\,
 \beta)\,(\mathit{List}\, \beta) \vdash
 \map^{\mathit{PTree}\,\beta,\mathit{List}\,\beta}_{\mathit{List}\,\alpha}\,x
@@ -1235,15 +1225,14 @@ typeable as follows:
   \Gamma;\beta \vdash \mathit{List}\,\beta$}
 \BIC{$\Gamma;\emptyset \,|\, x :   \Nat^\beta(\mathit{PTree}\,
   \beta)\,(\mathit{List}\, \beta) \vdash
-  \map^{F,G}_{\mathit{List}} \, x :
+  \map^{F,G}_{\mathit{List}\,\alpha} \, x :
  \Nat^\beta\,(\mathit{List}\,
   (\mathit{PTree}\, \beta))\,(\mathit{List}\, (\mathit{List}\,
   \beta))$}
 \DisplayProof
 \end{array}\]
 Similar remarks explain the appearance of $\ol \gamma$ in the typing
-rules for $\tin$ and $\fold$.}
-
+rules for $\tin$ and $\fold$.
 
 \vspace*{0.05in}
 
@@ -1333,7 +1322,7 @@ We will interpret the types in our calculus as $\omega$-cocontinuous
 functors on locally finitely presentable categories~\cite{ar94}. Since
 functor categories of locally finitely presentable categories are
 again locally finitely presentable, this will ensure, in particular,
-that the fixed points interpreting $\mu$-types in $\set$ and $\rel$
+that the fixpoints interpreting $\mu$-types in $\set$ and $\rel$
 exist, and thus that both the set and relational interpretations of
 all of the types in Definition~\ref{def:wftypes} are
 well-defined~\cite{jp19}. To bootstrap this process, we interpret type
@@ -1380,6 +1369,8 @@ Definition~\ref{def:rel-sem}.
 The {\em set interpretation} $\setsem{\cdot} : \F \to [\setenv, \set]$
 is defined by
 \begin{align*}
+  \setsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
+  \setsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
 %  \setsem{\Gamma;\emptyset \vdash v} \rho &= \rho v \mbox{
 %    if } v \in \tvars^0 \\ 
   \setsem{\Gamma; \Phi
@@ -1396,8 +1387,6 @@ is defined by
       : \relsem{\Gamma; \ol{\alpha} \vdash F}\Eq_{\rho}[\ol{\alpha := R}]
       \rightarrow \relsem{\Gamma;\Phi, \ol{\alpha} \vdash
         G}\Eq_{\rho}[\ol{\alpha := R}] \} \\
-  \setsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
-  \setsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
   \setsem{\Gamma;\Phi \vdash \phi\ol{\tau}}\rho &=
   (\rho\phi)\,\ol{\setsem{\Gamma;\Phi \vdash
     \tau}\rho}\\
@@ -1427,7 +1416,7 @@ in Definition~\ref{def:set-sem-funcs} below.
 If $\rho$ is a set environment and $\vdash \tau$ then we may
 write $\setsem{\vdash \tau}$ instead of $\setsem{\vdash \tau}\rho$
 since the environment is immaterial.
-We note that the second clause of
+We note that the third clause of
 Definition~\ref{def:set-sem} does indeed define a set: local finite
 presentability of $\set$ and $\omega$-cocontinuity of
 $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$ ensure that $\{\eta :
@@ -1444,15 +1433,15 @@ ${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
 ${\setsem{\Gamma;\Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
 there are only $\set$-many choices of morphisms between any
 %these (or any)
-two objects since $\set$ is locally small. Finally, interpretations of $\Nat$
-types in Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} ensure
-$\setsem{\Gamma \vdash \sigma \to \tau}$ and $\setsem{\Gamma \vdash
-  \forall \alpha. \tau}$ are as expected in any parametric model.
+two objects since $\set$ is locally small. Finally, interpretations of
+$\Nat$ types in Definition~\ref{def:set-sem} ensure $\setsem{\Gamma
+  \vdash \sigma \to \tau}$ and $\setsem{\Gamma \vdash \forall
+  \alpha. \tau}$ are as expected in any parametric model.
 
 In order to make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
 \setenv$, $T^\set_{H,\rho}$ is an $\omega$-cocontinuous endofunctor on
-$[\set^k, \set]$, and thus admits a fixed point.  Since
+$[\set^k, \set]$, and thus admits a fixpoint.  Since
 $T_{H,\rho}^\set$ is defined in terms of $\setsem{\Gamma;\Phi,\phi,
   \ol{\alpha} \vdash H}$, this means that interpretations of types
 must be such functors, which in turn means that the actions of set
@@ -1483,6 +1472,10 @@ that $\rho|_\tvars = \rho'|_\tvars$). The action $\setsem{\Gamma;\Phi
   \vdash \tau}f$ of\, $\setsem{\Gamma;\Phi \vdash \tau}$ on the
 morphism $f$ is given as follows:
 \begin{itemize}
+\item If \,$\Gamma;\Phi \vdash \zerot$ then $\setsem{\Gamma;\Phi \vdash
+  \zerot}f = \id_0$
+\item If \,$\Gamma;\Phi \vdash \onet$ then $\setsem{\Gamma;\Phi \vdash
+  \onet}f = \id_1$
 %\item If \,$\Gamma,v;\emptyset \vdash v$ then
 %  $\setsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$
 \item If \,$\Gamma; \Phi
@@ -1498,12 +1491,8 @@ morphism $f$ is given as follows:
     \Nat^{\ol{\alpha}}\,F\,G}\rho.\, 
   (\lambda \ol{A}. \setsem{\Gamma; \Phi,\ol\alpha \vdash G}f[\ol{\alpha
       := id_A}]) \circ t$  
-\item If \,$\Gamma;\Phi \vdash \zerot$ then $\setsem{\Gamma;\Phi \vdash
-  \zerot}f = \id_0$
-\item If \,$\Gamma;\Phi \vdash \onet$ then $\setsem{\Gamma;\Phi \vdash
-  \onet}f = \id_1$
 \item If \,$\Gamma;\Phi \vdash \phi \ol{\tau}$ then
-  $\setsem{\Gamma;\Phi \vdash \phi \ol{\tau}} f : \setsem{\Gamma;\Phi
+$\setsem{\Gamma;\Phi \vdash \phi \ol{\tau}} f : \setsem{\Gamma;\Phi
   \vdash \phi \ol{\tau}}\rho \to \setsem{\Gamma;\Phi \vdash
   \phi\ol{\tau}}\rho' = (\rho\phi) \ol{\setsem{\Gamma;\Phi \vdash
     \tau}\rho} \to (\rho'\phi) \ol{\setsem{\Gamma;\Phi \vdash
@@ -1531,24 +1520,30 @@ morphism $f$ is given as follows:
   \vdash \sigma + \tau}f$ is defined by $\setsem{\Gamma;\Phi \vdash
   \sigma + \tau}f(\inl\,x) = \inl\,(\setsem{\Gamma;\Phi \vdash
   \sigma}f x)$ and $\setsem{\Gamma;\Phi \vdash \sigma +
-  \tau}f(\inr\,y) = \inr\,(\setsem{\Gamma;\Phi \vdash \tau}f y)$.
+  \tau}f(\inr\,y) = \inr\,(\setsem{\Gamma;\Phi \vdash \tau}f y)$
 \item If \,$\Gamma;\Phi\vdash \sigma \times \tau$ then
   $\setsem{\Gamma;\Phi \vdash \sigma \times \tau}f = 
   \setsem{\Gamma;\Phi \vdash \sigma}f \times \setsem{\Gamma;\Phi \vdash
-    \tau}f$.
+    \tau}f$
 \item If \,$\Gamma;\Phi \vdash (\mu \phi.\lambda
-  \ol{\alpha}. H)\ol{\tau}$ then $ \setsem{\Gamma;\Phi \vdash (\mu
-    \phi.\lambda \ol{\alpha}. H)\ol{\tau}} f : \setsem{\Gamma;\Phi
+  \ol{\alpha}. H)\ol{\tau}$ then
+  \[\begin{array}{lll}
+  \setsem{\Gamma;\Phi \vdash (\mu  \phi.\lambda
+    \ol{\alpha}. H)\ol{\tau}} f &: &\setsem{\Gamma;\Phi 
     \vdash (\mu \phi.\lambda \ol{\alpha}. H)\ol{\tau}} \rho \to
   \setsem{\Gamma;\Phi \vdash (\mu
-    \phi.\lambda\ol{\alpha}. H)\ol{\tau}} \rho'$ $ = (\mu
+    \phi.\lambda\ol{\alpha}. H)\ol{\tau}} \rho'\\
+  &= &(\mu
   T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho} \to (\mu
-  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}$ is
-  defined by $ (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash
+  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash \tau}\rho'}
+  \end{array}\]
+  is
+  defined by
+  \[\begin{array}{ll} & (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash
       \tau}\rho'} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi
-      \vdash \tau}f}$ $= (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi
+      \vdash \tau}f}\\ = & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi
       \vdash \tau}f} \circ (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi
-      \vdash \tau}\rho}$.  The latter equality holds because $\mu
+      \vdash \tau}\rho}\end{array}\]  The latter equality holds because $\mu
   T^\set_{H,\rho}$ and $\mu T^\set_{H,\rho'}$ are functors and $\mu
   T_{H,f}^\set : \mu T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a
   natural transformation, so the following naturality square commutes:
@@ -1598,8 +1593,6 @@ following data:
   $\delta^1 : G^1 \to H^1$, $\delta^2 : G^2 \to H^2$ such that, for
   all $\ol{R : \rel(A, B)}$, if $(x, y) \in G^*\ol{R}$ then
   $(\delta^1_{\ol{A}}x, \delta^2_{\ol{B}}y) \in H^*\ol{R}$.
-%  {\color{blue} Comment that this is basically a fibred natural
-%    transformation, but for heterogeneous relations.}
 \item Identity morphisms and composition are inherited from the
   category of functors on $\set$.
 \end{itemize}
@@ -1790,17 +1783,16 @@ latter is always a morphism in $RT_k$, but the former isn't necessarily
 a morphism in $RT_k$ unless $T$ is $\omega$-cocontinuous.
 \end{comment}
 
-{\color{blue} It is worth noting that the third component in
-  Equation~(\ref{eq:mu}) is the colimit in $[\rel^k,\rel]$ of third
-  components of relation transformers, rather than a fixpoint of an
-  endofunctor on $[\rel^k,\rel]$. That there is an asymmetry between
-  the first two components of $\mu T$ and its third is an important
-  conceptual observation, and reflects the fact that the third
-  component of an endofunctor on $RT_k$ need not be a functor on all
-  of $[\rel^k,\rel]$. In particular, although we can define
-  $T_{H,\rho}\, F$ for a relation transformer $F$ in
-  Definition~\ref{def:rel-sem} below, it is not clear how we could
-  define it for $F : [\rel^k,\rel]$.}
+It is worth noting that the third component in Equation~(\ref{eq:mu})
+is the colimit in $[\rel^k,\rel]$ of third components of relation
+transformers, rather than a fixpoint of an endofunctor on
+$[\rel^k,\rel]$. That there is an asymmetry between the first two
+components of $\mu T$ and its third reflects the important conceptual
+observation that the third component of an endofunctor on $RT_k$ need
+not be a functor on all of $[\rel^k,\rel]$. In particular, although we
+can define $T_{H,\rho}\, F$ for a relation transformer $F$ in
+Definition~\ref{def:rel-sem} below, it is not clear how we could
+define it for $F : [\rel^k,\rel]$.
 
 \begin{dfn}\label{def:reln-env}
 A {\em relation environment} maps each each type variable in $\tvars^k
@@ -1877,44 +1869,28 @@ subsection that Definition~\ref{def:rel-sem} is given mutually
 inductively with Definition~\ref{def:set-sem} we can, at last, define:
 
 \begin{dfn}\label{def:rel-sem}
-%Let $\rho$ be a relation environment.
 The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
  \rel]$ is defined by
 \begin{align*}
-%  \relsem{\Gamma;\emptyset \vdash v}\rho &= \rho v \mbox{ if
-%  } v \in \tvars^0 \\ 
-  \relsem{\Gamma; \Phi
-    %\emptyset
-    \vdash \Nat^{\ol{\alpha}}
-    \,F\,G}\rho &= \{\eta : \lambda \ol{R}.\,\relsem{\Gamma;
-      \ol{\alpha} \vdash F}\rho[\ol{\alpha := R}] \Rightarrow \lambda
-  \ol{R}. \,\relsem{
-      \Gamma; \Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha := R}]\}\\
+  \relsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
+  \relsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
+  \end{align*}
+  \begin{align*}
+  \relsem{\Gamma; \Phi \vdash \Nat^{\ol{\alpha}} \,F\,G}\rho &= \{\eta
+  : \lambda \ol{R}.\,\relsem{\Gamma; \ol{\alpha} \vdash
+    F}\rho[\ol{\alpha := R}] \Rightarrow \lambda \ol{R}. \,\relsem{
+    \Gamma; \Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha := R}]\}\\
   &=
   \{(t,t') \in \setsem{\Gamma; \Phi
-    %\emptyset
     \vdash \Nat^{\ol{\alpha}}
     \,F\,G} (\pi_1 \rho) \times \setsem{ 
     \Gamma;\Phi
-    %\emptyset
     \vdash \Nat^{\ol{\alpha}} \,F\,G} (\pi_2
   \rho)~|~\\ 
   & \hspace{0.3in} \forall {R_1 : \rel(A_1,B_1)}\,...\,{R_k : \rel(A_k,B_k)}.\\
   & \hspace{0.4in} (t_{\ol{A}},t'_{\ol{B}}) \in
   (\relsem{\Gamma; \Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
       R}])^{\relsem{\Gamma;\ol{\alpha}\vdash F}\rho[\ol{\alpha := R}]} \}\\  
-  % exponential in $\rel$
-%  &= \{(t,t') \in \setsem{\Gamma;\emptyset \vdash \Nat^{
-%      \ol{\alpha}} \,F\,G} (\pi_1 \rho) \times 
-%  \setsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}} \,F\,G}
-%  (\pi_2 \rho)~|~\\ 
-%  & \hspace{0.3in} \forall {R_1 : \rel(A_1,B_1)}\,...\,{R_k : \rel(A_k,B_k)}.\\
-%  & \hspace{0.4in} \forall (a,b) \in \relsem{\Gamma;
-%      \ol{\alpha} \vdash F}\rho[\ol{\alpha := R}].\\
-%  & \hspace*{0.5in}  (t_{\ol{A}}a,t'_{\ol{B}}b) \in \relsem{
-%      \Gamma; \ol{\alpha} \vdash G}\rho[\ol{\alpha := R}] \}\\
-  \relsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
-  \relsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
   \relsem{\Gamma;\Phi \vdash \phi \ol{\tau}}\rho &=
   (\rho\phi)\ol{\relsem{\Gamma;\Phi \vdash 
     \tau}\rho}\\
@@ -1943,8 +1919,9 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 
 The interpretations in Definition~\ref{def:rel-sem}, as well as in
 Definition~\ref{def:rel-sem-funcs} below, respect weakening, and also
-ensure that $\relsem{\Gamma \vdash \forall \alpha. \tau}$ are as
-expected in any parametric model.
+ensure that $\relsem{\Gamma \vdash \sigma \to \tau}$ and
+$\relsem{\Gamma \vdash \forall \alpha. \tau}$ are as expected in any
+parametric model.
 %$\relsem{\Gamma \vdash
 %  \sigma \to \tau}\rho = \relsem{\Gamma \vdash \sigma} \rho \to
 %\relsem{\Gamma \vdash \tau} \rho$.
@@ -1953,7 +1930,7 @@ write $\relsem{\vdash \tau }$ instead of $\relsem{\vdash \tau }\rho$
 as for set interpretations.  For the last clause in
 Definition~\ref{def:rel-sem} to be well-defined we need $T_{\rho}$ to
 be an $\omega$-cocontinuous endofunctor on $RT$ so that, by
-Lemma~\ref{lem:fp}, it admits a fixed point. Since $T_\rho$ is defined
+Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_\rho$ is defined
 in terms of $\relsem{\Gamma;\Phi,\phi^k, \ol{\alpha} \vdash H}$, this
 means that relational interpretations of types must be
 $\omega$-cocontinuous functors from $\relenv$ to $RT_0$, which in turn
@@ -1988,10 +1965,17 @@ morphisms between relation environments.
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
 (so that $\rho|_\tvars = \rho'|_\tvars$). The action
 $\relsem{\Gamma;\Phi \vdash \tau}f$ of $\relsem{\Gamma;\Phi \vdash
-  \tau}$ on the morphism $f$ is given as follows:
+  \tau}$ on the morphism $f$ is given exactly as in
+Definition~\ref{def:set-sem-funcs}, except that all interpretations
+are relational interpretations and all occurrences of $T^\set_{H,f}$
+are replaced by $T_{H,f}$. 
+\begin{comment}
+as follows:
 \begin{itemize}
-%\item If $\Gamma,v;\emptyset \vdash v$ then
-%  $\relsem{\Gamma,v;\emptyset \vdash v}f = \id_{\rho v}$
+\item If \,$\Gamma;\Phi \vdash \zerot$ then $\relsem{\Gamma;\Phi \vdash
+  \zerot}f = \id_0$
+\item If\, $\Gamma;\Phi \vdash \onet$ then $\relsem{\Gamma;\Phi \vdash
+  \onet}f = \id_1$
 \item If \,$\Gamma; \Phi
   \vdash \Nat^{\ol{\alpha}}\,F\,G$ then
   $\relsem{\Gamma; \Phi
@@ -2000,16 +1984,7 @@ $\relsem{\Gamma;\Phi \vdash \tau}f$ of $\relsem{\Gamma;\Phi \vdash
     \Nat^{\ol{\alpha}}\,F\,G}\rho.\, 
   (\lambda \ol{A}. \relsem{\Gamma; \Phi,\ol\alpha \vdash G}f[\ol{\alpha
       := id_A}]) \circ t$  
-
-\item If $\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G$, then
-  $\relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G} f =
-  \id_{\relsem{\Gamma;\emptyset \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho}$
-
-\item If $\Gamma;\Phi \vdash \zerot$ then $\relsem{\Gamma;\Phi \vdash
-  \zerot}f = \id_0$
-\item If $\Gamma;\Phi \vdash \onet$ then $\relsem{\Gamma;\Phi \vdash
-  \onet}f = \id_1$
-\item If $\Gamma;\Phi \vdash \phi \ol{\tau}$, then
+\item If \,$\Gamma;\Phi \vdash \phi \ol{\tau}$, then
   $\relsem{\Gamma;\Phi \vdash \phi \ol{\tau}} f : \relsem{\Gamma;\Phi
   \vdash \phi \ol{\tau}}\rho \to \relsem{\Gamma;\Phi \vdash \phi
   \ol{\tau}}\rho' = (\rho\phi) \ol{\relsem{\Gamma;\Phi \vdash
@@ -2019,16 +1994,16 @@ $\relsem{\Gamma;\Phi \vdash \tau}f$ of $\relsem{\Gamma;\Phi \vdash
   \,\circ\, (\rho\phi) \ol{\relsem{\Gamma;\Phi \vdash \tau}f} =
   (\rho'\phi) \ol{\relsem{\Gamma;\Phi \vdash \tau}f} \,\circ\, (f
   \phi)_{\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho}}$
-\item If $\Gamma;\Phi\vdash \sigma + \tau$ then $\relsem{\Gamma;\Phi
+\item If\, $\Gamma;\Phi\vdash \sigma + \tau$ then $\relsem{\Gamma;\Phi
   \vdash \sigma + \tau}f$ is defined by $\relsem{\Gamma;\Phi \vdash
   \sigma + \tau}f(\inl\,x) = \inl\,(\relsem{\Gamma;\Phi \vdash
   \sigma}f x)$ and $\relsem{\Gamma;\Phi \vdash \sigma +
   \tau}f(\inr\,y) = \inr\,(\relsem{\Gamma;\Phi \vdash \tau}f y)$
-\item If $\Gamma;\Phi\vdash \sigma \times \tau$ then
+\item If\, $\Gamma;\Phi\vdash \sigma \times \tau$ then
   $\relsem{\Gamma;\Phi \vdash \sigma \times \tau}f =
   \relsem{\Gamma;\Phi \vdash \sigma}f \times \relsem{\Gamma;\Phi
     \vdash \tau}f$
-\item If $\Gamma;\Phi \vdash (\mu \phi^k.\lambda
+\item If\, $\Gamma;\Phi \vdash (\mu \phi^k.\lambda
   \ol{\alpha}. H)\ol{\tau}$ then $\relsem{\Gamma;\Phi \vdash (\mu
     \phi.\lambda \ol{\alpha}. H)\ol{\tau}} f = (\mu
   T_{H,f})\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho'} \circ (\mu
@@ -2036,6 +2011,7 @@ $\relsem{\Gamma;\Phi \vdash \tau}f$ of $\relsem{\Gamma;\Phi \vdash
   T_{H,\rho'})\ol{\relsem{\Gamma;\Phi \vdash \tau}f} \circ (\mu
   T_{H,f})\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho}$
 \end{itemize}
+\end{comment}
 \end{dfn}
 
 To see that the functors given by Definitions~\ref{def:rel-sem}
@@ -2162,7 +2138,7 @@ is a morphism in $RT_0$ (and thus in $\rel$) by the induction hypothesis.
 
 \vspace*{0.05in}
 
-The relation transformer $\mu T_\rho$ is therefore a fixed point of
+The relation transformer $\mu T_\rho$ is therefore a fixpoint of
 $T_\rho$ by Lemma~\ref{lem:fp}, and $\mu \sigma_f$ is a morphism in
 $RT_k$ from $\mu T_\rho$ to $\mu T_{\rho'}$. ($\mu$ is shown to be a
 functor in~\cite{jp19}.)  So $\relsem{\Gamma; \Phi \vdash (\mu
@@ -2484,7 +2460,7 @@ These two maps have the same actions on objects and morphisms by the
 induction hypothesis on $H$, and the fact that the extended
 environment $\rho[\phi' := F][\ol{\alpha := A}]$ satisfies the
 required hypothesis. They are thus equal as functors and so have the
-same fixed point. We also have that 
+same fixpoint. We also have that 
 \begin{align*}
 & \setsem{\Gamma; \Phi, \phi \vdash (\mu \phi'. \lambda
     \ol\alpha. H)\ol\tau } f \\ 
@@ -2546,7 +2522,7 @@ the arguments to the second $\mu$ operator:
       := A}] 
 \end{align*}
 By the same reasoning as above, these two maps are equal as functors,
-and thus have the same fixed point.
+and thus have the same fixpoint.
 \end{itemize}
 \end{proof}
 
@@ -2758,6 +2734,8 @@ let $h_{\overline{A \times B}}$ be the unique morphism making the diagram
         &F\overline{A} \times G\overline{B}
         \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
 \end{tikzcd}\]}
+
+\noindent
 commute, and let $h_{\overline{R}} : F\overline{R} \to F\overline{A}
 \times G\overline{B}$ be $h_{\overline{A \times B}} \circ
 F\overline{\iota_R}$. Further, let $\alpha^\wedge\overline{R}$ be the
@@ -2772,6 +2750,8 @@ following diagram:
         &\alpha^\wedge\overline{R}
         \ar[ur, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"']
 \end{tikzcd}\]}
+
+\noindent
 Then $\alpha^\wedge\overline{R} : \rel(F\overline{A}, G\overline{B})$
 by construction, so the action of $\langle \alpha \rangle^*$ on
 objects can be given by $\langle \alpha \rangle^* \overline{(A,B,R)} =
@@ -2798,8 +2778,18 @@ $\graph{\alpha}^* : [\rel^k,\rel]$. Now, suppose $\overline{R :
   \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and $\overline{(\beta,
   \beta') : R \to S}$. We want to show that there exists a morphism
 $\epsilon : \alpha^\wedge\overline{R} \to \alpha^\wedge\overline{S}$
-such that
-{\footnotesize    \[
+such that the diagram on the left below commutes. Since
+$\ol{(\beta,\beta') : R \to S}$, there exist $\overline{\gamma : R \to
+  S}$ such that each diagram in the middle commutes.
+Moreover, since both $h_{\overline{C \times D}} \circ
+F(\overline{\beta \times \beta'})$ and $(F\overline{\beta} \times
+G\overline{\beta'}) \circ h_{\overline{A \times B}}$ make the diagram
+on the right commute, they must be equal.
+\begin{figure*}[ht]
+\vspace*{-0.1in}
+  \hspace*{-0.85in}
+  \begin{minipage}[b]{0.25\linewidth}
+ {\small    \[
     \begin{tikzcd}
         \alpha^\wedge\overline{R}
         \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
@@ -2811,10 +2801,9 @@ such that
         & F\overline{C} \times G\overline{D}
     \end{tikzcd}
     \]}
-    commutes.
-    Since $\ol{(\beta,\beta') : R \to S}$, there exist $\overline{\gamma : R \to S}$
-    such that each diagram
-{\footnotesize    \[
+\end{minipage}
+\begin{minipage}[b]{0.25\linewidth}
+{\small    \[
     \begin{tikzcd}
         R_i
         \ar[d, "{\gamma_i}"']
@@ -2826,12 +2815,9 @@ such that
         &C_i \times D_i
     \end{tikzcd}
     \]}
-    commutes. Moreover, since both
-    $h_{\overline{C \times D}} \circ F(\overline{\beta \times \beta'})$
-    and
-    $(F\overline{\beta} \times G\overline{\beta'}) \circ h_{\overline{A \times B}}$
-    make
-{\footnotesize      \[
+\end{minipage}
+\begin{minipage}[b]{0.25\linewidth}
+{\footnotesize \[
       \begin{tikzcd}[row sep = large]
           F\overline{C}
           &F\overline{C} \times F\overline{D}
@@ -2845,10 +2831,69 @@ such that
           \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
       \end{tikzcd}
       \]}
-      commute, they must be equal. We therefore get that the
-      right-hand square below commutes, and thus that the entire
-      following diagram does as well:
-{\footnotesize      \[
+\end{minipage}
+\end{figure*}
+%{\footnotesize    \[
+%    \begin{tikzcd}
+%        \alpha^\wedge\overline{R}
+%        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+%        \ar[d, "{\epsilon}"']
+%        & F\overline{A} \times G\overline{B}
+%        \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+%        \alpha^\wedge\overline{S}
+%        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+%        & F\overline{C} \times G\overline{D}
+%    \end{tikzcd}
+%    \]}
+%    commutes.
+%    Since $\ol{(\beta,\beta') : R \to S}$, there exist $\overline{\gamma : R \to S}$
+%    such that each diagram
+%{\footnotesize    \[
+%    \begin{tikzcd}
+%        R_i
+%        \ar[d, "{\gamma_i}"']
+%        \ar[r, hookrightarrow, "{\iota_{R_i}}"]
+%        &A_i \times B_i
+%        \ar[d, "{\beta_i \times \beta'_i}"] \\
+%        S_i
+%        \ar[r, hookrightarrow, "{\iota_{S_i}}"]
+%        &C_i \times D_i
+%    \end{tikzcd}
+%    \]}
+%    commutes.
+%Moreover, since both $h_{\overline{C \times D}} \circ
+%F(\overline{\beta \times \beta'})$ and $(F\overline{\beta} \times
+%G\overline{\beta'}) \circ h_{\overline{A \times B}}$ make
+%{\footnotesize \[
+%      \begin{tikzcd}[row sep = large]
+%          F\overline{C}
+%          &F\overline{C} \times F\overline{D}
+%          \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+%          &F\overline{D}
+%          \ar[r, "{\alpha_{\ol{D}}}"]
+%          &G\overline{D}\\
+%          &F(\overline{A \times B})
+%          \ar[u, dashed, "{\exists !}"]
+%          \ar[ul, "{F\ol{\pi_1} \circ F(\overline{\beta \times \beta'})}"]
+%          \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \t%imes \beta'})}"']
+%      \end{tikzcd}
+%      \]}
+%      commute, they must be equal.
+
+\vspace*{-0.1in}
+
+\noindent
+We therefore get that the right-hand square in the diagram on the left
+below commutes, and thus that the entire diagram does as well.
+Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
+with respect to $\iota_{F^\wedge\overline{S}}$ given by the epi-mono
+factorization system, there exists an $\epsilon$ such that the diagram
+on the right below commutes.
+\begin{figure*}[ht]
+  \vspace*{-0.1in}
+  \hspace*{-0.5in}
+  \begin{minipage}[b]{0.45\linewidth}
+{\footnotesize \[
       \begin{tikzcd}
           F\overline{R}
           \ar[d, "{F\overline{\gamma}}"']
@@ -2867,7 +2912,34 @@ such that
           &F\overline{C} \times G\overline{D}
       \end{tikzcd}
       \]}
-      Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
+\end{minipage}
+  \vspace*{-0.5in}
+  \begin{minipage}[b]{0.45\linewidth}
+      {\footnotesize
+        \[  \vspace*{0.4in}
+      \begin{tikzcd}
+          F\overline{R}
+          \ar[d, "{F\overline{\gamma}}"']
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{R}}}"]
+          &\alpha^\wedge\overline{R}
+          \ar[d, dashed, "{\epsilon}"]
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+          &F\overline{A} \times G\overline{B}
+          \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+          F\overline{S}
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{S}}}"']
+          &\alpha^\wedge\overline{S}
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+          &F\overline{C} \times G\overline{D}
+      \end{tikzcd}
+      \]}
+\end{minipage}
+\end{figure*}
+
+
+\begin{comment}
+
+Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
       with respect to $\iota_{F^\wedge\overline{S}}$ given by the epi-mono
       factorization system, there exists an $\epsilon$ such that the
       following diagram commutes:
@@ -2889,7 +2961,12 @@ such that
           &F\overline{C} \times G\overline{D}
       \end{tikzcd}
       \]}
+
+      \vspace*{-0.1in}
+\end{comment}
 \end{proof}
+
+\vspace*{0.1in}
 
 If $f : A \to B$ is a morphism in $\set$ then the definition of the
 graph relation transformer $\langle f \rangle$ for $f$ as a natural
@@ -2898,6 +2975,8 @@ standard definition.  Graph relation transformers are thus a
 reasonable extension of graph relations to functors.
 \begin{comment}
 
+\vspace*{0.2in}
+  
 If $f : A \to B$ is a function with graph relation $\graph{f} = (A, B,
 \graph{f}^*)$, then $\langle \id_{A}, f \rangle : A \to A \times B$
 and $\langle \id_{A}, f \rangle\, A = \graph{f}^*$.  Moreover, if
@@ -2969,7 +3048,18 @@ then $\graph{\alpha}^* \graph{\overline{f}}
 \end{lemma}
 \begin{proof}
 Since $h_{\overline{A \times B}}$ is the unique morphism making the
-bottom triangle of this diagram commute
+bottom triangle of the diagram on the left below commute, and since
+$h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F
+\,\ol{\iota_{\graph{f}}} = h_{\overline{A \times B}} \circ F
+\overline{\langle \id_A, f \rangle}$, the universal property of the
+product depicted in the diagram on the right gives
+$h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}}
+\circ F\ol{f} \rangle : F \ol{A} \to F \ol{A} \times G \ol{B}$.
+
+\begin{figure*}[ht]
+  \vspace*{-0.15in}
+%  \hspace*{-0.5in}
+  \begin{minipage}[b]{0.45\linewidth}
 {\footnotesize
 \[\begin{tikzcd}[row sep = large]
         &F\overline{A}
@@ -2987,12 +3077,9 @@ bottom triangle of this diagram commute
         &F\overline{A} \times G\overline{B}
         \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
 \end{tikzcd}\]}
-and since $h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ
-F \,\ol{\iota_{\graph{f}}} = h_{\overline{A \times B}} \circ F
-\overline{\langle \id_A, f \rangle}$,
-%(the last equality being by the observation after
-%Remark~\ref{rmk:graph-fn}),
-the universal property of the product
+\end{minipage}
+%  \vspace*{-0.5in}
+  \begin{minipage}[b]{0.45\linewidth}
 {\footnotesize
 \[
       \begin{tikzcd}[row sep = large]
@@ -3008,9 +3095,13 @@ the universal property of the product
           \ar[u, "{\alpha_{\ol{B}}}"']
       \end{tikzcd}
       \]}
-gives $h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}},
-\alpha_{\ol{B}} \circ F\ol{f} \rangle : F \ol{A} \to F \ol{A} \times G
-\ol{B}$.  Moreover, $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ
+\end{minipage}
+\end{figure*}
+
+\vspace*{-0.1in}
+
+\noindent
+Moreover, $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ
 F\ol{f} \rangle$ is a monomorphism in $\set$ because $\id_{F \ol{A}}$
 is, so its epi-mono factorization gives $\iota_{\alpha^\wedge
   \graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}}
@@ -3083,6 +3174,7 @@ Identity Extension Lemma and a Graph Lemma for our calculus.
   $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho = \Eq_{\setsem{\Gamma;
       \Phi \vdash \tau}\rho}$.
 \end{thm}
+
 The proof is by induction on the structure of $\tau$. Only the
 application and fixpoint cases are non-routine. Both use
 Lemma~\ref{lem:eq-reln-equalities}. The latter also uses the
@@ -3175,7 +3267,7 @@ By induction on the structure of $\tau$.
 &= \Eq_{\setsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\rho}
 \end{split}
 \]
-\item The fixed point case is proven by the sequence of equalities
+\item The fixpoint case is proven by the sequence of equalities
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
@@ -3425,10 +3517,12 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \end{proof}
 \end{comment}
 
+\vspace*{-.2in}
+
 \section{Interpreting Terms}\label{sec:term-interp}
 
-{\color{blue} Double use of brackets confusing? (Graphs and pairing
-  morphisms)} 
+%{\color{blue} Double use of brackets confusing? (Graphs and pairing
+%  morphisms)} 
 %  Here, we are using angle bracket notation for both the
 %  graph relation of a function and for the pairing of functions with
 %  the same domain. This is justified by the relationship between the
@@ -3455,12 +3549,30 @@ $\relsem{\Gamma; \Phi \vdash \Delta}\rho$ to $\relsem{\Gamma; \Phi
   \vdash \tau}\rho$. These are given in the next (two) definitions.
 
 \begin{dfn}\label{def:set-interp}
-{\color{blue} CHANGE!}
 If $\rho$ is a set (resp., relation) environment and
 $\Gamma;\Phi~|~\Delta \vdash t : \tau$ then
 $\setsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho$ (resp.,
-$\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho$) is defined as
-follows, where $\mathsf D$ is either $\set$ or $\rel$ as appropriate:
+$\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho$) is defined as in
+Figure~\ref{fig:term-sem}, where $\mathsf D$ is either $\set$ or
+$\rel$ as appropriate.
+\end{dfn}
+
+\subsection{Basic Properties of Term Interpretations}
+
+The interpretations in Definition~\ref{def:set-interp} respect
+weakening, i.e., a term and its weakenings all have the same set and
+relational interpretations. In particular, for any $\rho \in \setenv$,
+$\setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
+  = (\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho) \circ
+  \pi_{\Delta}$, where $\pi_{\Delta}$ is the projection
+  $\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to
+  \setsem{\Gamma;\Phi \vdash \Delta}$, and similarly for relational
+  interpretations. 
+
+\begin{figure*}
+\hspace*{-2.85in}
+\resizebox{0.42\linewidth}{!}{
+\begin{minipage}[t]{0.5\textwidth}
 \[\begin{array}{lll}
 \dsem{\Gamma;\emptyset \,|\, \Delta,x :\tau \vdash x : \tau} \rho& = &
 \pi_{|\Delta|+1}\\
@@ -3516,8 +3628,8 @@ follows, where $\mathsf D$ is either $\set$ or $\rel$ as appropriate:
 \inl \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash s: \sigma}\rho\\
 \dsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: \sigma + \tau}\rho & = & 
 \inr \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho\\
-\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \map^{\ol{F},\ol{G}}_H :
-\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;&
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash {\color{blue} \map^{\ol{F},\ol{G}}_H :
+\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}})\;&
 = & \lambda d\, \ol{\eta}\,\ol{B}.\,
 \dsem{\Gamma; \ol{\phi},\ol{\gamma}\vdash H}\id_{\rho[\ol{\gamma :=
       B}]}[\ol{\phi := \lambda \ol{A}.\eta_{\ol{A}\,\ol{B}}}]\\
@@ -3539,23 +3651,9 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
   \phi.\lambda \overline \alpha.H)\overline \beta\;F)
 \rrbracket^\set \rho & & 
 \end{array}\]
-\end{dfn}
-\noindent
-The return type for the semantic fold in the last clause is
-$\dsem{\Gamma;\ol\beta,\ol\gamma \vdash F}\rho[\ol{\gamma := C}]$.
-This interpretation gives that $\dsem{\Gamma;\emptyset \,|\, \Delta
-  \vdash \lambda x.t : \sigma \to \tau}\rho = \curry
-(\dsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
-  \tau}\rho)$ and $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st:
-  \tau} \rho = \eval \circ \langle \dsem{\Gamma;\emptyset \,|\,
-  \Delta \vdash s: \sigma \to \tau}\rho, \dsem{\Gamma;\emptyset
-  \,|\, \Delta \vdash t: \sigma}\rho \rangle$, {\color{blue} so it
-  specializes to the standard interpretations for System F terms}.  If
-$t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t :
-\tau$, then we write $\dsem{\vdash t : \tau}$ instead of
-$\dsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$.
-%, and similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash
-%t : \tau}$.
+\caption{Term semantics}\label{fig:term-sem} 
+\end{minipage}}
+\end{figure*}
 
 \begin{comment}
 
@@ -3658,17 +3756,6 @@ If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
 $\setsem{\emptyset; \emptyset~|~\emptyset \vdash t : \tau}$.
 \end{comment}
 
-\subsection{Basic Properties of Term Interpretations}
-
-The interpretations in Definition~\ref{def:set-interp} respect
-weakening, i.e., a term and its weakenings all have the same set and
-relational interpretations. In particular, for any $\rho \in \setenv$,
-\[ \setsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
-  = (\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : \tau}\rho) \circ
-  \pi_{\Delta}\] where $\pi_{\Delta}$ is the projection
-  $\setsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to
-  \setsem{\Gamma;\Phi \vdash \Delta}$, and similarly for relational
-  interpretations. 
 \begin{comment}
   , and for any $\rho \in \relenv$, 
 \[ \relsem{\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash t : \tau}\rho
@@ -3677,7 +3764,23 @@ relational interpretations. In particular, for any $\rho \in \setenv$,
   $\relsem{\Gamma;\Phi \vdash \Delta, x : \sigma} \to
   \relsem{\Gamma;\Phi \vdash \Delta}$.
 \end{comment}
-  Moreover, if
+
+The return type for the semantic fold in the last clause is
+  $\dsem{\Gamma;\ol\beta,\ol\gamma \vdash F}\rho[\ol{\gamma := C}]$.
+  This interpretation gives that $\dsem{\Gamma;\emptyset \,|\, \Delta
+    \vdash \lambda x.t : \sigma \to \tau}\rho = \curry
+  (\dsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+    \tau}\rho)$ and $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st:
+    \tau} \rho = \eval \circ \langle \dsem{\Gamma;\emptyset \,|\,
+    \Delta \vdash s: \sigma \to \tau}\rho, \dsem{\Gamma;\emptyset
+    \,|\, \Delta \vdash t: \sigma}\rho \rangle$, so it specializes to
+  the standard interpretations for System F terms.  If $t$ is closed,
+  i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t : \tau$, then we
+  write $\dsem{\vdash t : \tau}$ instead of $\dsem{\emptyset;
+    \emptyset~|~\emptyset \vdash t : \tau}$.
+%, and similarly for $\relsem{\emptyset; \emptyset~|~\emptyset \vdash
+%t : \tau}$.
+Moreover, if
   $\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : \tau$ and
   $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : \tau$ and $\Gamma;\Phi
   \vdash \sigma$ then
@@ -3718,10 +3821,10 @@ satisfy
   (L_{\ol{\alpha}}x.t)_{\ol{\tau}}s} = \setsem{\Gamma; \Phi~|~\Delta
   \vdash t [\ol{\alpha := \tau}][x := s]}$
 \end{itemize}
-{\color{blue} Term extensionality with respect to types and terms ---
-  i.e., $\setsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha \top} =
-  \setsem{\Gamma;\Phi \vdash t}$ and $\setsem{\Gamma;\Phi\vdash
-    (L_\alpha x.t)_\alpha x} = \setsem{\Gamma;\Phi \vdash t}$}
+Term extensionality with respect to types and terms --- i.e.,
+$\setsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha \top} =
+\setsem{\Gamma;\Phi \vdash t}$ and $\setsem{\Gamma;\Phi\vdash
+  (L_\alpha x.t)_\alpha x} = \setsem{\Gamma;\Phi \vdash t}$
 %$\relsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha t} =
 %\relsem{\Gamma;\Phi \vdash t}$, as well as
 %term extensionality
@@ -6791,6 +6894,9 @@ H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
+
+Cite Abel, MAtthes, and Uustalu --- reference 1 in our JFP nested types paper
+
 study expressivity of folds for nesteds a la Graham, Bird and Paterson,
 
 Mendler types
@@ -6845,7 +6951,7 @@ Term-level fixpoints from Daniel: In order to interpret term-level
 fixpoints, we would need to add some sort of domain structure to the
 sets and relations which are currently being used to interpret types.
 With this added structure, we should be able to interpret recursive
-function definitions in the usual way (as least fixed points with
+function definitions in the usual way (as least fixpoints with
 respect to the domain structure).  An obvious way to add this
 structure might be to replace Set with the category of omega-CPOs in
 our model, but this category is not locally finitely presentable as is
@@ -6877,16 +6983,16 @@ structure preserved by the fibration and appropriate reflection of the
 total category in the base (as in Alex's effects paper?).
 
 
-fixed points at term level ala Pitts:
+fixpoints at term level ala Pitts:
 
-I'm not sure if we actually want to do this or not (because not all fixed
-points will necessarily exist, and this will have consequences, and because
-of the restriction to strict functions it will entail and the fact that I
-haven't yet thought about how those will thread through our calculus), but
-another idea we might consider is adding fixed points at the term level. This
-is done for System F in Wadler's section 7. [It is also done in Pitts'
-Parametric Polymorphism and Operational Equivalence paper, where the term
-introduction rule is SEE SOURCE
+I'm not sure if we actually want to do this or not (because not all
+fixpoints will necessarily exist, and this will have consequences, and
+because of the restriction to strict functions it will entail and the
+fact that I haven't yet thought about how those will thread through
+our calculus), but another idea we might consider is adding fixpoints
+at the term level. This is done for System F in Wadler's section
+7. [It is also done in Pitts' Parametric Polymorphism and Operational
+  Equivalence paper, where the term introduction rule is SEE SOURCE
 
 %Gamma \vdash F : \tau \to \tau
 %-------------------------------
