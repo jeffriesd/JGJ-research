@@ -237,7 +237,7 @@ Polonsky. This is illustrated with several examples.
 
 \section{Introduction}\label{sec:intro}
 
-Suppose we wanted to prove some property of programs over an algebraic
+Suppose we want to prove some property of programs over an algebraic
 data type (ADT) such as that of lists, coded in Agda
 %\footnote{All code appearing in this paper are written in Agda.}
 as 
@@ -854,19 +854,19 @@ We omit the variable subscripts in second-order type constructor
 substitution when convenient.
 
 \subsection{Terms}\label{sec:terms}
-We assume an infinite set $\cal V$ of term variables disjoint from
-$\tvars$ and $\fvars$. If $\Gamma$ be a type constructor context and
-$\Phi$ is a functorial context, then a {\em term context for $\Gamma$
-  and $\Phi$} is a finite set of bindings of the form $x : \tau$,
-where $x \in {\cal V}$ and $\Gamma; \Phi \vdash \tau$. We adopt
-the same conventions for denoting disjoint unions and for vectors in
-term contexts as for type constructor contexts and functorial
-contexts.
+
+We now define our term calculus. To do so we assume an infinite set
+$\cal V$ of term variables disjoint from $\tvars$ and $\fvars$. If
+$\Gamma$ is a type constructor context and $\Phi$ is a functorial
+context, then a {\em term context for $\Gamma$ and $\Phi$} is a finite
+set of bindings of the form $x : \tau$, where $x \in {\cal V}$ and
+$\Gamma; \Phi \vdash \tau$. We adopt the same conventions for denoting
+disjoint unions and for vectors in term contexts as for type
+constructor contexts and functorial contexts.
 
 \begin{dfn}\label{def:well-formed-terms}
 Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
 rules for the set of\, {\em well-formed terms over $\Delta$} are
-{\color{blue} Say term calc is new.}
 \[\begin{array}{ccc}
 %\AXC{$\Gamma;\emptyset \vdash \tau : \T$}
 %\UIC{$\Gamma;\emptyset\,|\, \Delta,x :\tau \vdash x : \tau$}
@@ -897,8 +897,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma; \Phi \vdash \tau,\sigma$}
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \sigma + \tau$}
 \AXC{$\Gamma;\Phi \,|\, \Delta, x : \sigma \vdash l : \gamma \hspace{0.3in} \Gamma;\Phi \,|\, \Delta, y : \tau \vdash r : \gamma$}
-\TIC{$\Gamma;\Phi~|~\Delta \vdash \case{t}{{\color{blue} \mathsf{inl
-        \,}} x \mapsto l}{{\color{blue} \mathsf{inr \,}} y \mapsto r} : \gamma$}
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r} : \gamma$}
 \DisplayProof
 \end{array}\]
 
@@ -952,7 +951,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
   %  \emptyset
   \vdash \map^{\ol{F},\ol{G}}_H \, \ol t :
 %  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
-  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\;H[\ol{\phi
       :=_{\ol{\beta}} G}]$} 
 \DisplayProof
 \\\\
@@ -1009,28 +1008,41 @@ calculus as
 \Nat^{\alpha} (\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)\] 
 where
 \[\begin{array}{lll}
-\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,\alpha} &
-: & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
-\alpha)) \; (\mathit{PTree}\,\alpha))\; (\Nat^{\alpha}
+\fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,\alpha} & :
+& \Nat^{\emptyset} (\Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha
+\times \alpha)) \; (\mathit{PTree}\,\alpha))\; (\Nat^{\alpha}
 (\mathit{PTree}\,\alpha) \; (\mathit{PTree}\,\alpha))\\
-\vdash \tin_{\beta + \phi(\beta \times \beta)} & : & \Nat^{\alpha}
-(\alpha + \mathit{PTree}\,(\alpha \times \alpha)) \; (\mathit{PTree}\,
-\alpha)\\ 
-{\color{red} \vdash \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
-  \alpha}} & : & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha \times \alpha)\,
-(\alpha \times \alpha))\; (\Nat^{\alpha} (\mathit{PTree}\,(\alpha \times
-\alpha))\, (\mathit{PTree}\,(\alpha \times \alpha)))
+\tin_{\beta + \phi(\beta \times \beta)} & : & \Nat^{\alpha} (\alpha +
+\mathit{PTree}\,(\alpha \times \alpha)) \; (\mathit{PTree}\, \alpha)\\
+\map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
+  \alpha} t & : & \Nat^{\alpha} (\mathit{PTree}\,(\alpha \times
+\alpha))\, (\mathit{PTree}\,(\alpha \times \alpha))
+%\[\begin{array}{lll}
+%\vdash \fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,\alpha} &
+%: & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+%\alpha)) \; (\mathit{PTree}\,\alpha))\; (\Nat^{\alpha}
+%(\mathit{PTree}\,\alpha) \; (\mathit{PTree}\,\alpha))\\
+%\vdash \tin_{\beta + \phi(\beta \times \beta)} & : & \Nat^{\alpha}
+%(\alpha + \mathit{PTree}\,(\alpha \times \alpha)) \; (\mathit{PTree}\,
+%\alpha)\\ 
+%\vdash \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
+%  \alpha} & : & \Nat^{\emptyset} (\Nat^{\alpha} (\alpha \times \alpha)\,
+%(\alpha \times \alpha))\; (\Nat^{\alpha} (\mathit{PTree}\,(\alpha \times
+%\alpha))\, (\mathit{PTree}\,(\alpha \times \alpha)))
 \end{array}\]
+for $t : \Nat^{\alpha} (\alpha \times \alpha)\, (\alpha \times
+\alpha)$, 
 and 
 $\mathit{swap}$ and $s$ are the terms
 \[ \vdash L_{\alpha} p.\, (\pi_2 p, \pi_1 p) :
 \Nat^{\alpha} (\alpha \times \alpha)\, (\alpha \times \alpha)\]
 and
 \[\begin{array}{l}
-\vdash L_{\alpha} t. \,\case{t}{b \mapsto {\color{blue} \inl}\, b}{t'
-  \mapsto {\color{blue} \inr}\,( 
-  {\color{red} \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times \alpha}\,
-  \mathit{swap}\, t'} )} : \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+\vdash L_{\alpha} t. \,\case{t}{b \mapsto
+  b}{t' \mapsto  
+    \map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
+      \alpha}\, \mathit{swap}\, t'} )
+:  \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
 \alpha))\; (\alpha + \mathit{PTree}\,(\alpha \times \alpha))
 \end{array}\]
 respectively. We can similarly represent the $\mathtt{reverseBush}$
@@ -1062,20 +1074,20 @@ L_{\alpha}\, x.\, \inr\, x ) \; : \; \Nat^{\alpha}\, (\alpha \times
 \mathit{Bush}\,(\mathit{Bush}\,\alpha))\; (\mathit{Bush}\,\alpha)\\
 \vdash \fold_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta
   \times \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha]}\,
-({\color{red} \map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
+(\map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
   \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha][\beta := \alpha],
   \mathit{Bush}\,\alpha}\, \tin_{\onet + \beta \times \phi
-  (\phi\beta)}})\\
+  (\phi\beta)})\\
 \hspace*{0.2in} : \Nat^{\alpha}\, (\mathit{Bush}\,\alpha)\; (\onet +
 \alpha \times \mathit{Bush}\,(\mathit{Bush}\,\alpha))\\ 
 \vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\, \{ \hspace*{0.21in}
-       {\color{blue} \inl}\,\ast \mapsto
+        \ast \mapsto
 \mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
-\hspace*{1in}{\color{blue} \inr}\,(s', u) \mapsto \mathsf{case}\;s'
-\{\hspace*{0.35in}{\color{blue} \inl}\, \ast
+\hspace*{1in}\,(s', u) \mapsto \mathsf{case}\;s'
+\{\hspace*{0.3in} \ast
 \mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
   \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
-\hspace*{2in} {\color{blue} \inr}\, (b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
+\hspace*{2in}(b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
 (\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
 b\, u )\, u')\}\}\\
 \hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
@@ -1102,8 +1114,8 @@ respectively. Here, $\Gamma; \emptyset \,|\, \Delta \vdash \sigma +
 \eta : \Nat^{\ol{\alpha}} (\sigma + F)\; (\sigma + G)$ and $\Gamma;
 \emptyset \,|\, \Delta \vdash \sigma \times \eta : \Nat^{\ol{\alpha}}
 (\sigma \times F)\; (\sigma \times G)$ for $\sigma + \eta :=
-L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto {\color{blue} \inl}\, s}{t
-  \mapsto {\color{blue} \inr}\, 
+L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto s}{t
+  \mapsto  
   (\eta_{\ol{\alpha}} t)}$ and $\sigma \times \eta := L_{\ol{\alpha}}\,
 x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
 \,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
@@ -1193,22 +1205,29 @@ well-typed:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,\sigma$}
-\AXC{$\Gamma;\emptyset \vdash \mathit{List}\,\tau$}
-\TIC{$\Gamma;\emptyset \,|\, x : \Nat^\emptyset\,(\mathit{PTree}\,
-  \sigma)\,(\mathit{List}\, \tau)\; \vdash
-  \map^{\mathit{PTree}\,\sigma, \,\mathit{List}\,\tau}_{\mathit{List}\,\alpha} \,x
- : \Nat^\emptyset\,(\mathit{List}\,
-  (\mathit{PTree}\, \sigma))\,(\mathit{List}\, (\mathit{List}\,
-  \tau))$}
-\DisplayProof
+\AXC{$\Gamma;\emptyset \vdash \mathit{List}\,\tau$ \hspace*{0.3in}
+  $\Gamma;\emptyset~|~\Delta \vdash t
+  : \Nat^\emptyset\,(\mathit{PTree}\, \sigma)\,(\mathit{List}\,
+  \tau)$}
+\TIC{$\Gamma;\emptyset \,|\, \Delta \vdash \map^{\mathit{PTree}\,\sigma,
+    \,\mathit{List}\,\tau}_{\mathit{List}\,\alpha} \,t :
+  \Nat^\emptyset\,(\mathit{List}\, (\mathit{PTree}\,
+  \sigma))\,(\mathit{List}\, (\mathit{List}\, \tau))$} \DisplayProof
 \end{array}\]
-But in the absence of $\ol \gamma$, the instance
-\[\Gamma;\emptyset \,|\, x : \Nat^\beta(\mathit{PTree}\,
-\beta)\,(\mathit{List}\, \beta) \vdash
-\map^{\mathit{PTree}\,\beta,\mathit{List}\,\beta}_{\mathit{List}\,\alpha}\,x
-: \Nat^\beta\,(\mathit{List}\,
-(\mathit{PTree}\, \beta))\,(\mathit{List}\, (\mathit{List}\,
-\beta))\] of $\mathtt{map}$ required to map the {\em polymorphic}
+But in the absence of $\ol \gamma$, if $\Gamma;
+\emptyset~|~\Delta\vdash t : \Nat^\beta(\mathit{PTree}\,
+\beta)\,(\mathit{List}\, \beta)$ then the instance
+\[\Gamma;\emptyset~|~\Delta \vdash
+\map^{\mathit{PTree}\,\beta,\mathit{List}\,\beta}_{\mathit{List}\,\alpha}\,t
+: \Nat^\beta\,(\mathit{List}\, (\mathit{PTree}\,
+\beta))\,(\mathit{List}\, (\mathit{List}\, \beta))\]
+%\[\Gamma;\emptyset \,|\, x : \Nat^\beta(\mathit{PTree}\,
+%\beta)\,(\mathit{List}\, \beta) \vdash
+%\map^{\mathit{PTree}\,\beta,\mathit{List}\,\beta}_{\mathit{List}\,\alpha}\,x
+%: \Nat^\beta\,(\mathit{List}\,
+%(\mathit{PTree}\, \beta))\,(\mathit{List}\, (\mathit{List}\,
+%\beta))\] of $\mathtt{map}$
+required to map the {\em polymorphic}
 $\mathit{flatten}$ function over a list of perfect trees is not: in
 that setting the functorial contexts for $F$ and $G$ in the rule for
 $\map^{F,G}_H$ would have to be empty, but the fact that the
@@ -1226,10 +1245,11 @@ typeable as follows:
 \[\begin{array}{l}
 \AXC{$\Gamma;\alpha,\beta \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\beta \vdash \mathit{PTree}\,\beta \hspace*{0.3in}
-  \Gamma;\beta \vdash \mathit{List}\,\beta$}
-\BIC{$\Gamma;\emptyset \,|\, x :   \Nat^\beta(\mathit{PTree}\,
-  \beta)\,(\mathit{List}\, \beta) \vdash
-  \map^{F,G}_{\mathit{List}\,\alpha} \, x :
+  \Gamma;\beta \vdash \mathit{List}\,\beta$\hspace*{0.3in}
+$\Gamma;\emptyset~|~\Delta \vdash t : \Nat^\beta(\mathit{PTree}\,
+  \beta)\,(\mathit{List}\, \beta)$}
+\BIC{$\Gamma;\emptyset~|~\Delta \vdash
+  \map^{F,G}_{\mathit{List}\,\alpha} \, t :
  \Nat^\beta\,(\mathit{List}\,
   (\mathit{PTree}\, \beta))\,(\mathit{List}\, (\mathit{List}\,
   \beta))$}
@@ -3862,8 +3882,8 @@ functorial types, i.e., we have
 \hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, x :
   \Nat^{\overline{\alpha}, 
     \overline{\gamma}} F\,G, \overline{y : \Nat^{\overline{\gamma}}
-    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) \circ
+    \sigma\, \tau} \vdash (\map_G^{\overline{\sigma},
+    \overline{\tau}} \,\overline{y}) \circ
   (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}}
   z) : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\,
   G[\overline{\alpha := \tau}]}\\
@@ -3871,7 +3891,7 @@ functorial types, i.e., we have
   : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y :
     \Nat^{\overline{\gamma}} \sigma\, \tau} \vdash
   (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)
-  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
+  \circ (\map_F^{\overline{\sigma}, \overline{\tau}} \,
   \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
       \sigma}]\, G[\overline{\alpha := \tau}]}
 \end{array}\]
@@ -3885,17 +3905,17 @@ specializes to
 \begin{array}{l}
 \hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, \overline{y :
     \Nat^{\overline{\gamma}} 
-    \sigma\, \tau} \vdash ((\map_{(\mu \phi. \lambda
+    \sigma\, \tau} \vdash (\map_{(\mu \phi. \lambda
     \overline{\alpha}. H) \overline{\beta}}^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) \circ
+    \overline{\tau}}\, \overline{y}) \circ
   (L_{\overline{\gamma}} z. (\tin_{H})_{\overline{\sigma},
     \overline{\gamma}} z) : \xi}\\
 = \setsem{\Gamma; \emptyset \,|\, \overline{y :
   \Nat^{\overline{\gamma}} \sigma\, \tau} 
   \vdash (L_{\overline{\gamma}} z. (\tin_H)_{\overline{\tau}, \overline{\gamma}} z)
-  \circ ((\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)
+  \circ (\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)
       \overline{\beta}]}^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) 
+    \overline{\tau}}\, \overline{y}) 
   : \xi}
 \end{array}
 \end{equation}
@@ -3908,13 +3928,13 @@ Section~\ref{sec:intro}. The $\mathtt{map}$/$\mathtt{reverse}$ theorem
 for bushes, e.g., is
 \begin{align*}
   &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
-    \vdash ((\map_{\mathit{Bush}\,\alpha}^{{\sigma},
-      {\tau}})_{\emptyset} {y}) \circ (L_{{\emptyset}}
+    \vdash (\map_{\mathit{Bush}\,\alpha}^{{\sigma},
+      {\tau}}\, y) \circ (L_{{\emptyset}}
     z. \mathit{reverseBush}_{\sigma} z) : \Nat^{{\emptyset}}
     (\mathit{Bush} \, \sigma) \, (\mathit{Bush} \, \tau) }\\ =\;
   &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset \sigma \, \tau
     \vdash (L_{\emptyset} z. \mathit{reverseBush}_{\tau} z) \circ
-    ((\map_{\mathit{Bush} \, \alpha}^{{\sigma}, {\tau}})_{\emptyset}
+    (\map_{\mathit{Bush} \, \alpha}^{{\sigma}, {\tau}}\,
            {y}) : \Nat^{\emptyset} (\mathit{Bush} \, \sigma ) \,
            (\mathit{Bush} \, \tau)}
 \end{align*}
@@ -3941,15 +3961,15 @@ if $\vdash \mathit{reverseTree} : \Nat^{\alpha, \gamma} (\mathit{Tree}
 \,\alpha \, \gamma) \, (\mathit{Tree} \, \alpha \, \gamma)$ then
 \begin{align*}
   &\setsem{\emptyset; \alpha,\gamma~|~y : \Nat^\emptyset \sigma \,
-    \tau \vdash ((\map_{\mathit{Tree}\,\alpha \, \gamma}^{{\sigma},
-      {\tau}})_{\emptyset} {y}) \circ (L_{{\gamma}}
+    \tau \vdash (\map_{\mathit{Tree}\,\alpha \, \gamma}^{{\sigma},
+      {\tau}}\, y) \circ (L_{{\gamma}}
     z. \mathit{reverseTree}_{\sigma, \gamma} z) : \Nat^{{\gamma}}
     (\mathit{Tree} \, \sigma \, \gamma) \, (\mathit{Tree} \, \tau \,
     \gamma) }\\ =\; &\setsem{\emptyset; \alpha,\gamma~|~y :
     \Nat^\emptyset \sigma \, \tau \vdash (L_{\gamma}
     z. \mathit{reverseTree}_{\tau, \gamma} z) \circ
-    ((\map_{\mathit{Tree} \, \alpha\, \gamma}^{{\sigma},
-      {\tau}})_{\emptyset} {y}) : \Nat^{\gamma} (\mathit{Tree} \,
+    (\map_{\mathit{Tree} \, \alpha\, \gamma}^{{\sigma},
+      {\tau}}\, y) : \Nat^{\gamma} (\mathit{Tree} \,
     \sigma \, \gamma) \, (\mathit{Tree} \, \tau\, \gamma)}
 \end{align*}
 \noindent
@@ -3977,7 +3997,7 @@ relational interpretations.
 
 \subsection{Properties of Initial Algebraic Constructs}\label{sec:iaps}
 
-Our semantics interprets $\map$ terms as semantic $\mathit{map}$
+{\color{red} Our semantics interprets $\map$ terms as semantic $\mathit{map}$
 functions. Indeed, if \(\Gamma; \ol{\phi}, \ol{\gamma} \vdash H\),
 \(\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}\) and 
 \(\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash G}\), then
@@ -4144,7 +4164,7 @@ then
 
 \noindent
 Analogous results hold for relational interpretations of terms and
-relational environments.
+relational environments.}
 
 \begin{comment}
 \subsection{Free Theorems Derived from Naturality}\label{sec:ft-nat}
@@ -4372,7 +4392,7 @@ of terms of $\Nat$-types satisfy the appropriate {\color{blue}
 For the interesting cases of abstraction, application, $\map$, $\tin$,
 and $\fold$ terms, propagating the naturality conditions is quite
 involved; the latter two cases especially require some rather
-sophisticated diagram chasing. That this is possible provides strong
+involved diagram chasing. That this is possible provides strong
 evidence that our definitions and development are sensible,
 natural, and at an appropriate level of abstraction. Detailed proofs
 for the set interpretations for the five interesting forms of terms
@@ -5042,7 +5062,7 @@ $\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\emptyset;\alpha\vdash K}\,B$. 
 \end{proof}
 
-\vspace*{-0.1in}
+\vspace*{-0.07in}
 
 As in~\cite{jg10}, replacing $\onet$ with any term $\emptyset;\alpha
 \vdash c$ generalizes
@@ -5050,6 +5070,13 @@ As in~\cite{jg10}, replacing $\onet$ with any term $\emptyset;\alpha
 Theorem~\ref{thm:short-cut-nested} to deliver more general a free
 theorem whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu
 H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
+
+\vspace*{0.02in}
+
+It is also standard to prove that the parametric model constructed
+verifies the existence of initial algebras. This is, however,
+unnecessary here since initial algebras are built directly into our
+model.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
@@ -5108,12 +5135,14 @@ domains to replace $\set$, {\color{blue} is not locally finitely
 The constructions of the present paper should all be possible in any
 locally presentable cartesian closed category (lpccc) $\cal C$ whose
 category of (abstract) relations, obtained by pullback as
-in~\cite{jac99}, is also a lpccc and is appropriately fibred over
-$C$. More specifically, it should be possible to extend the results
-presented here along the lines of~\cite{gjfor15}. This would give a
-framework based on ``locally presentable fibrations'', for some
-appropriate definition thereof, for constructing parametric models for
-calculi supporting nested types built from primitives.
+in~\cite{jac99}, is also a lpccc and is appropriately fibred over $C$.
+This would
+%extend the results presented here along the lines of~\cite{gjfor15},
+%thus giving
+give a framework for constructing parametric models for calculi
+supporting nested types built from primitives that is based on
+``locally presentable fibrations'', for some appropriate definition
+thereof.
 
 \vspace*{0.1in}
 
