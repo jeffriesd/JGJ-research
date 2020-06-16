@@ -1,0 +1,322 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+%\newcommand{\inl}{\mathit{inL}\,}
+%\newcommand{\inr}{\mathit{inR}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for 
+Nested Types} %% [Short Title] is optional;
+                                        %% when present, will be used in
+                                        %% header instead of Full Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann and Andrew Polonsky}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, andrew.polonsky@gmail.com}          %% \email is recommended
+
+
+
+
+\begin{document}
+\newcommand{\BBush}{\mathit{B}\,}
+\newcommand{\nilHelp}{\mathit{nilHelp}}
+\newcommand{\consHelp}{\mathit{consHelp}}
+\renewcommand{\F}[1]{\Nat^{#1} (\BBush #1)\, (\BBush (\beta \times #1))}
+\section{Zip function for Bush datatype}
+
+We can define a zip function for bushes with the following type
+
+$$\vdash \Nat^\beta \, (\BBush \beta) \, (\Nat^\delta (\BBush \delta) \, 
+(\BBush (\beta \times \delta)))$$
+
+as a fold in our calculus. The unapplied fold will be formed as
+
+\begin{align*}
+\vdash \fold^{\F{\delta}}_{\onet + \alpha \times \phi(\phi\alpha)} : 
+  \Nat^\emptyset &(\Nat^\beta (\onet + 
+%  FFB
+  \beta \times 
+(\Nat^\delta \BBush \delta \, (\BBush ((\Nat^{\delta'} \BBush \delta'
+\, \BBush (\beta \times \delta')) \times \delta ))
+)
+) \, (\F{\delta})) \\
+  &(\Nat^\beta \BBush \beta \,\, (\F{\delta}))
+\end{align*}
+
+and the algebra components to which we will apply the fold have the 
+following types:
+
+$$\vdash \nilHelp : \Nat^\beta \onet \, (\F{\delta})$$
+$$\vdash \consHelp : \Nat^\beta (\beta \times 
+(\Nat^\delta \BBush \delta \, (\BBush ((\Nat^{\delta'} \BBush \delta'
+\, \BBush (\beta \times \delta')) \times \delta ))))
+\, (\F{\delta})$$
+
+We first define $\nilHelp$ as a constant function which always returns an empty
+bush:
+
+$$\vdash L_\beta *. L_\delta \, b. bnil_{\beta\times\delta} * : 
+\Nat^\beta \onet \, (\F{\delta})$$
+
+\noindent \\
+$\consHelp$ has a more involved definition. It takes two arguments (an element of
+$\beta$, b,  and a natural transformation over bushes, r) and returns a natural transformation
+from $\BBush \delta$ to $\BBush (\beta \times \delta)$. Since the return type is a natural
+transformation, we can see $\consHelp$ as taking three arguments and returning
+an element of $\BBush (\beta \times \delta)$. 
+
+We define $\consHelp$ by pattern matching on the third argument. If this bush is empty,
+we return an empty bush. Otherwise we pair the head element of the third argument
+with the first argument and combine this pair with the recursively processed tail:
+
+\newcommand{\bd}{bd}
+\begin{align*}
+  \vdash L_\beta \, (b , r). 
+  &L_\delta \, \bd. \, 
+  case \, ((\tin^{-1}_{\onet + \alpha \times \phi(\phi(\alpha))})_\delta \, \bd)\, \mathsf{of}  \\
+  &\{  
+  * \mapsto bnil_{\beta\times\delta} \, *; \\
+  &(d , bbd) \mapsto bcons_{\beta \times \delta} 
+  ((b, d), (\map^{(\F{\delta})\times\BBush\delta, \BBush (\beta \times \delta)}_{\BBush \alpha}
+    \, app)_{\beta,\delta} (r_{(\BBush \delta)} \, bbd))\}
+\end{align*}
+
+where $ app : \Nat^{\beta, \delta} ((\Nat^{\delta'} \BBush \delta' \, \BBush (\beta \times \delta')) \times \BBush \delta)
+\, (\BBush(\beta\times\delta))$
+is the following application function:
+$$\vdash L_{\beta,\delta} \, (\eta , \bd). \eta_{\delta} \, \bd$$
+
+We can now define the zip function for bushes as 
+\begin{align*}
+  \vdash (\fold^{\F{\delta}}_{\onet + \alpha \times \phi(\phi\alpha)})_\emptyset \,
+  alg :
+  (\Nat^\beta (\BBush \beta) \,\, (\F{\delta}))
+\end{align*}
+
+where $alg : \Nat^\beta (\onet + 
+%  F F (B) 
+  \beta \times 
+(\Nat^\delta \BBush \delta \, (\BBush ((\Nat^{\delta'} \BBush \delta'
+\, \BBush (\beta \times \delta')) \times \delta ))
+)
+) \, (\F{\delta})$ is the sum of the algebra components:
+$$\vdash L_{\beta} \, s. \case{(s)}{* \mapsto \nilHelp_\beta \, *}{(b, r) \mapsto \consHelp_\beta \, (b, r)}$$
+
+\section{Type check}
+To see that $\consHelp$ is well-typed, first observe that $(r_{(\BBush \delta)} \, bbd)$
+has type $\emptyset; \beta, \delta \vdash \BBush ((\Nat^{\delta'} \BBush \delta' \, \BBush(\beta \times \delta')) \times 
+\BBush \delta))$. 
+Using the map rule, we can derive
+
+\[\begin{array}{c}
+  \AXC{$\emptyset ; \alpha, \beta, \delta \vdash \BBush \alpha$}
+  \AXC{$\emptyset ; \beta, \delta \vdash (\F{\delta'}) \times \BBush \delta $}
+  \AXC{$\emptyset ; \beta, \delta \vdash \BBush (\beta \times \delta) $}
+  \AXC{$\vdash app : \Nat^{\beta, \delta} ((\Nat^{\delta'} \BBush \delta' \, \BBush (\beta \times \delta')) \times \BBush \delta)
+  \, (\BBush(\beta\times\delta))$}
+  \QIC{$\vdash \map
+  % ^{(\F{\delta'})\times\BBush\delta,\BBush(\beta\times\delta)}
+  ^{...}
+  _{\BBush \alpha} 
+  \, app : \Nat^{\beta,\delta} (\BBush (\F{\delta'} \times \BBush\delta)) (\BBush(\BBush(\beta\times\delta)))
+  $}
+  \DP
+\end{array}\]
+
+and we can apply this result to $(r_{(\BBush \delta)} bbd)$ to get (omitting the type of $r$ for space)
+$$\emptyset; \beta, \delta \,|\, b : \beta, r : -\,, \bd : \BBush \delta, d : \delta, bbd : \BBush (\BBush \delta) \vdash (\map^{...}_{\BBush \alpha} \, app)_{\beta,\delta} \,
+(r_{(\BBush \delta)} \, bbd) : \BBush(\BBush(\beta \times \delta))$$
+Applying $bcons$ to this last result gives 
+$$\emptyset; \beta, \delta \,|\, b : \beta, r : -\,, \bd : \BBush \delta, d : \delta, bbd : \BBush (\BBush \delta) \vdash
+bcons_{\beta \times \delta} \, 
+((b, d), (\map^{...}_{\BBush \alpha} \, app)_{\beta,\delta} \,
+(r_{(\BBush \delta)} \, bbd)) : \BBush (\beta \times \delta)$$
+
+We can now show the case term has the correct type. Let $R$ stand for the 
+last term above, let $\Delta = b : \beta, r : -\,, \bd : \BBush \delta$ and
+let $bd' = (\tin^{-1}_{\onet + \alpha \times \phi(\phi(\alpha))})_\delta \, \bd$
+
+\[\begin{array}{c}
+  \AXC{$\emptyset; \beta, \delta \,|\, \Delta, * : \onet \vdash bnil_{\beta\times\delta} \, * : \BBush (\beta \times \delta)$}
+  \AXC{$\emptyset; \beta, \delta \,|\, \Delta, d : \delta , bbd : \BBush (\BBush \delta) 
+        \vdash R : \BBush (\beta \times \delta)$}
+  \AXC{$\emptyset; \beta, \delta \,|\, \Delta \vdash bd'
+  : \onet + \delta \times \BBush (\BBush \delta) $}
+  \TIC{$ \emptyset; \beta, \delta \,|\, \Delta \vdash \case{bd'}
+  {* \mapsto bnil_{\beta \times \delta}\, *}
+  {(d, bbd) \mapsto R } : \BBush (\beta \times \delta) $}
+  \DP
+\end{array}\]
+% note abuse of notation (x, y) \mapsto ... isn't really valid because (x, y)
+% is supposed to be a variable. just didn't want to introduce a bunch of \pi's 
+% when the meaning is clear
+
+\noindent
+Let $C$ stand for the entire $case$ term above.  Now we can derive
+\[\begin{array}{c}
+  \AXC{$\emptyset; \delta \vdash \BBush \delta$}
+  \AXC{$\emptyset; \beta, \delta \vdash \BBush (\beta \times \delta)$}
+  \AXC{$\emptyset; \beta, \delta \,|\, b : \beta, r : -,\, \bd: \BBush\delta 
+          \vdash C : \BBush (\beta \times \delta) $}
+  \TIC{$ \emptyset; \beta \,|\, b : \beta, r : - \vdash 
+    L_\delta \, \bd. C : \Nat^\delta (\BBush \delta) \, (\BBush (\beta \times \delta))
+  $}
+  \DP
+\end{array}\]
+
+and finally, if $F = \beta \times 
+(\Nat^\delta \BBush \delta \, (\BBush ((\Nat^{\delta'} \BBush \delta'
+\, \BBush (\beta \times \delta')) \times \delta )))$
+
+\[\begin{array}{c}
+  \AXC{$\emptyset; \beta \vdash F
+  $}
+  \AXC{$\emptyset; \beta \vdash \F{\delta}$}
+  \AXC{$\emptyset; \beta \,|\, b : \beta, r : - \vdash 
+          L_\delta \, \bd. C : \F{\delta} $}
+  \TIC{$ \vdash L_\beta \, (b, r). \, 
+    L_\delta \, \bd. C : \Nat^\beta F \, (\F{\delta})
+  $}
+  \DP
+\end{array}\]
+
+
+\end{document}
