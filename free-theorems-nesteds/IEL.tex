@@ -1,0 +1,426 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
+
+\title[Identity Extension Lemma (new Nat type)]{Identity Extension Lemma (new Nat type)} %% [Short Title] is optional; when present,
+                         %% will be used in header instead of Full
+                         %% Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+
+
+\begin{document}
+
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+
+%% Keywords
+%% comma separated list
+%\keywords{keyword1, keyword2, keyword3}  %% \keywords is optional
+
+
+\maketitle
+
+
+
+\begin{thm}\label{thm:iel}
+  If $\rho$ is a set environment, and $\Gamma; \Phi \vdash \tau : \F$,
+  then $\relsem{\Gamma; \Phi \vdash \tau} \Eq_\rho =
+  \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}$.
+\end{thm}
+\begin{proof}
+By induction on the structure of $\tau$.
+\begin{itemize}
+\item $\relsem{\Gamma; \emptyset \vdash v}\Eq_{\rho} = \Eq_{\rho} v =
+  \Eq_{\rho v} = \Eq_{\setsem{\Gamma; \emptyset \vdash v}\rho}$ where
+  $v \in \Gamma$.
+%\item $\relsem{\Gamma; \emptyset \vdash \sigma \to \tau} \Eq_{\rho} =
+%  \relsem{\Gamma; \emptyset \vdash \sigma} \Eq_{\rho} \to
+%  \relsem{\Gamma; \emptyset \vdash \tau} \Eq_{\rho} =
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma}\rho} \to
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \tau}\rho} =
+%  \Eq_{\setsem{\Gamma; \emptyset \vdash \sigma \to \tau}\rho}$, where
+%  the second equality is by the induction hypothesis.
+%% \item {\color{red} $\tau = \forall v.\tau_1$}
+\item {\color{red} CHANGED!} By definition, $\relsem{\Gamma; \Phi \vdash
+  \Nat^{\overline\alpha} \,F\,G} \Eq_{\rho}$ is the relation on
+  $\setsem{\Gamma; \Phi \vdash \Nat^{\overline\alpha} \,F\,G}
+  \rho$ relating $t$ and $t'$ if, for all ${R_1 :
+    \rel(A_1,B_1)},...,{R_k : \rel(A_k,B_k)}$, $(t_{\overline{A}},
+  t'_{\overline{B}})$ is a morphism from $\relsem{\Gamma;
+    \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha := R]}$ to
+  $\relsem{\Gamma ; \Phi, \overline\alpha \vdash G}
+  \Eq_{\rho}\overline{[\alpha := R]}$ in $\rel$.  To prove that this
+  is equal to $\Eq_{\setsem{\Gamma; \Phi \vdash
+      \Nat^{\overline\alpha} \,F\,G} \rho}$ we need to show that
+  $(t_{\overline{A}}, t'_{\overline{B}})$ is a morphism from
+  $\relsem{\Gamma; \overline\alpha \vdash F}
+  \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ;
+  \Phi, \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in
+  $\rel$ for all ${R_1 : \rel(A_1,B_1)},...,{R_k : \rel(A_k,B_k)}$ if
+  and only if $t = t'$ and $(t_{\overline{A}}, t_{\overline{B}})$ is a
+  morphism from $\relsem{\Gamma; \overline\alpha \vdash F}
+  \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ; \Phi, \overline
+    \alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in $\rel$ for
+  all ${R_1 : \rel(A_1,B_1)}, ...,$ ${R_k : \rel(A_k,B_k)}$. The only
+  interesting part of this equivalence is to show that if
+  $(t_{\overline{A}}, t'_{\overline{B}})$ is a morphism from
+  $\relsem{\Gamma; \overline\alpha \vdash F}
+  \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ; \Phi,
+    \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in
+  $\rel$ for all ${R_1 : \rel(A_1,B_1),}$ $...,{R_k : \rel(A_k,B_k)}$,
+  then $t = t'$.  By hypothesis, $(t_{\overline{A}},
+  t'_{\overline{A}})$ is a morphism from $\relsem{\Gamma;
+    \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha :=
+      \Eq_{A}]}$ to $\relsem{\Gamma ; \Phi, \overline\alpha \vdash G}
+  \Eq_{\rho}\overline{[\alpha := \Eq_{A}]}$ in $\rel$ for all
+  $A_1\,...\,A_k : \set$. By the induction hypothesis, it is therefore
+  a morphism from $\Eq_{\setsem{\Gamma; \overline\alpha \vdash F}
+    \rho\overline{[\alpha := A]}}$ to $\Eq_{\setsem{\Gamma ; \Phi,
+      \overline\alpha \vdash G} \rho\overline{[\alpha := A]}}$ in
+  $\rel$. This means that, for every $x : \Eq_{\setsem{\Gamma;
+      \overline\alpha \vdash F} \rho\overline{[\alpha := A]}}$,
+  $t_{\overline{A}}x = t'_{\overline{A}}x$.  Then, by extensionality,
+  $t = t'$.
+\item $\relsem{\Gamma; \Phi \vdash \zerot} \Eq_{\rho} = 0_\rel =
+  \Eq_{0_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash \zerot}\rho}$
+\item $\relsem{\Gamma; \Phi \vdash \onet} \Eq_{\rho} = 1_\rel =
+  \Eq_{1_\set} = \Eq_{\setsem{\Gamma; \Phi \vdash \onet}\rho}$
+\item The application case is proved by the following sequence of
+  equalities, where the second equality is by the induction hypothesis
+  and the definition of the relation environment $\Eq_\rho$, the third
+  is by the definition of application of relation transformers from
+  Definition~\ref{def:rel-transf}, and the fourth is by
+  Lemma~\ref{lem:eq-reln-equalities}:
+\[
+\begin{split}
+\relsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\Eq_{\rho} &=
+(\Eq_{\rho}\phi)\ol{\relsem{\Gamma; \Phi \vdash \tau}
+\Eq_{\rho}}\\
+&= \Eq_{\rho \phi}\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}
+  \rho}}\\
+&= (\Eq_{\rho \phi})^* \,\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}
+  \rho}}\\
+&= \Eq_{(\rho \phi) \,\ol{\setsem{\Gamma; \Phi \vdash \tau} \rho}}\\
+%&= (\Eq_{\rho \phi})^* \ol{\setsem{\Gamma; \Phi \vdash \tau} \rho}\\
+&= \Eq_{\setsem{\Gamma; \Phi \vdash \phi\ol{\tau}}\rho}
+\end{split}
+\]
+\item The fixed point case is proven by the sequence of equalities
+\[
+\begin{split}
+\relsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
+  \ol{\alpha}. H)\ol{\tau}}\Eq_{\rho} 
+&=(\mu {T_{\Eq_{\rho}}}) \,\ol{\relsem{\Gamma; \Phi \vdash \tau}\Eq_{\rho}}\\ 
+&= \colim{n \in \nat}{T^n_{\Eq_{\rho}} K_0}\, \ol{\relsem{\Gamma; \Phi
+  \vdash \tau}\Eq_{\rho}}\\
+%&= \colim{n \in \nat}{(T^n_{\Eq_{\rho}} K_0)}
+%\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}\\
+&= \colim{n \in \nat}{ T^n_{\Eq_{\rho}} K_0 \,\ol{\Eq_{\setsem{\Gamma;
+    \Phi \vdash \tau}\rho}}}\\
+&= \colim{n \in \nat}{(\Eq_{(T^\set_\rho)^n K_0})^*
+  \ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}}\\
+&= \colim{n \in \nat}{\Eq_{(T^\set_\rho)^n K_0 \,\ol{\setsem{\Gamma;
+        \Phi \vdash \tau}\rho}}}\\ 
+&= \Eq_{\colim{n \in \nat}{ (T^\set_{\rho})^n K_0\,
+    \ol{\setsem{\Gamma; \Phi \vdash \tau}\rho}}}\\
+&= \Eq_{\setsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
+      \ol{\alpha}. H)\ol{\tau}}\rho}
+\end{split}
+\]
+Here, the third equality is by induction hypothesis, the fifth is by
+Lemma~\ref{lem:eq-reln-equalities} and the fourth equality is because,
+for every $n \in \nat$, the following two statements can be proved by
+simultaneous induction:
+\begin{equation}\label{eq:iel-fix-point-intermediate1}
+T^n_{\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
+      \tau}\rho}} = (\Eq_{(T^\set_\rho)^n K_0})^*
+\ol{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
+\end{equation}
+and
+\begin{equation}\label{eq:iel-fix-point-intermediate2}
+\begin{split}
+  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H}
+\Eq_{\rho} [\phi := 
+ & T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
+    \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\
+=\;\; & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+  := \Eq_{(T^\set_\rho)^n K_0}] \overline{[\alpha :=
+    \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
+\end{split}
+\end{equation}
+We prove~\eqref{eq:iel-fix-point-intermediate1}.  The case $n=0$ is
+trivial, because $T^0_{\Eq_{\rho}} K_0 = K_0$ and
+$(T^\set_\rho)^0 K_0 = K_0$; the inductive step is
+proved by the following sequence of equalities:
+\[
+\begin{split}
+T^{n+1}_{\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}}
+&= T^\rel_{\Eq_{\rho}} (T^{n}_{\Eq_{\rho}} K_0)
+\overline{\Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}} \\ 
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+  := T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
+    \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\ 
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+  := \Eq_{(T^\set_\rho)^n K_0}] \overline{[\alpha :=
+    \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} \\ 
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho [\phi
+    := (T^\set_\rho)^n K_0] \overline{[\alpha :=
+      \setsem{\Gamma; \Phi \vdash \tau}\rho]}} \\ 
+&= \Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \rho [\phi
+    := (T^\set_\rho)^n K_0] \overline{[\alpha :=
+      \setsem{\Gamma; \Phi \vdash \tau}\rho]}} \\ 
+&= \Eq_{(T^\set_\rho)^{n+1} K_0 \overline{\setsem{\Gamma; \Phi
+      \vdash \tau}\rho}} \\ 
+&= (\Eq_{(T^\set_\rho)^{n+1} K_0})^*\, \overline{\Eq_{\setsem{\Gamma;
+      \Phi \vdash \tau}\rho}} 
+\end{split}
+\]
+Here, the third equality is by~\eqref{eq:iel-fix-point-intermediate2},
+the fifth by the induction hypothesis on $H$, and the last by
+Lemma~\ref{lem:eq-reln-equalities}.  We prove the induction step
+of~\eqref{eq:iel-fix-point-intermediate2} by structural induction on
+$H$: the only interesting case, though, is when $\phi$ is applied,
+i.e., for $H = \phi \ol{\sigma}$, which is proved by the sequence of
+equalities:
+\[
+\begin{split}
+& \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi
+    \ol{\sigma}} \Eq_{\rho} [\phi := T^{n}_{\Eq_{\rho}} K_0]
+  \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}
+  \\
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
+      \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
+      T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha :=
+        \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\ 
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
+      \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
+      \Eq_{(T^\set_\rho)^{n} K_0}] \overline{[\alpha :=
+        \Eq_{\setsem{\Gamma; \Phi \vdash \tau} \rho}]}} \\ 
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
+      \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho [\phi := (T^\set_\rho)^{n}
+        K_0] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash
+            \tau} \rho]}}} \\ 
+&= T^{n}_{\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
+        \Phi, \phi, \ol{\alpha} \vdash \sigma} \rho [\phi :=
+        (T^\set_\rho)^{n} K_0] \overline{[\alpha :=
+          \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\ 
+&= (\Eq_{(T^\set_\rho)^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
+        \Phi, \phi, \ol{\alpha} \vdash \sigma} \rho [\phi :=
+        (T^\set_\rho)^{n} K_0] \overline{[\alpha :=
+          \setsem{\Gamma; \Phi \vdash \tau} \rho]}}} \\ 
+&= (\Eq_{(T^\set_{\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
+      \Phi, \phi, \ol{\alpha} \vdash \sigma} \Eq_{\rho} [\phi :=
+      \Eq_{(T^\set_{\rho})^{n} K_0}] \overline{[\alpha :=
+        \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]}} \\ 
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi \ol{\sigma}}
+  \Eq_{\rho} [\phi := \Eq_{(T^\set_{\rho})^{n} K_0}]
+  \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}]} 
+\end{split}
+\]
+Here, the second equality is by the induction hypothesis
+for~\eqref{eq:iel-fix-point-intermediate2} on the $\sigma$s, the
+fourth is by the induction hypothesis for Theorem~\ref{thm:iel} on the
+$\sigma$s, and the fifth is by the induction hypothesis on $n$
+for~\eqref{eq:iel-fix-point-intermediate1}.
+\item $\relsem{\Gamma; \Phi \vdash \sigma + \tau} \Eq_{\rho} =
+  \relsem{\Gamma; \Phi \vdash \sigma} \Eq_{\rho} + \relsem{\Gamma;
+    \Phi \vdash \tau} \Eq_{\rho} = \Eq_{\setsem{\Gamma; \Phi \vdash
+      \sigma}\rho} + \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho} =
+  \Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho + \setsem{\Gamma; \Phi
+      \vdash \tau}\rho} = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma +
+      \tau}\rho}$
+\item $\relsem{\Gamma; \Phi \vdash \sigma \times \tau} \Eq_{\rho} =
+  \relsem{\Gamma; \Phi \vdash \sigma}\Eq_{\rho} \times \relsem{\Gamma;
+    \Phi \vdash \tau}\Eq_{\rho} = \Eq_{\setsem{\Gamma; \Phi \vdash
+      \sigma}\rho} \times \Eq_{\setsem{\Gamma; \Phi \vdash \tau}\rho}
+  = \Eq_{\setsem{\Gamma; \Phi \vdash \sigma}\rho \times
+    \setsem{\Gamma; \Phi \vdash \tau}\rho} = \Eq_{\setsem{\Gamma;
+      \Phi \vdash \sigma \times \tau}\rho}$
+\end{itemize}
+\end{proof}
+
+\end{document}
+
+
+  
