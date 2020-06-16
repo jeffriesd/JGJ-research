@@ -384,7 +384,7 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
 \end{itemize}
 \end{proof}
 
-\vspace*{0.2in}
+\vspace*{0.1in}
 
 \begin{nono-theorem}[Abstraction Theorem]\label{thm:at-gen}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ induces
@@ -534,7 +534,6 @@ let $f : \rho \to \rho'$ and consider the following computation
   by currying, and the eight equality uses the functoriality of
   $\setsem{\Gamma;\ol{\alpha} \vdash F}$ and the fact that the only
   functorial variables in $F$ are in $\ol{\alpha}$.
-
 \item 
 $\underline{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
   [\overline{\alpha := K}]}$\; To see that $\setsem{\Gamma;\Phi \,|\,
@@ -695,20 +694,20 @@ is equal to
   \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
       :=_{\ol{\beta}} G}]}$\;
   To see that
-  $\setsem{\Gamma; \Phi~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
+    \[\setsem{\Gamma; \Phi~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
   : \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}]}$ is a natural transformation from
-  $\setsem{\Gamma;\Phi \vdash \Delta}$ to
-  $\setsem{\Gamma;\Phi \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-      :=_{\ol{\beta}} G}]}$ we need to show that
-\[
-\setsem{\Gamma; \Phi~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
-    : \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
-        :=_{\ol{\beta}} G}]}\,\rho\,d
-  : \setsem{\Gamma; \Phi \vdash
+      :=_{\ol{\beta}} G}]}\] is a natural transformation from
+  \[\setsem{\Gamma;\Phi \vdash \Delta}\] to
+  \[\setsem{\Gamma;\Phi \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}]}\] we need to show that
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \Phi~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
+    :  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}]}\,\rho\,d\\
+  : & \setsem{\Gamma; \Phi \vdash
     \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
         :=_{\ol{\beta}} G}]} \rho
-\]
+\end{array}\]
   for all $\rho : \setenv$ and $d : \setsem{\Gamma;\Phi \vdash \Delta} \rho$,
   and that this family of morphisms is natural in $\rho$.
   For this, we first note that
@@ -732,9 +731,9 @@ so that
 [\ol{\phi := \lambda \ol{A}. {(\setsem{\Gamma; \Phi~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho d)}_{\ol{A}\,\ol{B}}}]
 \end{multline*}
 which is indeed a morphism from
-$\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma := B}]$
+\[\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma := B}]\]
 to 
-$\setsem{\Gamma ;\Phi, \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma := B}]$.
+\[\setsem{\Gamma ;\Phi, \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma := B}]\]
 This family of morphisms is natural in $\ol B$: if $\ol{f : B \to B'}$
 then, writing $\eta$ for
 \[
@@ -765,16 +764,15 @@ for $\eta$ commutes:
 & \setsem{\Gamma ; \Phi, \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
       := B'}] 
 \end{tikzcd}\]}
-That, for all $\rho : \setenv$ and $d :
-  \setsem{\Gamma;\Phi \vdash \Delta}\rho$,
-$\eta$ satisfies the
-additional condition needed for it to be in $\setsem{\Gamma;
-  \Phi \vdash \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}}
-      F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]}\rho$, follows from the fact
-that $\setsem{\Gamma; \Phi~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho d$
-satisfies the extra condition needed for it to be
-in its corresponding $\setsem{\Gamma; \Phi \vdash
-  \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho$.
+That, for all $\rho : \setenv$ and $d : \setsem{\Gamma;\Phi \vdash
+  \Delta}\rho$, $\eta$ satisfies the additional condition needed for
+it to be in $\setsem{\Gamma; \Phi \vdash
+  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}]}\rho$ follows from the fact
+that \[\setsem{\Gamma; \Phi~|~\Delta \vdash t :
+  \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho d\] satisfies the extra
+condition needed for it to be in its corresponding $\setsem{\Gamma;
+  \Phi \vdash \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho$.
 
 For the naturality of
 $\setsem{\Gamma; \Phi~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
