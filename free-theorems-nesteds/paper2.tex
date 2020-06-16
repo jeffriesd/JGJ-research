@@ -1,4 +1,4 @@
-% For double-blind review submission, w/o CCS and ACM Reference (max
+% double-blind review submission, w/o CCS and ACM Reference (max
 % submission space)
 \documentclass[acmsmall,review,anonymous]{acmart}
 \settopmatter{printfolios=true,printccs=false,printacmref=false}
@@ -1084,14 +1084,14 @@ L_{\alpha}\, x.\, \inr\, x ) \; : \; \Nat^{\alpha}\, (\alpha \times
   (\phi\beta)})\\
 \hspace*{0.2in} : \Nat^{\alpha}\, (\mathit{Bush}\,\alpha)\; (\onet +
 \alpha \times \mathit{Bush}\,(\mathit{Bush}\,\alpha))\\ 
-\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\, \{ \hspace*{0.21in}
+\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\,\mathsf{of}\, \{ \hspace*{0.21in}
         \ast \mapsto
 \mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
-\hspace*{1in}\,(s', u) \mapsto \mathsf{case}\;s'
+\hspace*{1.15in}\,(s', u) \mapsto \mathsf{case}\,{s'}\,\mathsf{of}\,
 \{\hspace*{0.3in} \ast
 \mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
   \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
-\hspace*{2in}(b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
+\hspace*{2.3in}(b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
 (\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
 b\, u )\, u')\}\}\\
 \hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
@@ -3600,12 +3600,12 @@ relational interpretations.
 % \langle \dsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
 %  \tau}\rho, \dsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
 %\rangle\\
-\dsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
-    \alpha} \,F \,G}\rho & = &  \curry (\dsem{\Gamma;\overline \alpha
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
+    \alpha} \,F \,G}\rho & = &  \curry (\dsem{\Gamma;\Phi,\overline \alpha
   \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
 \dsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s:
   G [\overline{\alpha := K}]}\rho & = & \eval \circ \langle
-  \lambda d.\,(\dsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+  \lambda d.\,(\dsem{\Gamma;\Phi \,|\, \Delta \vdash t :
   \Nat^{\overline{\alpha}} \,F \,G}\rho\; d)_{\overline{\dsem{\Gamma;\Phi
       \vdash K}\rho}},\\ 
  & & \hspace*{0.5in} \dsem{\Gamma;\Phi \,|\,
