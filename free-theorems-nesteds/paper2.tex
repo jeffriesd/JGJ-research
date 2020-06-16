@@ -3206,21 +3206,26 @@ observation that, for every $n \in \nat$, the following intermediate
 results can be proved {\color{blue} by simultaneous induction with
   Theorem~\ref{thm:iel}}:
 %\begin{equation}\label{eq:iel-fix-point-intermediate1}
-$T^n_{\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
-      F}\rho}} = (\Eq_{(T^\set_\rho)^n K_0})^*
+$T^n_{H,\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
+      F}\rho}} = (\Eq_{(T^\set_{H,\rho})^n K_0})^*
 \ol{\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}}$\;
 %\end{equation}
 and\;
 %\begin{equation}\label{eq:iel-fix-point-intermediate2}
 %\begin{split}
-$ \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := T^{n}_{\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_{\setsem{\Gamma;
-        \Phi \vdash F}\rho}]} =$\\
-$\relsem{\Gamma; \Phi, \phi,
-  \ol{\alpha} \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_\rho)^n K_0}]
-\overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}$.
+\[\begin{array}{ll}
+ & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+  := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_{\setsem{\Gamma;
+        \Phi \vdash F}\rho}]}\\
+= & 
+\relsem{\Gamma; \Phi, \phi,
+  \ol{\alpha} \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}]
+\overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}.
+\end{array}\]
 %\end{split}
 %\end{equation}
+With these results in hand, the proof is atraightforward. It is given
+in the accompanying anonymous supplementary material.
 
 \begin{comment}
 \begin{proof}
