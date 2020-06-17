@@ -4038,8 +4038,8 @@ Definition~\ref{def:set-interp} gives, for all $\ol{f :
 \rho\,\ol f\\ =& \setsem{\Gamma; \ol{\alpha}\vdash H}
 \id_{\rho}[\ol{\alpha := f}] \\ =&
 %\lambda \ol{f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma%; \emptyset \vdash \tau}\rho}.\,
-\textit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
-%=& \textit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
+\mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
+%=& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
 \end{array}
 \]
 \begin{comment}
@@ -4054,8 +4054,8 @@ Definition~\ref{def:set-interp} gives, for all $\ol{f :
 \setsem{\Gamma; \ol{\alpha}\vdash H}
 \id_{\rho}[\ol{\alpha := f}] \\
 =& \lambda \ol{f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma; \emptyset \vdash \tau}\rho}.\,
-\textit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
-=& \textit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
+\mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
+=& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
 \end{array}
 \]
 \end{comment}
@@ -4063,7 +4063,7 @@ Here, we obtain the first equality from the appropriate instance of
 Definition~\ref{def:set-interp}, and the second one by noting that
 $\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho
 [\ol{\alpha := A}]$ is a functor in $\alpha$ and using
-$\textit{map}_G\,\ol f$ to denote the action of the semantic functor
+$\mathit{map}_G\,\ol f$ to denote the action of the semantic functor
 $G$ on morphisms $\ol f$.
 
 \vspace*{0.1in}
@@ -4689,7 +4689,7 @@ If $\vdash F$, $\vdash H$, and
 $G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
   \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + F \times \beta)\,
   \beta)\, \beta}$ for some $g$, then
-\[\textit{fold}_{1 + F \times \_}\, n\, c\; (G\; (\mathit{List}\,
+\[\mathit{fold}_{1 + F \times \_}\, n\, c\; (G\; (\mathit{List}\,
 \setsem{\vdash F})\,\mathit{nil} \,\mathit{cons}) = G \,\setsem{\vdash
   H}\, n\, c \]
 \end{thm}
@@ -4742,7 +4742,7 @@ In addition,
     \times \beta}^{H} : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet
   + F \times H)\, \tau')\, (\Nat^{\emptyset} (\mu \alpha. \onet
   + F \times \alpha)\, H)} =
-\textit{fold}_{1 + F \times \_}\] so that if $c \in
+\mathit{fold}_{1 + F \times \_}\] so that if $c \in
 \setsem{\vdash F} \,\times\, \setsem{\vdash H} \to
 \setsem{\vdash H}$ and $n \in \setsem{\vdash H}$, then
 $(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + F \times H)\,
@@ -4750,7 +4750,7 @@ $(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + F \times H)\,
 $\pi_1 \rho \beta = \setsem{\vdash \mu \alpha. \onet + F \times
   \alpha}=\mathit{List}\,\setsem{\vdash F}$,\, 
 $\pi_2 \rho \beta = \setsem{\vdash H}$,\,
-$\rho \beta = \graph{\textit{fold}_{1 + F \times \_}\, n\, c} :
+$\rho \beta = \graph{\mathit{fold}_{1 + F \times \_}\, n\, c} :
 \rel(\pi_1 \rho \beta, \pi_2 \rho \beta)$,\,
 $c' = \mathit{cons}$,\, and 
 $n' = \mathit{nil}$
@@ -4759,30 +4759,30 @@ $n' = \mathit{nil}$
 %\pi_1 \rho \beta &=& \setsem{\vdash \mu \alpha. \onet + \tau \times
 %  \alpha} \;=\;\List\,\setsem{\vdash \tau}\\   
 %\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
-%\rho \beta &=& \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c} :
+%\rho \beta &=& \graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c} :
 %\rel(\pi_1 \rho \beta, \pi_2 \rho \beta) \\ 
 %c' &=& \mathit{cons}\\
 %n' &=& \mathit{nil}
 %\end{array}\]
 %Clearly, $(\mathit{nil}, n) \in \rho\beta =
-%\graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}$ because $
-%\textit{fold}_{1 + \tau \times \_}\, n\, c \,\mathit{nil} = n$.  Moreover,
+%\graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c}$ because $
+%\mathit{fold}_{1 + \tau \times \_}\, n\, c \,\mathit{nil} = n$.  Moreover,
 %$(\mathit{cons}, c) \in \relsem{\vdash \tau} \,\times\, \rho\beta \to
 %\rho\beta$ since if $(x, x') \in \relsem{\vdash \tau}$, i.e., $x =
 %x'$, and if $(y, y') \in \rho\beta =
-%\graph{\textit{fold}_{1 + \tau \times \_} n\, c}$, i.e., $y' =
-%\textit{fold}_{1 + \tau \times \_} n\, c\, y$, then
-%\[(\mathit{cons}\, x\, y, c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\,
-%c\, y)) \in \graph{\textit{fold}_{1 + \tau \times \_}\, n\, c}\]
+%\graph{\mathit{fold}_{1 + \tau \times \_} n\, c}$, i.e., $y' =
+%\mathit{fold}_{1 + \tau \times \_} n\, c\, y$, then
+%\[(\mathit{cons}\, x\, y, c\, x\, (\mathit{fold}_{1 + \tau \times \_}\, n\,
+%c\, y)) \in \graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c}\]
 %i.e.,
-%\[c\, x\, (\textit{fold}_{1 + \tau \times \_}\, n\, c\, y)
-%= \textit{fold}_{1 + \tau \times \_}\, n\, c\, (\mathit{cons} \,x\, y)\]
-%holds by definition of $\textit{fold}_{1 + \tau \times \_}$.  We
+%\[c\, x\, (\mathit{fold}_{1 + \tau \times \_}\, n\, c\, y)
+%= \mathit{fold}_{1 + \tau \times \_}\, n\, c\, (\mathit{cons} \,x\, y)\]
+%holds by definition of $\mathit{fold}_{1 + \tau \times \_}$.  We
 %therefore conclude that
 thus gives that $(G \;(\mathit{List}\,\setsem{\vdash
   F})\,\mathit{nil} \,\mathit{cons}, G \,\setsem{\vdash H} \,
-n\, c) \in \graph{\textit{fold}_{1 + F \times \_}\, n\, c}$, i.e.,
-that $\textit{fold}_{1 + F \times \_}\, n\, c\; (G\;
+n\, c) \in \graph{\mathit{fold}_{1 + F \times \_}\, n\, c}$, i.e.,
+that $\mathit{fold}_{1 + F \times \_}\, n\, c\; (G\;
 (\mathit{List}\,\setsem{\vdash F})\, \mathit{nil}\, \mathit{cons})
 = G \,\setsem{\vdash H}\, n\, c$.
 \end{proof}
@@ -4807,7 +4807,7 @@ G & = & \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
 \end{array}\]
 as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
 \rightarrow \setsem{\vdash \tau'}$ we have
-\[\textit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B\]
+\[\mathit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B\]
 \end{thm}
 
 \vspace*{0.2in}
@@ -4847,12 +4847,12 @@ Now note that
   \Nat^{\emptyset}\, (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}][\beta
     := \tau'] \, \tau')\, (\Nat^{\emptyset} \,(\mu
   \beta. F[\ol{\alpha := \tau}] \, \tau')} =
-\textit{fold}_H\]
+\mathit{fold}_H\]
 and consider the instantiation
 \[\begin{array}{lll}
 A &=& \mathit{in}_H :  H (\mu H) \to \mu H\\
 B & : & H\setsem{\vdash \tau'} \to \setsem{\vdash \tau'}\\
-\rho \beta &=& \graph{\textit{fold}_H\, B}
+\rho \beta &=& \graph{\mathit{fold}_H\, B}
 \end{array}\]
 (Note that all the types here are well-formed.)  This gives
 \[\begin{array}{lll}
@@ -4888,38 +4888,38 @@ A \; = \; \mathit{in}_H & : & H(\mu H) \to \mu H\\
 (A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\beta; \emptyset \vdash
   \Nat^{\emptyset} F[\ol{\alpha := \tau}] \, \beta} \rho \\
  & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\rho[\beta := \graph{\textit{fold}_H\, B}] \to
-\graph{\textit{fold}_H\, B}\\
+      \tau}]}\rho[\beta := \graph{\mathit{fold}_H\, B}] \to
+\graph{\mathit{fold}_H\, B}\\
  & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\graph{\textit{fold}_H\, B} \to
-\graph{\textit{fold}_H\, B}\\
+      \tau}]}\graph{\mathit{fold}_H\, B} \to
+\graph{\mathit{fold}_H\, B}\\
  & = & \relsem{\emptyset; \beta\vdash F[\ol{\alpha :=
-      \tau}]}\graph{\textit{fold}_H\, B} \to
-\graph{\textit{fold}_H\, B} \hspace*{0.35in} {\color{red}
+      \tau}]}\graph{\mathit{fold}_H\, B} \to
+\graph{\mathit{fold}_H\, B} \hspace*{0.35in} {\color{red}
   \mbox{Daniel's trick; now a theorem}}\\  
 & = & \graph{\setsem{\emptyset; \beta \vdash F[\ol{\alpha :=
-      \tau}]}\,(\textit{fold}_H\, B)} \to
-\graph{\textit{fold}_H\, B} \hspace*{0.25in} {\color{red} \mbox{by the
+      \tau}]}\,(\mathit{fold}_H\, B)} \to
+\graph{\mathit{fold}_H\, B} \hspace*{0.25in} {\color{red} \mbox{by the
     graph lemma}}\\ 
 & = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \to
-\graph{\textit{fold}_H\, B}\\
+\graph{\mathit{fold}_H\, B}\\
 \end{array}\]
 since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
 i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$, then
-$\textit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\, (\mathit{map}_H
+$\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\, (\mathit{map}_H
 \,(\mathit{fold}_H\,B) \, x)$ by the definition of $\mathit{fold}_H$
 as a (indeed, the unique) morphism from $\mathit{in}_H$ to $B$. Thus,
 \[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) \in
-\graph{\textit{fold}_H\, B}\]
+\graph{\mathit{fold}_H\, B}\]
 i.e.,
-\[\textit{fold}_H \, B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) =
+\[\mathit{fold}_H \, B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) =
 G\,(\pi_2 \rho)\,B\] 
 
 \vspace*{0.1in}
 
 \noindent
 Since $\beta$ is the only free variable in $G$, this simplifies to
-\[\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
+\[\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\vdash \tau'}\,B\]  
 \end{proof}
 \end{comment}
@@ -4956,7 +4956,7 @@ and
 (\phi\alpha))}\] for some $g$, then, for every $B \in H
 \setsem{\emptyset;\alpha \vdash K} \rightarrow \setsem{\emptyset;
   \alpha \vdash K}$,
-$\textit{fold}_{H}\, B \, (G\; \mu H \; in_{H}) = G
+$\mathit{fold}_{H}\, B \, (G\; \mu H \; in_{H}) = G
 \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 \end{thm}
 
@@ -4999,12 +4999,12 @@ so if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho$ then $(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\,
 B) \in \rho \phi$.
 In addition,
-%$\textit{fold}_H = \setsem{\vdash \fold_F^K :
+%$\mathit{fold}_H = \setsem{\vdash \fold_F^K :
 %  \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha
 %  ((\mu \phi.\lambda\alpha.F)\alpha)\,K)}$.
 \[\setsem{\vdash \fold_F^K :
   \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha
-  ((\mu \phi.\lambda\alpha.F)\alpha)\,K)} = \textit{fold}_H\]
+  ((\mu \phi.\lambda\alpha.F)\alpha)\,K)} = \mathit{fold}_H\]
 Consider the instantiation $A = \mathit{in}_H : H (\mu H) \Rightarrow
 \mu H$,\, $B : H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
 \setsem{\emptyset;\alpha \vdash K}$,\, $\rho \phi =
@@ -5018,7 +5018,7 @@ and $B : \setsem{\phi; \emptyset \vdash \Nat^\alpha F \, (\phi
 %A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
 %B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
 %\setsem{\emptyset;\alpha \vdash K}\\
-%\rho \phi &=& \graph{\textit{fold}_H\, B} \hspace*{0.2in} {
+%\rho \phi &=& \graph{\mathit{fold}_H\, B} \hspace*{0.2in} {
 %  \color{red} \mbox{a graph of a natural transformation, defined in
 %    Enrico's notes}} 
 %\end{array}\]
@@ -5057,31 +5057,31 @@ together give that
 % & = & \lambda A. \relsem{\phi;\alpha\vdash F}\rho[\alpha := A]
 %\Rightarrow \lambda A. (\rho\phi) A\\
 & = & \lambda A. \relsem{\phi;\alpha\vdash F}[\phi :=
-  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
- \graph{\textit{fold}_H\, B} \\ 
+  \graph{\mathit{fold}_H\, B}][\alpha := A] \Rightarrow 
+ \graph{\mathit{fold}_H\, B} \\ 
 %& = & \lambda A. \relsem{\emptyset;\phi,\alpha\vdash F}[\phi :=
-%  \graph{\textit{fold}_H\, B}][\alpha := A] \Rightarrow 
-%\graph{\textit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
+%  \graph{\mathit{fold}_H\, B}][\alpha := A] \Rightarrow 
+%\graph{\mathit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
 %  \mbox{Daniel's trick; now a theorem}}\\  
 & = & \relsem{\emptyset;\phi,\alpha\vdash F}
-  \graph{\textit{fold}_H\, B} \Rightarrow \graph{\textit{fold}_H\,
+  \graph{\mathit{fold}_H\, B} \Rightarrow \graph{\mathit{fold}_H\,
     B}\\
   & = & \graph{\setsem{\emptyset;\phi,\alpha\vdash F}
-    \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\textit{fold}_H\, B}\\
+    \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\mathit{fold}_H\, B}\\
 %\hspace*{0.25in} {\color{red} \mbox{Graph Lemma}}\\
   & = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \Rightarrow
-\graph{\textit{fold}_H\, B}\\
+\graph{\mathit{fold}_H\, B}\\
 \end{array}\]
 since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
 %i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$,
-then $\textit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
+then $\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
 (\mathit{map}_H \,(\mathit{fold}_H\,B) \, x)$ by the definition of
 $\mathit{fold}_H$ as a (indeed, the unique) morphism from
 $\mathit{in}_H$ to $B$.  Thus, $(G \,(\pi_1 \rho)\, A, G\, (\pi_2
-\rho)\, B) \in \graph{\textit{fold}_H\, B}$, i.e., $\textit{fold}_H \,
+\rho)\, B) \in \graph{\mathit{fold}_H\, B}$, i.e., $\mathit{fold}_H \,
 B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
 since $\phi$ is the only free variable in $G$, this simplifies to
-$\textit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
+$\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\emptyset;\alpha\vdash K}\,B$. 
 \end{proof}
 
@@ -5091,7 +5091,7 @@ As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
 \vdash C$ generalizes
 %with $\setsem{\emptyset;\alpha \vdash c}\rho = C$
 Theorem~\ref{thm:short-cut-nested} to deliver more general a free
-theorem whose conclusion is $\textit{fold}_{H}\, B \; \circ \; G\; \mu
+theorem whose conclusion is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu
 H \; in_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \vspace*{0.02in}
