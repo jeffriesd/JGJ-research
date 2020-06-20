@@ -273,24 +273,27 @@ By induction on $F$.
 \end{split}
 \]
 Here, the third equality is by induction hypothesis, the fifth is by
-Lemma~21 and the fourth equality is because,
-for every $n \in \nat$, the following two statements can be proved by
-simultaneous induction:
+Lemma~21 and the fourth equality is because, for every $n \in \nat$,
+the following two statements can be proved by simultaneous induction:
+(Note that we can use an arbitrary set $A$ in the statements below, or
+$\setsem{\Gamma;\Phi \vdash F}\rho$ as in the original statements in
+supp.tex, if we like.)
+
+For any $H$, $\rho$, and $A$,
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
-T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
-      F}\rho}} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
-\ol{\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}}
+T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
+\ol{\Eq_A}
 \end{equation}
-and
+and for any $H$, $\rho$, $A$, and subformula $J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate2}
 \begin{split}
-  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H}
+  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J}
 \Eq_{\rho} [\phi := 
  & T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
-    \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]} \\
-=\;\; & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
+    \Eq_A]} \\
+=\;\; & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha :=
-    \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}
+    \Eq_A]}
 \end{split}
 \end{equation}
 We prove~\eqref{eq:iel-fix-point-intermediate1}.  The case $n=0$ is
@@ -299,67 +302,98 @@ $(T^\set_{H,\rho})^0 K_0 = K_0$; the inductive step is
 proved by the following sequence of equalities:
 \[
 \begin{split}
-T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}}
+T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
 &= T^\rel_{H,\Eq_{\rho}} (T^{n}_{H,\Eq_{\rho}} K_0)
-\overline{\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}} \\ 
+\overline{\Eq_A} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
   := T^{n}_{H, \Eq_{\rho}} K_0] \overline{[\alpha :=
-    \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]} \\ 
+    \Eq_A]} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
   := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha :=
-    \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]} \\ 
+    \Eq_A]} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho [\phi
     := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
-      \setsem{\Gamma; \Phi \vdash F}\rho]}} \\ 
+      A]}} \\ 
 &= \Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \rho [\phi
     := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
-      \setsem{\Gamma; \Phi \vdash F}\rho]}} \\ 
-&= \Eq_{(T^\set_{H,\rho})^{n+1} K_0 \overline{\setsem{\Gamma; \Phi
-      \vdash F}\rho}} \\ 
-&= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^*\, \overline{\Eq_{\setsem{\Gamma;
-      \Phi \vdash F}\rho}} 
+      A]}} \\ 
+&= \Eq_{(T^\set_{H,\rho})^{n+1} K_0 \overline{A}} \\ 
+&= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^*\, \overline{\Eq_A} 
 \end{split}
 \]
 Here, the third equality is by~\eqref{eq:iel-fix-point-intermediate2},
 the fifth by the induction hypothesis on $H$, and the last by
 Lemma~21.  We prove the induction step
 of~\eqref{eq:iel-fix-point-intermediate2} by structural induction on
-$H$: the only interesting case, though, is when $\phi$ is applied,
-i.e., for $H = \phi \ol{G}$, which is proved by the sequence of
-equalities:
+{\color{blue} $J$}: the only interesting cases, though, are when $J =
+\Nat^{\ol\beta} G \,K$, when $J = \phi \ol{G}$ and when $J = (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}$.
+
+The case $J = \Nat^{\ol\beta} G \,K$ is proved by observing that
+\[
+\begin{split}
+& \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \Nat^{\ol\beta} G
+    \,K} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
+  \overline{[\alpha := \Eq_A]} \\
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha},\ol\beta \vdash
+    G}\Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha
+      := \Eq_A]}\,\ol{[\beta := \_]} \Rightarrow\\
+& \hspace*{0.4in} \relsem{\Gamma; \Phi, \phi,
+    \ol{\alpha},\ol\beta \vdash \,K}\Eq_{\rho} [\phi :=
+    T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\,\ol{[\beta := \_]} \\
+&= \relsem{\Gamma; \ol\beta \vdash
+    G}\Eq_{\rho}\ol{[\beta := \_]} \Rightarrow \relsem{\Gamma; \Phi, \phi^0,
+    \ol\beta \vdash \,K}\Eq_{\rho} [\phi :=
+    T^{n}_{H,\Eq_{\rho}} K_0]\ol{[\beta := \_]} \\
+&= \relsem{\Gamma; \ol\beta \vdash
+    G}\Eq_{\rho}[\phi
+    := \Eq_{(T^\set_{H,\rho})^n K_0}]\ol{[\beta := \_]} \Rightarrow\\
+& \hspace*{0.4in} \relsem{\Gamma; \Phi, \phi^0,
+    \ol\beta \vdash \,K}\Eq_{\rho}[\phi
+  := \Eq_{(T^\set_{H,\rho})^n K_0}]\ol{[\beta := \_]}\\
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \Nat^{\ol\beta} G
+    \,K} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
+  \overline{[\alpha := \Eq_A]} \\
+\end{split}\]
+Here, the second equality holds because $\Phi$ must consist entirely
+of arity $0$ variables, $\phi$ must have arity $0$, and $\ol\alpha$
+must be empty for $\Gamma;\Phi, \phi,\ol\alpha \vdash \Nat^{\ol\beta}
+G\,K$ to be well-typed, and the third is by
+Equation~\ref{eq:iel-fix-point-intermediate2} when $\phi$ has arity
+$0$.
+
+The case $J = \phi \ol{G}$ is proved by the sequence of equalities:
 \[
 \begin{split}
 & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi
     \ol{G}} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
-  \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}
+  \overline{[\alpha := \Eq_A]}
   \\
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
-        \Eq_{\setsem{\Gamma; \Phi \vdash F} \rho}]}} \\ 
+        \Eq_A]}} \\ 
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
-        \Eq_{\setsem{\Gamma; \Phi \vdash F} \rho}]}} \\ 
+        \Eq_A]}} \\ 
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; \Phi,
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\set_{H,\rho})^{n}
-        K_0] \overline{[\alpha := \setsem{\Gamma; \Phi \vdash
-            F} \rho]}}} \\ 
+        K_0] \overline{[\alpha := A]}}} \\ 
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
         \Phi, \phi, \ol{\alpha} \vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
-          \setsem{\Gamma; \Phi \vdash F} \rho]}}} \\ 
+          A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
         \Phi, \phi, \ol{\alpha} \vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
-          \setsem{\Gamma; \Phi \vdash F} \rho]}}} \\ 
+          A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
       \Phi, \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
-        \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}} \\ 
+        \Eq_A]}} \\ 
 &= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash \phi \ol{G}}
   \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^{n} K_0}]
-  \overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]} 
+  \overline{[\alpha := \Eq_A]} 
 \end{split}
 \]
 Here, the second equality is by the induction hypothesis
@@ -367,6 +401,85 @@ for~\eqref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth is
 by the induction hypothesis for the Identity Extension Lemma on the
 $G$s, and the fifth is by the induction hypothesis on $n$
 for~\eqref{eq:iel-fix-point-intermediate1}.
+
+The case $J = (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}$
+is proved by the sequence of equalities:
+\[
+\begin{split}
+& \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}}
+  \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
+  [\overline{\alpha := \Eq_A}] \\
+&= (\mu {T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
+  \,\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
+%% &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho[\overline{\alpha := A}]}}}\,K_0
+%%   \,(\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \Eq_{\rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}}) \\ 
+%% &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho[\overline{\alpha := A}]}}}\,K_0
+%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
+%% &= \colim{m \in \nat} (\Eq_{{(T^{\set}_{G, \rho[\overline{\alpha := A}]}})^m\,K_0})^*
+%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
+%% &= (\Eq_{\colim{m \in \nat} {(T^{\set}_{G, \rho[\overline{\alpha := A}]}})^m\,K_0})^*
+%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
+%% &= (\Eq_{{\mu T^{\set}_{G, \rho[\overline{\alpha := A}]}}})^*
+%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\
+%% &= \Eq_{{\mu T^{\set}_{G, \rho[\overline{\alpha := A}]}}
+%%   \,\ol{\setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\
+%=& \Eq_{\setsem{\Gamma; \Phi, \ol{\alpha}, \ol{\gamma} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{\gamma}}
+%  \rho[\overline{\alpha := A}][\ol{\gamma := \setsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}
+%  \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}]} \\
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\ 
+&= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}})
+  \,\ol{\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]} \\ 
+&= \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
+  \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_{A}}]
+\end{split}
+\]
+where
+\begin{itemize}
+\item the third equality is by the induction hypothesis for~\eqref{eq:iel-fix-point-intermediate2} on $K$,
+\item the fourth equality is because we can prove that for all $m \in \nat$, \\
+      $T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \
+      = T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0$. \\
+      The base case is trivial because \\
+      $T^0_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \
+      = K_0 = T^0_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0$. \\
+      The inductive case is proven by: \\
+      \begin{align*}
+        & T^{m+1}_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \\
+        &= T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} 
+         (T^{m}_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0) \\
+        &= T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} 
+         (T^{m}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0) \\
+        &= \lambda \ol{R}. \relsem{\Gamma; \Phi, \phi, \ol\alpha, \psi, \ol\beta \vdash G} 
+          \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0][\overline{\beta := R}] \\
+        &= \lambda \ol{R}. \relsem{\Gamma; \Phi, \phi, \ol\alpha, \psi, \ol\beta \vdash G} 
+          \Eq_{\rho} [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0][\overline{\beta := R}] \\
+        &= T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]} 
+         (T^{m}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0) \\
+        &= T^{m+1}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}\,K_0 
+      \end{align*}
+
+      where the second equality is by the induction hypothesis on $m$ and the fourth
+      equality is because $\phi$ does not appear in $G$.
+
+\end{itemize}
+   
+
 \item $\relsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \relsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \relsem{\Gamma;
     \Phi \vdash G} \Eq_{\rho} = \Eq_{\setsem{\Gamma; \Phi \vdash
