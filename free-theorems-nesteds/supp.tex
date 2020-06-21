@@ -252,7 +252,7 @@ By induction on $F$.
 &= \Eq_{\setsem{\Gamma; \Phi \vdash \phi\ol{F}}\rho}
 \end{split}
 \]
-The fixpoint case is proven by the sequence of equalities
+\item The fixpoint case is proven by the sequence of equalities
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash (\mu \phi.\lambda
@@ -275,8 +275,6 @@ The fixpoint case is proven by the sequence of equalities
 Here, the third equality is by induction hypothesis, the fifth is by
 Lemma~21 and the fourth equality is because, for every $n \in \nat$,
 the following two statements can be proved by simultaneous induction:
-{\color{blue} Can we use $\setsem{\Gamma;\Phi \vdash F}\rho$
-instead of an arbitrary set $A$ below?}
 and for any $H$, $\rho$, $A$, and subformula $J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
 T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
@@ -358,11 +356,11 @@ induction on $J$. The only interesting cases, though, are when $J =
     \,K} \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}]
   \overline{[\alpha := \Eq_A]} \\
 \end{split}\]
-Here, the second equality holds because $\phi$ must have arity $0$
-(since only functorial variables of arity $0$ can appear free in
-bodies of $\mu$ types), and thus $\ol\alpha$ must be empty, in order
-for $\Gamma;\Phi, \phi,\ol\alpha \vdash \Nat^{\ol\beta} G\,K$ to be
-well-typed. The third equality is by
+Here, the second equality holds because $\phi$ must either not appear
+in $J$ or have arity $0$ (since only functorial variables of arity $0$
+can appear free in bodies of $\mu$ types), in which case $\ol\alpha$
+must be empty, in order for $\Gamma;\Phi, \phi,\ol\alpha \vdash
+\Nat^{\ol\beta} G\,K$ to be well-typed. The third equality is by
 \eqref{eq:iel-fix-point-intermediate2} for $K$ when $\phi$ has arity
 $0$.
 
@@ -500,9 +498,10 @@ and the inductive case is proved by: \\
 \end{align*}
 Here, the second equality holds by the induction hypothesis
 for~\eqref{eq:helper} on $m$. The fourth equality holds because $\phi$
-must have arity $0$, and thus $\ol\alpha$ must be empty, if $\phi$
-appears in $G$, and uses~\eqref{eq:iel-fix-point-intermediate2} for
-$G$ when $\phi$ has arity $0$.
+either does not apear in $G$, or must have arity $0$, in which case
+$\ol\alpha$ must be empty, if $\phi$ appears in $G$, and
+uses~\eqref{eq:iel-fix-point-intermediate2} for $G$ when $\phi$ has
+arity $0$.
 \end{itemize}
 \item $\relsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \relsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \relsem{\Gamma;
