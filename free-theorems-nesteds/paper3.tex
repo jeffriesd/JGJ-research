@@ -704,15 +704,15 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash F}$}
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{F}$}
 \DisplayProof
-\\[3ex]
-\AXC{$\Gamma;\Phi,\ol{\alpha},\phi^k \vdash F$}
-\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash F}$}
-\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda \ol{\alpha}. \,F)\ol{F}$}
+\\[2ex]
+\AXC{$\Gamma;\ol{\beta^0},\ol{\alpha^0},\phi^k \vdash F$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi,\ol{\beta^0} \vdash G}$}
+\BIC{$\Gamma;\Phi,\ol{\beta^0} \vdash (\mu \phi^k.\lambda
+  \ol{\alpha^0}. \,F)\,\ol{G}$} 
 \DisplayProof
 \end{array}\]
 
-
-\vspace*{0.08in}
+\vspace*{0.04in}
 
 \[\begin{array}{cc}
 \AXC{$\Gamma;\Phi \vdash F$}
@@ -734,7 +734,7 @@ If $F$ is a closed type we may write $\vdash F$, rather than
 $\emptyset;\emptyset \vdash F$, for the judgment that it is
 well-formed.  Definition~\ref{def:wftypes} ensures that the expected
 weakening rules for well-formed types hold, although weakening does
-not change the contexts in which $\Nat$-types can be formed. If
+not change the contexts in which types can be formed. If
 $\Gamma;\emptyset \vdash F$ and $\Gamma;\emptyset \vdash G$,
 then our rules allow formation of the type $\Gamma;\emptyset \vdash
 \Nat^\emptyset F \,G$. Since $\Gamma; \emptyset \vdash
@@ -764,26 +764,46 @@ Definition~\ref{def:wftypes} allows the formation of all of the
 \times \phi\,(\phi\beta))\,\alpha 
 \end{array}\]
 Each of these types can be considered either functorial in $\alpha$ or
-not, according to whether $\alpha \in \Gamma$ or $\alpha \in \Phi$.
-For example, if $\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then
-the type $\vdash \Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is
-well-formed; if $\alpha;\emptyset \vdash \List \,\alpha$, then it is
-not. If $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta
-\times \gamma \times \beta$, then Definition~\ref{def:wftypes} also
-allows the derivation of, e.g., the type $\gamma; \emptyset \vdash
-\Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\,
-\gamma)$ representing a natural transformation from lists to trees
-that is natural in $\alpha$ but not necessarily in $\gamma$. We
-emphasize that types can be functorial in variables of arity greater
-than $0$. For example, the type $\mathit{GRose}\, \phi \, \alpha =
-\mu\beta . \alpha \times \phi \beta$ can be functorial in $\phi$ if
-$\phi \in \Phi$. As usual, whether $\phi \in \Gamma$ or $\phi \in
-\Phi$ determines whether types such as $\Nat^\alpha ( \mathit{GRose}
-\, \phi \, \alpha)\, (List\, \alpha)$ are well-formed. But even if
-$\mathit{GRose}$ is functorial in $\phi$, it still cannot be the
-domain of a $\Nat$ type representing a natural transformation in
-$\phi$. This is because our calculus does not allow naturality in
-variables of arity greater than $0$.
+not, according to whether $\alpha$ is in the functorial or
+non-functorial context in which it is formed. For example, if
+$\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then $\vdash
+\Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is well-formed; if
+$\alpha;\emptyset \vdash \List \,\alpha$, then it is not.  If
+$\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta \times
+\gamma \times \beta$, then both $\gamma;\emptyset \vdash \Nat^\alpha
+(\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ and
+$\emptyset;\gamma \vdash \Nat^\alpha (\mathit{List}\, \alpha) \,
+(\mathit{Tree} \, \alpha\, \gamma)$ are well-formed.  Although types
+can be functorial in variables of arity greater than $0$, the body $F$
+of a type $(\mu \phi.\lambda \ol\alpha.F)\,\ol G$ cannot. For example,
+the type $\mathit{GRose}\, \phi \, \alpha = \mu\beta . \alpha \times
+\phi \beta$ can be functorial or not in $\alpha$, but cannot be
+functorial in $\phi$.  As a result, $\mathit{GRose}\,\phi\,\alpha$
+cannot be the (co)domain of a $\Nat$ type representing a natural
+transformation in $\phi$, and the type $\mu \phi. \lambda
+\alpha. \mathit{GRose}\,\phi\alpha$ is not well-formed in our
+system. These restrictions on higher-arity functoriality are necessary
+for constructing our parametric model.  Fortunately, they are entirely
+natural, and {\color{blue} preclude only truly bizarre nested types}.
+%do not preclude any nested
+%types {\color{blue} occurring in practice}.
+
+%If $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta \times
+%\gamma \times \beta$, then Definition~\ref{def:wftypes} also allows
+%the derivation of, e.g., the type $\gamma; \emptyset \vdash
+%\Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\,
+%\gamma)$ representing a natural transformation from lists to trees
+%that is natural in $\alpha$ but not necessarily in $\gamma$. We
+%emphasize that types can be functorial in variables of arity greater
+%than $0$. For example, the type $\mathit{GRose}\, \phi \, \alpha =
+%\mu\beta . \alpha \times \phi \beta$ can be functorial in $\phi$ if
+%$\phi \in \Phi$. As usual, whether $\phi \in \Gamma$ or $\phi \in
+%\Phi$ determines whether types such as $\Nat^\alpha ( \mathit{GRose}
+%\, \phi \, \alpha)\, (List\, \alpha)$ are well-formed. But even if
+%$\mathit{GRose}$ is functorial in $\phi$, it still cannot be the
+%domain of a $\Nat$ type representing a natural transformation in
+%$\phi$. This is because our calculus does not allow naturality in
+%variables of arity greater than $0$.
 
 Definition~\ref{def:wftypes} allows well-formed types to be 
 %%considers types in $\T$ to be types in $\F$ that are
@@ -1157,12 +1177,15 @@ write as folds functions of types such as $\alpha; \emptyset \vdash
 %codomain of a fold applied to an algebra must be a functor, and this
 %clearly is not the case for a function on nested types that takes
 %more than one input involving the same type variable.
-We can, however, represent types of functions that take as arguments
-one proper nested type and as many other (possibly proper) nested
-types as we wish, provided the types of those arguments are
-parameterized over disjoint sets of type variables. The return type of
-the function can be parameterized over any or all of the type
-variables occurring in its argument types.
+We can, however, represent types of functions that take
+%    as arguments
+%one proper nested type and as many other (possibly proper)
+%as many proper nested types as we wish
+multiple nested types as arguments, provided the types of those
+arguments are parameterized over disjoint sets of type variables. The
+return type of the function can be parameterized over any or all of
+the type variables occurring in its argument types.  For example, we
+can represent the type of a zip-like function for bushes.
 %A well-known deeper limitation on folds is that a fold over a nested
 %type must take a natural transformation as an argument and return a
 %natural transformation; this issue is discussed in more detail in
@@ -3203,29 +3226,34 @@ The proof is by induction on the structure of $F$. Only the
 application and fixpoint cases are non-routine. Both use
 Lemma~\ref{lem:eq-reln-equalities}. The latter also uses the
 observation that, for every $n \in \nat$, the following intermediate
-results can be proved {\color{blue} by simultaneous induction with
-  Theorem~\ref{thm:iel}}:
+results can be proved by simultaneous induction with
+Theorem~\ref{thm:iel}: For any $H$, $\rho$, $A$, and any subformula
+$J$ of $H$, both
 %\begin{equation}\label{eq:iel-fix-point-intermediate1}
-$T^n_{H,\Eq_{\rho}} K_0\, \ol{\Eq_{\setsem{\Gamma; \Phi \vdash
-      F}\rho}} = (\Eq_{(T^\set_{H,\rho})^n K_0})^*
-\ol{\Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}}$\;
+$T^n_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A}
+%{\setsem{\Gamma; \Phi \vdash F}\rho}}
+= (\Eq_{(T^\set_{H,\rho})^n K_0})^*
+\ol{\Eq_A}$\;
+  %{\setsem{\Gamma; \Phi \vdash F}\rho}}$\;
 %\end{equation}
 and\;
 %\begin{equation}\label{eq:iel-fix-point-intermediate2}
 %\begin{split}
 \[\begin{array}{ll}
- & \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_{\setsem{\Gamma;
-        \Phi \vdash F}\rho}]}\\
-= & 
+&  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
+  := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\
+%{\setsem{\Gamma; \Phi \vdash F}\rho}]}\\
+=  &
 \relsem{\Gamma; \Phi, \phi,
-  \ol{\alpha} \vdash H} \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}]
-\overline{[\alpha := \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho}]}.
+  \ol{\alpha} \vdash J} \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}]
+\overline{[\alpha := \Eq_A]}
+%         {\setsem{\Gamma; \Phi \vdash F}\rho}]}.
 \end{array}\]
 %\end{split}
 %\end{equation}
-With these results in hand, the proof is atraightforward. It is given
-in the accompanying anonymous supplementary material.
+hold. With these results in hand, the proof is straightforward. A
+detailed proof is given in the accompanying anonymous supplementary
+material.
 
 \begin{comment}
 \begin{proof}
