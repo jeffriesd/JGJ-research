@@ -1456,38 +1456,39 @@ is defined by
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \end{dfn}
-The interpretations in Definition~\ref{def:set-sem} respect weakening,
-i.e., a type and its weakenings have the same set interpretations.
-The same holds for the actions of these interpretations on morphisms
-in Definition~\ref{def:set-sem-funcs} below.
+%The interpretations in Definition~\ref{def:set-sem} respect weakening,
+%i.e., a type and its weakenings have the same set interpretations.
+%
 %= \setsem{\Gamma \vdash \sigma} \rho \to
 %\setsem{\Gamma \vdash \tau} \rho$, as expected {\color{blue} by IEL}.
-If $\rho$ is a set environment and $\vdash F$ then we may
-write $\setsem{\vdash F}$ instead of $\setsem{\vdash F}\rho$
-since the environment is immaterial.
-We note that the third clause of
-Definition~\ref{def:set-sem} does indeed define a set: local finite
-presentability of $\set$ and $\omega$-cocontinuity of
-$\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$ ensure that $\{\eta :
-\setsem{\Gamma;\ol{\alpha} \vdash F}\rho \Rightarrow
-\setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho\}$ (which contains
-$\setsem{\Gamma;\ol\gamma \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho$) is a
-subset of $\big\{({\setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho[\ol{\alpha
+If $\rho \in \setenv$ and $\vdash F$ then we write $\setsem{\vdash F}$
+instead of $\setsem{\vdash F}\rho$ since the environment is
+immaterial. The third clause of Definition~\ref{def:set-sem} does
+indeed define a set: local finite presentability of $\set$ and
+$\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$
+ensure that $\{\eta : \setsem{\Gamma;\ol{\alpha} \vdash F}\rho
+\Rightarrow \setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho\}$
+(which contains $\setsem{\Gamma;\ol\gamma \vdash
+  \Nat^{\ol{\alpha}}\,F\,G}\rho$) is a subset of
+$\big\{({\setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho[\ol{\alpha
       := S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha
       := S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and
 }$ $S_i \mbox{ is a finite set for } i =
-1,...,|\ol{\alpha}|\big\}$. There are countably many choices for
-tuples $\ol{S}$, and each of these gives rise to a morphism from
+1,...,|\ol{\alpha}|\big\}$. There are countably many choices of tuples
+$\ol{S}$, each of which gives rise to a morphism from
 ${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
-${\setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
-there are only $\set$-many choices of morphisms between any
-%these (or any)
-two objects since $\set$ is locally small. Interpretations of
-$\Nat$ types in Definition~\ref{def:set-sem} ensure $\setsem{\Gamma
-  \vdash F \to G}$ and $\setsem{\Gamma \vdash \forall
-  \alpha. F}$ are as expected in any parametric model.
+${\setsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
+      S}]}$. But there are only $\set$-many choices of morphisms
+between any two objects since $\set$ is locally small.  That
+$\setsem{\Gamma; \ol\gamma \vdash \Nat^\alpha F\,G}$ is
+$\omega$-cocontinuous follows from $\omega$-cocontinuity of
+$\setsem{\Gamma;\ol\alpha \vdash F}$ and
+$\setsem{\Gamma;\ol\gamma,\ol\alpha \vdash G}$. Interpretations of
+$\Nat$-types ensure that $\setsem{\Gamma \vdash F \to G}$ and
+$\setsem{\Gamma \vdash \forall \alpha. F}$ are as expected in any
+parametric model.
 
-In order to make sense of the last clause in
+To make sense of the last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
 \setenv$, $T^\set_{H,\rho}$ is an $\omega$-cocontinuous endofunctor on
 $[\set^k, \set]$, and thus admits a fixpoint.  Since
@@ -1514,6 +1515,39 @@ component at $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} =
   \id_F][\ol{\alpha := \id_A}]$. The next definition uses the functor
 $T^\set_H$ to define the actions of functors interpreting types on
 morphisms between set environments.
+
+
+
+
+\begin{comment}
+To make sense of the last clause in
+Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
+\setenv$, $T^\set_{H,\rho}$ is an $\omega$-cocontinuous endofunctor on
+$[\set^k, \set]$, and thus admits a fixpoint.  Since
+$T_{H,\rho}^\set$ is defined in terms of $\setsem{\Gamma;\ol\gamma,\phi,
+  \ol{\alpha} \vdash H}$, this means that interpretations of types
+must be such functors, which in turn means that the actions of set
+interpretations of types on objects and on morphisms in $\setenv$ are
+intertwined. Fortunately, we know from~\cite{jp19} that, for every
+$\Gamma; \ol{\alpha} \vdash G$, $\setsem{\Gamma; \ol{\alpha} \vdash
+  G}$ is actually in $[\set^k,\set]$ where $k = |\ol \alpha|$. This
+means that for each $\setsem{\Gamma; \ol\gamma, \phi^k, \ol{\alpha} \vdash
+  H}$, the corresponding operator $T^\set_{H}$ can be extended to a
+{\em functor} from $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The
+action of $T^\set_H$ on an object $\rho \in \setenv$ is given by the
+higher-order functor $T_{H,\rho}^\set$, whose actions on objects
+(functors in $[\set^k, \set]$) and morphisms (natural transformations
+between such functors) are given in Definition~\ref{def:set-sem}. Its
+action on a morphism $f : \rho \to \rho'$ is the higher-order natural
+transformation $T^\set_{H,f} : T^\set_{H,\rho} \to T^\set_{H,\rho'}$
+whose action on $F : [\set^k,\set]$ is the natural transformation
+$T^\set_{H,f}\, F : T^\set_{H,\rho}\,F \to T^\set_{H,\rho'}\,F$ whose
+component at $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} =
+\setsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_A}]$. The next definition uses the functor
+$T^\set_H$ to define the actions of functors interpreting types on
+morphisms between set environments.
+\end{comment}
 
 \begin{dfn}\label{def:set-sem-funcs}
 Let $f: \rho \to \rho'$ for set environments $\rho$ and $\rho'$ (so
@@ -1610,6 +1644,10 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
 \end{equation}}
 \end{itemize}
 \end{dfn}
+
+Definitions~\ref{def:set-sem} and~\ref{def:set-sem-funcs} respect
+weakening, i.e., ensure that a type and its weakenings have the same
+set interpretations.
 
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
@@ -1966,27 +2004,30 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 \end{align*}
 \end{dfn}
 
-The interpretations in Definition~\ref{def:rel-sem}, as well as in
-Definition~\ref{def:rel-sem-funcs} below, respect weakening, and also
-ensure that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma
-  \vdash \forall \alpha. F}$ are as expected in any parametric model.
+The interpretations in Definitions~\ref{def:rel-sem}
+and~\ref{def:rel-sem-funcs} below respect weakening, and also ensure
+that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma \vdash
+  \forall \alpha. F}$ are as expected in any parametric model.
 %$\relsem{\Gamma \vdash
 %  \sigma \to \tau}\rho = \relsem{\Gamma \vdash \sigma} \rho \to
 %\relsem{\Gamma \vdash \tau} \rho$.
-If $\rho$ is a relational environment and $\vdash F$, then we write
-$\relsem{\vdash F}$ instead of $\relsem{\vdash F}\rho$ as for set
-interpretations.  For the last clause in Definition~\ref{def:rel-sem}
-to be well-defined we need $T_{H,\rho}$ to be an $\omega$-cocontinuous
-endofunctor on $RT$ so that, by Lemma~\ref{lem:fp}, it admits a
-fixpoint. Since $T_{H,\rho}$ is defined in terms of
-$\relsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha} \vdash H}$, this means that
-relational interpretations of types must be $\omega$-cocontinuous
-functors from $\relenv$ to $RT_0$, which in turn entails that the
-actions of relational interpretations of types on objects and on
-morphisms in $\relenv$ are intertwined. As for set interpretations, we
-know from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash F$,
-$\setsem{\Gamma; \ol{\alpha} \vdash F}$ is actually in
-$[\rel^k,\rel]$ where $k = |\ol \alpha|$.
+That $\relsem{\Gamma; \ol\gamma \vdash \Nat^\alpha F\,G}$ is
+$\omega$-cocontinuous follows from $\omega$-cocontinuity of
+$\relsem{\Gamma;\ol\alpha \vdash F}$ and
+$\relsem{\Gamma;\ol\gamma,\ol\alpha \vdash G}$.  If $\rho \in \relenv$
+and $\vdash F$, then we write $\relsem{\vdash F}$ instead of
+$\relsem{\vdash F}\rho$.  For the last clause in
+Definition~\ref{def:rel-sem} to be well-defined we need $T_{H,\rho}$
+to be an $\omega$-cocontinuous endofunctor on $RT$ so that, by
+Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_{H,\rho}$ is
+defined in terms of $\relsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha}
+  \vdash H}$, this means that relational interpretations of types must
+be $\omega$-cocontinuous functors from $\relenv$ to $RT_0$, which in
+turn entails that the actions of relational interpretations of types
+on objects and on morphisms in $\relenv$ are intertwined. As for set
+interpretations, we know from~\cite{jp19} that, for every $\Gamma;
+\ol{\alpha} \vdash F$, $\relsem{\Gamma; \ol{\alpha} \vdash F}$ is
+actually in $[\rel^k,\rel]$ where $k = |\ol \alpha|$.
 %In fact, we already know from~\cite{jp19} that, for every $\Gamma;
 %\ol{\alpha} \vdash \tau : \F$, $\relsem{\Gamma; \ol{\alpha} \vdash
 %  \tau}$ is actually functorial in $\ol{\alpha}$ and
@@ -2004,8 +2045,8 @@ Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
 the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \relsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
-  \id_F][\ol{\alpha := \id_R}]$.  The next definition uses the functor
+F)_{\ol{R}} = \relsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash
+  H}f[\phi := \id_F][\ol{\alpha := \id_R}]$. The next definition uses
 $T_H$ to define the actions of functors interpreting types on
 morphisms between relation environments.
     
@@ -3890,65 +3931,50 @@ properties hold for relational interpretations.
 
 \subsection{Properties of Terms of $\Nat$-Type}\label{sec:Nat-type-terms}
 
-Define, for $\Gamma; \ol{\alpha} \vdash F$, the term {\color{blue}
-  $\id_F$} to be $\Gamma;\emptyset~|~\emptyset \vdash
-L_{\ol{\alpha}}x.x : \Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma;
-\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and
-$\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}}
-G\,H$, the {\em composition} $s \circ t$ of $t$ and $s$ to be $\Gamma;
-\emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
-x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
-\Nat^{\overline{\alpha}} F\,H$. Then $\setsem{\Gamma; \emptyset \,|\,
-  \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
-\id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho
-  [\ol{\alpha := A}]}$ for any set environment $\rho$, and
-$\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
-  \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset \,|\,
-  \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
-\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
-  \Nat^{\overline{\alpha}} F\,G}$.  Straightforward calculation using
-these equalities shows that terms of $\Nat$ type behave as
+Straightforward calculation shows that terms of $\Nat$ type behave as
 natural transformations with respect to their source and target
 functorial types, i.e., we have
-\begin{thm}\label{eq:ft-from-nat}
-\[\begin{array}{l}
-\hspace*{0.135in}\setsem{\Gamma; {\color{blue} \ol\alpha} \,|\, x :
-  \Nat^{\overline{\alpha}, 
-    \overline{\gamma}} F\,G, \overline{y : \Nat^{\overline{\gamma}}
-    K\, H} \vdash (\map_G^{\overline{K},
-    \overline{H}} \,\overline{y}) \circ
-  (L_{\overline{\gamma}} z. x_{\overline{K}, \overline{\gamma}}
-  z) : \Nat^{\overline{\gamma}} F[\overline{\alpha := K}]\,
+\begin{thm}\label{eq:ft-from-nat} 
+If\, $\Gamma; \ol\beta \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
+  \overline{\gamma}} F\,G$ and $\overline{\Gamma; \ol\beta \,|\,
+  \Delta \vdash t : \Nat^{\overline{\gamma}} K\, H}$, then
+  \[\begin{array}{l}
+  \hspace*{0.135in}
+\setsem{\Gamma; \ol\beta \,|\, \Delta
+  \vdash L_{\overline{\gamma}} z. 
+  (\map_G^{\overline{K}, \overline{H}} \,\overline{t})_{\ol\gamma}
+  (s_{\overline{K}, \overline{\gamma}} z)
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := K}]\,
   G[\overline{\alpha := H}]}\\
-= \setsem{ \Gamma; {\color{blue} \ol\alpha} \,|\, x
-  : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y :
-    \Nat^{\overline{\gamma}} K\, H} \vdash
-  (L_{\overline{\gamma}} z. x_{\overline{H}, \overline{\gamma}} z)
-  \circ (\map_F^{\overline{K}, \overline{\tau}} \,
-  \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
+= \setsem{ \Gamma; \ol\beta \,|\, \Delta \vdash
+  L_{\overline{\gamma}} z. s_{\overline{H}, \overline{\gamma}}
+  ((\map_F^{\overline{K}, \overline{H}} \,
+  \overline{t})_{\ol\gamma} z) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
       K}]\, G[\overline{\alpha := H}]}
 \end{array}\]
 \end{thm}
-When $x = \mathit{in}_H$ and $\xi = \Nat^{\overline{\gamma}} H[\phi :=
+\noindent
+When $s = \mathsf{in}_H$, and
+$\overline{\Gamma; \ol\delta \,|\, t :
+ \Nat^{\overline{\gamma}} F\, G}$,
+and $\xi = \Nat^{\overline{\gamma}} H[\phi :=
   (\mu \phi. \lambda \overline{\alpha}. H)
   \overline{\beta}][\overline{\alpha := F}]\, (\mu \phi. \lambda
-\overline{\alpha}. H)\overline{G}$ Theorem~\ref{eq:ft-from-nat}
+\overline{\alpha}. H)\overline{G}$, Theorem~\ref{eq:ft-from-nat}
 specializes to
 \begin{equation}\label{thm:subst}
 \begin{array}{l}
-\hspace*{0.135in}\setsem{\Gamma; {\color{blue} \ol\alpha} \,|\, \overline{y :
-    \Nat^{\overline{\gamma}} 
-    F\, G} \vdash (\map_{(\mu \phi. \lambda
+\hspace*{0.135in}\setsem{\Gamma; \ol\delta \,|\, \Delta \vdash
+L_{\overline{\gamma}} z. (\map_{(\mu \phi. \lambda
     \overline{\alpha}. H) \overline{\beta}}^{\overline{F},
-    \overline{G}}\, \overline{y}) \circ
-  (L_{\overline{\gamma}} z. (\tin_{H})_{\overline{F},
+    \overline{G}}\, \overline{t})_{\ol\gamma}
+  (\tin_{H})_{\overline{F},
     \overline{\gamma}} z) : \xi}\\
-= \setsem{\Gamma; {\color{blue} \ol\alpha} \,|\, \overline{y :
-  \Nat^{\overline{\gamma}} F\, G} 
-  \vdash (L_{\overline{\gamma}} z. (\tin_H)_{\overline{G}, \overline{\gamma}} z)
-  \circ (\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)
+= \setsem{\Gamma; \ol\delta \,|\, \Delta
+\vdash L_{\overline{\gamma}} z. (\tin_H)_{\overline{G}, \overline{\gamma}}
+  ((\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)
       \overline{\beta}]}^{\overline{F},
-    \overline{G}}\, \overline{y}) 
+    \overline{G}}\, \overline{t})_{\ol\gamma} z)
   : \xi}
 \end{array}
 \end{equation}
@@ -3960,15 +3986,15 @@ $\mathtt{map}$/$\mathtt{reverse}$ theorems from
 Section~\ref{sec:intro}. The $\mathtt{map}$/$\mathtt{reverse}$ theorem
 for bushes, e.g., is
 \begin{align*}
-  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset F \, G
-    \vdash (\map_{\mathit{Bush}\,\alpha}^{{F},
-      {G}}\, y) \circ (L_{{\emptyset}}
-    z. \mathit{reverseBush}_{F}\, z) : \Nat^{{\emptyset}}
+  &\setsem{\emptyset; \emptyset~|~ y : \Nat^\emptyset F \, G
+    \vdash L_{{\emptyset}}
+    z. (\map_{\mathit{Bush}\,\alpha}^{{F},
+      {G}}\, y)_{\emptyset} (\mathit{reverseBush}_{F}\, z) : \Nat^{{\emptyset}}
     (\mathit{Bush} \, F) \, (\mathit{Bush} \, G) }\\ =\;
-  &\setsem{\emptyset; \alpha~|~ y : \Nat^\emptyset F\, G
-    \vdash (L_{\emptyset} z. \mathit{reverseBush}_{G} \,z) \circ
-    (\map_{\mathit{Bush} \, \alpha}^{F, G}\,
-           {y}) : \Nat^{\emptyset} (\mathit{Bush} \, F ) \,
+  &\setsem{\emptyset; \emptyset~|~ y : \Nat^\emptyset F\, G
+    \vdash L_{\emptyset} z. \mathit{reverseBush}_{G}
+    ((\map_{\mathit{Bush} \, \alpha}^{F, G}\,
+           {y})_{\emptyset} z) : \Nat^{\emptyset} (\mathit{Bush} \, F ) \,
            (\mathit{Bush} \, G)}
 \end{align*}
 for any term $\vdash \mathit{reverseBush} : \Nat^\alpha (\mathit{Bush}
@@ -3993,16 +4019,16 @@ similar but only maps along some of its functorial variables:
 if $\vdash \mathit{reverseTree} : \Nat^{\alpha, \gamma} (\mathit{Tree}
 \,\alpha \, \gamma) \, (\mathit{Tree} \, \alpha \, \gamma)$ then
 \begin{align*}
-  &\setsem{\emptyset; \alpha,\gamma~|~y : \Nat^\emptyset F \,
-    G \vdash (\map_{\mathit{Tree}\,\alpha \, \gamma}^{F,
-      G}\, y) \circ (L_{{\gamma}}
-    z. \mathit{reverseTree}_{F, \gamma}\, z) : \Nat^{{\gamma}}
+  &\setsem{\emptyset; \emptyset~|~y : \Nat^\gamma F \, G 
+  \vdash L_{{\gamma}} z.
+    (\map_{\mathit{Tree}\,\alpha \, \gamma}^{F,
+      G}\, y)_{\gamma} (\mathit{reverseTree}_{F, \gamma}\, z) : \Nat^{{\gamma}}
     (\mathit{Tree} \, F \, \gamma) \, (\mathit{Tree} \, G \,
-    \gamma) }\\ =\; &\setsem{\emptyset; \alpha,\gamma~|~y :
-    \Nat^\emptyset F \, G \vdash (L_{\gamma}
-    z. \mathit{reverseTree}_{G, \gamma} \,z) \circ
-    (\map_{\mathit{Tree} \, \alpha\, \gamma}^{{F},
-      {G}}\, y) : \Nat^{\gamma} (\mathit{Tree} \,
+    \gamma) }\\ =\; &\setsem{\emptyset; \emptyset~|~y :
+    \Nat^\gamma F \, G \vdash L_{\gamma}
+    z. \mathit{reverseTree}_{G, \gamma}\,
+    ((\map_{\mathit{Tree} \, \alpha\, \gamma}^{{F},
+      {G}}\, y)_{\gamma} z) : \Nat^{\gamma} (\mathit{Tree} \,
     F \, \gamma) \, (\mathit{Tree} \, G\, \gamma)}
 \end{align*}
 \noindent
@@ -4056,11 +4082,11 @@ Definition~\ref{def:set-interp} gives
 %\end{multline}
 \end{comment}
 In particular, if $\Gamma; \ol{\alpha} \vdash H$, $\ol{\Gamma;
-  \emptyset \vdash F}$, and $\ol{\Gamma; \emptyset \vdash G}$, then
+  \emptyset \vdash F}$, and $\ol{\Gamma; \ol\beta \vdash G}$, then
 Definition~\ref{def:set-interp} gives, for all $\ol{f :
-  \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset F\,G}\rho}$, that
+  \setsem{\Gamma;\ol\beta \vdash \Nat^\emptyset F\,G}\rho}$, that
 \[\begin{array}{rl}
-&\setsem{ \Gamma;\emptyset\,|\,\ol{x : \Nat^\emptyset F \, G}
+&\setsem{ \Gamma;\ol\beta\,|\,\ol{x : \Nat^\emptyset F \, G}
   \vdash \map^{\ol{F},\ol{G}}_H\,\ol x :
   \Nat^{\emptyset}\,H[\ol{\alpha := F}]\,H[\ol{\alpha := G}]}
 \rho\,\ol f\\ =& \setsem{\Gamma; \ol{\alpha}\vdash H}
@@ -4087,6 +4113,10 @@ Definition~\ref{def:set-interp} gives, for all $\ol{f :
 \end{array}
 \]
 \end{comment}
+
+\vspace*{0.05in}
+
+\noindent
 Here, we obtain the first equality from the appropriate instance of
 Definition~\ref{def:set-interp}, and the second one by noting that
 $\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho
@@ -4096,8 +4126,24 @@ $G$ on morphisms $\ol f$.
 
 \vspace*{0.1in}
 
-We also have the expected relationships between the interpetations of
-$\map$, $\tin$, and $\fold$, namely
+Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
+$\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
+\Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
+\Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \ol\beta
+\,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$, the {\em
+  composition} $s \circ t$ of $t$ and $s$ to be $\Gamma; \ol\beta
+\,|\, \Delta \vdash L_{\overline{\alpha}}
+x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
+\Nat^{\overline{\alpha}} F\,H$. Then $\setsem{\Gamma; \emptyset \,|\,
+  \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
+\id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho
+  [\ol{\alpha := A}]}$ for any set environment $\rho$, and
+$\setsem{\Gamma; \ol\beta \,|\, \Delta \vdash s \circ t:
+  \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \ol\beta \,|\,
+  \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
+\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
+  \Nat^{\overline{\alpha}} F\,G}$.  We have the expected relationships
+between the interpetations of $\map$, $\tin$, and $\fold$:
 
 \vspace*{0.1in}
 
@@ -4106,17 +4152,17 @@ $\bullet$\;  If
 $\Gamma; \ol{\psi}, \ol{\gamma} \vdash H$,\;
 $\ol{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}$,\;
 $\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}$, 
-$\ol{\Gamma; \Phi, \ol{\beta}, \ol{\gamma} \vdash G}$, and
-$\ol{\Gamma;\Phi\,|\,\Delta \vdash t : \Nat^{\ol{\alpha}, \ol{\beta},
+$\ol{\Gamma; \ol\delta, \ol{\beta}, \ol{\gamma} \vdash G}$, and
+$\ol{\Gamma;\ol\delta\,|\,\Delta \vdash t : \Nat^{\ol{\alpha}, \ol{\beta},
     \ol{\gamma}} F\, G}$
 then
-\[\setsem{\Gamma; \Phi \,|\, \Delta \vdash
+\[\setsem{\Gamma; \ol\delta \,|\, \Delta \vdash
 \map_{H[\ol{\psi := K}]}^{\ol{F}, \ol{G}}\,\ol t : \xi} = \setsem{\Gamma;
-  \Phi \,|\, \Delta \vdash \map_H^{\ol{K[\ol{\phi := F}]},
+  \ol\delta \,|\, \Delta \vdash \map_H^{\ol{K[\ol{\phi := F}]},
     \ol{K[\ol{\phi := G}]}}\, (\ol{\map_K^{\ol{F}, \ol{G}}}\, \ol t) :
   \xi}\]
-for $\xi = \Nat^{\ol{\gamma}} H[\ol{\psi :=
-    K}][\ol{\phi := F}] H[\ol{\psi := K}][\ol{\phi := G}]$
+for $\xi = \Nat^{\ol{\gamma}} \,H[\ol{\psi :=
+    K}][\ol{\phi := F}]\, H[\ol{\psi := K}][\ol{\phi := G}]$
 
 \vspace*{0.18in}
 
@@ -4124,14 +4170,15 @@ for $\xi = \Nat^{\ol{\gamma}} H[\ol{\psi :=
 $\bullet$\; If $\Gamma; \overline{\beta}, \overline{\gamma} \vdash
 H$,\; $\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$,\;
 $\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$,\;
-$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash G}$,\;
+$\overline{\Gamma; \ol\delta, \overline{\alpha}, \overline{\gamma}
+  \vdash G}$,\; 
 $\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash
   M}$,\; $\overline{I}$ is the sequence $\overline{F}, H$,\;
 $\overline{J}$ is the sequence $\overline{G}, K$, and $\Gamma;
-\Phi\,|\,\Delta \vdash s : \Nat^{\overline{\beta},
-  \overline{\gamma}} H\, K$ and $\ol{\Gamma; \Phi\,|\,\Delta \vdash
+\emptyset\,|\,\Delta \vdash s : \Nat^{\overline{\beta},
+  \overline{\gamma}} H\, K$ and $\ol{\Gamma; \ol\delta\,|\,\Delta \vdash
   t : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}$, then
-\[\hspace*{0.13in}\setsem{\Gamma; \Phi \,|\, \Delta
+\[\hspace*{0.13in}\setsem{\Gamma; \ol\delta \,|\, \Delta
     \vdash L_{\overline{\gamma}} z.\,
     s_{\overline{M [\overline{\psi := G}] [\phi := K]},
       \overline{\gamma}} \Big(\big( \map_{H}^{\overline{M
@@ -4139,7 +4186,7 @@ $\overline{J}$ is the sequence $\overline{G}, K$, and $\Gamma;
         [\overline{\psi := G}] [\phi := K]}}
     (\overline{\map_{M}^{\overline{I}, \overline{J}}
       (s, \overline{t})}) \big)_{\overline{\gamma}} z \Big) : \xi}\]
-\[= \setsem{\Gamma; \Phi \,|\, \Delta \vdash
+\[= \setsem{\Gamma; \ol\delta\,|\, \Delta \vdash
     L_{\overline{\gamma}} z.\, \big( \map_{K}^{\overline{M
       [\overline{\psi := F}] [\phi := H]}, \overline{M [\overline{\psi
           := G}] [\phi := K]}} (\overline{\map_{M}^{\overline{I},
@@ -4161,7 +4208,7 @@ F$, then
     F][\overline{\alpha := \beta}]\, F \vdash ((\fold_{H,
     F})_{\emptyset} x) \circ \tin_{H} : \xi}\]
 
-\vspace*{-0.3in}
+\vspace*{-0.15in}
 
 \[= \setsem{ \Gamma; \emptyset \,|\, x: \Nat^{\overline{\beta},
     \overline{\gamma}} H[\phi := F][\overline{\alpha := \beta}]\, F
@@ -4169,7 +4216,7 @@ F$, then
     \phi. \lambda \overline{\alpha} H) \overline{\beta},
     F} ((\fold_{H, F})_{\emptyset} x) \big) : \xi}\]
 
-\vspace*{0.18in}
+\vspace*{0.1in}
 
 \noindent
 $\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}\, (\mu
@@ -4184,12 +4231,12 @@ $\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}\, (\mu
     \overline{\alpha}. H)\overline{\beta}} \tin_H) :
   \xi}\]
 
-\vspace*{-0.2in}
+\vspace*{-0.15in}
 
-\[\hspace*{-3.6in} = \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \Id_{(\mu
+\[\hspace*{-3.6in} = \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \mathit{id}_{(\mu
     \phi. \lambda \overline{\alpha}. H)\overline{\beta}} : \xi}\]
 
-\vspace*{0.18in}
+\vspace*{0.15in}
 
 \noindent
 $\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}
@@ -4205,10 +4252,10 @@ then
     \overline{\alpha}. H)\overline{\beta}} \tin_H) \circ
   \tin_H : \xi}\]
 
-\vspace*{-0.2in}
+\vspace*{-0.15in}
 
 \[\hspace*{-3.32in} =\setsem{ \Gamma; \emptyset \,|\, \emptyset \vdash
-  \Id_{H[\phi := (\mu \phi. \lambda
+  \mathit{id}_{H[\phi := (\mu \phi. \lambda
       \overline{\alpha}. H)\overline{\beta}]} : \xi}\]
 
 \vspace*{0.1in}
@@ -5267,3 +5314,6 @@ specialization.
 
 Add more polymorphism (all foralls), even though most free theorems
 only use one level (or maybe two, like short cut).
+
+
+%test
