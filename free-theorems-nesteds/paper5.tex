@@ -194,25 +194,25 @@ all such types.
 %postulating them,
 Our main technical contribution is the construction of a parametric
 model for this calculus. This is both delicate and challenging.  To
-establish a suitable Identity Extension Lemma for our calculus, mild
-restrictions are imposed on the formation of fixpoints; all ADTs and
-all (truly) nested types appearing in the literature can nevertheless
-be expressed. Moreover, to ensure the existence of the fixpoints
-interpreting nested types, cocontinuity conditions on the functors
-underlying these fixpoints must be threaded throughout our model
-construction.  Overall, this paper offers a blueprint for deriving
-principled parametricity results for practical programming languages,
-such as Haskell and Agda, that directly construct nested types as
-fixpoints rather than encoding them. It also shows how parametric
-models can derive useful free theorems for programs over nested
-types. Like their counterparts for ADTs, these free theorems
+establish a suitable Identity Extension Lemma for our calculus, extra
+care is taken in the formation of fixpoints; all ADTs and all (truly)
+nested types appearing in the literature can nevertheless be expressed
+in our calculus. In addition, to ensure the existence of the fixpoints
+interpreting nested types, cocontinuity conditions on their underlying
+functors must be threaded throughout our model construction.  Overall,
+this paper offers a blueprint for deriving principled parametricity
+results for practical programming languages, such as Haskell and Agda,
+that directly construct nested types as fixpoints rather than
+representing them via Church encodings.
+%encoding them.
+It also shows how parametric models can derive useful free
+theorems for programs over nested types. Like their counterparts for
+ADTs, these free theorems
 %our model derives
 provide
 %, in particular,
-a principled alternative to proving
-properties of programs over nested types via induction, 
-e.g., using the deep
-induction rules
+a principled alternative to proving program properties via induction,
+e.g., using the deep induction rules for nested types
 %for nested types
 recently developed by
 Johann and Polonsky.
@@ -781,12 +781,12 @@ Definition~\ref{def:wftypes} allows the formation of all of the
 \end{array}\]
 Each of these types can be considered either functorial in $\alpha$ or
 not, according to whether $\alpha$ is in the functorial or
-non-functorial context in which it is formed. For example, if
+non-functorial context in which it is formed. In particular, if
 $\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then $\vdash
 \Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is well-formed; if
-$\alpha;\emptyset \vdash \List \,\alpha$, then it is not.  If
-$\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta \times
-\gamma \times \beta$, then $\gamma;\emptyset \vdash \Nat^\alpha
+$\alpha;\emptyset \vdash \List \,\alpha$, then it is not.  Similarly,
+if $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta
+\times \gamma \times \beta$, then $\gamma;\emptyset \vdash \Nat^\alpha
 (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is
 well-formed, but $\emptyset;\gamma \vdash \Nat^\alpha (\mathit{List}\,
 \alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is not. Although types
@@ -794,14 +794,16 @@ can be functorial in variables of arity greater than $0$, the body $F$
 of a type $(\mu \phi.\lambda \ol\alpha.F)\,\ol G$ cannot. For example,
 the type $\mathit{GRose}\, \phi \, \alpha = \mu\beta . \alpha \times
 \phi \beta$ can be functorial or not in $\alpha$, but cannot be
-functorial in $\phi$. In particular, $\mathit{GRose}\,\phi\,\alpha$
-cannot be the (co)domain of a $\Nat$ type representing a natural
-transformation functorial in $\phi$, and the type $\mu \phi. \lambda
-\alpha. \mathit{GRose}\,\phi\,\alpha$ is not well-formed in our
-system. The restrictions imposed by our typing rules will ensure that
-set interpretations of types are functors. In
-Section~\ref{sec:conclusion} we discuss how to lessen the expressivity
-constraints they impose.
+functorial in $\phi$. Moreover, $\mathit{GRose}\,\phi\,\alpha$ cannot
+be the (co)domain of a $\Nat$ type representing a natural
+transformation functorial in $\phi$. Finally, the type $\mu
+\phi. \lambda \alpha. \mathit{GRose}\,\phi\,\alpha$ is not well-formed
+in our system. These restrictions ensure that the set and relational
+interpretations of types in Section~\ref{sec:type-interp} are
+functors. In Section~\ref{sec:conclusion} we discuss how GADTs and
+other more expressive types might be accommodated.
+%consider ways to lessen the expressivity constraints they impose.
+%
 %These restrictions on higher-arity functoriality are necessary
 %for constructing our parametric model. Fortunately, they are entirely
 %natural, and {\color{blue} preclude only truly bizarre nested types}.
@@ -1025,14 +1027,14 @@ In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
 occurrences of the type variables in $\ol{\alpha}$ in the type of the
 term variable $x$ and in the body $t$, as well as all occurrences of
 $x$ in $t$. In the rule for $t_{\ol K} s$ there is one functorial
-expression $K$ for every functorial variable $\alpha$. In the rule
-for $\map^{\ol{F},\ol{G}}_H$ there is one functorial expression $F$
-and one functorial expression $G$ for each functorial variable in
-$\ol\phi$. Moreover, for each $\phi^k \in \ol\phi$ the number of
-functorial variables $\beta$ in the judgments for its corresponding
-functorial expresssions $F$ and $G$ is $k$. In the rules for $\tin_H$
-and $\fold^F_H$, the functorial variables in $\ol{\beta}$ are fresh
-with respect to $H$, and there is one $\beta$ for every
+expression $K$ for every functorial variable $\alpha$. In the rule for
+$\map^{\ol{F},\ol{G}}_H$ there is one functorial expression $F$ and
+one functorial expression $G$ for each functorial variable in
+$\ol\phi$. Moreover, for each $\phi^k$ in $\ol\phi$ the number of
+functorial variables in $\ol\beta$ in the judgments for its
+corresponding functorial expresssions $F$ and $G$ is $k$. In the rules
+for $\tin_H$ and $\fold^F_H$, the functorial variables in $\ol{\beta}$
+are fresh with respect to $H$, and there is one $\beta$ for every
 $\alpha$. (Recall from above that, in order for the types of $\tin_H$
 and $\fold^F_H$ to be well-formed, the length of $\alpha$ must equal
 the arity of $\phi$.) Substitution for terms is the obvious extension
@@ -1167,9 +1169,9 @@ Our rule for forming $\Nat$-types means that
 %functoriality does not interact with polymorphism as well as might be
 %hoped,
 our calculus cannot express types of recursive functions, such as a
-concatenation function for perfect trees, that take as inputs both a
-nested type and an argument of another type, both of which are
-parameterized over the same variable $\alpha$.
+concatenation function for perfect trees, that take as inputs a nested
+type and an argument of another type, both of which are parameterized
+over the same variable $\alpha$.
 %not just one nested type parameterized over a variable $\alpha$ as
 %input, but other inputs parameterized over $\alpha$ as well.
 Similarly, our calculus cannot express the type of a zip function for
@@ -1181,7 +1183,7 @@ its result.
 %leaves no nontrivial way to incorporate data from the second argument
 %to a function with a type like that above into a fold over its first
 %argument.
-Even for ADTs there is a difference between which folds over them we
+In fact, even for ADTs there is a difference between which folds over them we
 can type when ADTs are viewed as ADTs --- i.e., as fixpoints of types
 interpreted as first-order functors --- and which folds we can type
 when ADTs are viewed as proper nested types --- i.e., as fixpoints of
@@ -1192,7 +1194,7 @@ construct. For ADTs this number can be $0$, making it possible to
 write types such as $\alpha; \emptyset \vdash \Nat^\emptyset
 \ (\List\,\alpha)\,(\Nat^\emptyset \alpha\,(\List (\mu \beta. 1 +
 \beta)))$, all of whose argument types are parameterized over the same
-type $\alpha$. This is not possible even for nested types that are
+type $\alpha$. This is not possible for nested types, even if they are
 semantically equivalent to ADTs.
 %Currying the type of the function does not help either, since the
 %codomain of a fold applied to an algebra must be a functor, and this
@@ -1241,9 +1243,9 @@ in $\set$, as will be required in Section~\ref{sec:type-interp}. For
 example,
 %as shown in Example D, Section VI of~\cite{jp19},
 the type $\emptyset; \gamma \vdash \Nat^\emptyset (\onet + \onet)\,
-\gamma$ does not. We would therefore have to construct our models
-from semantic categories that are locally $\lambda$-presentable for
-$\lambda > \omega$.
+\gamma$ does not. To remedy this, we would need to construct our
+models from semantic categories that are locally $\lambda$-presentable
+for $\lambda > \omega$.
 %It is tempting to try to recover typeability of, say, a zip function
 %for bushes by allowing extra functorial variables in the codomain type
 %of $\Nat$-types. But such extended $\Nat$-types need not have
@@ -1252,13 +1254,13 @@ $\lambda > \omega$.
 %Section VI of~\cite{jp19}, the type $\emptyset; \gamma \vdash
 %\Nat^\emptyset (\onet + \onet)\, \gamma$ does not.
 %
-Adding more expressive stylized recursion combinators could
-also help,
+Adding more expressive recursion combinators could help, too,
 %enhance the expressivity of our calculus
 but the expressivity issue for folds for nested types long pre-dates,
 and is somewhat orthogonal to, the issue of parametricity for
 languages that construct nested types as fixpoints studied here.
-Enhancing the expressivity of our calculus is discussed further in
+%Nevertheless, improving expressivity is
+These and other extensions are discussed in
 Section~\ref{sec:conclusion}.
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
@@ -5224,24 +5226,24 @@ We have constructed a parametric model for a calculus
 providing primitives for constructing nested types directly as
 fixpoints.
 %rather than representing them via their Church encodings. We
-We have also used the Abstraction Theorem for this model to prove free
-theorems in the presence of nested types. This was not possible
-before~\cite{jp19} because the nested types definable in our syntax
-were not previously known to have well-defined interpretations in
-locally finitely presentable categories like $\set$ and $\rel$. No
-term calculus for terms of these types existed, either. The key to
-obtaining our parametric model is
+We have also used the Abstraction Theorem for this model to derive
+free theorems in the presence of nested types. This was not possible
+before~\cite{jp19} because the nested types in our calculus were not
+previously known to have well-defined interpretations in locally
+finitely presentable categories like $\set$ and $\rel$. No calculus
+for terms of these types existed, either. The key to obtaining our
+parametric model is
 %{\color{blue} adjusting our type syntax to respect the accessibility
 %  cardinal for the semantic category and}
 the delicate threading of functoriality and its accompanying
-naturality conditions throughout the model construction
+naturality conditions throughout the model construction.
 
 Even when nested types have well-defined interpretations in a semantic
-category, the types of standard functions over them may not be.  All
-recursion in our calculus must be coded using folds.  Since standard
-folds for nested types can only express computations that return
-natural transformations, their expressivity has long been a vexing
-issue, which our calculus naturally inherits.
+category, the types of standard functions over them may not. This is
+because all recursion in our calculus must be coded using standard
+folds.  Since folds for nested types can only express computations
+that return natural transformations, their expressivity has long been
+a vexing issue, and this is naturally inherited by our calculus.
 %indeed, such folds
 %Our calculus naturally inherits these constraints.
 %Of course our calculus inherits the constraints
@@ -5253,29 +5255,28 @@ local $\lambda$-presentability cardinal $\lambda$ of the categories in
 which higher-kinded types are interpreted. Because $\lambda = \omega$
 for $\set$ and $\rel$, the expressivity of our
 %$\set$/$\rel$-based parametric model
-calculus is not easily improved there. Construction of a
-$\set$/$\rel$-based parametric model for our calculus is nevertheless
-worthwhile.  For one thing, the expressivity issue is orthogonal to
-constructing parametric models,
+calculus is, unfortunately, not easily improved there. Construction of
+a $\set$/$\rel$-based parametric model for our calculus is
+nevertheless worthwhile.  For one thing, the expressivity issue is
+orthogonal to constructing parametric models,
 %in the presence of nested types built from primitives,
 and trying to address both in a single paper would
-detract from the conceptual clarity of our construction.
+detract from the conceptual clarity of our model construction.
 %our current focus on deriving principled parametricity
 %results for practical programming languages, such as Haskell and Agda,
 %that directly construct nested types as fixpoints.
 %
 %conceptual clarity of this paper.
-For another, if the construction of this paper
+For another, if the construction in this paper
 %we couldn't
 %construct a $\set$/$\rel$-based parametric model for the calculus
 %presented here,
-weren't possible then trying to construct a parametric model from
-robust semantic categories for more data types and/or recursion
-schemes would likely be futile. We naturally expect the construction
-reported here to guide its generalization to the locally
-$\lambda$-presentable categories for $\lambda > \omega$ that will be
-needed to accommodate more general data types and more general
-recursion over them.
+weren't possible, then trying to construct a parametric model from
+richer semantic categories for fancier data types and/or recursion
+schemes would be futile. We naturally expect the construction reported
+here to guide its generalization to the locally $\lambda$-presentable
+categories for $\lambda > \omega$ that will be needed to accommodate
+more general data types and recursion schemes for them.
 
 % As is, the results reported here provide a
 %blueprint for deriving principled parametricity results for practical
@@ -5352,37 +5353,37 @@ extensions.
 %a construct in $\set$ and $\rel$ should be unproblematic {\color{blue}
 %  since these categories have all(?) limits}.
 It was also shown in~\cite{jg08} that GADTs can be represented using
-object-level {\em left} Kan extensions.
+object-level {\em left} Kan extensions, and
 %
 %This suggests
 %extending our term calculus with such object-level constructs.
 %
 %{\color{blue} We may need to impose restrictions inspired
 %  by those for $\mu$-types on LKEs.}
-Augmenting the types in our calculus with a carefully designed left
-Kan extension was shown in~\cite{jp19} to preserve the cocontinuity
-needed for GADTs to have well-defined interpretations --- although
+adding a carefully designed left Kan extension construct to our
+calculus was shown in~\cite{jp19} to preserve the cocontinuity needed
+for GADTs to have well-defined interpretations. We note, however, that
 %not necessarily in
 %However, this will not, in general, be
 %the case in locally finitely presentable catgories. Indeed, as shown
 %in~\cite{jp19},
-local $\lambda$-presentabile categories for $\lambda > \aleph_1$ are
+locally $\lambda$-presentable categories for $\lambda > \aleph_1$ are
 required to interpret even commonly used GADTs. This suggests
-extending our term calculus with Kan extensions and
+extending our calculus with Kan extension constructs and
 %augmenting our type formation rules with such a construct.
 %The constructions of this paper should all be possible
 carrying out our model construction in a locally $\lambda$-presentable
 cartesian closed category (lpccc) $\cal C$ whose category of
-(abstract) relations, obtained by pullback as in~\cite{jac99}, is also
-a lpccc and is appropriately fibred over $\cal C$.  This would
+(abstract) relations, obtained by pullback as in~\cite{jac99},
+is also a lpccc and appropriately fibred over $\cal C$.  This would
 %extend the results presented here along the lines of~\cite{gjfor15},
 %thus giving
-result in a framework for constructing parametric models for calculi
+give a framework for constructing parametric models for calculi
 with nested types built from primitives that is based on ``locally
 $\lambda$-presentable fibrations'', for some appropriate definition
 thereof.  Another option is to add term-level fixpoints
 %, as in~\cite{pit00},
-to the calculus presented here. However, this would require the
+to the calculus presented here. This would, however, require the
 categories interpreting types to be not just locally
 $\lambda$-presentable, but to support some kind of domain structure as
 well.
