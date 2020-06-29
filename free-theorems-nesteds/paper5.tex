@@ -82,6 +82,8 @@
 
 \renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
 
+\newcommand{\ininv}[2]{(\tin^{-1}_{\onet +
+  \beta \times \phi (\phi\beta)})_{#1}\, #2}
 \newcommand{\emptyfun}{{[]}}
 \newcommand{\cal}{\mathcal}
 %\newcommand{\fold}{\mathit{fold}}
@@ -195,15 +197,16 @@ all such types.
 Our main technical contribution is the construction of a parametric
 model for this calculus. This is both delicate and challenging.  To
 establish a suitable Identity Extension Lemma for our calculus, extra
-care is taken in the formation of fixpoints; all ADTs and all (truly)
-nested types appearing in the literature can nevertheless be expressed
-in our calculus. In addition, to ensure the existence of the fixpoints
-interpreting nested types, cocontinuity conditions on their underlying
-functors must be threaded throughout our model construction.  Overall,
-this paper offers a blueprint for deriving principled parametricity
-results for practical programming languages, such as Haskell and Agda,
-that directly construct nested types as fixpoints rather than
-representing them via Church encodings.
+care must be taken in the formation of fixpoint types; all ADTs and
+all (truly) nested types appearing in the literature can nevertheless
+be expressed in our calculus. In addition, to ensure the existence of
+semantic fixpoints interpreting nested types, cocontinuity conditions
+on the functors interpreting all of the types in our calculus must
+be threaded throughout our model construction.  Overall, this paper
+provides a blueprint for deriving principled parametricity results for
+practical programming languages, such as Haskell and Agda, that
+directly construct nested types as fixpoints rather than representing
+them via Church encodings.
 %encoding them.
 It also shows how parametric models can derive useful free
 theorems for programs over nested types. Like their counterparts for
@@ -212,11 +215,11 @@ ADTs, these free theorems
 provide
 %, in particular,
 a principled alternative to proving program properties via induction,
-e.g., using the deep induction rules for nested types
-%for nested types
-recently developed by
-Johann and Polonsky.
-%This is illustrated with several examples.
+e.g., using the deep induction rules for nested types recently
+developed by Johann and Polonsky.
+%We derive a number of free theorems for nested types.
+%To illustrate, we derive a number of free theorems.
+Our approach is illustrated with several examples. 
 \end{abstract}
 
 %\begin{CCSXML}
@@ -271,11 +274,11 @@ resulting list is the same as reversing the original list and then
 mapping the function over the result, we unwind the (recursive)
 definitions of the $\mathtt{reverse}$ and $\mathtt{map}$ functions
 over lists to according to the inductive structure of the input
-list. Such data-driven induction proofs over ADTs are so routine that
-they are often included in, say, undergraduate functional programming
-courses.
+list. Such data-driven induction proofs over ADTs are routine enough
+to be included in, say, an undergraduate functional programming
+course.
 
-An alternative technique for proving results like the above
+An alternative approach to proving results like the above
 $\mathtt{map}$-$\mathtt{reverse}$ property for lists is to use
 parametricity, a formalization of extensional type-uniformity in
 polymorphic languages. Parametricity captures the intuition that a
@@ -289,12 +292,14 @@ popularized as Wadler's ``theorems for free''~\cite{wad89} because it
 allows the deduction of many properties of programs in such languages
 solely from their types, i.e., with no knowledge whatsoever of the
 text of the programs involved. To get interesting free theorems,
-Wadler's calculus included, implicitly, built-in list types; indeed,
-most of the free theorems in~\cite{wad89} are consequences of
-naturality for polymorphic list-processing functions. However,
-parametricity can also be used to prove naturality properties for
-non-list ADTs, as well as results, like correctness of program
-optimizations like {\em short cut fusion}~\cite{glp93,joh02,joh03},
+Wadler's calculus included built-in ADTs; indeed, most of the free
+theorems in~\cite{wad89} are consequences of naturality for
+polymorphic list-processing functions. However, the techniques
+of~\cite{wad89} show that parametricity can also be used to derive 
+naturality properties for non-list ADTs, as well as results, like
+correctness of program optimizations like {\em short cut
+  fusion}~\cite{glp93},
+%,joh02,joh03},
 that go beyond simple naturality.
 %In addition, parametricity in the presence of ADTs
 %{\color{blue} check!}  has further been used to prove i) {\em
@@ -312,19 +317,20 @@ that go beyond simple naturality.
 %  means. Re-word?}
 
 This paper is about parametricity and free theorems for a polymorphic
-calculus with explicit syntax not just for ADTs, but for nested types
-as well. An ADT defines a {\em family of inductive data types}, one
-for each input type. For example, the $\mathtt{List}$ data type
-definition above defines a collection of data types $\mathtt{List\;
-  A}$, $\mathtt{List\; B}$, $\mathtt{List\; (A \times B)}$,
-$\mathtt{List\; (\List\;A)}$, etc., each independent of all the
-others. By contrast, a nested type~\cite{bm98} is an {\em inductive
-  family of data types} that is defined over, or is defined mutually
-recursively with, (other) such data types. Since the structures of the
-data type at one type can depend on those at other types, the entire
-family of types must be defined at once. Examples of nested types
-include, trivially, ordinary ADTs, such as list and tree types; simple
-nested types, such as the data type {\small
+calculus with explicit syntax not just for ADTs, but for the
+generalization of ADTs known as {\em nested types}~\cite{bm98}, as
+well. An ADT defines a {\em family of inductive data types}, one for
+each input type. For example, the $\mathtt{List}$ data type definition
+above defines a collection of data types $\mathtt{List\; A}$,
+$\mathtt{List\; B}$, $\mathtt{List\; (A \times B)}$, $\mathtt{List\;
+  (\List\;A)}$, etc., each independent of all the others. By contrast,
+a nested type is an {\em inductive family of data types} that is
+defined over, or is defined mutually recursively with, (other) such
+data types. Since the structures of the data type at one input type
+can depend on those at other input types, the entire family of types
+must be defined at once. Examples of nested types include, trivially,
+ordinary ADTs, such as list and tree types; simple nested types, such
+as the data type {\small
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
@@ -366,10 +372,10 @@ drawing inspiration from the situation for ADTs, we easily construct a
 proof by induction on the input perfect tree. To formally establish
 this result, we could even prove it in Coq or Agda: each of these
 provers actually generates an induction rule for perfect trees, and
-the rule it generats gives the expected result because proving
+the rule it generates gives the expected result because proving
 properties of perfect trees requires only that we induct over the
-top-level perfect tree in the recursive position, leaving any data
-internal to the input tree untouched.
+top-level perfect tree in the recursive position. That is, any data
+internal to the input tree is left untouched.
 
 %want to prove that $\mathtt{reversePTree}$ commutes with
 %$\mathtt{mapPTree}$ or that $\mathtt{reverseBush}$ commutes with
@@ -442,22 +448,22 @@ modern proof assistants.
   (F\; B) \rightarrow F\; B) \rightarrow}\\ 
 \hspace*{0.5in} \mathtt{Bush\; A \rightarrow F \;A}\\
 \mathtt{foldBush\; bn\; bc\; bnil = bn}\\
-\mathtt{foldBush \;bn \;bc \;(bcons\; x \;bb) =}\\
+\mathtt{foldBush \;bn \;bc \;(bcons\; x \;bbx) =}\\
 \hspace*{0.5in} \mathtt{bc\; x \;(foldBush \;bn\; bc
-  \;(mapBush \;(foldBush\; bn\; bc) \;bb))}\\
+  \;(mapBush \;(foldBush\; bn\; bc) \;bbx))}\\
 \\
 \mathtt{mapBush : \forall \{A \,B : Set\} \to (A \to B) \to (Bush\, A) \to
   (Bush\, B)}\\ 
 \mathtt{mapBush\; \_ \; bnil = bnil}\\
-\mathtt{mapBush\; f\; (bcons\; x \;bb) = bcons \;(f\, x) \; (mapBush\;
-  (mapBush\, f) \; bb)}\\ 
+\mathtt{mapBush\; f\; (bcons\; x \;bbx) = bcons \;(f\, x) \; (mapBush\;
+  (mapBush\, f) \; bbx)}\\ 
 \\
 \mathtt{balg : \forall \{B : Set\} \rightarrow B \rightarrow Bush
   \;(Bush\; B) \rightarrow Bush\; B}\\
 \mathtt{balg \;x \;bnil = bcons\; x \;bnil}\\
 \mathtt{balg \;x\; (bcons \;bnil \;bbbx) = bcons\; x \;(bcons \;bnil\; bbbx)}\\
-\mathtt{balg\; x \;(bcons \;(bcons\; y \;bx)\; bbbx) =}\\
-\hspace*{0.5in} \mathtt{bcons\; y\; (bcons\; (bcons \;x \;bx) \;bbbx)}\\
+\mathtt{balg\; x \;(bcons \;(bcons\; y \;bbx)\; bbbx) =}\\
+\hspace*{0.5in} \mathtt{bcons\; y\; (bcons\; (bcons \;x \;bbx) \;bbbx)}\\
 \end{array}\]
 \caption{$\mathtt{reverseBush}$ and auxiliary
   functions in Agda}\label{fig:funs2} 
@@ -468,8 +474,11 @@ modern proof assistants.
 
 Of course it is great to know that we {\em can}, at last, prove
 properties of programs over (truly) nested types by induction.  But
-recalling that inductive proofs over ADTs can sometimes be
-circumvented in the presence of parametricity, we might naturally ask:
+recalling that parametricity often provides a viable alternative to
+inductive proofs for ADTs,
+%inductive proofs over ADTs can sometimes be circumvented in the
+%presence of parametricity,
+we might naturally ask:
 \begin{verse}
 {\em Can we derive properties of functions over (truly) nested types
   from parametricity?}
@@ -478,10 +487,8 @@ This paper answers the above question in the affirmative by
 constructing a parametric model for a polymorphic calculus providing
 primitives for {\em constructing} nested types
 %(including ADTs)
-directly via
-%type-level
-recursion --- rather than representing them indirectly by Church
-encodings as in most polymorphic calculi.
+directly via type-level recursion --- rather than representing them
+indirectly by Church encodings as in, e.g., System F.
 
 We introduce our calculus in Section~\ref{sec:calculus}.  At the type
 level, it is the level-2-truncation of the higher-kinded calculus
@@ -495,22 +502,21 @@ robust and includes all (truly) nested types known from the
 literature.  In Section~\ref{sec:type-interp} we give set and
 relational interpretations
 %{\color{blue} locally finitely presentable}
-for the types from Section~\ref{sec:calculus}. As is usual when
-modeling parametricity, types are interpreted as functors from
-environments interpreting their type variable contexts to set or
-relations, as appropriate. But in order to ensure that these functors
-satisfy the cocontinuity properties needed to know that the fixpoints
-interpreting $\mu$-types exist, set environments must map each $k$-ary
-type constructor variable to an appropriately cocontinuous $k$-ary
-functor on sets and relation environments must map each $k$-ary type
-constructor variable to an appropriately cocontinuous $k$-ary relation
-transformer, and these cocontinuity conditions must be threaded
-throughout the type interpretations in such a way that the resulting
-model is guaranteed to satisfy an appropriate Identity Extension Lemma
-(Theorem~\ref{thm:iel}).
+for these types. As is standard when modeling parametricity, types are
+interpreted as functors from environments interpreting their type
+variable contexts to set or relations, as appropriate. But to ensure
+that these functors satisfy the cocontinuity properties needed for the
+semantic fixpoints interpreting $\mu$-types to exist, set environments
+must map each $k$-ary type constructor variable to an appropriately
+cocontinuous $k$-ary functor on sets, relation environments must map
+each $k$-ary type constructor variable to an appropriately
+cocontinuous $k$-ary relation transformer, and these cocontinuity
+conditions must be threaded throughout the type interpretations in
+such a way that the resulting model is guaranteed to satisfy an
+appropriate Identity Extension Lemma (Theorem~\ref{thm:iel}).
 %{\color{blue} Syntactic restrictions on
 %  $\mu$-types are essential to proving IEL.}
-Properly progagating the cocontinuity conditions turns out to be both
+Properly propagating the cocontinuity conditions turns out to be both
 subtle and challenging, and Section~\ref{sec:iel}, where it is done,
 is where the bulk of the work in constructing our model lies.  At the
 term level, our calculus includes primitive constructs for the actions
@@ -530,17 +536,17 @@ essentially a fibrational way. Immediately from the definitions of our
 interpretations we prove in Section~\ref{sec:Nat-type-terms} a scheme
 deriving free theorems that are consequences of naturality of
 functions that are polymorphic over nested types. This scheme is very
-general, is parameterized over both the data type and the polymorphic
-function at hand, and has each of the above
+general, is parameterized over both the data type and the type of the
+polymorphic function at hand, and has each of the above
 $\mathtt{map}$-$\mathtt{reverse}$ theorems as instances.  The
 relationship between naturality and parametricity has long been of
 interest, and our inclusion of a primitive type of natural
 transformations allows us to clearly delineate those free theorems
-that are consequences of naturality, and thus hold even in
+that are consequences of naturality, and may thus hold even in
 non-parametric models, from those that require the full power of
 parametricity.  In Section~\ref{sec:thms} we prove that our model
 satisfies an Abstraction Theorem (Theorem~\ref{thm:abstraction}), and
-we derive several of this latter kind of free theorem from it in
+we derive several of this latter kind of free theorems from it in
 Section~\ref{sec:ftnt}.  Specifically, we state and prove
 (non-)inhabitation results in Sections~\ref{sec:bottom}
 and~\ref{sec:identity}, a free theorem for the type of a filter
@@ -573,12 +579,18 @@ The present paper draws on this rich tradition of categorical models
 of parametricity for System F, but treats nested types as well as
 ADTs, and is the first to treat these types by direct construction via
 primitives rather than by Church encodings. This requires that we
-modify the type calculus to ensure that
+%modify the type calculus to ensure that
 %System F's full impredicative polymorphism interacts reasonably with
 %functoriality,
-functoriality is guaranteed syntactically, and that functoriality is
-reflected in the standard model construction so that the existence of
-the fixpoints by which nested types are to be interpreted is ensured.
+design our calculus in such a way that its types all have
+interpretations as appropriately cocontinuous functors, so that the
+existence of the fixpoints by which nested types are to be interpreted
+is ensured.
+%
+%functoriality is guaranteed syntactically, and that it is reflected in
+%our model construction so that the existence of the fixpoints by which
+%nested types are to be interpreted is ensured.
+%
 %parametricity to primitive nested types {\em as the model is being
 %constructed} by taking care to ensure that System F's full
 %impredicative polymorphism does not interfere with the functoriality
@@ -796,12 +808,13 @@ the type $\mathit{GRose}\, \phi \, \alpha = \mu\beta . \alpha \times
 \phi \beta$ can be functorial or not in $\alpha$, but cannot be
 functorial in $\phi$. Moreover, $\mathit{GRose}\,\phi\,\alpha$ cannot
 be the (co)domain of a $\Nat$ type representing a natural
-transformation functorial in $\phi$. Finally, the type $\mu
-\phi. \lambda \alpha. \mathit{GRose}\,\phi\,\alpha$ is not well-formed
-in our system. These restrictions ensure that the set and relational
+transformation functorial in $\phi$, and the type $\mu \phi. \lambda
+\alpha. \mathit{GRose}\,\phi\,\alpha$ is not well-formed in our
+system. These restrictions ensure that the set and relational
 interpretations of types in Section~\ref{sec:type-interp} are
-functors. In Section~\ref{sec:conclusion} we discuss how GADTs and
-other more expressive types might be accommodated.
+functors. In Section~\ref{sec:conclusion} we discuss how
+%GADTs and other
+more expressive types might be accommodated.
 %consider ways to lessen the expressivity constraints they impose.
 %
 %These restrictions on higher-arity functoriality are necessary
@@ -842,7 +855,7 @@ induction on the structure of $F$.
 If\, $\Gamma; \Phi, \phi^k \vdash F$, then $\Gamma, \psi^k; \Phi
 \vdash F[\phi^k :== \psi^k]$ is also derivable. Here, $F[\phi :==
   \psi]$ is the textual replacement of $\phi$ in $F$, meaning that all
-occurences of $\phi\ol\sigma$ in $F$ become $\psi\ol\sigma$.
+occurrences of $\phi\ol\sigma$ in $F$ become $\psi\ol\sigma$.
 \end{lemma}
 
 In addition to textual replacement, we also have a proper substitution
@@ -870,7 +883,7 @@ $|\ol\alpha| = k$, then $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
 and if\, $\Gamma; \Psi,\ol{\alpha} \vdash F$ with $|\ol\alpha| = k$
 and $\Phi \cap \Psi = \emptyset$, then $\Gamma,\Psi;\Phi \vdash H[\phi
   :=_{\ol{\alpha}} F]$. Here, the operation $(\cdot)[\phi :=_{\ol \alpha}
-  F]$ of {\em second-order type substitution (along $\ol\alpha$)} is
+  F]$ of {\em second-order type substitution along $\ol\alpha$} is
 defined by: 
 \[\begin{array}{lll}
 \zerot[\phi :=_{\ol{\alpha}} F] & = & \zerot\\[0.5ex]
@@ -975,9 +988,9 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
   \,|\, \Delta \vdash L_{\ol{\alpha}} x.t : \Nat^{\ol{\alpha}} \,F \,G$}
 \DisplayProof
 \\\\
+\AXC{$\ol{\Gamma;\Phi \vdash K}$}
 \AXC{$\Gamma; \emptyset
   \,|\, \Delta \vdash t : \Nat^{\ol{\alpha}} \,F \,G$}
-\AXC{$\ol{\Gamma;\Phi \vdash K}$}
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F[\overline{\alpha := K}]$}
 \TIC{$\Gamma;\Phi\,|\, \Delta \vdash t_{\ol K} s:
   G[\overline{\alpha := K}]$}
@@ -1027,11 +1040,11 @@ In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
 occurrences of the type variables in $\ol{\alpha}$ in the type of the
 term variable $x$ and in the body $t$, as well as all occurrences of
 $x$ in $t$. In the rule for $t_{\ol K} s$ there is one functorial
-expression $K$ for every functorial variable $\alpha$. In the rule for
-$\map^{\ol{F},\ol{G}}_H$ there is one functorial expression $F$ and
-one functorial expression $G$ for each functorial variable in
-$\ol\phi$. Moreover, for each $\phi^k$ in $\ol\phi$ the number of
-functorial variables in $\ol\beta$ in the judgments for its
+expression in $\ol K$ for every functorial variable in $\ol \alpha$. In
+the rule for $\map^{\ol{F},\ol{G}}_H$ there is one functorial
+expression $F$ and one functorial expression $G$ for each functorial
+variable in $\ol\phi$. Moreover, for each $\phi^k$ in $\ol\phi$ the
+number of functorial variables in $\ol\beta$ in the judgments for its
 corresponding functorial expresssions $F$ and $G$ is $k$. In the rules
 for $\tin_H$ and $\fold^F_H$, the functorial variables in $\ol{\beta}$
 are fresh with respect to $H$, and there is one $\beta$ for every
@@ -1090,79 +1103,95 @@ and
 \end{array}\]
 respectively. We can similarly represent the $\mathtt{reverseBush}$
 function from Figure~\ref{fig:funs2} as
-\[\vdash \fold_{\onet + \beta \times
-\phi (\phi\beta)}^{\mathit{Bush}\,\alpha}\, ( \tin_{\onet + \beta \times
-  \phi (\phi\beta)} \circ (\onet + t \circ i \circ i') ) :
-\Nat^{\alpha} (\mathit{Bush}\,\alpha)\,(\mathit{Bush}\,\alpha)\] 
+\[\vdash \fold^{\mathit{Bush}\,\alpha}_{\onet + \beta \times \phi (\phi \beta)}\, balg
+: \Nat^\alpha (\mathit{Bush}\,\alpha)\,(\mathit{Bush}\,\alpha)\]
+%\[\vdash \fold_{\onet + \beta \times
+%\phi (\phi\beta)}^{\mathit{Bush}\,\alpha}\, ( \tin_{\onet + \beta \times
+%  \phi (\phi\beta)} \circ (\onet + t \circ i \circ i') ) :
+%\Nat^{\alpha} (\mathit{Bush}\,\alpha)\,(\mathit{Bush}\,\alpha)\] 
 where
 \[\begin{array}{lll}
 \vdash \fold_{\onet + \beta \times \phi
   (\phi\beta)}^{\mathit{Bush}\,\alpha} : \Nat^{\emptyset}\, (\Nat^{\alpha}\, 
 (\onet + \alpha \times \mathit{Bush}\, (\mathit{Bush}\, \alpha))) \;
 (\mathit{Bush}\,\alpha))\; (\Nat^{\alpha} \,(\mathit{Bush}\,\alpha) \;
-(\mathit{Bush}\,\alpha))\\ 
-\vdash \tin_{\onet + \beta \times \phi (\phi\beta)} : \Nat^{\alpha}\,
-(\onet + \alpha \times \mathit{Bush}\, (\mathit{Bush} \, \alpha))
-\;(\mathit{Bush}\, \alpha)\\
+(\mathit{Bush}\,\alpha))\\
 \end{array}\]
 and $\mathit{bnil}$, $\mathit{bcons}$, $\tin^{-1}_{\onet + \beta
-  \times \phi (\phi\beta)}$, $t$, $i$, and 
-$i'$ are the terms
+  \times \phi (\phi\beta)}$, $\mathit{balg}$, and $\mathit{consalg}$
+are the terms
 \[\begin{array}{l}
 \vdash \tin_{\onet + \beta \times \phi (\phi\beta)} \circ (
 L_{\alpha}\, x.\, \inl\, x) \; : \; \Nat^{\alpha}\, \onet\;
 (\mathit{Bush}\,\alpha)\\ 
 \vdash \tin_{\onet + \beta \times \phi (\phi\beta)} \circ (
 L_{\alpha}\, x.\, \inr\, x ) \; : \; \Nat^{\alpha}\, (\alpha \times
-\mathit{Bush}\,(\mathit{Bush}\,\alpha))\; (\mathit{Bush}\,\alpha)\\
+\mathit{Bush}\,(\mathit{Bush}\,\alpha))\; (\mathit{Bush}\,\alpha)\\[0.05in]
 \vdash \fold_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta
   \times \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha]}\,
 (\map_{\onet + \beta \times \phi (\phi\beta)}^{(\onet + \beta \times
   \phi (\phi\beta))[\phi := \mathit{Bush}\,\alpha][\beta := \alpha],
   \mathit{Bush}\,\alpha}\, \tin_{\onet + \beta \times \phi
-  (\phi\beta)})\\
+  (\phi\beta)})\\[0.05in]
 \hspace*{0.2in} : \Nat^{\alpha}\, (\mathit{Bush}\,\alpha)\; (\onet +
 \alpha \times \mathit{Bush}\,(\mathit{Bush}\,\alpha))\\ 
-\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\,\mathsf{of}\, \{ \hspace*{0.21in}
-        \ast \mapsto
-\mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
-\hspace*{1.15in}\,(s', u) \mapsto \mathsf{case}\,{s'}\,\mathsf{of}\,
-\{\hspace*{0.3in} \ast
-\mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
-  \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
-\hspace*{2.3in}(b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
-(\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
-b\, u )\, u')\}\}\\
-\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
-\times \mathit{Bush}\, (\mathit{Bush} \, \alpha))) \times
-\mathit{Bush}\, (\mathit{Bush} \, (\mathit{Bush}\, \alpha))) \;
-(\alpha \times \mathit{Bush}\, (\mathit{Bush} \, \alpha))\\
-\vdash \alpha \times (\onet + \tin^{-1}_{\onet + \beta \times \phi
-  (\phi\beta)} \times \mathit{Bush}\, (\mathit{Bush} \,
-(\mathit{Bush}\, \alpha)))\\
-\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + \mathit{Bush}
-\, \alpha \times \mathit{Bush}\,( \mathit{Bush} \, (\mathit{Bush}\,
-\alpha))))\\
-\hspace*{0.57in}(\alpha \times (\onet + (\onet + \alpha \times
-\mathit{Bush}\, (\mathit{Bush} \, \alpha)) \times \mathit{Bush}\,
-(\mathit{Bush} \, (\mathit{Bush}\, \alpha))))\\
-\vdash \alpha \times (L_{\alpha}\,x.\, (\tin^{-1}_{\onet +
-  \beta \times \phi (\phi\beta)})_{\mathit{Bush}\,\alpha}\, x)\\
-\hspace{0.2in} : \Nat^{\alpha} (\alpha
-\times \mathit{Bush} \, (\mathit{Bush}\, \alpha)) \; (\alpha \times (\onet
-+ \mathit{Bush} \, (\alpha \times \mathit{Bush}\, (\mathit{Bush} \,
-(\mathit{Bush}\, \alpha)))))
+%\vdash L_{\alpha}\, (b, s). \,\mathsf{case}\;s\,\mathsf{of}\, \{ \hspace*{0.21in}
+%        \ast \mapsto
+%\mathit{bcons}_{\alpha}\, b\, (\mathit{bnil}_{\alpha}\, \ast); \\
+%\hspace*{1.15in}\,(s', u) \mapsto \mathsf{case}\,{s'}\,\mathsf{of}\,
+%\{\hspace*{0.3in} \ast
+%\mapsto \mathit{bcons}_{\alpha}\, b \,(\mathit{bcons}_{\mathit{Bush}\,
+%  \alpha}\, (\mathit{bnil}_{\alpha}\, \ast)\, u); \\
+%\hspace*{2.3in}(b', u') \mapsto \mathit{bcons}_{\alpha}\, b'
+%(\mathit{bcons}_{\mathit{Bush}\, \alpha}\, (\mathit{bcons}_{\alpha}\,
+%b\, u )\, u')\}\}\\
+%\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + (\onet + \alpha
+%\times \mathit{Bush}\, (\mathit{Bush} \, \alpha))) \times
+%\mathit{Bush}\, (\mathit{Bush} \, (\mathit{Bush}\, \alpha))) \;
+%(\alpha \times \mathit{Bush}\, (\mathit{Bush} \, \alpha))\\
+%\vdash \alpha \times (\onet + \tin^{-1}_{\onet + \beta \times \phi
+%  (\phi\beta)} \times \mathit{Bush}\, (\mathit{Bush} \,
+%(\mathit{Bush}\, \alpha)))\\
+%\hspace{0.2in} : \Nat^{\alpha} (\alpha \times (\onet + \mathit{Bush}
+%\, \alpha \times \mathit{Bush}\,( \mathit{Bush} \, (\mathit{Bush}\,
+%\alpha))))\\
+%\hspace*{0.57in}(\alpha \times (\onet + (\onet + \alpha \times
+%\mathit{Bush}\, (\mathit{Bush} \, \alpha)) \times \mathit{Bush}\,
+%(\mathit{Bush} \, (\mathit{Bush}\, \alpha))))\\
+%\vdash \alpha \times (L_{\alpha}\,x.\, (\tin^{-1}_{\onet +
+%  \beta \times \phi (\phi\beta)})_{\mathit{Bush}\,\alpha}\, x)\\
+%\hspace{0.2in} : \Nat^{\alpha} (\alpha
+%\times \mathit{Bush} \, (\mathit{Bush}\, \alpha)) \; (\alpha \times (\onet
+%+ \mathit{Bush} \, (\alpha \times \mathit{Bush}\, (\mathit{Bush} \,
+%(\mathit{Bush}\, \alpha)))))
+%\[\begin{array}{l}
+  \vdash L_{\alpha} \, s. 
+  \case{s}{* \mapsto \mathit{bnil}_\alpha *}{(a, bba) \mapsto consalg_\alpha (a, bba)}
+  : \Nat^\alpha \, (\onet + \alpha \times \mathit{Bush} (\mathit{Bush} \,\alpha)) \, (\mathit{Bush}\,\alpha) \\
+  \vdash L_{\alpha} \, (a, bba).  
+  \mathsf{case}\, (\ininv{\mathit{Bush}\,\alpha}{bba})\, \mathsf{of}\,\{
+  \\
+  \hspace{8em}\, * \mapsto \mathit{bcons}_{\alpha} (a,\mathit{bnil}_{\mathit{Bush}\,\alpha} *);  \\
+  \hspace{8em} (ba, bbba) \mapsto \mathsf{case}\, (\ininv{\alpha}{ba})
+  \, \mathsf{of}\,\{  \\ 
+  \hspace{16em}* \mapsto \mathit{bcons}_\alpha (a, \mathit{bcons}_{\mathit{Bush}\,\alpha} 
+        (\mathit{bnil}_\alpha *, bbba)) ;  \\ 
+  \hspace{16em}(a', bba') \mapsto \mathit{bcons}_\alpha (a', \mathit{bcons}_{\mathit{Bush}\,\alpha}
+  (\mathit{bcons}_\alpha (a, bba'), bbba)) \} \! \}\\    
+%  \quad \}  
+\hspace*{0.2in} : \Nat^\alpha \, (\alpha \times \mathit{Bush} (\mathit{Bush} \,\alpha)) \, (\mathit{Bush}\,\alpha) \\
 \end{array}\]
-respectively. Here, $\Gamma; \emptyset \,|\, \Delta \vdash H+
-\eta : \Nat^{\ol{\alpha}} (H+ F)\; (H+ G)$ and $\Gamma;
-\emptyset \,|\, \Delta \vdash H\times \eta : \Nat^{\ol{\alpha}}
-(H\times F)\; (H\times G)$ for $H+ \eta :=
-L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto s}{t
-  \mapsto  
-  (\eta_{\ol{\alpha}} t)}$ and $H\times \eta := L_{\ol{\alpha}}\,
-x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
-\,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
-\ol{\alpha} \vdash H$.
+respectively.
+%Here, $\Gamma; \emptyset \,|\, \Delta \vdash H+
+%\eta : \Nat^{\ol{\alpha}} (H+ F)\; (H+ G)$ and $\Gamma;
+%\emptyset \,|\, \Delta \vdash H\times \eta : \Nat^{\ol{\alpha}}
+%(H\times F)\; (H\times G)$ for $H+ \eta :=
+%L_{\ol{\alpha}}\, x.\, \case{x}{s \mapsto s}{t
+%  \mapsto  
+%  (\eta_{\ol{\alpha}} t)}$ and $H\times \eta := L_{\ol{\alpha}}\,
+%x.\, (\pi_1 x, \eta_{\ol{\alpha}} (\pi_2 x))$ for $\Gamma; \emptyset
+%\,|\, \Delta \vdash \eta : \Nat^{\ol{\alpha}} F\; G$ and $\Gamma;
+%\ol{\alpha} \vdash H$.
 
 Our rule for forming $\Nat$-types means that 
 %Because our calculus is designed to ensure functoriality, and
@@ -1174,28 +1203,28 @@ type and an argument of another type, both of which are parameterized
 over the same variable $\alpha$.
 %not just one nested type parameterized over a variable $\alpha$ as
 %input, but other inputs parameterized over $\alpha$ as well.
-Similarly, our calculus cannot express the type of a zip function for
-bushes. The fundamental issue is that recursion is expressible only
-via folds, and a fold over a nested type must take a natural
-transformation as its argument and return a natural transformation as
-its result.
+For the same reason, our calculus cannot express, e.g., the type of a
+zip function for bushes. The fundamental
+issue is that recursion is expressible only via folds, and a fold over
+a nested type must take a natural transformation as its argument and
+return a natural transformation as its result.
 %and, unfortunately, the polymorphism natural transformations entail
 %leaves no nontrivial way to incorporate data from the second argument
 %to a function with a type like that above into a fold over its first
 %argument.
-In fact, even for ADTs there is a difference between which folds over them we
-can type when ADTs are viewed as ADTs --- i.e., as fixpoints of types
-interpreted as first-order functors --- and which folds we can type
-when ADTs are viewed as proper nested types --- i.e., as fixpoints of
-types that are interpreted as higher-order functors --- because the
-arity of the recursion variable $\phi$ in the fixpoint in the return
-type of $\fold$ must equal the number of variables bound by its $\Nat$
-construct. For ADTs this number can be $0$, making it possible to
-write types such as $\alpha; \emptyset \vdash \Nat^\emptyset
-\ (\List\,\alpha)\,(\Nat^\emptyset \alpha\,(\List (\mu \beta. 1 +
-\beta)))$, all of whose argument types are parameterized over the same
-type $\alpha$. This is not possible for nested types, even if they are
-semantically equivalent to ADTs.
+In fact, even for ADTs there is a difference between which folds over
+them we can type when ADTs are viewed as ADTs --- i.e., as fixpoints
+of types interpreted as first-order functors --- and which folds we
+can type when ADTs are viewed as proper nested types --- i.e., as
+fixpoints of types that are interpreted as higher-order functors ---
+because the arity of the recursion variable $\phi$ in the fixpoint in
+the return type of $\fold$ must equal the number of variables bound by
+its $\Nat$ construct. For ADTs this number can be $0$, making it
+possible to write types such as $\alpha; \emptyset \vdash
+\Nat^\emptyset \ (\List\,\alpha)\,(\Nat^\emptyset \alpha\,(\List (\mu
+\beta. 1 + \beta)))$, all of whose argument types are parameterized
+over the same type $\alpha$, which are not possible for nested types
+even when they are semantically equivalent to ADTs.
 %Currying the type of the function does not help either, since the
 %codomain of a fold applied to an algebra must be a functor, and this
 %clearly is not the case for a function on nested types that takes
@@ -1211,7 +1240,7 @@ semantically equivalent to ADTs.
 %entail leaves no nontrivial way to incorporate data from the second
 %argument to a function with a type like that above into a fold over
 %its first argument.
-Our calculus can, however, express types of functions
+Our calculus can, however, express types of recursive functions
 that take
 %    as arguments
 %one proper nested type and as many other (possibly proper)
@@ -1243,9 +1272,9 @@ in $\set$, as will be required in Section~\ref{sec:type-interp}. For
 example,
 %as shown in Example D, Section VI of~\cite{jp19},
 the type $\emptyset; \gamma \vdash \Nat^\emptyset (\onet + \onet)\,
-\gamma$ does not. To remedy this, we would need to construct our
-models from semantic categories that are locally $\lambda$-presentable
-for $\lambda > \omega$.
+\gamma$ has no such semantics. To remedy this, we would need to
+construct our models from semantic categories that are locally
+$\lambda$-presentable for $\lambda > \omega$.
 %It is tempting to try to recover typeability of, say, a zip function
 %for bushes by allowing extra functorial variables in the codomain type
 %of $\Nat$-types. But such extended $\Nat$-types need not have
@@ -1254,14 +1283,16 @@ for $\lambda > \omega$.
 %Section VI of~\cite{jp19}, the type $\emptyset; \gamma \vdash
 %\Nat^\emptyset (\onet + \onet)\, \gamma$ does not.
 %
-Adding more expressive recursion combinators could help, too,
+Adding more expressive recursion combinators could help, too.
 %enhance the expressivity of our calculus
-but the expressivity issue for folds for nested types long pre-dates,
-and is somewhat orthogonal to, the issue of parametricity for
-languages that construct nested types as fixpoints studied here.
-%Nevertheless, improving expressivity is
-These and other extensions are discussed in
-Section~\ref{sec:conclusion}.
+But since the expressivity issue for folds for nested types long
+pre-dates, and is somewhat orthogonal to, the issue of parametricity
+for languages that construct nested types as fixpoints, we do not
+consider it further in this paper other than to identify, in
+Section~\ref{sec:conclusion}, some ideas for addressing it in future
+work.
+%These and other extensions are discussed
+
 
 The presence of the ``extra'' functorial variables in $\ol{\gamma}$ in
 the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
@@ -1362,22 +1393,23 @@ holds for {\em all} elements of a type's interpretation, not just
 those that are interpretations of terms.
 %i.e., $t_0(A)$ and $t_0(B)$ map related arguments to
 %related results.
-Similar results are expected to hold for types and terms with any
+Similar theorems are expected to hold for types and terms with any
 number of free variables.
 
 The key to proving the Identity Extension Lemma
 (Theorem~\ref{thm:iel}) in our setting is a familiar ``cutting down''
-of the interpretations of universally quantified types, such as our
-$\Nat$-types, to include only the ``parametric'' elements.
+of the interpretations of universally quantified types to include only
+the ``parametric'' elements; the relevant types in our calculus are
+the $\Nat$-types.
 %(See, e.g.,~\cite{atk12,bfss90,gjfor15,rey83}).
-This requires that set interpretations of types are defined
-simultaneously with their relational interpretations. We give set
-interpretations for our types in Section~\ref{sec:set-interp} and give
-their relational interpretations in Section~\ref{sec:rel-interp}.
-While the set interpretations are relatively straightforward, their
-relation interpretations are less so, mainly because of the
-cocontinuity conditions we must impose to ensure that they are
-well-defined. We develop these conditions in
+This cutting down requires, as usual, that the set interpretations of
+our types are defined simultaneously with their relational
+interpretations. We give the set interpretations for our types in
+Section~\ref{sec:set-interp} and give their relational interpretations
+in Section~\ref{sec:rel-interp}.  While the set interpretations are
+relatively straightforward, their relation interpretations are less
+so, mainly because of the cocontinuity conditions required to ensure
+that they are well-defined. We develop these conditions in
 Section~\ref{sec:rel-interp}, which separates
 Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in space, but
 otherwise has no impact on the fact that they are given by mutual
@@ -1519,9 +1551,11 @@ $\ol{S}$, each of which gives rise to a morphism from
 ${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
 ${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
 there are only $\set$-many choices of morphisms between any two
-objects since $\set$ is locally small.  Note that $\setsem{\Gamma;
+objects since $\set$ is locally small.  We note that $\setsem{\Gamma;
   \emptyset \vdash \Nat^\alpha F\,G}$ is $\omega$-cocontinuous because
-it is a constant functor.
+it is a constant functor (and that allowing functorial variables not
+in $\ol \alpha$ in $G$ fails here, as shown in
+Section~\ref{sec:terms}).
 %follows from $\omega$-cocontinuity of $\setsem{\Gamma;\ol\alpha
 %\vdash F}$, $\setsem{\Gamma;\ol\alpha \vdash G}$, and the equality
 %relation environment $\Eq$.
@@ -2168,8 +2202,8 @@ The proof is a straightforward induction on the structure of $F$,
 %  \tau})$ is indeed a functor from $\relenv$ to $RT_0$, and then uses
 using an appropriate result from~\cite{jp19} to deduce
 $\omega$-cocontinuity of $\sem{\Gamma;\Phi \vdash F}$ in each case,
-together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} in the
-$\mu$-case.
+together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} for
+$\mu$-types.
 
 \begin{comment}
 \begin{proof}
@@ -2325,7 +2359,7 @@ hypothesis.
 The fourth equality is by~\ref{eq:mu} and the induction hypothesis.
 \end{itemize}
 As before, that $\sem{\Gamma; \Phi \vdash (\mu \phi. \lambda
-  \overline{\alpha}. H)\overline{\tau}}$ is $\omega$-concontinuous
+  \overline{\alpha}. H)\overline{\tau}}$ is $\omega$-cocontinuous
 follows from the facts that $\set$ and $\rel$ are locally finitely
 presentable, and that colimits in $\relenv$ are computed
 componentwise, together with Corollary~12 of~\cite{jp19}.
@@ -3291,10 +3325,10 @@ obvious ways.
 %\begin{definition}
 Indeed, if $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$, then the
 {\em graph relation environment} $\graph{f}$ is defined pointwise by
-$\graph{f} \phi = \graph{f \phi}$ for every $\phi$. This entails that
+$\graph{f} \phi = \graph{f \phi}$ for every $\phi$, which entails that
 $\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$. In particular,
 the {\em equality relation environment} $\Eq_\rho$ is defined to be
-$\graph{\id_{\rho}}$. This entails that $\Eq_\rho \phi = \Eq_{\rho
+$\graph{\id_{\rho}}$, which entails that $\Eq_\rho \phi = \Eq_{\rho
   \phi}$ for every $\phi$.
 %\end{definition}
 With these definitions in hand, we can state and prove both an
@@ -3333,11 +3367,11 @@ and\;
 \end{array}\]
 %\end{split}
 %\end{equation}
-hold. With these results in hand, the proof is straightforward. A
-detailed proof is given in the accompanying anonymous supplementary
+hold. With these results in hand, the proof follows easily. It is
+given in detail in the accompanying anonymous supplementary
 material. As noted there, if functorial variables of arity greater
-than $0$ were allowed to appear in the bodies of $\mu$-types, the IEL
-would fail.
+than $0$ were allowed to appear in the bodies of $\mu$-types, then the
+IEL would fail.
 
 \begin{comment}
 \begin{proof}
@@ -3680,7 +3714,7 @@ $\setsem{\Gamma; \Phi \vdash F}\rho$, and, for every $\rho \in
 \relenv$, relational interpretations $\relsem{\Gamma;\Phi~|~\Delta
   \vdash t : F}\rho$ as natural transformations from
 $\relsem{\Gamma; \Phi \vdash \Delta}\rho$ to $\relsem{\Gamma; \Phi
-  \vdash F}\rho$. These are given in the next (two) definitions.
+  \vdash F}\rho$. These are given in Definition~\ref{def:set-interp}.
 
 \begin{dfn}\label{def:set-interp}
 If $\rho$ is a set (resp., relation) environment and
@@ -4106,11 +4140,11 @@ if $\vdash \mathit{reverseTree} : \Nat^{\alpha, \gamma} (\mathit{Tree}
 %\Nat^{\emptyset} ((\Nat^\emptyset \, \sigma \,\tau) \times
 %(\Nat^\emptyset\,\sigma'\,\tau')) \,
 %(\Nat^\emptyset\,(\mathit{Tree}\,\sigma\,\sigma')\,(\mathit{Tree}\,\tau\,\tau'))$$
-Finally, in Section~\ref{sec:calculus} we observed that $ \phi; \alpha
-\vdash \mathit{GRose}\,\phi\,\alpha$ cannot appear as the (co)domain
-of a $\Nat$ type binding both $\phi$ and $\alpha$. As a result, there
-are no instances of, say, a $\mathtt{map}$/$\mathtt{reverse}$ free
-theorem for this data type that maps replacements for both $\phi$ and
+We observed in Section~\ref{sec:calculus} that $ \phi; \alpha \vdash
+\mathit{GRose}\,\phi\,\alpha$ cannot appear as the (co)domain of a
+$\Nat$-type binding both $\phi$ and $\alpha$. As a result, there are
+no instances of, say, a $\mathtt{map}$/$\mathtt{reverse}$ free theorem
+for this data type that maps replacements for both $\phi$ and
 $\alpha$. On the other hand, $\phi; \alpha \vdash
 \mathit{GRose}\,\phi\,\alpha$ does support a
 $\mathtt{map}$/$\mathtt{reverse}$ theorem that maps only a replacement
@@ -4191,8 +4225,8 @@ $G$ on morphisms $\ol f$.
 
 \vspace*{0.1in}
 
-We have the expected relationships
-between the interpetations of $\map$, $\tin$, and $\fold$:
+We have the expected properties of the interpretations of $\map$,
+$\tin$, and $\fold$, namely:
 
 \vspace*{0.1in}
 
@@ -4537,7 +4571,7 @@ of terms of $\Nat$-types satisfy the appropriate equality preservation
 conditions from Definition~\ref{def:set-sem}.  For the interesting
 cases of abstraction, application, $\map$, $\tin$, and $\fold$ terms,
 propagating the naturality conditions is quite involved; the latter
-two cases especially require some rather involved diagram
+two cases especially require some rather delicate diagram
 chasing. That this is possible provides strong evidence that our
 definitions and development are sensible, natural, and at an
 appropriate level of abstraction. Detailed proofs for the set
@@ -4598,12 +4632,13 @@ That is, $G^\set$ is a natural transformation from the constantly
 $1$-valued functor to the identity functor in $\set$. In particular,
 for every $S : \set$, $G^\set_S : 1 \to S$. Note, however, that if $S
 = \emptyset$, then there can be no such morphism, so no such natural
-transformation can exist,
+transformation,
 %in $\set$,
-and thus no term $\vdash g : \Nat^\alpha \onet \,\alpha$ can exist.
+and thus no term $\vdash g : \Nat^\alpha \onet \,\alpha$, can exist.
 %in our calculus.
-That is, our calculus does not admit any terms with the closed type
-$\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom.
+That is, our calculus admits no non-terminating terms, i.e., terms
+with the closed type $\Nat^\alpha \onet \,\alpha$ of the polymorphic
+bottom.
 
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
@@ -5250,7 +5285,7 @@ a vexing issue, and this is naturally inherited by our calculus.
 %standard folds for nested types impose, and thus is perhaps not as
 %expressive as we would ideally like.
 In addition, while there are many papers on higher-kinded types, we
-know of none that considers expressiblity issues arising from the
+know of none that considers expressibility issues arising from the
 local $\lambda$-presentability cardinal $\lambda$ of the categories in
 which higher-kinded types are interpreted. Because $\lambda = \omega$
 for $\set$ and $\rel$, the expressivity of our
@@ -5288,7 +5323,7 @@ more general data types and recursion schemes for them.
 %the types of functions (and thus the functions themselves), even over
 %expressible data types, that can be expressed. Although there are
 %many papers on higher-kinded types, no other work that we know of
-%even considers expressiblity issues resulting from the semantic
+%even considers expressibility issues resulting from the semantic
 %settings in which they are interpreted.}
 %{\color{blue} In light of the aforementioned
 %  restrictions imposed by the accessibility cardinal of $\set$ and
@@ -5362,13 +5397,13 @@ object-level {\em left} Kan extensions, and
 %  by those for $\mu$-types on LKEs.}
 adding a carefully designed left Kan extension construct to our
 calculus was shown in~\cite{jp19} to preserve the cocontinuity needed
-for GADTs to have well-defined interpretations. We note, however, that
+for GADTs to have well-defined interpretations. (Note, however, that
 %not necessarily in
 %However, this will not, in general, be
-%the case in locally finitely presentable catgories. Indeed, as shown
+%the case in locally finitely presentable categories. Indeed, as shown
 %in~\cite{jp19},
 locally $\lambda$-presentable categories for $\lambda > \aleph_1$ are
-required to interpret even commonly used GADTs. This suggests
+required to interpret even commonly used GADTs.) This suggests
 extending our calculus with Kan extension constructs and
 %augmenting our type formation rules with such a construct.
 %The constructions of this paper should all be possible
@@ -5379,11 +5414,11 @@ is also a lpccc and appropriately fibred over $\cal C$.  This would
 %extend the results presented here along the lines of~\cite{gjfor15},
 %thus giving
 give a framework for constructing parametric models for calculi
-with nested types built from primitives that is based on ``locally
-$\lambda$-presentable fibrations'', for some appropriate definition
+with nested types built from primitives that is based on locally
+$\lambda$-presentable fibrations, for some appropriate definition
 thereof.  Another option is to add term-level fixpoints
 %, as in~\cite{pit00},
-to the calculus presented here. This would, however, require the
+to the calculus presented here. Of course, this would require the
 categories interpreting types to be not just locally
 $\lambda$-presentable, but to support some kind of domain structure as
 well.
