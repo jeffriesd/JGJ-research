@@ -556,6 +556,14 @@ correctness of short cut fusion for lists in
 Section~\ref{sec:short-cut}, and its generalization to nested types in
 Section~\ref{sec:short-cut-nested}.
 
+It is well-known that there are no set-based parametric models of
+System F~\cite{rey84}. So it is worth noting that our calculus does
+not contain all System F types, and in fact is not impredicative, so a
+set-based parametric model is not {\em a priori} precluded. In fact,
+the local finite presentability of $\set$ makes it an obvious choice
+for interpreting nested types. We return to this point in
+Section~\ref{sec:conclusion}.
+
 There is a long line of work on categorical models of parametricity
 for System F; see,
 e.g.,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}.  To our
@@ -571,9 +579,9 @@ just-constructed parametric model that
 %the Church encoding constructed
 %from a type constructor is interpreted as the least fixpoint of the
 %functor interpreting that type constructor.
-the Church encoding of each such type is interpreted as the least
+each Church encoding is interpreted as the least
 fixpoint of the (first-order) functor interpreting the type
-constructor from which its Church encoding was constructed.
+constructor from which it was constructed.
 %This is the categorical analogue of the approach in~\cite{atk12}
 %described above.
 The present paper draws on this rich tradition of categorical models
@@ -2946,7 +2954,7 @@ transformation, then $\graph{\alpha}$ is in $RT_k$.
 \end{lemma}
 \begin{proof}
 Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous, so
-$\graph{\alpha}^* : [\rel^k,\rel]$. Now, suppose $\overline{R :
+$\graph{\alpha}^* : [\rel^k,\rel]$. Now, let $\overline{R :
   \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and $\overline{(\beta,
   \beta') : R \to S}$. We want to show that there exists a morphism
 $\epsilon : \alpha^\wedge\overline{R} \to \alpha^\wedge\overline{S}$
@@ -3636,8 +3644,6 @@ f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$ then $(x,
 \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash
   F} \graph{f}$, i.e., $\graph{\setsem{\Gamma; \Phi \vdash F}f}
 \subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.
-
-
 \end{proof}
 
 
@@ -3701,7 +3707,7 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \end{proof}
 \end{comment}
 
-\vspace*{-.2in}
+
 
 \section{Interpreting Terms}\label{sec:term-interp}
 
