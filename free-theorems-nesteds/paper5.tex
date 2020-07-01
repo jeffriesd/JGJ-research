@@ -180,7 +180,7 @@
 \begin{abstract}
 This paper considers parametricity and its consequent free theorems
 for nested data types. Rather than representing nested types via their
-Church encodings into a higher-kinded extension of System F, we adopt
+Church encodings in a higher-kinded extension of System F, we adopt
 a functional programming perspective and design a polymorphic calculus
 that provides primitives for constructing a robust class of nested
 types directly as fixpoints.
@@ -273,7 +273,7 @@ mapping a polymorphic function over a list and then reversing the
 resulting list is the same as reversing the original list and then
 mapping the function over the result, we unwind the (recursive)
 definitions of the $\mathtt{reverse}$ and $\mathtt{map}$ functions
-over lists to according to the inductive structure of the input
+over lists according to the inductive structure of the input
 list. Such data-driven induction proofs over ADTs are routine enough
 to be included in, say, an undergraduate functional programming
 course.
@@ -396,7 +396,7 @@ other truly nested types was known until very recently, when {\em deep
   induction}~\cite{jp20} was developed as a way to induct over {\em
   all} of the structured data present in an input. Deep induction thus
 not only gave the first principled and practically useful structural
-induction rules for bushes and other truly nested types, and has also
+induction rules for bushes and other truly nested types, but has also
 opened the way for incorporating automatic generation of such rules
 for (truly) nested data types --- and, eventually, even GADTs --- into
 modern proof assistants.
@@ -414,9 +414,9 @@ modern proof assistants.
 \\
 \mathtt{foldPTree : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow Set \}
   \rightarrow}\\
-\hspace*{0.8in} \mathtt{( \{B : Set\} \rightarrow B \rightarrow F B) \rightarrow}\\
-\hspace*{0.8in} \mathtt{(\{B : Set\} \rightarrow F (B \times B)
-  \rightarrow F B) \rightarrow}\\
+\hspace*{0.8in} \mathtt{( \{B : Set\} \rightarrow B \rightarrow F\;B) \rightarrow}\\
+\hspace*{0.8in} \mathtt{(\{B : Set\} \rightarrow F\;(B \times B)
+  \rightarrow F \;B) \rightarrow}\\
 \hspace*{0.8in}\mathtt{PTree \;A \rightarrow F\;A}\\
 \mathtt{foldPTree\; n\; c\; (pleaf\; x) = n \;x}\\
 \mathtt{foldPTree\; n\; c \;(pnode\; p) = c\; (foldPTree \;n \;c \;p)}\\
@@ -444,7 +444,7 @@ modern proof assistants.
 \\
 \mathtt{foldBush : \forall \{A : Set\} \rightarrow \{F : Set \rightarrow
   Set\} \rightarrow}\\
-\hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow F B) \rightarrow}\\
+\hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow F \;B) \rightarrow}\\
 \hspace*{0.5in} \mathtt{(\{B : Set\} \rightarrow B \rightarrow F\;
   (F\; B) \rightarrow F\; B) \rightarrow}\\ 
 \hspace*{0.5in} \mathtt{Bush\; A \rightarrow F \;A}\\
@@ -505,7 +505,7 @@ relational interpretations
 %{\color{blue} locally finitely presentable}
 for these types. As is standard when modeling parametricity, types are
 interpreted as functors from environments interpreting their type
-variable contexts to set or relations, as appropriate. But to ensure
+variable contexts to sets or relations, as appropriate. But to ensure
 that these functors satisfy the cocontinuity properties needed for the
 semantic fixpoints interpreting $\mu$-types to exist, set environments
 must map each $k$-ary type constructor variable to an appropriately
@@ -547,7 +547,7 @@ that are consequences of naturality, and may thus hold even in
 non-parametric models, from those that require the full power of
 parametricity.  In Section~\ref{sec:thms} we prove that our model
 satisfies an Abstraction Theorem (Theorem~\ref{thm:abstraction}), and
-we derive several of this latter kind of free theorems from it in
+we derive several of this latter kind of free theorem from it in
 Section~\ref{sec:ftnt}.  Specifically, we state and prove
 (non-)inhabitation results in Sections~\ref{sec:bottom}
 and~\ref{sec:identity}, a free theorem for the type of a filter
@@ -623,20 +623,16 @@ System $F_\omega$, but within the impredicative Calculus of Inductive
 Constructions (iCIC) rather than in a semantic category. His
 construction is in some ways similar to ours, but it represents data
 types using Church encodings rather than constructing them via
-primitives. Since his model is entirely syntactic, his syntactic
-``functors'', whose associated $\mathit{fmap}$ functions representing
-their functorial actions must be {\em given} together with their
-underlying type constructors, cannot be interpreted as semantic
-functors. The associated Church encodings therefore cannot be
-interpreted as their fixpoints, so Atkey need not, and does not,
-impose cocontinuity conditions on his model to ensure that these
-fixpoints exist.  Nevertheless, Atkey does verify the existence of
-initial algebras for ``functors'' in iCIC. He does not indicate which
-type constructors support the kinds of $\mathit{fmap}$ functions
-needed to ensure they are ``functors'', but we suspect spelling this
+primitives. However, the $\mathit{fmap}$ functions associated to 
+Atkey's functors must be {\em given} together with their
+underlying type constructors, and he need not 
+impose cocontinuity conditions on his model to ensure that 
+fixpoints of his functors exist. Unfortunately, Atkey does not 
+indicate which
+type constructors support the $\mathit{fmap}$ functions
+needed for them to be functors, but we suspect spelling this
 out explicitly would result in a full higher-kinded extension of the
 calculus presented here.
-
 \section{The Calculus}\label{sec:calculus}
 
 \subsection{Types}
