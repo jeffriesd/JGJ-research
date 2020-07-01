@@ -565,8 +565,8 @@ clear since $\eta_{\ol{A}} \, = \, \curry\,
 (\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
   G}\rho[\overline{\alpha := A}])\,d$ is the component at $\ol{A}$ of
 the partial specialization to $d$ of the natural transformation
-$\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
-  G}\rho[\overline{\alpha := \_}]$.  To see that the components of
+$$\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := \_}]$$  To see that the components of
 $\eta$ also satisfy the additional condition needed for $\eta$ to
 be in $\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
   \,G}\rho$, let $\overline{R : \rel(A, B)}$ and suppose
@@ -693,18 +693,28 @@ d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}}$ has type
 $\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
     \setsem{\Gamma;\Phi \vdash K}\rho}] \to \setsem{\Gamma;
   \ol{\alpha} \vdash G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
-      K}\rho}]$.  Since, in addition, $\setsem{\Gamma;\Phi \,|\,
+      K}\rho}]$.  Since, in addition, 
+\[\begin{array}{ll}
+  &\setsem{\Gamma;\Phi \,|\,
   \Delta \vdash s: F [\overline{\alpha := K}]}\rho\, d :
-\setsem{\Gamma; \Phi \vdash F[\ol{\alpha := K}]}\rho =
-\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
-    \setsem{\Gamma;\Phi \vdash K}\rho}] = \setsem{\Gamma;
+\setsem{\Gamma; \Phi \vdash F[\ol{\alpha := K}]}\rho \\ 
+  =&\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho}] \\
+    =& \setsem{\Gamma;
   \ol{\alpha} \vdash F}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
-      K}\rho}]$ by Equation~(6),
-we have that $\setsem{\Gamma;\Phi \,|\, \Delta
+      K}\rho}] 
+\end{array}\]
+      
+      by Equation~(6) from the paper,
+we have that 
+\[\begin{array}{ll}
+  &\setsem{\Gamma;\Phi \,|\, \Delta
   \vdash t_{\overline K} s: G [\overline{\alpha :=
       K}]}\,\rho\,d : \setsem{\Gamma; \Phi ,\ol{\alpha} \vdash
-  G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}\rho}] =
-\setsem{\Gamma; \Phi \vdash G[\ol{\alpha := K}]}\rho$, as desired.
+  G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}\rho}]  \\
+  =&\setsem{\Gamma; \Phi \vdash G[\ol{\alpha := K}]}\rho
+\end{array}\]
+as desired.
 
 \vspace*{0.1in}
 
@@ -872,7 +882,7 @@ for $\xi$ commutes:
           F}]}\id_{\rho}[\ol{\gamma := f}]}"']
 & \setsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
       := C}]
-\ar[d, "{\setsem{\Gamma ; \ol\alpha, \ol{\gamma} \vdash H[\ol{\phi :=
+\ar[d, "{\setsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi :=
           G}]}\id_{\rho}[\ol{\gamma := f}]}"]\\
 \setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
       := C'}] \ar[r, "{\xi_{\ol{C'}}}"]
@@ -1106,6 +1116,15 @@ T^\set_{H,\rho[\ol{\gamma := C'}]}) \,
     R}][\ol{\gamma :=S}]
 \end{array}\]
 
+Finally, since $\Phi = \emptyset$, the naturality of
+\[
+\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}
+\]
+in $\rho$ is trivial.
+
 
 
 \item
@@ -1123,7 +1142,7 @@ $\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
     \emptyset \vdash \Nat^\emptyset\;(\Nat^{\ol{\beta},
       \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
         \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
-    \phi.\lambda \overline \alpha.H)\overline \beta\,F}\] we need only
+    \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\] we need only
   show that, for all $\rho : \setenv$, the unique $d :
   \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$, and all $\eta :
   \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
@@ -1133,7 +1152,7 @@ $\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
   \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
   (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-  \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta\] has type
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\] has type
 $\setsem{\Gamma; \emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
   }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\,F}\,\rho$
 i.e., for any $\ol{B}$ and $\ol{C}$,
@@ -1141,7 +1160,7 @@ i.e., for any $\ol{B}$ and $\ol{C}$,
   \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
   (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-  \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
 morphism from $\setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu
   \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
     B}][\ol{\gamma := C}] \,=\,(\mu T^\set_{H,\rho[\ol{\gamma := C}]})
@@ -1203,7 +1222,7 @@ for each $\ol{B}$ and $\ol{C}$,
   \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
   (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
-  \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
 morphism from
 $\setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu
   \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
@@ -1368,7 +1387,7 @@ T^{\set}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\set}_{H,\rho [\ol{\gamma :=
     \mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
     \ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
     T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]} )}"] \ar[dd,
-  "{\tin_{T^{\set}_{H,\rho [\ol{\gamma := C}]}}}"']
+    "{\mathit{in}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}}}"']
 && T^{\set}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}. \setsem{\Gamma;
   \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma
     := C'}]) \ar[d, "{ T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]}
@@ -1399,7 +1418,7 @@ T^{\set}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\set}_{H,\rho [\ol{\gamma :=
     \lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
       [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
     \mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}} (\lambda
-    \ol{A}. \eta_{\ol{A}, \ol{C}}) )}"] \ar[dd, "{\tin_{T^{\set}_{H,\rho
+    \ol{A}. \eta_{\ol{A}, \ol{C}}) )}"] \ar[dd, "{\mathit{in}_{T^{\set}_{H,\rho
         [\ol{\gamma := C}]}}}"']
 && T^{\set}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
   \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C'}])
@@ -1432,10 +1451,10 @@ To see that, for all $\rho : \setenv$, $d \in
   \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta},
     \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
       \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
-  \phi.\lambda \overline \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta\]
+  \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\]
 satisfies the additional condition needed for it to be in
 $\setsem{\Gamma;\emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
-  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F)}\,\rho$,
+  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}\,\rho$,
 let $\ol{R : \rel(B,B')}$ and $\ol{S : \rel(C,C')}$.  Since $\eta$
 satisfies the additional condition needed for it to be in
 $\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
@@ -1460,6 +1479,7 @@ has type
   \ol{\alpha}. H)\ol{\beta}}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}] \to
 \relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
     S}][\ol{\beta:= R}]
+\qedhere
 \end{array}\]
 
 
