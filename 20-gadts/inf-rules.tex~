@@ -1,0 +1,461 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+\newcommand{\new}[1]{\color{blue}#1}
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
+
+\title[Practical Parametricity for GADTs]{Practical Parametricity for GADTs}
+  %Primitive
+  %% [Short Title] is optional; when present,
+                         %% will be used in header instead of Full
+                         %% Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+
+
+\begin{document}
+
+\begin{abstract}
+Abstract goes here
+\end{abstract}
+
+%\begin{CCSXML}
+%<ccs2012>
+%<concept>
+%<concept_id>10011007.10011006.10011008</concept_id>
+%<concept_desc>Software and its engineering~General programming languages</concept_desc>
+%<concept_significance>500</concept_significance>
+%</concept>
+%<concept>
+%<concept_id>10003456.10003457.10003521.10003525</concept_id>
+%<concept_desc>Social and professional topics~History of programming languages</concept_desc>
+%<concept_significance>300</concept_significance>
+%</concept>
+%</ccs2012>
+%\end{CCSXML}
+%
+%\ccsdesc[500]{Software and its engineering~General programming languages}
+%\ccsdesc[300]{Social and professional topics~History of programming languages}
+%% End of generated code
+
+
+%% Keywords
+%% comma separated list
+%\keywords{keyword1, keyword2, keyword3}  %% \keywords is optional
+
+
+\maketitle
+
+\section{Typing Rules}\label{sec:types}
+
+\begin{dfn}
+The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
+  \tvars, \Pos\, \subseteq \fvars}\F^\Pos(V)$ of\, {\em well-formed
+  types} are
+
+\[\begin{array}{cc}
+\AXC{\phantom{$\Gamma,\Phi$}}
+\UIC{$\Gamma;\Phi \vdash \zerot$}
+\DisplayProof
+&
+\AXC{\phantom{$\Gamma,\Phi$}}
+\UIC{$\Gamma;\Phi \vdash \onet$}
+\DisplayProof
+\end{array}\]
+
+\vspace*{0.1in}
+
+\[\begin{array}{cc}
+\AXC{$\Gamma;\Phi \vdash F$}
+\AXC{$\Gamma;\Phi \vdash G$}
+\BIC{$\Gamma; \Phi \vdash F + G$}
+\DisplayProof
+&
+\AXC{$\Gamma;\Phi \vdash F$}
+\AXC{$\Gamma;\Phi \vdash G$}
+\BIC{$\Gamma; \Phi \vdash F \times G$}
+\DisplayProof
+\end{array}\]
+
+\vspace*{0.05in}
+
+\[\begin{array}{c}
+\AXC{$\Gamma;\ol{\alpha^0} \vdash F$}
+\AXC{$\Gamma;\ol{\alpha^0}  \vdash G$}
+\BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha^0}}F \,G$}
+\DisplayProof
+\\[4ex]
+\AXC{$\phi^k \in \Gamma \cup \Phi$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash F}$}
+\BIC{$\Gamma;\Phi \vdash \phi^k \ol{F}$}
+\DisplayProof
+\\[3ex]
+\AXC{$\Gamma;\ol{\gamma^0},\ol{\alpha^0},\phi^k \vdash F$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi,\ol{\gamma^0} \vdash G}$}
+\BIC{$\Gamma;\Phi,\ol{\gamma^0} \vdash (\mu \phi^k.\lambda
+  \ol{\alpha^0}. \,F)\,\ol{G}$} 
+\DisplayProof
+\\[5ex]
+\new{
+\AXC{$\Gamma; \ol\alpha^0 \vdash F$}
+\AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
+\AXC{$\ol{\Gamma;\Phi \vdash A}$}
+\TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$}
+\DisplayProof}
+\end{array}\]
+\end{dfn}
+
+
+
+
+\begin{dfn}\label{def:well-formed-terms}
+Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
+rules for the set of\, {\em well-formed terms over $\Delta$} are
+\[\begin{array}{ccc}
+\AXC{$\Gamma;\Phi \vdash F$}
+\UIC{$\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F$}
+\DisplayProof
+&
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : \zerot$}
+\AXC{$\Gamma;\Phi \vdash F$}
+\BIC{$\Gamma;\Phi \,|\, \Delta \vdash \bot_F t  : F$}
+\DisplayProof
+&
+\AXC{$\phantom{\Gamma;\Phi}$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \top : \onet$}
+\DisplayProof\\\\
+\end{array}\]
+\[\begin{array}{cc}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: F + G$}
+\DisplayProof
+&
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : G$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: F + G$}
+\DisplayProof\\\\
+\end{array}\]
+\[\begin{array}{c}
+\AXC{$\Gamma; \Phi \vdash F,G$}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : F+G$}
+\AXC{$\Gamma;\Phi \,|\, \Delta, x : F \vdash l : K \hspace{0.3in} \Gamma;\Phi \,|\, \Delta, y : G \vdash r : K$}
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r} : K$}
+\DisplayProof
+\end{array}\]
+
+\vspace*{0.05in}
+
+\[\begin{array}{lll}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F$}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : G$}
+\BIC{$\Gamma;\Phi \,|\, \Delta \vdash (s,t) : F \times G$}
+\DisplayProof
+&
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : F \times G$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : F$}
+\DisplayProof
+&
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash t : F \times G$}
+\UIC{$\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : G$}
+\DisplayProof
+\end{array}\]
+
+\vspace*{0.05in}
+
+\[\begin{array}{c}
+\AXC{$\Gamma; \ol{\alpha} \vdash F$}
+\AXC{$\Gamma; \ol{\alpha} \vdash G$}
+\AXC{$\Gamma; \ol{\alpha} \,|\, \Delta, x : F \vdash t: G$} 
+\TIC{$\Gamma; \emptyset
+  \,|\, \Delta \vdash L_{\ol{\alpha}} x.t : \Nat^{\ol{\alpha}} \,F \,G$}
+\DisplayProof
+\\\\
+\AXC{$\ol{\Gamma;\Phi \vdash K}$}
+\AXC{$\Gamma; \emptyset
+  \,|\, \Delta \vdash t : \Nat^{\ol{\alpha}} \,F \,G$}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F[\overline{\alpha := K}]$}
+\TIC{$\Gamma;\Phi\,|\, \Delta \vdash t_{\ol K} s:
+  G[\overline{\alpha := K}]$}
+\DisplayProof
+\\\\
+\AXC{$\Gamma; \ol{\phi}, \ol{\gamma} \vdash H$}
+\AXC{$\ol{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}$}
+\AXC{$\ol{\Gamma; \ol{\beta},\ol{\gamma} \vdash
+    G}$}
+\TIC{$\Gamma; \emptyset
+  ~|~\emptyset
+  \vdash \map^{\ol{F},\ol{G}}_H :
+  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\;H[\ol{\phi
+      :=_{\ol{\beta}} G}])$} 
+\DisplayProof
+\\\\
+\AXC{$\Gamma; \phi, \ol{\alpha},\ol{\gamma} \vdash H$}
+\UIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta},\ol{\gamma}} H[\phi :=_{\ol{\beta}} (\mu
+    \phi.\lambda \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \beta}]\,(\mu
+  \phi.\lambda \ol{\alpha}.H)\ol{\beta}$}
+\DisplayProof
+\\\\
+\AXC{$\Gamma; \phi,\ol{\alpha}, \ol{\gamma} \vdash H$}
+\AXC{$\Gamma; \ol{\beta}, \ol{\gamma} \vdash F$}
+\BIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\; (\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\; (\Nat^{\ol{\beta},
+    \ol{\gamma}}\,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
+\DisplayProof
+\\\\
+\new{
+\AXC{$\Gamma; \ol{\alpha}\vdash F$}
+\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
+\BIC{$\Gamma;\emptyset~|~\emptyset \vdash \int_{K,F} :
+  \Nat^{\ol\gamma}\, F[\ol{\alpha := \gamma}]\;(\Lan^{\ol\alpha}_{\ol K}\,
+  F)\ol{K[\ol{\alpha := \gamma}]}$}  
+\DisplayProof}
+\\\\
+\new{
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\ol\alpha}
+  F\;G[\ol{\beta := K}]$}
+\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+  \Nat^{\ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol\beta \; G$}
+\DisplayProof}
+\end{array}\]
+\end{dfn}
+
+\vspace*{0.2in}
+
+Sum and product intro and elim rules should be annotated with
+  constituent types for consistency.
+
+\vspace*{0.2in}
+
+We should have a computation rule along the lines of: If $\eta :
+\Nat^{\ol\alpha} F \,G[\ol{\beta := K}]$ then
+\[\begin{array}{ll}
+& (\partial_F^{G,\ol K} \eta)_{\ol{K[\ol{\alpha := A}]}} \circ (\int_{K,F})_{\ol
+  A}\; \rightarrow \; \eta_{\ol A}\\
+: & F[\ol{\alpha := A}] \to G[\ol{\beta := K[\ol{\alpha :=A}]}]\\
+= & F[\ol{\alpha := A}] \to G[\ol{\beta := K}][\ol{\alpha := A}]
+\end{array}\] 
+
+
+
+Some questions/issues:
+\begin{itemize}
+\item Can we write zipBush and appendBush with $\partial$ and $\int$?
+  We could already represent the uncurried type of appendBush
+  (although not its curried type), but couldn't recurse over both
+  input bushes because folds take natural transformations as inputs.
+\item More generally, how do we compute with $\partial$ and $\int?$
+  Can we use the colimit formulation of Lans (see Lemma 6.3.7
+  of~\cite{rie16}) to get a handle on this?
+\item What is the connection between exponentials and natural
+  transformations? (Should we assume only small objects are
+  exponentiable?) Do we want the former or the latter for
+  computational purposes? (I suspect the latter.)
+
+  [From nlab:
+  In a functor category $D^C$ , a natural transformation $\alpha : F \to
+  G$ is exponentiable if (though probably not ``only if'') it is
+  cartesian and each component $\alpha_c : F c \to G c$ is
+  exponentiable in $D$.  Given $H \to F$ we define $(\Pi_\alpha H) c =
+  \Pi_{\alpha_c}(Hc)$; then for $u : c \to c'$ to obtain a map
+  $\Pi_{\alpha_c} (Hc) \to \Pi_{\alpha_{c'}} (Hc')$ we need a map
+  $\alpha^*_{c'}(\Pi_{\alpha_c}(Hc)) \to Hc'$. But since $\alpha$ is
+  cartesian, $\alpha^*_{c'}(\Pi_{\alpha_c}(Hc)) \cong
+  \alpha^*_{c}(\Pi_{\alpha_c}(Hc))$, so we have the counit
+  $\alpha^*_{c}(\Pi_{\alpha_c}(Hc)) \to Hc$ that we can compose with
+  $Hu$.]
+\item After we understand what we can do with Lans and folds on GADTs
+  we might want to try to extend calculus with term-level
+  fixpoints. This would give a categorical analogue for GADTs
+  of~\cite{pit98,pit00} for ADTs. Would it also more accurately
+  reflect how GADTs are used in practice, or are functions over GADTs
+  usually folds? Investigate applications in the literature and/or in
+  implementations.
+\item What kind of category can handle $\Lan$ types? Can $\omega$-CPO?
+  This caregory is locally $\omega_1$-presentable (but not locally
+  finitely presentable); see 1.18(2) of~\cite{ar94}). The
+  $\omega_1$-presentable objects are the $\omega$-CPOs cardinality
+  less than $\omega_1$, i.e., the countable $\omega$-CPOs.
+\item $\omega$-CPO is a natural choice for modeling general
+  recursion. We know $(Lan^\gamma_C \onet)D$ is $C \to D$ for any
+  closed type $C$. (Also for select classes of open types?) So can
+  model $\Nat \to \gamma$. But the functor $NX = \Nat \to X$ isn't
+  $\omega$-cocontinuous. It also doesn't preserve
+  $\omega_1$-presentable objects, i.e., countable $\omega$-CPOs since
+  $\Nat \to \Nat$ is not countable. So we cannot have a functor like
+  $N$ as the subscript to $\Lan$ and expect the resulting $\Lan$ to be
+  $\omega_1$-cocontinuous.
+\item What functors can be subscripts to $\Lan$ and produce
+  $\omega_1$-cocontinuous functors? We can use functors that preserve
+  presentable objects by theorem in~\cite{jp19}, and possibly others
+  as well. These include polynomial functors, ADTs and nested types
+  seen as functors, certain (which?) GADTs seen as functors? How big
+  can GADTs get? 
+\end{itemize}
+
+\bibliography{references}
+
+\end{document}
