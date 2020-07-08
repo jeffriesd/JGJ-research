@@ -1,0 +1,234 @@
+% double-blind review submission, w/o CCS and ACM Reference (max
+%
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\ininv}[2]{(\tin^{-1}_{\onet +
+  \beta \times \phi (\phi\beta)})_{#1}\, #2}
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for
+  %Primitive
+  Nested Types} %% [Short Title] is optional; when present,
+                         %% will be used in header instead of Full
+                         %% Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+
+\begin{document}
+
+\section{Interpretation of $\Nat$ is $\Set$ sized}
+
+%% omega CPO macro
+\newcommand{\ocpo}{\omega \mathsf{CPO}}
+Here we show that 
+$$\{\eta : \setsem{\Gamma;\Phi \vdash F}\rho[\Phi := -]
+\Rightarrow \setsem{\Gamma;\Phi \vdash G}\rho[\Phi := -]\}$$
+indeed defines a set. We prove the case in which $|\Phi| = 1$, as
+it is easy to extend the result for an arbitrary $\Phi$ of finite size. 
+We first observe that 
+$$\setsem{\Gamma;\Phi \vdash F}\rho[\Phi := -],
+ \setsem{\Gamma;\Phi \vdash G}\rho[\Phi := -]
+ : [[\ocpo^k , \ocpo]_{\omega_1}, \ocpo]_{\omega_1}  $$
+
+Proposition 1 from \cite{LICS paper} states (ii)
+If $\mathcal{A}$ is $\lambda$-accessible and $\mathcal{C}$
+is $\lambda$-cocomplete, then the category $[\mathcal{A}, \mathcal{C}]_\lambda$
+is naturally equivalent to the category 
+$\mathcal{C}^{\mathcal{A}_0}$, and (iii) if $\mathcal{C}$
+is locally $\lambda$-presentable and $\mathcal{A}_0$ is
+essentially small, then $\mathcal{C}^{\mathcal{A}_0}$ is
+locally $\lambda$-presentable. Note that if $\mathcal{A}$ and
+$\mathcal{C}$ are locally $\lambda$-presentable, then the
+hypotheses of (ii) and (iii) on $\mathcal{A}$, $\mathcal{A}_0$,
+and $\mathcal{C}$ are automatically satisfied. We can 
+also combine the results by noting that whenever (ii) and (iii) 
+are applied to the same $\mathcal{A}$ and $\mathcal{C}$,
+we have that $\mathcal{C}^{\mathcal{A}_0}$ is locally $\lambda$-presentable
+and naturally equivalent to $[\mathcal{A}, \mathcal{C}]_\lambda$, and 
+we can therefore conclude that $[\mathcal{A}, \mathcal{C}]_\lambda$ is 
+locally $\lambda$-presentable.
+
+
+It is known that $\ocpo$ is locally $\omega_1$-presentable \cite{Adamek/Rosicky},
+and it follows that $\ocpo^k$ is locally $\omega_1$-presentable for finite $k$;
+indeed, the $\omega_1$-presentable objects in $\ocpo^k$ are just
+$k$-tuples of the $\omega_1$-presentable objects in $\ocpo$ (i.e., countable $\ocpo s$).
+
+
+Applying Proposition 1 to $\ocpo^k$
+and $\ocpo$ gives that $[\ocpo^k, \ocpo]_{\omega_1}$
+is locally $\omega_1$-presentable. We can therefore
+apply Proposition 1 again, this time to $[\ocpo^k, \ocpo]_{\omega_1}$
+and $\ocpo$. This gives that 
+ $[[\ocpo^k , \ocpo]_{\omega_1}, \ocpo]_{\omega_1}$
+is locally $\omega_1$-presentable. Local smallness 
+ensures there are only $\set$-many morphisms (i.e., natural transformations) 
+between any two functors in
+$[[\ocpo^k , \ocpo]_{\omega_1}, \ocpo]_{\omega_1}$.
+In particular, there are only $\set$-many natural transformations
+between $\setsem{\Gamma;\Phi \vdash F}\rho[\Phi := -]$ and 
+$\setsem{\Gamma;\Phi \vdash G}\rho[\Phi := -]$.
+
+\end{document}
