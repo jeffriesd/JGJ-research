@@ -81,7 +81,9 @@
 \newtheorem{exmpl}{Example}
 
 \renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
-\newcommand{\new}[1]{\color{blue}#1}
+
+\newcommand{\new}[1]{{\color{blue} {#1}}}
+
 
 \newcommand{\emptyfun}{{[]}}
 \newcommand{\cal}{\mathcal}
@@ -208,9 +210,91 @@ Abstract goes here
 
 \maketitle
 
-\section{Typing Rules}\label{sec:types}
+\new{Maybe develop our theory for {\em any} $\lambda \geq \omega_1$,
+  and then specialize to $\omega_1$ when discussing GADTs? Can we do
+  that? It seems we really use properties of $\oCPO$ to get that
+  interpretations of $\Nat$-types are well-defined.}
 
+\section{The Calculus}
+
+\subsection{Types}\label{sec:types}
+
+For each $k \ge 0$, we assume countable sets $\tvars^k$ of \emph{type
+  constructor variables of arity $k$} and $\fvars^k$ of
+\emph{functorial variables of arity $k$}, all mutually disjoint.
+%disjoint for distinct $k$ and disjoint from each other.
+The sets of all type constructor variables and functorial variables
+are $\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars = \bigcup_{k \ge
+  0} \fvars^k$, respectively, and a \emph{type variable} is any
+element of $\tvars \cup \fvars$.  We use lower case Greek letters for
+type variables, writing $\phi^k$ to indicate that $\phi \in \tvars^k
+\cup \fvars^k$, and omitting the arity indicator $k$ when convenient,
+unimportant, or clear from context. We reserve letters from the
+beginning of the alphabet to denote type variables of arity $0$, i.e.,
+elements of $\tvars^0 \cup \fvars^0$. We write $\overline{\zeta}$ for
+either a set $\{\zeta_1,...,\zeta_n\}$ of type constructor variables
+or a set of functorial variables when the cardinality $n$ of the set
+is unimportant or clear from context. If $\Pos\,$ is a set of type
+variables we write $\Pos, \overline{\phi}$ for $\Pos\, \cup
+\overline{\phi}$ when $\Pos\, \cap \overline{\phi} = \emptyset$.  We
+omit the vector notation for a singleton set, thus writing $\phi$,
+instead of $\overline{\phi}$, for $\{\phi\}$.
 \begin{dfn}
+Let $V$ be a finite subset of\, $\tvars$, $\Pos$ be a finite
+subset of\, $\fvars$, $\overline{\alpha}$ be a finite subset of\,
+$\fvars^0$ disjoint from $\Pos$, and $\phi^k \in \fvars^k
+\setminus \Pos$.  The set $\mcF^\Pos(V)$ of {\em functorial
+  expressions} over $\Pos$ and $V$ are given by
+\begin{align*}
+  \mcF^\Pos(V) \; ::= \; 
+  & \hspace*{0.15in}
+\zerot \mid \onet 
+\mid \Nat^\Pos \, \mcF^\Pos (V) \;
+\mcF^\Pos (V) 
+\mid \Pos\; \ol{\mcF^\Pos(V)}  \,
+\mid V\, \ol{\mcF^\Pos(V)}  
+\mid \mcF^{\Pos}(V) + \mcF^\Pos(V)\\
+&\mid \mcF^{\Pos}(V) \times \mcF^\Pos(V) \mid \left(\mu
+\phi^{~k}. \lambda \alpha_1...\alpha_k.  
+\mcF^{\Pos,\alpha_1,...,\alpha_k,\phi}(V)\right)
+\ol{\mcF^{\Pos}(V)}\\
+&\mid (\Lan^{\ol\alpha}_{\ol{\F^{\ol\alpha}}} \F^{\Pos,\ol\alpha})\ol{\F^\Pos}
+\end{align*}
+\end{dfn}
+\noindent
+A \emph{type} over $\Pos$ and $V$ is any element of $\F^\Pos(V)$. The
+difference with~\cite{jgj20} here lies solely in the incorporation of
+functorial expressions constructed from $\Lan$.
+
+The notation for types entails that an application $F F_1...F_k$ is
+allowed only when $F$ is a type variable of arity $k$, or $F$ is a
+subexpression of the form $\mu \phi^{k}.\lambda
+\alpha_1...\alpha_k.F'$ or $\Lan^{\ol\alpha}_{\ol K}\, F'$. Moreover,
+if $F$ has arity $k$ then $F$ must be applied to exactly $k$
+arguments.  Accordingly, an overbar indicates a sequence of
+subexpressions whose length matches the arity of the type applied to
+it.  The fact that types are always in \emph{$\eta$-long normal form}
+avoids having to consider $\beta$-conversion at the level of types. In
+a subexpression $\Nat^\Phi F\,G$, the $\Nat$ operator binds all
+occurrences of the variables in $\Phi$ in $F$ and $G$. Note that, by
+contrast with~\cite{jgj20}, variables of arity greater than $0$ are
+allowed in $\Phi$; this is necessary to construct well-typed terms of
+$\Lan$ types. In a subexpression $\mu \phi^k.\lambda \ol{\alpha}.F$,
+the $\mu$ operator binds all occurrences of the variable $\phi$, and
+the $\lambda$ operator binds all occurrences of the variables in
+$\ol{\alpha}$, in the body $F$. And in a subexpression
+$(\Lan^{\ol\alpha}_{\ol K}\, F)\ol A$, the $\Lan$ operator binds all
+occurrences of the variables in $\ol\alpha$ in every element of $\ol
+K$, as well as in $F$.
+
+A {\em type constructor context} is a finite set $\Gamma$ of type
+constructor variables, and a {\em functorial context} is a finite set
+$\Phi$ of functorial variables. In Definition~\ref{def:wftypes}, a
+judgment of the form $\Gamma;\Phi \vdash F$ indicates that the
+type $F$ is intended to be functorial in the variables in $\Phi$
+but not necessarily in those in $\Gamma$.
+
+\begin{dfn}\label{def:wftypes}
 The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
   \tvars, \Pos\, \subseteq \fvars}\F^\Pos(V)$ of\, {\em well-formed
   types} are
@@ -242,10 +326,10 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \vspace*{0.05in}
 
 \[\begin{array}{c}
-\new{\AXC{$\Gamma;\Phi \vdash F$}
+\AXC{$\Gamma;\Phi \vdash F$}
 \AXC{$\Gamma;\Phi  \vdash G$}
 \BIC{$\Gamma;\emptyset \vdash \Nat^\Phi F \,G$}
-\DisplayProof}
+\DisplayProof
 \\[4ex]
 \AXC{$\phi^k \in \Gamma \cup \Phi$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash F}$}
@@ -258,17 +342,80 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
   \ol{\alpha^0}. \,F)\,\ol{G}$} 
 \DisplayProof
 \\[5ex]
-\new{
 \AXC{$\Gamma; \Phi,\ol\alpha^0 \vdash F$}
 \AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A}$}
 \TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$}
-\DisplayProof}
+\DisplayProof
 \end{array}\]
 \end{dfn}
 
+In addition to textual replacement, we also have a proper substitution
+operation on types. If $F$ is a type over $P$ and $V$, if $\Pos$
+and $V$ contain only type variables of arity $0$, and if $k=0$ for
+every occurrence of $\phi^k$ bound by $\mu$ in $F$, then we say
+that $F$ is {\em first-order}; otherwise we say that $F$ is {\em
+  second-order}.  Substitution for first-order types is the usual
+capture-avoiding textual substitution. We write $F[\alpha :=
+  \sigma]$ for the result of substituting $\sigma$ for $\alpha$ in
+$F$, and $F[\alpha_1 := F_1,...,\alpha_k := F_k]$, or
+$F[\ol{\alpha := F}]$ when convenient, for $F[\alpha_1 :=
+  F_1][\alpha_2 := F_2,...,\alpha_k := F_k]$. Substitution
+for second-order types is defined below, where we adopt a similar
+notational convention for vectors of types. Note that it is not
+correct to substitute along non-functorial variables.
 
+\begin{dfn}\label{def:second-order-subst}
+If \,$\Gamma; \Phi,\phi^k \vdash H$
+%with $k \geq 1$,
+and if\, $\Gamma;\Phi, \ol{\alpha} \vdash F$ with
+$|\ol\alpha| = k$, then $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
+  F]$.  Similarly, if \,$\Gamma, \phi^k; \Phi \vdash H$,
+%with $k \geq 1$,
+and if\, $\Gamma; \ol\psi,\ol{\alpha} \vdash F$ with $|\ol\alpha| = k$
+and $\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi \vdash
+H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$. Here, the operation
+  $(\cdot)[\phi :=_{\ol \alpha} F]$ of {\em second-order type
+    substitution along $\ol\alpha$} is defined by:
+\[\begin{array}{lll}
+\zerot[\phi :=_{\ol{\alpha}} F] & = & \zerot\\[0.5ex]
+\onet[\phi :=_{\ol{\alpha}} F] & = & \onet\\[0.25ex]
+(\Nat^{\ol\beta} G \,K)[\phi :=_{\ol{\alpha}} F]
+& = & \Nat^{\ol\beta}\, (G[\phi :=_{\ol{\alpha}} F]) \,(K[\phi
+  :=_{\ol{\alpha}} F])\\
+(\psi\ol{G})[\phi :=_{\ol{\alpha}} F] & = &
+\left\{\begin{array}{ll}
+\psi \,\ol{G[\phi :=_{\ol{\alpha}} F]} & \mbox{if } \psi \not = \phi\\
+  F[\ol{\alpha  := G[\phi :=_{\ol{\alpha}} F]}] 
+  & \mbox{if } \psi = \phi
+\end{array}\right.\\[2.8ex]
+(G + K)[\phi :=_{\ol{\alpha}} F] & = & G[\phi
+  :=_{\ol{\alpha}} F] + K[\phi :=_{\ol{\alpha}} F]\\[0.5ex] 
+(G \times K)[\phi :=_{\ol{\alpha}} F] & = &
+G[\phi :=_{\ol{\alpha}} F] \times K[\phi
+  :=_{\ol{\alpha}} F]\\[0.5ex]   
+((\mu \psi. \lambda \ol{\beta}.\, G)\ol{K})[\phi :=_{\ol{\alpha}}
+  F] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=_{\ol{\alpha}}
+  F])\, \ol{K[\phi :=_{\ol{\alpha}} F]}\\[0.5ex]
+((\Lan^{\ol{\beta}}_{\ol H}\, G)\ol{K})[\phi :=_{\ol{\alpha}}
+  F] & = & (\Lan^{\ol\beta}_{\ol H} \,G[\phi :=_{\ol{\alpha}}
+  F])\, \ol{K[\phi :=_{\ol{\alpha}} F]}
+\end{array}\]
+\end{dfn}
+\noindent
+We note that $(\cdot)[\phi^0 :=_\emptyset F]$ coincides with
+first-order substitution. We also omit $\ol\alpha$ when convenient.
 
+\subsection{Terms}\label{sec:terms}
+
+We now define our term calculus. To do so we assume an infinite set
+$\cal V$ of term variables disjoint from $\tvars$ and $\fvars$. If
+$\Gamma$ is a type constructor context and $\Phi$ is a functorial
+context, then a {\em term context for $\Gamma$ and $\Phi$} is a finite
+set of bindings of the form $x : F$, where $x \in {\cal V}$ and
+$\Gamma; \Phi \vdash F$. We adopt the same conventions for denoting
+disjoint unions and for vectors in term contexts as for type
+constructor contexts and functorial contexts.
 
 \begin{dfn}\label{def:well-formed-terms}
 Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
@@ -324,23 +471,21 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \vspace*{0.05in}
 
 \[\begin{array}{c}
-\new{
 \AXC{$\Gamma; \Phi \vdash F$}
 \AXC{$\Gamma; \Phi \vdash G$}
 \AXC{$\Gamma; \Phi \,|\, \Delta, x : F \vdash t: G$} 
 \TIC{$\Gamma; \emptyset
   \,|\, \Delta \vdash L_\Phi x.t : \Nat^\Phi \,F \,G$}
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{\AXC{$\ol{\Gamma;\Phi,\ol\beta \vdash K}$}
+\AXC{$\ol{\Gamma;\Phi,\ol\beta \vdash K}$}
 \AXC{$\Gamma; \emptyset
   \,|\, \Delta \vdash t : \Nat^{\ol\psi} \,F \,G$}
 \AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F[\overline{\psi :=_{\ol\beta} K}]$}
 \TIC{$\Gamma;\Phi\,|\, \Delta \vdash t_{\ol K} s:
   G[\overline{\psi :=_{\ol\beta} K}]$}
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{
 \AXC{$\Gamma; \Phi, \ol{\phi} \vdash H$}
 \AXC{$\ol{\Gamma; \Phi,\ol{\beta} \vdash F}$}
 \AXC{$\ol{\Gamma; \Phi,\ol{\beta} \vdash
@@ -351,56 +496,73 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
   \Nat^\emptyset\;(\ol{\Nat^{\Phi,\ol{\beta}}\,F\,G})\;
   (\Nat^\Phi\,H[\ol{\phi :=_{\ol{\beta}} F}]\;H[\ol{\phi
       :=_{\ol{\beta}} G}])$} 
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{\AXC{$\Gamma; \Phi, \phi, \ol{\alpha} \vdash H$}
+\AXC{$\Gamma; \Phi, \phi, \ol{\alpha} \vdash H$}
 \UIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \tin_H :
   \Nat^{\Phi,\ol{\beta}} H[\phi :=_{\ol{\beta}} (\mu
     \phi.\lambda \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \beta}]\,(\mu
   \phi.\lambda \ol{\alpha}.H)\ol{\beta}$}
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{\AXC{$\Gamma; \phi,\Phi,\ol{\alpha} \vdash H$}
+\AXC{$\Gamma; \phi,\Phi,\ol{\alpha} \vdash H$}
 \AXC{$\Gamma; \Phi, \ol{\beta} \vdash F$}
 \BIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \fold^F_H :
   \Nat^\emptyset\; (\Nat^{\Phi,\ol{\beta}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\; (\Nat^{\Phi,\ol{\beta}}
     \,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
 \AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
-\TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{K,F} t :
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
   (\Lan^{\ol\alpha}_{\ol K}\,  F)\,\ol{K[\ol{\alpha := A}]}$}  
-\DisplayProof}
+\DisplayProof
 \\\\
-\new{
 \AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
   F\;G[\ol{\beta := K}]$}
 \AXC{$\ol{\Gamma;\Phi \vdash A}$}
 \AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol A $}
 \TIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
   G[\ol{\beta := A}]$}
-\DisplayProof}
+\DisplayProof
 \end{array}\]
 \end{dfn}
 
 \vspace*{0.2in}
 
-Things to check:
-\begin{itemize}
-\item \new{Are these $\Nat$-types $\omega$CPOs? An argument similar to the
-  one in the POPL submission should hold.}
-\item \new{Does IEL hold if we allow functoriality in variables of arity $> 0$?}
-\item \new{Does AT hold if we allow functoriality in variables of arity $> 0$?}
-\end{itemize}
+In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
+occurrences of the type variables in $\ol{\alpha}$ in the type of the
+term variable $x$ and in the body $t$, as well as all occurrences of
+$x$ in $t$. In the rule for $t_{\ol K} s$ there is one functorial
+expression in $\ol K$ for every functorial variable in $\ol
+\alpha$. In the rule for $\map^{\ol{F},\ol{G}}_H$ there is one
+functorial expression $F$ and one functorial expression $G$ for each
+functorial variable in $\ol\phi$. Moreover, for each $\phi^k$ in
+$\ol\phi$ the number of functorial variables in $\ol\beta$ in the
+judgments for its corresponding functorial expresssions $F$ and $G$ is
+$k$. In the rules for $\tin_H$ and $\fold^F_H$, the functorial
+variables in $\ol{\beta}$ are fresh with respect to $H$, and there is
+one $\beta$ for every $\alpha$. (Recall from above that, in order for
+the types of $\tin_H$ and $\fold^F_H$ to be well-formed, the length of
+$\alpha$ must equal the arity of $\phi$.) In the rule for $\int_{\ol
+  K,H}\,t$, there is one functorial expression $A$ for every
+functorial variable in $\ol \alpha$, and in the rule for
+$\partial^{G,\ol K}_F\,\eta\,t$, there is one functorial expression
+$A$ for every functorial expression in $\ol K$ (and hence for every
+functorial variable in $\ol \beta$).
+    
 
+Substitution for terms is the obvious extension
+of the usual capture-avoiding textual substitution, and
+Definition~\ref{def:well-formed-terms} ensures that the expected
+weakening rules for well-formed terms hold.
 
+\vspace*{0.2in}
 
-Sum and product intro and elim rules should be annotated with
-  constituent types for consistency.
+\new{Sum and product intro and elim rules should be annotated with
+  constituent types for consistency?
 
 \vspace*{0.2in}
 
@@ -411,10 +573,506 @@ We should have a computation rule along the lines of: If $\eta :
   A}\; \rightarrow \; \eta_{\ol A}\\
 : & F[\ol{\alpha := A}] \to G[\ol{\beta := K[\ol{\alpha :=A}]}]\\
 = & F[\ol{\alpha := A}] \to G[\ol{\beta := K}][\ol{\alpha := A}]
-\end{array}\] 
+\end{array}\]
+This will appear as a computational property of the term
+interpretations.}
+
+\section{Interpreting Types}\label{sec:type-interp}
+
+The fundamental idea underlying Reynolds' parametricity is to give
+each type $F(\alpha)$ with one free variable $\alpha$ both an {\em
+  object interpretation} $F_0$ taking sets to sets and a
+\emph{relational interpretation} $F_1$ taking relations $R :
+\rel(A,B)$ to relations $F_1 (R) : \rel(F_0 (A), F_0 (B))$, and to
+interpret each term $t(\alpha,x) : F(\alpha)$ with one free term
+variable $x : G(\alpha)$ as a map $t_0$ associating to each set $A$ a
+homomorphism $t_0(A) : G_0(A) \to F_0(A)$, and to each relation $R$ a
+morphism $t_1(R) : G_1(R) \to F_1(R)$.  These interpretations are to
+be given inductively on the structures of $F$ and $t$ in such a way
+that they imply two fundamental theorems. The first is an
+\emph{Identity Extension Lemma}, which states that $F_1(\Eq_A) =
+\Eq_{F_0(A)}$, and is the essential property that makes a model
+relationally parametric rather than just induced by a logical
+relation. The second is an \emph{Abstraction Theorem}, which states
+that, for any $R :\rel(A, B)$, $(t_0(A),t_0(B))$ is a morphism in
+$\rel$ from $(G_0(A),G_0(B),G_1(R))$ to $(F_0(A),F_0(B),F_1(R))$. The
+Identity Extension Lemma is similar to the Abstraction Theorem except
+that it holds for {\em all} elements of a type's interpretation, not
+just those that are interpretations of terms.  Similar theorems are
+expected to hold for types and terms with any number of free
+variables.
+
+To accommodate GADTs, we will need to transition Reynolds' approach
+from a $\set$-based semantics to a semantics based on
+$\omega$-complete partial orders. We denote the category of
+$\omega$-complete partial orders ($\oCPO$s) and their sup-preserving
+morphisms by $\omega$CPO. The underlying set of an $\omega$-CPO $A$ is
+denoted $|A|$.  The category $\oCPOR$ of relations on $\omega$CPOs has
+as its objects triples $(A,B,R)$, where $A, B: \oCPO$ and $R:
+\rel(|A|, |B|)$, and has as its morphisms from $(A,B,R)$ to
+$(A',B',R')$ pairs $(f : A \to A',g : B \to B')$ of morphisms in
+$\oCPO$ such that $(f\,a, g\,b) \in R'$ whenever $(a,b) \in R$. We
+write $R : \oCPOR(A,B)$ in place of $(A,B,R): \oCPOR$ when
+convenient. If $R : \oCPOR(A,B)$ then we write $\pi_1 R$ and $\pi_2 R$
+for the {\em domain} $A$ of $R$ and the {\em codomain} $B$ of $R$,
+respectively. If $A : \oCPO$, then we write $\Eq_A = (A,A,\Eq_{|A|})$
+for the {\em equality relation} on $A$.
+
+To adapt Reynolds' approach, we first inductively define, for each
+type, an object interpretation in $\oCPO$ and a relational
+interpretation in $\oCPOR$.  Next, we show that these interpretations
+satisfy both an Identity Extension Lemma (Theorem~\ref{thm:iel}) and
+an Abstraction Theorem (Theorem~\ref{thm:gen-at}) appropriate to the
+$\oCPO$ setting. The key to proving our Identity Extension Lemma is a
+familiar ``cutting down'' of the interpretations of universally
+quantified types to include only the ``parametric'' elements; as
+in~\cite{jgj20}, the relevant types of the calculus defined above are
+the (now richer) $\Nat$-types.  The requisite cutting down requires
+that the object interpretations of our types in $\omega$CPO are
+defined simultaneously with their relational interpretations in
+$\oCPOR$.  We give the object interpretations for our types in
+Section~\ref{sec:obj-interp} and give their relational interpretations
+in Section~\ref{sec:rel-interp}.  While the former are relatively
+straightforward, the latter are less so, mainly because of the
+cocontinuity conditions, adapted from the $\set$-based setting
+of~\cite{jgj20}, that must hold if they are to be well-defined. We
+develop these conditions in Section~\ref{sec:rel-interp}, which
+separates Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in
+space, but otherwise has no impact on the fact that they are given by
+mutual induction.
+
+\subsection{Object Interpretations of Types}\label{sec:obj-interp}
+
+The object interpretations of the types in our calculus will be
+$\omega_1$-cocontinuous functors between categories of
+$\omega_1$-cocontinuous functors on categories constructed from the
+locally $\omega_1$-presentable category $\oCPO$.  We therefore begin
+by recording some important facts about locally $\omega_1$-presentable
+categories and functors on them, and verifying verify the properties
+needed to interpret our syntax.
+
+\subsubsection{Preliminaries}
+
+\new{Perhaps have as preliminaries to entire paper. Do everything for
+  $\lambda CPOs$? Define these; investigate their properties.}
+
+A category is \emph{small} if its collection of morphisms is a set.
+It is \emph{locally small} if, for any two objects $A$ and $B$, the
+collection of morphisms from $A$ to $B$ is a set. A {\em small
+  (co)limit} in a category $\mcC$ is a (co)limit of a diagram $F :
+\mcA \to \mcC$, where $\mcA$ is a small category. A category $\mcC$
+is {\em (co)complete} if it has all small (co)limits.
+
+A poset $\mcD = (D,\leq)$ is \emph{$\omega_1$-directed} if every
+countable subset of $D$ has a supremum. When $\mcD$ is considered
+as a category, we write $d \in \mcD$ to indicate that $d$ is an object
+of $\mcD$ (i.e., $d \in D$). An {\em $\omega_1$-directed colimit} in a
+category $\mcC$ is a colimit of a diagram $F : {\mathcal D} \to \mcC$,
+where $\mathcal D$ is an $\omega_1$-directed poset. A category $\mcC$
+is {\em $\omega_1$-cocomplete} if it has all $\omega_1$-directed
+colimits; a {\em cocomplete} category is one that has all colimits.
+
+If $\mcA$ and $\mcC$ are $\omega_1$-cocomplete, then the functor $F :
+\mcA \to \mcC$ is {\em $\omega_1$-cocontinuous} if it preserves
+$\omega_1$-directed colimits. We write $[\A,\C]_{\omega_1}$ for 
+the category of $\omega_1$-cocontinuous functors from $\A$ to $\C$,
+and $\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
+Since (co)limits of functors are computed pointwise, $C^\A$ has all
+(co)limits that $\C$ has, and (co)limits of (co)continuous functors
+are again (co)continuous. It follows that $[\A,\C]_{\omega_1}$ is
+($\omega_1$1)(co)complete whenever $\C$ is.
+
+If $\mcA$ is locally small, then an object $A$ of $\mcA$ is {\em
+  $\omega_1$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
+\mcA \to \Set$ preserves $\omega_1$-directed colimits, i.e., if for
+every $\omega_1$-directed poset $\mathcal D$ and every functor $F :
+{\mathcal D} \to \mcC$, there is a canonical isomorphism $\colim{d \in
+  \mcD}{\mathsf{Hom}_\mcA(A,Fd)} \simeq \mathsf{Hom}_{\mcA}(A,
+\colim{d \in \mcD}{Fd})$. A locally small category $\mcA$ is {\em
+  $\omega_1$-accessible} if it is $\omega_1$-cocomplete and has a set
+$\mcA_0$ of $\omega_1$-presentable objects such that every object is
+an $\omega_1$-directed colimit of objects in $\mcA_0$; a locally small
+category is {\em locally $\omega_1$-presentable} if it is
+$\omega_1$-accessible and cocomplete.
+
+The category $\oCPO$ is locally $\omega_1$-presentable (but not
+locally finitely presentable); see Examples~1.18(2)
+of~\cite{ar94}). Its $\omega_1$-presentable objects are precisely the
+$\omega$CPOs cardinality less than $\omega_1$, i.e., the countable
+$\omega$CPOs. In the next subsection we will interpret type variables
+in $\tvars^k \cup \fvars^k$ as elements of
+$[\oCPO^k,\oCPO]_{\omega_1}$; the following special cases of standard
+results (see, e.g.,~\cite{ar94}) will therefore be critical to
+deducing important properties of our object interpretations of types:
+\begin{prop}\label{prop:prelims}
+\begin{enumerate}
+\item If $\C_1,...,\C_n$ are locally $\omega_1$-presentable categories
+  then so is $\C_1 \times ... \times \C_n$. Moreover, the presentable
+  objects of $\C_1 \times ... \times \C_n$ are exactly the tuples of
+  the form $(P_1,...,P_n)$, where, for each $i = 1,...,n$, the object
+  $P_i$ is presentable in $\C_i$.
+\item If $\mathcal{A}$ is $\omega_1$-accessible and $\mathcal{C}$ is
+  $\lambda$-cocomplete, then the category $[\mathcal{A},
+  \mathcal{C}]_{\omega_1}$ is naturally equivalent to the category
+  $\mathcal{C}^{\mathcal{A}_0}$.
+\item If $\mathcal{C}$ is locally $\omega_1$-presentable and
+  $\mathcal{A}_0$ is essentially small, then
+  $\mathcal{C}^{\mathcal{A}_0}$ is locally $\omega_1$-presentable.
+\end{enumerate}
+\end{prop}
+\noindent
+Together, the statements in Proposition~\ref{prop:prelims} give that
+if $\mathcal{A}$ and $\mathcal{C}$ are locally $\omega_1$-presentable,
+then $[\mathcal{A}, \mathcal{C}]_{\omega_1}$ is naturally equivalent
+to $\mathcal{C}^{\mathcal{A}_0}$, and thus is
+$\omega_1$-presentable. Thus, for all $k_1,...,k_n \in \nat^n$,
+$[\mathcal{A}, \mathcal{C}]_{\omega_1}^{k_1} \times ... \times
+[\mathcal{A}, \mathcal{C}]_{\omega_1}^{k_n}$ is locally
+$\omega_1$-presentable, and therefore $[[\mathcal{A},
+    \mathcal{C}]_{\omega_1}^{k_1} \times ... \times [\mathcal{A},
+    \mathcal{C}]_{\omega_1}^{k_n}, \mathcal{C}]_{\omega_1}$ is as
+well. Taking both $\A$ and $C$ to be $\oCPO$ --- as we will to ensure
+that the fixpoints interpreting $\mu$-types in $\oCPO$ exist --- we
+have
+\begin{prop}\label{prop:nat-interps-sets}
+  For all $k_1,...,k_n \in \nat^n$,
+  \[[[\oCPO, \oCPO]_{\omega_1}^{k_1}
+  \times ... \times [\oCPO, \oCPO]_{\omega_1}^{k_n},
+  \oCPO]_{\omega_1}\] is locally $\omega_1$-presentable.
+\end{prop}
+
+\subsubsection{Object Interpretations}
+
+To define the object interpretations of the types in
+Definition~\ref{def:wftypes} we must first interpret their
+variables. We have:
+
+\begin{dfn}\label{def:set-env}
+A {\em $\oCPO$ environment} maps each type variable in $\tvars^k \cup
+\fvars^k$ to an element of $[\oCPO^k,\oCPO]_{\omega_1}$.  A morphism
+$f : \rho \to \rho'$ for set environments $\rho$ and $\rho'$ with
+$\rho|_\tvars = \rho'|_\tvars$ maps each type constructor variable
+$\psi^k \in \tvars$ to the identity natural transformation on $\rho
+\psi^k = \rho'\psi^k$ and each functorial variable $\phi^k \in \fvars$
+to a natural transformation from the $k$-ary functor $\rho \phi^k$ on
+$\oCPO$ to the $k$-ary functor $\rho' \phi^k$ on $\oCPO$.  Composition
+of morphisms on set environments is given componentwise, with the
+identity morphism mapping each set environment to itself. This gives a
+category of set environments and morphisms between them, which we
+denote $\oCPOenv$.
+\end{dfn}
+
+When convenient we identify a functor in $[\oCPO^0, \oCPO]_{\omega_1}$
+with its value on $\ast$ and consider a $\oCPO$ environment to map a
+type variable of arity $0$ to an $\omega_1$-cocontinuous functor from
+$\oCPO^0$ to $\oCPO$, i.e., to an $\oCPO$. If $\Phi =
+\{\phi_1^{k_1},...,\phi_n^{k_n}\}$ and $\ol K = \{K_1,...,K_n\}$ where
+$K_i : [\oCPO^{k_i},\oCPO]_{\omega_1}$ for $i = 1,...,n$, then we
+write $\rho[\ol{\Phi := K}]$ for the $\oCPO$ environment $\rho'$ such
+that $\rho' \phi_i = K_i$ for $i = 1,...,n$ and $\rho' \phi = \rho
+\phi$ if $\phi \not \in \Phi$.  If $\rho$ is an $\oCPO$ environment,
+we write $\Eq_\rho$ for the $\oCPOR$ environment (see
+Definition~\ref{def:reln-env}) such that $\Eq_\rho v = \Eq_{\rho v}$
+for every type variable $v$. The categories $\oCPORT_k$ and relational
+interpretations appearing in the third clause of
+Definition~\ref{def:set-sem} are given in full in Section~\ref{?}.
+
+\begin{dfn}\label{def:set-sem}
+The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
+  \oCPO]_{\omega_1}$ is defined by
+\begin{align*}
+  \oCPOsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
+  \oCPOsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
+  \oCPOsem{\Gamma; \emptyset
+    \vdash \Nat^\Phi
+    \,F\,G}\rho &= \{\eta : \lambda \ol{K}. \,\oCPOsem{\Gamma;
+    \Phi \vdash
+    F}\rho[\ol{\Phi := K}] 
+      \Rightarrow \lambda \ol{K}.\,\oCPOsem{\Gamma; 
+        \Phi \vdash G}\rho[\ol{\Phi := K}] \\ 
+      &\hspace{0.3in}|~\forall \ol{K = (K_0, K_1, K^*) : \oCPORT_k}.\\
+      &\hspace{0.4in}(\eta_{\overline{K_0}}, \eta_{\overline{K_1}})
+      : \oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi := K}]
+      \rightarrow \oCPORsem{\Gamma; \Phi \vdash
+        G}\Eq_{\rho}[\ol{\Phi := K}] \} \\
+  \oCPOsem{\Gamma;\Phi \vdash \phi\ol{F}}\rho &=
+  (\rho\phi)\,\ol{\oCPOsem{\Gamma;\Phi \vdash
+    F}\rho}\\
+  \oCPOsem{\Gamma;\Phi \vdash F+G}\rho &=
+  \oCPOsem{\Gamma;\Phi \vdash F}\rho +
+  \oCPOsem{\Gamma;\Phi \vdash G}\rho\\
+  \oCPOsem{\Gamma;\Phi \vdash F \times G}\rho &=
+  \oCPOsem{\Gamma;\Phi \vdash F}\rho \times
+  \oCPOsem{\Gamma;\Phi \vdash G}\rho\\ 
+  \oCPOsem{\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda
+    \ol{\alpha}. H)\ol{G}}\rho &= (\mu
+    T^\oCPO_{H,\rho})\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho}\\
+    \text{where } T^\oCPO_{H,\rho}\,F & = \lambda
+  \ol{A}. \oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
+    H}\rho[\phi :=  F][\ol{\alpha := A}]\\
+  \text{and } T^\oCPO_{H,\rho}\,\eta &= \lambda
+  \ol{A}. \oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
+    H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}] \\
+  \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
+    (\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}
+      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}])
+    \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}
+\end{align*}
+\end{dfn}
+If $\rho \in \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash F}$
+instead of $\oCPOsem{\vdash F}\rho$ since the environment is
+immaterial. The third clause of Definition~\ref{def:set-sem} does
+indeed define an $\oCPO$. First, we have
+
+\begin{lemma}
+The collection of all natural transformations 
+\[
+\eta : \lambda \ol K. \setsem{\Gamma;\Phi \vdash F}\rho[\ol{\Phi := K}]
+\Rightarrow \lambda \ol K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi :=
+  K}]
+\]
+defines a set.
+\end{lemma}
+\begin{proof}
+We first note that $\lambda \ol K. \setsem{\Gamma;\Phi \vdash
+  F}\rho[\ol{\Phi := K}]$ and $\lambda \ol K. \setsem{\Gamma;\Phi
+  \vdash G}\rho[\ol{\Phi := K}]$ are both in $[\ol{[\oCPO^k ,
+      \oCPO]_{\omega_1}}, \oCPO]_{\omega_1}$. By
+Proposition~\ref{prop:nat-interps-sets}, $[\ol{[\oCPO^k ,
+      \oCPO]_{\omega_1}}, \oCPO]_{\omega_1}$ is locally
+$\omega_1$-presentable. It is therefore locally small, so there are
+only $\set$-many morphisms (i.e., natural transformations) between any
+two functors in $[\ol{[\oCPO^k , \oCPO]_{\omega_1}},
+  \oCPO]_{\omega_1}$. In particular, there are only $\set$-many
+natural transformations from $\lambda \ol K. \setsem{\Gamma;\Phi
+  \vdash F}\rho[\ol{\Phi := K}]$ to $\lambda \ol
+K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$.
+\end{proof}
+
+\new{Need to modify to take equality conditions into account.}
+  If $\C$ is any category, then given functors $F,G : \C \to
+  \oCPO$ and natural transformations $\eta, \eta' : F \to G$, we
+  define $\eta \leq \eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in
+  \C$, i.e., iff $\eta_c\,x \leq \eta'_c\,x$ in $Gc$ for all $c \in
+  \C$ and $x \in Fc$.  If $(\eta_i)_{i < \omega}$ is a chain in
+  $\{\eta : F \to G\}$, then the family of morphisms $(\bigvee_{i <
+    \omega} \eta_i)_c = \lambda x. \bigvee_{i < \omega} (\eta_i)_c\,x
+  : Fc \to Gc$ defines a natural transformation $\bigvee_{i < \omega}
+  \eta_i : F \to G$, and this natural transformation is clearly the
+  supremum of $(\eta_i)_{i < \omega}$ in $\{\eta : F \to G\}$. We
+  therefore have that $\{\eta : F \to G\}$ is itself an $\oCPO$.
+  Letting $F = \lambda \ol K. \setsem{\Gamma;\Phi \vdash
+    F}\rho[\ol{\Phi := K}]$ and $G = \lambda \ol
+  K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$, we have that
+  $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}$ is indeed an
+  $\oCPO$, i.e., is a constantly-valued functor into $\oCPO$.
+
+Interpretations of $\Nat$-types ensure that $\oCPOsem{\Gamma \vdash F
+  \to G}$ and $\oCPOsem{\Gamma \vdash \forall \ol\alpha. F}$ are as
+expected in any parametric model.
+
+To make sense of the last clause in Definition~\ref{def:set-sem}, we
+need to know that, for each $\rho \in \oCPOenv$, $T^\oCPO_{H,\rho}$ is
+an $\omega_1$-cocontinuous endofunctor on $[\oCPO^k,
+  \oCPO]_{\omega_1}$, and thus admits a fixpoint.  Since
+$T_{H,\rho}^\oCPO$ is defined in terms of
+$\oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$, this means
+that interpretations of types must be such functors, which in turn
+means that the actions of set interpretations of types on objects and
+on morphisms in $\oCPOenv$ are intertwined. Fortunately, we know
+from~\cite{jp19} that, for every $\Gamma; \Phi \vdash G$,
+$\oCPOsem{\Gamma; \Phi \vdash G}$ is actually in
+$[\ol{[\oCPO^k,\oCPO]_{\omega_1}},\oCPO]_{\omega_1}$, or,
+equivalently, $[\oCPOenv,\oCPO]_{\omega_1}$.  Therefore, for each
+$\oCPOsem{\Gamma; \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the
+corresponding operator $T^\oCPO_{H}$ can be extended to a {\em
+  functor} from $\oCPOenv$ to
+$[[\oCPO^k,\oCPO]_{\omega_1},[\oCPO^k,\oCPO]_{\omega_1}]_{\omega_1}$.
+The action of $T^\oCPO_H$ on an object $\rho \in \oCPOenv$ is given by
+the higher-order functor $T_{H,\rho}^\oCPO$, whose actions on objects
+(functors in $[\oCPO^k, \oCPO]_{\omega_1}$) and on morphisms (natural
+transformations between such functors) are given in
+Definition~\ref{def:set-sem}. The action of $T^\oCPO_H$ on a morphism
+$f : \rho \to \rho'$ is the higher-order natural transformation
+$T^\oCPO_{H,f} : T^\oCPO_{H,\rho} \to T^\oCPO_{H,\rho'}$ whose action
+on $F : [\oCPO^k,\oCPO]_{\omega_1}$ is the natural transformation
+$T^\oCPO_{H,f}\, F : T^\oCPO_{H,\rho}\,F \to T^\oCPO_{H,\rho'}\,F$
+whose component at $\ol A$ is $(T^\oCPO_{H,f}\, F)_{\ol A} =
+\oCPOsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_A}]$.
+
+In addition, for each $\ol K$, we have that $\textit{Lan}_{\ol K}$ is
+itself a (higher-order) functor. Specifically, given functors $F, F' :
+\C \to \D$, a sequence of functors $\ol K = K_1, ..., K_n$ with $K_i :
+\C \to \C_i$ for $i = 1,...,n$, and a natural transformation $\alpha :
+F \to G$, the functorial action $\textit{Lan}_{\ol K} \alpha :
+\textit{Lan}_{\ol K} F \to \textit{Lan}_{\ol K} F'$ of
+$\mathit{Lan}_{\ol K}$ on $\alpha$ is defined to be the unique natural
+transformation such that $((\textit{Lan}_{\ol K} \alpha) \,\circ
+\,\langle K_1,...,K_n \rangle) \circ \eta_F = \eta_{F'} \,\circ\,
+\alpha$. Here, $\eta_F : F \to (\textit{Lan}_{\ol K} F) \circ \langle
+K_1,...,K_n \rangle$ and $\eta_{F'} : F' \to (\textit{Lan}_{\ol K} F')
+\circ \langle K_1,...,K_n \rangle$ are the natural transformations
+associated with the functors $\textit{Lan}_{\ol K} F$ and
+$\textit{Lan}_{\ol K} F'$ from $\Pi_{i \in \{1,...,n\}} \C_i$ to $\D$,
+respectively. It is not hard to see that $\mathit{Lan}_{\ol K}$ is a
+(higher-order) functor under this definition.
+
+The next definition uses the functors $T^\oCPO_H$ and $\mathit{Lan}_K$
+to define the actions of functors interpreting types on morphisms
+between set environments.
+
+\begin{dfn}\label{def:set-sem-funcs}
+Let $f: \rho \to \rho'$ be a morphism between $\omega$-CPO environments $\rho$
+and $\rho'$ (so that $\rho|_\tvars = \rho'|_\tvars$). The action
+$\oCPOsem{\Gamma;\Phi \vdash F}f$ of\, $\oCPOsem{\Gamma;\Phi \vdash F}$
+on the morphism $f$ is given as follows:
+\begin{itemize}
+\item If \,$\Gamma;\Phi \vdash \zerot$ then $\oCPOsem{\Gamma;\Phi \vdash
+  \zerot}f = \id_0$
+\item If \,$\Gamma;\Phi \vdash \onet$ then $\oCPOsem{\Gamma;\Phi \vdash
+  \onet}f = \id_1$
+\item If \,$\Gamma; \emptyset
+  \vdash \Nat^\Phi F\,G$ then
+  $\oCPOsem{\Gamma; \emptyset
+    \vdash \Nat^\Phi F\,G} f =
+  \id_{\oCPOsem{\Gamma; \emptyset
+      \vdash \Nat^\Phi F\,G}\rho}$
+\item If \,$\Gamma;\Phi \vdash \phi \ol{F}$ then
+ \begin{multline*}
+ \oCPOsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \oCPOsem{\Gamma;\Phi
+  \vdash \phi \ol{F}}\rho \to \oCPOsem{\Gamma;\Phi \vdash
+  \phi\ol{F}}\rho' \\
+  = (\rho\phi) \ol{\oCPOsem{\Gamma;\Phi \vdash
+  F}\rho} \to (\rho'\phi) \ol{\oCPOsem{\Gamma;\Phi \vdash
+  F}\rho'}
+ \end{multline*}
+  is defined by
+  \[
+  \begin{split}
+  \oCPOsem{\Gamma;\Phi \vdash \phi \ol{F}} f
+  &= (f\phi)_{\ol{\oCPOsem{\Gamma;\Phi \vdash
+      F}\rho'}}\, \circ\, (\rho\phi) {\ol{\oCPOsem{\Gamma;\Phi
+      \vdash F}f}} \\
+  &= (\rho'\phi) {\ol{\oCPOsem{\Gamma;\Phi \vdash
+      F}f}}\, \circ\, (f \phi)_{\ol{\oCPOsem{\Gamma;\Phi \vdash
+      F}\rho}}
+  \end{split}
+  \]
+  The latter equality holds because $\rho\phi$ and
+  $\rho'\phi$ are functors and $f\phi : \rho\phi \to \rho'\phi$ is a
+  natural transformation, so the following naturality square commutes:
+{\footnotesize\begin{equation}\label{eq:cd2}
+\begin{CD}
+  (\rho\phi) \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho} @> (f\phi)_{
+    \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho}} >> (\rho'\phi)
+  \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho} \\ @V(\rho\phi)
+  \ol{\oCPOsem{\Gamma;\Phi \vdash F}f}VV @V (\rho'\phi)
+  \ol{\oCPOsem{\Gamma;\Phi \vdash F}f} VV \\ (\rho\phi)
+  \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho'} @>(f\phi)_{
+    \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho'}}>> (\rho'\phi)
+  \ol{\oCPOsem{\Gamma;\Phi \vdash F}\rho'}
+\end{CD}
+\end{equation}}
+\item If\, $\Gamma;\Phi \vdash F + G$ then $\oCPOsem{\Gamma;\Phi
+  \vdash F + G}f$ is defined by
+  \begin{align*}
+  \oCPOsem{\Gamma;\Phi \vdash F + G}f(\inl\,x) 
+  &= \inl\,(\oCPOsem{\Gamma;\Phi \vdash
+  F}f x) \\
+  \oCPOsem{\Gamma;\Phi \vdash F + G}f(\inr\,y)
+  &= \inr\,(\oCPOsem{\Gamma;\Phi \vdash G}f y)
+  \end{align*}
+\item If \,$\Gamma;\Phi\vdash F \times G$ then
+  $\oCPOsem{\Gamma;\Phi \vdash F \times G}f = 
+  \oCPOsem{\Gamma;\Phi \vdash F}f \times \oCPOsem{\Gamma;\Phi \vdash
+    G}f$
+\item If \,$\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda
+  \ol{\alpha}. H)\ol{G}$ then
+  \[\begin{array}{lll}
+  \oCPOsem{\Gamma;\Phi,\ol\gamma \vdash (\mu  \phi.\lambda
+    \ol{\alpha}. H)\ol{G}} f &: &\oCPOsem{\Gamma;\Phi,\ol\gamma 
+    \vdash (\mu \phi.\lambda \ol{\alpha}. H)\ol{G}} \rho \to
+  \oCPOsem{\Gamma;\Phi,\ol\gamma \vdash (\mu
+    \phi.\lambda\ol{\alpha}. H)\ol{G}} \rho'\\
+  &= &(\mu
+  T^\oCPO_{H,\rho})\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} \to (\mu
+  T^\oCPO_{H,\rho'})\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}
+  \end{array}\]
+  is
+  defined by
+  \[\begin{array}{ll}
+  & (\mu T^\oCPO_{H,f})_{\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash
+      G}\rho'}} \circ (\mu T^\oCPO_{H,\rho})\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma
+      \vdash G}f}\\[2ex] = & (\mu
+  T^\oCPO_{H,\rho'})\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma 
+      \vdash G}f} \circ (\mu T^\oCPO_{H,f})_{\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma
+      \vdash G}\rho}}\end{array}\]  The latter equality holds because $\mu
+  T^\oCPO_{H,\rho}$ and $\mu T^\oCPO_{H,\rho'}$ are functors and $\mu
+  T_{H,f}^\oCPO : \mu T_{H,\rho}^\oCPO \to \mu T_{H,\rho'}^\oCPO$ is a
+  natural transformation, so the following naturality square commutes:
+{\footnotesize\begin{equation}\label{eq:cd3}
+\begin{CD}
+ (\mu T^\oCPO_{H,\rho}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} @> (\mu
+  T^\oCPO_{H,f})_{\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho}} >> (\mu
+  T^\oCPO_{H,\rho'}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} \\ 
+ @V(\mu T^\oCPO_{H,\rho}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}f}VV @V  (\mu
+ T^\oCPO_{H,\rho'}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}f} VV \\ 
+(\mu T^\oCPO_{H,\rho}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'} @>(\mu
+ T^\oCPO_{H,f})_{\ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}}>> (\mu
+ T^\oCPO_{H,\rho'}) \ol{\oCPOsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}
+\end{CD}
+\end{equation}}
+\item If\, $\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}$ then
+  \[\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f
+: \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
+    F)\ol{A}}\rho \to \oCPOsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho'\] is defined by
+\[\begin{array}{ll}
+ & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
+    \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho'} \\
+ &  \circ\;
+  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)
+    \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
+= & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)
+    \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
+ &  \circ\;
+  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
+    \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}
+\end{array}\]
+where the above equality holds by naturality of
+$\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+        K}\rho[\ol{\alpha := \_}]}}\,\oCPOsem{\Gamma; \Phi, \ol\alpha
+    \vdash F}f[\ol{\alpha := \id_{\_}}]$.
+%(and functoriality of
+%  $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+%        K}\rho[\ol{\alpha := \_}]}}$,
+%  $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+%        K}\rho'[\ol{\alpha := \_}]}}$, and $\ol{\oCPOsem{\Gamma; \Phi
+%      \vdash A}}$).
+\end{itemize}
+\end{dfn}
+
+Definitions~\ref{def:set-sem} and~\ref{def:set-sem-funcs} respect
+weakening, i.e., ensure that a type and its weakenings have the same
+set interpretations.
+
+\subsection{Relational Interpretations of Types}\label{sec:rel-interp}
 
 
 
+
+\vspace*{1in}
+
+\hrule
+
+\vspace*{0.1in}
+
+\new{
 Some questions/issues:
 \begin{itemize}
 \item Can we write zipBush and appendBush with $\partial$ and $\int$?
@@ -448,11 +1106,6 @@ Some questions/issues:
   reflect how GADTs are used in practice, or are functions over GADTs
   usually folds? Investigate applications in the literature and/or in
   implementations.
-\item What kind of category can handle $\Lan$ types? Can $\omega$CPO?
-  This caregory is locally $\omega_1$-presentable (but not locally
-  finitely presentable); see 1.18(2) of~\cite{ar94}). The
-  $\omega_1$-presentable objects are the $\omega$CPOs cardinality
-  less than $\omega_1$, i.e., the countable $\omega$CPOs.
 \item $\omega$CPO is a natural choice for modeling general
   recursion. We know $(Lan^\gamma_C \onet)D$ is $C \to D$ for any
   closed type $C$. (Also for select classes of open types?) So can
@@ -469,6 +1122,7 @@ Some questions/issues:
   seen as functors, certain (which?) GADTs seen as functors? How big
   can GADTs get? 
 \end{itemize}
+}
 
 \bibliography{references}
 
