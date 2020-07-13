@@ -606,7 +606,7 @@ To accommodate GADTs, we will need to transition Reynolds' approach
 from a $\set$-based semantics to a semantics based on
 $\omega$-complete partial orders. We denote the category of
 $\omega$-complete partial orders ($\oCPO$s) and their sup-preserving
-morphisms by $\omega$CPO. The underlying set of an $\omega$-CPO $A$ is
+morphisms by $\omega$CPO. The underlying set of an $\oCPO$ $A$ is
 denoted $|A|$.  The category $\oCPOR$ of relations on $\omega$CPOs has
 as its objects triples $(A,B,R)$, where $A, B: \oCPO$ and $R:
 \rel(|A|, |B|)$, and has as its morphisms from $(A,B,R)$ to
@@ -775,7 +775,12 @@ we write $\Eq_\rho$ for the $\oCPOR$ environment (see
 Definition~\ref{def:reln-env}) such that $\Eq_\rho v = \Eq_{\rho v}$
 for every type variable $v$. The categories $\oCPORT_k$ and relational
 interpretations appearing in the third clause of
-Definition~\ref{def:set-sem} are given in full in Section~\ref{?}.
+Definition~\ref{def:set-sem} are given in full in
+Section~\ref{sec:iel}.
+
+{\color{red} Need to describe $\omega_1$-directed colimits in
+  $\oCPOenv$ for the type of $\oCPOsem{\cdot}$ to make sense. We do it
+  pointwise.}
 
 \begin{dfn}\label{def:set-sem}
 The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
@@ -863,29 +868,31 @@ natural transformation is clearly the supremum of $(\eta_i)_{i <
 \to G\}$ is itself an $\oCPO$.  Letting $F = \lambda \ol
 K. \setsem{\Gamma;\Phi \vdash F}\rho[\ol{\Phi := K}]$ and $G = \lambda
 \ol K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$, we have
-that $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}$ is a
-{\color{red} discrete?} functor.
-%  indeed an
-%  $\oCPO$, i.e., is a constantly-valued functor into $\oCPO$.
+that $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}\rho$ is indeed
+an $\oCPO$. \new{Does this use functorial actions of interps? I don't
+  think so, but double-check with Enrico.} {\color{red} That each of
+  the above interpretations is $\omega_1$-cocontinuous follows from
+  Corollary~12 of~\cite{jp19} if we APPROPRIATELY RESTRICT THE
+  SUBSCRIPTS OF $\Lan$s.  For $\Nat$-types, we note that
+  $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}$ is an
+  $\omega_1$-cocontinuous functor because it is constant on
+  $\omega_1$-directed sets.} Interpretations of $\Nat$-types ensure
+that $\oCPOsem{\Gamma \vdash F \to G}$ and $\oCPOsem{\Gamma \vdash
+  \forall \ol\alpha. F}$ are as expected in any parametric model.
 
-Interpretations of $\Nat$-types ensure that $\oCPOsem{\Gamma \vdash F
-  \to G}$ and $\oCPOsem{\Gamma \vdash \forall \ol\alpha. F}$ are as
-expected in any parametric model.
-
-To make sense of the last clause in Definition~\ref{def:set-sem}, we
-need to know that, for each $\rho \in \oCPOenv$, $T^\oCPO_{H,\rho}$ is
-an $\omega_1$-cocontinuous endofunctor on $[\oCPO^k,
-  \oCPO]_{\omega_1}$, and thus admits a fixpoint.  Since
-$T_{H,\rho}^\oCPO$ is defined in terms of
+To make sense of the next-to-last clause in
+Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
+\oCPOenv$, $T^\oCPO_{H,\rho}$ is an $\omega_1$-cocontinuous
+endofunctor on $[\oCPO^k, \oCPO]_{\omega_1}$, and thus admits a
+fixpoint.  Since $T_{H,\rho}^\oCPO$ is defined in terms of
 $\oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$, this means
 that interpretations of types must be such functors, which in turn
 means that the actions of set interpretations of types on objects and
 on morphisms in $\oCPOenv$ are intertwined. Fortunately, we know
-from~\cite{jp19} that, for every $\Gamma; \Phi \vdash G$,
-$\oCPOsem{\Gamma; \Phi \vdash G}$ is actually in
-$[\ol{[\oCPO^k,\oCPO]_{\omega_1}},\oCPO]_{\omega_1}$, or,
-equivalently, $[\oCPOenv,\oCPO]_{\omega_1}$.  Therefore, for each
-$\oCPOsem{\Gamma; \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the
+from~\cite{jp19} that, for every $\Gamma; \ol\alpha \vdash F$,
+$\oCPOsem{\Gamma; \Phi \vdash F}$ is actually in
+$[\oCPO^k,\oCPO]_{\omega_1}$, where $k = |\ol\alpha|$.  Therefore, for
+each $\oCPOsem{\Gamma; \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the
 corresponding operator $T^\oCPO_{H}$ can be extended to a {\em
   functor} from $\oCPOenv$ to
 $[[\oCPO^k,\oCPO]_{\omega_1},[\oCPO^k,\oCPO]_{\omega_1}]_{\omega_1}$.
@@ -902,6 +909,10 @@ whose component at $\ol A$ is $(T^\oCPO_{H,f}\, F)_{\ol A} =
 \oCPOsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
   \id_F][\ol{\alpha := \id_A}]$.
 
+%For the last clause in Definition~\ref{def:set-sem} to be well-defined
+%we need $\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]$
+%and $\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+%    \_}]$ to be $\omega_1$-cocontinuous functors.
 In addition, for each $\ol K$, we have that $\textit{Lan}_{\ol K}$ is
 itself a (higher-order) functor. Specifically, given functors $F, F' :
 \C \to \D$, a sequence of functors $\ol K = K_1, ..., K_n$ with $K_i :
@@ -924,7 +935,7 @@ to define the actions of functors interpreting types on morphisms
 between set environments.
 
 \begin{dfn}\label{def:set-sem-funcs}
-Let $f: \rho \to \rho'$ be a morphism between $\omega$-CPO environments $\rho$
+Let $f: \rho \to \rho'$ be a morphism between $\oCPO$ environments $\rho$
 and $\rho'$ (so that $\rho|_\tvars = \rho'|_\tvars$). The action
 $\oCPOsem{\Gamma;\Phi \vdash F}f$ of\, $\oCPOsem{\Gamma;\Phi \vdash F}$
 on the morphism $f$ is given as follows:
@@ -1067,7 +1078,7 @@ set interpretations.
 \begin{dfn}\label{def:rel-transf}
 A {\em $k$-ary $\oCPO$ relation transformer} $F$ is a triple $(F^1,
 F^2,F^*)$, where $F^1,F^2 : [\oCPO^k,\oCPO]_{\omega_1}$ and $F^* :
-[\oCPOR^k, \oCPOR]_{\omega_1}$ are such that
+[\oCPOR^k, \oCPOR]_{\omega_1}$ are such that if
 $R_1:\oCPOR(A_1,B_1),...,R_k:\oCPOR(A_k,B_k)$ then $F^* \ol{R} :
 \oCPOR(F^1 \ol{A}, F^2 \ol{B})$, and if $(\alpha_1, \beta_1) \in
 \HomoCPOR(R_1,S_1),..., (\alpha_k, \beta_k) \in \HomoCPOR(R_k,S_k)$
@@ -1182,7 +1193,7 @@ $[\oCPO^k,\oCPO]_{\omega_1}$, and $K^\oCPOR_0$ is initial in
 $[\oCPOR^k,\oCPOR]_{\omega_1}$, we have that, for each $k$, $K_0 =
 (K^\oCPO_0,K^\oCPO_0,K^\oCPOR_0)$ is initial in $\oCPORT_k$. Thus, if
 $T = (T^1,T^2,T^*) : \oCPORT_k \to \oCPORT_k$ is an endofunctor on
-$\oCPORT_k$ then we can define the $\omega$-CPO relation transformer
+$\oCPORT_k$ then we can define the $\oCPO$ relation transformer
 $\mu T$ to be $\colim{n \in \nat}{T^n K_0}$.
 It is not hard to see that $\mu T$ is given explicitly as 
 \begin{equation}\label{eq:mu}
@@ -1240,8 +1251,6 @@ environment, we write $\pi_1 \rho$ and $\pi_2 \rho$ for the $\oCPO$
 environments mapping each type variable $\phi$ to the functors
 $(\rho\phi)^1$ and $(\rho\phi)^2$, respectively.
 
-{\color{red} HERE!!!!!}
-
 We define, for each $k$, the notion of an $\omega_1$-cocontinuous
 functor from $\oCPORenv$ to $\oCPORT_k$:
 \begin{dfn}\label{def:relenv-functor}
@@ -1292,21 +1301,21 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
 \begin{align*}
   \oCPORsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \oCPORsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
-  \oCPORsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} \,F\,G}\rho &= \{\eta
-  : \lambda \ol{K}.\,\oCPORsem{\Gamma; \ol{\psi} \vdash
-    F}\rho[\ol{\psi := K}] \Rightarrow \lambda \ol{K}. \,\oCPORsem{
-    \Gamma; \ol{\psi} \vdash G}\rho[\ol{\psi := K}]\}\\
+  \oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho &= \{\eta
+  : \lambda \ol{K}.\,\oCPORsem{\Gamma; \Phi \vdash
+    F}\rho[\ol{\Phi := K}] \Rightarrow \lambda \ol{K}. \,\oCPORsem{
+    \Gamma; \Phi \vdash G}\rho[\ol{\phi := K}]\}\\
   &=
   \{(t,t') \in \oCPOsem{\Gamma; \emptyset
-    \vdash \Nat^{\ol{\psi}}
+    \vdash \Nat^\Phi
     \,F\,G} (\pi_1 \rho) \times \oCPOsem{ 
     \Gamma;\emptyset
-    \vdash \Nat^{\ol{\psi}} \,F\,G} (\pi_2
+    \vdash \Nat^\Phi \,F\,G} (\pi_2
   \rho)~|~\\ 
   & \hspace{0.3in} \forall \ol{K = (K^0, K^1, K^*) : \oCPORT_{k}}.\\
   & \hspace{0.4in} (t_{\ol{K^0}},t'_{\ol{K^1}}) \in
-  (\oCPORsem{\Gamma; \ol{\psi} \vdash G}\rho[\ol{\psi :=
-      K}])^{\oCPORsem{\Gamma;\ol{\psi}\vdash F}\rho[\ol{\psi := K}]} \}\\  
+  (\oCPORsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
+      K}])^{\oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
   \oCPORsem{\Gamma;\Phi \vdash \phi \ol{F}}\rho &=
   (\rho\phi)\ol{\oCPORsem{\Gamma;\Phi \vdash 
     F}\rho}\\
@@ -1336,95 +1345,102 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
     \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}
 \end{align*}
 \end{dfn}
-
 The interpretations in Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} below respect weakening, and also ensure
 that $\oCPORsem{\Gamma \vdash F \to G}$ and $\oCPORsem{\Gamma \vdash
   \forall \ol \alpha. F}$ are as expected in any parametric model.
-Observe that
-$\oCPORsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} F\,G} \rho$
-is an $\oCPO$ relation.
-%on $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} F\,G} (\pi_1 \rho)$
-%and $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} F\,G} (\pi_2 \rho)$.
-Indeed, its relation preserves sups of $\omega$-chains of natural transformations
-because the sups are computed pointwise:
-if $(t_d, t'_d) \colon \oCPORsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} F\,G} \rho$
-for all $d$ in an $\omega$-chain $\cal D$, then
-for all $\ol{K = (K^0, K^1, K^*) : \oCPORT_{k}}$
-we have that $(t_d)_{\ol{K^0}}$ and $(t'_d)_{\ol{K^1}}$
-are related for every $d : \cal D$ and they form $\omega$-chains in a $\oCPO$, and thus
+Observe that $\oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$
+is in $\oCPOR$. \new{Same comments here as above.} {\color{red} It is
+  indeed a relation between $\oCPO$s, and it preserves sups of
+  $\omega$-chains of natural transformations because their sups are
+  computed pointwise. Concretely, if $(t_i, t_i') \colon
+  \oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$ for all $i
+  < \omega$, then for all $\ol{K = (K^0, K^1, K^*) : \oCPORT_{k}}$ we
+  have that
+\[((t_i)_{\ol{K^0}},\, (t'_i)_{\ol{K^1}}) \in (\oCPORsem{\Gamma; \Phi
+  \vdash G}\rho[\ol{\Phi := K}])^{\oCPORsem{\Gamma;\Phi\vdash
+    F}\rho[\ol{\Phi := K}]}\] for every $i < \omega$. In addition,
+$((t_i)_{\ol{K^0}})_{i < \omega}$ is an $\omega$-chain in
+$(\oCPOsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
+    K^0}])^{\oCPOsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K^0}]}$ and
+$((t'_i)_{\ol{K^1}})_{i < \omega}$ is an $\omega$-chain in
+$(\oCPOsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
+    K^1}])^{\oCPOsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K^1}]}$, so
+their sups are not only well-defined but must also be related
+in
+$(\oCPORsem{\Gamma;
+    \Phi \vdash G}\rho[\ol{\Phi := K}])^{\oCPORsem{\Gamma;\Phi\vdash
+      F}\rho[\ol{\Phi := K}]}$. This gives that
 \[
-  \Big((\bigvee_d t_d)_{\ol{K^0}}, (\bigvee_d t'_d)_{\ol{K^1}} \Big)
-= \Big(\bigvee_d (t_d)_{\ol{K^0}}, \bigvee_d (t'_d)_{\ol{K^1}} \Big) \in
-  (\oCPORsem{\Gamma; \ol{\psi} \vdash G}\rho[\ol{\psi :=
-  K}])^{\oCPORsem{\Gamma;\ol{\psi}\vdash F}\rho[\ol{\psi := K}]}
+  \Big((\bigvee_{i < \omega} t_i)_{\ol{K^0}}, (\bigvee_{i < \omega}
+  t'_i)_{\ol{K^1}} \Big) = \Big(\bigvee_{i < \omega} (t_i)_{\ol{K^0}},
+  \bigvee_{i < \omega} (t'_i)_{\ol{K^1}} \Big) \in (\oCPORsem{\Gamma;
+    \Phi \vdash G}\rho[\ol{\Phi := K}])^{\oCPORsem{\Gamma;\Phi\vdash
+      F}\rho[\ol{\Phi := K}]}
 \]
-Moreover, as for $\oCPO$ interpretations,
-$\oCPORsem{\Gamma; \emptyset \vdash \Nat^{\ol\psi} F\,G}$
-is an $\oCPO$ relation
- is $\omega_1$-cocontinuous because it is a constant
-{\color{red} discrete?} functor.
-If $\rho \in \oCPORenv$
-and $\vdash F$, then we write $\oCPORsem{\vdash F}$ instead of
+Moreover, as for $\oCPO$ interpretations, $\omega_1$-cocontinuity of
+each of the above interpretations follows from Corollary~12
+of~\cite{jp19} if we APPROPRIATELY RESTRICT THE SUBSCRIPTS of the
+$\Lan$s. For $\Nat$-types, $\oCPORsem{\Gamma; \emptyset \vdash
+  \Nat^\Phi F\,G}$ is an $\omega_1$-cocontinuous functor because it is
+constant on $\omega_1$-directed sets.} If $\rho \in \oCPORenv$ and
+$\vdash F$, then we write $\oCPORsem{\vdash F}$ instead of
 $\oCPORsem{\vdash F}\rho$.  For the second-to-last clause in
 Definition~\ref{def:rel-sem} to be well-defined we need $T_{H,\rho}$
 to be an $\omega_1$-cocontinuous endofunctor on $\oCPORT$ so that, by
-Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_{H,\rho}$ is
+Lemma~\ref{lem:fp}, it admits a fixpoint.  Since $T_{H,\rho}$ is
 defined in terms of $\oCPORsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha}
   \vdash H}$, this means that relational interpretations of types must
-be $\omega_1$-cocontinuous functors from $\oCPORenv$ to $\oCPORT_0$, which in
-turn entails that the actions of relational interpretations of types
-on objects and on morphisms in $\oCPORenv$ are intertwined. 
-Moreover, for the ast clause in
-Definition~\ref{def:rel-sem} to be well-defined we need
-$\oCPORsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]$
-and
-$\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]$
-to be $\omega_1$-cocontinuous functors.
-As for $\oCPO$ interpretations,
-we know from~\cite{jp19} that, for every $\Gamma;
-\ol{\alpha} \vdash F$, $\oCPORsem{\Gamma; \ol{\alpha} \vdash F}$ is
-actually in $[\oCPOR^k,\oCPOR]_{\omega_1}$ where $k = |\ol \alpha|$.
-%In fact, we already know from~\cite{jp19} that, for every $\Gamma;
-%\ol{\alpha} \vdash \tau : \F$, $\relsem{\Gamma; \ol{\alpha} \vdash
-%  \tau}$ is actually functorial in $\ol{\alpha}$ and
-%$\omega$-cocontinuous.
-We first define the actions of each of these functors on morphisms
-between environments in Definition~\ref{def:rel-sem-funcs}, and then
-argue that the functors given by Definitions~\ref{def:rel-sem}
-and~\ref{def:rel-sem-funcs} are well-defined and have the required
-properties. To do this, we extend $T_H$ to a {\em functor} from
-$\oCPORenv$ to $[[\oCPOR^k,\oCPOR]_{\omega_1},[\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$.
-Its action on an object
+be $\omega_1$-cocontinuous functors from $\oCPORenv$ to $\oCPORT_0$,
+which in turn entails that the actions of relational interpretations
+of types on objects and on morphisms in $\oCPORenv$ are intertwined.
+%Moreover, for the last clause in Definition~\ref{def:rel-sem} to be
+%well-defined we need $\oCPORsem{\Gamma; \ol\alpha \vdash
+%  K}\rho[\ol{\alpha := \_}]$ and $\oCPORsem{\Gamma; \Phi, \ol\alpha
+%  \vdash F}\rho[\ol{\alpha := \_}]$ to be $\omega_1$-cocontinuous
+%functors.
+As for $\oCPO$ interpretations, we know from~\cite{jp19} that, for
+every $\Gamma; \ol\alpha \vdash F$, $\oCPORsem{\Gamma; \ol\alpha
+  \vdash F}$ is actually in $[\oCPOR^k,\oCPOR]_{\omega_1}$, where $k =
+|\ol\alpha|$. We first define the actions of each of these functors
+on morphisms between $\oCPO$ relation environments in
+Definition~\ref{def:rel-sem-funcs}, and then argue that the functors
+given by Definitions~\ref{def:rel-sem} and~\ref{def:rel-sem-funcs} are
+well-defined and have the required properties. To do this, we extend
+$T_H$ to a {\em functor} from $\oCPORenv$ to
+$[[\oCPOR^k,\oCPOR]_{\omega_1},
+  [\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$.  Its action on an object
 $\rho \in \oCPORenv$ is given by the higher-order functor $T_{H,\rho}$
 whose actions on objects and morphisms are given in
 Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
 \to \rho'$ is the higher-order natural transformation $T_{H,f} :
-T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\oCPOR^k,\oCPOR]_{\omega_1}$ is
-the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
-T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \oCPORsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash
-  H}f[\phi := \id_F][\ol{\alpha := \id_R}]$. The next definition uses
-$T_H$ to define the actions of functors interpreting types on
-morphisms between $\oCPO$ relation environments.
+T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F :
+[\oCPOR^k,\oCPOR]_{\omega_1}$ is the higher-order natural
+transformation $T_{H,f}\, F : T_{H,\rho}\, F \to T_{H,\rho'}\, F$
+whose component at $\ol{R}$ is $(T_{H,f}\, F)_{\ol{R}} =
+\oCPORsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_R}]$. The next definition uses $T_H$ to
+define the actions of functors interpreting types on morphisms between
+$\oCPO$ relation environments.
     
 \begin{dfn}\label{def:rel-sem-funcs}
-Let $f: \rho \to \rho'$ for $\oCPO$ relation environments $\rho$ and $\rho'$
-(so that $\rho|_\tvars = \rho'|_\tvars$). The action
-$\oCPORsem{\Gamma;\Phi \vdash F}f$ of $\oCPORsem{\Gamma;\Phi \vdash F}$ on
-the morphism $f$ is given exactly as in
+Let $f: \rho \to \rho'$ for $\oCPO$ relation environments $\rho$ and
+$\rho'$ (so that $\rho|_\tvars = \rho'|_\tvars$). The action
+$\oCPORsem{\Gamma;\Phi \vdash F}f$ of $\oCPORsem{\Gamma;\Phi \vdash
+  F}$ on the morphism $f$ is given exactly as in
 Definition~\ref{def:set-sem-funcs}, except that all interpretations
-are relational interpretations and all occurrences of $T^\oCPO_{H,f}$
-are replaced by $T_{H,f}$.
+are $\oCPO$ relational interpretations and all occurrences of
+$T^\oCPO_{H,f}$ are replaced by $T_{H,f}$.
 \end{dfn}
 
 To see that the functors given by Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} are well-defined we must show that, for
-every $H$, $T_{H,\rho}\,F$ is an $\oCPO$ relation transformer for any $\oCPO$ relation
-transformer $F$, and that $T_{H,f}\, F : T_{H,\rho}\, F \to
-T_{H,\rho'}\, F$ is a morphism of $\oCPO$ relation transformers for every
-$\oCPO$ relation transformer $F$ and every morphism $f : \rho \to \rho'$ in
-$\oCPORenv$. This is an immediate consequence of the following Lemma.
+every $H$, $T_{H,\rho}\,F$ is an $\oCPO$ relation transformer for any
+$\oCPO$ relation transformer $F$, and that $T_{H,f}\, F : T_{H,\rho}\,
+F \to T_{H,\rho'}\, F$ is a morphism of $\oCPO$ relation transformers
+for every $\oCPO$ relation transformer $F$ and every morphism $f :
+\rho \to \rho'$ in $\oCPORenv$. This is an immediate consequence of
+the following Lemma.
 
 \begin{lemma}\label{lem:rel-transf-morph}
 For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F} =
@@ -1434,22 +1450,11 @@ For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F} =
 \end{lemma}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
-%%each case of which first shows that $(\setsem{\Gamma;\Phi \vdash
-%  \tau}, \setsem{\Gamma;\Phi \vdash \tau},\relsem{\Gamma;\Phi \vdash
-%  \tau})$ is indeed a functor from $\relenv$ to $RT_0$, and then uses
 using an appropriate result from~\cite{jp19} to deduce
 $\omega_1$-cocontinuity of $\sem{\Gamma;\Phi \vdash F}$ in each case,
 together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} for
-$\mu$-types.
+$\mu$-types. {\color{red} Anything needed for $\Lan$ types??}
 
-%We need
-%$\relsem{\Gamma; \Phi, \phi \vdash \tau}\rho$ $=
-%\relsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-%    \psi]}\rho[\psi:=\rho\phi]$, and that $\relsem{\Gamma \vdash
-%  \sigma \to \tau}$ and
-%$\setsem{\Gamma; \Phi, \phi \vdash \tau}\rho$ $=
-%\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
-%    \psi]}\rho[\psi:=\rho\phi]$. 
 We can also prove by simultaneous induction that our interpretations
 of types interact well with demotion of functorial variables. Indeed,
 we have that, if $\rho, \rho' : \oCPOenv$, \,$f : \rho \to \rho'$,
@@ -1457,8 +1462,6 @@ we have that, if $\rho, \rho' : \oCPOenv$, \,$f : \rho \to \rho'$,
 \psi = \id_{\rho \phi}$,\, $\Gamma; \Phi, \phi^k \vdash F$,\,
 $\Gamma;\Phi,\ol{\alpha} \vdash G$,\, $\Gamma;\Phi,\alpha_1...\alpha_k
 \vdash H$, and $\ol{\Gamma;\Phi \vdash K}$, then
-%for any $\rho,\rho'$ and $f: \rho \to \rho'$ in
-%$\setenv$, 
 \begin{gather}
 \label{thm:demotion-objects}
 \oCPOsem{\Gamma; \Phi, \phi \vdash F} \rho = \oCPOsem{\Gamma, \psi; \Phi
@@ -1496,7 +1499,8 @@ $\Gamma;\Phi,\ol{\alpha} \vdash G$,\, $\Gamma;\Phi,\alpha_1...\alpha_k
     H}f[\overline{\alpha := \id_{\ol{A}}}]] 
 \end{gather}
 Identities analogous to (\ref{thm:demotion-objects}) through
-(\ref{eq:subs-const-morph}) hold for relational interpretations as well.
+(\ref{eq:subs-const-morph}) hold for $\oCPO$ relational
+interpretations as well.
   
 
 
