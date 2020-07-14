@@ -522,10 +522,10 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \\\\
 \AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
   F\;G[\ol{\beta := K}]$}
-\AXC{$\ol{\Gamma;\Phi \vdash A}$}
-\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol A $}
+\AXC{$\ol{\Gamma;\Phi \vdash B}$}
+\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol B $}
 \TIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
-  G[\ol{\beta := A}]$}
+ G[\ol{\beta := B}]$}
 \DisplayProof
 \end{array}\]
 \end{dfn}
@@ -586,7 +586,7 @@ each type $F(\alpha)$ with one free variable $\alpha$ both an {\em
 \rel(A,B)$ to relations $F_1 (R) : \rel(F_0 (A), F_0 (B))$, and to
 interpret each term $t(\alpha,x) : F(\alpha)$ with one free term
 variable $x : G(\alpha)$ as a map $t_0$ associating to each set $A$ a
-homomorphism $t_0(A) : G_0(A) \to F_0(A)$, and to each relation $R$ a
+function $t_0(A) : G_0(A) \to F_0(A)$, and to each relation $R$ a
 morphism $t_1(R) : G_1(R) \to F_1(R)$.  These interpretations are to
 be given inductively on the structures of $F$ and $t$ in such a way
 that they imply two fundamental theorems. The first is an
@@ -607,7 +607,7 @@ from a $\set$-based semantics to a semantics based on
 $\omega$-complete partial orders. We denote the category of
 $\omega$-complete partial orders ($\oCPO$s) and their sup-preserving
 morphisms by $\omega$CPO. The underlying set of an $\oCPO$ $A$ is
-denoted $|A|$.  The category $\oCPOR$ of relations on $\omega$CPOs has
+denoted $|A|$.  The category $\oCPOR$ of $\oCPO$ relations has
 as its objects triples $(A,B,R)$, where $A, B: \oCPO$ and $R:
 \rel(|A|, |B|)$ and $(\bigvee_{i < \omega} a_i, \bigvee_{i < \omega}
 b_i) \in R$ whenever $(a_i)_{i < \omega}$ and $(b_i)_{i < \omega}$ are
@@ -679,7 +679,7 @@ where $\mathcal D$ is an $\omega_1$-directed poset. A category $\mcC$
 is {\em $\omega_1$-cocomplete} if it has all $\omega_1$-directed
 colimits; a {\em cocomplete} category is one that has all colimits.
 
-If $\mcA$ and $\mcC$ are $\omega_1$-cocomplete, then the functor $F :
+If $\mcA$ and $\mcC$ are $\omega_1$-cocomplete, then a functor $F :
 \mcA \to \mcC$ is {\em $\omega_1$-cocontinuous} if it preserves
 $\omega_1$-directed colimits. We write $[\A,\C]_{\omega_1}$ for 
 the category of $\omega_1$-cocontinuous functors from $\A$ to $\C$,
@@ -687,13 +687,13 @@ and $\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
 Since (co)limits of functors are computed pointwise, $C^\A$ has all
 (co)limits that $\C$ has, and (co)limits of (co)continuous functors
 are again (co)continuous. It follows that $[\A,\C]_{\omega_1}$ is
-($\omega_1$1)(co)complete whenever $\C$ is.
+($\omega_1$-)(co)complete whenever $\C$ is.
 
 If $\mcA$ is locally small, then an object $A$ of $\mcA$ is {\em
   $\omega_1$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
 \mcA \to \Set$ preserves $\omega_1$-directed colimits, i.e., if for
 every $\omega_1$-directed poset $\mathcal D$ and every functor $F :
-{\mathcal D} \to \mcC$, there is a canonical isomorphism $\colim{d \in
+{\mathcal D} \to \A$, there is a canonical isomorphism $\colim{d \in
   \mcD}{\mathsf{Hom}_\mcA(A,Fd)} \simeq \mathsf{Hom}_{\mcA}(A,
 \colim{d \in \mcD}{Fd})$. A locally small category $\mcA$ is {\em
   $\omega_1$-accessible} if it is $\omega_1$-cocomplete and has a set
@@ -733,18 +733,18 @@ if $\mathcal{A}$ and $\mathcal{C}$ are locally $\omega_1$-presentable,
 then $[\mathcal{A}, \mathcal{C}]_{\omega_1}$ is naturally equivalent
 to $\mathcal{C}^{\mathcal{A}_0}$, and thus is
 $\omega_1$-presentable. Thus, for all $k_1,...,k_n \in \nat^n$,
-$[\mathcal{A}, \mathcal{C}]_{\omega_1}^{k_1} \times ... \times
-[\mathcal{A}, \mathcal{C}]_{\omega_1}^{k_n}$ is locally
-$\omega_1$-presentable, and therefore $[[\mathcal{A},
-    \mathcal{C}]_{\omega_1}^{k_1} \times ... \times [\mathcal{A},
-    \mathcal{C}]_{\omega_1}^{k_n}, \mathcal{C}]_{\omega_1}$ is as
+$[\mathcal{A}^{k_1}, \mathcal{C}]_{\omega_1} \times ... \times
+[\mathcal{A}^{k_n}, \mathcal{C}]_{\omega_1}$ is locally
+$\omega_1$-presentable, and therefore $[[\mathcal{A}^{k_1},
+    \mathcal{C}]_{\omega_1} \times ... \times [\mathcal{A}^{k_n},
+    \mathcal{C}]_{\omega_1}, \mathcal{C}]_{\omega_1}$ is as
 well. Taking both $\A$ and $C$ to be $\oCPO$ --- as we will to ensure
 that the fixpoints interpreting $\mu$-types in $\oCPO$ exist --- we
 have
 \begin{prop}\label{prop:nat-interps-sets}
   For all $k_1,...,k_n \in \nat^n$,
-  \[[[\oCPO, \oCPO]_{\omega_1}^{k_1}
-  \times ... \times [\oCPO, \oCPO]_{\omega_1}^{k_n},
+  \[[[\oCPO^{k_1}, \oCPO]_{\omega_1}
+  \times ... \times [\oCPO^{k_n}, \oCPO]_{\omega_1},
   \oCPO]_{\omega_1}\] is locally $\omega_1$-presentable.
 \end{prop}
 
@@ -775,14 +775,14 @@ type variable of arity $0$ to an $\omega_1$-cocontinuous functor from
 $\oCPO^0$ to $\oCPO$, i.e., to an $\oCPO$. If $\Phi =
 \{\phi_1^{k_1},...,\phi_n^{k_n}\}$ and $\ol K = \{K_1,...,K_n\}$ where
 $K_i : [\oCPO^{k_i},\oCPO]_{\omega_1}$ for $i = 1,...,n$, then we
-write $\rho[\ol{\Phi := K}]$ for the $\oCPO$ environment $\rho'$ such
-that $\rho' \phi_i = K_i$ for $i = 1,...,n$ and $\rho' \phi = \rho
-\phi$ if $\phi \not \in \Phi$.  If $\rho$ is an $\oCPO$ environment,
-we write $\Eq_\rho$ for the $\oCPOR$ environment (see
-Definition~\ref{def:reln-env}) such that $\Eq_\rho v = \Eq_{\rho v}$
-for every type variable $v$. The categories $\oCPORT_k$ and relational
-interpretations appearing in the third clause of
-Definition~\ref{def:set-sem} are given in full in
+write either $\rho[\ol{\Phi := K}]$ or $\rho[\ol{\phi := K}]$ for the
+$\oCPO$ environment $\rho'$ such that $\rho' \phi_i = K_i$ for $i =
+1,...,n$ and $\rho' \phi = \rho \phi$ if $\phi \not \in \Phi$.  If
+$\rho$ is an $\oCPO$ environment, we write $\Eq_\rho$ for the $\oCPOR$
+environment (see Definition~\ref{def:reln-env}) such that $\Eq_\rho v
+= \Eq_{\rho v}$ for every type variable $v$. The categories
+$\oCPORT_k$ and relational interpretations appearing in the third
+clause of Definition~\ref{def:set-sem} are given in full in
 Section~\ref{sec:rel-interp}. We note that $\omega_1$-directed
 colimits in $\oCPOenv$ are taken pointwise.
 
@@ -799,8 +799,8 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
     F}\rho[\ol{\Phi := K}] 
       \Rightarrow \lambda \ol{K}.\,\oCPOsem{\Gamma; 
         \Phi \vdash G}\rho[\ol{\Phi := K}] \\ 
-      &\hspace{0.3in}|~\forall \ol{K = (K_0, K_1, K^*) : \oCPORT_k}.\\
-      &\hspace{0.4in}(\eta_{\overline{K_0}}, \eta_{\overline{K_1}})
+      &\hspace{0.3in}|~\forall \ol{K = (K^1, K^2, K^*) : \oCPORT_k}.\\
+      &\hspace{0.4in}(\eta_{\overline{K^1}}, \eta_{\overline{K^2}})
       : \oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi := K}]
       \rightarrow \oCPORsem{\Gamma; \Phi \vdash
         G}\Eq_{\rho}[\ol{\Phi := K}] \} \\
@@ -928,7 +928,7 @@ In addition, for each $\ol K$, we have that $\textit{Lan}_{\ol K}$ is
 itself a (higher-order) functor. Specifically, given functors $F, F' :
 \C \to \D$, a sequence of functors $\ol K = K_1, ..., K_n$ with $K_i :
 \C \to \C_i$ for $i = 1,...,n$, and a natural transformation $\alpha :
-F \to G$, the functorial action $\textit{Lan}_{\ol K} \alpha :
+F \to F'$, the functorial action $\textit{Lan}_{\ol K} \alpha :
 \textit{Lan}_{\ol K} F \to \textit{Lan}_{\ol K} F'$ of
 $\mathit{Lan}_{\ol K}$ on $\alpha$ is defined to be the unique natural
 transformation such that $((\textit{Lan}_{\ol K} \alpha) \,\circ
@@ -1257,13 +1257,16 @@ $\oCPORenv$.
 When convenient we identify a $0$-ary $\oCPO$ relation transformer
 with the $\oCPO$ relation (transformer) that is its codomain and
 consider an $\oCPO$ relation environment to map a type variable of
-arity $0$ to an $\oCPO$ relation.  We write $\rho[\ol{\alpha := R}]$
-for the $\oCPO$ relation environment $\rho'$ such that $\rho' \alpha_i
-\, = R_i$ for $i = 1,...,k$ and $\rho' \alpha = \rho\alpha$ if $\alpha
-\not \in \{\alpha_1,...,\alpha_k\}$.  If $\rho$ is an $\oCPO$ relation
-environment, we write $\pi_1 \rho$ and $\pi_2 \rho$ for the $\oCPO$
-environments mapping each type variable $\phi$ to the functors
-$(\rho\phi)^1$ and $(\rho\phi)^2$, respectively.
+arity $0$ to an $\oCPO$ relation. If $\Phi =
+\{\phi_1^{k_1},...,\phi_n^{k_n}\}$ and $\ol K = \{K_1,...,K_n\}$ where
+$K_i : [\oCPOR^{k_i},\oCPOR]_{\omega_1}$ for $i = 1,...,n$, then we
+write either $\rho[\ol{\Phi := K}]$ or $\rho[\ol{\phi := K}]$ for the
+$\oCPO$ relation environment $\rho'$ such that $\rho' \phi_i = K_i$
+for $i = 1,...,n$ and $\rho' \phi = \rho \phi$ if $\phi \not \in
+\Phi$. If $\rho$ is an $\oCPO$ relation environment, we write $\pi_1
+\rho$ and $\pi_2 \rho$ for the $\oCPO$ relation environments mapping
+each type variable $\phi$ to the functors $(\rho\phi)^1$ and
+$(\rho\phi)^2$, respectively.
 
 We define, for each $k$, the notion of an $\omega_1$-cocontinuous
 functor from $\oCPORenv$ to $\oCPORT_k$:
@@ -1276,9 +1279,9 @@ A functor $H : [\oCPORenv, \oCPORT_k]_{\omega_1}$ is a triple $H =
 \item $H^*$ is a an object in
   $[\oCPORenv,[\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$
 \item for all $\overline{R : \oCPOR(A,B)}$ and morphisms $f$ in
-  $\oCPORenv$, $\pi_1(H^*f \,{\overline{R}}) = H^1 (\pi_1
-  f)\,{\overline{A}}$ and $\pi_2(H^*f \,{\overline{R}}) = H^2 (\pi_2
-  f)\,{\overline{B}}$
+  $\oCPORenv$, $\pi_1((H^*f)_{\overline{R}}) = (H^1 (\pi_1
+  f))_{\overline{A}}$ and $\pi_2((H^*f)_{\overline{R}}) = (H^2 (\pi_2
+  f))_{\overline{B}}$
 \item The action of $H$ on $\rho$ in $\oCPORenv$ is given by $H \rho = (H^1
   (\pi_1 \rho),\,H^2 (\pi_2 \rho),\,H^*\rho)$
 \item The action of $H$ on morphisms $f : \rho \to \rho'$ in $\oCPORenv$
@@ -1294,8 +1297,8 @@ if $(\alpha_1, \beta_1) \in \HomoCPOR(R_1,S_1),..., (\alpha_k,
 \beta_k) \in \HomoCPOR(R_k,S_k)$, then $H^*\rho\, \ol{(\alpha, \beta)}
 = (H^1(\pi_1 \rho)\,\ol{\alpha}, H^2(\pi_2 \rho)\, \ol{\beta})$; and
 {\em iii}) if $f : \rho \to \rho'$ and
-$R_1:\oCPOR(A_1,B_1),...,R_k:\oCPOR(A_k,B_k)$, then $(H^1(\pi_1
-f)\,{\ol{A}}\,x, H^2(\pi_2 f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$
+$R_1:\oCPOR(A_1,B_1),...,R_k:\oCPOR(A_k,B_k)$, then $((H^1(\pi_1
+f))_{\ol{A}}\,x, (H^2(\pi_2 f))_{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$
 whenever $(x, y) \in H^*\rho\,\ol{R}$. As before, the last condition
 is automatically satisfied because it is implied by the third bullet
 point of Definition~\ref{def:relenv-functor}.
@@ -1326,8 +1329,8 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
     \Gamma;\emptyset
     \vdash \Nat^\Phi \,F\,G} (\pi_2
   \rho)~|~\\ 
-  & \hspace{0.3in} \forall \ol{K = (K^0, K^1, K^*) : \oCPORT_{k}}.\\
-  & \hspace{0.4in} (t_{\ol{K^0}},t'_{\ol{K^1}}) \in
+  & \hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : \oCPORT_{k}}.\\
+  & \hspace{0.4in} (t_{\ol{K^1}},t'_{\ol{K^2}}) \in
   (\oCPORsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
       K}])^{\oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
   \oCPORsem{\Gamma;\Phi \vdash \phi \ol{F}}\rho &=
@@ -1449,7 +1452,7 @@ $[[\oCPOR^k,\oCPOR]_{\omega_1},
   [\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$.  Its action on an object
 $\rho \in \oCPORenv$ is given by the higher-order functor $T_{H,\rho}$
 whose actions on objects and morphisms are given in
-Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
+Definition~\ref{def:rel-sem}. Its action on a morphism $f : \rho
 \to \rho'$ is the higher-order natural transformation $T_{H,f} :
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F :
 [\oCPOR^k,\oCPOR]_{\omega_1}$ is the higher-order natural
