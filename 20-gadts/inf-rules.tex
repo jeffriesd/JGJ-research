@@ -215,6 +215,12 @@ Abstract goes here
   that? It seems we really use properties of $\oCPO$ to get that
   interpretations of $\Nat$-types are well-defined.}
 
+\new{Locally presentable categories are the closest approximation to
+  small complete categories. It's remarkable that local presentability
+  is sufficient not just to give semantics to GADTs, but is also all
+  that is needed to ensure that the model induced by that semantics is
+  actually parametric.}
+
 \section{The Calculus}
 
 \subsection{Types}\label{sec:types}
@@ -681,13 +687,18 @@ colimits; a {\em cocomplete} category is one that has all colimits.
 
 If $\mcA$ and $\mcC$ are $\omega_1$-cocomplete, then a functor $F :
 \mcA \to \mcC$ is {\em $\omega_1$-cocontinuous} if it preserves
-$\omega_1$-directed colimits. We write $[\A,\C]_{\omega_1}$ for 
-the category of $\omega_1$-cocontinuous functors from $\A$ to $\C$,
-and $\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
+$\omega_1$-directed colimits. We write $[\A,\C]_{\omega_1}$ for the
+category of $\omega_1$-cocontinuous functors from $\A$ to $\C$, and
+$\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
 Since (co)limits of functors are computed pointwise, $C^\A$ has all
 (co)limits that $\C$ has, and (co)limits of (co)continuous functors
-are again (co)continuous. It follows that $[\A,\C]_{\omega_1}$ is
-($\omega_1$-)(co)complete whenever $\C$ is.
+are again (co)continuous. It follows that $[\A,\C]_{(\omega_1)}$ is
+($\omega_1$-)(co)complete whenever $\C$ is.  {\color{red} In
+  particular, if $F : [\C, \C]_{(\omega_1)}$ for a(n)
+  ($\omega_1$-)cocomplete category $\C$, then we can define $F^0 =
+  \Id$, $F^{\alpha + 1} = F \circ F^\alpha$ at successor ordinals, and
+  $F^{\bigcup_{\beta < \alpha} \beta} = \colim{\beta < \alpha}
+  F^\beta$ at limit ordinals.}
 
 If $\mcA$ is locally small, then an object $A$ of $\mcA$ is {\em
   $\omega_1$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
@@ -1207,12 +1218,12 @@ $[\oCPO^k,\oCPO]_{\omega_1}$, and $K^\oCPOR_0$ is initial in
 $[\oCPOR^k,\oCPOR]_{\omega_1}$, we have that, for each $k$, $K_0 =
 (K^\oCPO_0,K^\oCPO_0,K^\oCPOR_0)$ is initial in $\oCPORT_k$. Thus, if
 $T = (T^1,T^2,T^*) : \oCPORT_k \to \oCPORT_k$ is an endofunctor on
-$\oCPORT_k$ then we can define the $\oCPO$ relation transformer
-$\mu T$ to be $\colim{n < \omega_1}{T^n K_0}$.
-It is not hard to see that $\mu T$ is given explicitly as 
+$\oCPORT_k$ then we can define the $\oCPO$ relation transformer $\mu
+T$ to be $\colim{i < \omega_1}{T^i K_0}$. It is not hard to see that
+$\mu T$ is given explicitly as
 \begin{equation}\label{eq:mu}
   \mu T = (\mu T^1,\mu T^2,
-\colim{n < \omega_1}{(T^nK_0)^*})
+\colim{i < \omega_1}{(T^iK_0)^*})
 \end{equation}
 and that, as our notation suggests, it really is a fixpoint for $T$ if
 $T$ is $\omega_1$-cocontinuous:
@@ -1548,7 +1559,393 @@ Identities analogous to (\ref{thm:demotion-objects}) through
 (\ref{eq:subs-const-morph}) hold for $\oCPO$ relational
 interpretations as well.
   
+\section{The Identity Extension Lemma}\label{sec:iel}
 
+The standard definition of the graph for a morphism $f : A \to B$ in
+$\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
+\graph{f}$ iff $fx = y$. This definition naturally generalizes to
+associate to each natural transformation between $k$-ary functors on
+$\oCPO$ a $k$-ary $\oCPO$ relation transformer as follows.
+
+First, let $f : A \to B$ be a morphism in $\oCPO$. Then the graph of
+the underlying function $|f| : |A| \to |B|$ in $\set$ is an $\oCPO$
+relation.  Indeed, if $(a_i, b_i) : \graph{|f|}$ for all $i < \omega$
+is a chain, then $|f| a_i = b_i$ for all $i$, and consequently
+$|f|(\bigvee_{i < \omega} a_i) = \bigvee_{i < \omega} (|f| a_i) =
+\bigvee_{i < \omega} b_i$, i.e., $(\bigvee_{i < \omega} a_i,
+\bigvee_{i < \omega} b_i) : \graph{|f|}$. We therefore define the {\em
+  $\oCPO$ graph of $f$} in $\oCPO$ to be $\graph{f} =
+\graph{|f|}$. Note in particular that if $A : \oCPO$ then
+$\graph{\id_A}$ is an $\oCPO$ relation. We denote this $\oCPO$
+relation, called the {\em equality relation on $A$}, by $\Eq_A$. It
+coincides exactly with the equality relation on the underlying set
+$|A|$ of $A$.
+
+The notion of an $\oCPO$ graph relation naturally generalizes to
+associate to each natural transformation between $k$-ary functors on
+$\oCPO$ a $k$-ary $\oCPO$ relation transformer as follows. Recall
+that, since $\oCPO$ is a locally $\omega_1$-presentable category,
+Proposition 1.6.1 of~\cite{ar94} ensures that it has a (strong epi,
+mono) factorization system. We then have:
+
+\begin{dfn}\label{dfn:graph-nat-transf}
+If $F, G: \oCPO^k \to \oCPO$ and $\alpha : F \to G$ is a natural
+transformation, then the functor $\graph{\alpha}^*: \oCPOR^k \to
+\oCPOR$ is defined as follows. Given $R_1 : \oCPOR(A_1, B_1),...,R_k :
+\oCPOR(A_k,B_k)$, let $\iota_{R_i} : R_i \hookrightarrow A_i \times
+B_i$, for $i = 1,...,k$, be the inclusion of $R_i$ as a
+sub$\oCPO$ of $A_i \times B_i$, let $h_{\overline{A \times B}}$
+be the unique morphism making the diagram
+{\footnotesize\[\begin{tikzcd}[row sep = large] F\overline{A}
+  &F(\overline{A \times B}) \ar[l, "{F\overline{\pi_1}}"'] \ar[r,
+    "{F\overline{\pi_2}}"] \ar[d, dashed, "{h_{\overline{A \times
+          B}}}"] &F\overline{B} \ar[r, "{\alpha_{\ol{B}}}"]
+  &G\overline{B} \\ &F\overline{A} \times G\overline{B} \ar[ul,
+    "{\pi_1}"] \ar[urr, "{\pi_2}"']
+\end{tikzcd}\]}
+\noindent
+\!\!commute, and let $h_{\overline{R}} : F\overline{R} \to
+F\overline{A} \times G\overline{B}$ be $h_{\overline{A \times B}}
+\circ F\overline{\iota_R}$. Further, let $\alpha^\wedge\overline{R}$
+be the
+%If $f = e \circ m = e' \circ m'$ then $cod e = dom m$ is the same as
+%$cod e' = dom m'$ up to isomorphism. This follows easily from the
+%definition of a factorization system.
+subobject through which $h_{\overline{R}}$ is factorized by the
+(strong epi, mono) factorization system of $\oCPO$, as shown in the
+following diagram: {\footnotesize\[\begin{tikzcd} F\overline{R}
+  \ar[rr, "{h_{\overline{R}}}"] \ar[dr, twoheadrightarrow,
+    "{q_{\alpha^\wedge\overline{R}}}"'] &&F\overline{A} \times
+  G\overline{B} \\ &\alpha^\wedge\overline{R} \ar[ur, hookrightarrow,
+    "{\iota_{\alpha^\wedge\overline{R}}}"']
+\end{tikzcd}\]}
+
+\noindent
+Then $\alpha^\wedge\overline{R} : \oCPOR(F\overline{A},
+G\overline{B})$ by construction, so the action of $\graph{\alpha}^*$
+on objects of $\oCPOR$ can be given by $\langle \alpha \rangle^*
+\overline{(A,B,R)} = (F\overline{A}, G\overline{B},
+\iota_{\alpha^\wedge \overline{R}}\alpha^\wedge\overline{R})$. The
+action of $\graph{\alpha}^*$ on morphisms of $\oCPOR$ is given by
+$\graph{\alpha}^*\overline{(\beta, \beta')} = (F\overline\beta,
+G\overline\beta')$.
+\end{dfn}
+
+The next lemma shows that the data in
+Definition~\ref{dfn:graph-nat-transf} actually yield a relation
+transformer $\graph{\alpha} = (F, G, \graph{\alpha}^*)$. We call this
+the {\em $\oCPO$ graph relation transformer} for $\alpha$.
+
+\begin{lemma}\label{lem:graph-reln-functors}
+If $F,G : [\oCPO^k,\oCPO]_{\omega_1}$, and if $\alpha : F \to G$ is a natural
+transformation, then $\graph{\alpha}$ is in $\oCPORT_k$.
+\end{lemma}
+\begin{proof}
+Clearly, $\graph{\alpha}^*$ is $\omega_1$-cocontinuous, so
+$\graph{\alpha}^* : [\oCPOR^k,\oCPOR]_{\omega_1}$. Now, suppose
+$\overline{R : \oCPOR(A, B)}$, $\overline{S : \oCPOR(C, D)}$, and
+$\overline{(\beta, \beta') : R \to S}$. We want to show that there
+exists a morphism $\epsilon : \alpha^\wedge\overline{R} \to
+\alpha^\wedge\overline{S}$ such that the diagram on the left below
+commutes. Since $\ol{(\beta,\beta') : R \to S}$, there exist
+$\overline{\gamma : R \to S}$ such that each diagram in the middle
+commutes.  Moreover, since both $h_{\overline{C \times D}} \circ
+F(\overline{\beta \times \beta'})$ and $(F\overline{\beta} \times
+G\overline{\beta'}) \circ h_{\overline{A \times B}}$ make the diagram
+on the right commute, they must be equal.
+\begin{figure*}[ht]
+\vspace*{-0.1in}
+  \hspace*{-0.85in}
+  \begin{minipage}[b]{0.25\linewidth}
+ {\small    \[
+    \begin{tikzcd}
+        \alpha^\wedge\overline{R}
+        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+        \ar[d, "{\epsilon}"']
+        & F\overline{A} \times G\overline{B}
+        \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+        \alpha^\wedge\overline{S}
+        \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+        & F\overline{C} \times G\overline{D}
+    \end{tikzcd}
+    \]}
+\end{minipage}
+\begin{minipage}[b]{0.25\linewidth}
+{\small    \[
+    \begin{tikzcd}
+        R_i
+        \ar[d, "{\gamma_i}"']
+        \ar[r, hookrightarrow, "{\iota_{R_i}}"]
+        &A_i \times B_i
+        \ar[d, "{\beta_i \times \beta'_i}"] \\
+        S_i
+        \ar[r, hookrightarrow, "{\iota_{S_i}}"]
+        &C_i \times D_i
+    \end{tikzcd}
+    \]}
+\end{minipage}
+\begin{minipage}[b]{0.25\linewidth}
+{\footnotesize \[
+      \begin{tikzcd}[row sep = large]
+          F\overline{C}
+          &F\overline{C} \times F\overline{D}
+          \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+          &F\overline{D}
+          \ar[r, "{\alpha_{\ol{D}}}"]
+          &G\overline{D}\\
+          &F(\overline{A \times B})
+          \ar[u, dashed, "{\exists !}"]
+          \ar[ul, "{F\ol{\pi_1} \circ F(\overline{\beta \times \beta'})}"]
+          \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
+      \end{tikzcd}
+      \]}
+\end{minipage}
+\end{figure*}
+We therefore get that the right-hand square in the diagram on the left
+below commutes, and thus that the entire diagram does as well.
+Finally, by the left-lifting property of
+$q_{\alpha^\wedge\overline{R}}$ with respect to
+$\iota_{\alpha^\wedge\overline{S}}$ given by the (strong epi, mono)
+factorization system there exists an $\epsilon$ such that the diagram
+on the right below commutes.
+\[
+      \begin{tikzcd}
+          F\overline{R}
+          \ar[d, "{F\overline{\gamma}}"']
+          \ar[r, hookrightarrow, "{F\overline{\iota_R}}"]
+          \ar[rr, bend left, "{h_{\overline{R}}}"]
+          &F(\overline{A \times B})
+          \ar[d, "{F(\overline{\beta \times \beta'})}"]
+          \ar[r, "{h_{\overline{A \times B}}}"]
+          &F\overline{A} \times G\overline{B}
+          \ar[d, "{F\overline{\beta} \times F\overline{\beta'}}"] \\
+          F\overline{S}
+          \ar[r, hookrightarrow, "{F\overline{\iota_S}}"']
+          \ar[rr, bend right, "{h_{\overline{S}}}"']
+          &F(\overline{C \times D})
+          \ar[r, "{h_{\overline{C \times D}}}"']
+          &F\overline{C} \times G\overline{D}
+      \end{tikzcd}
+\qquad
+      \begin{tikzcd}
+          F\overline{R}
+          \ar[d, "{F\overline{\gamma}}"']
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{R}}}"]
+          &\alpha^\wedge\overline{R}
+          \ar[d, dashed, "{\epsilon}"]
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{R}}}"]
+          &F\overline{A} \times G\overline{B}
+          \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
+          F\overline{S}
+          \ar[r, twoheadrightarrow, "{q_{\alpha^\wedge\overline{S}}}"']
+          &\alpha^\wedge\overline{S}
+          \ar[r, hookrightarrow, "{\iota_{\alpha^\wedge\overline{S}}}"']
+          &F\overline{C} \times G\overline{D}
+      \end{tikzcd}
+\]
+\end{proof}
+
+If $f : A \to B$ is a morphism in $\oCPO$ then the definition of the
+$\oCPO$ graph relation transformer $\graph{f}$ for $f$ as a natural
+transformation between $0$-ary functors $A$ and $B$ coincides with the
+definition of $\graph{f}$ for $f$ as a morphism in $\oCPO$ given in
+the second paragraph of this section.  As a result, $\oCPO$ graph
+relation transformers are a reasonable extension of $\oCPO$ graph
+relations to functors.
+
+To prove the IEL, we will need to know that the equality $\oCPO$
+relation transformer preserves equality relations in $\oCPOR$; see
+Equation~\ref{eq:eq-pres-eq} below. This will follow from the next
+lemma, which shows how to compute the action of an $\oCPO$ graph
+relation transformer on any $\oCPO$ graph relation.
+
+\begin{lemma}\label{lem:eq-reln-equalities}
+If $\alpha : F \to G$ is a morphism in $[\oCPO^k, \oCPO]_{\omega_1}$
+and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$, then $\graph{\alpha}^*
+\graph{\overline{f}} = \graph{G \ol{f} \circ \alpha_{\ol{A}}} =
+\graph{\alpha_{\ol{B}} \circ F \ol{f}}$.
+\end{lemma}
+\begin{proof}
+Since $h_{\overline{A \times B}}$ is the unique morphism making the
+bottom triangle of the diagram on the left below commute, and since
+$h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F
+\,\ol{\iota_{\graph{f}}} = h_{\overline{A \times B}} \circ F
+\overline{\graph{\id_A, f}}$, the universal property of the
+product depicted in the diagram on the right gives
+$h_{\graph{\overline{f}}} = \graph{\id_{F \ol{A}}, \alpha_{\ol{B}}
+\circ F\ol{f}} : F \ol{A} \to F \ol{A} \times G \ol{B}$.
+\begin{figure*}[ht]
+  \vspace*{-0.15in}
+  \begin{minipage}[b]{0.45\linewidth}
+{\footnotesize
+\[\begin{tikzcd}[row sep = large]
+        &F\overline{A}
+        \ar[d, "{F \overline{\graph{\id_A, f}}}" description]
+        \ar[dl, equal]
+        \ar[dr, "{F\ol{f}}"]\\
+        F\overline{A}
+        &F(\overline{A \times B})
+        \ar[l, "{F\overline{\pi_1}}"']
+        \ar[r, "{F\overline{\pi_2}}"]
+        \ar[d, "{h_{\overline{A \times B}}}"]
+        &F\overline{B}
+        \ar[r, "{\alpha_{\ol{B}}}"]
+        &G\overline{B}\\
+        &F\overline{A} \times G\overline{B}
+        \ar[ul, "{\pi_1}"] \ar[urr, "{\pi_2}"']
+\end{tikzcd}\]}
+\end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+{\footnotesize
+\[
+      \begin{tikzcd}[row sep = large]
+          F\overline{A}
+          &F\overline{A} \times G\overline{B}
+          \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
+          &G\overline{B}\\
+          &F\overline{A}
+          \ar[u, dashed, "{\exists !}"]
+          \ar[ul, equal]
+          \ar[r, "{F\ol{f}}"']
+          &F{\ol{B}}
+          \ar[u, "{\alpha_{\ol{B}}}"']
+      \end{tikzcd}
+      \]}
+\end{minipage}
+\end{figure*}
+
+\vspace*{-0.1in}
+
+\noindent
+Moreover, $\graph{\id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f}}$ is a
+monomorphism in $\oCPO$ because $\id_{F \ol{A}}$ is, so its (strong
+epi, mono) factorization gives $\iota_{\alpha^\wedge
+  \graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}}
+\circ F\ol{f} \rangle$, and thus that $\alpha^\wedge
+\graph{\overline{f}} = F\overline{A}$.
+%If $e \circ m = e \circ m'$ then $m = m'$ is trivial from the
+%definition of a factorization system.
+Then $\iota_{\alpha^\wedge \graph{\overline{f}}} \alpha^\wedge
+\graph{\overline{f}} = \graph{\id_{F \ol{A}}, \alpha_{\ol{B}} \circ
+  F\ol{f}} (F \ol{A}) = \graph{ \alpha_{\ol{B}} \circ F\ol{f}
+}^*$. Then $\graph{ \alpha }^* \graph{ \overline{f} } =
+(F\overline{A}, G\overline{B}, \iota_{\alpha^\wedge
+  \graph{\overline{f}}}\, \alpha^\wedge \graph{\overline{f}}) =
+(F\overline{A}, G\overline{B}, \graph{ \alpha_{\ol{B}} \circ F\ol{f}
+}^*) = \graph{ \alpha_{\ol{B}} \circ F\ol{f} }$, and, finally,
+$\alpha_{\ol{B}} \circ F\ol{f} = G\ol{f} \circ \alpha_{\ol{A}}$ by
+naturality of $\alpha$.
+\end{proof}
+
+The {\em equality $\oCPO$ relation transformer} on $F :
+[\oCPO^k,\oCPO]_{\omega_1}$ is defined to be $\Eq_F =
+\graph{\id_{F}}$. Specifically, $\Eq_F = (F, F, \Eq_F^*)$ with
+$\Eq_F^* = \graph{\id_{F}}^*$, and Lemma~\ref{lem:eq-reln-equalities}
+indeed ensures that
+\begin{equation}\label{eq:eq-pres-eq}
+\Eq^*_F \ol{\Eq_A}
+= \graph{\id_F}^* \graph{\id_{\ol{A}}}
+= \graph{F \id_{\ol{A}} \circ (\id_F)_{\ol{A}}}
+= \graph{\id_{F\ol{A}} \circ \id_{F\ol{A}}}
+= \graph{\id_{F\ol{A}}}
+= \Eq_{F\ol{A}}
+\end{equation}
+for all $\ol{A : \oCPO}$.  Graph $\oCPO$ relation transformers in
+general, and equality $\oCPO$ relation transformers in particular,
+extend to $\oCPO$ relation environments in the obvious ways.  Indeed,
+if $\rho, \rho' : \oCPOenv$ and $f : \rho \to \rho'$, then the {\em
+  graph $\oCPO$ relation environment} $\graph{f}$ is defined pointwise
+by $\graph{f} \phi = \graph{f \phi}$ for every $\phi$, which entails
+that $\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$. In
+particular, the {\em equality $\oCPO$ relation environment} $\Eq_\rho$
+is defined to be $\graph{\id_{\rho}}$, which entails that $\Eq_\rho
+\phi = \Eq_{\rho \phi}$ for every $\phi$.  With these definitions in
+hand, we can state and prove both an Identity Extension Lemma and a
+Graph Lemma for our calculus.
+
+\begin{thm}[IEL]\label{thm:iel}
+  If $\rho : \oCPOenv$ and $\Gamma; \Phi \vdash F$ then
+  $\oCPORsem{\Gamma; \Phi \vdash F} \Eq_\rho = \Eq_{\oCPOsem{\Gamma;
+      \Phi \vdash F}\rho}$.
+\end{thm}
+The proof is by induction on the structure of $F$. Only the $\Nat$,
+application, and fixpoint cases are non-routine. The latter two use
+Lemma~\ref{lem:eq-reln-equalities}. The fixpoint case also uses the
+observation that, for every $i < \omega_1$, the following intermediate
+results can be proved by simultaneous induction with
+Theorem~\ref{thm:iel}: for any $H$, $\rho$, $A$, and any subformula
+$J$ of $H$, both
+$T^i_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A}
+= (\Eq_{(T^\set_{H,\rho})^i K_0})^*
+\ol{\Eq_A}$\;
+and\;
+\[\begin{array}{ll}
+&  \oCPORsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
+  := T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\
+=  &
+\oCPORsem{\Gamma; \Phi, \phi,
+  \ol{\alpha} \vdash J} \Eq_{\rho} [\phi := \Eq_{(T^\oCPO_{H,\rho})^i K_0}]
+\overline{[\alpha := \Eq_A]}
+\end{array}\]
+hold. With these results in hand, the proof follows easily. It is
+given in detail in the accompanying anonymous supplementary
+material. As noted there, if functorial variables of arity greater
+than $0$ were allowed to appear in the bodies of $\mu$-types, then the
+IEL would fail.
+
+\begin{lemma}[Graph Lemma]\label{lem:graph}
+If $\rho, \rho' : \oCPOenv$, $f : \rho \to \rho'$, and $\Gamma; \Phi
+\vdash F$, then $\graph{\oCPOsem{\Gamma; \Phi \vdash F} f} =
+\oCPORsem{\Gamma; \Phi \vdash F}\graph{f}$.
+\end{lemma}
+\begin{proof}
+Applying Lemma~\ref{lem:rel-transf-morph} to the morphisms $(f,
+\id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$ and $(\id_{\rho}, f) :
+\Eq_{\rho} \to \graph{f}$ of relation environments gives that
+\begin{multline*}
+(\oCPOsem{\Gamma; \Phi \vdash F}f, \oCPOsem{\Gamma; \Phi \vdash F}\id_{\rho'})
+  = \oCPORsem{\Gamma; \Phi \vdash F} (f, \id_{\rho'}) \\
+:\oCPORsem{\Gamma; \Phi \vdash F}\graph{f} \to 
+  \oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho'}
+\end{multline*}
+and
+\begin{multline*}
+(\oCPOsem{\Gamma; \Phi \vdash F}\id_{\rho}, \oCPOsem{\Gamma; \Phi \vdash F}f)
+  = \oCPORsem{\Gamma; \Phi \vdash F} (\id_{\rho}, f) \\
+: \oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho} 
+  \to \oCPORsem{\Gamma; \Phi \vdash F}\graph{f}
+\end{multline*}
+Expanding the first equation gives that if $(x,y) \in \oCPORsem{\Gamma;
+  \Phi \vdash F}\graph{f}$ then \[(\oCPOsem{\Gamma; \Phi \vdash F} f\,
+x, \oCPOsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y) \in \oCPORsem{\Gamma;
+  \Phi \vdash F}\Eq_{\rho'}\] So $\oCPOsem{\Gamma; \Phi \vdash
+  F}\id_{\rho'}\, y = \id_{\oCPOsem{\Gamma; \Phi \vdash F}\rho'}\, y =
+y$ and $\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} =
+\Eq_{\oCPOsem{\Gamma; \Phi \vdash F}\rho'}$, and if $(x,y) \in
+\oCPORsem{\Gamma; \Phi \vdash F}\graph{f}$ then $(\oCPOsem{\Gamma; \Phi
+  \vdash F} f\, x, y) \in \Eq_{\oCPOsem{\Gamma; \Phi \vdash F}\rho'}$,
+i.e., $\oCPOsem{\Gamma; \Phi \vdash F} f\, x = y$, i.e., $(x, y) \in
+\graph{\oCPOsem{\Gamma; \Phi \vdash F} f}$.  So, we have that
+$\oCPORsem{\Gamma; \Phi \vdash F}\graph{f} \subseteq
+\graph{\oCPOsem{\Gamma; \Phi \vdash F}f}$.  Expanding the second
+equation gives that if $x \in \oCPOsem{\Gamma; \Phi \vdash F}\rho$ then
+$(\oCPOsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x,$\\
+$\oCPOsem{\Gamma; \Phi
+  \vdash F} f\, x) \in \oCPORsem{\Gamma; \Phi \vdash F}\graph{f}$.  Then
+$\oCPOsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x = \id_{\oCPOsem{\Gamma;
+    \Phi \vdash F}\rho} x = x$, so for any $x \in \oCPOsem{\Gamma; \Phi
+  \vdash F}\rho$ we have that $(x, \oCPOsem{\Gamma; \Phi \vdash F}f\,
+x) \in \oCPORsem{\Gamma; \Phi \vdash F}\graph{f}$.  Moreover, $x \in
+\oCPOsem{\Gamma; \Phi \vdash F}\rho$ if and only if $(x,
+\oCPOsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\oCPOsem{\Gamma; \Phi
+    \vdash F}f}$ and, if $x \in \oCPOsem{\Gamma; \Phi \vdash F}\rho$
+then $(x, \oCPOsem{\Gamma; \Phi \vdash F} f\, x) \in \oCPORsem{\Gamma;
+  \Phi \vdash F} \graph{f}$, so if $(x, \oCPOsem{\Gamma; \Phi \vdash F}
+f\, x) \in \graph{\oCPOsem{\Gamma; \Phi \vdash F}f}$ then $(x,
+\oCPOsem{\Gamma; \Phi \vdash F} f\, x) \in \oCPORsem{\Gamma; \Phi \vdash
+  F} \graph{f}$, i.e., $\graph{\oCPOsem{\Gamma; \Phi \vdash F}f}
+\subseteq \oCPORsem{\Gamma; \Phi \vdash F} \graph{f}$.
+\end{proof}
 
 
 

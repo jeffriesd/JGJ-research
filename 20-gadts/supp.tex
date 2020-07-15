@@ -1,0 +1,1470 @@
+% For double-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+\newtheorem*{nono-theorem}{Theorem}
+
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
+
+\title[Supplementary Material]{Supplementary Material} %% [Short Title] is optional; when present,
+                         %% will be used in header instead of Full
+                         %% Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+
+
+\begin{document}
+
+\maketitle
+
+\begin{nono-theorem}[Identity Extension Lemma]\label{thm:iel}
+If $\rho$ is an $\oCPO$ environment, and $\Gamma; \Phi \vdash F$, then
+\[\oCPORsem{\Gamma; \Phi \vdash F} \Eq_\rho = \Eq_{\oCPOsem{\Gamma; \Phi
+    \vdash F}\rho}\]
+\end{nono-theorem}
+\begin{proof}
+By induction on $F$.
+\begin{itemize}
+%\item $\relsem{\Gamma; \emptyset \vdash v}\Eq_{\rho} = \Eq_{\rho} v =
+%  \Eq_{\rho v} = \Eq_{\setsem{\Gamma; \emptyset \vdash v}\rho}$ where
+%  $v \in \Gamma$.
+\item $\oCPORsem{\Gamma; \Phi \vdash \zerot} \Eq_{\rho} = 0_\oCPOR =
+  \Eq_{0_\oCPO} = \Eq_{\oCPOsem{\Gamma; \Phi \vdash \zerot}\rho}$
+\item $\oCPORsem{\Gamma; \Phi \vdash \onet} \Eq_{\rho} = 1_\oCPOR =
+  \Eq_{1_\oCPO} = \Eq_{\oCPOsem{\Gamma; \Phi \vdash \onet}\rho}$
+\item
+By definition, $\oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}
+\Eq_{\rho}$ is the relation on $\oCPOsem{\Gamma; \emptyset \vdash
+  \Nat^\Phi \,F\,G} \rho$ relating $\eta$ and $\eta'$ if, for all $K_1
+: \oCPORT_{k_1},...,K_n : \oCPORT_{k_n}$, $(\eta_{\overline{K^1}},
+\eta'_{\overline{K^2}})$ is a morphism from $\oCPORsem{\Gamma; \Phi
+  \vdash F} \Eq_{\rho}\overline{[\Phi := K]}$ to $\oCPORsem{\Gamma ;
+  \Phi \vdash G} \Eq_{\rho}\overline{[\Phi := K]}$ in $\oCPOR$.  To
+prove that this is equal to $\Eq_{\oCPOsem{\Gamma; \emptyset \vdash
+    \Nat^\Phi F\,G} \rho}$ we need to show that
+$(\eta_{\overline{K^1}}, \eta'_{\overline{K^2}})$ is a morphism from
+$\oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho}\overline{[\Phi := K]}$ to
+$\oCPORsem{\Gamma ; \Phi \vdash G} \Eq_{\rho}\overline{[\Phi := K]}$
+in $\oCPOR$ for all $K_1 : \oCPORT_{k_1},...,K_n : \oCPORT_{k_n}$ if
+and only if $\eta = \eta'$ and $(\eta_{\overline{K^1}},
+\eta'_{\overline{K^2}})$ is a morphism from $\oCPORsem{\Gamma; \Phi
+  \vdash F} \Eq_{\rho}\overline{[\Phi := K]}$ to $\oCPORsem{\Gamma ;
+  \Phi \vdash G} \Eq_{\rho}\overline{[\Phi := K]}$ in $\oCPOR$ for all
+$K_1 : \oCPORT_{k_1},...,$ $ K_n : \oCPORT_{k_n}$.  The only
+interesting part of this equivalence is to show that if
+$(\eta_{\overline{K^1}}, \eta'_{\overline{K^2}})$ is a morphism from
+$\oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho}\overline{[\Phi := K]}$ to
+$\oCPORsem{\Gamma ; \oCPO \vdash G} \Eq_{\rho}\overline{[\Phi := K]}$
+in $\oCPOR$ for all $K_1 : \oCPORT_{k_1},...,K_n : \oCPORT_{k_n}$,
+then $\eta = \eta'$. By hypothesis, $(\eta_{\overline{T}},
+\eta'_{\overline{K^1}})$ is a morphism from $\oCPORsem{\Gamma; \Phi
+  \vdash F} \Eq_{\rho}\overline{[\Phi := \Eq_{T}]}$ to
+$\oCPORsem{\Gamma ; \Phi \vdash G} \Eq_{\rho}\overline{[\Phi :=
+    \Eq_{T}]}$ in $\oCPOR$ for all $\ol{T :
+  [\oCPO^k,\oCPO]_{\omega_1}}$.  By the induction hypothesis, it is
+therefore a morphism from $\Eq_{\oCPOsem{\Gamma; \Phi \vdash F}
+  \rho\overline{[\Phi := T]}}$ to $\Eq_{\oCPOsem{\Gamma; \Phi \vdash
+    G} \rho\overline{[\Phi := T]}}$ in $\oCPOR$. This means that, for
+every $x : \Eq_{\oCPOsem{\Gamma; \Phi \vdash F} \rho\overline{[\Phi :=
+      T]}}$, $\eta_{\overline{T}}x = \eta'_{\overline{T}}x$.  Then, by
+extensionality, $\eta = \eta'$.
+
+\item The application case is proved by the following sequence of
+  equalities, where the second equality is by the induction hypothesis
+  and the definition of the relation environment $\Eq_\rho$, the third
+  is by the definition of application of relation transformers from
+  Definition~11, and the fourth is by
+  Lemma~23:
+\[
+\begin{split}
+\oCPORsem{\Gamma; \Phi \vdash \phi\ol{F}}\Eq_{\rho} &=
+(\Eq_{\rho}\phi)\ol{\oCPORsem{\Gamma; \Phi \vdash F}
+\Eq_{\rho}}\\
+&= \Eq_{\rho \phi}\, \ol{\Eq_{\oCPOsem{\Gamma; \Phi \vdash F}
+  \rho}}\\
+&= (\Eq_{\rho \phi})^* \,\ol{\Eq_{\oCPOsem{\Gamma; \Phi \vdash F}
+  \rho}}\\
+&= \Eq_{(\rho \phi) \,\ol{\oCPOsem{\Gamma; \Phi \vdash F} \rho}}\\
+&= \Eq_{\oCPOsem{\Gamma; \Phi \vdash \phi\ol{F}}\rho}
+\end{split}
+\]
+\item 
+  The fixpoint case is proven by the sequence of equalities
+\[
+\begin{split}
+\oCPORsem{\Gamma; \Phi, \ol\gamma \vdash (\mu \phi.\lambda
+  \ol{\alpha}. H)\ol{F}}\Eq_{\rho} 
+&=(\mu {T_{H, \Eq_{\rho}}}) \,\ol{\oCPORsem{\Gamma; \Phi, \ol\gamma
+    \vdash F}\Eq_{\rho}}\\   
+&= \colim{i < \omega_1}{T^i_{H, \Eq_{\rho}} K_0}\, \ol{\oCPORsem{\Gamma;
+    \Phi, \ol\gamma \vdash F}\Eq_{\rho}}\\
+&= \colim{i < \omega_1}{ T^i_{H, \Eq_{\rho}} K_0 \,\ol{\Eq_{\oCPOsem{\Gamma;
+    \Phi, \ol\gamma  \vdash F}\rho}}}\\
+&= \colim{i < \omega_1}{(\Eq_{(T^\oCPO_{H,\rho})^i K_0})^*
+  \ol{\Eq_{\oCPOsem{\Gamma; \Phi, \ol\gamma  \vdash F}\rho}}}\\
+&= \colim{i < \omega_1}{\Eq_{(T^\oCPO_{H,\rho})^i K_0 \,\ol{\oCPOsem{\Gamma;
+        \Phi, \ol\gamma  \vdash F}\rho}}}\\ 
+&= \Eq_{\colim{i < \omega_1}{ (T^\oCPO_{H,\rho})^i K_0\,
+    \ol{\oCPOsem{\Gamma; \Phi, \ol\gamma  \vdash F}\rho}}}\\
+&= \Eq_{\oCPOsem{\Gamma; \Phi, \ol\gamma  \vdash (\mu \phi.\lambda
+      \ol{\alpha}. H)\ol{F}}\rho}
+\end{split}
+\]
+Here, the third equality is by induction hypothesis, the fifth is by
+Lemma~23 and the fourth equality is because, for every $i < \omega_1$,
+the following two statements can be proved by simultaneous induction:
+and for any $H$, $\rho$, $\ol A$, and subformula $J$ of $H$,
+\begin{equation}\label{eq:iel-fix-point-intermediate1}
+T^i_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\oCPO_{H, \rho})^i K_0})^*
+\ol{\Eq_A}
+\end{equation}
+and 
+\begin{equation}\label{eq:iel-fix-point-intermediate2}
+\begin{split}
+  \oCPORsem{\Gamma; \Phi', \phi, \ol{\alpha} \vdash J}
+\Eq_{\rho} [\phi := 
+ & T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
+    \Eq_A]} \\
+=\;\; & \oCPORsem{\Gamma; \Phi', \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
+  := \Eq_{(T^\oCPO_{H,\rho})^i K_0}] \overline{[\alpha :=
+    \Eq_A]}
+\end{split}
+\end{equation}
+(Notice that we don't know what's in the context $\Phi'$.)  We
+prove~\eqref{eq:iel-fix-point-intermediate1} by induction on $i$.  The
+case $i=0$ is trivial, because $T^0_{H,\Eq_{\rho}} K_0 = K_0$ and
+$(T^\oCPO_{H,\rho})^0 K_0 = K_0$. The inductive step for successor
+ordinals is proved by the following sequence of equalities:
+\[
+\begin{split}
+T^{i+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
+&= T^\oCPOR_{H,\Eq_{\rho}} (T^i_{H,\Eq_{\rho}} K_0)
+\overline{\Eq_A} \\ 
+&= \oCPORsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho} [\phi
+  := T^i_{H, \Eq_{\rho}} K_0] \overline{[\alpha :=
+    \Eq_A]} \\ 
+&= \oCPORsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho} [\phi
+  := \Eq_{(T^\oCPO_{H,\rho})^i K_0}] \overline{[\alpha :=
+    \Eq_A]} \\ 
+&= \oCPORsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho [\phi
+    := (T^\oCPO_{H,\rho})^i K_0] \overline{[\alpha :=
+      A]}} \\ 
+&= \Eq_{\oCPOsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \rho [\phi
+    := (T^\oCPO_{H,\rho})^i K_0] \overline{[\alpha :=
+      A]}} \\ 
+&= \Eq_{(T^\oCPO_{H,\rho})^{i+1} K_0 \overline{A}} \\ 
+&= (\Eq_{(T^\oCPO_{H,\rho})^{i+1} K_0})^*\, \overline{\Eq_A} 
+\end{split}
+\]
+Here, the third equality is by~\eqref{eq:iel-fix-point-intermediate2}
+for $J = H$, the fifth by the induction hypothesis of the IEL on $H$,
+and the last is by Lemma~23. {\color{red} Finally, the inductive step
+  for limit ordinals is...}
+
+\vspace*{0.1in}
+
+We prove~\eqref{eq:iel-fix-point-intermediate2} by structural
+induction on $J$. The only interesting cases, though, are when
+$J = \phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
+\begin{itemize}
+\item The case $J = \phi \ol G$ is proved by the sequence of equalities:
+\[
+\begin{split}
+& \oCPORsem{\Gamma; \Phi', \phi, \ol{\alpha} \vdash \phi
+    \ol{G}} \Eq_{\rho} [\phi := T^i_{H,\Eq_{\rho}} K_0]
+  \overline{[\alpha := \Eq_A]}
+  \\
+&= T^i_{H,\Eq_{\rho}} K_0\, \overline{\oCPORsem{\Gamma; \Phi',
+      \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
+      T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
+        \Eq_A]}} \\ 
+&= T^i_{H,\Eq_{\rho}} K_0\, \overline{\oCPORsem{\Gamma; \Phi',
+      \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
+      \Eq_{(T^\oCPO_{H,\rho})^i K_0}] \overline{[\alpha :=
+        \Eq_A]}} \\ 
+&= T^i_{H,\Eq_{\rho}} K_0\, \overline{\oCPORsem{\Gamma; \Phi',
+      \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\oCPO_{H,\rho})^i
+        K_0] \overline{[\alpha := A]}}} \\ 
+&= T^i_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\oCPOsem{\Gamma;
+        \Phi', \phi, \ol{\alpha} \vdash G} \rho [\phi :=
+        (T^\oCPO_{H,\rho})^i K_0] \overline{[\alpha :=
+          A]}}} \\ 
+&= (\Eq_{(T^\oCPO_{H,\rho})^i K_0})^* \,\overline{\Eq_{\oCPOsem{\Gamma;
+        \Phi', \phi, \ol{\alpha} \vdash G} \rho [\phi :=
+        (T^\oCPO_{H,\rho})^i K_0] \overline{[\alpha :=
+          A]}}} \\ 
+&= (\Eq_{(T^\oCPO_{H,\rho})^i K_0})^* \overline{\oCPORsem{\Gamma;
+      \Phi', \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
+      \Eq_{(T^\oCPO_{H,\rho})^i K_0}] \overline{[\alpha :=
+        \Eq_A]}} \\ 
+&= \oCPORsem{\Gamma; \Phi', \phi, \ol{\alpha} \vdash \phi \ol{G}}
+  \Eq_{\rho} [\phi := \Eq_{(T^\oCPO_{H,\rho})^i K_0}]
+  \overline{[\alpha := \Eq_A]} 
+\end{split}
+\]
+Here, the second equality is by the induction hypothesis
+for~\eqref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth is
+by the induction hypothesis for the IEL on the $G$s, and the fifth is
+by the induction hypothesis on $i$
+for~\eqref{eq:iel-fix-point-intermediate1}.
+
+\item 
+The case $J = (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}$
+is proved by the sequence of equalities (where $\Phi' = \Phi'', \ol\gamma$):
+\[
+\begin{split}
+& \oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}}
+  \Eq_{\rho} [\phi := T^i_{H,\Eq_{\rho}} K_0]
+  [\overline{\alpha := \Eq_A}] \\
+&= (\mu {T_{G, \Eq_{\rho}[\phi := T^i_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
+  \,\ol{\oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := T^i_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
+&= \colim{j < \omega_1} {T^j_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
+&= \colim{j < \omega_1} {T^j_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
+&= \colim{j < \omega_1} {T^j_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
+  \,(\ol{\oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_A}]}) \\ 
+&= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_A}]}})
+  \,\ol{\oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  [\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_A}]} \\ 
+&= \oCPORsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
+  \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha := \Eq_{A}}]
+\end{split}
+\]
+Here, the third equality is by the induction hypothesis
+for~\eqref{eq:iel-fix-point-intermediate2} on the $K$s, and the fourth
+equality holds because we can prove that, for all $j < \omega_1$,
+\begin{equation}\label{eq:helper}
+T^j_{G,
+\Eq_{\rho}[\phi := T^i_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
+    \Eq_A}]}\,K_0 \ = T^j_{G, \Eq_{\rho}[\phi :=
+    \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
+      \Eq_A}]}\,K_0
+\end{equation}
+Indeed, the base case of~\eqref{eq:helper} is trivial because
+\[T^0_{G,
+  \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
+      \Eq_A}]}\,K_0 \ = K_0 = T^0_{G, \Eq_{\rho}[\phi :=
+    \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
+      \Eq_A}]}\,K_0\]
+The inductive case for successor ordinals is proved by: \\
+\begin{align*}
+&\;\;\;\; T^{j+1}_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \\
+&= T_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha
+        := \Eq_A}]} (T^{j}_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}}
+      K_0][\overline{\alpha := \Eq_A}]}\,K_0) \\
+&= T_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha
+        := \Eq_A}]} (T^{j}_{G, \Eq_{\rho}[\phi :=
+      \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
+        \Eq_A}]}\,K_0) \\
+&= \lambda \ol{R}. \oCPORsem{\Gamma; \ol\gamma, \phi, \ol\alpha, \psi,
+    \ol\beta \vdash G} \Eq_{\rho} [\phi := T^{i}_{H,\Eq_{\rho}}
+    K_0][\overline{\alpha := \Eq_A}][\psi := T^{j}_{G, \Eq_{\rho}[\phi
+        := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
+          \Eq_A}]}\,K_0][\overline{\beta := R}] \\
+&= \lambda \ol{R}. \oCPORsem{\Gamma; \ol\gamma, \phi, \ol\alpha, \psi,
+    \ol\beta \vdash G} \Eq_{\rho} [\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+      K_0}][\overline{\alpha := \Eq_A}][\psi := T^{j}_{G,
+      \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^n
+          K_0}][\overline{\alpha := \Eq_A}]}\,K_0][\overline{\beta :=
+      R}] \\
+&= T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+        K_0}][\overline{\alpha := \Eq_A}]} (T^{j}_{G, \Eq_{\rho}[\phi
+      := \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
+        \Eq_A}]}\,K_0) \\
+&= T^{j+1}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+        K_0}][\overline{\alpha := \Eq_A}]}\,K_0
+\end{align*}
+
+Here, the second equality holds by the induction hypothesis
+for~\eqref{eq:helper} on $m$. The fourth equality holds because,
+due to typing rule restrictions for the $\mu$ types,
+$\phi$ either does not appear in $G$, or must have arity $0$, in which case
+$\ol\alpha$ must be empty, if $\phi$ appears in $G$, and
+uses~\eqref{eq:iel-fix-point-intermediate2} for $G$ when $\phi$ has
+arity $0$.
+
+{\color{red} The inductive case for limit ordinals is proved by...}
+
+\end{itemize}
+\item $\oCPORsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
+  \oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \oCPORsem{\Gamma;
+    \Phi \vdash G} \Eq_{\rho} = \Eq_{\oCPOsem{\Gamma; \Phi \vdash
+      F}\rho} + \Eq_{\oCPOsem{\Gamma; \Phi \vdash G}\rho} =
+  \Eq_{\oCPOsem{\Gamma; \Phi \vdash F}\rho + \oCPOsem{\Gamma; \Phi
+      \vdash G}\rho} = \Eq_{\oCPOsem{\Gamma; \Phi \vdash F +
+      G}\rho}$
+\item $\oCPORsem{\Gamma; \Phi \vdash F \times G} \Eq_{\rho} =
+  \oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho} \times \oCPORsem{\Gamma;
+    \Phi \vdash G}\Eq_{\rho} = \Eq_{\oCPOsem{\Gamma; \Phi \vdash
+      F}\rho} \times \Eq_{\oCPOsem{\Gamma; \Phi \vdash G}\rho}
+  = \Eq_{\oCPOsem{\Gamma; \Phi \vdash F}\rho \times
+    \oCPOsem{\Gamma; \Phi \vdash G}\rho} = \Eq_{\oCPOsem{\Gamma;
+      \Phi \vdash F \times G}\rho}$
+\end{itemize}
+\end{proof}
+
+
+\begin{nono-theorem}[Abstraction Theorem]\label{thm:at-gen}
+Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ induces
+a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
+$\sem{\Gamma; \Phi \vdash F}$, i.e., a triple of natural
+transformations 
+\[(\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F},\,
+\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F},\,
+\oCPORsem{\Gamma;\Phi~|~\Delta \vdash t : F})\]
+where
+\[\begin{array}{lll}
+\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F} & : & \oCPOsem{\Gamma;
+  \Phi \vdash \Delta} \to \oCPOsem{\Gamma; \Phi \vdash F}
+\end{array}\]
+has as its component at $\rho : \oCPOenv$ a morphism
+\[\begin{array}{lll}
+\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \oCPOsem{\Gamma;
+  \Phi \vdash \Delta}\rho \to \oCPOsem{\Gamma; \Phi \vdash F}\rho
+\end{array}\]
+in $\oCPO$,
+\[\begin{array}{lll}
+\oCPORsem{\Gamma;\Phi~|~\Delta \vdash t : F} & : & \oCPORsem{\Gamma;
+  \Phi \vdash \Delta} \to \oCPORsem{\Gamma; \Phi \vdash F}
+\end{array}\]
+has as its component at $\rho : \oCPORenv$ a morphism
+\[\begin{array}{lll}
+\oCPORsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \oCPORsem{\Gamma;
+  \Phi \vdash \Delta}\rho \to \oCPORsem{\Gamma; \Phi \vdash F}\rho
+\end{array}\]
+in $\oCPOR$,
+and, for all $\rho : \oCPORenv$,
+\begin{equation}\label{eq:projs}
+\oCPORsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho =
+(\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_1 \rho),\,
+\oCPOsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_2 \rho))
+\end{equation}
+\end{nono-theorem}
+
+\begin{proof}
+By induction on $t$. The only interesting cases are the cases for
+abstraction, application, $\map$, $\tin$, and $\fold$ so we omit the
+others.   
+\begin{itemize}
+
+
+\item 
+$\underline{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+  x.t : \Nat^{\overline{\alpha}} \,F \,G}$ \;
+  To see that $\oCPOsem{\Gamma; \emptyset
+    \,|\, \Delta \vdash L_{\overline{\alpha}} x.t :
+    \Nat^{\overline{\alpha}} \,F \,G}$ is a natural transformation
+  from $\oCPOsem{\Gamma; \emptyset \vdash \Delta}$ to
+  $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}$
+  we need show that, for every $\rho : \oCPOenv$,
+  $\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho$ is a morphism in
+  $\oCPO$ from $\oCPOsem{\Gamma; \emptyset \vdash \Delta}\rho$ to
+  $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
+    \,G}\rho$, and that such family of morphisms is natural.
+  First, we need to show that, for all $\ol{A : \oCPO}$ and all $d :
+  \oCPOsem{\Gamma; \emptyset \vdash \Delta}\rho = \oCPOsem{\Gamma;
+    \ol{\alpha} \vdash \Delta}\rho[\overline{\alpha := A}]$, we have
+  $(\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,d)_{\ol{A}}$ $:
+  \oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := A}]$
+  $\to \oCPOsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha :=
+      A}]$, but this follows easily from the induction hypothesis.
+That these maps comprise a natural transformation $\eta :
+\oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := \_}] \to
+\oCPOsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha := \_}]$ is
+clear since $\eta_{\ol{A}} \, = \, \curry\,
+(\oCPOsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := A}])\,d$ is the component at $\ol{A}$ of
+the partial specialization to $d$ of the natural transformation
+$$\oCPOsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := \_}]$$  To see that the components of
+$\eta$ also satisfy the additional condition needed for $\eta$ to
+be in $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
+  \,G}\rho$, let $\overline{R : \oCPOR(A, B)}$ and suppose
+\[\begin{array}{lll}
+(u, v) &  \in & \oCPORsem{\Gamma;\overline{\alpha} \vdash F}
+\Eq_{\rho}[\overline{\alpha := R}]\\
+&  = & (\oCPOsem{\Gamma;\overline{\alpha} \vdash F}
+\rho[\overline{\alpha := A}], \oCPOsem{\Gamma;\overline{\alpha} \vdash
+  F} \rho[\overline{\alpha := B}],
+(\oCPORsem{\Gamma;\overline{\alpha} \vdash F}
+\Eq_{\rho}[\overline{\alpha := R}])^*)
+\end{array}\]
+Then the induction hypothesis and
+$(d,d) \in \oCPORsem{\Gamma; \emptyset \vdash \Delta} \Eq_\rho =
+\oCPORsem{\Gamma; \emptyset \vdash \Delta} \Eq_\rho[\ol{\alpha := R}]$
+ensure that
+\[\begin{array}{ll}
+& (\eta_{\ol{A}}u,\eta_{\ol{B}}v)\\
+= & (\curry\, (\oCPOsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F
+  \vdash t: G}\rho[\overline{\alpha := A}])\,d\,u, \curry\,
+(\oCPOsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := B}])\,d\,v)\\
+= & \curry\, (\oCPORsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F
+  \vdash t: G}\Eq_\rho[\overline{\alpha := R}])\,(d,d)\,(u,v)\\
+: & \oCPORsem{\Gamma; \overline{\alpha} \vdash G}
+\Eq_{\rho}[\overline{\alpha := R}]  
+\end{array}\]
+Moreover,
+$\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+: \Nat^{\overline{\alpha}} \,F \,G} \rho$
+is trivially natural in $\rho$,
+as the functorial action of
+$\oCPOsem{\Gamma; \emptyset \vdash \Delta}$
+and $\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}$
+on morphisms is the identity.
+%let $f : \rho \to \rho'$ and consider the following computation
+%  \[\begin{array}{ll}
+%  &\oCPOsem{\Gamma;\ol\gamma \vdash \Nat^{\overline{\alpha}} \,F \,G}f
+%  \circ
+%  \oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}}
+%    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho \\
+%  = & \lambda d.\,
+%  \oCPOsem{\Gamma;\ol\gamma \vdash \Nat^{\overline{\alpha}} \,F \,G}f
+%  (\oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}}
+%    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\, d) \\
+%  = & \lambda d.\,
+%  (\lambda \ol{A}.\, \oCPOsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}f[\ol{\alpha := \id_A}])
+%  \circ
+%  \oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}}
+%    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\, d \\
+%  = & \lambda d\, \ol{A}.\,
+%  \oCPOsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}f[\ol{\alpha := \id_A}]
+%  \circ
+%  (\oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}}
+%    x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\, d)_{\ol{A}} \\
+%  = & \lambda d\, \ol{A}.\,
+%  \oCPOsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}f[\ol{\alpha := \id_A}]
+%  \circ
+%  \oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho[\ol{\alpha := A}]\, d \\
+%  = & \lambda d\, \ol{A}\, x.\,
+%  \oCPOsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash G}f[\ol{\alpha := \id_A}]
+%  (\oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho[\ol{\alpha := A}]\, d\, x) \\
+%  = & \lambda d\, \ol{A}\, x.\,
+%  \oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho'[\ol{\alpha := A}]
+%  (\oCPOsem{\Gamma;\ol\gamma,\ol{\alpha} \vdash \Delta, x : F}f[\ol{\alpha := \id_A}] \, d\, x) \\
+%  = & \lambda d\, \ol{A}\, x.\,
+%  \oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho'[\ol{\alpha := A}]
+%  (\oCPOsem{\Gamma;\ol\gamma \vdash \Delta}f\, d)
+%  (\oCPOsem{\Gamma;\ol{\alpha} \vdash F}f[\ol{\alpha := \id_A}] x) \\
+%  = & \lambda d\, \ol{A}\, x.\,
+%  \oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G}\rho'[\ol{\alpha := A}]
+%  (\oCPOsem{\Gamma;\ol\gamma \vdash \Delta}f\, d)\, x \\
+%  = & \lambda d\, \ol{A}.\,
+%  (\oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho'
+%  (\oCPOsem{\Gamma;\ol\gamma \vdash \Delta}f\, d))_{\ol{A}} \\
+%  = &
+%  \oCPOsem{\Gamma;\ol\gamma \,|\, \Delta \vdash L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho'
+%  \circ
+%  \oCPOsem{\Gamma;\ol\gamma \vdash \Delta}f
+%  \end{array}\]
+%  where the sixth equality is by the naturality of the interpretation
+%  of $\Gamma;\ol\gamma, \ol{\alpha} \,|\, \Delta, x : F \vdash t : G$,
+%  which is given by the induction hypothesis, the seventh equality is
+%  by currying, and the eighth equality uses the functoriality of
+%  $\oCPOsem{\Gamma;\ol{\alpha} \vdash F}$ and the fact that the only
+%  functorial variables in $F$ are in $\ol{\alpha}$.
+%
+  
+\item 
+$\underline{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
+  [\overline{\alpha := K}]}$\; 
+  To see that $\oCPOsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}$ is a
+  natural transformation from $\oCPOsem{\Gamma; \Phi \vdash \Delta}$ to
+  $\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}$ we must
+  show that, for every $\rho : \oCPOenv$, $\oCPOsem{\Gamma;\Phi \,|\,
+    \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}\rho$
+  is a morphism from $\oCPOsem{\Gamma; \Phi \vdash \Delta}\rho$ to
+  $\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho$, and
+  that this family of morphisms is natural in $\rho$. Let $d :
+  \oCPOsem{\Gamma; \Phi \vdash \Delta}\rho$. Then
+  \[\begin{array}{ll}
+  & \oCPOsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
+  [\overline{\alpha := K}]}\,\rho\,d\\
+= & (\eval \circ \langle (\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash
+  t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho}},\,
+\oCPOsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho \rangle)\,d\\
+= & \eval ((\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho}} \,d,\,
+\oCPOsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho\, d)\\
+= & \eval ((\oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+d)_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho}},\,
+\oCPOsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho\, d)\\
+\end{array}\]
+The induction hypothesis ensures that $(\oCPOsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,
+d)_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho}}$ has type
+$\oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho}] \to \oCPOsem{\Gamma;
+  \ol{\alpha} \vdash G}\rho[\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash
+      K}\rho}]$.  Since, in addition, 
+\[\begin{array}{ll}
+  &\oCPOsem{\Gamma;\Phi \,|\,
+  \Delta \vdash s: F [\overline{\alpha := K}]}\rho\, d :
+\oCPOsem{\Gamma; \Phi \vdash F[\ol{\alpha := K}]}\rho \\ 
+  =&\oCPOsem{\Gamma; \Phi, \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho}] \\
+    =& \oCPOsem{\Gamma;
+  \ol{\alpha} \vdash F}\rho[\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash
+      K}\rho}] 
+\end{array}\]
+      
+      by Equation~(6) from the paper,
+we have that 
+\[\begin{array}{ll}
+  &\oCPOsem{\Gamma;\Phi \,|\, \Delta
+  \vdash t_{\overline K} s: G [\overline{\alpha :=
+      K}]}\,\rho\,d : \oCPOsem{\Gamma; \Phi ,\ol{\alpha} \vdash
+  G}\rho[\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash K}\rho}]  \\
+  =&\oCPOsem{\Gamma; \Phi \vdash G[\ol{\alpha := K}]}\rho
+\end{array}\]
+as desired.
+
+\vspace*{0.1in}
+
+To see that the family of maps comprising $\oCPOsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}$
+is natural in $\rho$
+we need to show that, if $f : \rho \to \rho'$ in $\oCPOenv$, then the
+following diagram commutes, where $g = \oCPOsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}$ and $h =
+\oCPOsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}$:
+{\footnotesize
+\[\begin{tikzcd}
+\oCPOsem{\Gamma;\Phi \vdash \Delta}\rho \ar[r, "{\oCPOsem{\Gamma;\Phi
+  \vdash \Delta}f}"] \ar[d, "{\langle g \rho, h \rho\rangle}"']
+& \oCPOsem{\Gamma;\Phi \vdash 
+  \Delta}\rho' \ar[d, "{\langle g \rho', h \rho' \rangle}"]\\
+\oCPOsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho
+\times \oCPOsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi \vdash K}\rho}} \times
+    \id)}"']
+\ar[r, bend left = 5, "{\oCPOsem{\Gamma;\emptyset\vdash
+      \Nat^{\overline{\alpha}} \,F \,G}f\, \times\, \oCPOsem{\Gamma;\Phi
+      \vdash F [\overline{\alpha := K}]}f}"] &
+\oCPOsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho'
+\times \oCPOsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho'
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi \vdash
+          K}\rho'}} \times \id)}"] \\
+\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho
+\ar[r, "{\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}f}"']
+&
+\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho'
+\end{tikzcd}\]}
+
+\noindent
+The top diagram commutes because $g$ and $h$ are natural in $\rho$ by
+the induction hypothesis.
+To see that the bottom diagram commutes,
+we need to show that
+$\oCPOsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}f
+(\eta_{\overline{\sem{\Gamma;\Phi \vdash K}\rho}} x) =
+(\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G} f\, \eta
+)_{\overline{\sem{\Gamma;\Phi \vdash K}\rho'}}
+(\oCPOsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}f x)$
+holds for all $\eta \in \oCPOsem{\Gamma; \emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$ and $x \in
+\oCPOsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho$,
+i.e.,
+by remembering the following facts,
+\begin{align*}
+\oCPOsem{\Gamma;\Phi \vdash F[\ol{\alpha := K}]}\rho
+&= \oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho}] \\
+\oCPOsem{\Gamma;\Phi \vdash F[\ol{\alpha := K}]}f
+&= \oCPOsem{\Gamma; \ol{\alpha} \vdash F}
+  f [\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash K}f}] \\
+\oCPOsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}\rho
+&= \oCPOsem{\Gamma; \ol{\alpha} \vdash G}\rho[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho}] \\
+\oCPOsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}f
+&= \oCPOsem{\Gamma; \ol{\alpha} \vdash
+  G} f [\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash K}f}]
+\end{align*}
+we need to show that
+\begin{multline*}
+\oCPOsem{\Gamma; \ol{\alpha} \vdash G} f[\overline{\alpha := \oCPOsem{\Gamma;\Phi \vdash K} f }]
+  \circ
+\eta_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho}} \\
+=
+%\oCPOsem{\Gamma; \ol{\alpha} \vdash G} f[\overline{\alpha := \id_{\oCPOsem{\Gamma;\Phi \vdash K}\rho'}}]
+%\circ
+\eta_{\overline{\oCPOsem{\Gamma;\Phi \vdash K}\rho'}}
+\circ
+\oCPOsem{\Gamma; \ol{\alpha} \vdash F} f [\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash K}f}]
+\end{multline*}
+for all $\eta \in \oCPOsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$.
+But this follows from the naturality of $\eta$, which ensures the commutativity of
+{\footnotesize
+\[\begin{tikzcd}[column sep = large]
+\oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho}] \ar[r,
+  "{\;\;\;\eta_{\ol{\oCPOsem{\Gamma;\Phi \vdash K}\rho}}\;\;\; }"]
+\ar[d, "{\oCPOsem{\Gamma; \ol{\alpha} \vdash F} f [\ol{\alpha := 
+        \oCPOsem{\Gamma;\Phi \vdash K}f}]}"']
+& \oCPOsem{\Gamma;
+  \ol{\alpha} \vdash G}\rho[\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash
+      K}\rho}]
+\ar[d, "{\oCPOsem{\Gamma; \ol{\alpha} \vdash G} f [\ol{\alpha := 
+        \oCPOsem{\Gamma;\Phi \vdash K}f}]}"]\\
+\oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho'[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho'}] \ar[r,
+  "{\eta_{\ol{\oCPOsem{\Gamma;\Phi \vdash K}\rho'}} }"]
+& \oCPOsem{\Gamma; \ol{\alpha} \vdash G}\rho'[\ol{\alpha :=
+    \oCPOsem{\Gamma;\Phi \vdash K}\rho'}]
+\end{tikzcd}\]}
+
+%and the observation that
+%$\oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \vdash G} f[\overline{\alpha := \oCPOsem{\Gamma;\Phi, \ol\gamma \vdash K} f }]$
+%is equal to
+%\[
+%\oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \vdash G} f[\overline{\alpha := \id_{\oCPOsem{\Gamma;\Phi, \ol\gamma \vdash K}\rho'}}]
+%\circ \oCPOsem{\Gamma;\ol\gamma, \ol{\alpha} \vdash G} \id_{\rho} [\overline{\alpha := \oCPOsem{\Gamma;\Phi, \ol\gamma \vdash K}f}]
+%\]
+
+\item 
+  $\underline{\Gamma;\emptyset~|~\emptyset \vdash
+  \map^{\ol{F},\ol{G}}_H :
+  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}$\;
+To see that
+\[
+\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}
+\]
+is in $\oCPOsem{\Gamma; \emptyset \vdash
+    \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}]} \rho$
+for all $\rho : \oCPOenv$, all $\ol{\eta : \oCPOsem{\Gamma; \emptyset
+  \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$,
+  and $d$ the unique element of $\oCPOsem{\Gamma;\emptyset \vdash \emptyset} \rho$,
+  we first note that
+$\oCPOsem{\Gamma ;\ol{\phi}, \ol{\gamma} \vdash H}$ is a functor from
+  $\oCPOenv$ to $\oCPO$ and, for any $\ol C$, $\id_{\rho[\ol{\gamma :=
+        C}]}[\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}\,\ol{C}}}]$ is a
+  morphism in $\oCPOenv$ from \[\rho[\ol{\gamma := C}][\ol{\phi :=
+      \lambda \ol{B}.\oCPOsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash
+        F}\rho[\ol{\gamma := C}][\ol{\beta := B}]}]\] to
+\[\rho[\ol{\gamma := C}][\ol{\phi := \lambda \ol{B}.\oCPOsem{\Gamma;
+\ol{\gamma},\ol{\beta} \vdash G}\rho[\ol{\gamma := C}][\ol{\beta := B}]}]\]
+so that
+$(\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash
+\map^{\ol{F},\ol{G}}_H :
+\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+(\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+    :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta})_{\ol{C}}$
+$=  \oCPOsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho[\ol{\gamma
+      := C}]}[\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}\,\ol{C}}}]$
+is indeed a morphism from
+$\oCPOsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C}]$
+to 
+$ \oCPOsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C}]$.
+This family of morphisms is natural in $\ol C$: if $\ol{f : C \to C'}$
+then, writing $\xi$ for
+\[
+\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}
+\]
+the naturality of $\eta$,
+together with the fact that composition of environments is
+computed componentwise, ensure that the following naturality diagram
+for $\xi$ commutes:
+{\footnotesize
+\[\begin{tikzcd}
+\oCPOsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C}] \ar[r, "{\xi_{\ol{C}}}"]
+\ar[d, "{\oCPOsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi :=
+          F}]}\id_{\rho}[\ol{\gamma := f}]}"']
+& \oCPOsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C}]
+\ar[d, "{\oCPOsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi :=
+          G}]}\id_{\rho}[\ol{\gamma := f}]}"]\\
+\oCPOsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C'}] \ar[r, "{\xi_{\ol{C'}}}"]
+& \oCPOsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C'}] 
+\end{tikzcd}\]}
+That, for all $\rho : \oCPOenv$ and $d : \oCPOsem{\Gamma; \emptyset \vdash
+  \emptyset}\rho$, $\xi$ satisfies the additional condition needed for
+it to be in $\oCPOsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}]}\rho$ follows from the fact
+that $\eta$ satisfies the extra
+condition needed for it to be in its corresponding
+$\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho$.
+
+Finally, since $\Phi = \emptyset$, the naturality of
+\[
+\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\rho
+\]
+in $\rho$ is trivial.
+
+%For the naturality of
+%$\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash \map^{\ol{F},\ol{G}}_H\, \ol{t}
+%  : \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}]}$,
+%consider $f : \rho \to \rho'$.
+%We need to prove that
+%\begin{multline*}
+%\oCPOsem{\Gamma; \ol\alpha \vdash
+% \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}]} f
+%\circ
+%\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho \\
+%= 
+%\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho'
+%\circ
+%\oCPOsem{\Gamma; \ol\alpha \vdash \Delta}\, f
+%\end{multline*}
+%i.e., that
+%\begin{multline*}
+%\oCPOsem{\Gamma; \ol\alpha \vdash 
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}]} f
+%(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho\,d) \\
+%=
+%\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho'
+%(\oCPOsem{\Gamma; \ol\alpha \vdash \Delta}\, f\, d )
+%\end{multline*}
+%for any $d : \oCPOsem{\Gamma; \ol\alpha \vdash \Delta} \rho$.
+%That is shown by the following calculations:
+%\[
+%\begin{array}{ll}
+%&\oCPOsem{\Gamma; \ol\alpha \vdash 
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%      :=_{\ol{\beta}} G}]} f
+%(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho\,d) \\
+%=&
+%\lambda \ol{B}.\,
+%\oCPOsem{\Gamma; \ol\alpha, \ol{\gamma} \vdash 
+%H[\ol{\phi :=_{\ol{\beta}} G}]} f[\ol{\gamma := \id_B}] \\
+%&\hspace{2em}\circ
+%(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho\,d)_{\ol{B}} \\
+%=&
+%\lambda \ol{B}.\,
+%\oCPOsem{\Gamma; \ol{\phi}, \ol{\gamma} \vdash 
+%H} f[\ol{\gamma := \id_B}] [\ol{\phi := \lambda \ol{A}.\, \oCPOsem{\Gamma; \ol\alpha, \ol{\beta}, \ol{\gamma} \vdash G}f[\ol{\beta := \id_A}][\ol{\gamma := \id_B}]}] \\
+%&\hspace{2em}\circ
+%\oCPOsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho[\ol{\gamma := B}]}
+%[\ol{\phi := \lambda \ol{A}. {(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho\, d)}_{\ol{A}\,\ol{B}}}] \\
+%=&
+%\lambda \ol{B}.\,
+%\oCPOsem{\Gamma; \ol{\phi}, \ol{\gamma} \vdash H}
+%f[\ol{\gamma := \id_B}] \\
+%&\hspace{2em}[\ol{\phi := \lambda \ol{A}.\, \oCPOsem{\Gamma; \ol\alpha, \ol{\beta}, \ol{\gamma} \vdash G}f[\ol{\beta := \id_A}][\ol{\gamma := \id_B}]
+%\circ {(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho\, d)}_{\ol{A}\,\ol{B}}}] \\
+%=&
+%\lambda \ol{B}.\, 
+%\oCPOsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho'[\ol{\gamma := B}]}
+%[\ol{\phi := \lambda \ol{A}. {(\oCPOsem{\Gamma; \ol\alpha \vdash \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} f (\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\, \rho\, d ))}_{\ol{A}\,\ol{B}}}] \\
+%=&
+%\lambda \ol{B}.\, 
+%\oCPOsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho'[\ol{\gamma := B}]}
+%[\ol{\phi := \lambda \ol{A}. {(\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho' (\oCPOsem{\Gamma; \ol\alpha \vdash \Delta}\, f\, d ))}_{\ol{A}\,\ol{B}}}] \\
+%=&
+%\oCPOsem{\Gamma; \ol\alpha~|~\Delta \vdash
+%\map^{\ol{F},\ol{G}}_H\, \ol{t} :
+%\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+%    :=_{\ol{\beta}} G}]}\,\rho'
+%(\oCPOsem{\Gamma; \ol\alpha \vdash \Delta}\, f\, d )
+%\end{array}
+%\]
+%where the third equality is given by composition of morphisms of environments
+%and the fifth equality is given by the naturality of $\Gamma; \ol\alpha~|~\Delta \vdash t : \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G$,
+%which we have by the induction hypothesis.
+
+\item
+$\underline{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}$\; To
+  see that if $d : \oCPOsem{\Gamma;\emptyset \vdash \emptyset} \rho$
+  then $\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho\,d$ is in\\ $\oCPOsem{\Gamma;\emptyset \vdash
+    \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho$, we first note that, for all $\ol{B}$ and $\ol{C}$,
+  $(\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho\,d)_{\ol{B}\,\ol{C}}\, =\,
+  (\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C}]}})_{\ol{B}}$ maps
+  $\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+      \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha
+        := \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}] =
+  T^\oCPO_{H,\rho[\ol{\gamma := C}]}\, (\mu T^\oCPO_{H,\rho[\ol{\gamma
+        := C}]}) \, \ol{B}$ to $\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma}
+    \vdash (\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}
+  \rho[\ol{\beta := B}][\ol{\gamma := C}] = (\mu
+  T^\oCPO_{H,\rho[\ol{\gamma := C}]}) \, \ol{B}$. Secondly, we observe
+  that\\ $\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}}\,\rho\,d = \lambda
+  \ol{B}\,\ol{C}.\,(\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+          C}]}})_{\ol{B}}$ is natural in $\ol{B}$ and $\ol{C}$, since
+  naturality of $\mathit{in}$ with respect to its functor argument and
+  naturality of $\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C'}]}}$ ensure
+  that the following diagram commutes for all $\ol{f : B \to B'}$ and
+  $\ol{g : C \to C'}$:
+{\tiny
+  \[\begin{tikzcd}[column sep=2.5in, row sep=0.75in]
+T^\oCPO_{H,\rho[\ol{\gamma := C}]}\, (\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]})\, \ol{B}
+\ar[d, "{T^\oCPO_{H,\id_\rho[\ol{\gamma := g}]}\,(\mu
+    T^\oCPO_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"] \ar[r,
+  "{(\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C}]}})_{\ol{B}}}" ]
+& (\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]})\, \ol{B} \ar[d, "{(\mu
+    T^\oCPO_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"]\\
+T^\oCPO_{H,\rho[\ol{\gamma := C'}]}\, (\mu
+T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\, \ol{B} \ar[d, "{T^\oCPO_{H,\rho[\ol{\gamma :=
+          C'}]}\, (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\, \ol{f}}"]
+\ar[r,"{(\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C'}]}})_{\ol{B}}}" ] & 
+  (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\, \ol{B}
+\ar[d,"{\mu {T^\oCPO_{H,\rho[\ol{\gamma := C'}]}}\, {\ol{f}}}" ] 
+\\
+T^\oCPO_{H,\rho[\ol{\gamma := C'}]}\, (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\,
+\ol{B'} \ar[r, "{(\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+            C'}]}})_{\ol{B'}}}"] & (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\,
+\ol{B'}
+\end{tikzcd}\]
+}
+  That, for all $\rho : \oCPOenv$ and $d :
+\oCPOsem{\Gamma;\emptyset \vdash \emptyset}\rho$,
+\[\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d\] satisfies the additional property needed for
+it to be in \[\oCPOsem{\Gamma;\emptyset \vdash
+  \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,\rho\]
+  let $\ol{R : \oCPOR(B,B')}$ and $\ol{S : \oCPOR(C,C')}$ follows from the
+  fact that 
+\[\begin{array}{ll}
+ & (\,(\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d)_{\ol{B},\ol{C}},\,\\
+ & \hspace*{0.5in}(\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d)_{\ol{B'},\ol{C'}}\,)\\
+=& (\, (\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C}]}})_{\ol{B}},
+(\mathit{in}_{T^\oCPO_{H,\rho[\ol{\gamma := C'}]}})_{\ol{B'}}\,)
+\end{array}\]
+has type
+\[\begin{array}{ll}
+%& (\, \oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+%    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+%      \beta}]}\rho[\ol{\beta := B}][\ol{\gamma := C}] \to\\ 
+%& \hspace*{0.5in}\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+%  {\overline \alpha}.H){\overline \beta}} \rho[\ol{\beta :=
+%    B}][\ol{\gamma := C}],\\
+%& \hspace*{0.05in}\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+%    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+%      \beta}]}\rho[\ol{\beta := B'}][\ol{\gamma := C'}] \to\\ 
+%& \hspace*{0.5in}\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+%  {\overline \alpha}.H){\overline \beta}} \rho[\ol{\beta :=
+%    B'}][\ol{\gamma := C'}]\,)\\
+& (\, T^\oCPO_{H,\rho[\ol{\gamma := C}]}\, (\mu
+T^\oCPO_{H,\rho[\ol{\gamma := C}]}) \, 
+\ol{B} \to (\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]}) \, \ol{B}, \, \\
+& \hspace*{0.5in}T^\oCPO_{H,\rho[\ol{\gamma := C'}]}\, (\mu
+T^\oCPO_{H,\rho[\ol{\gamma := C'}]}) \, 
+\ol{B'} \to (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]}) \,\ol{B'} \, )\\
+= &
+ \oCPORsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\Eq_\rho[\ol{\beta := R}][\ol{\gamma := S}] \to\\
+ & \hspace*{0.5in} \oCPORsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash (\mu
+  \phi.\lambda \ol{\alpha}.H)\ol{\beta}} \Eq_\rho[\ol{\beta:=
+    R}][\ol{\gamma :=S}]
+\end{array}\]
+
+Finally, since $\Phi = \emptyset$, the naturality of
+\[
+\oCPOsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}
+\]
+in $\rho$ is trivial.
+
+
+
+\item
+$\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta \;F)}$ \; Since $\Phi$ is empty, to see
+  that $\oCPOsem{ \Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+    \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+      :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+    (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta \;F)}$ is a natural transformation
+  $\oCPOsem{\Gamma;\emptyset \vdash \emptyset}$ to \[\oCPOsem{\Gamma;
+    \emptyset \vdash \Nat^\emptyset\;(\Nat^{\ol{\beta},
+      \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+        \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+    \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\] we need only
+  show that, for all $\rho : \oCPOenv$, the unique $d :
+  \oCPOsem{\Gamma;\emptyset \vdash \emptyset} \rho$, and all $\eta :
+  \oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
+      \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+        \beta}]\,F} \rho$,
+\[ \oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\] has type
+$\oCPOsem{\Gamma; \emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
+  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\,F}\,\rho$
+i.e., for any $\ol{B}$ and $\ol{C}$,
+\[(\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
+morphism from $\oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
+    B}][\ol{\gamma := C}] \,=\,(\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]})
+\ol{B}$\\ to $\oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash
+  F}\rho[\ol{\beta := B}][\ol{\gamma := C}]$.  To see this, note
+%use Equations~\ref{eq:subs-var} and~\ref{eq:subs-const} to verify
+that $\eta$ is a natural transformation from
+\[\begin{array}{ll}
+ & \lambda \ol{B}\,\ol{C}.\,\oCPOsem{\Gamma; \ol{\beta},\ol{\gamma}
+  \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho[\ol{\beta :=
+    B}][\ol{\gamma := C}]\\
+%= & \lambda
+%\ol{B}\,\ol{C}.\,\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma},\ol{\alpha}  
+%  \vdash H[\phi := F]}\rho[\ol{\beta := B}][\ol{\gamma :=
+%    C}][\ol{\alpha := B}]\\ 
+%= & \lambda \ol{B}\,\ol{C}.\,\oCPOsem{\Gamma;
+%  \ol{\beta},\ol{\gamma},\ol{\alpha},\phi \vdash H}\rho
+%[\ol{\beta := B}][\ol{\gamma := C}][\ol{\alpha := B}]\\
+% & \hspace*{0.5in}[\phi := \lambda \ol{A}.\, \oCPOsem{\Gamma;\ol{\beta},
+%    \ol{\gamma},\ol{\alpha} \vdash F}\rho[\ol{\beta := B}][\ol{\gamma
+%      := C}][\ol{\alpha := B}][\ol{\beta := A}]]\\ 
+%= & \lambda \ol{B}\,\ol{C}.\, \oCPOsem{\Gamma;
+%  \ol{\gamma},\ol{\alpha},\phi \vdash H}\rho[\ol{\gamma :=
+%    C}][\ol{\alpha := B}][\phi := \lambda \ol{A}.\,
+%  \oCPOsem{\Gamma;\ol{\beta}, 
+%    \ol{\gamma}\vdash F}\rho[\ol{\gamma := C}][\ol{\beta := A}]]\\ 
+= & \lambda \ol{B}\,\ol{C}.\,T^\oCPO_{H,\rho[\ol{\gamma:=
+     C}]}\,(\lambda \ol{A}. \, \oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} 
+  \vdash F}\rho[\ol{\beta := A}][\ol{\gamma := C}]) \, \ol{B}
+\end{array}\]
+to
+\[\begin{array}{ll}
+ & \lambda \ol{B}\,\ol{C}.\,(\lambda
+\ol{A}.\,\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\beta
+    := A}][\ol{\gamma := C}]) \ol{B}\\
+= & \lambda
+\ol{B}\,\ol{C}.\,\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash
+  F}\rho[\ol{\beta := B}][\ol{\gamma := C}]
+\end{array}\]
+and thus
+%if $x :
+%\oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu \phi.\lambda
+%  \overline \alpha.H)\overline \beta}\rho[\ol{\beta := B}][\ol{\gamma
+%    := C}]\;=\;(\mu T^\oCPO_{\rho[\ol{\gamma := C}]}) \ol{B}$, then
+%\[\begin{array}{ll}
+%  & (\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+%  \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+%    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+%  (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+%  \alpha.H)\overline \beta\,F}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\,x\\
+%= & (\mathit{fold}_{T^\oCPO_{\rho[{\gamma := C}]}}\,(\lambda
+%\ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}\,x\\  
+%:& (\lambda \ol{A}.\,\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash
+%  F}\rho[\ol{\beta := A}][\ol{\gamma := C}])\ol{B}
+%\end{array}\]
+%i.e.,
+for each $\ol{B}$ and $\ol{C}$,
+\[(\oCPOsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}\,\ol{C}}\] is a
+morphism from
+$\oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash (\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
+    B}][\ol{\gamma := C}]\,=\, (\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]})
+\ol{B}$ to\\ $\oCPOsem{\Gamma;\ol{\beta},\ol{\gamma} \vdash
+  F}\rho[\ol{\beta := B}][\ol{\gamma := C}]$.
+
+To see that this family of morphisms is natural in $\ol{B}$ and
+$\ol{C}$, we observe that the following diagram commutes for all
+$\ol{f : B \to B'}$ and $\ol{g : C \to C'}$:
+{\tiny
+\[\begin{tikzcd}[column sep=2.5in, row sep=0.75in]
+(\mu T^\oCPO_{H,\rho[\ol{\gamma := C}]})\, \ol{B}
+\ar[d, "{(\mu T^\oCPO_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"'] \ar[r, 
+  "{(\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma := C}]}}\,(\lambda
+    \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}}"] 
+& \oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
+    C}][\ol{\beta := B}]\ar[d, "{\oCPOsem{\Gamma;
+      \ol{\beta},\ol{\gamma} \vdash F}\id_\rho[\ol{\gamma := 
+    g}][\ol{\beta := \id_B}]}"]\\
+(\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\, \ol{B} 
+\ar[r,"{(\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+            C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C'}}))_{\ol{B}}\,}" ] 
+\ar[d, "{(\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]}) \, \ol{f}}"'] & 
+ \oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
+    C'}][\ol{\beta := B}]\ar[d, "{\oCPOsem{\Gamma;
+      \ol{\beta},\ol{\gamma} \vdash F}\id_\rho[\ol{\gamma := 
+    \id_{C'}}][\ol{\beta := f}]}"]\\
+ (\mu T^\oCPO_{H,\rho[\ol{\gamma := C'}]})\, \ol{B'} 
+\ar[r,"{(\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+            C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C'}}))_{\ol{B'}}\,}"
+] &  
+ \oCPOsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
+    C'}][\ol{\beta := B'}]
+\end{tikzcd}\]}
+Indeed, naturality of $\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+        C'}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C'}})$ ensures that
+the bottom diagram commutes. To see that the top one commutes
+%is considerably more delicate.
+%\vspace*{0.1in}
+% To see that the top diagram commutes
+we first observe that, given a natural transformation $\Theta : H \to
+K : [\oCPO^k, \oCPO] \to [\oCPO^k, \oCPO]$, the fixpoint natural
+transformation $\mu \Theta : \mu H \to \mu K : \oCPO^k \to \oCPO$ is
+defined to be $\mathit{fold}_{H}(\Theta\,(\mu K) \circ
+\mathit{in}_{K})$, i.e., the unique morphism making the following
+diagram commute:\label{page:dia1}
+{\footnotesize
+\[\begin{tikzcd}[column sep = large]
+H(\mu H)
+	\ar[dd, "{\mathit{in}_H}"']
+	\ar[r, "{H(\mu \Theta)}"]
+& H(\mu K)
+	\ar[d, "{\Theta (\mu K)}"] \\
+& K(\mu K)
+	\ar[d, "{\mathit{in}_K}"] \\
+\mu H
+	\ar[r, "{\mu \Theta}"']
+& \mu K
+\end{tikzcd}\]}
+Taking $\Theta = T^{\oCPO}_{H,f}: T^{\oCPO}_{H,\rho} \to
+T^{\oCPO}_{H,\rho'}$ thus gives that, for any $f : \rho \to \rho'$ in
+$\oCPOenv$,
+\begin{equation}\label{eq:mu-sigma-def}
+\mathit{in}_{T^{\oCPO}_{H,\rho'}} \circ 
+T^{\oCPO}_{H,f} (\mu T^{\oCPO}_{H,\rho'}) \circ 
+T^{\oCPO}_{H,\rho}(\mu T^{\oCPO}_{H,f}) \,=\, 
+\mu T^{\oCPO}_{H,f} \circ \mathit{in}_{T^{\oCPO}_{H,\rho}}
+\end{equation}
+Next, note that the action of the functor
+$\lambda \ol{B}. \lambda \ol{C}. \oCPOsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+        [\ol{\beta := B}] [\ol{\gamma := C}]$
+on the morphisms $\ol{f : B \to B'}, \ol{g : C \to C'}$ is given by
+\[\begin{array}{ll}
+ & \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash H[\phi :=
+      F][\ol{\alpha := \beta}]} \id_{\rho} [\ol{\beta := f}]
+           [\ol{\gamma := g}]\\
+= & \oCPOsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H}
+\id_{\rho}[\ol{\alpha := f}] [\ol{\gamma := g}][\phi := \lambda
+  \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+    [\ol{\beta := A}]} [\ol{\gamma := g}]] \\ 
+=& \oCPOsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma} \vdash H} \id_{\rho
+  [\ol{\gamma := C'}][\phi := \lambda \ol{A}. \oCPOsem{\Gamma;
+      \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := A}]
+    [\ol{\gamma := C'}]]} [\ol{\alpha := f}] \\
+&\hspace{3em} \circ \oCPOsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
+  \vdash H} \id_{\rho [\ol{\alpha := B}][\phi := \lambda
+    \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+       [\ol{\beta := A}] [\ol{\gamma := C'}]]} [\ol{\gamma := g}] \\
+&\hspace{3em} \circ \oCPOsem{\Gamma; \phi, \ol{\alpha}, \ol{\gamma}
+  \vdash H} \id_{\rho [\ol{\alpha := B}] [\ol{\gamma := C}]} [\phi :=
+  \lambda \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+  \id_{\rho [\ol{\beta := A}]} [\ol{\gamma := g}]] \\
+= & T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]} (\lambda
+\ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \ol{f} \\
+&\hspace{3em} \circ \big( T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}
+   (\lambda \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+   \rho [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}} \\
+&\hspace{3em} \circ \big( T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\lambda
+   \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+     [\ol{\beta := A}]} [\ol{\gamma := g}]) \big)_{\ol{B}}
+\end{array}\]
+So if $\eta$ is a natural transformation such that $\eta_{\ol B, \ol
+  C}$ has type
+\[
+%\lambda \ol{B}\,\ol{C}.
+\oCPOsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+[\ol{\beta := B}] [\ol{\gamma := C}]
+%\]          to \[
+\to
+%\lambda \ol{B}\, \ol{C}.
+\oCPOsem{\Gamma; \ol{\beta},
+   \ol{\gamma} \vdash F}\rho [\ol{\beta := B}] [\ol{\gamma := C}]\]
+then, by naturality,
+\[\begin{array}{ll}
+ & \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho}
+       [\ol{\beta := f}] [\ol{\gamma := g}] \circ \eta_{\ol{B},
+         \ol{C}} \\ 
+%= & \eta_{\ol{B'}, \ol{C'}} \circ \oCPOsem{\Gamma; \ol{\alpha},
+%  \ol{\gamma} \vdash H[\phi := F][\ol{\alpha := \beta}]} \id_{\rho}
+%[\ol{\beta := f}] [\ol{\gamma := g}] \\ 
+= & \eta_{\ol{B'}, \ol{C'}} \circ T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]}
+(\lambda \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\rho [\ol{\beta := A}] [\ol{\gamma := C'}]) \ol{f} \\
+& \circ \big( T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \big)_{\ol{B}} \\
+& \circ \big( T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\lambda
+   \ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+     [\ol{\beta := A}]} [\ol{\gamma := g}]) \big)_{\ol{B}}
+\end{array}\]
+As a special case when $\ol{f = \id_B}$ we have
+\begin{equation}\label{eq:T-sigma-functor}
+\begin{split}
+  & \lambda \ol{B}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}] \circ \lambda
+\ol{B}.\eta_{\ol{B}, \ol{C}} \\  
+=\;\;\; & \lambda \ol{B}.\eta_{\ol{B}, \ol{C'}} \circ
+T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]} (\lambda
+\ol{A}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := A}] [\ol{\gamma := C'}]) \\
+ & \hspace*{0.5in} \circ
+   T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{A}. \oCPOsem{\Gamma;
+     \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho [\ol{\beta := A}]}
+   [\ol{\gamma := g}]) 
+\end{split}
+\end{equation}
+Finally, to see that the top diagram in the diagram on
+page~\pageref{page:dia1} commutes we first note that functoriality of
+$T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}$, naturality of
+$T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}$, the universal property of
+$\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}})$ and Equation~\ref{eq:mu-sigma-def}
+ensure that the following diagram commutes: {\footnotesize
+\begin{equation}\label{eq:one-side}
+  \begin{tikzcd}[column sep = huge, row sep = huge]
+T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\oCPO}_{H,\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (
+    \mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+    T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]} )}"] \ar[dd,
+    "{\mathit{in}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}}}"']
+&& T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}. \oCPOsem{\Gamma;
+  \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma
+    := C'}]) \ar[d, "{ T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+    \rho [\ol{\beta := B}] [\ol{\gamma := C'}]) }" description] \\
+&& T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]} (\lambda
+\ol{B}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}
+     }" description] \\
+\mu T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}\ar[r, "{\mu
+    T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}}"'] 
+&\mu T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]} \ar[r, bend right = 10,
+  "{\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}})}"']
+& \lambda \ol{B}. \oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\rho [\ol{\beta := B}] [\ol{\gamma := C'}]
+  \end{tikzcd}
+  \end{equation}}
+Next, we note that functoriality of $T^{\oCPO}_{H,\rho [\ol{\gamma :=
+      C}]}$, Equation~\ref{eq:T-sigma-functor}, and the universal
+property of $\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C}})$ ensure that the following diagram
+commutes: {\footnotesize
+\begin{equation}\label{eq:other-side}
+\begin{tikzcd}[row sep = huge]
+T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\oCPO}_{H,\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (
+    \lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+      [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+    \mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}}) )}"] \ar[dd, "{\mathit{in}_{T^{\oCPO}_{H,\rho
+        [\ol{\gamma := C}]}}}"']
+&& T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C'}])
+\ar[d, "{ T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta
+        := B}] [\ol{\gamma := C'}]) }" description]\\
+&& T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]} (\lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}} }" description] \\
+\mu T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} \ar[r, bend right = 10,
+  "{\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}})}"'] & \lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C}]
+\ar[r, bend right = 10, "{\lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma}
+      \vdash F} \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}]}"'] &
+\lambda \ol{B}.\oCPOsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta :=
+    B}] [\ol{\gamma := C'}]
+\end{tikzcd}
+\end{equation}}
+Combining the equations entailed by~\ref{eq:one-side}
+and~\ref{eq:other-side}, we get that
+the top diagram in the diagram on
+  page~\pageref{page:dia1} commutes, as desired.
+To see that, for all $\rho : \oCPOenv$, $d \in
+\oCPOsem{\Gamma; \emptyset \vdash \emptyset}\rho$, and $\eta :
+\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
+    \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F}
+\rho$,
+\[\oCPOsem{\Gamma; \emptyset~|~\emptyset
+  \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta},
+    \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+      \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\]
+satisfies the additional condition needed for it to be in
+$\oCPOsem{\Gamma;\emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
+  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}\,\rho$,
+let $\ol{R : \oCPOR(B,B')}$ and $\ol{S : \oCPOR(C,C')}$.  Since $\eta$
+satisfies the additional condition needed for it to be in
+$\oCPOsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
+    \ol{\gamma}}\,(H[\phi := F][\ol{\alpha := \beta}])\,F} \rho$,
+\[\begin{array}{ll}
+ & (\,(\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+        C}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}},\,
+(\mathit{fold}_{T^\oCPO_{H,\rho[\ol{\gamma :=
+        C'}]}}\,(\lambda \ol{A}.\eta_{\ol{A}\,\ol{C'}}))_{\ol{B'}}\,) 
+\end{array}\]
+has type
+\[\begin{array}{ll}
+  & (\mu T_{H,\Eq_\rho[\ol{\gamma := S}]}) \,\ol{R} \to
+\oCPORsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & (\mu T_{H,\Eq_\rho[\ol{\gamma :=
+      S}]})\,\ol{\oCPORsem{\Gamma;\ol{\gamma},\ol{\beta} 
+  \vdash \beta}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}]} \to
+\oCPORsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & \oCPORsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash (\mu \phi. \lambda
+  \ol{\alpha}. H)\ol{\beta}}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}] \to
+\oCPORsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]
+\qedhere
+\end{array}\]
+
+
+\end{itemize}
+\end{proof}
+
+
+\end{document}
+
+
