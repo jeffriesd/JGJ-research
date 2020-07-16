@@ -1869,16 +1869,14 @@ Graph Lemma for our calculus.
       \Phi \vdash F}\rho}$.
 \end{thm}
 The proof is by induction on the structure of $F$. Only the $\Nat$,
-application, and fixpoint cases are non-routine. The latter two use
+application, and fixpoint {\color{red} and $\Lan$?} cases are
+non-routine. The latter two use
 Lemma~\ref{lem:eq-reln-equalities}. The fixpoint case also uses the
 observation that, for every $i < \omega_1$, the following intermediate
 results can be proved by simultaneous induction with
 Theorem~\ref{thm:iel}: for any $H$, $\rho$, $A$, and any subformula
-$J$ of $H$, both
-$T^i_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A}
-= (\Eq_{(T^\set_{H,\rho})^i K_0})^*
-\ol{\Eq_A}$\;
-and\;
+$J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A} =
+(\Eq_{(T^\set_{H,\rho})^i K_0})^* \ol{\Eq_A}$\; and\;
 \[\begin{array}{ll}
 &  \oCPORsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\

@@ -218,7 +218,7 @@ $\oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho}\overline{[\Phi := K]}$ to
 $\oCPORsem{\Gamma ; \oCPO \vdash G} \Eq_{\rho}\overline{[\Phi := K]}$
 in $\oCPOR$ for all $K_1 : \oCPORT_{k_1},...,K_n : \oCPORT_{k_n}$,
 then $\eta = \eta'$. By hypothesis, $(\eta_{\overline{T}},
-\eta'_{\overline{K^1}})$ is a morphism from $\oCPORsem{\Gamma; \Phi
+\eta'_{\overline{T}})$ is a morphism from $\oCPORsem{\Gamma; \Phi
   \vdash F} \Eq_{\rho}\overline{[\Phi := \Eq_{T}]}$ to
 $\oCPORsem{\Gamma ; \Phi \vdash G} \Eq_{\rho}\overline{[\Phi :=
     \Eq_{T}]}$ in $\oCPOR$ for all $\ol{T :
@@ -232,10 +232,10 @@ extensionality, $\eta = \eta'$.
 
 \item The application case is proved by the following sequence of
   equalities, where the second equality is by the induction hypothesis
-  and the definition of the relation environment $\Eq_\rho$, the third
-  is by the definition of application of relation transformers from
-  Definition~11, and the fourth is by
-  Lemma~23:
+  and the definition of the $\oCPO$ relation environment $\Eq_\rho$,
+  the third is by the definition of application of $\oCPO$ relation
+  transformers from Definition~11, and the fourth is by
+  Equation~10:
 \[
 \begin{split}
 \oCPORsem{\Gamma; \Phi \vdash \phi\ol{F}}\Eq_{\rho} &=
@@ -272,7 +272,7 @@ extensionality, $\eta = \eta'$.
 \end{split}
 \]
 Here, the third equality is by induction hypothesis, the fifth is by
-Lemma~23 and the fourth equality is because, for every $i < \omega_1$,
+Equation~10 and the fourth equality is because, for every $i < \omega_1$,
 the following two statements can be proved by simultaneous induction:
 and for any $H$, $\rho$, $\ol A$, and subformula $J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
@@ -319,14 +319,38 @@ T^{i+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
 \]
 Here, the third equality is by~\eqref{eq:iel-fix-point-intermediate2}
 for $J = H$, the fifth by the induction hypothesis of the IEL on $H$,
-and the last is by Lemma~23. {\color{red} Finally, the inductive step
-  for limit ordinals is...}
+and the last is by Equation~10. {\color{red} Finally, the inductive
+  step for limit ordinals is proved by the following sequence of
+  equalities:
+\[
+\begin{split}
+T^{\bigcup_{j<i}j}_{H,\Eq_\rho} K_0\, \overline{\Eq_A}
+&= (\colim{j < i}{T^j_{H,\Eq_\rho}}) K_0\, \overline{\Eq_A}\\
+&= (\colim{j < i}{(T^j_{H,\Eq_\rho} K_0)})\, \overline{\Eq_A}\\
+&= \colim{j < i}{T^j_{H,\Eq_\rho} K_0\, \overline{\Eq_A}}\\
+&= \colim{j < i}{(\Eq_{(T^\oCPO_{H,\rho})^j K_0})^*\,
+  \overline{\Eq_A}}\\
+&= (\colim{j < i}{(\Eq_{(T^\oCPO_{H,\rho})^j K_0})^*)\,
+  \overline{\Eq_A}}\\
+&= (\Eq_{\colim{j < i}{(T^\oCPO_{H,\rho})^j K_0}})^*\,
+\overline{\Eq_A}\\
+&= (\Eq_{(\colim{j < i}{(T^\oCPO_{H,\rho})^j}) K_0})^*\,
+\overline{\Eq_A}\\
+&= (\Eq_{(T^\oCPO_{H,\rho})^{\bigcup_{j < i}j} K_0})^*\, \overline{\Eq_A}\\
+\end{split}
+\]
+Here, the second, third, fifth, and seventh equalities are by Lemma~2
+of~{\color{red} [Johann and Polonsky 2019]}, the fourth is by the
+induction hypothesis, and the sixth is by $\omega_1$-cocontinuity of
+$\Eq$.  }
+ 
 
 \vspace*{0.1in}
 
 We prove~\eqref{eq:iel-fix-point-intermediate2} by structural
 induction on $J$. The only interesting cases, though, are when
-$J = \phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
+$J = \phi \ol{G}$, when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$,
+{\color{red} and when $J = \Lan_{\ol K}^{\ol \alpha} F$}.
 \begin{itemize}
 \item The case $J = \phi \ol G$ is proved by the sequence of equalities:
 \[
@@ -411,8 +435,8 @@ Indeed, the base case of~\eqref{eq:helper} is trivial because
   \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
       \Eq_A}]}\,K_0 \ = K_0 = T^0_{G, \Eq_{\rho}[\phi :=
     \Eq_{(T^{\oCPO}_{H,\rho})^i K_0}][\overline{\alpha :=
-      \Eq_A}]}\,K_0\]
-The inductive case for successor ordinals is proved by: \\
+      \Eq_A}]}\,K_0\] The inductive case of \eqref{eq:helper} for
+successor ordinals is proved by: \\
 \begin{align*}
 &\;\;\;\; T^{j+1}_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \\
 &= T_{G, \Eq_{\rho}[\phi := T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha
@@ -442,14 +466,37 @@ The inductive case for successor ordinals is proved by: \\
 \end{align*}
 
 Here, the second equality holds by the induction hypothesis
-for~\eqref{eq:helper} on $m$. The fourth equality holds because,
+for~\eqref{eq:helper} on $j$. The fourth equality holds because,
 due to typing rule restrictions for the $\mu$ types,
 $\phi$ either does not appear in $G$, or must have arity $0$, in which case
 $\ol\alpha$ must be empty, if $\phi$ appears in $G$, and
 uses~\eqref{eq:iel-fix-point-intermediate2} for $G$ when $\phi$ has
 arity $0$.
 
-{\color{red} The inductive case for limit ordinals is proved by...}
+{\color{red} The inductive case of \eqref{eq:helper} for limit
+  ordinals is proved by:
+
+\begin{align*}
+&\;\;\;\; T^{\bigcup_{j<i}j}_{G, \Eq_{\rho}[\phi :=
+      T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0\\
+&= (\colim{j < i}{T^{j}_{G, \Eq_{\rho}[\phi :=
+      T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})\,K_0\\
+&= \colim{j < i}{(T^{j}_{G, \Eq_{\rho}[\phi :=
+      T^{i}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0)}\\
+&= \colim{j<i}{(T^{j}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+          K_0}][\overline{\alpha := \Eq_A}]}\,K_0)}\\
+&= (\colim{j<i}{T^{j}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+          K_0}][\overline{\alpha := \Eq_A}]}})\,K_0\\
+&= T^{\bigcup_{j<i}j}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\oCPO}_{H,\rho})^i
+        K_0}][\overline{\alpha := \Eq_A}]}\,K_0
+\end{align*}
+} Here, the second and fourth equalitues hold by Lemma~2
+of~{\color{red} [Johann and Polonsky 2019]}, and trhe third holds by
+the induction hypothesis.
+
+
+\item {\color{blue} Finally, the $\Lan$ case for (2) is proved by...}
+
 
 \end{itemize}
 \item $\oCPORsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
@@ -466,6 +513,7 @@ arity $0$.
   = \Eq_{\oCPOsem{\Gamma; \Phi \vdash F}\rho \times
     \oCPOsem{\Gamma; \Phi \vdash G}\rho} = \Eq_{\oCPOsem{\Gamma;
       \Phi \vdash F \times G}\rho}$
+\item {\color{blue} Need $\Lan$ case for overall IEL...}
 \end{itemize}
 \end{proof}
 
