@@ -693,12 +693,11 @@ $\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
 Since (co)limits of functors are computed pointwise, $C^\A$ has all
 (co)limits that $\C$ has, and (co)limits of (co)continuous functors
 are again (co)continuous. It follows that $[\A,\C]_{(\omega_1)}$ is
-($\omega_1$-)(co)complete whenever $\C$ is.  {\color{red} In
-  particular, if $F : [\C, \C]_{(\omega_1)}$ for a(n)
-  ($\omega_1$-)cocomplete category $\C$, then we can define $F^0 =
-  \Id$, $F^{\alpha + 1} = F \circ F^\alpha$ at successor ordinals, and
-  $F^{\bigcup_{\beta < \alpha} \beta} = \colim{\beta < \alpha}
-  F^\beta$ at limit ordinals.}
+($\omega_1$-)(co)complete whenever $\C$ is. In particular, if $F :
+[\C, \C]_{(\omega_1)}$ for a(n) ($\omega_1$-)cocomplete category $\C$,
+then we can define $F^0 = \Id$, $F^{\alpha + 1} = F \circ F^\alpha$ at
+successor ordinals, and $F^{\bigcup_{\beta < \alpha} \beta} =
+\colim{\beta < \alpha} F^\beta$ at limit ordinals.
 
 If $\mcA$ is locally small, then an object $A$ of $\mcA$ is {\em
   $\omega_1$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
@@ -875,22 +874,68 @@ natural transformations from $\lambda \ol K. \setsem{\Gamma;\Phi
 K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$.
 \end{proof}
 
-\new{Need to modify to take equality conditions into account.}  Now,
-if $\C$ is any category, then given functors $F,G : \C \to \oCPO$ and
-natural transformations $\eta, \eta' : F \to G$, we define $\eta \leq
-\eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in \C$, i.e., iff
+%Now, if $\C$ is any category, then given functors $F,G : \C \to \oCPO$
+%and natural transformations $\eta, \eta' : F \to G$, we define $\eta
+%\leq \eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in \C$, i.e., iff
+%$\eta_c\,x \leq \eta'_c\,x$ in $Gc$ for all $c \in \C$ and $x \in Fc$.
+%If $(\eta_i)_{i < \omega}$ is a chain in $\{\eta : F \to G\}$, then
+%the family of morphisms $(\bigvee_{i < \omega} \eta_i)_c = \lambda
+%x. \bigvee_{i < \omega} ((\eta_i)_c\,x) : Fc \to Gc$ defines a natural
+%transformation $\bigvee_{i < \omega} \eta_i : F \to G$, and this
+%natural transformation is clearly the supremum of $(\eta_i)_{i <
+%  \omega}$ in $\{\eta : F \to G\}$. We therefore have that $\{\eta : F
+%\to G\}$ is itself an $\oCPO$.
+%Letting $F = \lambda \ol
+%K. \setsem{\Gamma;\Phi \vdash F}\rho[\ol{\Phi := K}]$ and $G = \lambda
+%\ol K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$, we have
+%that $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}\rho$ is indeed
+%an $\oCPO$.
+
+Now, if $\C$ is any category, then given functors $F,G : \C \to \oCPO$
+and natural transformations $\eta, \eta' : F \to G$, we define $\eta
+\leq \eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in \C$, i.e., iff
 $\eta_c\,x \leq \eta'_c\,x$ in $Gc$ for all $c \in \C$ and $x \in Fc$.
 If $(\eta_i)_{i < \omega}$ is a chain in $\{\eta : F \to G\}$, then
 the family of morphisms $(\bigvee_{i < \omega} \eta_i)_c = \lambda
 x. \bigvee_{i < \omega} ((\eta_i)_c\,x) : Fc \to Gc$ defines a natural
 transformation $\bigvee_{i < \omega} \eta_i : F \to G$, and this
-natural transformation is clearly the supremum of $(\eta_i)_{i <
+natural transformation is clearly the supremum of $(\eta_i)_{i <  
   \omega}$ in $\{\eta : F \to G\}$. We therefore have that $\{\eta : F
-\to G\}$ is itself an $\oCPO$.  Letting $F = \lambda \ol
-K. \setsem{\Gamma;\Phi \vdash F}\rho[\ol{\Phi := K}]$ and $G = \lambda
-\ol K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$, we have
-that $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}\rho$ is indeed
-an $\oCPO$.
+\to G\}$ is itself an $\oCPO$.  To show that $\oCPOsem{\Gamma;
+  \emptyset \vdash \Nat^\Phi \,F\,G}\rho$ is an $\oCPO$, we then still
+need to prove that, for any chain of natural transformations
+$(\eta_i)_{i < \omega}$ in $\oCPOsem{\Gamma; \emptyset \vdash
+  \Nat^\Phi \,F\,G}\rho$, $\bigvee_{i < \omega} \eta_i$ is again in
+$\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho$.  By
+hypothesis, each $\eta_i$ is such that, for all $\ol{K = (K^1, K^2,
+  K^*) : \oCPORT_k}$,
+\[((\eta_i)_{\overline{K^1}},
+(\eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
+  F}\Eq_{\rho}[\ol{\Phi := K}] \rightarrow \oCPORsem{\Gamma; \Phi
+  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is a morphism in
+$\oCPOR$. To see that, for all $\ol{K = (K^1, K^2, K^*) : \oCPORT_k}$,
+%\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+%%  \omega} \eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
+%  F}\Eq_{\rho}[\ol{\Phi := K}] \rightarrow \oCPORsem{\Gamma; \Phi
+%  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is again a morphism in
+%$\oCPOR$, we observe that
+$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+  \omega} \eta_i)_{\overline{K^2}})$ is a morphism from
+$\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi := K}]$ to
+$\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi := K}]$ in
+$\oCPOR$, we simply observe that
+\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i < \omega}
+\eta_i)_{\overline{K^2}}) = (\bigvee_{i < \omega}
+(\eta_i)_{\overline{K^1}}, \bigvee_{i < \omega}
+(\eta_i)_{\overline{K^2}}) = \bigvee_{i < \omega}
+((\eta_i)_{\overline{K^1}}, (\eta_i)_{\overline{K^2}})\] so
+$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+  \omega} \eta_i)_{\overline{K^2}})$ is the sup of a chain of
+morphisms from $\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi :=
+    K}]$ to $\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi :=
+    K}]$ in $\oCPOR$ and thus is itself such a morphism. Taken
+together, this all shows that $\oCPOsem{\Gamma; \emptyset \vdash
+  \Nat^\Phi \,F\,G}\rho$ is indeed an $\oCPO$.
 
 That each of the above interpretations is $\omega_1$-cocontinuous
 follows from Corollary~12 of~\cite{jp19} if we \new{APPROPRIATELY
