@@ -611,25 +611,27 @@ variables.
 To accommodate GADTs, we will need to transition Reynolds' approach
 from a $\set$-based semantics to a semantics based on
 $\omega$-complete partial orders. We denote the category of
-$\omega$-complete partial orders ($\oCPO$s) and their sup-preserving
-morphisms by $\omega$CPO. The underlying set of an $\oCPO$ $A$ is
-denoted $|A|$.  The category $\oCPOR$ of $\oCPO$ relations has
-as its objects triples $(A,B,R)$, where $A, B: \oCPO$ and $R:
-\rel(|A|, |B|)$ and $(\bigvee_{i < \omega} a_i, \bigvee_{i < \omega}
-b_i) \in R$ whenever $(a_i)_{i < \omega}$ and $(b_i)_{i < \omega}$ are
-chains in $A$ and $B$, respectively, such that $(a_i,b_i) \in R$ for
-all $i$. The category $\oCPOR$ has as its morphisms from $(A,B,R)$ to
-$(A',B',R')$ pairs $(f : A \to A',g : B \to B')$ of morphisms in
-$\oCPO$ such that $(f\,a, g\,b) \in R'$ whenever $(a,b) \in R$. We
-note that if $(f,g) : (A,B,R) \to (A',B',R')$ and $(a_i)_{i < \omega}$
-and $(b_i)_{i < \omega}$ are chains in $A$ and $B$, respectively, then
-$ (f \, (\bigvee_{i < \omega} a_i), g \, (\bigvee_{i < \omega} b_i)) =
-(\bigvee_{i < \omega} (f a_i), \bigvee_{i < \omega} (g b_i)) \in R'$
-necessarily holds.  We write $R : \oCPOR(A,B)$ in place of $(A,B,R):
-\oCPOR$ when convenient. If $R : \oCPOR(A,B)$ then we write $\pi_1 R$
-and $\pi_2 R$ for the {\em domain} $A$ of $R$ and the {\em codomain}
-$B$ of $R$, respectively. If $A : \oCPO$, then we write $\Eq_A =
-(A,A,\Eq_{|A|})$ for the {\em equality relation} on $A$.
+$\omega$-complete partial orders ($\oCPO$s) and their {\color{blue}
+  monotone?} sup-preserving morphisms by $\omega$CPO. The underlying
+set of an $\oCPO$ $A$ is denoted $|A|$.  The category $\oCPOR$ of
+$\oCPO$ relations has as its objects triples $(A,B,R)$, where $A, B:
+\oCPO$; $R: \rel(|A|, |B|)$; {\color{blue} $(a,b) \in R, (a',b') \in
+  R$, and $a \leq a'$ imply $b \leq b'$;} and $(\bigvee_{i < \omega}
+a_i, \bigvee_{i < \omega} b_i) \in R$ whenever $(a_i)_{i < \omega}$
+and $(b_i)_{i < \omega}$ are chains in $A$ and $B$, respectively, such
+that $(a_i,b_i) \in R$ for all $i$. The category $\oCPOR$ has as its
+morphisms from $(A,B,R)$ to $(A',B',R')$ pairs $(f : A \to A',g : B
+\to B')$ of morphisms in $\oCPO$ such that $(f\,a, g\,b) \in R'$
+whenever $(a,b) \in R$. We note that if $(f,g) : (A,B,R) \to
+(A',B',R')$ and $(a_i)_{i < \omega}$ and $(b_i)_{i < \omega}$ are
+chains in $A$ and $B$, respectively, then $ (f \, (\bigvee_{i <
+  \omega} a_i), g \, (\bigvee_{i < \omega} b_i)) = (\bigvee_{i <
+  \omega} (f a_i), \bigvee_{i < \omega} (g b_i)) \in R'$ necessarily
+holds.  We write $R : \oCPOR(A,B)$ in place of $(A,B,R): \oCPOR$ when
+convenient. If $R : \oCPOR(A,B)$ then we write $\pi_1 R$ and $\pi_2 R$
+for the {\em domain} $A$ of $R$ and the {\em codomain} $B$ of $R$,
+respectively. If $A : \oCPO$, then we write $\Eq_A = (A,A,\Eq_{|A|})$
+for the {\em equality relation} on $A$.
 
 To adapt Reynolds' approach, we first inductively define, for each
 type, an object interpretation in $\oCPO$ and a relational
