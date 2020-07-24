@@ -1,0 +1,856 @@
+% double-blind review submission, w/o CCS and ACM Reference (max
+%
+% submission space)
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For double-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission, w/ CCS and ACM Reference
+%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission, w/ required CCS and ACM Reference
+%\documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2020}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+%% Citation style
+%% Note: author/year citations are required for papers published as an
+%% issue of PACMPL.
+\citestyle{acmauthoryear}   %% For author/year citations
+%\citestyle{acmnumeric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Note: Authors migrating a paper from PACMPL format to traditional
+%% SIGPLAN proceedings format must update the '\documentclass' and
+%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+%\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\input{macros}
+\input{mytheorem}
+
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+
+\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+
+\newcommand{\ininv}[2]{(\tin^{-1}_{\onet +
+  \beta \times \phi (\phi\beta)})_{#1}\, #2}
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\renewcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\renewcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\Bcons}{\mathit{Bcons}}
+\newcommand{\Bnil}{\mathit{Bnil}}
+
+\title[Free Theorems for Nested Types]{Free Theorems for
+  %Primitive
+  Nested Types} %% [Short Title] is optional; when present,
+                         %% will be used in header instead of Full
+                         %% Title.
+%\titlenote{with title note}             %% \titlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+%\subtitle{Subtitle}                     %% \subtitle is optional
+%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
+                                        %% can be repeated if necessary;
+                                        %% contents suppressed with 'anonymous'
+
+
+%% Author information
+%% Contents and number of authors suppressed with 'anonymous'.
+%% Each author should be introduced by \author, followed by
+%% \authornote (optional), \orcid (optional), \affiliation, and
+%% \email.
+%% An author may have multiple affiliations and/or emails; repeat the
+%% appropriate command.
+%% Many elements are not rendered, but should be provided for metadata
+%% extraction tools.
+
+%% Author with single affiliation.
+\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
+%\authornote{with author1 note}          %% \authornote is optional;
+%                                        %% can be repeated if necessary
+%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
+\affiliation{
+%  \position{Position1}
+%  \department{Department1}              %% \department is recommended
+  \institution{Appalachian State University}            %% \institution is required
+%  \streetaddress{Street1 Address1}
+%  \city{City1}
+%  \state{State1}
+%  \postcode{Post-Code1}
+%  \country{Country1}                    %% \country is recommended
+}
+\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+
+
+%% macros
+\newcommand{\nats}{\mu \beta. \onet + \beta}
+
+\begin{document}
+
+% Equality type GADT
+
+\begin{comment}
+
+    \[\begin{array}{l}
+      \mathtt{data\; Eql \;(A : Set)\;(B : Set)\;:\;Set\;where}\\
+    \hspace*{0.4in}\mathtt{refl\;:\; \;Eql \;A\;A}
+    \end{array}\]
+
+    % singleton Z - not a GADT
+    \[\begin{array}{l}
+    \mathtt{data\; Z \;:\;Set\;where}\\
+    \hspace*{0.4in}\mathtt{szero\;:\; \;Z}
+    \end{array}\]
+
+    % singleton S - not a GADT
+    \[\begin{array}{l}
+      \mathtt{data\; S \;(A : Set)\;:\;Set\;where}\\
+    \hspace*{0.4in}\mathtt{ssucc\;:\; A \rightarrow S\;A}
+    \end{array}\]
+
+    % GNat  - GADT
+    \[\begin{array}{l}
+    \mathtt{data\; GNat\;(A : Set)\;:\;Set\;where}\\
+    \hspace*{0.4in}\mathtt{gzero\;:\; GNat\;Z}\\
+      \hspace*{0.4in}\mathtt{gsucc\;:\;GNat\;A \rightarrow GNat\;(S\;A)}
+    \end{array}\]
+
+
+    % GVec  - GADT
+    % --- uses GADT (GNat) in subscript!
+    \[\begin{array}{l}
+      \mathtt{data\; GVec\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+      \hspace*{0.4in}\mathtt{gnil\;:\; GVec\;A\;(GNat\;Z)}\\
+      \hspace*{0.4in}\mathtt{gcons\;:\; A \rightarrow 
+          GVec\;A\;(GNat\;N) \rightarrow GVec\;A\;(GNat\;(S\;N))} 
+    \end{array}\]
+
+    % PTree 
+    \[\begin{array}{l}
+      \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
+      \hspace*{0.4in}\mathtt{pleaf\;:\; A \rightarrow PTree\;A}\\
+      \hspace*{0.4in}\mathtt{pnode\;:\; PTree\;(A \times A) \rightarrow PTree\;A} \\
+    \end{array}\]
+
+
+    % GTree
+    \[\begin{array}{l}
+      \mathtt{data\; GTree\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+      \hspace*{0.4in}\mathtt{gleaf\;:\; A \rightarrow GTree\;A\;Z}\\
+      \hspace*{0.4in}\mathtt{gnode\;:\; GTree\;A\;N \rightarrow GTree\;A\;N 
+            \rightarrow GTree\;A\;(S\;N)} \\
+    \end{array}\]
+
+    % ETree
+    \[\begin{array}{l}
+      \mathtt{data\; ETree\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+      \hspace*{0.4in}\mathtt{eleaf\;:\; A \rightarrow Eql\;N\;Z \rightarrow ETree\;A\;N}\\
+      \hspace*{0.4in}\mathtt{enode\;:\; Eql\;N\;(S\;M) \rightarrow ETree\;A\;M \rightarrow ETree\;A\;M 
+            \rightarrow ETree\;A\;N} \\
+    \end{array}\]
+
+
+    % lambda terms from wobbly types (minus a few constructors)
+    \[\begin{array}{l}
+      \mathtt{data\; Term\;(A : Set)\;:\;Set\;where}\\
+      \hspace*{0.4in}\mathtt{lit\;:\; \nat \rightarrow Term\;\nat}\\
+      \hspace*{0.4in}\mathtt{inc\;:\; Term\;\nat \rightarrow Term\;\nat}\\
+      \hspace*{0.4in}\mathtt{isZ\;:\; Term\;\nat \rightarrow Term\;Bool}\\
+      \hspace*{0.4in}\mathtt{pair\;:\; Term\;A \rightarrow Term\;B \rightarrow Term\;(A \times B)}
+    \end{array}\]
+
+
+    % 
+    \[\begin{array}{l}
+    % Natural numbers in our calculus
+    \nat = (\mu \beta. \onet + \beta) \\
+    % Z in our calculus
+    Z = \onet \\
+    % S in our calculus
+    S \, \beta = (\mu \phi. \lambda \alpha. \alpha) \beta \\
+    % GNat in our calculus
+    \mathit{GNat} \, \beta = 
+    (\mu \phi. \lambda \alpha. 
+      (\Lan^\emptyset_Z \, 1)\alpha 
+      + (\Lan^\gamma_{S\,\gamma} \, \phi \gamma)\alpha)\beta \\
+    % GVec in our calculus
+    \mathit{GVec} \, \beta_1 \, \beta_2 = 
+      (\mu \phi. \lambda \alpha_1, \alpha_2. 
+        (\Lan^\gamma_{\gamma, \mathit{GNat}\,Z} \, 1)(\alpha_1, \alpha_2)
+      + (\Lan^{\gamma_1,\gamma_2}_{\gamma_1, \mathit{GNat} \, (S\,\gamma_2)}
+            \,\gamma_1 \times \phi (\gamma_1, \mathit{GNat} \, \gamma_2))(\alpha_1, \alpha_2)
+            )(\beta_1, \beta_2) \\
+      \color{red} \mbox{Note: GVec uses GNat as a subscript}\\
+    % GTree in our calculus
+      \mathit{GTree} \, \beta_1 \, \beta_2 =
+        (\mu \phi. \lambda \alpha_1, \alpha_2.
+          (\Lan^\gamma_{\gamma, Z} \, \gamma)(\alpha_1, \alpha_2)
+        + (\Lan^{\gamma_1, \gamma_2}_{\gamma, S\,\gamma_2} \, \phi\,(\gamma_1,\gamma_2) \times \phi\,(\gamma_1,\gamma_2))(\alpha_1, \alpha_2)
+        )(\beta_1, \beta_2) \\
+    % PTree in our calculus
+      \mathit{PTree} \, \beta = 
+        (\mu \phi. \lambda \alpha. \alpha + \phi\,(\alpha \times \alpha))\beta \\
+
+    % Term data type in our calculus
+    \mathit{Term} \, \beta = (\mu \phi. \lambda \alpha. 
+      (\Lan^\emptyset_\nat \, \nat)\alpha
+    + (\Lan^\emptyset_\nat \, \phi \nat)\alpha
+    + (\Lan^\emptyset_{\mathit{Bool}} \, \phi \nat)\alpha
+    + (\Lan^{\gamma_1, \gamma_2}_{\gamma_1 \times \gamma_2} \, \phi \gamma_1 \times \phi \gamma_2)\alpha)\beta\\
+    % Eql data type 
+      \mathit{Eql} \, \beta_1 \, \beta_2 = (\Lan^\gamma_{\gamma, \gamma} 1)(\beta_1, \beta_2)
+    \end{array}\]
+  \end{comment}
+
+
+\section{Programming with $\Lan$ types}
+We can use $\Lan$ types in several different ways in our calculus. In this note
+we will explore how to use $\Lan$ types to encode GADTs in our calculus. 
+These $\Lan$ types / GADTs have several useful applications in our calculus.
+In addition to allowing for more general return types in data type constructors,
+$\Lan$ can be combined with singleton types to mimick some dependent types.
+
+We can also define existential types and an equality type using $\Lan$,
+but the latter is not really useful in the absence of type refinement(?).
+
+The usefulness of existential types is also somewhat limited depending on 
+what is allowed in the context of $G$ in the $\partial$ rule. 
+
+
+
+
+
+
+
+\subsection{Using Lan in a constructor}
+Our calculus does not include "GADT-syntax" (like Agda, Haskell + GADTs) in which 
+one can make the "return type" explicit.  Instead,
+we write a data type as the fixed point of the sum of its constructors. 
+To produce a term of some data type with $n$ constructors $(\mu \phi. \lambda \ol{\alpha}. F_1 + ... + F_n)\ol{G}$,
+we first construct a term 
+$$t : F_i [\phi :=_\beta (\mu \phi. \lambda \ol{\alpha}. F_1 + ... + F_n)\ol{\beta}][\ol{\alpha := G}]$$
+and invoke $\tin$ and some combination of $\inl/\inr$ to get 
+$$(\tin_{F_1 + ... + F_n})_{\ol{G}} \, (..\inl/\inr..  \,t) : (\mu \phi. \lambda \ol{\alpha}. F_1 + ... + F_n)\ol{G}$$
+
+So how are
+these restrictions on the return types enforced in our calculus?
+Although $\tin_{F_1 + ... + F_n}$ is a natural transformation from 
+$$(F_1 + ... + F_n)[\phi :=_\beta (\mu \phi. \lambda \ol{\alpha}. F_1 + ... + F_n)\ol{\beta}][\ol{\alpha := \beta}]$$
+to 
+$$(\mu \phi.\ol\alpha. F_1 + ... + F_n)\ol\beta$$
+we can only use the component $(\tin_{F_1 + ... + F_n})_{\ol{G}}$ when
+$F_i [\phi :=_\beta (\mu \phi. \lambda \ol{\alpha}. F_1 + ... + F_n)\ol{\beta}][\ol{\alpha := G}]$
+is inhabited for some $1 \le i \le n$. 
+
+So when $F_i = (\Lan^{\ol\gamma}_{\ol K} \,H)\ol\alpha$, we know from the $\int$ rule
+that we can only introduce terms of type $(\Lan^{\ol\gamma}_{\ol K} \,H)\ol{K[\ol{\gamma := A}]}$
+for some types $\ol{A}$, so we can never use a component of $\tin_{F_1 + ... F_n}$ unless it has the form
+$(\tin_{F_1 + ... F_n})_{\ol{K[\ol{\gamma := A}]}}$
+
+
+% $\alpha_j = K_j[\ol{\gamma := A}]$ for $j = 1,...,|\ol{K}|$ and types $\ol{A}$.
+For example, consider the third constructor in
+the type of simply-typed lambda terms:
+\[\begin{array}{l}
+  \mathtt{data\; Term\;(A : Set)\;:\;Set\;where}\\
+  \hspace*{0.4in}\mathtt{lit\;:\; \nat \rightarrow Term\;\nat}\\
+  \hspace*{0.4in}\mathtt{inc\;:\; Term\;\nat \rightarrow Term\;\nat}\\
+  \hspace*{0.4in}\mathtt{isZ\;:\; Term\;\nat \rightarrow Term\;Bool}\\
+  \hspace*{0.4in}\mathtt{pair\;:\; Term\;A \rightarrow Term\;B \rightarrow Term\;(A \times B)} \\ \\
+
+\mathit{Term} \, \beta = (\mu \phi. \lambda \alpha. 
+  (\Lan^\emptyset_\nat \, \nat)\alpha
++ (\Lan^\emptyset_\nat \, \phi \nat)\alpha
++ (\Lan^\emptyset_{\mathit{Bool}} \, \phi \nat)\alpha
++ (\Lan^{\gamma_1, \gamma_2}_{\gamma_1 \times \gamma_2} \, \phi \gamma_1 \times \phi \gamma_2)\alpha)\beta
+\end{array}\]
+
+In this case, $F_i = (\Lan^{\emptyset}_{\mathit{Bool}} \, \phi\,\nat)\alpha$, which is only inhabited when $\alpha = \mathit{Bool}$.
+The only component of $\tin_{F_1 + ... F_n}$ we can hope to use with this constructor is $(\tin_{F_1 + ... F_n})_\mathit{Bool}$,
+and this restriction corresponds exactly with the return type of \texttt{isZ} in the Agda definition. 
+
+% This restriction in the $\int$ rule also restricts the choice of $\ol{B}$ in the $\partial$ rule,
+% in practice.  
+
+
+
+\section{Singleton Types and Fake Dependent Types}
+Since the return types of constructors in a GADT can vary, 
+the type of a term can now potentially give us information about its value.
+
+We have already seen the $\mathit{Term}$ datatype, which ensures that 
+the lambda terms which inhabit the datatype are well-typed. This additional
+structure can also make programs more efficient in a practical setting
+by eliminating some pattern matching cases. 
+
+It turns out that we can mimick dependent types by using GADTs with "singleton types", 
+which are type-level representations of terms. For instance, we can 
+represent type-level natural numbers using $Z = \onet$ and 
+$S \, \beta = (\mu \phi. \lambda \alpha. \alpha) \beta$.
+
+Using $Z$ and $S$ we can define a type of length-indexed lists:
+\[\begin{array}{l}
+  \mathtt{data\; Vec\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+  \hspace*{0.4in}\mathtt{gnil\;:\; Vec\;A\;\;Z}\\
+  \hspace*{0.4in}\mathtt{gcons\;:\; A \rightarrow 
+      Vec\;A\;N \rightarrow Vec\;A\;(S\;N)}  \\ \\
+
+\mathit{Vec} \, \beta_1 \beta_2 = 
+  (\mu \phi. \lambda \alpha_1, \alpha_2. 
+    (\Lan^\gamma_{\gamma, Z} \, 1)(\alpha_1, \alpha_2)
+  + (\Lan^{\gamma_1,\gamma_2}_{\gamma_1, S\,\gamma_2}
+        \,\gamma_1 \times \phi (\gamma_1, \gamma_2))(\alpha_1, \alpha_2)
+        )(\beta_1, \beta_2)
+\end{array}\]
+and for convenience we can define some constructors \\(abusing notation to write
+$\tin_{\mathit{Vec}}$ for $\tin_{
+    (\Lan^\gamma_{\gamma, Z} \, 1)(\alpha_1, \alpha_2)
+  + (\Lan^{\gamma_1,\gamma_2}_{\gamma_1, S\,\gamma_2}
+        \,\gamma_1 \times \phi (\gamma_1, \gamma_2))(\alpha_1, \alpha_2)}$ and similar below):
+
+\[\begin{array}{l}
+  \mathit{nil}: \Nat^\alpha \, \onet \, (\mathit{List}\,\alpha) \\
+  \vspace{0.05in}
+  \mathit{nil} = L_\alpha \ast. (\tin_{\onet + \alpha \times \phi\alpha})_\alpha (\inl \, \ast) \\
+  \mathit{cons} : \Nat^\alpha \, (\alpha \times \mathit{List}\,\alpha)\, (\mathit{List} \,\alpha) \\
+  \vspace{0.05in}
+  \mathit{cons} = L_\alpha t. (\tin_{\onet + \alpha \times \phi\alpha})_\alpha (\inr \, t) \\
+  \mathit{vnil} : \Nat^\alpha \, \onet \, (\mathit{Vec} \,\alpha \,Z) \\
+  \vspace{0.05in}
+  \mathit{vnil} = L_\alpha \ast. (\tin_{\mathit{Vec}})_{\alpha, Z} (\inl \,(\int_{(\gamma, Z), \onet} \ast)) \\
+  \mathit{vcons} : \Nat^{\alpha, n} \, (\alpha \times \mathit{Vec} \, \alpha \, n)\, (\mathit{Vec} \, \alpha\,(S\,n)) \\
+  \mathit{vcons} = L_{\alpha, n} t. (\tin_{\mathit{Vec}})_{\alpha, (S \,n)} (\inr\, (\int_{(\gamma_1, S\,\gamma_2), \gamma_1 \times \mathit{Vec} \, \gamma_1\,\gamma_2} t))
+\end{array}\]
+
+We can write a function to convert a vector into a list: 
+\[\begin{array}{l}
+  \mathit{vecToList} : \Nat^{\alpha, n} \, (\mathit{Vec} \, \alpha \, n) \, (\mathit{List} \, \alpha) \\
+  \vspace{0.05in}
+  \mathit{vecToList} = (\fold_{\mathit{Vec}})_\emptyset \mathit{alg} \\
+  \mathit{alg} : \Nat^{\alpha, n} \, 
+  ((\Lan^\gamma_{\gamma, Z} \, \onet)(\alpha, n) + (\Lan^{\gamma_1, \gamma_2}_{\gamma_1, S\,\gamma_2} \, \gamma_1 \times \mathit{List}\, \gamma_1)(\alpha, n))
+  \; (\mathit{List}\,\alpha)\\
+  \mathit{alg} = L_{\alpha, n} \, t. 
+    \mathsf{case} \; t \; \mathsf{of} \; \{ \\ 
+    \hspace{0.5in} vn \mapsto \mathit{nil}_\alpha \ast; \\
+    \hspace{0.5in} vc \mapsto \mathit{cons}_\alpha 
+    (\partial^{\beta \times \mathit{List}\,\beta, (\gamma_1, S\,\gamma_2)}_{\gamma_1 \times \mathit{List}\,\gamma_1} \, (\id_{\gamma_1\times \mathit{List}\,\gamma_1}) \, vc) \\
+    \}
+\end{array}\]
+
+In $alg$, we use the following instance of the $\Lan$-elimination rule:
+\[\begin{array}{c}
+  \AXC{$\vdash \id_{\gamma_1 \times \mathit{List}\, \gamma_1} : \Nat^{\alpha,n,\gamma_1,\gamma_2}\,
+  (\gamma_1 \times \mathit{List} \, \gamma_1)\;(\gamma_1 \times \mathit{List} \, \gamma_1)$}
+  \AXC{$\emptyset;\alpha,n~|~\emptyset \vdash vc : (\Lan^{\gamma_1,\gamma_2}_{\gamma_1, S\,\gamma_2} \gamma_1 \times \mathit{List} \,\gamma_1)\,(\alpha, n) $}
+  \BIC{$\emptyset;\alpha,n~|~\emptyset \vdash \partial^{\beta_1 \times \mathit{List}\,\beta_1, (\gamma_1, S\,\gamma_2)}_{\gamma_1 \times \mathit{List}\,\gamma_1} \eta\,vc :
+  (\beta_1 \times \mathit{List}\, \beta_1)[\beta_1 := \alpha][\beta_2 := n]$}
+\DisplayProof
+\end{array}\]
+to produce a term of type $\alpha \times \mathit{List}\, \alpha$.
+We can also convert lists to vectors, but this is tackled in the next section 
+with existential types.
+
+
+\subsection{Safe(?) head}
+Given a the type of length-indexed vectors, one might ask whether we can 
+write a $head$ function of type $\Nat^{\alpha, n} (\mathit{Vec}\,\alpha\,(S\,n))\;(\alpha)$ 
+in which we only need to give the case for the $\mathit{vcons}$ constructor. 
+
+
+\[\begin{array}{l}
+  \mathit{head} : \Nat^{\alpha, n} (\mathit{Vec}\,\alpha\,(S\,n))\;(\alpha)\\
+  \mathit{head} = L_{\alpha, n} t. \mathsf{case} \, ((\tin^{-1}_{\mathit{Vec}})_{\alpha, S\,n} t) \, \mathsf{of} \{ \\
+  \hspace{0.5in} vn : (\Lan^\gamma_{\gamma, Z} \, 1)(\alpha, S\,n) \mapsto {\color{red}???}; \\
+  \hspace{0.5in} vc : (\Lan^{\gamma_1, \gamma_2}_{\gamma_1, S\,\gamma_2} \, 
+  \gamma_1 \times \mathit{Vec}\,\gamma_1\,\gamma_2)(\alpha, S\,n) 
+  \mapsto  \partial^{\beta_1, (\gamma_1, \gamma_2)}_{\gamma_1 \times \mathit{Vec}\,\gamma_1\,\gamma_2} \, (L_{\alpha, n, \gamma_1, \gamma_2}\, x. \pi_1 x) \, vc \\
+  \}
+\end{array}\]
+
+In the second case above, we can use the following instance of the $\Lan$-elimination rule
+to extract a term of type $\alpha$ from a term of type $(\Lan^{\gamma_1, \gamma_2}_{\gamma_1, S\,\gamma_2} \, 
+  \gamma_1 \times \mathit{Vec}\,\gamma_1\,\gamma_2)(\alpha, n)$:
+\[\begin{array}{c}
+  \AXC{$\vdash \eta : \Nat^{\alpha,n,\gamma_1,\gamma_2}\,
+  (\gamma_1 \times \mathit{Vec} \, \gamma_1 \,\gamma_2)\;(\gamma_1)$}
+  \AXC{$\emptyset;\alpha,n~|~ vc \vdash vc : (\Lan^{\gamma_1,\gamma_2}_{\gamma_1, S\,\gamma_2} \gamma_1 \times \mathit{Vec} \,\gamma_1\,\gamma_2)\,(\alpha, S\,n) $}
+  \BIC{$\emptyset;\alpha,n~|~ vc \vdash \partial^{\beta_1, (\gamma_1, S\,\gamma_2)}_{\gamma_1 \times \mathit{Vec}\,\gamma_1\,\gamma_2}\, \eta\,vc :
+  (\beta_1)[\beta_1 := \alpha][\beta_2 := S\,n]$}
+\DisplayProof
+\end{array}\]
+
+Unfortunately, we have no way of producing a term of type $\alpha$ in the first case. 
+In a practical setting, the type unification algorithm would determine at this point
+that the first constructor pattern need not be matched, because $Z$ cannot be unified 
+with $S\,n$ for any $n$. It is also true in our calculus that, due to the $\Lan$-introduction rule,
+it is impossible to construct a term of type $(\Lan^{\ol{\gamma}}_{\ol{K}}\, F)\ol{B}$ unless
+$B_i = K_{i}[\ol{\gamma := A}]$ for $i = 1,...,|\ol{K}|$ and some types $\ol{A}$.
+In particular, it is impossible to construct a term of type 
+$(\Lan^\gamma_{\gamma, Z} \, 1)(\alpha, S\,n)$, so assuming its existence should
+allow us to do something akin to $\bot$-eliimination in the first case above.
+{\color{blue} I don't know how we could do this because it seems we would need type-equality
+at the meta-level in order to have a rule that can check the arguments of a $\Lan$ type in this way.
+This concern is probably orthogonal to the goals of this project, but without it, the
+"fake dependent types" are not incredibly useful.}
+
+{\color{red} Note about S and Z }
+
+
+Note that we cannot write a function 
+from the type-level natural numbers to 
+the natural numbers data type. We 
+can write each instance, e.g. $Zto0 : \Nat^{\emptyset} (Z) \, (\nats)$,
+$SZto1 : \Nat^{\emptyset} (S\,Z) \, (\nats)$, but we cannot 
+write them all in a single function because S and Z are separate types. 
+(What would the type be? $\Nat^{\alpha} (Z + S \,\alpha) (\nats)$? This is too 
+generic because it must be defined for all $\alpha$. )
+We address this issue with the following GADT:
+
+\[\begin{array}{l}
+\mathtt{data\; GNat\;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{gzero\;:\; GNat\;Z}\\
+  \hspace*{0.4in}\mathtt{gsucc\;:\;GNat\;A \rightarrow GNat\;(S\;A)}
+\end{array}\]
+Note that using $\mathit{GNat}$ in the definition of $\mathit{Vec}$ 
+would required having a $\Lan$ type ($\mathit{GNat}$) in the subscript of another $\Lan$
+(a constructor for $\mathit{Vec}$).
+
+\section{Existential Types} 
+The following defines an existential type in Agda:
+\[\begin{array}{l}
+\mathtt{data\; Exists \;(F : Set \rightarrow Set)\;:\;Set_1\;where}\\
+\hspace*{0.4in}\mathtt{e\;:\; F \,A \rightarrow Exists\;F}\\
+\end{array}\]
+The aspect that makes it existential is that the type $\mathtt{A}$ used in the constructor argument is hidden in the return type.
+To provide a witness to the fact that there exists a type $\mathtt{A}$ such that $\mathtt{List\, A}$
+is inhabited, we just need to provide an inhabitant of $\mathtt{List \, A}$ for some type $\mathtt{A}$.
+
+Unfortunately, we cannot define an exact analogue (with closed type) 
+of the $\mathtt{Exists}$ datatype in our calculus because it is parameterized over a $1$-ary variable ($\mathtt{F}$),
+and we can only bind 0-ary variables in our types (we can bind other variables with $\mu$, but that isn't what we want here).
+
+However, we can define an existential type for a variable $\psi$ as $\emptyset; \psi \vdash (\Lan^{\ol\alpha}_\emptyset\,\psi\,\ol\alpha)$,
+or given some type $\Gamma; \Phi, \ol\gamma \vdash F$ we can existentially quantify $\ol\gamma$ 
+in $F$ with $\Gamma; \Phi \vdash (\Lan^{\ol\alpha}_\emptyset \, F[\ol{\gamma := \alpha}])$. 
+
+The introduction and elimination rules for $\Lan$ give these types their "existential" character:
+
+\[\begin{array}{c}
+\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
+  \AXC{$\ol{\Gamma;\Phi \vdash A}$} 
+  \AXC{$\Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\emptyset,F} t :
+  (\Lan^{\ol\alpha}_{\emptyset}\,  F)$}
+\DisplayProof
+\\\\
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
+  F\;G$}
+\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\emptyset} F) $}
+\BIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \emptyset}_F \eta\,t :
+ G$}
+\DisplayProof
+\end{array}\]
+
+The introduction rule is precisely as we expect:
+to introduce an existential type, we just need a term of type $F[\ol{\alpha := A}]$
+for some types $\ol{A}$. The elimination rule also behaves as expected: 
+if we have a term $t$ of existential type and a natural transformation from $F$ to $G$, 
+we don't need to know which instance of $F$ produced $t$ in order to reach $G$, because 
+the natural transformation is defined for all instances of $F$.
+For example, if we have a list whose elements are of an unknown type, we can still
+compute its length given a natural transformation of type $\Nat^\alpha (\mathit{List}\,\alpha) (\nat)$.
+
+
+
+\subsection{From List to Vec (PTree to GTree)}
+In order to write a natural transformation from lists to length-indexed vectors,
+we must existentially quantify the length variable in the return type. Otherwise,
+we must define the natural transformation for all possible values of $n$.
+The function is defined as follows:
+
+{\color{red} I am having issues defining the list to vector function at the moment, but I will define an analogous
+embedding function for $\mathit{PTree}$ and $\mathit{GTree}$:}
+\[\begin{array}{l}
+  \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
+  \hspace*{0.4in}\mathtt{pleaf\;:\; A \rightarrow PTree\;A}\\
+  \hspace*{0.4in}\mathtt{pnode\;:\; PTree\;(A \times A) \rightarrow PTree\;A} \\ \\
+  \mathit{PTree} \, \beta = 
+    (\mu \phi. \lambda \alpha. \alpha + \phi\,(\alpha \times \alpha))\beta \\ \\ \\
+
+  \mathtt{data\; GTree\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+  \hspace*{0.4in}\mathtt{gleaf\;:\; A \rightarrow GTree\;A\;Z}\\
+  \hspace*{0.4in}\mathtt{gnode\;:\; GTree\;A\;N \rightarrow GTree\;A\;N 
+        \rightarrow GTree\;A\;(S\;N)} \\ \\
+
+  \mathit{GTree} \, \beta_1 \, \beta_2 =
+    (\mu \phi. \lambda \alpha_1, \alpha_2.
+      (\Lan^\gamma_{\gamma, Z} \, \gamma)(\alpha_1, \alpha_2)
+    + (\Lan^{\gamma_1, \gamma_2}_{\gamma, S\,\gamma_2} \, \phi\,(\gamma_1,\gamma_2) \times \phi\,(\gamma_1,\gamma_2))(\alpha_1, \alpha_2)
+    )(\beta_1, \beta_2) 
+\end{array}\]
+
+%%%%% haven't quite figured this out 
+%%%%%  
+%% \[\begin{array}{l}
+%%   \mathit{listToVec} : \Nat^\alpha \, (\mathit{List}\,\alpha)\,(\Lan^n_\emptyset \, \mathit{Vec}\,\alpha\,n) \\
+%%   \vspace{0.05in}
+%%   \mathit{listToVec} = (\fold_{\onet + \beta \times \phi\,\beta})_\emptyset \, \mathit{alg} \\
+%%   \mathit{alg} : \Nat^\alpha (\onet + \alpha \times (\Lan^n_\emptyset \, \mathit{Vec}\,\alpha\,n)) 
+%%     \; (\Lan^n_\emptyset \,\mathit{Vec}\,\alpha\,n) \\
+%%   \mathit{alg} = L_\alpha \,s. \mathsf{case} \;s \; \mathsf{of} \; \{ \\
+%%     \hspace{0.5in} \ast \mapsto \int_{\emptyset, \mathit{Vec}\,\alpha\,n} (\mathit{vnil}_\alpha \ast)  ; \\
+%%     \hspace{0.5in} t 
+%%     : \alpha \times (\Lan^n_\emptyset \,\mathit{Vec}\,\alpha\,n) 
+%%     \mapsto ??? \\
+%%     \}
+%% \end{array}\]
+
+We first define some constructors for $\mathit{GTree}$ and some helper functions for 
+$\mathit{ptreeToGTree}$. There is some trickiness with variable names in the $\Lan$ types, and so we define
+$\mathit{alphaRename}$ to deal with this. 
+
+The origin of this issue is in the typing of the 
+$\Lan$-elimination rule used in the second case of $alg$ below. In particular, it does
+not seem possible to let the codomain of $\eta$ be typed as $\emptyset; \alpha, n \vdash (\Lan^n_\emptyset \, \mathit{GTree}\,\alpha\,n)$,
+even though it is legal to form $\emptyset; \alpha \vdash (\Lan^n_\emptyset \,\mathit{GTree}\,\alpha\,n)$ and 
+then weaken to get  $\emptyset; \alpha, n \vdash (\Lan^n_\emptyset \, \mathit{GTree}\,\alpha\,n)$. The issue
+is that a natural transformation of type 
+$\Nat^{\alpha,n}\,
+  (\mathit{GTree}\,(\alpha\times\alpha)\,n) \;(\Lan^n_\emptyset\,\mathit{GTree}\,\alpha\,n)
+  $ 
+apparently cannot be defined directly.
+To define such a natural transformation, we would need to change $\mathit{helper}$'s type and definition:  \\ \\
+  $\mathit{helper} : \Nat^{\alpha,n}\,
+  (\mathit{GTree}\,(\alpha\times\alpha)\,n) \;(\Lan^{\color{red}n}_\emptyset\,\mathit{GTree}\,\alpha\,{\color{red}n})$ \\
+  $\mathit{helper} = L_{\alpha, n} \, t. \, \int_{\emptyset, \mathit{GTree}\,\alpha\,{\color{red}n}}  \,  (\mathit{gnode}_{\alpha, n}  \,  (\mathit{unzipGTree}_{\alpha, n} \, t)) $ \\
+
+It turns out that the use of $\int_{\emptyset, \mathit{GTree}\,\alpha\,n}$ is not well-typed in this 
+version (specifically because it requires $n$ to be in both $\Phi$ and $\ol\alpha$ in the context of $F$
+in the $\Lan$-introduction rule), and so we must define $\mathit{alphaRename}$.
+
+
+\[\begin{array}{l}
+  % constructors for GTree
+  \mathit{gleaf} : \Nat^{\alpha}\, (\alpha) \, (\mathit{GTree}\,\alpha\,Z) \\
+  \mathit{gleaf} = L_\alpha \, t. (\tin_{\mathit{GTree}})_{\alpha,Z} \, (\inl \, (\int_{(\gamma, Z), \gamma} \, t)) \\ \\ 
+
+  \mathit{gnode} : \Nat^{\alpha, n}\, (\mathit{GTree}\,\alpha\,n \times \mathit{GTree}\,\alpha\,n) \, (\mathit{GTree}\,\alpha\, (S\,n)) \\
+  \mathit{gnode} = L_{\alpha, n} \, t. (\tin_{\mathit{GTree}})_{\alpha,(S\,n)} \, (\inr \, (\int_{(\gamma_1, S\,\gamma_2), \mathit{GTree}\,\gamma_1\,\gamma_2\times\mathit{GTree}\,\gamma_1\,\gamma_2} \, t)) \\ \\ 
+
+  \mathit{ptreeToGTree} : \Nat^\alpha \, (\mathit{PTree}\,\alpha)\,(\Lan^n_\emptyset \, \mathit{GTree}\,\alpha\,n) \\
+  \vspace{0.05in}
+  \mathit{ptreeToGTree} = (\fold_{\beta + \phi\,(\beta \times \beta)})_\emptyset \, \mathit{alg} \\ \\ 
+  \mathit{alg} : \Nat^\alpha (\alpha + (\Lan^n_\emptyset \, \mathit{GTree}\,(\alpha \times \alpha) \,n)) 
+    \; (\Lan^n_\emptyset \,\mathit{GTree}\,\alpha\,n) \\
+  \mathit{alg} = L_\alpha \,s. \mathsf{case} \;s \; \mathsf{of} \; \{ \\
+    \hspace{0.5in} \mathit{lf} : \alpha \mapsto \int_{\emptyset, \mathit{GTree}\,\alpha\,n} (\mathit{gleaf}_\alpha \mathit{lf})  ; \\
+    \hspace{0.5in} \mathit{nd}
+    : (\Lan^n_\emptyset \,\mathit{GTree}\,(\alpha \times \alpha)\,n) 
+    \mapsto \mathit{alphaRename}_{\mathit{GTree}\,\alpha\,\beta}\, ( \partial^{(\Lan^m_\emptyset \,\mathit{GTree}\,\alpha\,m),\emptyset}_{\mathit{GTree}\,(\alpha \times \alpha)\,n} \mathit{helper} \,t ) \\
+    \}\\ \\
+
+  \mathit{helper} : \Nat^{\alpha,n}\,
+  (\mathit{GTree}\,(\alpha\times\alpha)\,n) \;(\Lan^m_\emptyset\,\mathit{GTree}\,\alpha\,m) \\
+  \mathit{helper} = L_{\alpha, n} \, t. \, \int_{\emptyset, \mathit{GTree}\,\alpha\,m}  \,  (\mathit{gnode}_{\alpha, n}  \,  (\mathit{unzipGTree}_{\alpha, n} \, t)) \\ \\
+
+  \mathit{unzipGTree} : \Nat^{\alpha, n} \, (\mathit{GTree}\,(\alpha \times \alpha)\,n) \, (\mathit{GTree}\,\alpha\,n \times \mathit{GTree}\,\alpha\,n) \\
+  \vspace{0.05in}
+  \mathit{unzipGTree} = L_{\alpha, n}\, t. (     
+    ((\map^{\alpha \times \alpha, \alpha}_{\mathit{GTree}\,\beta\,n})_\emptyset \, (L_{\alpha, n} x. \pi_1 x))_{\alpha, n} \, t ,\\
+    \hspace{1.3in}       ((\map^{\alpha \times \alpha, \alpha}_{\mathit{GTree}\,\beta\,n})_\emptyset \, (L_{\alpha, n} x. \pi_2 x))_{\alpha, n} \, t)\\ \\
+   
+
+
+  \mathit{existsGTree} : \Nat^{\alpha, n} (\mathit{GTree}\,\alpha\,n) \; (\Lan^m_\emptyset \,\mathit{GTree}\,\alpha\,m) \\
+    \vspace{0.15in}
+    % F = GTree alpha n 
+    % t : (GTree alpha n)[n := S n] -- ! cant do this because \Phi and \ol\alpha 
+    % must be disjoint for F in \int rule 
+    % -- but we can let Phi := alpha, n ; \ol\alpha := m ; A := S n
+    % -- F := \alpha, n, m \vdash GTree \alpha m 
+    % -- F[\alpha := A] := GTree \alpha (S n)
+    \mathit{existsGTree} = L_{\alpha, n} \, t. \int_{\emptyset,\mathit{GTree}\,\alpha\,m} t \\ 
+    \vspace{0.05in}
+    % we cant replace along m, n here can we ? yes we can , e.g. 
+    % dfn 3 
+    % "H" - phi \vdash (Lan^m phi m ) 
+    % "F" - alpha, n \vdash Vec alpha n 
+    % --------
+    % \alpha \vdash (Lan^m phi m)[phi :=_n Vec alpha n]
+    % =
+    % \alpha \vdash (Lan^m Vec alpha m)
+    %
+    %
+  \mathit{alphaRename} : \Nat^{\phi} (\Lan^m_\emptyset \,\phi\,m) \; (\Lan^n_\emptyset \,\phi\,n)\\
+    \vspace{0.05in}
+    \mathit{alphaRename} = L_{\phi}\, t.  \partial^{(\Lan^n_\emptyset \phi\,n), \emptyset}_{(\phi\,m)} \mathit{exists}  \;t \\
+    \\
+    \mathit{exists} : \Nat^{\phi, m} (\phi\,m) \; (\Lan^n_\emptyset \, \phi \,n) \\
+    \mathit{exists} = L_{\phi, m}\, t . \int_{\emptyset, \phi\,n} t \\ \\
+
+
+\end{array}\]
+
+
+{\color{red} Let $\emptyset; \alpha \vdash G = (\Lan^n_\emptyset\,\mathit{GTree}\,\alpha\,n)$.
+Is this allowed?
+}
+
+\[\begin{array}{c}
+  \vspace{0.05in}
+  \mbox{\textbf{Typing of $\Lan$-elimination in \textit{nd} case of \textit{alg} } }\\
+\AXC{$\emptyset;\emptyset~|~\Delta \vdash \eta : \Nat^{\alpha,n}\,
+  (\mathit{GTree}\,(\alpha\times\alpha)\,n) \;(\Lan^m_\emptyset\,\mathit{GTree}\,\alpha\,m)
+  $}
+  \AXC{$\emptyset;\alpha~|~\Delta \vdash t : (\Lan^n_\emptyset \,\mathit{GTree}\,(\alpha \times \alpha) \,n) $}
+  \BIC{$\emptyset;\alpha~|~\Delta \vdash \partial^{(\Lan^m_\emptyset \,\mathit{GTree}\,\alpha\,m),\emptyset}_{\mathit{GTree}\,(\alpha \times \alpha)\,n} \eta\,t :
+  (\Lan^m_\emptyset \,\mathit{GTree}\,\alpha\,m)  
+  $}
+\DisplayProof \\ \\
+
+  \vspace{0.05in}
+  \mbox{\textbf{Typing of $\Lan$-elimination in \textit{alphaRename} } }\\
+  % typing of alpha conversion for Lan
+  \AXC{$\emptyset;\emptyset~|~t\vdash \eta : \Nat^{\phi, m}\,
+    (\phi\,m)\; (\Lan^n_\emptyset \,\phi\,n)$}
+  \AXC{$\emptyset;\phi~|~ t \vdash t : (\Lan^{m}_{\emptyset} (\phi\,m))$}
+  \BIC{$\emptyset;\phi~|~ t \vdash \partial^{(\Lan^n_\emptyset \phi\,n), \emptyset}_{(\phi\,m)} \eta\,t :
+   (\Lan^n_\emptyset \,\phi\,n)$}
+  \DP \\ \\
+
+  \vspace{0.05in}
+  \mbox{\textbf{Typing of $\Lan$-introduction in \textit{exists} } }\\
+  % typing of alpha conversion helper function for Lan (exists function)
+  \AXC{$\emptyset; \phi, m, n \vdash \phi \,n$}
+  \AXC{$\emptyset; \phi, m \vdash m $}
+  \AXC{$\emptyset; \phi, m \,|\, t \vdash t : \phi n [n := m]$}
+  \TIC{$\emptyset; \phi, m \,|\, t \vdash \int_{\emptyset, \phi \,n} t : (\Lan^n_\emptyset \phi \,n)$}
+  \DP
+\end{array}\]
+
+
+\subsection{Varying $K$ in Existential Types}
+We can also represent existential types with $(\Lan^{\ol\alpha}_\onet \, F)\onet$, or
+by using any other constant functor as a subscript. This is because using
+a constant functor in the subscript restricts the introduction rule 
+so that the instantiating types $\ol{A}$ are hidden in the resulting $\Lan$-type. 
+
+\[\begin{array}{c}
+  \mbox{\textbf{$\Lan$-introduction rule with constant subscript} }\\
+\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
+\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
+\AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
+\TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol K}\,  F)\,\ol{K}$}  
+\DisplayProof
+\end{array}\]
+
+Varying $K$ changes the elimination rule as well. In particular,
+the types $\ol{B}$ must be $\ol{K}$,  
+
+\[\begin{array}{c}
+  \mbox{\textbf{$\Lan$-elimination rule with constant subscript} }\\
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
+  F\;G[\ol{\beta := K}]$}
+\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol K $}
+\BIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
+ G[\ol{\beta := K}]$}
+\DisplayProof 
+\end{array}\]
+
+The most general existential type is $(\Lan^{\ol\alpha}_\emptyset \,F)$,
+or equivalently $(\Lan^{\ol\alpha}_\onet\, F)\onet$, but if we 
+change the subscript to $\nat$, for example, then we are somewhat
+restricted in what we can compute with this type due to the 
+elimination rule. 
+
+% % \subsection{Computing with Existential Types}
+% % {\color{blue} ($\Lan^\alpha_{\nat}\,\mathit{List}\,\alpha$) example}
+
+
+\section{Equality Types}
+A common use of GADTs is to define a datatype representing 
+type equality: 
+
+\[\begin{array}{l}
+  \mathtt{data\; Eql \;(A : Set)\;(B : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{refl\;:\; \;Eql \;A\;A}
+\end{array}\]
+We can define this in our calculus as 
+  $\mathit{Eql} \, \beta_1 \, \beta_2 = (\Lan^\gamma_{\gamma, \gamma} 1)(\beta_1, \beta_2)$.
+Looking at the $\Lan$-introduction rule tells us that we can only produce a term of 
+this type when $\beta_1$ and $\beta_2$ are the same type: 
+
+
+\[\begin{array}{c}
+\AXC{$\Gamma; \Phi, \gamma\vdash \onet$}
+\AXC{$\ol{\Gamma; \gamma \vdash \gamma}$}
+  \AXC{$\Gamma;\Phi \vdash A $}
+  \AXC{$\vdash t : \onet$}
+\QIC{$\Gamma;\Phi~|~\emptyset \vdash \int_{\ol K,F} t :
+  (\Lan^{\gamma}_{\gamma, \gamma}\,  \onet)\,(A, A)$}
+\DisplayProof
+\end{array}\]
+
+We can use the elimination rule to show that this equality
+is symmetric, but so far, I have not found many useful applications
+of this type. It seems these types are mostly useful in practical settings
+with type refinement/unification.
+
+\[\begin{array}{c}
+  \mbox{\textbf{Generic $\Lan$-elimination rule for Eql } }\\
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\gamma}\,
+  \onet\;G[\beta_1 := \gamma][\beta_2 := \gamma]$}
+\AXC{$\Gamma;\Phi \vdash A$}
+\AXC{$\Gamma;\Phi \vdash B$}
+  \AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\gamma}_{\gamma, \gamma} \onet)\,(A, B) $}
+\QIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
+  G[\beta_1 := A][\beta_2 := B] $}
+\DisplayProof \\ \\
+
+
+\mbox{\textbf{$\Lan$-elimination rule for Eql with G = ($\mathit{Eql} \, \beta_2 \, \beta_1$)} }\\
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\gamma}\,
+  \onet\;(\mathit{Eql} \, \gamma \, \gamma)$}
+  
+  % G[\beta_1 := \gamma][\beta_2 := \gamma]$}
+\AXC{$\Gamma;\Phi \vdash A$}
+\AXC{$\Gamma;\Phi \vdash B$}
+  \AXC{$\Gamma;\Phi~|~\Delta \vdash t : \mathit{Eql}\,A\,B
+  % : (\Lan^{\gamma}_{\gamma, \gamma} \onet)\,(A, B)
+  $}
+\QIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
+  \mathit{Eql}\,B\,A
+  % G[\beta_1 := A][\beta_2 := B] 
+  $}
+\DisplayProof \\
+\end{array}\]
+
+
+We can also use the $\mathit{Eql}$ type to define GADTs, e.g., an analogue of
+$\mathit{GTree}$:
+
+\[\begin{array}{l}
+  \mathtt{data\; ETree\;(A : Set)\;(N : Set)\;:\;Set\;where}\\
+  \hspace*{0.4in}\mathtt{eleaf\;:\; A \rightarrow Eql\;N\;Z \rightarrow ETree\;A\;N}\\
+  \hspace*{0.4in}\mathtt{enode\;:\; Eql\;N\;(S\;M) \rightarrow ETree\;A\;M \rightarrow ETree\;A\;M 
+        \rightarrow ETree\;A\;N} \\
+
+  \mathit{ETree} \, \beta_1 \, \beta_2 = \\
+     (\mu \phi. \lambda \alpha, n. 
+      \alpha \times (\Lan^\gamma_{\gamma, \gamma} \, \onet)(n, Z)
+    + (\Lan^{\alpha', n', m}_{\alpha', n'} \,(\Lan^\gamma_{\gamma, \gamma}\,\onet)(n', S\, m) \times \phi\,(\alpha',m) \times \phi\,(\alpha',m))(\alpha, n) 
+    )(\beta_1, \beta_2) \\
+\end{array}\]
+
+\noindent
+I have not yet explored $\mathit{ETree}$ or similar types thoroughly. 
+
+% % \section{Other}
+% % \subsection{Case Elimination}
+% % {\color{red} head: Vec a Sn -> a example}
+% % 
+% % \subsection{Properties of Lan}
+% % 
+% % {\color{red} What is allowed for the context of G in $\partial$ rule??}
+% % 
+% % 
+% % \subsection{Balanced tree variants}
+
+\end{document}
