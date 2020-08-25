@@ -835,9 +835,12 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
   \ol{A}. \oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}] \\
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
-    (\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}
-      \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}])
-    \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}
+    \{ t : (\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+          K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
+      \vdash F}\rho[\ol{\alpha := \_}]) \ol{\oCPOsem{\Gamma; \Phi
+        \vdash A}\rho}\\
+    &\hspace{0.3in}|~ (t,t) \in \oCPORsem{\Gamma;\Phi \vdash
+      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}
 \end{align*}
 \end{dfn}
 If $\rho \in \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash F}$
@@ -1138,6 +1141,9 @@ $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
 \end{itemize}
 \end{dfn}
 
+{\color{blue} Need to check that the extra condition in the interp of
+  Lans is preserved for the last clause to be well-defined.}
+  
 Definitions~\ref{def:set-sem} and~\ref{def:set-sem-funcs} respect
 weakening, i.e., ensure that a type and its weakenings have the same
 set interpretations.
@@ -1417,9 +1423,24 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
   \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
     (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}
       \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}])
-    \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}
+    \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}\\
+  \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
+    F)\ol{A}}\rho &= \{ (t_1,t_2) : \oCPOsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\pi_1 \rho \,\times\,
+  \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
+    F)\ol{A}}\pi_2 \rho\\
+  &\hspace{0.3in}|~( (\eta_1)_{\ol{\oCPORsem{\Gamma;\Phi \vdash A}\pi_1
+    \rho}} t_1,  (\eta_2)_{\ol{\oCPORsem{\Gamma;\Phi \vdash A}\pi_2
+    \rho}} t_2) \in\\
+  &\hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
+          K}\rho[\ol{\alpha := \_}]}} \oCPORsem{\Gamma; \Phi, \ol\alpha
+      \vdash F}\rho[\ol{\alpha := \_}]) \ol{\oCPORsem{\Gamma; \Phi
+        \vdash A}\rho} \}\\
 \end{align*}
 \end{dfn}
+{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
+  $\eta_1$ and $\eta_2$ are...}
+
 
 For Definition~\ref{def:rel-sem} to be well-defined, we have to check
 that each relational interpretation is in $\oCPOR$ and, in particular,
@@ -1534,6 +1555,10 @@ $\oCPORsem{\Gamma;\Phi \vdash F}f$ of $\oCPORsem{\Gamma;\Phi \vdash
 Definition~\ref{def:set-sem-funcs}, except that all interpretations
 are $\oCPO$ relational interpretations and all occurrences of
 $T^\oCPO_{H,f}$ are replaced by $T_{H,f}$.
+
+{\color{blue} This is not true for the relational interps of
+  Lans. Define explicitly.}
+
 \end{dfn}
 
 To see that the functors given by Definitions~\ref{def:rel-sem}
@@ -1916,14 +1941,13 @@ Graph Lemma for our calculus.
       \Phi \vdash F}\rho}$.
 \end{thm}
 The proof is by induction on the structure of $F$. Only the $\Nat$,
-application, and fixpoint {\color{red} and $\Lan$?} cases are
-non-routine. The latter two use
-Lemma~\ref{lem:eq-reln-equalities}. The fixpoint case also uses the
+application, fixpoint, and $\Lan$ cases are non-routine. The latter
+two use Equation~\ref{eq:eq-pres-eq}. The fixpoint case also uses the
 observation that, for every $i < \omega_1$, the following intermediate
 results can be proved by simultaneous induction with
-Theorem~\ref{thm:iel}: for any $H$, $\rho$, $A$, and any subformula
-$J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A} =
-(\Eq_{(T^\set_{H,\rho})^i K_0})^* \ol{\Eq_A}$\; and\;
+Theorem~\ref{thm:iel}: {\color{red} CHECK THIS!} for any $H$, $\rho$,
+$A$, and any subformula $J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\,
+\ol{\Eq_A} = (\Eq_{(T^\set_{H,\rho})^i K_0})^* \ol{\Eq_A}$\; and\;
 \[\begin{array}{ll}
 &  \oCPORsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\
