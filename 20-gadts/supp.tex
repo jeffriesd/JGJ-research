@@ -317,11 +317,11 @@ T^{i+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
 &= (\Eq_{(T^\oCPO_{H,\rho})^{i+1} K_0})^*\, \overline{\Eq_A} 
 \end{split}
 \]
-Here, the third equality is by
-Equation~\ref{eq:iel-fix-point-intermediate2} for $J = H$, the fifth
-by the induction hypothesis of the IEL on $H$, and the last is by
-Equation~10. {\color{blue} Finally, the inductive step for limit
-  ordinals is proved by the following sequence of equalities:
+Here, the third equality is by \eqref{eq:iel-fix-point-intermediate2}
+for $J = H$, the fifth by the induction hypothesis of the IEL on $H$,
+and the last is by Equation~10. {\color{blue} Finally, the inductive
+  step for limit ordinals is proved by the following sequence of
+  equalities:
 \[
 \begin{split}
 T^{\bigcup_{j<i}j}_{H,\Eq_\rho} K_0\, \overline{\Eq_A}
@@ -386,9 +386,9 @@ $J = (\Lan_{\ol K}^{\ol \beta} F)\ol{A}$.
 \end{split}
 \]
 Here, the second equality is by the induction hypothesis for
-Equation~\ref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth
-is by the induction hypothesis for the IEL on the $G$s, and the fifth
-is by the induction hypothesis on $i$
+~\eqref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth is by
+the induction hypothesis for the IEL on the $G$s, and the fifth is by
+the induction hypothesis on $i$
 for~\eqref{eq:iel-fix-point-intermediate1}.
 
 \item 
@@ -542,34 +542,34 @@ We can now compute
       \vdash B}\rho [\phi := \pi_2\,
     (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]}} t_2) \in\\
 & \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
-        \vdash K}\Eq_\rho[\ol{\beta := \_}]}}
+        \vdash K}\Eq_\rho[\ol{\beta := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi',\phi,
     \ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi := T^i_{H,\Eq_{\rho}} K_0][\ol{\alpha
-      := \Eq_A}][\ol{\beta := \_}])\\
+      := \Eq_A}][\ol{\beta := \Eq_{\_}}])\\
 &\hspace*{1in}\ol{\oCPORsem{\Gamma; \Phi',
     \ol\alpha,\phi\vdash B}\Eq_\rho[\phi := T^i_{H,\Eq_{\rho}} K_0][\ol{\alpha
           := \Eq_A}]}\\
-&= \{(t_1,t_2) \in \oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
-    \vdash (\Lan_{\ol K}^{\ol \beta} F)\ol{B}} \rho [\phi := \pi_1\,
-    (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]\\
-& \hspace*{0.57in}\times\;
-  \oCPOsem{\Gamma;\Phi',\phi,\ol\alpha \vdash (\Lan_{\ol
-      K}^{\ol \beta} F)\ol{B}} \rho [\phi := \pi_2\,
-    (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]\\
-& \hspace*{0.63in}|~\;((\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
-      \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i
-     K_0] [\overline{\alpha := A}]}} t_1,\,
-  (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
-      \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i
-    K_0] [\overline{\alpha := A}]}} t_2) \in\\
-& \hspace*{0.5in}{\color{red} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
-        \vdash K}\Eq_\rho[\ol{\beta := \_}]}}
-  \oCPORsem{\Gamma; \Phi',\phi,
-    \ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi := T^i_{H,\Eq_{\rho}} K_0][\ol{\alpha
-      := \Eq_A}][\ol{\beta := \_}])}\\
-&{\color{red} \hspace*{1in}\ol{\oCPORsem{\Gamma; \Phi',
-      \ol\alpha,\phi \vdash B}\Eq_\rho[\phi := \Eq_{(T^\oCPO_{H,\rho})^i
-      K_0}][\ol{\alpha := \Eq_A}]}}\\
+%&= \{(t_1,t_2) \in \oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
+%    \vdash (\Lan_{\ol K}^{\ol \beta} F)\ol{B}} \rho [\phi := \pi_1\,
+%    (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]\\
+%& \hspace*{0.57in}\times\;
+%  \oCPOsem{\Gamma;\Phi',\phi,\ol\alpha \vdash (\Lan_{\ol
+%      K}^{\ol \beta} F)\ol{B}} \rho [\phi := \pi_2\,
+%    (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]\\
+%& \hspace*{0.63in}|~\;((\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
+%      \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i
+%     K_0] [\overline{\alpha := A}]}} t_1,\,
+%  (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
+%      \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i
+%    K_0] [\overline{\alpha := A}]}} t_2) \in\\
+%& \hspace*{0.5in}{\color{red} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
+%        \vdash K}\Eq_\rho[\ol{\beta := \Eq_{\_}}]}}
+%  \oCPORsem{\Gamma; \Phi',\phi,
+%    \ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi := T^i_{H,\Eq_{\rho}} K_0][\ol{\a%lpha
+%      := \Eq_A}][\ol{\beta := \Eq_{\_}}])}\\
+%&{\color{red} \hspace*{1in}\ol{\oCPORsem{\Gamma; \Phi',
+%      \ol\alpha,\phi \vdash B}\Eq_\rho[\phi := \Eq_{(T^\oCPO_{H,\rho})^i
+%      K_0}][\ol{\alpha := \Eq_A}]}}\\
 &= \{(t_1,t_2) \in \oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
     \vdash (\Lan_{\ol K}^{\ol \beta} F)\ol{B}} \rho [\phi :=
     (T^\oCPO_{H,\rho})^i K_0] [\overline{\alpha := A}]\\
@@ -583,28 +583,23 @@ We can now compute
   (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi',\ol\alpha,\phi
       \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i K_0]
     [\overline{\alpha := A}]}} t_2) \in\\ 
-& \hspace*{0.5in}{\color{red} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
-        \vdash K}\Eq_\rho[\ol{\beta := \_}]}}
+& \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
+        \vdash K}\Eq_\rho[\ol{\beta := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi', \phi,\ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi
     := \Eq_{(T^\oCPO_{H,\rho})^i 
-      K_0}][\ol{\alpha := \Eq_A}][\ol{\beta := \_}])}\\
-&{\color{red} \hspace*{1in}\Eq_{\ol{\oCPOsem{\Gamma; \Phi',
+      K_0}][\ol{\alpha := \Eq_A}][\ol{\beta := \Eq_{\_}}])\\
+&\hspace*{1in}\Eq_{\ol{\oCPOsem{\Gamma; \Phi',
       \ol\alpha,\phi \vdash B}\rho[\phi := (T^\oCPO_{H,\rho})^i
-      K_0][\ol{\alpha := A}]}}}\\
+      K_0][\ol{\alpha := A}]}}\\
 &=\oCPORsem{\Gamma;\Phi',\phi,\ol\alpha
     \vdash (\Lan_{\ol K}^{\ol \beta} F)\ol{B}}  \Eq_{\rho} [\phi :=
    \Eq_{(T^\oCPO_{H,\rho})^i
       K_0}] [\overline{\alpha := \Eq_A}]
 \end{align*}
-The second equality uses Equation~\ref{eq:helper-lan} twice and the
-induction hypothesis once. The third equality uses the induction
-hypothesis for the IEL for $\ol{\oCPOsem{\Gamma; \Phi', \ol\alpha,\phi
-    \vdash B}\Eq_\rho[\phi := \Eq_{(T^\oCPO_{H,\rho})^i
-      K_0}][\ol{\alpha := \Eq_A}]}$} {\color{red} and the fact that the
-  red parts should be equal because the Lans are being applied to
-  equal objects. BUT HOW TO PROVE THIS LAST PART????}
-
-
+The second equality uses~\eqref{eq:helper-lan} four times, and the
+third equality uses the induction hypothesis for
+~\eqref{eq:iel-fix-point-intermediate2} twice and the induction
+hypothesis for the IEL once.}
 \end{itemize}
 \item $\oCPORsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \oCPORsem{\Gamma;
@@ -637,8 +632,8 @@ hypothesis for the IEL for $\ol{\oCPOsem{\Gamma; \Phi', \ol\alpha,\phi
       A}\rho}} t_1, (\eta_2)_{\ol{\oCPORsem{\Gamma;\Phi \vdash A}
     \rho}} t_2) \in\\
 & \hspace*{0.3in}(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
-      \vdash K}\Eq_\rho[\ol{\alpha := \_}]}} \oCPORsem{\Gamma; \Phi,
-  \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha := \_}]) \ol{\oCPORsem{\Gamma;
+      \vdash K}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]) \ol{\oCPORsem{\Gamma;
     \Phi \vdash A}\Eq_\rho}\\
 \Rightarrow & (((\pi_1 \varepsilon)_{\ol{\oCPORsem{\Gamma;\Phi \vdash 
       A}\rho}} \,((\eta_1)_{\ol{\oCPORsem{\Gamma;\Phi \vdash 
@@ -899,9 +894,7 @@ $\oCPOsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
   \ol{\alpha} \vdash F}\rho[\ol{\alpha := \oCPOsem{\Gamma;\Phi \vdash
       K}\rho}] 
 \end{array}\]
-      
-      by Equation~(6) from the paper,
-we have that 
+by Equation~(6) from the paper, we have that 
 \[\begin{array}{ll}
   &\oCPOsem{\Gamma;\Phi \,|\, \Delta
   \vdash t_{\overline K} s: G [\overline{\alpha :=
@@ -1573,7 +1566,7 @@ page~\pageref{page:dia1} commutes we first note that functoriality of
 $T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}$, naturality of
 $T^{\oCPO}_{H,\id_{\rho}[\ol{\gamma := g}]}$, the universal property of
 $\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
-\ol{A}. \eta_{\ol{A}, \ol{C'}})$ and Equation~\ref{eq:mu-sigma-def}
+\ol{A}. \eta_{\ol{A}, \ol{C'}})$ and ~\eqref{eq:mu-sigma-def}
 ensure that the following diagram commutes: {\footnotesize
 \begin{equation}\label{eq:one-side}
   \begin{tikzcd}[column sep = huge, row sep = huge]
@@ -1602,7 +1595,7 @@ T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\oCPO}_{H,\rho [\ol{\gamma :=
   \end{tikzcd}
   \end{equation}}
 Next, we note that functoriality of $T^{\oCPO}_{H,\rho [\ol{\gamma :=
-      C}]}$, Equation~\ref{eq:T-sigma-functor}, and the universal
+      C}]}$, ~\eqref{eq:T-sigma-functor}, and the universal
 property of $\mathit{fold}_{T^{\oCPO}_{H,\rho [\ol{\gamma := C}]}} (\lambda
 \ol{A}. \eta_{\ol{A}, \ol{C}})$ ensure that the following diagram
 commutes: {\footnotesize
@@ -1633,8 +1626,8 @@ T^{\oCPO}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\oCPO}_{H,\rho [\ol{\gamma :=
     B}] [\ol{\gamma := C'}]
 \end{tikzcd}
 \end{equation}}
-Combining the equations entailed by Equation~\ref{eq:one-side}
-and Equation~\ref{eq:other-side}, we get that
+Combining the equations entailed by ~\eqref{eq:one-side}
+and ~\eqref{eq:other-side}, we get that
 the top diagram in the diagram on
   page~\pageref{page:dia1} commutes, as desired.
 To see that, for all $\rho : \oCPOenv$, $d \in
