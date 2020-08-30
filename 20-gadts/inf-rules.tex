@@ -1430,8 +1430,8 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
     F)\ol{A}}\pi_2 \rho\\
   &\hspace{0.3in}|~\forall \sigma : \setenv, (
-  (\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_1,
-  (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_2) \in\\
+  (\eta^\sigma_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_1,
+  (\eta^\sigma_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_2) \in\\
   &\hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
         \vdash K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha :=
@@ -1439,7 +1439,13 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
 \end{align*}
 \end{dfn}
 {\color{blue} In the final clause of Definition~\ref{def:rel-sem},
-  $\eta_1$ and $\eta_2$ are...}
+  $\eta^\sigma_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+        K}\sigma[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
+    \vdash F}\sigma[\ol{\alpha := \_}] \; \to \;
+  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
+        K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma;
+    \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}])$ for
+  each $\sigma : \setenv$ and $i = 1,2$.}
 
 
 For Definition~\ref{def:rel-sem} to be well-defined, we have to check
