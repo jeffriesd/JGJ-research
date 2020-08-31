@@ -598,7 +598,11 @@ We can now compute
 The second equality uses~\eqref{eq:helper-lan} four times, and the
 third equality uses the induction hypothesis for
 ~\eqref{eq:iel-fix-point-intermediate2} twice and the induction
-hypothesis for the IEL once.}
+hypothesis for the IEL once, together with two applications of the
+observation that $\pi_1 (\Eq_{\rho} [\phi := (T^\oCPO_{H,\Eq_\rho})^i
+  K_0] [\overline{\alpha := \Eq_A}]) = \pi_1(\Eq_{\rho} [\phi :=
+  \Eq_{(T^\oCPO_{H,\rho})^i K_0}] [\overline{\alpha := \Eq_A}]) = \rho
+[\phi := (T^\oCPO_{H,\rho})^i K_0] [\overline{\alpha := A}]$.}
 \end{itemize}
 \item $\oCPORsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \oCPORsem{\Gamma;

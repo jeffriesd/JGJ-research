@@ -839,10 +839,30 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
           K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
       \vdash F}\rho[\ol{\alpha := \_}]) \ol{\oCPOsem{\Gamma; \Phi
         \vdash A}\rho}\\
-    &\hspace{0.3in}|~ (t,t) \in \oCPORsem{\Gamma;\Phi \vdash
-      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}
+    &\hspace{0.3in}|~
+%    (t,t) \in \oCPORsem{\Gamma;\Phi \vdash
+%      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}\\
+{\color{blue} ( (\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t,
+  (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t) \in}\\
+  &{\color{blue} \hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
+        \vdash K}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]}}
+  \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha :=
+      \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\rho} \}}\\
 \end{align*}
 \end{dfn}
+{\color{blue} Here, $\eta_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma;
+        \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma;
+    \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}] \; \to \;
+  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
+        K}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma; \Phi,
+    \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha := \Eq_{\_}}])$ for $i =
+  1,2$, i.e., $\eta_i$ is for the (mixed $\set/\rel$) diagram top p2
+  of Daniel's notes for relational environment $\Eq_\rho[\alpha :=
+    \Eq_{\_}]$. (Note that the codomains of $\eta_1$ and $\eta_2$
+  should be the same so we should have $\eta_1=\eta_2$). The condition
+  in the final clause should therefore simplify by writing $\eta$ for
+  $\eta_1 = \eta_2$.)}
+
 If $\rho \in \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash F}$
 instead of $\oCPOsem{\vdash F}\rho$ since the environment is
 immaterial.
@@ -1387,14 +1407,14 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
     F}\rho[\ol{\Phi := K}] \Rightarrow \lambda \ol{K}. \,\oCPORsem{
     \Gamma; \Phi \vdash G}\rho[\ol{\phi := K}]\}\\
   &=
-  \{(t,t') \in \oCPOsem{\Gamma; \emptyset
+  \{(\eta_1,\eta_2) \in \oCPOsem{\Gamma; \emptyset
     \vdash \Nat^\Phi
     \,F\,G} (\pi_1 \rho) \times \oCPOsem{ 
     \Gamma;\emptyset
     \vdash \Nat^\Phi \,F\,G} (\pi_2
   \rho)~|~\\ 
   & \hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : \oCPORT_{k}}.\\
-  & \hspace{0.4in} (t_{\ol{K^1}},t'_{\ol{K^2}}) \in
+  & \hspace{0.4in} ((\eta_1)_{\ol{K^1}},(\eta_2)_{\ol{K^2}}) \in
   (\oCPORsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
       K}])^{\oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
   \oCPORsem{\Gamma;\Phi \vdash \phi \ol{F}}\rho &=
@@ -1420,33 +1440,43 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
     &= \lambda \ol{R}. \oCPORsem{
       \Gamma;\ol\gamma,\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
     \delta][\ol{\alpha := \id_{\ol{R}}}] \\
-  \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
-    (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}
-      \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}])
-    \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}\\
   \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
-    F)\ol{A}}\rho &= \{ (t_1,t_2) : \oCPOsem{\Gamma;\Phi \vdash
+    F)\ol{A}}\rho &= \{ (t_1, t_2) : \oCPOsem{\Gamma;\Phi \vdash
     (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\pi_1 \rho \,\times\,
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
     F)\ol{A}}\pi_2 \rho\\
-  &\hspace{0.3in}|~\forall \sigma : \setenv, (
-  (\eta^\sigma_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_1,
-  (\eta^\sigma_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_2) \in\\
-  &\hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
-        \vdash K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}}
-  \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha :=
-      \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\sigma} \}\\
+  &\hspace{0.3in}|~{\color{blue}
+    ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1,
+(\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2) \in}\\
+  &\hspace{0.3in}{\color{blue}
+(\textit{Lan}_{\ol{\oCPORsem{\Gamma;
+          \ol\alpha \vdash K}\rho[\ol{\alpha := \Eq_{\_}}]}}
+    \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+        \Eq_{\_}}])
+    \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}} \}  
+  %\forall \sigma : \setenv, (
+  %(\eta^\sigma_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_1,
+  %(\eta^\sigma_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_2) \in\\
+  %&\hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
+  %      \vdash K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}}
+  %\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha :=
+  %    \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\sigma} \}\\
 \end{align*}
 \end{dfn}
-{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
-  $\eta^\sigma_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-        K}\sigma[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
-    \vdash F}\sigma[\ol{\alpha := \_}] \; \to \;
-  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
-        K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma;
-    \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}])$ for
-  each $\sigma : \setenv$ and $i = 1,2$.}
+{\color{blue} where $\eta_i$ is for the (mixed $\set/\rel$) diagram
+  top p2 of Daniel's notes for relational environment $\Eq_{\pi_i
+    \rho}[\alpha := \Eq_{\_}]$.}
 
+
+
+%{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
+%  $\eta^\sigma_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+%        K}\sigma[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
+%    \vdash F}\sigma[\ol{\alpha := \_}] \; \to \;
+%  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
+%        K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma;
+%    \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}])$ for
+%  each $\sigma : \setenv$ and $i = 1,2$.}
 
 For Definition~\ref{def:rel-sem} to be well-defined, we have to check
 that each relational interpretation is in $\oCPOR$ and, in particular,
