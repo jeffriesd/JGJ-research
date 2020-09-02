@@ -1190,9 +1190,11 @@ implies $\ol{(\alpha\,a,\beta\,b) \in S}$ then $(c,d) \in F^*\ol{R}$
 implies $(F^1 \ol{\alpha}\,c,F^2 \ol{\beta}\,d) \in F^*\ol{S}$. When
 convenient we identify a $0$-ary $\oCPO$ relation transformer
 $(A,B,R)$ with $R : \oCPOR(A,B)$. We may also write $\pi_1 F$ for
-$F^1$ and $\pi_2 F$ for $F^2$. We extend these conventions to $\oCPO$
-relation environments, introduced in Definition~\ref{def:reln-env}
-below, in the obvious way.
+$F^1$ and $\pi_2 F$ for $F^2$. {\color{blue} Without loss of
+  generality, we may assume that $\pi_1$ and $\pi_2$ are surjective on
+  relations.} We extend these conventions to $\oCPO$ relation
+environments, introduced in Definition~\ref{def:reln-env} below, in
+the obvious way.
 
 \begin{dfn}
 The category $\oCPORT_k$ of $k$-ary $\oCPO$ relation transformers is
@@ -1446,8 +1448,8 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
     F)\ol{A}}\pi_2 \rho\\
   &\hspace{0.3in}|~{\color{blue}
-    ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1,
-(\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2) \in}\\
+    (\nu_1 ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1),
+\nu_2 ((\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2)) \in}\\
   &\hspace{0.3in}{\color{blue}
 (\textit{Lan}_{\ol{\oCPORsem{\Gamma;
           \ol\alpha \vdash K}\rho[\ol{\alpha := \Eq_{\_}}]}}
@@ -1465,8 +1467,16 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
 \end{dfn}
 {\color{blue} where $\eta_i$ is for the (mixed $\set/\rel$) diagram
   top p2 of Daniel's notes for relational environment $\Eq_{\pi_i
-    \rho}[\alpha := \Eq_{\_}]$.}
-
+    \rho}[\alpha := \Eq_{\_}]$ and $\nu_i$ is the unique morphism in
+  $\set$ from \[(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+        K}\pi_i\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi,
+    \ol\alpha \vdash F}\pi_i\rho[\ol{\alpha := \_}])
+  \ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_i\rho}\] to
+\[\pi_i(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+      K}\rho[\ol{\alpha := \Eq_{\_}}]}} \oCPOsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}\rho[\ol{\alpha := \Eq_{\_}}])
+\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_i\rho}\]
+given by the colimit formulation of left Kan extensions.}
 
 
 %{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
