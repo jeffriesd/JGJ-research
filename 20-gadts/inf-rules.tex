@@ -221,6 +221,31 @@ Abstract goes here
   that is needed to ensure that the model induced by that semantics is
   actually parametric.}
 
+{\color{red} We should ask what, intuitively, it means to a GADT to be
+  ``parametric'', i.e., uniform in its type indices. For ADTs and
+  nested types it means that the datatype elements are constructed in
+  exactly the same ways at each type. For GADTs, it means that as
+  well, but here we have to take into account the inhabited instances
+  as well. [Of course we did not have to do that ADTs and nested types
+    because {\em all} instances of ADTs and nested types are
+    inhabited.] So, intuitively, we consider a GADT to be
+  ``parametric'' if we can construct the inhabitants of all of the
+  inhabited type instances in a type-independent way. We capture this
+  in our calculus by requiring that $\emptyset;\ol\beta \vdash K$ (and
+  that $K$ does not involve any constants?) in $\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$. Then to get that the real
+  live Lans interpreting $\Lan$-constructs are $\omega$-cocontinuous
+  we also require that $K$ is a polynomial functor in the $\alpha$s
+  that does not involve any constant functors. This means that our
+  constructors have types of the form $F\ol\beta \to F(K\ol\beta)$
+  with no constants in $K$, so that exactly the corresponding
+  instances of the GADT are inhabited for every instantiation of the
+  $\alpha$s, and the objects for each instantiation of the $\alpha$s
+  are constructed in exactly the same way. That is, the inhabited
+  instances and the construction of the data in those instances are
+  type independent.}
+  
+
 \section{The Calculus}
 
 \subsection{Types}\label{sec:types}
@@ -349,7 +374,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 \\[5ex]
 \AXC{$\Gamma; \Phi,\ol\alpha^0 \vdash F$}
-\AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
+\AXC{$\ol{{\color{blue} \emptyset};\ol\alpha^0 \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A}$}
 \TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$}
 \DisplayProof
@@ -520,7 +545,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \DisplayProof
 \\\\
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
-\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
+\AXC{$\ol{{\color{blue} \emptyset}; \ol{\alpha} \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
 \TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
   (\Lan^{\ol\alpha}_{\ol K}\,  F)\,\ol{K[\ol{\alpha := A}]}$}  
@@ -835,8 +860,8 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
   \ol{A}. \oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}] \\
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
-    \{ t : (\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-          K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
+    \{ t : (\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash
+          K}[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
       \vdash F}\rho[\ol{\alpha := \_}]) \ol{\oCPOsem{\Gamma; \Phi
         \vdash A}\rho}\\
     &\hspace{0.3in}|~
@@ -844,17 +869,18 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
 %      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}\\
 {\color{blue} ( (\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t,
   (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t) \in}\\
-  &{\color{blue} \hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
-        \vdash K}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]}}
+  &{\color{blue} \hspace{0.5in}
+     (\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\alpha 
+        \vdash K}[\ol{\alpha := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha :=
       \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\rho} \}}\\
 \end{align*}
 \end{dfn}
-{\color{blue} Here, $\eta_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma;
-        \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma;
+{\color{blue} Here, $\eta_i : \textit{Lan}_{\ol{\oCPOsem{\emptyset;
+        \ol\alpha \vdash K}[\ol{\alpha := \_}]}} \oCPOsem{\Gamma;
     \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}] \; \to \;
-  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
-        K}\Eq_\rho[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma; \Phi,
+  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\alpha \vdash
+        K}[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma; \Phi,
     \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha := \Eq_{\_}}])$ for $i =
   1,2$, i.e., $\eta_i$ is for the (mixed $\set/\rel$) diagram top p2
   of Daniel's notes for relational environment $\Eq_\rho[\alpha :=
@@ -964,9 +990,11 @@ together, this all shows that $\oCPOsem{\Gamma; \emptyset \vdash
 
 That each of the above interpretations is $\omega_1$-cocontinuous
 follows from Corollary~12 of~\cite{jp19} if we \new{APPROPRIATELY
-  RESTRICT THE SUBSCRIPTS OF $\Lan$s}.  For $\Nat$-types, we note that
-$\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}$ is an
-$\omega_1$-cocontinuous functor because, in accordance with
+  RESTRICT THE SUBSCRIPTS OF $\Lan$s; we will require that $K$ is a
+  polynomial functor in the $\alpha$s that does not involve any
+  constant functors}. For $\Nat$-types, we note that $\oCPOsem{\Gamma;
+  \emptyset \vdash \Nat^\Phi F\,G}$ is an $\omega_1$-cocontinuous
+functor because, in accordance with
 Definition~\ref{def:set-sem-funcs}, it is constant on
 $\omega_1$-directed sets. Interpretations of $\Nat$-types ensure that
 $\oCPOsem{\Gamma \vdash F \to G}$ and $\oCPOsem{\Gamma \vdash \forall
@@ -1133,24 +1161,24 @@ on the morphism $f$ is given as follows:
     F)\ol{A}}\rho \to \oCPOsem{\Gamma;\Phi \vdash
     (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho'\] is defined by
 \[\begin{array}{ll}
- & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+ & \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho'} \\
  &  \circ\;
-  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+  \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
-= & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+= & \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
  &  \circ\;
-  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+  \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}
 \end{array}\]
 where the above equality holds by naturality of
-$\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-        K}\rho[\ol{\alpha := \_}]}}\,\oCPOsem{\Gamma; \Phi, \ol\alpha
+$\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash
+        K}[\ol{\alpha := \_}]}}\,\oCPOsem{\Gamma; \Phi, \ol\alpha
     \vdash F}f[\ol{\alpha := \id_{\_}}]$.
 %(and functoriality of
 %  $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
@@ -1448,11 +1476,11 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
     F)\ol{A}}\pi_2 \rho\\
   &\hspace{0.3in}|~{\color{blue}
-    (\nu_1 ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1),
-\nu_2 ((\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2)) \in}\\
+    ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1,
+(\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2) \in}\\
   &\hspace{0.3in}{\color{blue}
-(\textit{Lan}_{\ol{\oCPORsem{\Gamma;
-          \ol\alpha \vdash K}\rho[\ol{\alpha := \Eq_{\_}}]}}
+(\textit{Lan}_{\ol{\oCPORsem{\emptyset;
+          \ol\alpha \vdash K}[\ol{\alpha := \Eq_{\_}}]}}
     \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
         \Eq_{\_}}])
     \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}} \}  
@@ -1467,16 +1495,7 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
 \end{dfn}
 {\color{blue} where $\eta_i$ is for the (mixed $\set/\rel$) diagram
   top p2 of Daniel's notes for relational environment $\Eq_{\pi_i
-    \rho}[\alpha := \Eq_{\_}]$ and $\nu_i$ is the unique morphism in
-  $\set$ from \[(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-        K}\pi_i\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi,
-    \ol\alpha \vdash F}\pi_i\rho[\ol{\alpha := \_}])
-  \ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_i\rho}\] to
-\[\pi_i(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-      K}\rho[\ol{\alpha := \Eq_{\_}}]}} \oCPOsem{\Gamma; \Phi,
-  \ol\alpha \vdash F}\rho[\ol{\alpha := \Eq_{\_}}])
-\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_i\rho}\]
-given by the colimit formulation of left Kan extensions.}
+    \rho}[\alpha := \Eq_{\_}]$.}
 
 
 %{\color{blue} In the final clause of Definition~\ref{def:rel-sem},

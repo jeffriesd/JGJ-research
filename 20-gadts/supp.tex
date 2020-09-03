@@ -540,8 +540,8 @@ We can now compute
   (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
       \vdash B}\rho [\phi := \pi_2\,
     (T^i_{H,\Eq_{\rho}} K_0)] [\overline{\alpha := A}]}} t_2) \in\\
-& \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
-        \vdash K}\Eq_\rho[\ol{\beta := \Eq_{\_}}]}}
+& \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\beta 
+        \vdash K}[\ol{\beta := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi',\phi,
     \ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi := T^i_{H,\Eq_{\rho}} K_0][\ol{\alpha
       := \Eq_A}][\ol{\beta := \Eq_{\_}}])\\
@@ -582,8 +582,8 @@ We can now compute
   (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi',\ol\alpha,\phi
       \vdash B}\rho [\phi := (T^\oCPO_{H,\rho})^i K_0]
     [\overline{\alpha := A}]}} t_2) \in\\ 
-& \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\beta 
-        \vdash K}\Eq_\rho[\ol{\beta := \Eq_{\_}}]}}
+& \hspace*{0.5in}(\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\beta 
+        \vdash K}[\ol{\beta := \Eq_{\_}}]}}
   \oCPORsem{\Gamma; \Phi', \phi,\ol\alpha,\ol\beta \vdash F}\Eq_\rho[\phi
     := \Eq_{(T^\oCPO_{H,\rho})^i 
       K_0}][\ol{\alpha := \Eq_A}][\ol{\beta := \Eq_{\_}}])\\
@@ -595,16 +595,17 @@ We can now compute
    \Eq_{(T^\oCPO_{H,\rho})^i
       K_0}] [\overline{\alpha := \Eq_A}]
 \end{align*}
-The second equality uses~\eqref{eq:helper-lan} four times, and the
-third equality uses the induction hypothesis for
-~\eqref{eq:iel-fix-point-intermediate2} twice and the induction
-hypothesis for the IEL once, together with two applications of the
-observation that $\pi_1 (\Eq_{\rho} [\phi := (T^\oCPO_{H,\Eq_\rho})^i
-  K_0] [\overline{\alpha := \Eq_A}]) = \pi_1(\Eq_{\rho} [\phi :=
-  \Eq_{(T^\oCPO_{H,\rho})^i K_0}] [\overline{\alpha := \Eq_A}]) = \rho
-[\phi := (T^\oCPO_{H,\rho})^i K_0] [\overline{\alpha := A}]$, so that
-natural transformations $\eta_1$ and $\eta_2$ appearing in the
-conditions for the first and last expressions are indeed the same.}
+The second equality uses~\eqref{eq:helper-lan} four times, the
+induction hypothesis for ~\eqref{eq:iel-fix-point-intermediate2}
+twice, and the induction hypothesis for the IEL once, together with
+two applications of the observation that $\pi_1 (\Eq_{\rho} [\phi :=
+  (T^\oCPO_{H,\Eq_\rho})^i K_0] [\overline{\alpha := \Eq_A}]) =
+\pi_1(\Eq_{\rho} [\phi := \Eq_{(T^\oCPO_{H,\rho})^i K_0}]
+   [\overline{\alpha := \Eq_A}]) = \rho [\phi := (T^\oCPO_{H,\rho})^i
+     K_0] [\overline{\alpha := A}]$, so that natural transformations
+   $\eta_1$ and $\eta_2$ appearing in the conditions for the first and
+   last expressions are indeed the same. REFER TO ELSEWHERE FOR
+   DIAGRAMS FOR $\eta_i$s.}
 \end{itemize}
 \item $\oCPORsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \oCPORsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \oCPORsem{\Gamma;
