@@ -221,29 +221,42 @@ Abstract goes here
   that is needed to ensure that the model induced by that semantics is
   actually parametric.}
 
-{\color{red} We should ask what, intuitively, it means to a GADT to be
-  ``parametric'', i.e., uniform in its type indices. For ADTs and
-  nested types it means that the datatype elements are constructed in
-  exactly the same ways at each type. For GADTs, it means that as
-  well, but here we have to take into account the inhabited instances
-  as well. [Of course we did not have to do that ADTs and nested types
+{\color{red} We should ask what, intuitively, it means to have
+  parametricity for a calculus with GADTs. In particular it should
+  mean that any polymorphic function that takes a GADT as input should
+  operate uniformly over all type instances of the GADT. That means
+  that the GADT must itself be ``parametric'', i.e., uniform in its
+  type indices. But what does this mean? For ADTs and nested types it
+  means that the datatype elements are constructed in exactly the same
+  ways at each type instance. For GADTs, it means that as well, but
+  here we also have to take into account which instances are actually
+  inhabited, since not all type instances of a GADT are inhabited.
+  [Of course we did not have to do this for ADTs and nested types
     because {\em all} instances of ADTs and nested types are
     inhabited.] So, intuitively, we consider a GADT to be
-  ``parametric'' if we can construct the inhabitants of all of the
-  inhabited type instances in a type-independent way. We capture this
-  in our calculus by requiring that $\emptyset;\ol\beta \vdash K$ (and
-  that $K$ does not involve any constants?) in $\Gamma;\Phi \vdash
-  (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$. Then to get that the real
-  live Lans interpreting $\Lan$-constructs are $\omega$-cocontinuous
-  we also require that $K$ is a polynomial functor in the $\alpha$s
-  that does not involve any constant functors. This means that our
-  constructors have types of the form $F\ol\beta \to F(K\ol\beta)$
-  with no constants in $K$, so that exactly the corresponding
-  instances of the GADT are inhabited for every instantiation of the
-  $\alpha$s, and the objects for each instantiation of the $\alpha$s
-  are constructed in exactly the same way. That is, the inhabited
-  instances and the construction of the data in those instances are
-  type independent.}
+  ``parametric'' if 1) the corresponding instances of the GADT are
+  inhabited for for every instantiation of its type parameters
+  $\ol\alpha$, and 2) the objects for each instantiation of the
+  $\alpha$s are constructed in exactly the same way. That is, which
+  instances are inhabited, as well as how the data in each of those
+  instances are constructed, is type independent. We capture this in
+  our calculus by requiring that, for $\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$, we have that
+  $\emptyset;\ol\beta \vdash K$, and that $K$ does not involve any
+  constants. (The latter ensures that a GADT with a constructor of
+  type $\alpha \to Int$ is not parametric, which makes sense since
+  there will be more ways to construct Int instances of the GADT than
+  ways to construct its other type instances.)  Further, to ensure
+  that the categorical Lans interpreting $\Lan$-constructs are
+  $\omega$-cocontinuous we also require that $K$ is a polynomial
+  functor in the $\alpha$s that does not involve any constant
+  functors. This means that our constructors have types of the form
+  $F\ol\beta \to F(K\ol\beta)$ with no constants in $K$, so that
+  exactly the corresponding instances of the GADT are inhabited for
+  every instantiation of the $\alpha$s, and the objects for each
+  instantiation of the $\alpha$s are constructed in exactly the same
+  way. That is, the inhabited instances and the construction of the
+  data in those instances are type independent.}
   
 
 \section{The Calculus}
