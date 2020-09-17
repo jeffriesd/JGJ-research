@@ -274,7 +274,7 @@ extensionality, $\eta = \eta'$.
 Here, the third equality is by induction hypothesis, the fifth is by
 Equation~10 and the fourth equality is because, for every $i < \omega$,
 the following two statements can be proved by simultaneous induction:
-and for any $H$, $\rho$, $\ol A$, and subformula $J$ of $H$,
+for any $H$, $\rho$, $\ol A$, and subformula $J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
 T^i_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\oCPO_{H, \rho})^i K_0})^*
 \ol{\Eq_A}
@@ -502,16 +502,22 @@ arity $0$.
 \end{equation}
 Indeed, the inductive case is proved by:
 \begin{align*}
-\pi\, (T^{i+1}_{H,\Eq_{\rho}} K_0) &= \pi\,(\lambda R. \oCPORsem{\Gamma;\ol
+  \pi\, (T^{i+1}_{H,\Eq_{\rho}} K_0) &= \pi(
+\lambda A. \oCPOsem{\Gamma;\ol
+  \gamma, \ol \alpha, \phi \vdash H}\rho[\phi :=
+    \pi_1(T^{i}_{H,\Eq_{\rho}} K_0)][\ol{\alpha := A}],\\
+& \hspace*{0.2in} \lambda A. \oCPOsem{\Gamma;\ol
+  \gamma, \ol \alpha, \phi \vdash H}\rho[\phi :=
+  \pi_2(T^{i}_{H,\Eq_{\rho}} K_0)][\ol{\alpha := A}],\\
+&  \hspace*{0.2in} \lambda R. \oCPORsem{\Gamma;\ol
   \gamma, \ol \alpha, \phi \vdash H}\Eq_\rho[\phi :=
-  T^{i}_{H,\Eq_{\rho}} K_0][\ol{\alpha := R}])\\
+  T^{i}_{H,\Eq_{\rho}} K_0][\ol{\alpha := R}] \,) \\
 &= \lambda A. \oCPOsem{\Gamma;\ol
   \gamma, \ol \alpha, \phi \vdash H}\rho[\phi :=
    (T^{\oCPO}_{H,\rho})^i K_0][\ol{\alpha := A}]\\
-&= (T^\oCPO_{H,\rho})^i K_0 
+&= (T^\oCPO_{H,\rho})^{i+1} K_0 
 \end{align*}
-where the second is by surjectivity of projection and the induction
-hypothesis.
+where the second equality is by the induction hypothesis.
 %For the limit ordinal $i = \bigcup_{j<i}j$ we have
 %\begin{align*}
 %& \hspace*{0.18in} \pi\, (T^{\bigcup_{j<i}j}_{H,\Eq_{\rho}} K_0)\\
@@ -556,6 +562,19 @@ We can now compute
   & \hspace*{0.63in}|~\exists\, \ol{Z : \oCPO_0}, t_1',\, t_2',\,
   f : \oCPOsem{\Gamma;\ol\beta \vdash K} \Eq_\rho[\overline{\beta :=
       \Eq_Z}]\to \oCPOsem{\Gamma;\Phi',
+    \phi,\ol\alpha \vdash B} \Eq_{\rho[\phi := (T^\set_{H,{\rho}})^i K_0] 
+  [\overline{\alpha := A}]}\\
+  &\hspace{0.9in}\mbox{such that } \iota_{Z,\pi_1 f}t_1' = t_1,\,
+  \kappa_{Z,\pi_2 f}t_2' = t_2, \mbox{ and }\\
+  &\hspace*{0.9in}(t_1',t_2') : \oCPOsem{\Gamma;\Phi',
+    \phi,\ol\alpha,\ol\beta \vdash F} \Eq_{\rho[\phi :=
+      (T^\set_{H,{\rho}[\ol{\beta := Z}]})^i K_0][\overline{\alpha := A}][\ol{\beta :=Z}]}\,\}\\
+  &= \{(t_1,t_2) \in (\oCPOsem{\Gamma;\Phi',\phi,\ol\alpha
+    \vdash (\Lan_{\ol K}^{\ol \beta} F)\ol{B}} \rho [\phi := 
+    (T^\set_{H,{\rho}})^i K_0] [\overline{\alpha := A}])^2\\
+  & \hspace*{0.63in}|~\exists\, \ol{Z : \oCPO_0}, t_1',\, t_2',\,
+  f : \oCPOsem{\Gamma;\ol\beta \vdash K} \Eq_\rho[\overline{\beta :=
+      \Eq_Z}]\to \oCPOsem{\Gamma;\Phi',
     \phi,\ol\alpha \vdash B} \Eq_{\rho[\phi := (T^\set_{H,{\rho}})^i K_0]
   [\overline{\alpha := A}]}\\
   &\hspace{0.9in}\mbox{such that } \iota_{Z,\pi_1 f}t_1' = t_1,\,
@@ -573,7 +592,7 @@ We can now compute
 \end{align*}
 The second equality uses~\eqref{eq:helper-lan} twice to rewrite the
 types of $t_1$ and $t_2$, together with the induction hypothesis
-for~\eqref{eq:iel-fix-point-intermediate2} twice --- once for $B$ and
+for~\eqref{eq:iel-fix-point-intermediate2} twice --- once for $A$ and
 $\rho$, and once for $F$ and $\rho' = \rho[\ol{\beta := Z}]$ after we
 observe that $T^i_{H,\Eq_\rho} = T^i_{H,\Eq_{\rho'}} $ since, without
 loss of generality, the variables in $\ol\beta$ do not appear free in
