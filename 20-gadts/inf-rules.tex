@@ -246,14 +246,14 @@ Abstract goes here
   constants. (The latter ensures that a GADT with a constructor of
   type $\alpha \to Int$ is not parametric, which makes sense since
   there will be more ways to construct Int instances of the GADT than
-  ways to construct its other type instances.)  Further, to ensure
-  that the categorical Lans interpreting $\Lan$-constructs are
+  ways to construct its other type instances.) Further, to ensure that
+  the categorical Lans interpreting $\Lan$-constructs are
   $\omega$-cocontinuous we also require that $K$ is a polynomial
-  functor in the $\alpha$s that does not involve any constant
-  functors. This means that our constructors have types of the form
-  $F\ol\beta \to F(K\ol\beta)$ with no constants in $K$, so that
-  exactly the corresponding instances of the GADT are inhabited for
-  every instantiation of the $\alpha$s, and the objects for each
+  functor in the $\alpha$s (that necessarily will not involve any
+  constant functors). This means that our constructors have types of
+  the form $F\ol\beta \to F(K\ol\beta)$ with no constants in $K$, so
+  that exactly the corresponding instances of the GADT are inhabited
+  for every instantiation of the $\alpha$s, and the objects for each
   instantiation of the $\alpha$s are constructed in exactly the same
   way. That is, the inhabited instances and the construction of the
   data in those instances are type independent.}
@@ -387,7 +387,7 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 \DisplayProof
 \\[5ex]
 \AXC{$\Gamma; \Phi,\ol\alpha^0 \vdash F$}
-\AXC{$\ol{{\color{blue} \emptyset};\ol\alpha^0 \vdash K}$}
+\AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A}$}
 \TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F)\, \ol A$}
 \DisplayProof
@@ -558,7 +558,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \DisplayProof
 \\\\
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
-\AXC{$\ol{{\color{blue} \emptyset}; \ol{\alpha} \vdash K}$}
+\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
 \AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
 \TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
   (\Lan^{\ol\alpha}_{\ol K}\,  F)\,\ol{K[\ol{\alpha := A}]}$}  
@@ -646,6 +646,7 @@ just those that are interpretations of terms.  Similar theorems are
 expected to hold for types and terms with any number of free
 variables.
 
+{\color{red} NOT NEEDED ANYMORE??
 To accommodate GADTs, we will need to transition Reynolds' approach
 from a $\set$-based semantics to a semantics based on
 $\omega$-complete partial orders. We denote the category of
@@ -665,7 +666,7 @@ note that if $(f,g) : (A,B,R) \to (A',B',R')$ and $(a_i)_{i < \omega}$
 and $(b_i)_{i < \omega}$ are chains in $A$ and $B$, respectively, then
 $ (f \, (\bigvee_{i < \omega} a_i), g \, (\bigvee_{i < \omega} b_i)) =
 (\bigvee_{i < \omega} (f a_i), \bigvee_{i < \omega} (g b_i)) \in R'$
-necessarily holds.  We write $R : \oCPOR(A,B)$ in place of $(A,B,R):
+necessarily holds.}  We write $R : \oCPOR(A,B)$ in place of $(A,B,R):
 \oCPOR$ when convenient. If $R : \oCPOR(A,B)$ then we write $\pi_1 R$
 and $\pi_2 R$ for the {\em domain} $A$ of $R$ and the {\em codomain}
 $B$ of $R$, respectively. If $A : \oCPO$, then we write $\Eq_A =
@@ -697,17 +698,16 @@ mutual induction.
 \subsection{Object Interpretations of Types}\label{sec:obj-interp}
 
 The object interpretations of the types in our calculus will be
-$\omega_1$-cocontinuous functors between categories of
-$\omega_1$-cocontinuous functors on categories constructed from the
-locally $\omega_1$-presentable category $\oCPO$.  We therefore begin
-by recording some important facts about locally $\omega_1$-presentable
+$\omega$-cocontinuous functors between categories of
+$\omega$-cocontinuous functors on categories constructed from the
+locally $\omega$-presentable category $\oCPO$.  We therefore begin
+by recording some important facts about locally $\omega$-presentable
 categories and functors on them, and verifying verify the properties
 needed to interpret our syntax.
 
 \subsubsection{Preliminaries}
 
-\new{Perhaps have as preliminaries to entire paper. Do everything for
-  $\lambda CPOs$? Define these; investigate their properties.}
+\new{Perhaps have as preliminaries to entire paper.}
 
 A category is \emph{small} if its collection of morphisms is a set.
 It is \emph{locally small} if, for any two objects $A$ and $B$, the
@@ -716,86 +716,89 @@ collection of morphisms from $A$ to $B$ is a set. A {\em small
 \mcA \to \mcC$, where $\mcA$ is a small category. A category $\mcC$
 is {\em (co)complete} if it has all small (co)limits.
 
-A poset $\mcD = (D,\leq)$ is \emph{$\omega_1$-directed} if every
+A poset $\mcD = (D,\leq)$ is \emph{$\omega$-directed} if every
 countable subset of $D$ has a supremum. When $\mcD$ is considered
 as a category, we write $d \in \mcD$ to indicate that $d$ is an object
-of $\mcD$ (i.e., $d \in D$). An {\em $\omega_1$-directed colimit} in a
+of $\mcD$ (i.e., $d \in D$). An {\em $\omega$-directed colimit} in a
 category $\mcC$ is a colimit of a diagram $F : {\mathcal D} \to \mcC$,
-where $\mathcal D$ is an $\omega_1$-directed poset. A category $\mcC$
-is {\em $\omega_1$-cocomplete} if it has all $\omega_1$-directed
+where $\mathcal D$ is an $\omega$-directed poset. A category $\mcC$
+is {\em $\omega$-cocomplete} if it has all $\omega$-directed
 colimits; a {\em cocomplete} category is one that has all colimits.
 
-If $\mcA$ and $\mcC$ are $\omega_1$-cocomplete, then a functor $F :
-\mcA \to \mcC$ is {\em $\omega_1$-cocontinuous} if it preserves
-$\omega_1$-directed colimits. We write $[\A,\C]_{\omega_1}$ for the
-category of $\omega_1$-cocontinuous functors from $\A$ to $\C$, and
+If $\mcA$ and $\mcC$ are $\omega$-cocomplete, then a functor $F :
+\mcA \to \mcC$ is {\em $\omega$-cocontinuous} if it preserves
+$\omega$-directed colimits. We write $[\A,\C]_{\omega}$ for the
+category of $\omega$-cocontinuous functors from $\A$ to $\C$, and
 $\C^\A$ for the category of {\em all} functors from $\A$ to $\C$.
 Since (co)limits of functors are computed pointwise, $C^\A$ has all
 (co)limits that $\C$ has, and (co)limits of (co)continuous functors
-are again (co)continuous. It follows that $[\A,\C]_{(\omega_1)}$ is
-($\omega_1$-)(co)complete whenever $\C$ is. In particular, if $F :
-[\C, \C]_{(\omega_1)}$ for a(n) ($\omega_1$-)cocomplete category $\C$,
+are again (co)continuous. It follows that $[\A,\C]_{(\omega)}$ is
+($\omega$-)(co)complete whenever $\C$ is. In particular, if $F :
+[\C, \C]_{(\omega)}$ for a(n) ($\omega$-)cocomplete category $\C$,
 then we can define $F^0 = \Id$, $F^{\alpha + 1} = F \circ F^\alpha$ at
 successor ordinals, and $F^{\bigcup_{\beta < \alpha} \beta} =
 \colim{\beta < \alpha} F^\beta$ at limit ordinals.
 
 If $\mcA$ is locally small, then an object $A$ of $\mcA$ is {\em
-  $\omega_1$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
-\mcA \to \Set$ preserves $\omega_1$-directed colimits, i.e., if for
-every $\omega_1$-directed poset $\mathcal D$ and every functor $F :
+  $\omega$-presentable} if the functor $\mathsf{Hom}_\mcA(A, -) :
+\mcA \to \Set$ preserves $\omega$-directed colimits, i.e., if for
+every $\omega$-directed poset $\mathcal D$ and every functor $F :
 {\mathcal D} \to \A$, there is a canonical isomorphism $\colim{d \in
   \mcD}{\mathsf{Hom}_\mcA(A,Fd)} \simeq \mathsf{Hom}_{\mcA}(A,
 \colim{d \in \mcD}{Fd})$. A locally small category $\mcA$ is {\em
-  $\omega_1$-accessible} if it is $\omega_1$-cocomplete and has a set
-$\mcA_0$ of $\omega_1$-presentable objects such that every object is
-an $\omega_1$-directed colimit of objects in $\mcA_0$; a locally small
-category is {\em locally $\omega_1$-presentable} if it is
-$\omega_1$-accessible and cocomplete.
+  $\omega$-accessible} if it is $\omega$-cocomplete and has a set
+$\mcA_0$ of $\omega$-presentable objects such that every object is
+an $\omega$-directed colimit of objects in $\mcA_0$; a locally small
+category is {\em locally $\omega$-presentable} if it is
+$\omega$-accessible and cocomplete.
 
-The category $\oCPO$ is locally $\omega_1$-presentable (but not
-locally finitely presentable); see Examples~1.18(2)
-of~\cite{ar94}). Its $\omega_1$-presentable objects are precisely the
-$\omega$CPOs cardinality less than $\omega_1$, i.e., the countable
-$\omega$CPOs. In the next subsection we will interpret type variables
-in $\tvars^k \cup \fvars^k$ as elements of
-$[\oCPO^k,\oCPO]_{\omega_1}$; the following special cases of standard
-results (see, e.g.,~\cite{ar94}) will therefore be critical to
-deducing important properties of our object interpretations of types:
+The category $\oCPO$ is locally presentable; its presentable objects
+are precisely the finite sets.
+%The category $\oCPO$ is locally $\omega$-presentable (but not
+%locally finitely presentable); see Examples~1.18(2)
+%of~\cite{ar94}). Its $\omega$-presentable objects are precisely the
+%$\omega$CPOs cardinality less than $\omega$, i.e., the countable
+%$\omega$CPOs.
+In the next subsection we will interpret type variables in $\tvars^k
+\cup \fvars^k$ as elements of $[\oCPO^k,\oCPO]_{\omega}$; the
+following special cases of standard results (see, e.g.,~\cite{ar94})
+will therefore be critical to deducing important properties of our
+object interpretations of types:
 \begin{prop}\label{prop:prelims}
 \begin{enumerate}
-\item If $\C_1,...,\C_n$ are locally $\omega_1$-presentable categories
+\item If $\C_1,...,\C_n$ are locally $\omega$-presentable categories
   then so is $\C_1 \times ... \times \C_n$. Moreover, the presentable
   objects of $\C_1 \times ... \times \C_n$ are exactly the tuples of
   the form $(P_1,...,P_n)$, where, for each $i = 1,...,n$, the object
   $P_i$ is presentable in $\C_i$.
-\item If $\mathcal{A}$ is $\omega_1$-accessible and $\mathcal{C}$ is
+\item If $\mathcal{A}$ is $\omega$-accessible and $\mathcal{C}$ is
   $\lambda$-cocomplete, then the category $[\mathcal{A},
-  \mathcal{C}]_{\omega_1}$ is naturally equivalent to the category
+  \mathcal{C}]_{\omega}$ is naturally equivalent to the category
   $\mathcal{C}^{\mathcal{A}_0}$.
-\item If $\mathcal{C}$ is locally $\omega_1$-presentable and
+\item If $\mathcal{C}$ is locally $\omega$-presentable and
   $\mathcal{A}_0$ is essentially small, then
-  $\mathcal{C}^{\mathcal{A}_0}$ is locally $\omega_1$-presentable.
+  $\mathcal{C}^{\mathcal{A}_0}$ is locally $\omega$-presentable.
 \end{enumerate}
 \end{prop}
 \noindent
 Together, the statements in Proposition~\ref{prop:prelims} give that
-if $\mathcal{A}$ and $\mathcal{C}$ are locally $\omega_1$-presentable,
-then $[\mathcal{A}, \mathcal{C}]_{\omega_1}$ is naturally equivalent
+if $\mathcal{A}$ and $\mathcal{C}$ are locally $\omega$-presentable,
+then $[\mathcal{A}, \mathcal{C}]_{\omega}$ is naturally equivalent
 to $\mathcal{C}^{\mathcal{A}_0}$, and thus is
-$\omega_1$-presentable. Thus, for all $k_1,...,k_n \in \nat^n$,
-$[\mathcal{A}^{k_1}, \mathcal{C}]_{\omega_1} \times ... \times
-[\mathcal{A}^{k_n}, \mathcal{C}]_{\omega_1}$ is locally
-$\omega_1$-presentable, and therefore $[[\mathcal{A}^{k_1},
-    \mathcal{C}]_{\omega_1} \times ... \times [\mathcal{A}^{k_n},
-    \mathcal{C}]_{\omega_1}, \mathcal{C}]_{\omega_1}$ is as
+$\omega$-presentable. Thus, for all $k_1,...,k_n \in \nat^n$,
+$[\mathcal{A}^{k_1}, \mathcal{C}]_{\omega} \times ... \times
+[\mathcal{A}^{k_n}, \mathcal{C}]_{\omega}$ is locally
+$\omega$-presentable, and therefore $[[\mathcal{A}^{k_1},
+    \mathcal{C}]_{\omega} \times ... \times [\mathcal{A}^{k_n},
+    \mathcal{C}]_{\omega}, \mathcal{C}]_{\omega}$ is as
 well. Taking both $\A$ and $C$ to be $\oCPO$ --- as we will to ensure
 that the fixpoints interpreting $\mu$-types in $\oCPO$ exist --- we
 have
 \begin{prop}\label{prop:nat-interps-sets}
   For all $k_1,...,k_n \in \nat^n$,
-  \[[[\oCPO^{k_1}, \oCPO]_{\omega_1}
-  \times ... \times [\oCPO^{k_n}, \oCPO]_{\omega_1},
-  \oCPO]_{\omega_1}\] is locally $\omega_1$-presentable.
+  \[[[\oCPO^{k_1}, \oCPO]_{\omega}
+  \times ... \times [\oCPO^{k_n}, \oCPO]_{\omega},
+  \oCPO]_{\omega}\] is locally $\omega$-presentable.
 \end{prop}
 
 \subsubsection{Object Interpretations}
@@ -806,7 +809,7 @@ variables. We have:
 
 \begin{dfn}\label{def:set-env}
 A {\em $\oCPO$ environment} maps each type variable in $\tvars^k \cup
-\fvars^k$ to an element of $[\oCPO^k,\oCPO]_{\omega_1}$.  A morphism
+\fvars^k$ to an element of $[\oCPO^k,\oCPO]_{\omega}$.  A morphism
 $f : \rho \to \rho'$ for set environments $\rho$ and $\rho'$ with
 $\rho|_\tvars = \rho'|_\tvars$ maps each type constructor variable
 $\psi^k \in \tvars$ to the identity natural transformation on $\rho
@@ -819,12 +822,12 @@ category of set environments and morphisms between them, which we
 denote $\oCPOenv$.
 \end{dfn}
 
-When convenient we identify a functor in $[\oCPO^0, \oCPO]_{\omega_1}$
+When convenient we identify a functor in $[\oCPO^0, \oCPO]_{\omega}$
 with its value on $\ast$ and consider a $\oCPO$ environment to map a
-type variable of arity $0$ to an $\omega_1$-cocontinuous functor from
+type variable of arity $0$ to an $\omega$-cocontinuous functor from
 $\oCPO^0$ to $\oCPO$, i.e., to an $\oCPO$. If $\Phi =
 \{\phi_1^{k_1},...,\phi_n^{k_n}\}$ and $\ol K = \{K_1,...,K_n\}$ where
-$K_i : [\oCPO^{k_i},\oCPO]_{\omega_1}$ for $i = 1,...,n$, then we
+$K_i : [\oCPO^{k_i},\oCPO]_{\omega}$ for $i = 1,...,n$, then we
 write either $\rho[\ol{\Phi := K}]$ or $\rho[\ol{\phi := K}]$ for the
 $\oCPO$ environment $\rho'$ such that $\rho' \phi_i = K_i$ for $i =
 1,...,n$ and $\rho' \phi = \rho \phi$ if $\phi \not \in \Phi$.  If
@@ -833,12 +836,12 @@ environment (see Definition~\ref{def:reln-env}) such that $\Eq_\rho v
 = \Eq_{\rho v}$ for every type variable $v$. The categories
 $\oCPORT_k$ and relational interpretations appearing in the third
 clause of Definition~\ref{def:set-sem} are given in full in
-Section~\ref{sec:rel-interp}. We note that $\omega_1$-directed
+Section~\ref{sec:rel-interp}. We note that $\omega$-directed
 colimits in $\oCPOenv$ are taken pointwise.
 
 \begin{dfn}\label{def:set-sem}
 The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
-  \oCPO]_{\omega_1}$ is defined by
+  \oCPO]_{\omega}$ is defined by
 \begin{align*}
   \oCPOsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \oCPOsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
@@ -873,34 +876,14 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
   \ol{A}. \oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}] \\
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho &=
-    \{ t : (\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash
-          K}[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
+    \{ t : (\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+          K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
       \vdash F}\rho[\ol{\alpha := \_}]) \ol{\oCPOsem{\Gamma; \Phi
         \vdash A}\rho}\\
-    &\hspace{0.3in}|~
-%    (t,t) \in \oCPORsem{\Gamma;\Phi \vdash
-%      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}\\
-{\color{blue} ( (\eta_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t,
-  (\eta_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho }} t) \in}\\
-  &{\color{blue} \hspace{0.5in}
-     (\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\alpha 
-        \vdash K}[\ol{\alpha := \Eq_{\_}}]}}
-  \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha :=
-      \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\rho} \}}\\
+    &\hspace{0.3in}|~(t,t) \in \oCPORsem{\Gamma;\Phi \vdash
+      (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}\\
 \end{align*}
 \end{dfn}
-{\color{blue} Here, $\eta_i : \textit{Lan}_{\ol{\oCPOsem{\emptyset;
-        \ol\alpha \vdash K}[\ol{\alpha := \_}]}} \oCPOsem{\Gamma;
-    \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}] \; \to \;
-  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\emptyset; \ol\alpha \vdash
-        K}[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma; \Phi,
-    \ol\alpha \vdash F}\Eq_\rho[\ol{\alpha := \Eq_{\_}}])$ for $i =
-  1,2$, i.e., $\eta_i$ is for the (mixed $\set/\rel$) diagram top p2
-  of Daniel's notes for relational environment $\Eq_\rho[\alpha :=
-    \Eq_{\_}]$. (Note that the codomains of $\eta_1$ and $\eta_2$
-  should be the same so we should have $\eta_1=\eta_2$). The condition
-  in the final clause should therefore simplify by writing $\eta$ for
-  $\eta_1 = \eta_2$.)}
 
 If $\rho \in \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash F}$
 instead of $\oCPOsem{\vdash F}\rho$ since the environment is
@@ -926,13 +909,13 @@ defines a set.
 We first note that $\lambda \ol K. \setsem{\Gamma;\Phi \vdash
   F}\rho[\ol{\Phi := K}]$ and $\lambda \ol K. \setsem{\Gamma;\Phi
   \vdash G}\rho[\ol{\Phi := K}]$ are both in $[\ol{[\oCPO^k ,
-      \oCPO]_{\omega_1}}, \oCPO]_{\omega_1}$. By
+      \oCPO]_{\omega}}, \oCPO]_{\omega}$. By
 Proposition~\ref{prop:nat-interps-sets}, $[\ol{[\oCPO^k ,
-      \oCPO]_{\omega_1}}, \oCPO]_{\omega_1}$ is locally
-$\omega_1$-presentable. It is therefore locally small, so there are
+      \oCPO]_{\omega}}, \oCPO]_{\omega}$ is locally
+$\omega$-presentable. It is therefore locally small, so there are
 only $\set$-many morphisms (i.e., natural transformations) between any
-two functors in $[\ol{[\oCPO^k , \oCPO]_{\omega_1}},
-  \oCPO]_{\omega_1}$. In particular, there are only $\set$-many
+two functors in $[\ol{[\oCPO^k , \oCPO]_{\omega}},
+  \oCPO]_{\omega}$. In particular, there are only $\set$-many
 natural transformations from $\lambda \ol K. \setsem{\Gamma;\Phi
   \vdash F}\rho[\ol{\Phi := K}]$ to $\lambda \ol
 K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$.
@@ -955,68 +938,68 @@ K. \setsem{\Gamma;\Phi \vdash G}\rho[\ol{\Phi := K}]$.
 %that $\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G}\rho$ is indeed
 %an $\oCPO$.
 
-Now, if $\C$ is any category, then given functors $F,G : \C \to \oCPO$
-and natural transformations $\eta, \eta' : F \to G$, we define $\eta
-\leq \eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in \C$, i.e., iff
-$\eta_c\,x \leq \eta'_c\,x$ in $Gc$ for all $c \in \C$ and $x \in Fc$.
-If $(\eta_i)_{i < \omega}$ is a chain in $\{\eta : F \to G\}$, then
-the family of morphisms $(\bigvee_{i < \omega} \eta_i)_c = \lambda
-x. \bigvee_{i < \omega} ((\eta_i)_c\,x) : Fc \to Gc$ defines a natural
-transformation $\bigvee_{i < \omega} \eta_i : F \to G$, and this
-natural transformation is clearly the supremum of $(\eta_i)_{i <  
-  \omega}$ in $\{\eta : F \to G\}$. We therefore have that $\{\eta : F
-\to G\}$ is itself an $\oCPO$.  To show that $\oCPOsem{\Gamma;
-  \emptyset \vdash \Nat^\Phi \,F\,G}\rho$ is an $\oCPO$, we then still
-need to prove that, for any chain of natural transformations
-$(\eta_i)_{i < \omega}$ in $\oCPOsem{\Gamma; \emptyset \vdash
-  \Nat^\Phi \,F\,G}\rho$, $\bigvee_{i < \omega} \eta_i$ is again in
-$\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho$.  By
-hypothesis, each $\eta_i$ is such that, for all $\ol{K = (K^1, K^2,
-  K^*) : \oCPORT_k}$,
-\[((\eta_i)_{\overline{K^1}},
-(\eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
-  F}\Eq_{\rho}[\ol{\Phi := K}] \rightarrow \oCPORsem{\Gamma; \Phi
-  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is a morphism in
-$\oCPOR$. To see that, for all $\ol{K = (K^1, K^2, K^*) : \oCPORT_k}$,
-%\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
-%%  \omega} \eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
+%Now, if $\C$ is any category, then given functors $F,G : \C \to \oCPO$
+%and natural transformations $\eta, \eta' : F \to G$, we define $\eta
+%\leq \eta'$ iff $\eta_c \leq \eta'_c$ for all $c \in \C$, i.e., iff
+%$\eta_c\,x \leq \eta'_c\,x$ in $Gc$ for all $c \in \C$ and $x \in Fc$.
+%If $(\eta_i)_{i < \omega}$ is a chain in $\{\eta : F \to G\}$, then
+%the family of morphisms $(\bigvee_{i < \omega} \eta_i)_c = \lambda
+%x. \bigvee_{i < \omega} ((\eta_i)_c\,x) : Fc \to Gc$ defines a natural
+%transformation $\bigvee_{i < \omega} \eta_i : F \to G$, and this
+%natural transformation is clearly the supremum of $(\eta_i)_{i <  
+%  \omega}$ in $\{\eta : F \to G\}$. We therefore have that $\{\eta : F
+%\to G\}$ is itself an $\oCPO$.  To show that $\oCPOsem{\Gamma;
+%  \emptyset \vdash \Nat^\Phi \,F\,G}\rho$ is an $\oCPO$, we then still
+%need to prove that, for any chain of natural transformations
+%$(\eta_i)_{i < \omega}$ in $\oCPOsem{\Gamma; \emptyset \vdash
+%  \Nat^\Phi \,F\,G}\rho$, $\bigvee_{i < \omega} \eta_i$ is again in
+%$\oCPOsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho$.  By
+%hypothesis, each $\eta_i$ is such that, for all $\ol{K = (K^1, K^2,
+%  K^*) : \oCPORT_k}$,
+%\[((\eta_i)_{\overline{K^1}},
+%(\eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
 %  F}\Eq_{\rho}[\ol{\Phi := K}] \rightarrow \oCPORsem{\Gamma; \Phi
-%  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is again a morphism in
-%$\oCPOR$, we observe that
-$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
-  \omega} \eta_i)_{\overline{K^2}})$ is a morphism from
-$\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi := K}]$ to
-$\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi := K}]$ in
-$\oCPOR$, we simply observe that
-\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i < \omega}
-\eta_i)_{\overline{K^2}}) = (\bigvee_{i < \omega}
-(\eta_i)_{\overline{K^1}}, \bigvee_{i < \omega}
-(\eta_i)_{\overline{K^2}}) = \bigvee_{i < \omega}
-((\eta_i)_{\overline{K^1}}, (\eta_i)_{\overline{K^2}})\] so
-$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
-  \omega} \eta_i)_{\overline{K^2}})$ is the sup of a chain of
-morphisms from $\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi :=
-    K}]$ to $\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi :=
-    K}]$ in $\oCPOR$ and thus is itself such a morphism. Taken
-together, this all shows that $\oCPOsem{\Gamma; \emptyset \vdash
-  \Nat^\Phi \,F\,G}\rho$ is indeed an $\oCPO$.
+%  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is a morphism in
+%$\oCPOR$. To see that, for all $\ol{K = (K^1, K^2, K^*) : \oCPORT_k}$,
+%%\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+%%%  \omega} \eta_i)_{\overline{K^2}}) : \oCPORsem{\Gamma; \Phi \vdash
+%%  F}\Eq_{\rho}[\ol{\Phi := K}] \rightarrow \oCPORsem{\Gamma; \Phi
+%%  \vdash G}\Eq_{\rho}[\ol{\Phi := K}]\] is again a morphism in
+%%$\oCPOR$, we observe that
+%$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+%  \omega} \eta_i)_{\overline{K^2}})$ is a morphism from
+%$\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi := K}]$ to
+%$\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi := K}]$ in
+%$\oCPOR$, we simply observe that
+%\[((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i < \omega}
+%\eta_i)_{\overline{K^2}}) = (\bigvee_{i < \omega}
+%(\eta_i)_{\overline{K^1}}, \bigvee_{i < \omega}
+%(\eta_i)_{\overline{K^2}}) = \bigvee_{i < \omega}
+%((\eta_i)_{\overline{K^1}}, (\eta_i)_{\overline{K^2}})\] so
+%$((\bigvee_{i < \omega} \eta_i)_{\overline{K^1}}, (\bigvee_{i <
+%  \omega} \eta_i)_{\overline{K^2}})$ is the sup of a chain of
+%morphisms from $\oCPORsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\ol{\Phi :=
+%    K}]$ to $\oCPORsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\ol{\Phi :=
+%    K}]$ in $\oCPOR$ and thus is itself such a morphism. Taken
+%together, this all shows that $\oCPOsem{\Gamma; \emptyset \vdash
+%  \Nat^\Phi \,F\,G}\rho$ is indeed an $\oCPO$.
 
-That each of the above interpretations is $\omega_1$-cocontinuous
+That each of the above interpretations is $\omega$-cocontinuous
 follows from Corollary~12 of~\cite{jp19} if we \new{APPROPRIATELY
   RESTRICT THE SUBSCRIPTS OF $\Lan$s; we will require that $K$ is a
   polynomial functor in the $\alpha$s that does not involve any
   constant functors}. For $\Nat$-types, we note that $\oCPOsem{\Gamma;
-  \emptyset \vdash \Nat^\Phi F\,G}$ is an $\omega_1$-cocontinuous
+  \emptyset \vdash \Nat^\Phi F\,G}$ is an $\omega$-cocontinuous
 functor because, in accordance with
 Definition~\ref{def:set-sem-funcs}, it is constant on
-$\omega_1$-directed sets. Interpretations of $\Nat$-types ensure that
+$\omega$-directed sets. Interpretations of $\Nat$-types ensure that
 $\oCPOsem{\Gamma \vdash F \to G}$ and $\oCPOsem{\Gamma \vdash \forall
   \ol\alpha. F}$ are as expected in any parametric model.
 
 To make sense of the next-to-last clause in
 Definition~\ref{def:set-sem}, we need to know that, for each $\rho \in
-\oCPOenv$, $T^\oCPO_{H,\rho}$ is an $\omega_1$-cocontinuous
-endofunctor on $[\oCPO^k, \oCPO]_{\omega_1}$, and thus admits a
+\oCPOenv$, $T^\oCPO_{H,\rho}$ is an $\omega$-cocontinuous
+endofunctor on $[\oCPO^k, \oCPO]_{\omega}$, and thus admits a
 fixpoint.  Since $T_{H,\rho}^\oCPO$ is defined in terms of
 $\oCPOsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$, this means
 that interpretations of types must be such functors, which in turn
@@ -1024,19 +1007,19 @@ means that the actions of set interpretations of types on objects and
 on morphisms in $\oCPOenv$ are intertwined. Fortunately, we know
 from~\cite{jp19} that, for every $\Gamma; \ol\alpha \vdash F$,
 $\oCPOsem{\Gamma; \Phi \vdash F}$ is actually in
-$[\oCPO^k,\oCPO]_{\omega_1}$, where $k = |\ol\alpha|$.  Therefore, for
+$[\oCPO^k,\oCPO]_{\omega}$, where $k = |\ol\alpha|$.  Therefore, for
 each $\oCPOsem{\Gamma; \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the
 corresponding operator $T^\oCPO_{H}$ can be extended to a {\em
   functor} from $\oCPOenv$ to
-$[[\oCPO^k,\oCPO]_{\omega_1},[\oCPO^k,\oCPO]_{\omega_1}]_{\omega_1}$.
+$[[\oCPO^k,\oCPO]_{\omega},[\oCPO^k,\oCPO]_{\omega}]_{\omega}$.
 The action of $T^\oCPO_H$ on an object $\rho \in \oCPOenv$ is given by
 the higher-order functor $T_{H,\rho}^\oCPO$, whose actions on objects
-(functors in $[\oCPO^k, \oCPO]_{\omega_1}$) and on morphisms (natural
+(functors in $[\oCPO^k, \oCPO]_{\omega}$) and on morphisms (natural
 transformations between such functors) are given in
 Definition~\ref{def:set-sem}. The action of $T^\oCPO_H$ on a morphism
 $f : \rho \to \rho'$ is the higher-order natural transformation
 $T^\oCPO_{H,f} : T^\oCPO_{H,\rho} \to T^\oCPO_{H,\rho'}$ whose action
-on $F : [\oCPO^k,\oCPO]_{\omega_1}$ is the natural transformation
+on $F : [\oCPO^k,\oCPO]_{\omega}$ is the natural transformation
 $T^\oCPO_{H,f}\, F : T^\oCPO_{H,\rho}\,F \to T^\oCPO_{H,\rho'}\,F$
 whose component at $\ol A$ is $(T^\oCPO_{H,f}\, F)_{\ol A} =
 \oCPOsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
@@ -1045,7 +1028,7 @@ whose component at $\ol A$ is $(T^\oCPO_{H,f}\, F)_{\ol A} =
 %For the last clause in Definition~\ref{def:set-sem} to be well-defined
 %we need $\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]$
 %and $\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
-%    \_}]$ to be $\omega_1$-cocontinuous functors.
+%    \_}]$ to be $\omega$-cocontinuous functors.
 In addition, for each $\ol K$, we have that $\textit{Lan}_{\ol K}$ is
 itself a (higher-order) functor. Specifically, given functors $F, F' :
 \C \to \D$, a sequence of functors $\ol K = K_1, ..., K_n$ with $K_i :
@@ -1174,24 +1157,24 @@ on the morphism $f$ is given as follows:
     F)\ol{A}}\rho \to \oCPOsem{\Gamma;\Phi \vdash
     (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\rho'\] is defined by
 \[\begin{array}{ll}
- & \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
+ & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho'} \\
  &  \circ\;
-  \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
+  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
-= & \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
+= & \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}f} \\
  &  \circ\;
-  \big(\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := \_}]}}\,
+  \big(\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
       \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)
     \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}
 \end{array}\]
 where the above equality holds by naturality of
-$\textit{Lan}_{\ol{\oCPOsem{\emptyset; \ol\alpha \vdash
-        K}[\ol{\alpha := \_}]}}\,\oCPOsem{\Gamma; \Phi, \ol\alpha
+$\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
+        K}\rho[\ol{\alpha := \_}]}}\,\oCPOsem{\Gamma; \Phi, \ol\alpha
     \vdash F}f[\ol{\alpha := \id_{\_}}]$.
 %(and functoriality of
 %  $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
@@ -1213,8 +1196,8 @@ set interpretations.
 
 \begin{dfn}\label{def:rel-transf}
 A {\em $k$-ary $\oCPO$ relation transformer} $F$ is a triple $(F^1,
-F^2,F^*)$, where $F^1,F^2 : [\oCPO^k,\oCPO]_{\omega_1}$ and $F^* :
-[\oCPOR^k, \oCPOR]_{\omega_1}$ are such that if
+F^2,F^*)$, where $F^1,F^2 : [\oCPO^k,\oCPO]_{\omega}$ and $F^* :
+[\oCPOR^k, \oCPOR]_{\omega}$ are such that if
 $R_1:\oCPOR(A_1,B_1),...,R_k:\oCPOR(A_k,B_k)$ then $F^* \ol{R} :
 \oCPOR(F^1 \ol{A}, F^2 \ol{B})$, and if $(\alpha_1, \beta_1) \in
 \HomoCPOR(R_1,S_1),..., (\alpha_k, \beta_k) \in \HomoCPOR(R_k,S_k)$
@@ -1256,8 +1239,8 @@ given by the following data:
 \begin{dfn}\label{def:RT-functor}
 An endofunctor $H$ on $\oCPORT_k$ is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
-\item $H^1$ and $H^2$ are functors from $[\oCPO^k,\oCPO]_{\omega_1}$ to $[\oCPO^k,\oCPO]_{\omega_1}$
-\item $H^*$ is a functor from $\oCPORT_k$ to $[\oCPOR^k,\oCPOR]_{\omega_1}$
+\item $H^1$ and $H^2$ are functors from $[\oCPO^k,\oCPO]_{\omega}$ to $[\oCPO^k,\oCPO]_{\omega}$
+\item $H^*$ is a functor from $\oCPORT_k$ to $[\oCPOR^k,\oCPOR]_{\omega}$
 \item for all $\overline{R : \oCPOR(A,B)}$,
   $\pi_1((H^*(\delta^1,\delta^2))_{\overline{R}}) = (H^1
   \delta^1)_{\overline{A}}$ and
@@ -1293,13 +1276,13 @@ If $H$ and $K$ are endofunctors on $\oCPORT_k$, then a {\em natural
   transformation} $\sigma : H \to K$ is a pair $\sigma = (\sigma^1,
 \sigma^2)$, where $\sigma^1 : H^1 \to K^1$ and $\sigma^2 : H^2 \to
 K^2$ are natural transformations between endofunctors on
-$[\oCPO^k,\oCPO]_{\omega_1}$ and the component of $\sigma$ at $F
+$[\oCPO^k,\oCPO]_{\omega}$ and the component of $\sigma$ at $F
 %= (F^1,F^2,F^*)
 \in \oCPORT_k$ is given by $\sigma_F = (\sigma^1_{F^1}, \sigma^2_{F^2})$.
 \end{dfn}
 
 Definition~\ref{def:RT-nat-trans} entails that $\sigma^i_{F^i}$ must
-be natural in $F^i : [\oCPO^k,\oCPO]_{\omega_1}$, and, for every $F$,
+be natural in $F^i : [\oCPO^k,\oCPO]_{\omega}$, and, for every $F$,
 $(\sigma^1_{F^1})_{\overline{A}}$ and
 $(\sigma^2_{F^2})_{\overline{B}}$ must be natural in $\overline{A}$
 and $\ol B$, respectively.  Moreover, since the results of applying
@@ -1312,17 +1295,17 @@ a morphism in $\oCPOR$ for any $k$-tuple of relations $\overline{R :
 $((\sigma^1_{F^1})_{\overline{A}} x, (\sigma^2_{F^2})_{\overline{B}}
 y) \in K^*F\overline{R}$.
 
-Critically, we can compute $\omega_1$-directed colimits in
+Critically, we can compute $\omega$-directed colimits in
 $\oCPORT_k$: it is not hard to see that if $\cal D$ is an
-$\omega_1$-directed set then $\colim{d \in {\cal D}}{(F^1_d,
+$\omega$-directed set then $\colim{d \in {\cal D}}{(F^1_d,
   F^2_d,F^*_d)} = (\colim{d \in {\cal D}}{F^1_d}, \colim{d \in {\cal
     D}}{F^2_d}, \colim{d \in {\cal D}}{F^*_d})$.  We define an
 endofunctor $T = (T^1,T^2,T^*)$ on $\oCPORT_k$ to be {\em
-  $\omega_1$-cocontinuous} if $T^1$ and $T^2$ are
-$\omega_1$-cocontinuous endofunctors on $[\oCPO^k,\oCPO]_{\omega_1}$
-and $T^*$ is an $\omega_1$-cocontinuous functor from $\oCPORT_k$ to
-$[\oCPOR^k,\oCPOR]_{\omega_1}$, i.e., is in
-$[\oCPORT_k,[\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$.
+  $\omega$-cocontinuous} if $T^1$ and $T^2$ are
+$\omega$-cocontinuous endofunctors on $[\oCPO^k,\oCPO]_{\omega}$
+and $T^*$ is an $\omega$-cocontinuous functor from $\oCPORT_k$ to
+$[\oCPOR^k,\oCPOR]_{\omega}$, i.e., is in
+$[\oCPORT_k,[\oCPOR^k,\oCPOR]_{\omega}]_{\omega}$.
 
 Now, for any $k$, any $A : \oCPO$, and any $R : \oCPOR(A, B)$, let
 $K^\oCPO_A$ be the constantly $A$-valued functor from $\oCPO^k$ to
@@ -1330,39 +1313,39 @@ $\oCPO$ and $K^\oCPOR_R$ be the constantly $R$-valued functor from
 $\oCPOR^k$ to $\oCPOR$.  Also let $0$ denote either the initial object
 of $\oCPO$ or the initial object of $\oCPOR$, as appropriate.
 Observing that, for every $k$, $K^\oCPO_0$ is initial in
-$[\oCPO^k,\oCPO]_{\omega_1}$, and $K^\oCPOR_0$ is initial in
-$[\oCPOR^k,\oCPOR]_{\omega_1}$, we have that, for each $k$, $K_0 =
+$[\oCPO^k,\oCPO]_{\omega}$, and $K^\oCPOR_0$ is initial in
+$[\oCPOR^k,\oCPOR]_{\omega}$, we have that, for each $k$, $K_0 =
 (K^\oCPO_0,K^\oCPO_0,K^\oCPOR_0)$ is initial in $\oCPORT_k$. Thus, if
 $T = (T^1,T^2,T^*) : \oCPORT_k \to \oCPORT_k$ is an endofunctor on
 $\oCPORT_k$ then we can define the $\oCPO$ relation transformer $\mu
-T$ to be $\colim{i < \omega_1}{T^i K_0}$. It is not hard to see that
+T$ to be $\colim{i < \omega}{T^i K_0}$. It is not hard to see that
 $\mu T$ is given explicitly as
 \begin{equation}\label{eq:mu}
   \mu T = (\mu T^1,\mu T^2,
-\colim{i < \omega_1}{(T^iK_0)^*})
+\colim{i < \omega}{(T^iK_0)^*})
 \end{equation}
 and that, as our notation suggests, it really is a fixpoint for $T$ if
-$T$ is $\omega_1$-cocontinuous:
+$T$ is $\omega$-cocontinuous:
 \begin{lemma}\label{lem:fp}
-For any $T : [\oCPORT_k,\oCPORT_k]_{\omega_1}$, $\mu T \cong T(\mu T)$.
+For any $T : [\oCPORT_k,\oCPORT_k]_{\omega}$, $\mu T \cong T(\mu T)$.
 \end{lemma}
 \noindent
 The isomorphism is given by the morphisms $(\mathit{in}_1,
 \mathit{in}_2) : T(\mu T) \to \mu T$ and $(in_1^{-1}, in_2^{-1}) : \mu
 T \to T(\mu T)$ in $\oCPORT_k$. The latter is always a morphism in $\oCPORT_k$,
-but the former need not be if $T$ is not $\omega_1$-cocontinuous.
+but the former need not be if $T$ is not $\omega$-cocontinuous.
 
 It is worth noting that the third component in Equation~(\ref{eq:mu})
-is the colimit in $[\oCPOR^k,\oCPOR]_{\omega_1}$ of third components
+is the colimit in $[\oCPOR^k,\oCPOR]_{\omega}$ of third components
 of $\oCPO$ relation transformers, rather than a fixpoint of an
-endofunctor on $[\oCPO^k,\oCPO]_{\omega_1}$. That there is an
+endofunctor on $[\oCPO^k,\oCPO]_{\omega}$. That there is an
 asymmetry between the first two components of $\mu T$ and its third
 reflects the important conceptual observation that the third component
 of an endofunctor on $\oCPORT_k$ need not be a functor on all of
-$[\oCPOR^k,\oCPOR]_{\omega_1}$. In particular, although we can define
+$[\oCPOR^k,\oCPOR]_{\omega}$. In particular, although we can define
 $T_{H,\rho}\, F$ for an $\oCPO$ relation transformer $F$ in
 Definition~\ref{def:rel-sem} below, it is not clear how we could
-define it for an arbitrary $F : [\oCPOR^k,\oCPOR]_{\omega_1}$.
+define it for an arbitrary $F : [\oCPOR^k,\oCPOR]_{\omega}$.
 
 \begin{dfn}\label{def:reln-env}
 An {\em $\oCPO$ relation environment} maps each type variable in
@@ -1386,7 +1369,7 @@ with the $\oCPO$ relation (transformer) that is its codomain and
 consider an $\oCPO$ relation environment to map a type variable of
 arity $0$ to an $\oCPO$ relation. If $\Phi =
 \{\phi_1^{k_1},...,\phi_n^{k_n}\}$ and $\ol K = \{K_1,...,K_n\}$ where
-$K_i : [\oCPOR^{k_i},\oCPOR]_{\omega_1}$ for $i = 1,...,n$, then we
+$K_i : [\oCPOR^{k_i},\oCPOR]_{\omega}$ for $i = 1,...,n$, then we
 write either $\rho[\ol{\Phi := K}]$ or $\rho[\ol{\phi := K}]$ for the
 $\oCPO$ relation environment $\rho'$ such that $\rho' \phi_i = K_i$
 for $i = 1,...,n$ and $\rho' \phi = \rho \phi$ if $\phi \not \in
@@ -1395,16 +1378,16 @@ for $i = 1,...,n$ and $\rho' \phi = \rho \phi$ if $\phi \not \in
 each type variable $\phi$ to the functors $(\rho\phi)^1$ and
 $(\rho\phi)^2$, respectively.
 
-We define, for each $k$, the notion of an $\omega_1$-cocontinuous
+We define, for each $k$, the notion of an $\omega$-cocontinuous
 functor from $\oCPORenv$ to $\oCPORT_k$:
 \begin{dfn}\label{def:relenv-functor}
-A functor $H : [\oCPORenv, \oCPORT_k]_{\omega_1}$ is a triple $H =
+A functor $H : [\oCPORenv, \oCPORT_k]_{\omega}$ is a triple $H =
 (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are objects in
-  $[\oCPOenv,[\oCPO^k,\oCPO]_{\omega_1}]_{\omega_1}$
+  $[\oCPOenv,[\oCPO^k,\oCPO]_{\omega}]_{\omega}$
 \item $H^*$ is a an object in
-  $[\oCPORenv,[\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$
+  $[\oCPORenv,[\oCPOR^k,\oCPOR]_{\omega}]_{\omega}$
 \item for all $\overline{R : \oCPOR(A,B)}$ and morphisms $f$ in
   $\oCPORenv$, $\pi_1((H^*f)_{\overline{R}}) = (H^1 (\pi_1
   f))_{\overline{A}}$ and $\pi_2((H^*f)_{\overline{R}}) = (H^2 (\pi_2
@@ -1431,17 +1414,17 @@ is automatically satisfied because it is implied by the third bullet
 point of Definition~\ref{def:relenv-functor}.
 
 Considering $\oCPORenv$ as a product $\Pi_{\phi^k \in \tvars \cup
-  \fvars} \oCPORT_k$, we extend the computation of $\omega_1$-directed
+  \fvars} \oCPORT_k$, we extend the computation of $\omega$-directed
 colimits in $\oCPORT_k$ to compute colimits in $\oCPORenv$ componentwise. We
-similarly extend the notion of an $\omega_1$-cocontinuous endofunctor on
-$\oCPORT_k$ componentwise to give a notion of $\omega_1$-cocontinuity for
+similarly extend the notion of an $\omega$-cocontinuous endofunctor on
+$\oCPORT_k$ componentwise to give a notion of $\omega$-cocontinuity for
 functors from $\oCPORenv$ to $\oCPORT_k$.  Recalling from the start of this
 subsection that Definition~\ref{def:rel-sem} is given mutually
 inductively with Definition~\ref{def:set-sem} we can, at last, define:
 
 \begin{dfn}\label{def:rel-sem}
 The {\em relational interpretation}
-$\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
+$\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega}$ is defined by
 \begin{align*}
   \oCPORsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \oCPORsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
@@ -1488,37 +1471,31 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega_1}$ is defined by
     (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\pi_1 \rho \,\times\,
   \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
     F)\ol{A}}\pi_2 \rho\\
-  &\hspace{0.3in}|~{\color{blue}
-    ((\eta_1)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_1 \rho}} t_1,
-(\eta_2)_{\ol{\oCPOsem{\Gamma; \Phi \vdash A}\pi_2 \rho}} t_2) \in}\\
-  &\hspace{0.3in}{\color{blue}
-(\textit{Lan}_{\ol{\oCPORsem{\emptyset;
-          \ol\alpha \vdash K}[\ol{\alpha := \Eq_{\_}}]}}
-    \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
-        \Eq_{\_}}])
-    \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}} \}  
-  %\forall \sigma : \setenv, (
-  %(\eta^\sigma_1)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_1,
-  %(\eta^\sigma_2)_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\sigma }} t_2) \in\\
-  %&\hspace{0.5in} (\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha
-  %      \vdash K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}}
-  %\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha :=
-  %    \Eq_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\Eq_\sigma} \}\\
+  &\hspace{0.2in}|~\exists\, \ol{Z : \oCPO_0}, t_1' : \oCPOsem{\Gamma;
+    \ol{\alpha} \vdash K}\pi_1\rho[\ol{\alpha := Z}],\, t_2' :
+  \oCPOsem{\Gamma; \ol{\alpha} \vdash K}\pi_2\rho[\ol{\alpha := Z}],\\
+  & \hspace{0.2in} f :
+  \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \Eq_Z}] \to
+  \oCPORsem{\Gamma; \Phi \vdash A}\rho\\
+  &\hspace{0.2in}\mbox{such that } \iota_{Z,\pi_1 f}t_1' = t_1,\,
+  \kappa_{Z,\pi_2 f}t_2' = t_2,\\
+  &  \hspace*{0.2in}\mbox{and } (t_1',t_2') :
+  \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \Eq_Z}]\,\}
 \end{align*}
 \end{dfn}
-{\color{blue} where $\eta_i$ is for the (mixed $\set/\rel$) diagram
-  top p2 of Daniel's notes for relational environment $\Eq_{\pi_i
-    \rho}[\alpha := \Eq_{\_}]$.}
-
-
-%{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
-%  $\eta^\sigma_i : \textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
-%        K}\sigma[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha
-%    \vdash F}\sigma[\ol{\alpha := \_}] \; \to \;
-%  \pi_i\,(\textit{Lan}_{\ol{\oCPORsem{\Gamma; \ol\alpha \vdash
-%        K}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}]}} \oCPORsem{\Gamma;
-%    \Phi, \ol\alpha \vdash F}\Eq_\sigma[\ol{\alpha := \Eq_{\_}}])$ for
-%  each $\sigma : \setenv$ and $i = 1,2$.}
+\noindent
+{\color{blue} In the final clause of Definition~\ref{def:rel-sem},
+  $\iota_{Z,h}$ is the injection into
+\[\colim{Z \,: \,\oCPO_0,\; h \,:\, \oCPOsem{\Gamma; \ol{\alpha} \vdash
+      K}\pi_1\rho[\ol{\alpha := Z}] \to \oCPOsem{\Gamma; \Phi \vdash
+      A}\pi_1\rho}{\oCPOsem{\Gamma; \ol{\alpha} \vdash
+    F}\pi_1\rho[\ol{\alpha := Z}]}\]
+  and 
+  $\kappa_{Z,h}$ is the injection into
+\[\colim{Z\, :\, \oCPO_0, \;h \,:\, \oCPOsem{\Gamma; \ol{\alpha} \vdash
+      K}\pi_2\rho[\ol{\alpha := Z}] \to \oCPOsem{\Gamma; \Phi \vdash
+    A}\pi_2\rho}{\oCPOsem{\Gamma; \ol{\alpha} \vdash
+    F}\pi_2\rho[\ol{\alpha := Z}]}\]}
 
 For Definition~\ref{def:rel-sem} to be well-defined, we have to check
 that each relational interpretation is in $\oCPOR$ and, in particular,
@@ -1528,91 +1505,95 @@ the induction hypotheses. However, well-definedness needs to be proved
 directly for relational interpretations of $\Nat$-types.
 
 The proof that relational interpretations of $\Nat$-types define sets
-is analogous to the proof of Lemma~\ref{lem:nat-types-sets}.  Next, we
-observe that $\oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$
-is in $\oCPOR$. It is indeed a relation between $\oCPO$s, and it
-relates sups of pairwise related $\omega$-chains of natural
-transformations because their sups are computed pointwise. More
-specifically, if $(t_i, t_i') \colon \oCPORsem{\Gamma; \emptyset
-  \vdash \Nat^\Phi F\,G} \rho$ for all $i < \omega$, then for every
-$\ol{K = (K^1, K^2, K^*) : \oCPORT_{k}}$ and every $i < \omega$ we
-have
-  \[\big((t_i)_{\ol{K^1}},\, (t'_i)_{\ol{K^2}}\big) \in
-  (\oCPORsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
-      K}])^{\oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]}\] So
-  if $(a,b) \in \oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]$,
-  then $\big((t_i)_{\ol{K^1}}\,a,\, (t'_i)_{\ol{K^2}}\,b\big) \in
-  \oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K}]$ for all $i <
-  \omega$. But then since $\big((t_i)_{\ol{K^1}} a\big)_{i < \omega}$
-  is an $\omega$-chain in $\oCPOsem{\Gamma; \Phi \vdash
-    G}\rho[\ol{\Phi := K^1}]$ and $\big((t'_i)_{\ol{K^2}}\big)_{i <
-    \omega} b$ is an $\omega$-chain in $\oCPOsem{\Gamma; \Phi \vdash
-    G}\rho[\ol{\Phi := K^2}]$, not only are $\bigvee_{i < \omega}
-  ((t_i)_{\ol{K^1}}\,a)$ and $\bigvee_{i < \omega}
-  ((t'_i)_{\ol{K^2}}\,b)$ well-defined, but, since
-\[\oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K}] : \oCPOR(
-  \oCPOsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K^1}],
-  \oCPOsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K^2}])\]
-we have
-  \[
-  \Big(\big(\bigvee_{i < \omega} t_i\big)_{\ol{K^1}} \,a,
-  \big(\bigvee_{i < \omega} t'_i\big)_{\ol{K^2}} \,b\Big)
-  = \Big(\bigvee_{i < \omega} \big((t_i)_{\ol{K^1}}\,a\big),\,
-  \bigvee_{i < \omega} \big((t'_i)_{\ol{K^2}}\,b\big)\Big) \in
-          \oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi
-             := K}]\] as well. That is,
-\[
-  \Big(\big(\bigvee_{i < \omega} t_i\big)_{\ol{K^1}}, \big(\bigvee_{i
-    < \omega} t'_i\big)_{\ol{K^2}} \Big)
-  \in (\oCPORsem{\Gamma;
-    \Phi \vdash G}\rho[\ol{\Phi := K}])^{\oCPORsem{\Gamma;\Phi\vdash
-      F}\rho[\ol{\Phi := K}]}
-  \]
-i.e.,
-$( \bigvee_{i < \omega} t_i, \bigvee_{i < \omega} t'_i ) \in
-  \oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$.
+is analogous to the proof of Lemma~\ref{lem:nat-types-sets}.
 
-Moreover, as for $\oCPO$ interpretations, $\omega_1$-cocontinuity of
+%Next, we
+%observe that $\oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$
+%is in $\oCPOR$. It is indeed a relation between $\oCPO$s, and it
+%relates sups of pairwise related $\omega$-chains of natural
+%transformations because their sups are computed pointwise. More
+%specifically, if $(t_i, t_i') \colon \oCPORsem{\Gamma; \emptyset
+%  \vdash \Nat^\Phi F\,G} \rho$ for all $i < \omega$, then for every
+%$\ol{K = (K^1, K^2, K^*) : \oCPORT_{k}}$ and every $i < \omega$ we
+%have
+%  \[\big((t_i)_{\ol{K^1}},\, (t'_i)_{\ol{K^2}}\big) \in
+%  (\oCPORsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi :=
+%      K}])^{\oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]}\] So
+%  if $(a,b) \in \oCPORsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]$,
+%  then $\big((t_i)_{\ol{K^1}}\,a,\, (t'_i)_{\ol{K^2}}\,b\big) \in
+%  \oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K}]$ for all $i <
+%  \omega$. But then since $\big((t_i)_{\ol{K^1}} a\big)_{i < \omega}$
+%  is an $\omega$-chain in $\oCPOsem{\Gamma; \Phi \vdash
+%    G}\rho[\ol{\Phi := K^1}]$ and $\big((t'_i)_{\ol{K^2}}\big)_{i <
+%    \omega} b$ is an $\omega$-chain in $\oCPOsem{\Gamma; \Phi \vdash
+%    G}\rho[\ol{\Phi := K^2}]$, not only are $\bigvee_{i < \omega}
+%  ((t_i)_{\ol{K^1}}\,a)$ and $\bigvee_{i < \omega}
+%  ((t'_i)_{\ol{K^2}}\,b)$ well-defined, but, since
+%\[\oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K}] : \oCPOR(
+%  \oCPOsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K^1}],
+%  \oCPOsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi := K^2}])\]
+%we have
+%  \[
+%  \Big(\big(\bigvee_{i < \omega} t_i\big)_{\ol{K^1}} \,a,
+%  \big(\bigvee_{i < \omega} t'_i\big)_{\ol{K^2}} \,b\Big)
+%  = \Big(\bigvee_{i < \omega} \big((t_i)_{\ol{K^1}}\,a\big),\,
+%  \bigvee_{i < \omega} \big((t'_i)_{\ol{K^2}}\,b\big)\Big) \in
+%          \oCPORsem{\Gamma;\Phi\vdash G}\rho[\ol{\Phi
+%             := K}]\] as well. That is,
+%\[
+%  \Big(\big(\bigvee_{i < \omega} t_i\big)_{\ol{K^1}}, \big(\bigvee_{i
+%    < \omega} t'_i\big)_{\ol{K^2}} \Big)
+%  \in (\oCPORsem{\Gamma;
+%    \Phi \vdash G}\rho[\ol{\Phi := K}])^{\oCPORsem{\Gamma;\Phi\vdash
+%      F}\rho[\ol{\Phi := K}]}
+%  \]
+%i.e.,
+%$( \bigvee_{i < \omega} t_i, \bigvee_{i < \omega} t'_i ) \in
+%  \oCPORsem{\Gamma; \emptyset \vdash \Nat^\Phi F\,G} \rho$.
+
+Moreover,
+%as for $\oCPO$ interpretations,
+$\omega$-cocontinuity of
 each of the above interpretations follows from Corollary~12
 of~\cite{jp19} if we \new{APPROPRIATELY RESTRICT THE SUBSCRIPTS of
 $\Lan$s}. For $\Nat$-types, $\oCPORsem{\Gamma; \emptyset \vdash
-  \Nat^\Phi F\,G}$ is an $\omega_1$-cocontinuous functor because it is
-constant on $\omega_1$-directed sets.  Interpretations of $\Nat$-types
+  \Nat^\Phi F\,G}$ is an $\omega$-cocontinuous functor because it is
+constant on $\omega$-directed sets.  Interpretations of $\Nat$-types
 ensure that $\oCPORsem{\Gamma \vdash F \to G}$ and $\oCPORsem{\Gamma
   \vdash \forall \ol \alpha. F}$ are as expected in any parametric
 model.
 
 For the next-to-last clause in Definition~\ref{def:rel-sem} to be
-well-defined we need $T_{H,\rho}$ to be an $\omega_1$-cocontinuous
+well-defined we need $T_{H,\rho}$ to be an $\omega$-cocontinuous
 endofunctor on $\oCPORT$ so that, by Lemma~\ref{lem:fp}, it admits a
 fixpoint.  Since $T_{H,\rho}$ is defined in terms of
 $\oCPORsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha} \vdash H}$, this means
 that relational interpretations of types must be
-$\omega_1$-cocontinuous functors from $\oCPORenv$ to $\oCPORT_0$,
+$\omega$-cocontinuous functors from $\oCPORenv$ to $\oCPORT_0$,
 which in turn entails that the actions of relational interpretations
 of types on objects and on morphisms in $\oCPORenv$ are intertwined.
 %Moreover, for the last clause in Definition~\ref{def:rel-sem} to be
 %well-defined we need $\oCPORsem{\Gamma; \ol\alpha \vdash
 %  K}\rho[\ol{\alpha := \_}]$ and $\oCPORsem{\Gamma; \Phi, \ol\alpha
-%  \vdash F}\rho[\ol{\alpha := \_}]$ to be $\omega_1$-cocontinuous
+%  \vdash F}\rho[\ol{\alpha := \_}]$ to be $\omega$-cocontinuous
 %functors.
 As for $\oCPO$ interpretations, we know from~\cite{jp19} that, for
 every $\Gamma; \ol\alpha \vdash F$, $\oCPORsem{\Gamma; \ol\alpha
-  \vdash F}$ is actually in $[\oCPOR^k,\oCPOR]_{\omega_1}$, where $k =
+  \vdash F}$ is actually in $[\oCPOR^k,\oCPOR]_{\omega}$, where $k =
 |\ol\alpha|$. We first define the actions of each of these functors
 on morphisms between $\oCPO$ relation environments in
 Definition~\ref{def:rel-sem-funcs}, and then argue that the functors
 given by Definitions~\ref{def:rel-sem} and~\ref{def:rel-sem-funcs} are
 well-defined and have the required properties. To do this, we extend
 $T_H$ to a {\em functor} from $\oCPORenv$ to
-$[[\oCPOR^k,\oCPOR]_{\omega_1},
-  [\oCPOR^k,\oCPOR]_{\omega_1}]_{\omega_1}$.  Its action on an object
+$[[\oCPOR^k,\oCPOR]_{\omega},
+  [\oCPOR^k,\oCPOR]_{\omega}]_{\omega}$.  Its action on an object
 $\rho \in \oCPORenv$ is given by the higher-order functor $T_{H,\rho}$
 whose actions on objects and morphisms are given in
 Definition~\ref{def:rel-sem}. Its action on a morphism $f : \rho
 \to \rho'$ is the higher-order natural transformation $T_{H,f} :
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F :
-[\oCPOR^k,\oCPOR]_{\omega_1}$ is the higher-order natural
+[\oCPOR^k,\oCPOR]_{\omega}$ is the higher-order natural
 transformation $T_{H,f}\, F : T_{H,\rho}\, F \to T_{H,\rho'}\, F$
 whose component at $\ol{R}$ is $(T_{H,f}\, F)_{\ol{R}} =
 \oCPORsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi :=
@@ -1652,12 +1633,12 @@ the following Lemma.
 For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F} =
 (\oCPOsem{\Gamma;\Phi \vdash F}, \oCPOsem{\Gamma;\Phi \vdash
   F},\oCPORsem{\Gamma;\Phi \vdash F}) \in
-[\oCPORenv,\oCPORT_0]_{\omega_1}$.
+[\oCPORenv,\oCPORT_0]_{\omega}$.
 \end{lemma}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
 using an appropriate result from~\cite{jp19} to deduce
-$\omega_1$-cocontinuity of $\sem{\Gamma;\Phi \vdash F}$ in each case,
+$\omega$-cocontinuity of $\sem{\Gamma;\Phi \vdash F}$ in each case,
 together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} for
 $\mu$-types. \new{$\Lan$ types need restriction on their
   subscripts.}
@@ -1734,7 +1715,7 @@ $|A|$ of $A$.
 The notion of an $\oCPO$ graph relation naturally generalizes to
 associate to each natural transformation between $k$-ary functors on
 $\oCPO$ a $k$-ary $\oCPO$ relation transformer as follows. Recall
-that, since $\oCPO$ is a locally $\omega_1$-presentable category,
+that, since $\oCPO$ is a locally $\omega$-presentable category,
 Proposition 1.6.1 of~\cite{ar94} ensures that it has a (strong epi,
 mono) factorization system. We then have:
 
@@ -1787,12 +1768,12 @@ transformer $\graph{\alpha} = (F, G, \graph{\alpha}^*)$. We call this
 the {\em $\oCPO$ graph relation transformer} for $\alpha$.
 
 \begin{lemma}\label{lem:graph-reln-functors}
-If $F,G : [\oCPO^k,\oCPO]_{\omega_1}$, and if $\alpha : F \to G$ is a natural
+If $F,G : [\oCPO^k,\oCPO]_{\omega}$, and if $\alpha : F \to G$ is a natural
 transformation, then $\graph{\alpha}$ is in $\oCPORT_k$.
 \end{lemma}
 \begin{proof}
-Clearly, $\graph{\alpha}^*$ is $\omega_1$-cocontinuous, so
-$\graph{\alpha}^* : [\oCPOR^k,\oCPOR]_{\omega_1}$. Now, suppose
+Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous, so
+$\graph{\alpha}^* : [\oCPOR^k,\oCPOR]_{\omega}$. Now, suppose
 $\overline{R : \oCPOR(A, B)}$, $\overline{S : \oCPOR(C, D)}$, and
 $\overline{(\beta, \beta') : R \to S}$. We want to show that there
 exists a morphism $\epsilon : \alpha^\wedge\overline{R} \to
@@ -1910,7 +1891,7 @@ lemma, which shows how to compute the action of an $\oCPO$ graph
 relation transformer on any $\oCPO$ graph relation.
 
 \begin{lemma}\label{lem:eq-reln-equalities}
-If $\alpha : F \to G$ is a morphism in $[\oCPO^k, \oCPO]_{\omega_1}$
+If $\alpha : F \to G$ is a morphism in $[\oCPO^k, \oCPO]_{\omega}$
 and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$, then $\graph{\alpha}^*
 \graph{\overline{f}} = \graph{G \ol{f} \circ \alpha_{\ol{A}}} =
 \graph{\alpha_{\ol{B}} \circ F \ol{f}}$.
@@ -1988,7 +1969,7 @@ naturality of $\alpha$.
 \end{proof}
 
 The {\em equality $\oCPO$ relation transformer} on $F :
-[\oCPO^k,\oCPO]_{\omega_1}$ is defined to be $\Eq_F =
+[\oCPO^k,\oCPO]_{\omega}$ is defined to be $\Eq_F =
 \graph{\id_{F}}$. Specifically, $\Eq_F = (F, F, \Eq_F^*)$ with
 $\Eq_F^* = \graph{\id_{F}}^*$, and Lemma~\ref{lem:eq-reln-equalities}
 indeed ensures that
@@ -2018,10 +1999,15 @@ Graph Lemma for our calculus.
   $\oCPORsem{\Gamma; \Phi \vdash F} \Eq_\rho = \Eq_{\oCPOsem{\Gamma;
       \Phi \vdash F}\rho}$.
 \end{thm}
-The proof is by induction on the structure of $F$. Only the $\Nat$,
-application, fixpoint, and $\Lan$ cases are non-routine. The latter
-two use Equation~\ref{eq:eq-pres-eq}. The fixpoint case also uses the
-observation that, for every $i < \omega_1$, the following intermediate
+\begin{proof}
+By induction on the structure of $F$. Only the $\Nat$, application,
+fixpoint, and $\Lan$ cases are non-routine.
+
+
+
+The latter two use
+Equation~\ref{eq:eq-pres-eq}. The fixpoint case also uses the
+observation that, for every $i < \omega$, the following intermediate
 results can be proved by simultaneous induction with
 Theorem~\ref{thm:iel}: {\color{red} CHECK THIS!} for any $H$, $\rho$,
 $A$, and any subformula $J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\,
@@ -2034,11 +2020,16 @@ $A$, and any subformula $J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\,
   \ol{\alpha} \vdash J} \Eq_{\rho} [\phi := \Eq_{(T^\oCPO_{H,\rho})^i K_0}]
 \overline{[\alpha := \Eq_A]}
 \end{array}\]
-hold. With these results in hand, the proof follows easily. It is
-given in detail in the accompanying anonymous supplementary
-material. As noted there, if functorial variables of arity greater
-than $0$ were allowed to appear in the bodies of $\mu$-types, then the
-IEL would fail.
+hold. With these results in hand, the proof follows easily
+{\color{red} for all but $\Lan$-types}. The entire proof is given in
+detail in the accompanying anonymous supplementary material. As noted
+there, if functorial variables of arity greater than $0$ were allowed
+to appear in the bodies of $\mu$-types, then the IEL would fail.
+
+{\color{red} For $\Lan$-types,....}
+
+
+\end{proof}
 
 \begin{lemma}[Graph Lemma]\label{lem:graph}
 If $\rho, \rho' : \oCPOenv$, $f : \rho \to \rho'$, and $\Gamma; \Phi
@@ -2142,12 +2133,12 @@ Some questions/issues:
   closed type $C$. (Also for select classes of open types?) So can
   model $\Nat \to \gamma$. But the functor $NX = \Nat \to X$ isn't
   $\omega$-cocontinuous. It also doesn't preserve
-  $\omega_1$-presentable objects, i.e., countable $\omega$CPOs since
+  $\omega$-presentable objects, i.e., countable $\omega$CPOs since
   $\Nat \to \Nat$ is not countable. So we cannot have a functor like
   $N$ as the subscript to $\Lan$ and expect the resulting $\Lan$ to be
-  $\omega_1$-cocontinuous.
+  $\omega$-cocontinuous.
 \item What functors can be subscripts to $\Lan$ and produce
-  $\omega_1$-cocontinuous functors? We can use functors that preserve
+  $\omega$-cocontinuous functors? We can use functors that preserve
   presentable objects by theorem in~\cite{jp19}, and possibly others
   as well. These include polynomial functors, ADTs and nested types
   seen as functors, certain (which?) GADTs seen as functors? How big
