@@ -559,17 +559,17 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \\\\
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
 \AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
-\AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
-\TIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
-  (\Lan^{\ol\alpha}_{\ol K}\,  F)\,\ol{K[\ol{\alpha := A}]}$}  
+%\AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
+\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} :
+\Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,  F)\ol{K}$}  
 \DisplayProof
 \\\\
 \AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
   F\;G[\ol{\beta := K}]$}
-\AXC{$\ol{\Gamma;\Phi \vdash B}$}
-\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol B $}
-\TIC{$\Gamma;\Phi~|~\Delta \vdash \partial^{G, \ol K}_F \eta\,t :
- G[\ol{\beta := B}]$}
+%\AXC{$\ol{\Gamma;\Phi \vdash B}$}
+%\AXC{$\Gamma;\Phi~|~\Delta \vdash t : (\Lan^{\ol\alpha}_{\ol K} F)\,\ol B $}
+\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+\Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta\; G$}
 \DisplayProof
 \end{array}\]
 \end{dfn}
@@ -1185,39 +1185,42 @@ $\textit{Lan}_{\ol{\oCPOsem{\Gamma; \ol\alpha \vdash
 \end{itemize}
 \end{dfn}
 
-We need to check that the functorial action on $\Lan$ types is well-defined.
-That amounts to showing that the extra condition in the interpretation of
-$\Lan$ types is preserved by the functorial action, so that,
-if $t : \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho$,
-then $\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t : \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho'$.
-By definition, if $t : \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho$,
-then $(t, t) \in \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \Eq_{\rho}$,
-i.e., there exist
-$\ol{Z : \oCPO_0}$,
-$t_1 : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := Z}]$,
-$t_2 : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := Z}]$,
-and $\ol{g : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\Eq_{\rho}[\ol{\alpha := \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash A}\Eq_{\rho}}$
-such that
-$\iota_{\ol{Z}, \ol{\pi_1 g}}t_1 = t$,
-$\kappa_{\ol{Z}, \ol{\pi_2 g}}t_2 = t$,
-and
-$(t_1,t_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho}[\ol{\alpha := \Eq_Z}]$.
-To prove that
+We need to check that the functorial action on $\Lan$ types is
+well-defined, i.e., that the extra condition in the interpretation of
+$\Lan$ types is preserved by the functorial action, i.e., if $t :
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}
+\rho$, then $\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}
+  F)\ol{A}}f t : \oCPOsem{\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho'$.  By definition, if $t
+: \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}
+\rho$, then $(t, t) \in \oCPORsem{\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \Eq_{\rho}$, i.e., there
+exist $\ol{Z : \oCPO_0}$, $t_1 : \oCPOsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho[\ol{\alpha := Z}]$, $t_2 : \oCPOsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}\rho[\ol{\alpha := Z}]$, and $\ol{g :
+  \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\Eq_{\rho}[\ol{\alpha :=
+      \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash A}\Eq_{\rho}}$ such
+that $\iota_{\ol{Z}, \ol{\pi_1 g}}t_1 = t$, $\kappa_{\ol{Z}, \ol{\pi_2
+    g}}t_2 = t$, and $(t_1,t_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\Eq_{\rho}[\ol{\alpha := \Eq_Z}]$.  To prove that
 $\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t
-: \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho'$,
-let $\ol{Z' = Z}$, $t'_i = \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} f [\ol{\alpha := \id_{Z}}] t_i$ for $i = 1, 2$,
-and $\ol{g' = \oCPORsem{\Gamma; \Phi \vdash A}f \circ g}$.
-We thus have to show that
-$\iota'_{\ol{Z'}, \ol{\pi_1 g'}}t'_1 = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t$,
-$\kappa'_{\ol{Z'}, \ol{\pi_2 g'}}t'_2 = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t$,
-and
-$(t_1',t_2') : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho'}[\ol{\alpha := \Eq_{Z'}}]$.
-That $(t_1',t_2') : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho'}[\ol{\alpha := \Eq_{Z'}}]$
-follows from the fact that
-$(t_1',t_2') = \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F} Eq_{f} [\ol{\alpha := \id_{\Eq_{Z}}}] (t_1, t_2)$
-and $(t_1,t_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho}[\ol{\alpha := \Eq_Z}]$.
-That $\iota'_{\ol{Z'}, \ol{\pi_1 g'}}t'_1 = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t$
-is because
+: \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}
+\rho'$, let $\ol{Z' = Z}$, $t'_i = \oCPOsem{\Gamma; \Phi, \ol\alpha
+  \vdash F} f [\ol{\alpha := \id_{Z}}] t_i$ for $i = 1, 2$, and
+$\ol{g' = \oCPORsem{\Gamma; \Phi \vdash A}\Eq_f \circ g}$.  We have
+to show that $\iota'_{\ol{Z'}, \ol{\pi_1 g'}}t'_1 =
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f
+t$, $\kappa'_{\ol{Z'}, \ol{\pi_2 g'}}t'_2 = \oCPOsem{\Gamma;\Phi
+  \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t$, and $(t_1',t_2')
+: \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho'}[\ol{\alpha :=
+    \Eq_{Z'}}]$.  That $(t_1',t_2') : \oCPORsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}\Eq_{\rho'}[\ol{\alpha := \Eq_{Z'}}]$ follows
+from the fact that $(t_1',t_2') = \oCPORsem{\Gamma; \Phi, \ol\alpha
+  \vdash F} \Eq_f [\ol{\alpha := \id_{\Eq_{Z}}}] (t_1, t_2)$ and
+$(t_1,t_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash
+  F}\Eq_{\rho}[\ol{\alpha := \Eq_Z}]$.  That $\iota'_{\ol{Z'},
+  \ol{\pi_1 g'}}t'_1 = \oCPOsem{\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}f t$ is because
 \[
 \begin{array}{rl}
 \iota'_{\ol{Z'}, \ol{\pi_1 g'}}t'_1
@@ -1229,22 +1232,22 @@ is because
 where the second equality is justified by the commutativity of the diagram
 \begin{equation}\label{cd:lan-comm}
 \begin{tikzcd}[row sep = huge]
-\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := Z}]
+\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := Z}]
   \ar[r, "{\iota_{\ol{Z}, \ol{\pi_1 g}}}"]
-  \ar[d, "{\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F} f [\ol{\alpha := \id_Z}]}" description]
-&\colim{\ol{S}, \ol{h : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := S}] \to \oCPORsem{\Gamma; \Phi \vdash A}\rho}}
-{\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := S}]}
-  \ar[d, "{(\Lan_{\ol{\oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \_}]}} \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}\rho}}" description] \\
-\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := Z}]
+  \ar[d, "{\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} f [\ol{\alpha := \id_Z}]}" description]
+&\colim{\ol{S}, \ol{h : \oCPOsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := S}] \to \oCPOsem{\Gamma; \Phi \vdash A}\rho}}
+{\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := S}]}
+  \ar[d, "{(\Lan_{\ol{\oCPOsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]) \ol{\oCPOsem{\Gamma; \Phi \vdash A}\rho}}" description] \\
+\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := Z}]
   \ar[r, "{\iota''_{\ol{Z}, \ol{\pi_1 g}}}"]
   \ar[d, equal]
-& \colim{\ol{S}, \ol{h : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho'[\ol{\alpha := S}] \to \oCPORsem{\Gamma; \Phi \vdash A}\rho'}}
-{\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]}
-  \ar[d, "{(\Lan_{\ol{\oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \_}]}} \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]) \ol{\oCPORsem{\Gamma; \Phi \vdash A}f}}" description] \\
-\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := Z}]
-  \ar[r, shift right = 1, "{\iota'_{\ol{Z'}, \ol{\pi_1 (\oCPORsem{\Gamma; \Phi \vdash A}f \circ g)}}}"']
-& \colim{\ol{S}, \ol{h : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho'[\ol{\alpha := S}] \to \oCPORsem{\Gamma; \Phi \vdash A}\rho'}}
-{\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]}
+& \colim{\ol{S}, \ol{h : \oCPOsem{\Gamma; \ol{\alpha} \vdash K}\rho'[\ol{\alpha := S}] \to \oCPOsem{\Gamma; \Phi \vdash A}\rho}}
+{\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]}
+  \ar[d, "{(\Lan_{\ol{\oCPOsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \_}]}} \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]) \ol{\oCPOsem{\Gamma; \Phi \vdash A}f}}" description] \\
+\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := Z}]
+  \ar[r, shift right = 1, "{\iota'_{\ol{Z'}, \ol{\pi_1 (\oCPORsem{\Gamma; \Phi \vdash A}\Eq_f \circ g)}}}"']
+& \colim{\ol{S}, \ol{h : \oCPOsem{\Gamma; \ol{\alpha} \vdash K}\rho'[\ol{\alpha := S}] \to \oCPOsem{\Gamma; \Phi \vdash A}\rho'}}
+{\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]}
 \end{tikzcd}
 \end{equation}
 %\[
@@ -1584,7 +1587,15 @@ $\oCPORsem{\cdot} : \F \to [\oCPORenv, \oCPOR]_{\omega}$ is defined by
 \[\colim{Z\, :\, \oCPO_0, \;h \,:\, \oCPOsem{\Gamma; \ol{\alpha} \vdash
       K}\pi_2\rho[\ol{\alpha := Z}] \to \oCPOsem{\Gamma; \Phi \vdash
     A}\pi_2\rho}{\oCPOsem{\Gamma; \ol{\alpha} \vdash
-    F}\pi_2\rho[\ol{\alpha := Z}]}\]}
+    F}\pi_2\rho[\ol{\alpha := Z}]}\]
+We note that the pair $(\iota_{Z,h},\kappa_{Z,h})$ need not coincide
+with the injection $j_{Z,\Eq_h}$ into 
+\[\colim{Z\, :\, \oCPO_0, \;g \,:\, \oCPORsem{\Gamma; \ol{\alpha} \vdash
+      K}\rho[\ol{\alpha := \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash
+    A}\rho}{\oCPORsem{\Gamma; \ol{\alpha} \vdash
+    F}\rho[\ol{\alpha := \Eq_Z}]}\]}
+
+
 
 For Definition~\ref{def:rel-sem} to be well-defined, we have to check
 that each relational interpretation is in $\oCPOR$ and, in particular,
@@ -1718,57 +1729,61 @@ In the $\Lan$ case, instead, define
 \]
 \end{dfn}
 
-We need to show that the functorial action for the $\Lan$ case is well-defined, i.e.,
-that for every $(t_1, t_2) : \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}$
-we have that
+We need to show that the functorial action for the $\Lan$ case is
+well-defined, i.e., that for every $(t_1, t_2) : \oCPORsem{\Gamma;\Phi
+  \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}$ we have that
 \[
 (
-\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \pi_1 f t_1,
-\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \pi_2 f t_2
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) t_1,
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_2 f) t_2
 )
 : \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho'
 \]
-From $(t_1, t_2) : \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}$
-we have, by definition, that there exist
-$\ol{Z : \oCPO_0}$,
-$t_1' : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\pi_1\rho[\ol{\alpha := Z}]$,
-$t_2' : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\pi_2\rho[\ol{\alpha := Z}]$,
-$\ol{g : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\rho[\ol{\alpha := \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash A}\rho}$
-such that
-$\iota_{\ol{Z},\ol{\pi_1 g}}t_1' = t_1$,
-$\kappa_{\ol{Z}, \ol{\pi_2 g}}t_2' = t_2$,
-and
-$(t_1',t_2') : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \Eq_Z}]$.
-To show that
+From $(t_1, t_2) : \oCPORsem{\Gamma;\Phi \vdash
+  (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}$ we have, by definition, that
+there exist $\ol{Z : \oCPO_0}$, $t_1' : \oCPOsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}(\pi_1\rho)[\ol{\alpha := Z}]$, $t_2' :
+\oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_2\rho)[\ol{\alpha :=
+    Z}]$, $\ol{g : \oCPORsem{\Gamma; \ol{\alpha} \vdash
+    K}\rho[\ol{\alpha := \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash
+    A}\rho}$ such that $\iota_{\ol{Z},\ol{\pi_1 g}}t_1' = t_1$,
+$\kappa_{\ol{Z}, \ol{\pi_2 g}}t_2' = t_2$, and $(t_1',t_2') :
+\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    \Eq_Z}]$.  To show that
 \[
 (
-\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \pi_1 f t_1,
-\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \pi_2 f t_2
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) t_1,
+\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_2 f) t_2
 )
 : \oCPORsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} \rho'
 \]
-let
-$\ol{S = Z : \oCPO_0}$,
-$s_1 = \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 f) [\ol{\alpha := Z}] t'_1$,
-$s_2 = \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_2 f) [\ol{\alpha := Z}] t'_2$,
-and
-$\ol{h = \oCPORsem{\Gamma; \Phi \vdash A} f \circ g}$.
-The first thing we need to show is that $(s_1, s_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \Eq_S}]$,
-and that is because $(s_1, s_2) = \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} f [\ol{\alpha := \Eq_Z}] (t'_1, t'_2)$.
-The second thing we need to show is that $\iota'_{\ol{S},\ol{\pi_1 h}} s_1' = s_1$ and $\kappa'_{\ol{S},\ol{\pi_2 h}} s_2' = s_2$.
-That is because
+let $\ol{S = Z}$, $s_1' = \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}
+(\pi_1 f) [\ol{\alpha := Z}] t'_1$, $s_2' = \oCPOsem{\Gamma; \Phi,
+  \ol\alpha \vdash F} (\pi_2 f) [\ol{\alpha := Z}] t'_2$, and $\ol{h =
+  \oCPORsem{\Gamma; \Phi \vdash A} f \circ g}$.  The first thing we
+need to show is that $(s'_1, s'_2) : \oCPORsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho'[\ol{\alpha := \Eq_Z}]$, and that is because $(s'_1,
+s'_2) = \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F} f [\ol{\alpha :=
+    \Eq_Z}] (t'_1, t'_2)$.  The second thing we need to show is that
+\[\iota'_{\ol{Z},\ol{\pi_1 h}} s_1' = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) t_1\] and
+\[\kappa'_{\ol{Z},\ol{\pi_2 h}} s_2' = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_2 f) t_2\]  That is because
 \[
 \begin{array}{rl}
-\iota'_{\ol{S},\ol{\pi_1 h}} s_1'
-&= \iota'_{\ol{S},\ol{\oCPOsem{\Gamma; \Phi \vdash A} \pi_1 f \circ \pi_1 g}} ( \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 f) [\ol{\alpha := Z}] t'_1 ) \\
-&= (\oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) \circ \iota_{\ol{S},\ol{\pi_1 g}}) t'_1 \\
-&= \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) (\iota_{\ol{S},\ol{\pi_1 g}} t'_1) \\
-&= \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) t_1 \\
-&= s_1
-\end{array}
+\iota'_{\ol{Z},\ol{\pi_1 h}} s_1' &=
+\iota'_{\ol{Z},\ol{\oCPOsem{\Gamma; \Phi \vdash A} (\pi_1 f) \circ \pi_1
+    g}} ( \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 f)
+      [\ol{\alpha := \id_Z}] t'_1 ) \\
+%      &= (\oCPOsem{\Gamma;\Phi \vdash
+%        (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f) \circ
+      %      \iota_{\ol{Z},\ol{\pi_1 g}}) t'_1
+       &= \oCPOsem{\Gamma;\Phi
+        \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f)
+      (\iota_{\ol{Z},\ol{\pi_1 g}} t'_1) \\ &= \oCPOsem{\Gamma;\Phi
+        \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_1 f)
+      t_1 \end{array}
 \]
 where the second equality is by the commutativity of diagram~\ref{cd:lan-comm}.
-Analogously, we show that $\kappa'_{\ol{S},\ol{\pi_2 h}} s_2' = s_2$.
+Analogously, we show that $\kappa'_{\ol{Z},\ol{\pi_2 h}} s_2' = \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}} (\pi_2 f) t_2$.
 
 To see that the functors given by Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} are well-defined we must also show that, for
