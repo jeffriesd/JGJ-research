@@ -537,7 +537,7 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
 \AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
 %\AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
-\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} :
+\BIC{$\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F} :
 \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,  F)\ol{K}$}  
 \DisplayProof
 \\\\
@@ -570,8 +570,7 @@ $k$. In the rules for $\tin_H$ and $\fold^F_H$, the functorial
 variables in $\ol{\beta}$ are fresh with respect to $H$, and there is
 one $\beta$ for every $\alpha$. (Recall from above that, in order for
 the types of $\tin_H$ and $\fold^F_H$ to be well-formed, the length of
-$\alpha$ must equal the arity of $\phi$.)  {\color{red} In the rule
-  for $\int_{\ol K,H}$, ANYTHING NEEDED HERE?}
+$\alpha$ must equal the arity of $\phi$.) 
 
 Substitution for terms is the obvious extension of the usual
 capture-avoiding textual substitution, and
@@ -763,7 +762,15 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
 Here, $\iota_{X,g}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
   K}\,F)\,B = \colim{X : \set_0,\, g : KX \to B}{FX}$ and
 $\iota'_{X,g'}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
-  K}\,F)\,B' = \colim{X : \set_0,\, g' : KX \to B'}{FX}$.}
+  K}\,F)\,B' = \colim{X : \set_0,\, g' : KX \to B'}{FX}$.
+
+\vspace*{0.1in}
+
+**Say somewhere that recognizing the non-parallel nature of the Lan
+interps, and yet still being able to define the set and rel interps so
+that everything is intertwined in exactly the right way to make the
+proofs (e.g., of the IEL) work, is what's hard here. This is where the
+insight is required.**}
 
 If $\rho : \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash
   F}$ instead of $\oCPOsem{\vdash F}\rho$ since the environment is
@@ -1905,17 +1912,14 @@ Graph Lemma for our calculus.
 \end{thm}
 \begin{proof}
 By induction on the structure of $F$. Only the $\Nat$, application,
-fixpoint, and $\Lan$ cases are non-routine.
-
-
-
-The latter two use
-Equation~\ref{eq:eq-pres-eq}. The fixpoint case also uses the
-observation that, for every $i < \omega$, the following intermediate
-results can be proved by simultaneous induction with
-Theorem~\ref{thm:iel}: {\color{red} CHECK THIS!} for any $H$, $\rho$,
-$\ol A$, and any subformula $J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\,
-\ol{\Eq_A} = (\Eq_{(T^\set_{H,\rho})^i K_0})^* \ol{\Eq_A}$\; and\;
+fixpoint, and $\Lan$ cases are non-routine. The application and
+fixpoint cases use Equation~\ref{eq:eq-pres-eq}. The fixpoint case
+$\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda \ol\alpha.H)\ol F$
+also uses the observation that, for every $i < \omega$, the following
+intermediate results can be proved by simultaneous induction with
+Theorem~\ref{thm:iel}: for any $H$, $\rho$, $\ol A$, and any
+subformula $J$ of $H$, $T^i_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A} =
+(\Eq_{(T^\set_{H,\rho})^i K_0})^* \ol{\Eq_A}$\; and\;
 \[\begin{array}{ll}
 &  \oCPORsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := T^i_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\
@@ -1924,15 +1928,18 @@ $\ol A$, and any subformula $J$ of $H$, both $T^i_{H,\Eq_{\rho}} K_0\,
   \ol{\alpha} \vdash J} \Eq_{\rho} [\phi := \Eq_{(T^\oCPO_{H,\rho})^i K_0}]
 \overline{[\alpha := \Eq_A]}
 \end{array}\]
-hold. With these results in hand, the proof follows easily
-{\color{red} for all but $\Lan$-types}. The entire proof is given in
-detail in the accompanying anonymous supplementary material. As noted
-there, if functorial variables of arity greater than $0$ were allowed
-to appear in the bodies of $\mu$-types, then the IEL would fail.
-
-{\color{red} For $\Lan$-types,....}
-
-
+The case of the latter equation for $J = (\Lan_{\ol K}^{\ol
+  \beta}\,F)\ol B$ uses the facts that $\pi_1 (T^i_{H,\Eq_\rho} K_0) =
+(T^\set_{H,\rho})^i K_0$ for all $i < \omega$, $\pi_2
+(T^i_{H,\Eq_\rho} K_0) = (T^\set_{H,\rho})^i K_0$ for all $i <
+\omega$, and that, without loss of generality, the variables in $\ol
+\beta$ do not appear free in $H$. With these results in hand, the
+proof of Theorem~\ref{thm:iel} follows. The simultaneous induction
+required to make the various parts of the proof hang together
+appropriately is somewhat delicate, so we give the proof in its
+entirety in the {\color{blue} appendix}. As noted there, if functorial
+variables of arity greater than $0$ were allowed in the bodies of
+$\mu$-types then the IEL would fail.
 \end{proof}
 
 \begin{lemma}[Graph Lemma]\label{lem:graph}
@@ -1989,66 +1996,8 @@ f\, x) \in \graph{\oCPOsem{\Gamma; \Phi \vdash F}f}$ then $(x,
 \subseteq \oCPORsem{\Gamma; \Phi \vdash F} \graph{f}$.
 \end{proof}
 
+\section{Interpreting Terms}
 
-
-
-\vspace*{1in}
-
-\hrule
-
-\vspace*{0.1in}
-
-\new{
-Some questions/issues:
-\begin{itemize}
-\item Can we write zipBush and appendBush with $\partial$ and $\int$?
-  We could already represent the uncurried type of appendBush
-  (although not its curried type), but couldn't recurse over both
-  input bushes because folds take natural transformations as inputs.
-\item More generally, how do we compute with $\partial$ and $\int?$
-  Can we use the colimit formulation of Lans (see Lemma 6.3.7
-  of~\cite{rie16}) to get a handle on this?
-\item What is the connection between exponentials and natural
-  transformations? (Should we assume only small objects are
-  exponentiable?) Do we want the former or the latter for
-  computational purposes? (I suspect the latter.)
-
-  [From nlab:
-  In a functor category $D^C$ , a natural transformation $\alpha : F \to
-  G$ is exponentiable if (though probably not ``only if'') it is
-  cartesian and each component $\alpha_c : F c \to G c$ is
-  exponentiable in $D$.  Given $H \to F$ we define $(\Pi_\alpha H) c =
-  \Pi_{\alpha_c}(Hc)$; then for $u : c \to c'$ to obtain a map
-  $\Pi_{\alpha_c} (Hc) \to \Pi_{\alpha_{c'}} (Hc')$ we need a map
-  $\alpha^*_{c'}(\Pi_{\alpha_c}(Hc)) \to Hc'$. But since $\alpha$ is
-  cartesian, $\alpha^*_{c'}(\Pi_{\alpha_c}(Hc)) \cong
-  \alpha^*_{c}(\Pi_{\alpha_c}(Hc))$, so we have the counit
-  $\alpha^*_{c}(\Pi_{\alpha_c}(Hc)) \to Hc$ that we can compose with
-  $Hu$.]
-\item After we understand what we can do with Lans and folds on GADTs
-  we might want to try to extend calculus with term-level
-  fixpoints. This would give a categorical analogue for GADTs
-  of~\cite{pit98,pit00} for ADTs. Would it also more accurately
-  reflect how GADTs are used in practice, or are functions over GADTs
-  usually folds? Investigate applications in the literature and/or in
-  implementations.
-\item $\omega$CPO is a natural choice for modeling general
-  recursion. We know $(Lan^\gamma_C \onet)D$ is $C \to D$ for any
-  closed type $C$. (Also for select classes of open types?) So can
-  model $\Nat \to \gamma$. But the functor $NX = \Nat \to X$ isn't
-  $\omega$-cocontinuous. It also doesn't preserve
-  $\omega$-presentable objects, i.e., countable $\omega$CPOs since
-  $\Nat \to \Nat$ is not countable. So we cannot have a functor like
-  $N$ as the subscript to $\Lan$ and expect the resulting $\Lan$ to be
-  $\omega$-cocontinuous.
-\item What functors can be subscripts to $\Lan$ and produce
-  $\omega$-cocontinuous functors? We can use functors that preserve
-  presentable objects by theorem in~\cite{jp19}, and possibly others
-  as well. These include polynomial functors, ADTs and nested types
-  seen as functors, certain (which?) GADTs seen as functors? How big
-  can GADTs get? 
-\end{itemize}
-}
 
 \bibliography{references}
 
