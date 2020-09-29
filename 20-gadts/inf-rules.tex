@@ -654,6 +654,27 @@ Definitions~\ref{def:set-sem} and~\ref{def:rel-sem} in space, but
 otherwise has no impact on the fact that these definitions are given
 by mutual induction.
 
+\subsection{Preliminaries}
+
+\new{WHERE DOES THIS ALL GO? Must explain $\Lan$s, say why they are
+  functors, say they can be computed using colimits in $\set$ and
+  $\rel$, define injections, etc. If $f : B \to B'$ in $\set$, then
+  the functorial action of $\mathit{Lan}_{\ol K}\,F$ on $f$ is the
+  unique morphism $(\mathit{Lan}_{\ol K}\,F)f$ such that
+  \begin{equation}\label{def:functorial-action-lan}
+(\mathit{Lan}_{\ol K}\,F)f \circ \iota_{X,g} = \iota'_{X, f \circ
+      g}~~~MISSING~SOME~BARS
+\end{equation}
+Here, $\iota_{X,g}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
+  K}\,F)\,B = \colim{X : \set_0,\, g : KX \to B}{FX}$ and
+$\iota'_{X,g'}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
+  K}\,F)\,B' = \colim{X : \set_0,\, g' : KX \to B'}{FX}$.
+**Say somewhere that recognizing the non-parallel nature of the Lan
+interps, and yet still being able to define the set and rel interps so
+that everything is intertwined in exactly the right way to make the
+proofs (e.g., of the IEL) work, is what's hard here. This is where the
+insight is required.**}
+
 \subsection{Object Interpretations of Types}\label{sec:obj-interp}
 
 The object interpretations of the types in our calculus will be
@@ -674,6 +695,14 @@ Writing $[\C,\D]$ for the category of $\omega$-cocontinuous functors
 from $\C$ to $\D$ for the locally finitely presentable categories $\C$
 and $\D$, for our $\set$ interpretations we have:
 
+{\color{red} We need to restrict set and relational environments to
+  $\set_0$ and $\rel_0$ for interps of $\Lan$-types and -terms, and
+  note that this is OK because these are our presentable objects, all
+  (other) objects can be written as $\omega$-directed colimits of
+  presentables, and our interpretations are $\omega$-cocontinuous and
+  therefore preserve $\omega$-directed colimits. Say once here, and
+  then just use throughout.}
+  
 \begin{dfn}\label{def:set-env}
 A {\em $\set$ environment} maps each type variable in $\tvars^k \cup
 \fvars^k$ to an element of\, $[\oCPO^k,\oCPO]$. A morphism $f : \rho
@@ -750,27 +779,8 @@ The {\em object interpretation} $\oCPOsem{\cdot} : \F \to [\oCPOenv,
       (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{A}}\Eq_\rho\}\\
 \end{align*}
 \end{dfn}
-\new{WHERE DOES THIS ALL GO? Must explain $\Lan$s, say why they are
-  functors, say they can be computed using colimits in $\set$ and
-  $\rel$, define injections, etc. If $f : B \to B'$ in $\set$, then
-  the functorial action of $\mathit{Lan}_{\ol K}\,F$ on $f$ is the
-  unique morphism $(\mathit{Lan}_{\ol K}\,F)f$ such that
-  \begin{equation}\label{def:functorial-action-lan}
-(\mathit{Lan}_{\ol K}\,F)f \circ \iota_{X,g} = \iota'_{X, f \circ
-      g}~~~MISSING~SOME~BARS
-\end{equation}
-Here, $\iota_{X,g}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
-  K}\,F)\,B = \colim{X : \set_0,\, g : KX \to B}{FX}$ and
-$\iota'_{X,g'}$ is the injection of $FX$ into $(\mathit{Lan}_{\ol
-  K}\,F)\,B' = \colim{X : \set_0,\, g' : KX \to B'}{FX}$.
 
 \vspace*{0.1in}
-
-**Say somewhere that recognizing the non-parallel nature of the Lan
-interps, and yet still being able to define the set and rel interps so
-that everything is intertwined in exactly the right way to make the
-proofs (e.g., of the IEL) work, is what's hard here. This is where the
-insight is required.**}
 
 If $\rho : \oCPOenv$ and $\vdash F$ then we write $\oCPOsem{\vdash
   F}$ instead of $\oCPOsem{\vdash F}\rho$ since the environment is
@@ -1997,6 +2007,739 @@ f\, x) \in \graph{\oCPOsem{\Gamma; \Phi \vdash F}f}$ then $(x,
 \end{proof}
 
 \section{Interpreting Terms}
+
+If $\Delta = x_1 : F_1,...,x_n : F_n$ is a term context for $\Gamma$
+and $\Phi$, then the interpretations $\setsem{\Gamma;\Phi \vdash \Delta}$ and
+$\relsem{\Gamma;\Phi \vdash \Delta}$ are defined by
+\[\begin{array}{lll}
+\setsem{\Gamma;\Phi \vdash \Delta} & = & \setsem{\Gamma;\Phi \vdash
+  F_1} \times ... \times \setsem{\Gamma;\Phi \vdash F_n}\\ 
+\relsem{\Gamma;\Phi \vdash \Delta} & = & \relsem{\Gamma;\Phi \vdash
+  F_1} \times ... \times \relsem{\Gamma;\Phi \vdash F_n}\\ 
+\end{array}\]
+Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ then
+has, for every $\rho \in \setenv$, set interpretations
+$\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$ as natural
+transformations from $\setsem{\Gamma; \Phi \vdash \Delta}\rho$ to
+$\setsem{\Gamma; \Phi \vdash F}\rho$, and, for every $\rho \in
+\relenv$, relational interpretations $\relsem{\Gamma;\Phi~|~\Delta
+  \vdash t : F}\rho$ as natural transformations from
+$\relsem{\Gamma; \Phi \vdash \Delta}\rho$ to $\relsem{\Gamma; \Phi
+  \vdash F}\rho$. These are given in Definition~\ref{def:set-interp}.
+
+\begin{dfn}\label{def:set-interp}
+If $\rho$ is a set (resp., relation) environment and
+$\Gamma;\Phi~|~\Delta \vdash t : F$ then
+$\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$ (resp.,
+$\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$) is defined as in
+Figure~\ref{fig:term-sem}, where $\mathsf D$ is either $\set$ or
+$\rel$ as appropriate.
+\end{dfn}
+
+\begin{figure*}
+\hspace*{-3.1in}
+\resizebox{0.46\linewidth}{!}{
+\begin{minipage}[t]{0.5\textwidth}
+\[\begin{array}{lll}
+\dsem{\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F} \rho& = &
+\pi_{|\Delta|+1}\\
+%\dsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : \sigma \to \tau}\rho &
+%= & \curry (\dsem{\Gamma;\emptyset \,|\, \Delta, x : \sigma \vdash t :
+%  \tau}\rho)\\ 
+%\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st: \tau} \rho & = &
+%\eval \circ
+% \langle \dsem{\Gamma;\emptyset \,|\, \Delta \vdash s: \sigma \to
+%  \tau}\rho, \dsem{\Gamma;\emptyset \,|\, \Delta \vdash t: \sigma}\rho
+%\rangle\\
+\dsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
+    \alpha} \,F \,G}\rho & = &  \curry (\dsem{\Gamma;\overline \alpha
+  \,|\, \Delta, x : F \vdash t: G}\rho[\overline{\alpha := \_}])\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s:
+  G [\overline{\alpha := K}]}\rho & = & \eval \circ \langle
+  \lambda d.\,(\dsem{\Gamma;\emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\; d)_{\overline{\dsem{\Gamma;\Phi
+      \vdash K}\rho}},\\ 
+ & & \hspace*{0.5in} \dsem{\Gamma;\Phi \,|\,
+    \Delta \vdash s: F [\overline{\alpha := K}]}\rho \rangle\\ 
+& & \\
+%% \color{red} \mbox{Add rules for } \forall \mbox{ if we include it} & & \\
+%\dsem{\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F} \rho& = &
+%\pi_{|\Delta|+1}\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \bot_F t : F} \rho& = &
+!^0_{\dsem{\Gamma;\Phi \vdash F}\rho} \circ
+  \dsem{\Gamma;\Phi~|~\Delta \vdash t : \zerot}\rho, \mbox{ where } \\
+ & & \hspace*{0.1in} !^0_{\dsem{\Gamma;\Phi \vdash F}\rho}
+\mbox{ is the unique morphism from } 0\\
+ & & \hspace*{0.1in} \mbox{ to } \dsem{\Gamma;\Phi \vdash F}\rho\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \top : \onet}\rho & = &
+!^{\dsem{\Gamma;\Phi\vdash \Delta}\rho}_1, \mbox{ where }
+!^{\dsem{\Gamma;\Phi\vdash \Delta}\rho}_1\\ 
+& & \hspace*{0.1in} \mbox{ is the unique morphism from }
+\dsem{\Gamma;\Phi\vdash \Delta}\rho \mbox{ to } 1\vspace*{0.05in}\\ 
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : F \times G} \rho& = &
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash s: F} \rho\times
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash t : G} \rho\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : F} \rho& = &
+\pi_1 \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash t : F \times G}\rho\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : G}\rho & = &
+\pi_2 \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash t : F \times
+  G} \rho\\
+\dsem{\Gamma;\Phi~|~\Delta \vdash \case{t}{x \mapsto l}{y \mapsto r} :
+  K}\rho & = & \eval \circ \langle \curry \,[\dsem{\Gamma;\Phi
+    \,|\, \Delta, x : F \vdash l : K}\rho,\\
+   & & \hspace*{0.79in} \dsem{\Gamma;\Phi \,|\, \Delta, y
+    : G \vdash r : K}\rho],\\
+   & &  \hspace*{0.5in} \dsem{\Gamma;\Phi \,|\, \Delta \vdash t :
+  F + G} \rho\rangle\vspace*{0.05in}\\   
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \inl \,s: F + G} \rho& = &
+\inl \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash s: F}\rho\\
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash \inr \,t: F + G}\rho & = & 
+\inr \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash t : G}\rho\\
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \map^{\ol{F},\ol{G}}_H
+  : \Nat^\emptyset (\Nat^{\ol\beta,\ol\gamma} F\,G)
+& = & \lambda d\, \ol\eta\,\ol{C}.\,
+\dsem{\Gamma; \ol{\phi},\ol{\gamma}\vdash H}\id_{\rho[\ol{\gamma:=
+      C}]}[\ol{\phi := \lambda \ol B. \eta_{\ol B\, \ol C}}]\\ 
+\hspace*{0.5in}
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}]) \rrbracket^{\mathsf D} \rho & &\\
+%\hspace*{0.79in}  & & \hspace*{0.1in}\id_{\rho[\ol{\gamma :=
+%      C}]}[\ol{\phi := \lambda
+%    \ol{B}. (\dsem{\Gamma;\ol\alpha\,|\,\Delta \vdash t : 
+%    \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G}\rho\,d)_{\ol{B}\,\ol{C}}}]\\
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
+    \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
+\lambda d\,\ol{B}\,
+\ol{C}.\,(\mathit{in}_{{T}^X_{H,\rho[\ol{\gamma :=
+        C}]}})_{\ol{B}} \;\;\mbox{ where } X \mbox{ is } \set \mbox{ when } \\ 
+\hspace*{0.79in}(\mu \phi.\lambda {\overline \alpha}.H){\overline
+  \beta} \rrbracket^{\mathsf{D}} \rho & & \hspace*{0.2in}  
+\mathsf{D} = \set \mbox{ and not present when }
+\mathsf{D} = \rel\vspace*{0.05in}\\  
+\llbracket \Gamma;\emptyset \,|\, \emptyset \vdash
+  \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F) & = &  
+\lambda d\,\eta\,\ol{B}\,\ol{C}.\,
+(\mathit{fold}_{T^X_{H,\rho[\ol{\gamma := C}]}} \, (\lambda
+\ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}\\ 
+\hspace*{0.79in}(\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\;F)
+\rrbracket^{\mathsf{D}} \rho & & \hspace*{0.2in} \mbox{ where } X
+\mbox{ is as above }\vspace*{0.05in} \\
+\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}\rho
+& = & \vspace*{0.05in}\\
+\relsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F} :
+  \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,
+  F)\ol{K}}\rho\,d & = & \vspace*{0.05in} \\
+\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
+      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+  F)\ol \beta\; G}\rho & = &\lambda \ol{N} \, \ol{B}.\,
+((\mu_{\ol{N}})_{\ol{B}})|_{\setsem{\Gamma; \Phi, \ol\beta \vdash
+    (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta } \rho[\Phi, \ol \beta :=
+    \ol N, \ol B]}\\
+& & \hspace*{0.2in} \mbox{where } \mu_{\ol{N}} \mbox{ is as described below}
+\vspace*{0.05in}\\
+\relsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
+      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+    F)\ol \beta\; G}\rho & = & \\
+\vspace*{-0.1in} 
+\end{array}\]
+\caption{Term semantics}\label{fig:term-sem} 
+\end{minipage}}\vspace*{-0.05in}
+\end{figure*}
+
+\new{In the fourth-to-last clause of Definition~\ref{def:set-interp},...}
+
+\new{In the third-to-last clause of Definition~\ref{def:set-interp},...}
+
+In the next-to-last clause of Definition~\ref{def:set-interp},
+  \[\mu_{\ol{N}} : \Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
+  {[\ol{\alpha := \_} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash
+    F}\rho {[\Phi, \ol \alpha := \ol N, \_ ]} \to \setsem{\Gamma;
+    \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \_]\]
+  is the unique natural transformation such that
+\begin{equation}\label{eq:defn-of-mu-sub-N}
+    (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi,
+    \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}} =
+\mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K}
+  \rho[\ol{\alpha := \_}]} \circ \epsilon_{\ol{N}}
+  \end{equation}
+Here, $\epsilon_{\ol{N}}$ is the natural transformation associated
+with the left Kan extension
+\[\begin{tikzcd} [column sep = large, row sep = large]
+\set^{|\ol \alpha|}
+\ar[rr, "\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol
+      \alpha := \ol N, \_ ]}"{name=F}] 
+\ar[dr, "\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}"{left}] && \set \\ 
+&\set^{|\ol K|} \ar[ur, "\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}}
+\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
+    \ol N, \_ ]}"{right}]
+\ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
+          from=F, to=2-2,  "\epsilon_{\ol{N}}"{}]
+\end{tikzcd}\]
+
+
+\new{In the final last clause of Definition~\ref{def:set-interp},...}
+
+
+
+\vspace*{1in}
+
+If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
+: F$, then we write $\dsem{\vdash t : F}$ instead of $\dsem{\emptyset;
+  \emptyset~|~\emptyset \vdash t : F}$.  The return type for the
+semantic fold is $\dsem{\Gamma;\ol\beta,\ol\gamma \vdash
+  F}\rho[\ol{\gamma := C}][\ol{\beta := B}]$.  This interpretation
+gives $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : F \to
+  G}\rho = \curry (\dsem{\Gamma;\emptyset \,|\, \Delta, x : F \vdash t
+  : G}\rho)$ and $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st: G}
+\rho = \eval \circ \langle \dsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  s: F \to G}\rho, \dsem{\Gamma;\emptyset \,|\, \Delta \vdash t:
+  F}\rho \rangle$, so it specializes to the standard interpretations
+for System F terms.  To see that the object and relational
+interpretations of $\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}$ and
+$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+\Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta\; G$ are
+well-defined is significantly more involved, as we see in the next
+four subsections.
+
+
+
+
+\subsection{$\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}$ is
+  well-defined}
+
+\subsection{$\relsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}$ is
+  well-defined}
+
+
+
+\subsection{$\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
+      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+    F)\ol \beta\; G}$ is well-defined} We must show that, for every
+$\rho : \setenv$ and $d : \setsem{\Gamma; \emptyset \vdash \Delta}
+\rho$, \[\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \partial^{G,
+    \ol K}_F \eta : \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+  F)\ol \beta\; G} \rho \, d\] has the correct type and satisfies the
+condition required for it to be in $\setsem{\Gamma; \emptyset \vdash
+  \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta\; G}
+\rho$. For the former we observe that each component
+$(\mu_{\ol{N}})_{\ol{B}}$ of $\mu_{\ol{N}}$ has type
+  \[\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
+  {[\ol{\alpha := B} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho
+        {[\Phi, \ol \alpha := \ol N, \ol B]} \to \setsem{\Gamma; \Phi,
+          \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \ol B]\]
+        Each component of $(\mu_{\ol{N}})_{\ol{B}} |_{\setsem{\Gamma;
+            \Phi, \ol\beta \vdash (\Lan^{\ol\alpha}_{\ol K} F)\ol
+            \beta } \rho[\Phi, \ol \beta := \ol N, \ol B]}$ therefore
+        has the correct type to be the component at $\ol N$ and $\ol
+        B$ of a natural transformation in $\setsem{\Gamma; \emptyset
+          \vdash \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+          F)\ol \beta\; G} \rho$.
+
+The next two lemmas show that $ \lambda \ol{N} \,
+\ol{B}. (\mu_{\ol{N}})_{\ol{B}} |_{\setsem{\Gamma; \Phi, \ol\beta
+    \vdash (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta } \rho[\ol{\Phi,
+      \beta := N, B}]}$ is natural in both $\ol{N}$ and $\ol{B}$ and
+that it satisfies the condition required for it to be in
+$\setsem{\Gamma; \emptyset \vdash \Nat^{\Phi, \ol\beta}\,
+  (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta\; G} \rho$, namely, if $\Phi =
+{\phi_1,...,\phi_n}$ and $\phi_i$ has arity $k_i$ for $i = 1,...,n$,
+then 
+\begin{equation}\label{eq:P2}
+    \begin{split}
+      &\forall \ol{N = (N^1, N^2, N^*) : RT_{k_i}}, \forall \ol{B =
+        (B^1, B^2, B^*) :
+        RT_0}.\\ &((\mu_{\ol{N^1}})_{\ol{B^1}}|_{\setsem{\Gamma; \Phi,
+          \ol\beta \vdash (\Lan^{\ol\beta}_{\ol K} F)\ol \beta }
+        \rho[\Phi, \ol \beta := \ol{N^1}, \ol{B^1}]} ,
+      (\mu_{\ol{N^2}})_{\ol{B^2}}|_{\setsem{\Gamma; \Phi, \ol\beta
+          \vdash (\Lan^{\ol\beta}_{\ol K} F)\ol \beta } \rho[\Phi, \ol
+          \beta := \ol{N^2}, \ol{B^2}]} )\\ &: \relsem{\Gamma; \Phi,
+        \ol\beta \vdash (\Lan^{\ol\beta}_{\ol K} F)\ol \beta
+      }\Eq_{\rho}[\Phi, \ol \beta := \ol N, \ol B] \rightarrow
+      \relsem{\Gamma; \Phi, \ol\beta \vdash G}\Eq_{\rho}[\Phi, \ol
+        \beta := \ol N, \ol B]
+    \end{split}
+    \end{equation}
+
+\begin{lemma}
+For every $\rho : \setenv$, $d : \setsem{\Gamma; \emptyset \vdash
+  \Delta} \rho$, $\ol{N = (N^1, N^2, N^*) : RT_{k_i}}$, $\ol{B = (B^1,
+  B^2, B^*) : RT_0}$, and $(t_1, t_2) \in \relsem{\Gamma; \Phi,
+  \ol\beta \vdash (\Lan^{\ol\beta}_{\ol K} F)\ol \beta
+}\Eq_{\rho}[\Phi, \ol \beta := \ol N, \ol B]$, it holds that
+\[((\mu_{\ol{N^1}})_{\ol{B^1}} \,\, t_1, (\mu_{\ol{N^2}})_{\ol{B^2}} \,\, t_2) \in
+\relsem{\Gamma; \Phi, \ol\beta \vdash G}\Eq_{\rho}[\Phi, \ol \beta :=
+  \ol N, \ol B]\]
+\end{lemma}
+
+\begin{proof}
+Unfolding the definition of relational interpretation for $\Lan$-types
+in the hypothesis gives that $(t_1, t_2) : \setsem{\Gamma;\Phi,
+  \ol\beta \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{\beta}}\rho[\Phi,
+  \ol \beta := \ol{N^1}, \ol{B^1}] \,\times\, \setsem{\Gamma;\Phi,
+  \ol\beta \vdash (\Lan^{\ol{\alpha}}_{\ol{K}} F)\ol{\beta}}\rho[\Phi,
+  \ol \beta := \ol{N^2}, \ol{B^2}]$ and there exist $\ol{Z : \set_0},
+t_1' : \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \rho[\ol{\Phi :=
+    N^1}][\ol{\alpha := Z}],\, t_2' : \setsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho[\ol{\Phi := N^2 }][\ol{\alpha := Z}]$,\\ $\ol{f :
+  \relsem{\Gamma; \ol{\alpha} \vdash K}\Eq_\rho[\ol{\alpha := \Eq_Z}]
+  \to B}$ \, such that $\iota_{\ol{Z},\ol{\pi_1 f}}t_1' = t_1,\,
+\kappa_{\ol{Z}, \ol{\pi_2 f}}t_2' = t_2,$ and $(t_1',t_2') \in
+\\ \relsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\rho[\ol{\Phi :=
+    N}][\ol{\alpha := \Eq_Z}].$ Inlining $t_1 =
+\iota_{\ol{Z},\ol{\pi_1 f}}t_1'$ and $t_2 = \kappa_{\ol{Z}, \ol{\pi_2
+    f}}t_2'$ in in the goal in the statement of the lemma gives us the
+following rewritten goal to prove:
+\begin{equation}\label{eq:new-goal}
+((\mu_{\ol{N^1}})_{\ol{B^1}} \,\, \iota_{\ol{Z},\ol{\pi_1 f}}\, t_1' ,
+  (\mu_{\ol{N^2}})_{\ol{B^2}} \,\,  \kappa_{\ol{Z}, \ol{\pi_2 f}}\, t_2'  )
+\in \relsem{\Gamma; \Phi, \ol\beta \vdash
+G}\Eq_{\rho}[\ol{\Phi, \beta := N, B}]
+\end{equation}
+
+To this end, consider the commuting diagram\\ 
+
+\begin{tikzcd}[column sep = large, row sep = large]
+    & \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\Phi, \ol \alpha
+    := \ol{N^1}, \ol Z]
+    \ar[dr, "\;\;\;\;\;\iota_{\ol{Z}, \ol{\pi_1 f}}"{right}] 
+    \ar[dl, "\iota'_{\ol Z, 
+                \ol{\id_{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := Z}]}}}\;\;\;\;\;\;\;\;\;\;\;\;"{left}] 
+        & \\
+    LKZ % (\Lan_{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}
+    %               \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+    %                 \rho{[\ol{\Phi, \alpha := N^1, \_}]}) \ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := Z}]}
+    \ar[rr, dashed, "(\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\Phi, \ol \alpha := \ol{N^1}, \_]}) \ol{\pi_1 f}"{below}]
+       & & LB
+  \end{tikzcd}
+
+\noindent
+where $LKZ = (\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash
+      K}\rho{[\ol{\alpha := \_}]}}} \setsem{\Gamma; \Phi, \ol\alpha
+  \vdash F} \rho{[\Phi, \ol \alpha := \ol{N^1}, \_]})
+\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := Z}]}$ and
+\\ $LB = (\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash
+      K}\rho{[\ol{\alpha := \_}]}}} \setsem{\Gamma; \Phi, \ol\alpha
+  \vdash F} \rho{[\Phi, \ol \alpha := \ol{N^1}, \_]}) \ol{B^1}$. This
+diagram commutes by the universal property of $LKZ$ regarded as a
+colimit in $\set$.  Theorem 6.2.2 of~\cite{rie16} also gives that
+$\iota'_{\ol Z, \ol{\id_{\setsem{\Gamma; \ol\alpha \vdash
+        K}\rho[\ol{\alpha := Z}]}}} = (\epsilon_{\ol{N^1}})_{\ol{Z}}$.
+Together these two facts give
+\[  \iota_{\ol{Z}, \ol{\pi_1 f}}
+  = (\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\ol{\Phi, \alpha := N^1, \_}]}) \ol{\pi_1 f}
+  \circ (\epsilon_{\ol{N^1}})_{\ol{Z}}
+\]
+\noindent
+An analogous proof gives 
+\[  \kappa_{\ol{Z}, \ol{\pi_2 f}}
+  = (\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\ol{\Phi, \alpha := N^2, \_}]}) \ol{\pi_2 f}
+  \circ (\epsilon_{\ol{N^2}})_{\ol{Z}}
+\]
+Using these equalities, we can rewrite our goal~\eqref{eq:new-goal}
+again, this time as
+\begin{align}\label{eq:new-new-goal} 
+  ((\mu_{\ol{N^1}})_{\ol{B^1}} \,\, 
+  ((\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\ol{\Phi, \alpha := N^1, \_}]}) \ol{\pi_1 f}
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}}
+        \, t_1' )) , \\\nonumber
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(\mu_{\ol{N^2}})_{\ol{B^2}} \,\,  
+  ((\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\ol{\Phi, \alpha := N^2, \_}]}) \ol{\pi_2 f}
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}}
+        \, t_2'  ))) \\\nonumber
+        \in \relsem{\Gamma; \Phi, \ol\beta \vdash
+    G}\Eq_{\rho}[\Phi, \ol \beta := \ol N, \ol B]
+\end{align}
+
+Now, by naturality of $\mu_{\ol{N^i}}$ for the morphisms $\ol{\pi_i
+  f}$ we have
+\begin{align*}
+(\mu_{\ol{N^i}})_{\ol{B^i}} \circ 
+  ((\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho{[\ol{\alpha := \_}]}}}
+                  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+                    \rho{[\ol{\Phi, \alpha := N^i, \_}]}) \ol{\pi_i f} \\
+= \setsem{\Gamma; \Phi, \ol\beta \vdash G}\id_\rho 
+    [\ol{\Phi, \beta := \id_{N^i}, \pi_i f}]
+  \circ 
+  (\mu_{\ol{N^i}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := Z}]}}
+\end{align*}
+Using this, we can rewrite our goal~\eqref{eq:new-new-goal} a final
+time as
+\begin{align}\label{eq:new-new-new-goal} 
+  \big(\setsem{\Gamma; \Phi, \ol\beta \vdash G}\id_\rho 
+    [\Phi, \ol \beta := \ol{\id_{N^1}}, \ol{\pi_1 f}]
+  ((\mu_{\ol{N^1}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := Z}]}}
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}}
+        \, t_1' )) , \\\nonumber
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \setsem{\Gamma; \Phi, \ol\beta \vdash G}\id_\rho 
+    [\Phi, \ol \beta := \ol{\id_{N^2}}, \ol{\pi_2 f}]
+  ((\mu_{\ol{N^2}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := Z}]}}
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}}
+        \, t_2'  ))\big) \\\nonumber
+        \in \relsem{\Gamma; \Phi, \ol\beta \vdash
+    G}\Eq_{\rho}[\Phi, \ol \beta := \ol N, \ol B]
+\end{align}
+
+  {\color{red} START HERE!}
+
+To finish the proof, we would like to use that fact that
+$\relsem{\Gamma; \Phi,\ol\beta \vdash G}\id_{\Eq_\rho} [\Phi,
+   \ol \beta := \ol{\id_N}, \ol{f}]$ is a morphism in $\rel$ and thus preserves
+related elements. But in order to apply this morphism, we must first show
+that
+\begin{align*}
+((\mu_{\ol{N^1}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}} \,\, t_1') &, 
+  %%%
+  (\mu_{\ol{N^2}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}} \,\, t_2')) \\
+  & \in 
+  \relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G[\ol{\beta := K}]}\Eq_{\rho}[\Phi, \ol \alpha := \ol N,
+    \ol{\Eq_Z}]
+\end{align*}
+To show this, we use the condition imposed on $\setsem{\Gamma;
+  \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi, \ol\alpha} \, F
+  \,\, G[\ol{\beta := K}]} \rho \, d$ to be in $\setsem{\Gamma;
+  \emptyset \vdash \Nat^{\Phi, \ol\alpha} \, F \,\, G[\ol{\beta :=
+      K}]} \rho$, i.e.,
+
+    \begin{equation}\label{eq:P1}
+    \begin{split}
+      &\forall \ol{N = (N^1, N^2, N^*) : RT_k}, 
+          \forall \ol{M = (M^1, M^2, M^*) : RT_k}.\\
+      &((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi, \ol\alpha} \, F \,\, G[\ol{\beta := K}]} \rho \, d)_{\ol{N^1}, \ol{M^1}}, 
+      (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta} : \Nat^{\Phi, \ol\alpha} \, F \,\, G[\ol{\beta := K}] \rho \, d)_{\ol{N^2}, \ol{M^2}}) \\
+      &: \relsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho}[\ol{\Phi, \alpha := N, M}]
+      \rightarrow \relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G[\ol{\beta := K}]}\Eq_{\rho}[\ol{\Phi, \alpha := N, M}]
+    \end{split}
+    \end{equation}
+along with the universal property of 
+$\Lan_{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\ol{\Phi, \alpha := N^i, \_} ]}$
+      for $i = 1, 2$
+and the fact that $t_1'$ and $t_2'$ are related in 
+$\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho}[\ol{\Phi, \alpha := N, \Eq_Z}]$.
+Applying Equation \eqref{eq:P1} with $\ol{M} = \ol{Z}$ 
+gives (eliding the type of $\eta$)
+    \begin{equation*}
+    \begin{split}
+      &((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta} \rho \, d)_{\ol{N^1}, \ol{Z}}, 
+      (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta} \rho \, d)_{\ol{N^2}, \ol{Z}}) \\
+      &: \relsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho}[\ol{\Phi, \alpha := N, \Eq_Z}]
+      \rightarrow \relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G[\ol{\beta := K}]}\Eq_{\rho}[\ol{\Phi, \alpha := N, \Eq_Z}]
+    \end{split}
+    \end{equation*}
+and since we know 
+$(t_1',t_2') \in
+  \relsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_\rho[\ol{\Phi := N}][\ol{\alpha := \Eq_Z}]$, 
+we can apply this morphism
+%%
+to $(t_1', t_2')$:
+\begin{align*}
+  ((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta} \rho \, d)_{\ol{N^1}, \ol{Z}} t_1', 
+  (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta} \rho \, d)_{\ol{N^2}, \ol{Z}} t_2') 
+  \in 
+\relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G[\ol{\beta := K}]}\Eq_{\rho}[\ol{\Phi, \alpha := N, \Eq_Z}]
+\end{align*}
+%%
+Applying the universal property at component $\ol{Z}$
+$$
+  ((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta}\rho \, d)_{\ol{N^i}})_{\ol{Z}}
+  = (\mu_{\ol{N^i}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} \circ 
+  (\epsilon_{\ol{N^i}})_{\ol{Z}}
+$$
+yields 
+\begin{align*}
+((\mu_{\ol{N^1}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}} \,\, t_1') &, 
+  %%%
+  (\mu_{\ol{N^2}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}} \,\, t_2')) \\
+  & \in 
+  \relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G[\ol{\beta := K}]}\Eq_{\rho}[\ol{\Phi, \alpha := N, \Eq_Z}] \\
+  & = \relsem{\Gamma; \Phi,\ol\beta \vdash G}\Eq_\rho
+  [\ol{\Phi, \beta := N, \relsem{\Gamma; \ol\alpha \vdash K}\Eq_\rho[\ol{\alpha := \Eq_Z}]}]
+\end{align*}
+
+
+Finally, we can apply the morphism 
+\begin{align*}
+  \relsem{\Gamma; \Phi,\ol\beta \vdash G}\id_{\Eq_\rho} [\ol{\Phi, \beta := \id_N, f}] 
+  : \,\,
+  &\relsem{\Gamma; \Phi,\ol\beta \vdash G}\Eq_\rho
+  [\ol{\Phi, \beta := N, \relsem{\Gamma; \ol\alpha \vdash K}\Eq_\rho[\ol{\alpha := \Eq_Z}]}] \\
+  \rightarrow \,\,
+  &\relsem{\Gamma; \Phi,\ol\beta \vdash G}\Eq_\rho [\ol{\Phi, \beta := N, B}]
+\end{align*}
+to the pair
+$((\mu_{\ol{N^1}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}} \,\, t_1') , 
+  %%%
+  (\mu_{\ol{N^2}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}} \,\, t_2'))$
+, which gives 
+
+\begin{align*}
+( 
+  &\setsem{\Gamma; \Phi,\ol\beta \vdash G}\id_{\rho} [\ol{\Phi, \beta := \id_{N^1}, \pi_1 f}] 
+  ((\mu_{\ol{N^1}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^1}})_{\ol{Z}} \,\, t_1')) ,  \\
+  %%%
+  &\setsem{\Gamma; \Phi,\ol\beta \vdash G}\id_{\rho} [\ol{\Phi, \beta := \id_{N^2}, \pi_2 f}] 
+  ((\mu_{\ol{N^2}})_{\ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := Z}]}} 
+  ((\epsilon_{\ol{N^2}})_{\ol{Z}} \,\, t_2'))) \\
+  & \in 
+  \relsem{\Gamma; \Phi, \ol\alpha \vdash
+        G}\Eq_{\rho}[\ol{\Phi, \alpha := N,B}] 
+\end{align*}
+and thus 
+$$((\mu_{\ol{N^1}})_{\ol{B^1}} \,\, t_1, 
+                (\mu_{\ol{N^2}})_{\ol{B^2}} \,\, t_2)
+                \in \relsem{\Gamma; \Phi, \ol\beta \vdash
+            G}\Eq_{\rho}[\ol{\Phi, \beta := N, B}]$$
+
+\end{proof}
+
+\begin{lemma}
+  For all $\rho : \setenv$ and $d : \setsem{\Gamma; \emptyset \vdash \Delta} \rho$, 
+  the family of morphisms 
+  $$
+  \lambda \ol{N} \, \ol{B}. 
+  ((\mu_{\ol{N}})_{\ol{B}})|_{\setsem{\Gamma; \Phi, \ol\beta 
+                  \vdash (\Lan^{\ol\alpha}_{\ol K} F)\ol \beta } \rho[\ol{\Phi, \beta := N, B}]} 
+  $$ 
+  is natural in $\ol{N}$ and $\ol{B}$, where $\mu_{\ol{N}}$ is the unique natural transformation such that
+  $$
+  (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi, \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}}
+  = \mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K} \rho[\ol{\alpha := \_}]} \circ 
+  \epsilon_{\ol{N}}
+  $$
+
+\end{lemma}
+\begin{proof}
+To prove that this family of morphisms is natural, it suffices to show that the family of unrestricted morphisms 
+  $\lambda \ol{N} \, \ol{B}. (\mu_{\ol{N}})_{\ol{B}}$ is natural in $\ol{N}$ and $\ol{B}$.
+Let us give convenient shorthand names to the following functors and natural transformations.
+\begin{align*}
+\ol{K} &= \ol{\lambda \ol M. \oCPOsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := M}]} \\
+F_{\ol N} &= \lambda \ol M. \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\Phi := \ol N][\ol{\alpha := M}] \\
+F_{\ol{N'}} &= \lambda \ol M. \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\Phi := \ol{N'}][\ol{\alpha := M}] \\
+F_{\ol h} &= \lambda \ol M. \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash F}\id_{\rho}[\Phi := \ol{h}][\ol{\alpha := \id_{M}}] \colon F_{\ol{N}} \to F_{\ol{N'}} \\
+G_{\ol N} &= \lambda \ol B. \oCPOsem{\Gamma; \Phi, \ol\beta \vdash G}\rho[\Phi := \ol N][\ol{\beta := B}] \\
+G_{\ol{N'}} &= \lambda \ol B. \oCPOsem{\Gamma; \Phi, \ol\beta \vdash G}\rho[\Phi := \ol{N'}][\ol{\beta := B}] \\
+G_{\ol h} &= \lambda \ol B. \oCPOsem{\Gamma; \Phi, \ol\beta \vdash G}\id_{\rho}[\Phi := \ol{h}][\ol{\beta := \id_{B}}] \colon G_{\ol{N}} \to G_{\ol{N'}} \\
+\eta &= \oCPOsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi, \ol\alpha} F\; G[\ol{\beta := K}]} \rho\, d
+\end{align*}
+Moreover, let $|\ol \alpha| = j$ and $|\ol \beta| = |\ol K| = k$.
+
+Notice that \(\eta\) is natural, so that
+\begin{equation*}\label{eq:lan-elim-eta-nat}
+	\eta_{\ol{N'}} \circ F_{\ol h} = G_{\ol h} \ol{K} \circ \eta_{\ol N} : F_{\ol N} \to G_{\ol{N'}} \ol{K}
+\end{equation*}
+The situation is illustrated in the following diagram.
+\[
+\begin{tikzcd}[column sep = huge, row sep = huge]
+\Set^j
+\ar[r, bend left, "{F_{\ol N}}", ""{name=F, below}]
+\ar[r, bend right, "{F_{\ol{N'}}}"{name=F'b, below}, ""{name=F'a, above}]
+\ar[Rightarrow, from=F, to=F'a, "{F_{\ol{h}}}"']
+\ar[dr, bend right, "{\ol K}"']
+&\Set \\
+&\Set^k
+\ar[Rightarrow, from=F'b, "{\eta_{\ol{N'}}}"']
+\ar[Rightarrow, from=F, "{\eta_{\ol N}}" description]
+\ar[u, "{G_{\ol N}}"{name=L, description}]
+\ar[u, bend right = 90, "{G_{\ol{N'}}}"{name=L', right}]
+\ar[Rightarrow, from=L, to=L', "{G_{\ol h}}"]
+\end{tikzcd}
+\]
+
+Let $\epsilon_{\ol N} \colon F_{\ol N} \to (\Lan_{\ol K} F_{\ol N}) K$ and $\epsilon_{\ol{N'}} \colon F_{\ol{N'}} \to (\Lan_{\ol K} F_{\ol{N'}}) \ol{K}$ be the natural transformations associated to the left Kan extensions, and notice that $\epsilon$ is natural, so that
+\begin{equation}\label{eq:lan-elim-epsilon-nat}
+	(\Lan_{\ol K} F_{\ol h}) \ol{K} \circ \epsilon_{\ol N} = \epsilon_{\ol{N'}} \circ F_{\ol h}
+\end{equation}
+The situation is illustrated in the following diagram.
+\[
+\begin{tikzcd}[column sep = huge, row sep = huge]
+\Set^j
+\ar[r, bend left, "{F_{\ol N}}", ""{name=F, below}]
+\ar[r, bend right, "{F_{\ol{N'}}}"{name=F'b, below}, ""{name=F'a, above}]
+\ar[Rightarrow, from=F, to=F'a, "{F_{\ol{h}}}"']
+\ar[dr, bend right, "{\ol K}"']
+&\Set \\
+&\Set^k
+\ar[Rightarrow, from=F'b, "{\epsilon_{\ol{N'}}}"']
+\ar[Rightarrow, from=F, "{\epsilon_{\ol N}}" description]
+\ar[u, "{\Lan_{\ol K} F_{\ol N}}"{name=L, description}]
+\ar[u, bend right = 90, "{\Lan_{\ol K} F_{\ol{N'}}}"{name=L', right}]
+\ar[Rightarrow, from=L, to=L', "{\Lan_K F_{\ol h}}"]
+\end{tikzcd}
+\]
+
+Let $\mu_{\ol N} : \Lan_{\ol K} F_{\ol N} \to G_{\ol{N}}$ be the unique natural transformation such that
+\begin{equation}\label{eq:lan-elim-mu-univ}
+	\mu_{\ol N} \ol{K} \circ \epsilon_{\ol N} = \eta_{\ol N}
+\end{equation}
+and $\mu_{\ol{N'}} : \Lan_{\ol K} F_{\ol{N'}} \to G_{\ol{N'}}$ be the unique natural transformation such that
+\begin{equation}\label{eq:lan-elim-mu'-univ}
+	\mu_{\ol{N'}} \ol{K} \circ \epsilon_{\ol{N'}} = \eta_{\ol{N'}}
+\end{equation}
+The situation is illustrated in the following diagrams.
+\[
+\begin{tikzcd}[column sep = huge, row sep = huge]
+\Set^j
+\ar[r, "{F_{\ol N}}"{name=Fa}, ""{name=F, below}]
+\ar[dr, "{\ol K}"']
+&\Set \\
+&\Set^k
+\ar[Rightarrow, from=F, "{\epsilon_{\ol N}}" description]
+\ar[u, "{\Lan_{\ol K} F_{\ol N}}"{name=L, description}]
+\ar[u, bend right = 90, "{G_{\ol N}}"{name=G, right}, ""'{name=Gr, right}]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Gr, "{\eta_{\ol{N}}}"]
+\ar[Rightarrow, from=L, to=G, "{\mu_{\ol N}}"]
+\end{tikzcd}
+%%%
+\begin{tikzcd}[column sep = huge, row sep = huge]
+\Set^j
+\ar[r, "{F_{\ol{N'}}}"{name=Fa}, ""{name=F, below}]
+\ar[dr, "{\ol K}"']
+&\Set \\
+&\Set^k
+\ar[Rightarrow, from=F, "{\epsilon_{\ol{N'}}}" description]
+\ar[u, "{\Lan_{\ol K} F_{\ol{N'}}}"{name=L, description}]
+\ar[u, bend right = 90, "{G_{\ol{N'}}}"{name=G, right}, ""'{name=Gr, right}]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Gr, "{\eta_{\ol{N'}}}"]
+\ar[Rightarrow, from=L, to=G, "{\mu_{\ol{N'}}}"]
+\end{tikzcd}
+\]
+
+Notice that, by the universal property of the left Kan extension, there exists a unique $\theta : \Lan_K F_{\ol{N}} \to G_{\ol{N'}}$ such that
+\[
+	\theta \ol{K} \circ \epsilon_{\ol N} = \eta_{\ol{N'}} \circ F_{\ol h} = G_{\ol h} \ol{K} \circ \eta_{\ol N}
+\]
+We shall now show that both $G_{\ol h} \circ \mu_{\ol N}$ and $\mu_{\ol{N'}} \circ \Lan_{\ol K} F_{\ol{h}}$ satisfy this universal property, and thus they are equal to each other.
+\[
+	(G_{\ol h} \circ \mu_{\ol N}) \ol{K} \circ \epsilon_{\ol N}
+	= G_{\ol h}\ol{K} \circ \mu_{\ol N} \ol{K} \circ \epsilon_{\ol N}
+	= G_{\ol h}\ol{K} \circ \eta_{\ol N}
+\]
+where the second equality is by Equation~\ref{eq:lan-elim-mu-univ}
+and
+\[
+	(\mu_{\ol{N'}} \circ \Lan_{\ol K} F_{\ol{h}}) \ol{K} \circ \epsilon_{\ol N}
+	= \mu_{\ol{N'}}\ol{K} \circ \Lan_{\ol K} F_{\ol{h}}\ol{K} \circ \epsilon_{\ol N}
+	= \mu_{\ol{N'}}\ol{K} \circ \epsilon_{\ol{N'}} \circ F_{\ol h}
+	= \eta_{\ol{N'}} \circ F_{\ol h}
+\]
+where the second equality is by Equation~\ref{eq:lan-elim-epsilon-nat} and the third equality is by Equation~\ref{eq:lan-elim-mu'-univ}.
+
+
+\end{proof}
+
+
+
+
+
+\subsection{$\relsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
+      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
+    F)\ol \beta\; G}$ is well-defined} 
+
+
+
+
+
+\section{Basic Properties of Term Interpretations}
+
+The interpretations in Definition~\ref{def:set-interp} respect
+weakening, i.e., a term and its weakenings all have the same set and
+relational interpretations. Specifically, for any $\rho \in \setenv$,
+$\setsem{\Gamma;\Phi \,|\, \Delta, x : F \vdash t : G}\rho =
+(\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : G}\rho) \circ
+\pi_{\Delta}$, where $\pi_{\Delta}$ is the projection
+$\setsem{\Gamma;\Phi \vdash \Delta, x : F} \to
+\setsem{\Gamma;\Phi \vdash \Delta}$. A similar result holds for
+relational interpretations.
+
+Moreover, if
+  $\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : F$ and
+  $\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : F$ and $\Gamma;\Phi
+  \vdash G$ then
+\begin{itemize}
+\item $\setsem{\Gamma;\Phi \,|\, \Delta[\alpha := G] \vdash
+  t[\alpha := G] : F[\alpha := G]}\rho =
+  \setsem{\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : F }\rho [
+    \alpha := \setsem{\Gamma;\Phi\vdash G}\rho ]$
+%\item $\relsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash
+%  t[\alpha := \sigma] : \tau[\alpha := \sigma]}\rho =
+%  \relsem{\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : \tau }\rho [
+%    \alpha := \relsem{\Gamma;\Phi\vdash\sigma}\rho ]$
+\item $\setsem{\Gamma;\Phi \,|\, \Delta[\alpha := G] \vdash
+  t'[\alpha := G] : F[\alpha := G]}\rho =
+  \setsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : F }\rho [
+    \alpha := \setsem{\Gamma;\Phi\vdash G}\rho ]$
+%\item $\relsem{\Gamma;\Phi \,|\, \Delta[\alpha := \sigma] \vdash
+%  t'[\alpha := \sigma] : \tau[\alpha := \sigma]}\rho =
+%  \relsem{\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : \tau }\rho [
+%    \alpha := \relsem{\Gamma;\Phi\vdash\sigma}\rho ]$
+\end{itemize}
+and if $\Gamma;\Phi \,|\, \Delta, x: G \vdash t : F$ and
+$\Gamma;\Phi \,|\, \Delta \vdash s : G$ then
+\begin{itemize}
+\item $\lambda A.\, \setsem{\Gamma;\Phi \,|\, \Delta \vdash t[x := s]
+  : F }\rho \, A = \lambda A.\,\setsem{\Gamma;\Phi \,|\, \Delta, x:
+  G \vdash t : F}\rho \,(A, \setsem{\Gamma;\Phi \,|\,
+  \Delta\vdash s: G}\rho\, A)$
+%\item $\lambda R.\,\relsem{\Gamma;\Phi \,|\, \Delta \vdash t[x := s] :
+%  \tau }\rho\,R = \lambda R.\,\relsem{\Gamma;\Phi \,|\, \Delta, x:
+%  \sigma \vdash t : \tau}\rho \,(R, \relsem{\Gamma;\Phi \,|\,
+%  \Delta\vdash s: \sigma}\rho\,R)$
+\end{itemize}
+Direct calculation reveals that the set interpretations of terms also
+satisfy
+\begin{itemize}
+\item $\setsem{\Gamma; \Phi~|~\Delta \vdash
+  (L_{\ol{\alpha}}x.t)_{\ol{K}}s} = \setsem{\Gamma; \Phi~|~\Delta
+  \vdash t [\ol{\alpha := K}][x := s]}$
+\end{itemize}
+Term extensionality with respect to types and terms --- i.e.,
+$\setsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha \top : F} =
+\setsem{\Gamma;\Phi \vdash t : F}$ and $\setsem{\Gamma;\Phi\vdash
+  (L_\alpha x.t)_\alpha x : F} = \setsem{\Gamma;\Phi \vdash t : F}$
+%$\relsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha t} =
+%\relsem{\Gamma;\Phi \vdash t}$, as well as
+%term extensionality
+%and $\relsem{\Gamma;\Phi\vdash
+%  (L_\alpha x.t)_\alpha \top} = \relsem{\Gamma;\Phi \vdash t}$
+--- follow (when both sides of the equations are defined). Similar
+properties hold for relational interpretations.
+
 
 
 \bibliography{references}
