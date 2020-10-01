@@ -536,9 +536,9 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \\\\
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
 \AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
-%\AXC{$\ol{\Gamma;\Phi \vdash A} \hspace*{0.3in} \Gamma;\Phi~|~\Delta \vdash t : F[\ol{\alpha :=A}]$}
-\BIC{$\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F} :
-\Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,  F)\ol{K}$}  
+\AXC{$\ol{\Gamma; \Phi \vdash A}$}
+\AXC{$\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]$}
+\QIC{$\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t : (\Lan^{\ol\alpha}_{\ol{K}}\,  F)\, \ol{K[\ol{\alpha := A}]}$}
 \DisplayProof
 \\\\
 \AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
@@ -552,6 +552,21 @@ rules for the set of\, {\em well-formed terms over $\Delta$} are
 \end{dfn}
 
 \vspace*{0.2in}
+
+\new{Note that we cannot have
+\[
+\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$} \AXC{$\ol{\Gamma; \ol{\alpha}
+    \vdash K}$} \BIC{$\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol
+    K,F} : \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,
+  F)\ol{K}$} \DisplayProof\] We cannot prove the additional property
+needed to define an object semantics for this rule because we can only
+introduce components of the natural transformation at representable
+types, as in the rule above. We cannot produce the entire natural
+transformation required in the conclusion of the alternative rule
+here. This makes sense because not all parts of the functors
+underlying GADTs are representable in syntax, which in turn means that
+not all components of the associated natural transformations are
+representable in syntax.}
 
 \new{Sum and product intro and elim rules should be annotated with
   constituent types for consistency?}
@@ -2130,12 +2145,15 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
   \phi.\lambda \overline \alpha.H)\overline \beta\;F)
 \rrbracket^{\mathsf{D}} \rho & & \hspace*{0.2in} \mbox{ where } X
 \mbox{ is as above }\vspace*{0.05in} \\
-\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
-: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}\rho
-& = & \vspace*{0.05in}\\
-\relsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F} :
-  \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\,
-  F)\ol{K}}\rho\,d & = & \vspace*{0.05in} \\
+\setsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol{K}}\,  F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d
+& = & = \iota_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho},
+  \ol{\id_{\oCPOsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}
+\oCPOsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, 
+d \vspace*{0.05in}\\
+\relsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol{K}}\,  F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d
+& = & \vspace*{0.05in} \\
 \setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
       K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
   F)\ol \beta\; G}\rho & = &\lambda \ol{N} \, \ol{B}.\,
@@ -2153,7 +2171,19 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
 \end{minipage}}\vspace*{-0.05in}
 \end{figure*}
 
-\new{In the fourth-to-last clause of Definition~\ref{def:set-interp},...}
+\new{In the fourth-to-last clause of Definition~\ref{def:set-interp},
+  $\iota_{Z, f}$ is the injection into
+\[\colim{\ol{Z : \Set_0},\, \ol{f : \oCPOsem{\Gamma; \ol\alpha \vdash K}
+    \rho[\ol{\alpha := Z}] \to \oCPOsem{\Gamma; \Phi \vdash
+      K[\ol{\alpha := A}]} \rho}}{\,\oCPOsem{\Gamma; \Phi, \ol\alpha
+    \vdash F} \rho[\ol{\alpha := Z}]}\]
+
+
+
+}
+
+
+
 
 \new{In the third-to-last clause of Definition~\ref{def:set-interp},...}
 
@@ -2184,7 +2214,7 @@ with the left Kan extension
 \end{tikzcd}\]
 
 
-\new{In the final last clause of Definition~\ref{def:set-interp},...}
+\new{In the final clause of Definition~\ref{def:set-interp},...}
 
 
 
@@ -2209,22 +2239,57 @@ $\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
 well-defined is significantly more involved, as we see in the next
 four subsections.
 
+\subsection{Object interpretations of $\Lan$-introduction
+  are well-defined}
 
+We must show that, for every $\rho : \setenv$ and $d :
+\oCPOsem{\Gamma;\Phi \vdash \Delta}\rho$,
+\[\oCPOsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol{K}}\, F)\, \ol{K[\ol{\alpha := A}]}}\rho\, d
+\in \oCPOsem{\Gamma;\Phi \vdash (\Lan^{\ol\alpha}_{\ol{K}}\, F)\,
+  \ol{K[\ol{\alpha := A}]}}\rho\] i.e., that there exist $\ol{Z :
+  \oCPO_0}$, $t_1', t_2' : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash
+  F}\rho[\ol{\alpha := Z}]$, and
+\[\ol{f : \oCPORsem{\Gamma; \ol{\alpha} \vdash K}\Eq_{\rho}[\ol{\alpha
+      := \Eq_Z}] \to \oCPORsem{\Gamma; \Phi \vdash K[\ol{\alpha :=
+        A}]}\Eq_{\rho}} \]
+such that
+\[\begin{array}{rcl}
+\iota_{\ol{Z},\ol{\pi_1 f}}t_1' &=& \iota_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho}, \ol{\id_{\oCPOsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
+\oCPOsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, d \\[2ex]
+\iota_{\ol{Z}, \ol{\pi_2 f}}t_2' &=& \iota_{\ol{\oCPOsem{\Gamma;\Phi \vdash A}\rho}, \ol{\id_{\oCPOsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
+\oCPOsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\,
+d\\[2ex]
+(t_1',t_2') &\in& \oCPORsem{\Gamma; \Phi, \ol\alpha \vdash
+  F}\Eq_{\rho}[\ol{\alpha := \Eq_Z}] \;=\; \oCPORsem{\Gamma;
+  \Phi, \ol\alpha \vdash F}\Eq_{\rho[\ol{\alpha := Z}]}
+\end{array}\]
+Let $\ol{Z = \oCPOsem{\Gamma; \Phi \vdash A} \rho}$, $t_1' = t_2' =
+\oCPOsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\,
+d$, and $\ol{f = \id_{\oCPORsem{\Gamma; \ol\alpha \vdash K[\ol{\alpha
+          := A}]}\Eq_{\rho}}}$.  Then~\eqref{eq:subs-var} gives that
+$t_1', t_2' : \oCPOsem{\Gamma; \Phi, \ol\alpha \vdash
+  F}\rho[\ol{\alpha := Z}]$ as required, as well as that
+$\oCPORsem{\Gamma; \ol{\alpha} \vdash K}\Eq_{\rho}[\ol{\alpha :=
+    \Eq_{\oCPOsem{\Gamma; \Phi \vdash A} \rho}}] = \oCPORsem{\Gamma;
+  \Phi \vdash K[\ol{\alpha := A}]}\Eq_{\rho}$. In light of the latter
+we take $f$ to be
+\[\ol{ \id_{\oCPORsem{\Gamma; \ol\alpha \vdash K[\ol{\alpha :=
+          A}]}\Eq_{\rho}} : \oCPORsem{\Gamma; \ol{\alpha} \vdash
+    K}\Eq_{\rho}[\ol{\alpha := \Eq_{\oCPOsem{\Gamma; \Phi \vdash A}
+        \rho}}] \to \oCPORsem{\Gamma; \Phi \vdash K[\ol{\alpha :=
+        A}]}\Eq_{\rho} }\] Then the first two properties above hold by
+construction, and the third holds because $t_1' = t_2'$ and because
+$\oCPORsem{\Gamma; \Phi, \ol\alpha \vdash F}\Eq_{\rho[\ol{\alpha :=
+      Z}]} = \Eq_{\setsem{\Gamma; \Phi, \ol\alpha \vdash
+    F}\rho[\ol{\alpha := Z}]}$ by the IEL.
 
-
-\subsection{$\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
-: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}$ is
+\subsection{Relational interpretations of $\Lan$-introduction are
   well-defined}
 
-\subsection{$\relsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
-: \Nat^{\Phi,\ol\alpha}\,F\, (\Lan^{\ol\alpha}_{\ol K}\, F)\ol{K}}$ is
-  well-defined}
 
-
-
-\subsection{$\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
-      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
-    F)\ol \beta\; G}$ is well-defined} We must show that, for every
+\subsection{Object interpretations of $\Lan$-elimination are
+  well-defined} We must show that, for every 
 $\rho : \setenv$ and $d : \setsem{\Gamma; \emptyset \vdash \Delta}
 \rho$, \[\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \partial^{G,
     \ol K}_F \eta : \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
@@ -2666,9 +2731,8 @@ i.e., that
             G}\Eq_{\rho}[\Phi, \ol \beta := \ol N, \ol B]\]
 \end{proof}
 
-\subsection{$\relsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol
-      K}_F \eta : Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}
-    F)\ol \beta\; G}$ is well-defined} 
+\subsection{Relational interpretations of $\Lan$-elimination are
+  well-defined}  
 
 
 
