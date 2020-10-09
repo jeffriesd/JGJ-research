@@ -1610,7 +1610,11 @@ rules for $\tin$ and $\fold$.
 
 \end{comment}
 
+\vspace*{-0.1in}
+
 \section{Interpreting Types}\label{sec:type-interp}
+
+\vspace*{-0.1in}
 
 We denote the category of sets and functions by $\set$. The category
 $\rel$ has as objects triples $(A,B,R)$, where $R$ is a relation
@@ -1669,7 +1673,11 @@ Section~\ref{sec:rel-interp}, which separates
 our set and relational interpretations in space, but otherwise has no
 impact on the fact that they are given by mutual induction.
 
+\vspace*{-0.15in}
+
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
+
+\vspace*{-0.05in}
 
 %A poset $\mcD = (D,\leq)$ is \emph{$\omega$-directed} if every finite
 %subset of $D$ has an upper bound. When $\mcD$ is considered as a
@@ -1993,6 +2001,8 @@ $\setsem{\Gamma;\Phi,\ol\gamma \vdash (\mu  \phi.\lambda
 \end{itemize}
 \end{definition}
 
+\vspace*{-0.2in}
+
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
 %\begin{definition}\label{def:rel-transf}
@@ -2108,8 +2118,6 @@ a morphism in $\rel$ for any $k$-tuple of relations $\overline{R :
   \rel(A, B)}$, i.e., that if $(x, y) \in H^*F\overline{R}$, then
 $((\sigma^1_{F^1})_{\overline{A}} x, (\sigma^2_{F^2})_{\overline{B}}
 y) \in K^*F\overline{R}$.
-
-\vspace*{0.1in}
 
 %{\color{blue} More context? Weave cocontinuity requirement for fixed
 %  points through text better.}
@@ -3193,7 +3201,11 @@ hypothesis and weakening.
 \end{proof}
 \end{comment}
 
+\vspace*{-0.1in}
+
 \section{The Identity Extension Lemma}\label{sec:iel}
+
+\vspace*{-0.1in}
 
 In most treatments of parametricity, equality relations on sets are
 taken as {\em given} --- either directly as diagonal relations or
@@ -3622,12 +3634,18 @@ $T^n_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A}
 \ol{\Eq_A}$\;
   %{\setsem{\Gamma; \Phi \vdash F}\rho}}$\;
 %\end{equation}
-and
+and 
 %\begin{equation}\label{eq:iel-fix-point-intermediate2}
 %\begin{split}
+$ \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
+  := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}$ $=
+\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho}[\phi :=$
 
-\vspace*{-0.03in}
+  \pagebreak
 
+\noindent
+$\Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}$
+\begin{comment}
 \[\begin{array}{ll}
 &  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}\\
@@ -3640,11 +3658,12 @@ and
 \end{array}\]
 %\end{split}
 %\end{equation}
+\end{comment}
 hold. With these results in hand, the proof follows straightforwardly.
 {\color{red} It is given in detail in the accompanying anonymous
-  supplementary material.} The proof reveals that if functorial
-variables of arity greater than $0$ were allowed to appear in the
-bodies of $\mu$-types, then the IEL would fail.
+  supplementary material.} It reveals that if functorial variables of
+arity greater than $0$ were allowed to appear in the bodies of
+$\mu$-types, then the IEL would fail.
 
 \begin{comment}
 \begin{proof}
@@ -3855,7 +3874,7 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
 %\vspace*{0.05in}
 %
 
-The IEL gives rise to an apppropriate Graph Lemma in the standard way:
+The IEL leads to an apppropriate Graph Lemma, proved in the usual way:
 \begin{lemma}%[Graph Lemma]
   \label{lem:graph}
   If $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$
@@ -3969,7 +3988,6 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \end{comment}
 
 
-
 \section{Interpreting Terms}\label{sec:term-interp}
 
 If $\Delta = x_1 : F_1,...,x_n : F_n$ is a term context for $\Gamma$
@@ -3986,8 +4004,17 @@ $\sem{\Gamma;\Phi \vdash \Delta}^{\mathsf{D}} = \sem{\Gamma;\Phi
 where $\mathsf D$ is $\set$ or $\rel$ as appropriate. Then every
 well-formed term has a set (resp., relational) interpretation as a
 natural transformation from the set (resp., relational) interpretation
-of its term context to that of its type. These interpretations are
-given in Figure~\ref{fig:term-sem}. 
+of its term context to that of its type. These interpretations, given
+in Figure~\ref{fig:term-sem}, respect weakening, so that
+%, i.e., a term and its weakenings all have the same set and
+%relational interpretations.
+if $\rho : \setenv$ then $\sem{\Gamma;\Phi \,|\, \Delta, x : F
+  \vdash t : G}^{\mathsf D}\rho = (\sem{\Gamma;\Phi \,|\, \Delta
+  \vdash t : G}^{\mathsf D}\rho) \circ \pi_{\Delta}$, where
+$\pi_{\Delta}$ is the projection $\sem{\Gamma;\Phi \vdash \Delta, x :
+  F}^{\mathsf D} \to \sem{\Gamma;\Phi \vdash \Delta}^{\mathsf D}$.
+
+
 
 \begin{comment}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ then has,
@@ -4112,16 +4139,6 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
 \end{figure}
 
 %\subsection{Basic Properties of Term Interpretations}
-
-The interpretations in Figure~\ref{fig:term-sem} respect
-weakening, i.e., 
-%, i.e., a term and its weakenings all have the same set and
-%relational interpretations.
-if $\rho \in \setenv$ then $\sem{\Gamma;\Phi \,|\, \Delta, x : F
-  \vdash t : G}^{\mathsf D}\rho = (\sem{\Gamma;\Phi \,|\, \Delta
-  \vdash t : G}^{\mathsf D}\rho) \circ \pi_{\Delta}$, where
-$\pi_{\Delta}$ is the projection $\sem{\Gamma;\Phi \vdash \Delta, x :
-  F}^{\mathsf D} \to \sem{\Gamma;\Phi \vdash \Delta}^{\mathsf D}$.
 
 
 
@@ -4827,11 +4844,11 @@ Then for any functions $\ol{f : A \to B}$ we have that
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
 To go beyond naturality and get {\em all} consequences of
-parametricity, we prove an Abstraction Theorem for our calculus. As
-usual for such theorems, we prove a more general result in
-Theorem~\ref{thm:at-gen} that handles possibly open terms. We then
-recover the Abstraction Theorem (Theorem~\ref{thm:abstraction}) as the
-special case of Theorem~\ref{thm:at-gen} for closed terms of closed type.
+parametricity, we prove an Abstraction Theorem. As usual for such
+theorems, we prove a more general result (Theorem~\ref{thm:at-gen})
+for possibly open terms. We recover our Abstraction Theorem
+(Theorem~\ref{thm:abstraction}) as the special case of
+Theorem~\ref{thm:at-gen} for closed terms of closed type.
 
 \begin{theorem}\label{thm:at-gen}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ induces
