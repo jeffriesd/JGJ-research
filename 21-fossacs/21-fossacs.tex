@@ -388,14 +388,16 @@ polymorphic function at hand. It has, for example, analogues for
 nested types of Wadler's map-rearrangement free theorems as
 instances. In Section~\ref{sec:thms} we prove that our model satisfies
 an Abstraction Theorem (Theorem~\ref{thm:abstraction}), and use it to
-derive other parametricity results that go beyond naturality in
-Section~\ref{sec:ftnt}. Specifically, we state and prove
-(non-)inhabitation results in Sections~\ref{sec:bottom}
-and~\ref{sec:identity}, a free theorem for the type of a filter
-function on generalized rose trees in Section~\ref{sec:ft-adt}, and
-correctness of a generalization of short cut fusion to
-%lists in Section~\ref{sec:short-cut}, and its generalization to
-nested types in Section~\ref{sec:short-cut-nested}. 
+derive other parametricity results that go beyond naturality. We
+conclude in Section~\ref{sec:conclusion}.
+%in Section~\ref{sec:short-cut-nested}.
+%Specifically, we state and prove
+%(non-)inhabitation results in Sections~\ref{sec:bottom}
+%and~\ref{sec:identity}, a free theorem for the type of a filter
+%function on generalized rose trees in Section~\ref{sec:ft-adt}, and
+%correctness of a generalization of short cut fusion to
+%%lists in Section~\ref{sec:short-cut}, and its generalization to
+%nested types in Section~\ref{sec:short-cut-nested}. 
 
 \noindent
 {\bf Related Work}\/
@@ -1286,15 +1288,20 @@ Interestingly, even some recursive functions of a single proper nested
 type --- e.g., a reverse function for bushes --- cannot be expressed
 as folds because the algebra arguments needed to define them are again
 recursive functions with types of the same problematic form as the
-type of a zip function for perfect trees.  In order to define such
-functions, we could add more expressive recursion combinators.  But
-since the expressivity issue for folds over nested types long
-pre-dates, and is somewhat orthogonal to, the issue of parametricity
-for languages that construct nested types as fixpoints, we do not
-consider it further here other than to offer, in
-Section~\ref{sec:conclusion}, some ideas for addressing it in future
-work.
+type of a zip function for perfect trees.  Expressivity of folds for
+nested types has long been a vexing issue, and this is naturally
+inherited by our calculus.  Adding more expressive recursion
+combinators could help, but since this is orthogonal to the issue of
+parametricity in the presence of primitive nested types we do not
+consider it further.
 
+%In order to define such functions, we could add more expressive
+%recursion combinators.  But since the expressivity issue for folds
+%over nested types long pre-dates, and is somewhat orthogonal to, the
+%issue of parametricity for languages that construct nested types as
+%fixpoints, we do not consider it further here other than to offer, in
+%Section~\ref{sec:conclusion}, some ideas for addressing it in future
+%work.
 
 
 \begin{comment}
@@ -1537,14 +1544,18 @@ $\lambda$-presentable for $\lambda > \omega$.
 %Section VI of~\cite{jp19}, the type $\emptyset; \gamma \vdash
 %\Nat^\emptyset (\onet + \onet)\, \gamma$ does not.
 %
-Adding more expressive recursion combinators could help, too.
+
+Expressivity of folds for nested types 
+has long been
+a vexing issue, and this is naturally inherited by our calculus.
+Adding more expressive recursion combinators could help, but
 %enhance the expressivity of our calculus
-But since the expressivity issue for folds for nested types long
-pre-dates, and is somewhat orthogonal to, the issue of parametricity
-for languages that construct nested types as fixpoints, we do not
-consider it further in this paper other than to identify, in
-Section~\ref{sec:conclusion}, some ideas for addressing it in future
-work.
+since this issue is somewhat orthogonal to the issue of parametricity
+in the presence of primitive nested types we do not consider it
+further.
+%in this paper other than to identify, in
+%Section~\ref{sec:conclusion}, some ideas for addressing it in future
+%work.
 %These and other extensions are discussed
 
 
@@ -4338,10 +4349,13 @@ $\sem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha x : F}^{\mathsf D} =
 --- follow (when both sides of these equations are defined).
 %Similar properties hold for relational interpretations.
 
-\vspace*{-0.1in}
+%\vspace*{-0.1in}
 
-\subsection{Consequences of Naturality and Initial
-  Algebras}\label{sec:Nat-type-terms} 
+\section{Free Theorems for Nested Types}\label{sec:ftnt}
+
+\vspace*{-0.05in}
+
+\subsection{Consequences of Naturality}\label{sec:Nat-type-terms}   
 
 \vspace*{-0.05in}
 
@@ -4427,9 +4441,16 @@ $\Gamma; \ol\alpha, \ol\gamma \vdash H$,
   
 \noindent
 We also have the expected properties of $\map$, $\tin$, and $\fold$,
-and their interpretations, e.g, the uniqueness and universal property
-of the interpretation of $\fold$ and the fact that the interpretation
-of $\tin$ is an isomorphism.
+and their interpretations, e.g, uniqueness and the universal property
+of the interpretation of $\fold$ and that the interpretation of $\tin$
+is an isomorphism. Further, we can prove that our calculus admits no
+non-terminating terms, i.e., terms with the
+%closed
+type $\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom, as well
+as the standard result that every closed term $g$ of type
+$\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic identity function
+{\color{red} (see appendix)}.
+
 
 \begin{comment}
 \subsection{Properties of Terms of $\Nat$-Type}\label{sec:Nat-type-terms}
@@ -4948,12 +4969,13 @@ Then for any functions $\ol{f : A \to B}$ we have that
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
-To go beyond naturality and get {\em all} consequences of
-parametricity, we prove an Abstraction Theorem. As usual for such
-theorems, we prove a more general result (Theorem~\ref{thm:at-gen})
-for possibly open terms. We recover our Abstraction Theorem
-(Theorem~\ref{thm:abstraction}) as the special case of
-Theorem~\ref{thm:at-gen} for closed terms of closed type.
+To get {\em all} consequences of parametricity, including those that
+are not merely consequences of naturality, we prove an Abstraction
+Theorem (Theorem~\ref{thm:abstraction}). As usual, % for such theorems,
+we prove a more general result (Theorem~\ref{thm:at-gen}) for %possibly
+open terms, and recover our Abstraction Theorem as its special case
+%of Theorem~\ref{thm:at-gen}
+for closed terms of closed type.
 
 \vspace*{-0.05in}
 
@@ -5038,6 +5060,12 @@ abstraction.
 %``in parallel'', i.e., are fibred.
 %%\end{proof}
 
+An immediate consequence of Theorem~\ref{thm:at-gen} is that
+if $\rho \in \relenv$, and \,$(a, b) \in \relsem{\Gamma; \Phi \vdash
+  \Delta} \rho$, then $(\setsem{\Gamma; \Phi \,|\, \Delta \vdash t :
+  F} (\pi_1 \rho) \,a \, , \setsem{\Gamma; \Phi \,|\, \Delta \vdash t
+  : F } (\pi_2 \rho) \,b) \in \relsem{\Gamma; \Phi \vdash F} \rho$. 
+\begin{comment}
 The following theorem is an immediate consequence of
 Theorem~\ref{thm:at-gen}. The Abstraction Theorem is its instantiation
 %of Theorem~\ref{thm:at-gen-rel}
@@ -5052,18 +5080,65 @@ to closed terms of closed type.
       \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : F } (\pi_2 \rho) \,b) \in 
     \relsem{\Gamma; \Phi \vdash F} \rho$
 \end{theorem}
+\end{comment}
+The Abstraction Theorem is the instantiation of this result to closed
+terms of closed type:
+
+\vspace*{-0.03in}
+
 \begin{theorem}[Abstraction Theorem]\label{thm:abstraction}
   %If $\vdash t : F$, then
   $(\setsem{\vdash t : F},\setsem{\vdash t
   : F}) \in \relsem{\vdash F}$
 \end{theorem}
 
-\section{Free Theorems for Nested Types}\label{sec:ftnt}
+%\vspace*{-0.1in}
 
-In this section we show how Theorem~\ref{thm:abstraction} can be used
-to prove more advanced free theorems than those of
-Section~\ref{sec:Nat-type-terms} in the presence of directly
-constructed nested types.
+%\section{Free Theorems for Nested Types}\label{sec:ftnt}
+
+%Using the results of Sections~\ref{sec:Nat-type-terms}
+%and~\ref{sec:thms} we can prove free theorems for nested
+%types. {\color{red} (See appendix for proofs)}.  For example, we can
+%prove that our calculus admits no non-terminating terms, i.e., terms
+%with the closed type $\Nat^\alpha \onet \,\alpha$ of the polymorphic
+%bottom, and the standard result that every closed term $g$ of type
+%$\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic identity function.
+Using this, we can recover free theorems, such as the free theorem for
+the type of the standard $\mathit{filter}$ function for lists, that go
+beyond mere naturality, and extend them to those nested types for
+which analogous functions can be defined. In particular, we can extend
+short cut fusion for lists~\cite{glp93} to nested types, thereby
+formally proving correctness of the categorically inspired theorem
+from~\cite{jg10}. In fact, replacing $\onet$ with any type
+$\emptyset;\alpha \vdash C$ generalizes
+Theorem~\ref{thm:short-cut-nested} to a free theorem whose conclusion
+is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu H \; \mathit{in}_{H} = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B$.
+%Although it is standard to prove that the parametric model constructed
+%verifies the existence of initial algebras, this is unnecessary here
+%since initial algebras are built directly into our model.
+\begin{theorem}\label{thm:short-cut-nested}
+If $\emptyset;\phi,\alpha \vdash F$, $\emptyset; \alpha
+\vdash K$, 
+%let $\phi ;\emptyset\,|\,\emptyset\vdash g :
+%\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
+%(\Nat^\alpha\,\onet \, (\phi\alpha))$. If we let
+$H : [\set,\set] \to [\set,\set]$ is defined by $H\,f\,x =
+\setsem{\emptyset; \phi, \alpha \vdash F}[\phi := f][\alpha := x]$,
+and $G = \llbracket \phi;\emptyset\,|\,\emptyset \vdash g :
+\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))$ \\
+\noindent $(\Nat^\alpha\,\onet \, (\phi\alpha)) \rrbracket^\set$ for
+some $g$, then for every $B \in H \setsem{\emptyset;\alpha \vdash K}
+\rightarrow \setsem{\emptyset; \alpha \vdash K}$ we have
+$\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B$.
+\end{theorem}
+
+\begin{comment}
+
+%Theorem~\ref{thm:abstraction} can be used to prove more advanced free
+%theorems than those of Section~\ref{sec:Nat-type-terms} in the
+%presence of directly constructed nested types.
 
 \subsection{Free Theorem for Type of Polymorphic
   Bottom}\label{sec:bottom} 
@@ -5199,6 +5274,7 @@ Equation~\ref{eq:filter-thm-list}.\end{proof}
 %  \end{align*}
 %  as desired.
 %\end{proof}
+\end{comment}
 
 \begin{comment}
 \begin{theorem}\label{thm:at-gen-rel}
@@ -5263,7 +5339,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
 
 %\subsection{Free Theorem for Type of $\mathit{filter}$ for
 %  $\GRose$}\label{sec:filter-grose} 
-
+\begin{comment}
 A similar proof establishes the analogous result for, say, generalized
 rose trees. 
 \begin{theorem} 
@@ -5288,6 +5364,7 @@ This is not surprising since rose trees are essentially
 ADT-like. However, as noted in Section~\ref{sec:terms}, our calculus
 cannot express the type of a polymorphic filter function for a proper
 nested type.
+\end{comment}
 
 \begin{comment}
 \subsection{Short Cut Fusion for Lists}\label{sec:short-cut}
@@ -5544,6 +5621,7 @@ G\,\setsem{\vdash \tau'}\,B\]
 \end{proof}
 \end{comment}
 
+\begin{comment}
 \subsection{Short Cut Fusion for Arbitrary Nested
   Types}\label{sec:short-cut-nested} 
 
@@ -5711,16 +5789,15 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B$.
 \end{proof}
 
 \vspace*{-0.08in}
+\end{comment}
 
-As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
-\vdash C$ generalizes
-%with $\setsem{\emptyset;\alpha \vdash c}\rho = C$
-Theorem~\ref{thm:short-cut-nested} to deliver more general a free
-theorem whose conclusion is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu
-H \; \mathit{in}_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
-Although it is standard to prove that the parametric model constructed
-verifies the existence of initial algebras, this is unnecessary here
-since initial algebras are built directly into our model.
+%As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
+%\vdash C$ generalizes Theorem~\ref{thm:short-cut-nested} to a free
+%theorem whose conclusion is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu
+%H \; \mathit{in}_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
+%%Although it is standard to prove that the parametric model constructed
+%%verifies the existence of initial algebras, this is unnecessary here
+%%since initial algebras are built directly into our model.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
@@ -5732,30 +5809,31 @@ We have also used the Abstraction Theorem for this model to derive
 free theorems in the presence of nested types. This was not possible
 before~\cite{jp19} because the nested types in our calculus were not
 previously known to have well-defined interpretations in locally
-finitely presentable categories like $\set$ and $\rel$. No calculus
-for terms of these types existed, either. The key to our parametric
-model is
-%{\color{blue} adjusting our type syntax to respect the accessibility
-%  cardinal for the semantic category and}
-the delicate threading of functoriality and 
-naturality conditions throughout its construction.
+finitely presentable categories (here, $\set$ and $\rel$), and no term
+calculus for them existed.
+%The key to our parametric model is
+%%{\color{blue} adjusting our type syntax to respect the accessibility
+%%  cardinal for the semantic category and}
+%the delicate threading of functoriality and 
+%naturality conditions throughout its construction.
 
-Even when nested types have well-defined interpretations in a semantic
-category, the types of standard functions over them may not. This is
-because all recursion in our calculus must be coded using standard
-folds.  Since folds for nested types can only express computations
-that return natural transformations, their expressivity has long been
-a vexing issue, and this is naturally inherited by our calculus.
-%indeed, such folds
-%Our calculus naturally inherits these constraints.
-%Of course our calculus inherits the constraints
-%standard folds for nested types impose, and thus is perhaps not as
-%expressive as we would ideally like.
-In addition, while there are many papers on higher-kinded types, we
-know of none that considers expressibility issues arising from the
-local $\lambda$-presentability cardinal $\lambda$ of the categories in
-which higher-kinded types are interpreted. Because $\lambda = \omega$
-for $\set$ and $\rel$, the expressivity of our
+%Even when nested types have well-defined interpretations in a semantic
+%category, the types of standard functions over them may not. This is
+%because all recursion in our calculus must be coded using standard
+%folds.  Since folds for nested types can only express computations
+%that return natural transformations, their expressivity has long been
+%a vexing issue, and this is naturally inherited by our calculus.
+%%indeed, such folds
+%%Our calculus naturally inherits these constraints.
+%%Of course our calculus inherits the constraints
+%%standard folds for nested types impose, and thus is perhaps not as
+%%expressive as we would ideally like.
+%In addition,
+There are many papers on higher-kinded types, but we know of none that
+considers expressibility issues arising from the local
+$\lambda$-presentability cardinal $\lambda$ of the categories in which
+higher-kinded types are interpreted. Because $\lambda = \omega$ for
+$\set$ and $\rel$, the expressivity of our
 %$\set$/$\rel$-based parametric model
 calculus is, unfortunately, not easily improved there. Construction of
 a $\set$/$\rel$-based parametric model for our calculus is
@@ -5778,7 +5856,7 @@ richer semantic categories for fancier data types and/or recursion
 schemes would be futile. We naturally expect the construction reported
 here to guide its generalization to the locally $\lambda$-presentable
 categories for $\lambda > \omega$ that will be needed to accommodate
-more general data types and recursion schemes for them.
+more general data types, like GADTs, and recursion schemes for them.
 
 % As is, the results reported here provide a
 %blueprint for deriving principled parametricity results for practical
@@ -5842,57 +5920,62 @@ more general data types and recursion schemes for them.
 %languages, such as Haskell and Agda, that directly construct nested
 %types as fixpoints.
 
-%Many extensions of standard folds have been
-%proposed. Perhaps the most significant of these are
-Generalized folds~\cite{bp99} are an extension of standard folds that
-%and Mendler iterators~\cite{amu05}.
-%which
-can express computations whose results are not natural
-transformations. These were shown in~\cite{jg10} to be equivalent to
-standard folds in the presence of object-level {\em right} Kan
-extensions.
+%%Many extensions of standard folds have been
+%%proposed. Perhaps the most significant of these are
+%Generalized folds~\cite{bp99} are an extension of standard folds that
+%%and Mendler iterators~\cite{amu05}.
+%%which
+%can express computations whose results are not natural
+%transformations. These were shown in~\cite{jg10} to be equivalent to
+%standard folds in the presence of object-level {\em right} Kan
+%extensions.
 %; interpreting such
 %a construct in $\set$ and $\rel$ should be unproblematic {\color{blue}
 %  since these categories have all(?) limits}.
-It was also shown in~\cite{jg08} that GADTs can be represented using
-object-level {\em left} Kan extensions, and
+It was shown in~\cite{jg08} that GADTs can be represented using
+%object-level
+left Kan extensions, and
 %
 %This suggests
 %extending our term calculus with such object-level constructs.
 %
 %{\color{blue} We may need to impose restrictions inspired
 %  by those for $\mu$-types on LKEs.}
-adding a carefully designed left Kan extension construct to our
-calculus was shown in~\cite{jp19} to preserve the cocontinuity needed
-for GADTs to have well-defined interpretations. (Note, however, that
+carefully adding a
+%carefully designed adding a
+left Kan extension construct to a calculus like ours was shown
+in~\cite{jp19} to preserve the cocontinuity needed for GADTs to have
+well-defined interpretations in locally $\lambda$-presentable
+categories. (Interestingly,
 %not necessarily in
 %However, this will not, in general, be
 %the case in locally finitely presentable categories. Indeed, as shown
 %in~\cite{jp19},
-locally $\lambda$-presentable categories for $\lambda > \aleph_1$ are
-required to interpret even commonly used GADTs.) This suggests
-extending our calculus with Kan extension constructs and
+$\lambda > \aleph_1$ is required to interpret even commonly used
+GADTs.) This suggests
+%extending our calculus with Kan extension
+%constructs and
 %augmenting our type formation rules with such a construct.
 %The constructions of this paper should all be possible
 carrying out our model construction in a locally $\lambda$-presentable
 cartesian closed category (lpccc) $\cal C$ whose category of
 (abstract) relations, obtained by pullback as in~\cite{jac99},
-is also a lpccc and appropriately fibred over $\cal C$.  This would
+is also a lpccc and appropriately fibred over $\cal C$.
+%This would
 %extend the results presented here along the lines of~\cite{gjfor15},
 %thus giving
-give a framework for constructing parametric models for calculi
-with nested types built from primitives that is based on locally
-$\lambda$-presentable fibrations, for some appropriate definition
-thereof.  Another option is to add term-level fixpoints
+%give a framework for constructing parametric models for calculi with
+%primitive GADTs that is based on locally $\lambda$-presentable
+%fibrations, for some appropriate definition thereof.
+%Another option is to add
+Adding term-level fixpoints 
 %, as in~\cite{pit00},
-to the calculus presented here. Of course, this would require the
-categories interpreting types to be not just locally
-$\lambda$-presentable, but to support some kind of domain structure as
-well.
+%to the calculus presented here. Of course, this
+would further require the categories interpreting types not just to be
+locally $\lambda$-presentable, but to support some kind of domain
+structure as well.
 %Unfortunately, $\omega$-CPO, the most obvious category
 %of domains to replace $\set$, is not locally finitely presentable.
-
-\pagebreak
 
 \noindent
 
