@@ -59,7 +59,7 @@
 
 \newcommand{\emptyfun}{{[]}}
 %\newcommand{\cal}{\mathcal}
-\newcommand{\fold}{\mathit{fold}}
+\newcommand{\fold}{\mathsf{fold}}
 \newcommand{\F}{\mathcal{F}}
 %\renewcommand{\G}{\mathcal{G}}
 \newcommand{\N}{\mathcal{N}}
@@ -113,14 +113,14 @@
 
 
 \titlerunning{Parametricity for Primitive Nested Types}
-\authorrunning{P.~Johann, E.~Ghiorzi, and D.~Jeffries}
+\authorrunning{P.~Johann, D.~Jeffries, and E.~Ghiorzi}
 
 \title{Parametricity for Primitive Nested Types\vspace*{-0.2in}} 
-\author{Patricia Johann \and Enrico Ghiorzi \and Daniel
-  Jeffries\vspace*{-0.12in}} 
+\author{Patricia Johann \and Daniel
+  Jeffries \and Enrico Ghiorzi\vspace*{-0.12in}} 
 \institute{Appalachian State University, Boone, NC, USA\\
-\email{johannp@appstate.edu, ghiorzie@appstate.edu,
-  jeffriesd@appstate.edu}}
+\email{johannp@appstate.edu, 
+ jeffriesd@appstate.edu, ghiorzie@appstate.edu,}}
 
 \maketitle
 
@@ -310,9 +310,9 @@ types appearing in the literature, including truly nested types.  At
 the term-level, it supports primitive pattern matching, map functions,
 and fold combinators for nested types.\footnote{We do not address
   general term-level recursion in this paper in part because, as
-  Pitts~\cite{pit00} states, ``it is hard to construct models of both
-  impredicative polymorphism and fixpoint recursion'', and in part
-  because constructing a parametric model even for a predicative
+  Pitts~\cite{pit00} reminds us, ``it is hard to construct models of
+  both impredicative polymorphism and fixpoint recursion'', and in
+  part because constructing a parametric model even for a predicative
   calculus with primitive nested type is already rather involved.
 %  Our
 %  strongly normalizing calculus may be what was sought
@@ -3286,8 +3286,7 @@ action on morphisms is given by $\graph{\alpha}^*\overline{(\beta,
 %\graph{\alpha}^*)$, called the {\em graph relation transformer for
 %$\alpha$}.
 
-Some diagram chasing, together with the left-lifting property of the
-mono-epi factorization system in $\set$, proves
+{\color{red} The next two lemmas are proved in the appendix.}
 \begin{lemma}\label{lem:graph-reln-functors}
 If $F,G : [\set^k,\set]$, and if $\alpha : F \to G$ is a natural
 transformation, then the {\em graph relation transformer for $\alpha$}
@@ -3499,10 +3498,10 @@ F, \Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$.
 \noindent
 The graph relation transformer $\langle f \rangle$, for $f : A \to B$
 in $\set$ considered as a natural transformation between $0$-ary
-functors $A$ and $B$, coincides with its standard definition. Graph
-relation transformers thus extend graph relations to functors.  The
-next lemma, which computes the action of a graph relation transformer
-on graph relations, is also obtained via diagram chasing.
+functors $A$ and $B$, coincides with the usual definition of
+$\graph{f}$, so graph relation transformers do extend graph relations
+to functors.  The next lemma computes the action of a graph relation
+transformer on graph relations.
 \begin{lemma}\label{lem:eq-reln-equalities}
 If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
 and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$,
@@ -3659,11 +3658,10 @@ $\Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}$
 %\end{split}
 %\end{equation}
 \end{comment}
-hold. With these results in hand, the proof follows straightforwardly.
-{\color{red} It is given in detail in the accompanying anonymous
-  supplementary material.} It reveals that if functorial variables of
-arity greater than $0$ were allowed to appear in the bodies of
-$\mu$-types, then the IEL would fail.
+hold. With these results in hand, the proof is not hard.  {\color{red}
+  It is given in detail in the appendix.} The proof reveals that if
+functorial variables of arity greater than $0$ could appear in the
+bodies of $\mu$-types, the IEL would fail.
 
 \begin{comment}
 \begin{proof}
@@ -3874,7 +3872,8 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
 %\vspace*{0.05in}
 %
 
-The IEL leads to an apppropriate Graph Lemma, proved in the usual way:
+From the IEL we get a Graph Lemma, {\color{red} also proved in the
+  appendix:} 
 \begin{lemma}%[Graph Lemma]
   \label{lem:graph}
   If $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$
@@ -3987,8 +3986,11 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \end{proof}
 \end{comment}
 
+\vspace*{-0.2in}
 
 \section{Interpreting Terms}\label{sec:term-interp}
+
+\vspace*{-0.1in}
 
 If $\Delta = x_1 : F_1,...,x_n : F_n$ is a term context for $\Gamma$
 and $\Phi$, define 
@@ -4330,6 +4332,132 @@ $\sem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha x : F}^{\mathsf D} =
 --- follow (when both sides of these equations are defined).
 %Similar properties hold for relational interpretations.
 
+\vspace*{-0.1in}
+
+\subsection{Properties of Terms}\label{sec:Nat-type-terms}
+
+\vspace*{-0.05in}
+
+Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
+$\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
+\Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
+\Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset
+\,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$, the {\em
+  composition} $s \circ t$ of $t$ and $s$ to be $\Gamma;
+\emptyset\,|\, \Delta \vdash L_{\overline{\alpha}}
+x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
+\Nat^{\overline{\alpha}} F\,H$. Then $\setsem{\Gamma; \emptyset \,|\,
+  \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
+\id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho
+  [\ol{\alpha := A}]}$ for any set environment $\rho$, and
+$\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
+  \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
+\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
+  \Nat^{\overline{\alpha}} F\,G}$. Straightforward calculation shows
+that terms of $\Nat$ type behave as natural transformations with
+respect to their source and target functorial types, i.e., we have
+
+  \vspace*{-0.1in}
+  
+\begin{theorem}\label{eq:ft-from-nat} 
+  If\, $\Gamma; \emptyset \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
+  \overline{\gamma}} F\,G$ and $\overline{\Gamma; \emptyset \,|\,
+  \Delta \vdash t : \Nat^{\overline{\gamma}} K\, H}$, then
+
+    \vspace*{-0.25in}
+  
+  \[\begin{array}{l}
+  \hspace*{0.135in}
+\setsem{\Gamma; \emptyset\,|\, \Delta
+  \vdash 
+  ((\map_G^{\overline{K}, \overline{H}})_\emptyset \,\overline{t}) \circ
+(L_{\overline{\gamma}} z. s_{\overline{K}, \overline{\gamma}}
+  z)
+  : \Nat^{\overline{\gamma}} F[\overline{\alpha := K}]\,
+  G[\overline{\alpha := H}]}\\
+= \setsem{ \Gamma; \emptyset \,|\, \Delta \vdash
+(L_{\overline{\gamma}} z.
+  s_{\overline{H}, \overline{\gamma}} z)\circ
+  ((\map_F^{\overline{K}, \overline{H}})_\emptyset \,
+  \overline{t})  : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
+      K}]\, G[\overline{\alpha := H}]}
+\end{array}\]
+\end{theorem}
+
+  \vspace*{-0.1in}
+  
+\noindent
+Theorem~\ref{eq:ft-from-nat} gives a family of free theorems that are
+consequences of naturality, and thus do not require the full power of
+parametricity. All of Wadler's free theorems apart from short cut
+fusion are in this family. We can also prove that the interpretation
+of every $\map_G$ is a functor, and that $\map$ is itself a
+higher-order functor. For example, the former property can be stated as:
+%\begin{theorem}\label{eq:ft-functoriality}
+  if 
+$\Gamma; \ol\alpha, \ol\gamma \vdash H$, 
+  $\ol{\Gamma; \emptyset \,|\, \Delta \vdash g : \Nat^{\ol\gamma} F \, G}$, and
+  $\ol{\Gamma; \emptyset \,|\, \Delta \vdash f : \Nat^{\ol\gamma} G \, K}$, then
+
+  \vspace*{-0.25in}
+  
+  \begin{align*}
+&\setsem{
+\Gamma; \emptyset \,|\, \Delta \vdash 
+  (\map^{\ol{F}, \ol{K}}_H \,)_{\emptyset} \, \ol{(f \circ g)}
+  : \Nat^{\ol\gamma} H[\ol{\alpha := F}] \, H[\ol{\alpha := K}]} \\ 
+= \hspace{0.03in} 
+  &\setsem{
+  \Gamma; \emptyset \,|\, \Delta \vdash 
+  (\map^{\ol{G}, \ol{K}}_H \,)_{\emptyset} \, \ol{f} \circ 
+  (\map^{\ol{F}, \ol{G}}_H \,)_{\emptyset} \, \ol{g}
+  : \Nat^{\ol\gamma} H[\ol{\alpha := F}] \, H[\ol{\alpha := K}]}
+\end{align*}
+%\end{theorem}
+
+    \vspace*{-0.1in}
+  
+\noindent
+We also have the expected properties of the interpretations of $\map$,
+$\tin$, and $\fold$, namely the uniqueness and universal property of
+the interpretation of $\fold$ and the fact that the interpretation of
+$\tin$ is an isomorphism.
+
+{\color{red}
+\noindent
+$\bullet$\; If $\Gamma; \overline{\beta}, \overline{\gamma} \vdash
+H$,\; $\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$,\;
+$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$,\;
+$\overline{\Gamma; \emptyset, \overline{\alpha}, \overline{\gamma}
+  \vdash G}$,\; 
+$\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash
+  M}$,\; $\overline{I}$ is the sequence $\overline{F}, H$,\;
+$\overline{J}$ is the sequence $\overline{G}, K$, and $\Gamma;
+\emptyset\,|\,\Delta \vdash s : \Nat^{\overline{\beta},
+  \overline{\gamma}} H\, K$ and $\ol{\Gamma; \emptyset \,|\,\Delta \vdash
+  t : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}$, then
+\[\hspace*{0.13in}\setsem{\Gamma; \emptyset \,|\, \Delta
+    \vdash L_{\overline{\gamma}} z.\,
+    s_{\overline{M [\overline{\psi := G}] [\phi := K]},
+      \overline{\gamma}} \Big(\big( (\map_{H}^{\overline{M
+        [\overline{\psi := F}] [\phi := H]}, \overline{M
+        [\overline{\psi := G}] [\phi := K]}})_\emptyset
+    (\overline{(\map_{M}^{\overline{I}, \overline{J}})_\emptyset
+      (s, \overline{t})}) \big)_{\overline{\gamma}} z \Big) : \xi}\]
+\[= \setsem{\Gamma; \emptyset\,|\, \Delta \vdash
+    L_{\overline{\gamma}} z.\, \big( (\map_{K}^{\overline{M
+      [\overline{\psi := F}] [\phi := H]}, \overline{M [\overline{\psi
+          := G}] [\phi := K]}})_\emptyset (\overline{(\map_{M}^{\overline{I},
+    \overline{J}})_\emptyset (s, \overline{t})}) \big)_{\overline{\gamma}} \Big(
+s_{\overline{M [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}}
+z \Big) : \xi}\] for $\xi = \Nat^{\overline{\gamma}}\,
+  H[\overline{\beta:= M}] [\overline{\psi := F}] [\phi := H]\;
+  K[\overline{\beta := M}] [\overline{\psi := G}] [\phi := K]$
+}
+
+
+\begin{comment}
 \subsection{Properties of Terms of $\Nat$-Type}\label{sec:Nat-type-terms}
 
 Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
@@ -4474,6 +4602,8 @@ for $\alpha$.
 Analogous results hold for relation environments and relational
 interpretations.
 
+
+
 \subsection{Properties of Initial Algebraic Constructs}\label{sec:iaps}
 
 Our semantics interprets applications of $\map$ as applications of
@@ -4500,7 +4630,6 @@ Definition~\ref{def:set-interp} gives
     \ol{A}.\eta_{\ol{A}\,\ol{B}}}] \label{eq:map-sem-def}
 \end{align}
 %\end{multline}
-\end{comment}
 In particular, if $\Gamma; \ol{\alpha} \vdash H$, $\ol{\Gamma;
   \emptyset \vdash F}$, and $\ol{\Gamma; \emptyset \vdash G}$, then
 Definition~\ref{def:set-interp} gives, for all $\ol{f :
@@ -4516,6 +4645,7 @@ Definition~\ref{def:set-interp} gives, for all $\ol{f :
 %=& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
 \end{array}
 \]
+\end{comment}
 \begin{comment}
 \[\begin{array}{rl}
 &\setsem{
@@ -4532,7 +4662,6 @@ Definition~\ref{def:set-interp} gives, for all $\ol{f :
 =& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
 \end{array}
 \]
-\end{comment}
 
 \vspace*{0.05in}
 
@@ -4667,7 +4796,7 @@ then
 \noindent
 Analogous results hold for relational interpretations of terms and
 relational environments.
-{\color{blue} Add Reviewer D property in Sec 5.3 comment.}
+\end{comment}
 
 
 \begin{comment}
