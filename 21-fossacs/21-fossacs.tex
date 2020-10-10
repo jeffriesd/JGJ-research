@@ -399,6 +399,8 @@ conclude in Section~\ref{sec:conclusion}.
 %%lists in Section~\ref{sec:short-cut}, and its generalization to
 %nested types in Section~\ref{sec:short-cut-nested}. 
 
+\vspace*{0.1in}
+
 \noindent
 {\bf Related Work}\/
 There is a long line of work on categorical models of parametricity
@@ -547,9 +549,12 @@ presented here.
 
 \section{The Calculus}\label{sec:calculus}
 
-\vspace*{-0.07in}
+\vspace*{-0.1in}
 
 \subsection{Types}
+
+\vspace*{-0.1in}
+
 For each $k \ge 0$, we assume countable sets $\tvars^k$ of \emph{type
   constructor variables of arity $k$} and $\fvars^k$ of
 \emph{functorial variables of arity $k$}, all mutually disjoint.
@@ -691,27 +696,31 @@ The formation rules for the set $\F \subseteq \bigcup_{V \subseteq
 %either a well-formed type constructor expression or a
 %well-formed functorial expression.
 \end{definition}
-If $F$ is a closed type we write $\vdash F$ for $\emptyset;\emptyset
-\vdash F$.  Definition~\ref{def:wftypes} ensures that the expected
-weakening rules for well-formed types hold, although weakening does
-not change the contexts in which types can be formed. If
-$\Gamma;\emptyset \vdash F$ and $\Gamma;\emptyset \vdash G$, then our
-rules allow formation of the type $\Gamma;\emptyset \vdash
-\Nat^\emptyset F \,G$.
+%If $F$ is a closed type w
+We write $\vdash F$ for $\emptyset;\emptyset \vdash F$.
+Definition~\ref{def:wftypes} ensures that the expected weakening rules
+for well-formed types hold (but weakening does not change the contexts
+in which types can be formed). If $\Gamma;\emptyset \vdash F$ and
+$\Gamma;\emptyset \vdash G$, then our rules allow formation of
+$\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$,
 %Since $\Gamma; \emptyset \vdash \Nat^{\ol
 %  \alpha}F\,G$ represents the type of a natural transformation in $\ol
 %\alpha$ from $F$ to $G$,
-Note that the type $\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$
-represents the arrow type $\Gamma \vdash F \to G$ in our calculus and
-the type $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,F$
+%Note that the type $\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$
+which represents the arrow type $\Gamma \vdash F \to G$ in our calculus.
+The type $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,F$
 represents the $\forall$-type $\Gamma; \emptyset \vdash \forall
-\ol\alpha . F$.  Note also that
+\ol\alpha . F$.
+%Note also that
 %not even all
 %Hindley-Milner types of System F are representable in our calculus.
-not all System F types are 
+%not all
+Some System F types, such as $\forall \alpha. (\alpha \to \alpha) \to
+\alpha$, are not
 %only those System F types that can be interpreted as functors are
-representable in our calculus. For example, the type $\forall
-\alpha. (\alpha \to \alpha) \to \alpha$ is not representable.
+representable in our calculus.
+%For example, $\forall \alpha. (\alpha
+%\to \alpha) \to \alpha$ is not representable.
 %
 %However, if $\ol\alpha$ is non-empty then $\tau$ cannot be of the
 %form $\Nat^{\ol\beta} H \, K$ since $\Gamma; \ol\alpha \vdash
@@ -782,8 +791,8 @@ F[\phi^k :== \psi^k]$ is derivable whenever $\Gamma; \Phi, \phi^k
 %  \psi]$ is the textual replacement of $\phi$ in $F$, meaning that all
 %occurrences of $\phi\ol\sigma$ in $F$ become $\psi\ol\sigma$.
 %\end{lemma}
-The proof is by induction on the structure of $F$.  In addition to
-textual replacement, we also have a proper substitution operation on
+%The proof is by induction on the structure of $F$.
+In addition to textual replacement, we also have substitution for
 types. If $F$ is a type over $P$ and $V$, if $\Pos$ and $V$ contain
 only type variables of arity $0$, and if $k=0$ for every occurrence of
 $\phi^k$ bound by $\mu$ in $F$, then we say that $F$ is {\em
@@ -961,7 +970,7 @@ Similarly, if \,$\Gamma, \phi^k; \Phi \vdash H$, and if\, $\Gamma;
        \vspace*{0.05in}
 
  %      \end{minipage}
-       \caption{Well-formed terms}\label{fig:terms} \vspace*{-0.15in}
+       \caption{Well-formed terms}\label{fig:terms} \vspace*{-0.00in}
 \end{adjustbox}
        % trim space below caption
        \vspace*{-0.25in}
@@ -1095,9 +1104,7 @@ Similarly, if \,$\Gamma, \phi^k; \Phi \vdash H$, and if\, $\Gamma;
 \end{figure}
 \end{comment}
 
-
-
-\vspace*{-0.1in}
+\vspace*{-0.10in}
 
 \subsection{Terms}\label{sec:terms}
 %To define our term calculus we a
@@ -1108,25 +1115,23 @@ $\Phi$ is a functorial context, then a {\em term context for $\Gamma$
 $x \in {\cal V}$ and $\Gamma; \Phi \vdash F$. We adopt the above
 conventions for disjoint unions and vectors in term contexts.
 %as for type constructor and functorial contexts.
-
 %\begin{definition}\label{def:well-formed-terms}
-Let $\Delta$ be a term context for $\Gamma$ and $\Phi$.  The formation
+If $\Delta$ is a term context for $\Gamma$ and $\Phi$ then the formation
 rules for the set of\, {\em well-formed terms over $\Delta$} are given
 in Figure~\ref{fig:terms}.
 %\end{definition}
-
-In the rule for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all
-occurrences of the type variables in $\ol{\alpha}$ in the types of $x$
-and $t$, as well as all occurrences of $x$ in $t$ themselves. In the
-rule for $t_{\ol K} s$ there is one functorial expression in $\ol K$
-for every variable in $\ol \alpha$. In the rule for
-$\map^{\ol{F},\ol{G}}_H$ there is one functorial expression in $\ol F$
-and one functorial expression in $\ol G$ for each variable in
-$\ol\phi$. Moreover, for each $\phi^k$ in $\ol\phi$ the number of
-variables in $\ol\beta$ in the judgments for functorial expresssions
-in $\ol F$ and $\ol G$ is $k$. In the rules for $\tin_H$ and
-$\fold^F_H$, the variables in $\ol{\beta}$ are fresh with respect to
-$H$, and there is one $\beta$ for every $\alpha$.
+%
+An expression $L_{\ol{\alpha}}x.t$ binds all occurrences of the type
+variables in $\ol{\alpha}$ in the types of $x$ and $t$, as well as all
+occurrences of $x$ in $t$. In the rule for $t_{\ol K} s$ there is one
+functorial expression in $\ol K$ for every variable in $\ol
+\alpha$. In the rule for $\map^{\ol{F},\ol{G}}_H$ there is one
+functorial expression in $\ol F$ and one functorial expression in $\ol
+G$ for each variable in $\ol\phi$. Moreover, for each $\phi^k$ in
+$\ol\phi$ the number of variables in $\ol\beta$ in the judgments for
+functorial expresssions in $\ol F$ and $\ol G$ is $k$. In the rules
+for $\tin_H$ and $\fold^F_H$, the variables in $\ol{\beta}$ are fresh
+with respect to $H$, and there is one $\beta$ for every $\alpha$.
 %(Recall from above that, in order for the types of $\tin_H$
 %and $\fold^F_H$ to be well-formed, the length of $\alpha$ must equal
 %the arity of $\phi$.)
@@ -1168,7 +1173,6 @@ $\map$ term for this is typeable as follows:
 However, this derivation would not possible without the $\ol\gamma$
 variables.  Similar remarks explain the appearance of $\ol \gamma$ in
 the typing rules for $\tin$ and $\mathtt{fold}$.
-
 
 \begin{comment}
 \begin{figure*}
@@ -1242,8 +1246,8 @@ the typing rules for $\tin$ and $\mathtt{fold}$.
 \end{minipage}}\vspace*{-0.25in}
 \end{figure*}
 \end{comment}
-
-Our calculus is expressive enough to define, for example, a function
+%
+Our calculus is expressive enough to define, e.g., a function
 $\mathit{reversePTree}: \Nat^\alpha \, (\mathit{PTree}\,\alpha)
 (\mathit{PTree}\,\alpha)$ that reverses the order of the leaves in a
 perfect tree. It maps the perfect tree $((1, 2), (3, 4))$ to $((4, 3),
@@ -1251,7 +1255,7 @@ perfect tree. It maps the perfect tree $((1, 2), (3, 4))$ to $((4, 3),
 such as a zip function for perfect trees --- that take as inputs a
 nested type and an argument of another type, both of which are
 parameterized over the same variable. The fundamental issue is that
-recursion is expressible only via $\mathtt{fold}$, which produces
+recursion is expressible only via $\mathsf{fold}$, which produces
 natural transformations in some variables $\ol{\alpha}$ from
 $\mu$-types to other functors $F$. The restrictions on $\Nat$-types
 entail that $F$ cannot itself be a $\Nat$-type containing
@@ -1260,22 +1264,23 @@ $\ol{\alpha}$, so, e.g., $\Nat^\alpha \, (\mathit{PTree}\,\alpha)
 \times \alpha)))$ is not well-typed.  Uncurrying gives $\Nat^\alpha \,
 (\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha)
 (\mathit{PTree}\,(\alpha \times \alpha))$, which is well-typed, but
-$\mathtt{fold}$ cannot produce a term of this type
+$\mathsf{fold}$ cannot produce a term of this type
 %such a natural transformation
 because $\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha$ is not
 a $\mu$-type.
-
-
+%
 Our calculus can, however, express types of recursive functions that
-take multiple nested types as arguments, provided those nested types
+take multiple nested types as arguments, provided they
+%those nested types
 are parameterized over disjoint sets of type variables and the return
 type of the function is parameterized over only the variables
 occurring in the type of its final argument.  Even for ADTs there is a
 difference between which folds over them we can type when they are
-viewed as ADTs (i.e., as fixpoints of first-order functors) and which
-folds we can type when they are viewed as proper nested types (i.e.,
+viewed as ADTs (i.e., as fixpoints of first-order functors) versus
+%and which folds we can type when they are viewed
+as proper nested types (i.e.,
 as fixpoints of higher-order functors). This is because, in the return
-type of $\mathtt{fold}$, the arguments of the $\mu$-type must be
+type of $\mathsf{fold}$, the arguments of the $\mu$-type must be
 variables bound by $\Nat$.  For ADTs, the $\mu$-type takes no
 arguments, making it possible to write recursive functions, such as a
 concatenation function for lists of type $\alpha ; \emptyset \vdash
@@ -1623,7 +1628,7 @@ rules for $\tin$ and $\fold$.
 
 \end{comment}
 
-\vspace*{-0.1in}
+\vspace*{-0.15in}
 
 \section{Interpreting Types}\label{sec:type-interp}
 
@@ -1667,24 +1672,31 @@ those that interpret terms.
 Similar theorems are required for types and terms with any number of
 free variables.
 
-The key to proving the Identity Extension Lemma
+The key to proving our Identity Extension Lemma
 %(Theorem~\ref{thm:iel})
-for our calculus is a familiar ``cutting down'' of the interpretations
-of universally quantified types to include only the ``parametric''
-elements; the relevant types for us are $\Nat$-types.
+is a familiar ``cutting down'' of the interpretations of universally
+quantified types to include only the ``parametric'' elements; the
+relevant types for us are $\Nat$-types.
 %(See, e.g.,~\cite{atk12,bfss90,gjfor15,rey83}).
-This cutting down requires, as usual, that the set interpretations of
-our types are defined simultaneously with their relational
-interpretations. We give the set interpretations for our types in
-Section~\ref{sec:set-interp} and give their relational interpretations
-in Section~\ref{sec:rel-interp}.  While the set interpretations are
-relatively straightforward, their relation interpretations are less
-so, mainly because of the cocontinuity conditions required to ensure
-that they are well-defined. We develop these conditions in
+This requires that the set interpretations of types
+(Section~\ref{sec:set-interp}) are defined simultaneously with their
+relational interpretations (Section~\ref{sec:rel-interp}).
+%This cutting down requires, as usual, that the set interpretations of
+%our types are defined simultaneously with their relational
+%interpretations. We give the set interpretations for our types in
+%Section~\ref{sec:set-interp} and give their relational interpretations
+%in Section~\ref{sec:rel-interp}.
+While set interpretations are relatively straightforward, relational
+interpretations are less so,
+%mainly
+because of the cocontinuity conditions needed to know they
+are well-defined. We develop these conditions in
 Section~\ref{sec:rel-interp}, which separates
 %Definitions~\ref{def:set-sem} and~\ref{def:rel-sem}
 our set and relational interpretations in space, but otherwise has no
-impact on the fact that they are given by mutual induction.
+impact on the
+%fact that they are given by
+mutually inductive definitions.
 
 \vspace*{-0.15in}
 
@@ -1741,8 +1753,8 @@ and each functorial variable $\phi^k \in \fvars$ to a natural
 transformation from the $k$-ary functor $\rho \phi^k$ on $\set$ to the
 $k$-ary functor $\rho' \phi^k$ on $\set$.  Composition of morphisms on
 set environments is componentwise, with the identity morphism mapping
-each set environment to itself. This gives a category of set
-environments and morphisms between them, denoted $\setenv$.
+each one to itself. This gives a category of set environments and
+morphisms between them, denoted $\setenv$.
 %\end{definition}
 We identify a functor in $[\set^0, \set]$ with its value on $\ast$,
 and consider a set environment to map a type variable of arity $0$ to
@@ -1810,9 +1822,9 @@ Figure~\ref{fig:set-sem} are given in Figure~\ref{fig:rel-sem}.
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \vspace*{-0.3in}\caption{Set interpretation}\label{fig:set-sem} 
+\vspace*{-0.3in}
 %\end{minipage}}
-\vspace*{-0.15in}
-\end{adjustbox}
+\end{adjustbox}\vspace*{-0.17in}
   \end{figure}
 
 %The interpretations in Definition~\ref{def:set-sem} respect weakening,
@@ -1833,41 +1845,48 @@ $\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
       S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha :=
       S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and }$
 $S_i \mbox{ is a finite set for } i =
-1,...,|\ol{\alpha}|\big\}$. There are countably many tuples
-$\ol{S}$, each of which gives a morphism from
-${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
-${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$. But
-there are only $\set$-many choices of morphisms between any two
-objects since $\set$ is locally small.  We note that $\setsem{\Gamma;
-  \emptyset \vdash \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous
-because it is a constant functor (and that allowing functorial
-variables not in $\ol \alpha$ in $G$ fails here, as shown in
-Section~\ref{sec:terms}).
+1,...,|\ol{\alpha}|\big\}$. There are countably many tuples $\ol{S}$,
+each giving a morphism from ${\setsem{\Gamma;\ol{\alpha} \vdash
+    F}\rho[ \ol{\alpha := S}]}$ to ${\setsem{\Gamma;\ol{\alpha} \vdash
+    G}\rho[\ol{\alpha := S}]}$,
+%But there are
+and only $\set$-many
+%choices of morphisms between any two objects
+such morphisms since $\set$ is locally small.  Also,
+$\setsem{\Gamma; \emptyset \vdash \Nat^{\ol\alpha} F\,G}$ is
+$\omega$-cocontinuous since it is a constant functor.
+%(and that allowing functorial
+%variables not in $\ol \alpha$ in $G$ fails here, as shown in
+%Section~\ref{sec:terms}).
+%
 %follows from $\omega$-cocontinuity of $\setsem{\Gamma;\ol\alpha
 %\vdash F}$, $\setsem{\Gamma;\ol\alpha \vdash G}$, and the equality
 %relation environment $\Eq$.
-Interpretations of $\Nat$-types ensure
-that $\setsem{\Gamma \vdash F \to G}$ and $\setsem{\Gamma \vdash
-  \forall \ol\alpha. F}$ are as expected in any parametric model.
+Interpretations of $\Nat$-types ensure that $\setsem{\Gamma \vdash F
+  \to G}$ and $\setsem{\Gamma \vdash \forall \ol\alpha. F}$ are as
+expected in parametric models.
 
 To make sense of the last clause in Figure~\ref{fig:set-sem}, we need
 to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is an
 $\omega$-cocontinuous endofunctor on $[\set^k, \set]$, and thus admits
 a fixpoint.  Since $T_{H,\rho}^\set$ is defined in terms of
-$\setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$, this means
-that interpretations of types must be such functors, which in turn
-means that the actions of set interpretations of types on objects and
-on morphisms in $\setenv$ are intertwined. Fortunately, we know
+$\setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$,
+interpretations of types must be such functors, which entails
+that the actions of set interpretations of types on objects and on
+morphisms in $\setenv$ are intertwined.
+%Fortunately,
+We know
 from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash G$,
 $\setsem{\Gamma; \ol{\alpha} \vdash G}$ is actually in $[\set^k,\set]$
-where $k = |\ol \alpha|$. This means that for each $\setsem{\Gamma;
+where $k = |\ol \alpha|$, so that, for each $\setsem{\Gamma;
   \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the corresponding
 operator $T^\set_{H}$ can be extended to a {\em functor} from
 $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The action of $T^\set_H$
 on an object $\rho \in \setenv$ is given by the higher-order functor
 $T_{H,\rho}^\set$, whose actions on objects (functors in $[\set^k,
-  \set]$) and morphisms (natural transformations between such
-functors) are given in Figure~\ref{fig:set-sem}. Its action on a
+  \set]$) and morphisms between them
+%(natural transformations between such functors)
+are given in Figure~\ref{fig:set-sem}. Its action on a
 morphism $f : \rho \to \rho'$ is the higher-order natural
 transformation $T^\set_{H,f} : T^\set_{H,\rho} \to T^\set_{H,\rho'}$
 whose action on $F : [\set^k,\set]$ is the natural transformation
@@ -2017,31 +2036,37 @@ $\setsem{\Gamma;\Phi,\ol\gamma \vdash (\mu  \phi.\lambda
 \end{itemize}
 \end{definition}
 
-\vspace*{-0.2in}
-
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
+
+\vspace*{-0.01in}
 
 %\begin{definition}\label{def:rel-transf}
 A {\em $k$-ary relation transformer} $F$ is a triple $(F^1, F^2,F^*)$,
-where $F^1,F^2 : [\set^k,\set]$ are functors, $F^* : [\rel^k, \rel]$
-is a functor, if $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$ then $F^*
-\ol{R} : \rel(F^1 \ol{A}, F^2 \ol{B})$, and if $(\alpha_1, \beta_1)
-\in \Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$
+where $F^1,F^2 : [\set^k,\set]$ and $F^* : [\rel^k, \rel]$
+are functors, if $
+%R_1:\rel(A_1,B_1),...,
+\ol{R_i:\rel(A_i,B_i)}$ for $i = 1,...,k$ then $F^*
+\ol{R} : \rel(F^1 \ol{A}, F^2 \ol{B})$, and if
+%$(\alpha_1, \beta_1) \in \Homrel(R_1,S_1),...,
+$\ol{(\alpha_i, \beta_i) \in \Homrel(R_i,S_i)}$ for $i = 1,...,k$,
 then $F^* \ol{(\alpha, \beta)} = (F^1 \ol{\alpha}, F^2 \ol{\beta})$.
 We define $F\ol{R}$ to be $F^*\overline{R}$ and
 $F\overline{(\alpha,\beta)}$ to be $F^*\overline{(\alpha,\beta)}$.
 %\end{definition}
-The last clause here
+The last clause above
 %of Definition~\ref{def:rel-transf}
 expands to: if
 $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b) \in S}$ then
 $(c,d) \in F^*\ol{R}$ implies $(F^1 \ol{\alpha}\,c,F^2 \ol{\beta}\,d)
-\in F^*\ol{S}$. When convenient we identify a $0$-ary relation
-transformer $(A,B,R)$ with $R : \rel(A,B)$. We may also write $\pi_1
-F$ for $F^1$ and $\pi_2 F$ for $F^2$. We extend these conventions to
-relation environments, introduced
+\in F^*\ol{S}$.
+%When convenient
+We identify a $0$-ary relation transformer $(A,B,R)$ with $R :
+\rel(A,B)$,
+%. We may also
+and write $\pi_1 F$ for $F^1$ and $\pi_2 F$ for $F^2$.  Below we
+extend these conventions to relation environments
 %in Definition~\ref{def:reln-env}
-below, in the obvious way.
+in the obvious way.
 
 %\begin{definition}
 The category $RT_k$ of $k$-ary relation transformers is given by the
@@ -2214,26 +2239,28 @@ $[RT_k,[\rel^k,\rel]]$.
 Now, for any $k$, any $A : \set$, and any $R : \rel(A, B)$, let
 $K^\set_A$ be the constantly $A$-valued functor from $\set^k$ to
 $\set$ and $K^\rel_R$ be the constantly $R$-valued functor from
-$\rel^k$ to $\rel$.  Also let $0$ denote either the initial object of
-$\set$ or the initial object of $\rel$, as appropriate. Observing
-that, for every $k$, $K^\set_0$ is initial in $[\set^k,\set]$, and
-$K^\rel_0$ is initial in $[\rel^k,\rel]$, we have that, for each $k$,
-$K_0 = (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus, if $T
-= (T^1,T^2,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$ then we
-can define the relation transformer $\mu T$ to be $\colim{n \in
-  \nat}{T^n K_0}$.
+$\rel^k$ to $\rel$.  Also let $0$ denote the initial object of either
+$\set$ or $\rel$, as appropriate. Observing that, for every $k$,
+$K^\set_0$ is initial in $[\set^k,\set]$, and $K^\rel_0$ is initial in
+$[\rel^k,\rel]$, we have that, for each $k$, $K_0 =
+(K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus, if $T =
+(T^1,T^2,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$ we can
+define the relation transformer $\mu T$ to be $\colim{n \in \nat}{T^n
+  K_0}$
 %Then Lemma~\ref{lem:colimits} shows $\mu T$ is indeed a relation
 %transformer, and that it is given explicitly by
-It is not hard to see that $\mu T$ is given explicitly as
+%It is not hard to see that $\mu T$ is given explicitly as
 %\begin{equation}\label{eq:mu}
   %\colim{n \in \nat}{T^n K_0}
-$ \mu T = (\mu T^1,\mu T^2,
+$= (\mu T^1,\mu T^2,
 \colim{n \in \nat}{(T^nK_0)^*})$.
 %\end{equation}
-As our notation suggests, $\mu T$ really is a fixpoint for $T$ if $T$
-is $\omega$-cocontinuous, i.e., 
+If $T : [RT_k,RT_k]$ then $\mu T$ is a fixpoint for $T$, i.e., $\mu T
+\cong T(\mu T)$.
+%if $T$
+%is $\omega$-cocontinuous, i.e., 
 %\begin{lemma}\label{lem:fp} For any
-if $T : [RT_k,RT_k]$, then $\mu T \cong T(\mu T)$.
+%, then $\mu T \cong T(\mu T)$.
 %\end{lemma}
 %\noindent
 The isomorphism is given by $(\mathit{in}_1, \mathit{in}_2) : T(\mu T)
@@ -2252,13 +2279,15 @@ in_2^{-1}) : \mu T \to T(\mu T)$ in $RT_k$. It is worth noting that the
 latter is always a morphism in $RT_k$, but the former isn't necessarily
 a morphism in $RT_k$ unless $T$ is $\omega$-cocontinuous.
 \end{comment}
-Note that the third component of $\mu T$ is the colimit in
+Since $\mu T$'s third component is the colimit in
 $[\rel^k,\rel]$ of third components of relation transformers, rather
-than a fixpoint of an endofunctor on $[\rel^k,\rel]$. That there is an
-asymmetry between the first two components of $\mu T$ and its third
-reflects the important conceptual observation that the third component
-of an endofunctor on $RT_k$ need not be a functor on all of
-$[\rel^k,\rel]$.
+than a fixpoint of an endofunctor on $[\rel^k,\rel]$,
+%That there is an
+there is an asymmetry between $\mu T$'s first two and third
+components.
+%reflects the important conceptual observation that the third component
+%of an endofunctor on $RT_k$ need not be a functor on all of
+%$[\rel^k,\rel]$.
 %In particular, although we can define $T_{H,\rho}\,
 %F$ for a relation transformer $F$ in Definition~\ref{def:rel-sem}
 %below, it is not clear how we could define it for $F : [\rel^k,\rel]$.
@@ -2267,39 +2296,43 @@ $[\rel^k,\rel]$.
 A {\em relation environment} maps each type variable in $\tvars^k \cup
 \fvars^k$ to a $k$-ary relation transformer.  A morphism $f : \rho \to
 \rho'$ between relation environments $\rho$ and $\rho'$ with
-$\rho|_\tvars = \rho'|_\tvars$ maps each type constructor variable
+$\rho|_\tvars = \rho'|_\tvars$ maps each
+%type constructor variable
 $\psi^k \in \tvars$ to the identity morphism on $\rho \psi^k = \rho'
-\psi^k$ and each functorial variable $\phi^k \in \fvars$ to a morphism
+\psi^k$ and each
+%functorial variable
+$\phi^k \in \fvars$ to a morphism
 from the $k$-ary relation transformer $\rho \phi$ to the $k$-ary
 relation transformer $\rho' \phi$. Composition of morphisms on
-relation environments is componentwise, with the identity
-morphism mapping each relation environment to itself. This gives a
-category of relation environments and morphisms between them, 
-denoted $\relenv$.
+relation environments is componentwise, with the identity morphism
+mapping each to itself; this gives a category $\relenv$ of relation
+environments and their morphisms.
 %\end{definition}
-When convenient we identify a $0$-ary relation transformer with the
-relation (transformer) that is its codomain and consider
+%When convenient w
+We identify a $0$-ary relation transformer with
+%the relation (transformer) that is
+its codomain, and consider
 % With this convention,
 a relation environment to map a type variable of arity $0$
 %to a $0$-ary relation transformer, i.e.,
 to a relation.  We write $\rho[\ol{\alpha := R}]$ for the relation
 environment $\rho'$ such that $\rho' \alpha_i \, = R_i$ for $i =
 1,...,k$ and $\rho' \alpha = \rho\alpha$ if $\alpha \not \in
-\{\alpha_1,...,\alpha_k\}$.  If $\rho$ is a relation environment, we
-write $\pi_1 \rho$ and $\pi_2 \rho$ for the set environments mapping
-each type variable $\phi$ to the functors $(\rho\phi)^1$ and
-$(\rho\phi)^2$, respectively.
+\{\alpha_1,...,\alpha_k\}$.  If $\rho : \relenv$ we write $\pi_1 \rho$
+and $\pi_2 \rho$ for the set environments mapping each type variable
+$\phi$ to the functors $(\rho\phi)^1$ and $(\rho\phi)^2$,
+respectively.
 
-We define, for each $k$, the notion of an $\omega$-cocontinuous
-functor from $\relenv$ to $RT_k$.
+%We define, for each $k$, the notion of an $\omega$-cocontinuous
+%functor from $\relenv$ to $RT_k$.
 %\begin{definition}\label{def:relenv-functor}
-A functor $H : [\relenv, RT_k]$ is a triple $H = (H^1,H^2,H^*)$,
-where
+For each $k$, an $\omega$-cocontinuous functor $H : [\relenv, RT_k]$
+is a triple $H = (H^1,H^2,H^*)$, where
 %\begin{itemize}
 %\item
-$H^1$ and $H^2$ are objects in $[\setenv,[\set^k,\set]]$;
+$H^1, H^2 : [\setenv,[\set^k,\set]]$;
 %\item
-$H^*$ is a an object in $[\relenv,[\rel^k,\rel]]$;
+$H^* : [\relenv,[\rel^k,\rel]]$;
 %\item
 for all $\overline{R : \rel(A,B)}$ and morphisms $f$ in
   $\relenv$, $\pi_1(H^*f \,{\overline{R}}) = H^1 (\pi_1
@@ -2309,29 +2342,35 @@ for all $\overline{R : \rel(A,B)}$ and morphisms $f$ in
   the action of $H$ on $\rho$ in $\relenv$ is given by $H \rho = (H^1
   (\pi_1 \rho),\,H^2 (\pi_2 \rho),\,H^*\rho)$; and 
   %\item
-  The action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
+  the action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
   is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2 f))$.
 %\end{itemize}
 %\end{definition}
-Spelling out the last two points above gives the
-following analogues of the three conditions
-%immediately following Definition~\ref{def:RT-functor}:
-on functors on $\setenv$:
-{\em i}) if $R_1 :
-\rel(A_1,B_1),...,R_k : \rel(A_k,B_k)$, then $H^*\rho\, \ol{R} :
+The last two points above give:
+  %the following analogues of the three conditions
+%%immediately following Definition~\ref{def:RT-functor}:
+%on functors on $\setenv$:
+{\em i}) if $\ol{R_i : \rel(A_i,B_i)}$ for $i = 1,...,k$
+%,...,R_k : \rel(A_k,B_k)$,
+then $H^*\rho\, \ol{R} :
 \rel(H^1(\pi_1 \rho)\, \ol{A}, H^2(\pi_2 \rho)\, \ol{B})$;
 %In other words, $\pi_1 (H^*\rho \ol{R}) = H^1(\pi_1 \rho)
 %  \,\ol{A}$ and $\pi_2 (H^*\rho \ol{R}) = H^2 (\pi_2 \rho) \,\ol{B}$;
-{\em ii}) if $(\alpha_1, \beta_1) \in \Homrel(R_1,S_1),..., (\alpha_k,
-\beta_k) \in \Homrel(R_k,S_k)$, then $H^*\rho\, \ol{(\alpha, \beta)} =
+    {\em ii}) if $\ol{(\alpha_i, \beta_i) \in \Homrel(R_i,S_i)}$ for
+    $i = 1,...,k$
+    %,..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$,
+    then $H^*\rho\, \ol{(\alpha, \beta)} =
 (H^1(\pi_1 \rho)\,\ol{\alpha}, H^2(\pi_2 \rho)\, \ol{\beta})$;
 %  In other words, $\pi_1 (H^*\rho\, \ol{(\alpha, \beta)}) = H^1(\pi_1
 %  \rho)\,\ol{\alpha}$ and $\pi_2 (H^*\rho\, \ol{(\alpha, \beta)}) =
 %  H^2(\pi_2 \rho)\,\ol{\beta}$;
 and {\em iii}) if $f : \rho \to \rho'$ and
-$R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then $(H^1(\pi_1
-f)\,{\ol{A}}\,x, H^2(\pi_2 f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$
-whenever $(x, y) \in H^*\rho\,\ol{R}$.
+$\ol{R_i:\rel(A_i,B_i)}$ for $i = 1,...,k$,
+%,...,R_k:\rel(A_k,B_k)$,
+then if $(x, y) \in H^*\rho\,\ol{R}$ then
+$(H^1(\pi_1
+f)\,{\ol{A}}\,x, H^2(\pi_2 f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$.
+%whenever 
 %As before, the last
 %condition is automatically satisfied because it is implied by the
 %third bullet point of Definition~\ref{def:relenv-functor}.
@@ -2342,19 +2381,20 @@ Computation of $\omega$-directed colimits in $RT_k$ extends
 componentwise to colimits in $\relenv$. Similarly
 $\omega$-cocontinuity for endofunctors on $RT_k$ extends to
 %a notion of $\omega$-cocontinuity for
-functors from $\relenv$ to $RT_k$.  Recalling from the start of this
-subsection that set and relational interpretations are given
+functors from $\relenv$ to $RT_k$.
+%Recalling from the start of this
+%subsection that set and relational interpretations are given
 %Definition~\ref{def:rel-sem} is given
-mutually inductively,
+%mutually inductively,
 %with Definition~\ref{def:set-sem}
 %we can, at last, define:
-our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
+Our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
 \rel]$ is given in Figure~\ref{fig:rel-sem}.
 %\begin{definition}\label{def:rel-sem}
 %The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 % \rel]$ is defined by
-
-
+%
+%
 \begin{figure}[t]
 %\hspace*{0.1in}
 %\resizebox{1.1\linewidth}{!}{
@@ -2405,12 +2445,12 @@ our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
     \delta][\ol{\alpha := \id_{\ol{R}}}]
 \end{align*}
 \vspace*{-0.3in}\caption{Relational
-  interpretation}\label{fig:rel-sem} \vspace*{-0.15in} 
+  interpretation}\label{fig:rel-sem} \vspace*{-0.3in} 
 %\end{minipage}}\vspace*{-0.2in}
-\end{adjustbox}
+\end{adjustbox}\vspace*{-0.15in}
 \end{figure}
-
-Figure~\ref{fig:rel-sem} ensures that $\relsem{\Gamma \vdash F
+%Figure~\ref{fig:rel-sem}
+It ensures that $\relsem{\Gamma \vdash F
   \to G}$ and $\relsem{\Gamma \vdash \forall \ol \alpha. F}$ are as
 expected in any parametric model.
 %$\relsem{\Gamma \vdash
@@ -2423,7 +2463,8 @@ functor.
 %$\relsem{\Gamma;\ol\alpha \vdash F}$ and
 %$\relsem{\Gamma;\ol\alpha \vdash G}$.
 If $\rho \in \relenv$
-and $\vdash F$, then we write $\relsem{\vdash F}$ instead of
+%and $\vdash F$, then
+we write $\relsem{\vdash F}$ for
 $\relsem{\vdash F}\rho$.  For the last clause in
 Figure~\ref{fig:rel-sem} to be well-defined we need $T_{H,\rho}$
 to be an $\omega$-cocontinuous endofunctor on $RT$, so that
@@ -2433,8 +2474,9 @@ defined in terms of $\relsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha}
   \vdash H}$, this means that relational interpretations of types must
 be $\omega$-cocontinuous functors from $\relenv$ to $RT_0$, which in
 turn entails that the actions of relational interpretations of types
-on objects and on morphisms in $\relenv$ are intertwined. As for set
-interpretations, we know from~\cite{jp19} that, for every $\Gamma;
+on objects and on morphisms in $\relenv$ are intertwined.
+%As for set interpretations,
+We know from~\cite{jp19} that, for every $\Gamma;
 \ol{\alpha} \vdash F$, $\relsem{\Gamma; \ol{\alpha} \vdash F}$ is
 actually in $[\rel^k,\rel]$ where $k = |\ol \alpha|$.
 %In fact, we already know from~\cite{jp19} that, for every $\Gamma;
@@ -2514,18 +2556,20 @@ as follows:
   T_{H,f})\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho}$
 \end{itemize}
 \end{comment}
-To see that the functors given by 
+%To see that the functors given by 
 %Definition~\ref{def:rel-sem-funcs}
-this definition and Figure~\ref{fig:rel-sem} are well-defined we must
-show that, for every $H$, $T_{H,\rho}\,F$ is a relation transformer if
-$F$ is, and that $T_{H,f}\, F : T_{H,\rho}\, F \to T_{H,\rho'}\, F$ is
-a morphism of relation transformers for every relation transformer $F$
-and every morphism $f : \rho \to \rho'$ in $\relenv$. This is an
-immediate consequence of
+For this definition and Figure~\ref{fig:rel-sem} to be well-defined we
+need that, for every $H$, $T_{H,\rho}\,F$ is a relation transformer,
+and $T_{H,f}\, F : T_{H,\rho}\, F \to T_{H,\rho'}\, F$ is a morphism
+of relation transformers, whenever $F$ is a relation transformer $f :
+\rho \to \rho'$ in $\relenv$. This is immediate from
 %\begin{lemma}\label{lem:rel-transf-morph}
 %The interpretations in Definitions~\ref{def:rel-sem}
 %and~\ref{def:rel-sem-funcs} are well-defined and,
   %For every $\Gamma;\Phi \vdash F$,
+
+\vspace*{-0.2in}
+
 \begin{equation}\label{lem:rel-transf-morph}
 \sem{\Gamma;\Phi \vdash F} =
 (\setsem{\Gamma;\Phi \vdash F}, \setsem{\Gamma;\Phi \vdash
@@ -2534,6 +2578,9 @@ immediate consequence of
 %element of
 [\relenv,RT_0]
 \end{equation}
+
+\vspace*{-0.05in}
+
 %\end{lemma}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
@@ -2716,26 +2763,26 @@ componentwise, together with Corollary~12 of~\cite{jp19}.
 %\setsem{\Gamma, \psi; \Phi \vdash \tau[\phi :==
 %    \psi]}\rho[\psi:=\rho\phi]$. 
 We can prove by simultaneous induction that set and relational
-interpretations of types also respect demotion of functorial variables to
-non-functorial ones, as well as that
-$\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}\rho =
-\setsem{\Gamma;\Phi,\ol{\alpha} \vdash G}\rho[\ol{\alpha := 
-\setsem{\Gamma;\Phi \vdash K}\rho}]$, and
+interpretations of types respect demotion of functorial variables to
+non-functorial ones and, for $\mathsf D \in \{\set,\rel\}$,
+$\sem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}^{\mathsf D}\rho =
+\sem{\Gamma;\Phi,\ol{\alpha} \vdash G}^{\mathsf D}\rho[\ol{\alpha :=
+    \sem{\Gamma;\Phi \vdash K}^{\mathsf D}\rho}]$, and
 %\label{eq:subs-var-morph}
-$\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}f =
-\setsem{\Gamma;\Phi,\ol{\alpha} \vdash G}f[\ol{\alpha :=
-\setsem{\Gamma;\Phi \vdash K}f}]$, and
+$\sem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}^{\mathsf D}f =
+\sem{\Gamma;\Phi,\ol{\alpha} \vdash G}^{\mathsf D}f[\ol{\alpha :=
+\sem{\Gamma;\Phi \vdash K}^{\mathsf D}f}]$, and
 %\label{eq:subs-const}
 $\llbracket \Gamma; \Phi$
-$\vdash F[\phi := H] \rrbracket^\set \rho
-= \setsem{\Gamma; \Phi, \phi \vdash F}\rho
-[\phi := \lambda \ol{A}.\, \setsem{\Gamma;\Phi,\overline{\alpha}\vdash
-    H}\rho[\overline{\alpha := A}]]$, and 
+$\vdash F[\phi := H] \rrbracket^{\mathsf D} \rho
+= \sem{\Gamma; \Phi, \phi \vdash F}^{\mathsf D}\rho
+[\phi := \lambda \ol{A}.\, \sem{\Gamma;\Phi,\overline{\alpha}\vdash
+    H}^{\mathsf D}\rho[\overline{\alpha := A}]]$, and, finally,
 %\label{eq:subs-const-morph}
-$\setsem{\Gamma; \Phi \vdash F[\phi := H]}f
-= \setsem{\Gamma; \Phi, \phi \vdash F}f
-[\phi := \lambda \ol{A}.\,\setsem{\Gamma;\Phi,\overline{\alpha}\vdash
-    H}f[\overline{\alpha := \id_{\ol{A}}}]]$. 
+$\sem{\Gamma; \Phi \vdash F[\phi := H]}^{\mathsf D}f
+= \sem{\Gamma; \Phi, \phi \vdash F}^{\mathsf D}f
+[\phi := \lambda \ol{A}.\,\sem{\Gamma;\Phi,\overline{\alpha}\vdash
+    H}^{\mathsf D}f[\overline{\alpha := \id_{\ol{A}}}]]$. 
 
 \begin{comment}
 {\color{red} Indeed, if $\rho, \rho' : \setenv$, \,$f : \rho
@@ -3223,20 +3270,26 @@ hypothesis and weakening.
 
 \vspace*{-0.1in}
 
-In most treatments of parametricity, equality relations on sets are
-taken as {\em given} --- either directly as diagonal relations or
-perhaps via reflexive graphs --- and the graph relations used to
-validate existence of initial algebras are defined in terms of
-them. Below, by contrast, we give a categorical definition of graph
-relations for natural transformations and {\em construct} equality
-relations as particular graph relations. Our definitions specialize to
-the usual ones for the graph relation for a morphism between sets and
-the equality relation for a set.
+In most treatments of parametricity, equality relations are
+taken as {\em given}, either directly as diagonal relations or
+perhaps via reflexive graphs.
+%--- and the graph relations used to
+%validate existence of initial algebras are defined in terms of
+%them.
+By contrast, we give a categorical definition of graph relations for
+natural transformations and {\em construct} equality relations as
+particular such relations. Our definitions specialize to the usual
+ones for
+%the graph relation for a
+morphisms between sets and 
+equality relations on sets.
 %In light of its novelty, we spell out our construction in detail.
 
-The standard definition of the graph for a morphism $f : A \to B$ in
-$\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
-\graph{f}$ iff $fx = y$. This definition naturally generalizes to
+The standard definition $(x,y) \in \graph{f}$ iff $fx = y$ of the
+graph $\graph{f}$ of a morphism $f : A \to B$ in $\set$
+%is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
+%\graph{f}$ iff $fx = y$. This definition
+naturally generalizes to
 associate to each natural transformation between $k$-ary functors on
 $\set$ a $k$-ary relation transformer. Indeed,
 %\begin{definition}\label{def:graph-nat-transf}
@@ -3510,21 +3563,21 @@ F, \Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$.
 \end{comment}
 
 \noindent
-The definition of $\langle f \rangle$ for $f : A \to B$
-in $\set$ considered as a natural transformation between $0$-ary
-functors $A$ and $B$ coincides with its usual definition.
+%The definition of $\langle f \rangle$ for $f : A \to B$
+%in $\set$ considered as a natural transformation between $0$-ary
+%functors $A$ and $B$ coincides with its usual definition.
 %so graph relation transformers do extend graph relations
 %to functors.
-The next lemma computes the action of a graph relation
-transformer on graph relations.
-\begin{lemma}\label{lem:eq-reln-equalities}
-If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
+The action of a graph relation transformer on a graph relation can be
+computed explicitly:
+%\begin{lemma}\label{lem:eq-reln-equalities}
+if $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
 and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$,
 then $\graph{\alpha}^* \graph{\overline{f}}
 = \langle G \ol{f} \circ \alpha_{\ol{A}} \rangle
 = \langle \alpha_{\ol{B}} \circ F \ol{f} \rangle$.
-\end{lemma}
-
+%\end{lemma}
+%
 \begin{comment}
 \begin{proof}
 Since $h_{\overline{A \times B}}$ is the unique morphism making the
@@ -3602,29 +3655,30 @@ G\overline{B}, \iota_{\alpha^\wedge \graph{\overline{f}}}\,
 \circ \alpha_{\ol{A}}$ by naturality of $\alpha$.
 \end{proof}
 \end{comment}
-
-To prove the IEL we will need to know that equality relation
+%
+To prove the IEL we also need to know that equality relation
 transformers preserve equality relations. The {\em equality relation
   transformer} on $F : [\set^k,\set]$ is $\Eq_F = \graph{\id_{F}} =
-(F, F, \graph{\id_{F}}^*)$. Lemma~\ref{lem:eq-reln-equalities} then
-gives that, for all $\ol{A : \set}$,
-\begin{equation*}\label{eq:eq-pres-eq}
-\Eq^*_F \ol{\Eq_A}
+(F, F, \graph{\id_{F}}^*)$.
+%Lemma~\ref{lem:eq-reln-equalities}
+The above definition then gives that, for all $\ol{A : \set}$,
+%\begin{equation*}\label{eq:eq-pres-eq}
+$\Eq^*_F \ol{\Eq_A}
 = \graph{\id_F}^* \graph{\id_{\ol{A}}}
 = \graph{F \id_{\ol{A}} \circ (\id_F)_{\ol{A}}}
 = \graph{\id_{F\ol{A}} \circ \id_{F\ol{A}}}
 = \graph{\id_{F\ol{A}}}
-= \Eq_{F\ol{A}}
-\end{equation*}
+= \Eq_{F\ol{A}}$. In addition,
+%\end{equation*}
 %$\Eq^*_F \,\ol{\Eq_A} = \Eq_{F\ol{A}}$
 %Graph relation transformers extend to relation environments in the
 %obvious way.
-If $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$, then
+if $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$, then
 the {\em graph relation environment} $\graph{f}$ is defined pointwise
 by $\graph{f} \phi = \graph{f \phi}$ for every $\phi$. This entails
 that $\pi_1 \graph{f} = \rho$ and $\pi_2 \graph{f} = \rho'$.  The {\em
   equality relation environment} $\Eq_\rho$ is defined to be
-$\graph{\id_{\rho}}$.
+$\graph{\id_{\rho}}$. Our IEL is thus:
 %It is such that $\Eq_\rho \phi = \Eq_{\rho \phi}$ for every $\phi$.
 %
 %  With these definitions in hand, we can state and prove both an
@@ -3637,11 +3691,13 @@ $\graph{\id_{\rho}}$.
 \end{theorem}
 The IEL's highly non-trivial proof is by induction on the
 structure of $F$. Only the $\Nat$, application, and fixpoint cases are
-non-routine. The latter two use
-Lemma~\ref{lem:eq-reln-equalities}. The fixpoint case also uses that,
-for every $n \in \nat$, the following intermediate results can be
-proved by simultaneous induction with Theorem~\ref{thm:iel}: for any
-$H$, $\rho$, $A$, and subformula $J$ of $H$, both
+non-routine. The latter two explicitly calculate
+%Lemma~\ref{lem:eq-reln-equalities}.
+actions of graph relation transformers as above.  The fixpoint case
+also uses that, for every $n \in \nat$, the following intermediate
+results can be proved by simultaneous induction with
+Theorem~\ref{thm:iel}: for any $H$, $\rho$, $A$, and subformula $J$ of
+$H$, both
 %\begin{equation}\label{eq:iel-fix-point-intermediate1}
 $T^n_{H,\Eq_{\rho}} K_0\, \ol{\Eq_A}
 %{\setsem{\Gamma; \Phi \vdash F}\rho}}
@@ -3654,12 +3710,8 @@ and
 %\begin{split}
 $ \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
   := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]}$ $=
-\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho}[\phi :=$
-
-%  \pagebreak
-
-\noindent
-$\Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}$
+\relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho}[\phi :=
+\Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}$
 \begin{comment}
 \[\begin{array}{ll}
 &  \relsem{\Gamma; \Phi, \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
@@ -3674,11 +3726,11 @@ $\Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}$
 %\end{split}
 %\end{equation}
 \end{comment}
-hold. With these results in hand, the proof is not hard.  {\color{red}
-  It is given in the appendix, along with proofs of all other results
-  in this section.}  The proof makes clear that if functorial
-variables of arity greater than $0$ were allowed to appear in the
-bodies of $\mu$-types, then the IEL would fail.  
+hold. {\color{red} The full proof of the IEL is given in the appendix,
+  along with proofs of all other results in this section.} It makes
+clear that if functorial variables of arity greater than $0$ were
+allowed to appear in the bodies of $\mu$-types, then the IEL would
+fail.
 
 \begin{comment}
 \begin{proof}
@@ -3891,6 +3943,8 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
 
 With the IEL in hand we can prove a Graph Lemma for our setting:
 
+\vspace*{-0.05in}
+
 \begin{lemma}%[Graph Lemma]
   \label{lem:graph}
   If $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$
@@ -4003,7 +4057,7 @@ conclude that $\relsem{\Gamma; \Phi \vdash F}\graph{f} =
 \end{proof}
 \end{comment}
 
-\vspace*{-0.5in}
+\vspace*{-0.25in}
 
 \section{Interpreting Terms}\label{sec:term-interp}
 
@@ -4154,7 +4208,7 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
 \caption{Term semantics}\label{fig:term-sem} 
 %\end{minipage}}
 \vspace*{-0.05in}
-\end{adjustbox}
+\end{adjustbox}\vspace*{-0.1in}
 \end{figure}
 
 %\subsection{Basic Properties of Term Interpretations}
@@ -4349,15 +4403,15 @@ $\sem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha x : F}^{\mathsf D} =
 --- follow (when both sides of these equations are defined).
 %Similar properties hold for relational interpretations.
 
-%\vspace*{-0.1in}
+\vspace*{-0.15in}
 
 \section{Free Theorems for Nested Types}\label{sec:ftnt}
 
-\vspace*{-0.05in}
+\vspace*{-0.1in}
 
 \subsection{Consequences of Naturality}\label{sec:Nat-type-terms}   
 
-\vspace*{-0.05in}
+\vspace*{-0.1in}
 
 Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
 $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
@@ -4375,12 +4429,16 @@ $\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
   \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset \,|\,
   \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
 \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
-  \Nat^{\overline{\alpha}} F\,G}$. Straightforward calculation shows
-that terms of $\Nat$ type behave as natural transformations with
-respect to their source and target functorial types, i.e., we have
+  \Nat^{\overline{\alpha}} F\,G}$.
+%Straightforward calculation shows that
+Then terms of $\Nat$ type behave as natural transformations with
+respect to their source and target
+%functorial
+types:
+%, i.e., we have
 
-  \vspace*{-0.1in}
-  
+  \vspace*{-0.05in}
+
 \begin{theorem}\label{eq:ft-from-nat} 
   If\, $\Gamma; \emptyset \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
   \overline{\gamma}} F\,G$ and $\overline{\Gamma; \emptyset \,|\,
@@ -4437,19 +4495,19 @@ $\Gamma; \ol\alpha, \ol\gamma \vdash H$,
 \end{align*}
 %\end{theorem}
 
-%    \vspace*{-0.1in}
+    \vspace*{-0.05in}
   
 \noindent
 We also have the expected properties of $\map$, $\tin$, and $\fold$,
 and their interpretations, e.g, uniqueness and the universal property
 of the interpretation of $\fold$ and that the interpretation of $\tin$
-is an isomorphism. Further, we can prove that our calculus admits no
-non-terminating terms, i.e., terms with the
+is an isomorphism. Further, our calculus admits no
+%non-terminating terms, i.e.,
+terms with the
 %closed
-type $\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom, as well
-as the standard result that every closed term $g$ of type
-$\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic identity function
-{\color{red} (see appendix)}.
+type $\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom, and every
+closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$ denotes the
+polymorphic identity function {\color{red} (see appendix)}.
 
 
 \begin{comment}
@@ -4969,6 +5027,8 @@ Then for any functions $\ol{f : A \to B}$ we have that
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
+\vspace*{-0.05in}
+
 To get {\em all} consequences of parametricity, including those that
 are not merely consequences of naturality, we prove an Abstraction
 Theorem (Theorem~\ref{thm:abstraction}). As usual, % for such theorems,
@@ -5033,16 +5093,18 @@ in $\rel$, and for all $\rho : \relenv$,
 The proof, {\color{red} given in the appendix}, is by structural
 induction on
 %the type judgment for
-$t$. The overall challenge of our development manifests in this proof:
-it lies in showing that the set and relational interpretations of each
-term judgment are natural transformations, and that all set
+$t$. It
+%The challenge of our development
+%manifests in this proof: it manifests in
+requires showing that set and relational interpretations of term
+judgments are natural transformations, and that all set
 interpretations of terms of $\Nat$-types satisfy the appropriate
 equality preservation conditions from Figure~\ref{fig:set-sem}.  For
 the interesting cases of abstraction, application, $\map$, $\tin$, and
 $\mathsf{fold}$ terms, propagating the naturality conditions is quite
-involved; the latter two cases especially require some rather delicate
-diagram chasing. That this is possible provides strong evidence that
-our development is sensible, natural, and at an appropriate level of
+involved; the latter two especially require some rather delicate
+diagram chasing. That it is possible provides strong evidence that our
+development is sensible, natural, and at an appropriate level of
 abstraction.
 %{\color{red} Detailed proofs for the set interpretations for the five
 %  interesting forms of terms are included in the accompanying
@@ -5067,9 +5129,11 @@ if $\rho \in \relenv$, and \,$(a, b) \in \relsem{\Gamma; \Phi \vdash
   : F } (\pi_2 \rho) \,b) \in \relsem{\Gamma; \Phi \vdash F} \rho$. 
 \begin{comment}
 The following theorem is an immediate consequence of
-Theorem~\ref{thm:at-gen}. The Abstraction Theorem is its instantiation
+Theorem~\ref{thm:at-gen}.
+%The Abstraction Theorem is i
+Its instantiation
 %of Theorem~\ref{thm:at-gen-rel}
-to closed terms of closed type.
+to closed terms of closed type gives
 \begin{theorem}\label{thm:at-gen-rel}
   If
   %\,$\Gamma; \Phi \,|\, \Delta \vdash t : F$ and \,
@@ -5081,10 +5145,9 @@ to closed terms of closed type.
     \relsem{\Gamma; \Phi \vdash F} \rho$
 \end{theorem}
 \end{comment}
-The Abstraction Theorem is the instantiation of this result to closed
-terms of closed type:
+Its instantiation to closed terms of closed type gives
 
-\vspace*{-0.03in}
+\vspace*{-0.04in}
 
 \begin{theorem}[Abstraction Theorem]\label{thm:abstraction}
   %If $\vdash t : F$, then
@@ -5092,7 +5155,7 @@ terms of closed type:
   : F}) \in \relsem{\vdash F}$
 \end{theorem}
 
-%\vspace*{-0.1in}
+\vspace*{-0.05in}
 
 %\section{Free Theorems for Nested Types}\label{sec:ftnt}
 
@@ -5103,13 +5166,13 @@ terms of closed type:
 %with the closed type $\Nat^\alpha \onet \,\alpha$ of the polymorphic
 %bottom, and the standard result that every closed term $g$ of type
 %$\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic identity function.
-Using this, we can recover free theorems, such as the free theorem for
-the type of the standard $\mathit{filter}$ function for lists, that go
-beyond mere naturality, and extend them to those nested types for
-which analogous functions can be defined. In particular, we can extend
-short cut fusion for lists~\cite{glp93} to nested types, thereby
-formally proving correctness of the categorically inspired theorem
-from~\cite{jg10}. In fact, replacing $\onet$ with any type
+Using this, we can recover free theorems, such as that for the type of
+the standard $\mathit{filter}$ function for lists, that go beyond mere
+naturality, and extend them to those nested types for which analogous
+functions can be defined. In particular, we can extend short cut
+fusion for lists~\cite{glp93} to nested types, thereby formally
+proving correctness of the categorically inspired theorem
+from~\cite{jg10}. As shown there, replacing $\onet$ with any type
 $\emptyset;\alpha \vdash C$ generalizes
 Theorem~\ref{thm:short-cut-nested} to a free theorem whose conclusion
 is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu H \; \mathit{in}_{H} = G
@@ -5799,24 +5862,29 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B$.
 %%verifies the existence of initial algebras, this is unnecessary here
 %%since initial algebras are built directly into our model.
 
+\vspace*{-0.2in}
+
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
+\vspace*{-0.1in}
+
 We have constructed a parametric model for a calculus
-providing primitives for constructing nested types directly as
-fixpoints.
+providing supporting primitive nested types,
+and
 %rather than representing them via their Church encodings. We
-We have also used the Abstraction Theorem for this model to derive
-free theorems in the presence of nested types. This was not possible
-before~\cite{jp19} because the nested types in our calculus were not
-previously known to have well-defined interpretations in locally
-finitely presentable categories (here, $\set$ and $\rel$), and no term
-calculus for them existed.
+used its Abstraction Theorem to derive free theorems for nested types.
+This was not possible before~\cite{jp19} because
+%the nested types in our calculus
+these types were not previously known to have well-defined
+interpretations in locally finitely presentable categories (here,
+$\set$ and $\rel$), and, to our knowledge, no term calculus for them
+existed.
 %The key to our parametric model is
 %%{\color{blue} adjusting our type syntax to respect the accessibility
 %%  cardinal for the semantic category and}
 %the delicate threading of functoriality and 
 %naturality conditions throughout its construction.
-
+%
 %Even when nested types have well-defined interpretations in a semantic
 %category, the types of standard functions over them may not. This is
 %because all recursion in our calculus must be coded using standard
@@ -5829,6 +5897,7 @@ calculus for them existed.
 %%standard folds for nested types impose, and thus is perhaps not as
 %%expressive as we would ideally like.
 %In addition,
+\begin{comment}
 There are many papers on higher-kinded types, but we know of none that
 considers expressibility issues arising from the local
 $\lambda$-presentability cardinal $\lambda$ of the categories in which
@@ -5853,16 +5922,22 @@ For another, if the construction in this paper
 %presented here,
 weren't possible, then trying to construct a parametric model from
 richer semantic categories for fancier data types and/or recursion
-schemes would be futile. We naturally expect the construction reported
-here to guide its generalization to the locally $\lambda$-presentable
-categories for $\lambda > \omega$ that will be needed to accommodate
-more general data types, like GADTs, and recursion schemes for them.
-
+schemes would be futile.
+\end{comment}
+We naturally expect the construction elaborated here to guide its
+generalization to more advanced data types.
+%
+%the locally $\lambda$-presentable
+%categories for $\lambda > \omega$ that will be needed to accommodate
+%more general data types.
+\begin{comment}
+%, and recursion schemes for them.
+%
 % As is, the results reported here provide a
 %blueprint for deriving principled parametricity results for practical
 %programming languages, such as Haskell and Agda, that directly
 %construct nested types as fixpoints.
-
+%
 %{\color{blue} Perhaps surprisingly, the accessibility cardinal
 %$\omega$ for the semantic categories $\set$ and $\rel$ also impacts
 %the types of functions (and thus the functions themselves), even over
@@ -5932,35 +6007,38 @@ more general data types, like GADTs, and recursion schemes for them.
 %; interpreting such
 %a construct in $\set$ and $\rel$ should be unproblematic {\color{blue}
 %  since these categories have all(?) limits}.
-It was shown in~\cite{jg08} that GADTs can be represented using
+\end{comment}
+For example, GADTs can be represented using
 %object-level
-left Kan extensions, and
+left Kan extensions,
 %
 %This suggests
 %extending our term calculus with such object-level constructs.
 %
 %{\color{blue} We may need to impose restrictions inspired
 %  by those for $\mu$-types on LKEs.}
-carefully adding a
+%carefully incorporating a
 %carefully designed adding a
-left Kan extension construct to a calculus like ours was shown
-in~\cite{jp19} to preserve the cocontinuity needed for GADTs to have
-well-defined interpretations in locally $\lambda$-presentable
-categories. (Interestingly,
+%left Kan extension construct (even at higher-kinds)
+%to a calculus like ours was
+and it was shown in~\cite{jp19} that adding a $\mathsf{Lan}$ construct
+to a calculus such as ours preserves the cocontinuity needed for the
+data types it defines to have well-defined interpretations in locally
+$\lambda$-presentable categories. (Interestingly,
 %not necessarily in
 %However, this will not, in general, be
 %the case in locally finitely presentable categories. Indeed, as shown
 %in~\cite{jp19},
-$\lambda > \aleph_1$ is required to interpret even commonly used
+$\lambda > \aleph_1$ is required to interpret even common
 GADTs.) This suggests
 %extending our calculus with Kan extension
 %constructs and
 %augmenting our type formation rules with such a construct.
 %The constructions of this paper should all be possible
-carrying out our model construction in a locally $\lambda$-presentable
-cartesian closed category (lpccc) $\cal C$ whose category of
-(abstract) relations, obtained by pullback as in~\cite{jac99},
-is also a lpccc and appropriately fibred over $\cal C$.
+carrying out our model construction in locally $\lambda$-presentable
+cartesian closed categories (lpcccs) $\cal C$ whose categories of
+(abstract) relations, obtained by pullback as in~\cite{jac99}, are also
+lpcccs and are  appropriately fibred over $\cal C$.
 %This would
 %extend the results presented here along the lines of~\cite{gjfor15},
 %thus giving
@@ -5971,13 +6049,12 @@ is also a lpccc and appropriately fibred over $\cal C$.
 Adding term-level fixpoints 
 %, as in~\cite{pit00},
 %to the calculus presented here. Of course, this
-would further require the categories interpreting types not just to be
-locally $\lambda$-presentable, but to support some kind of domain
-structure as well.
+further requires
+%the categories interpreting types
+our semantic categories not just to be locally $\lambda$-presentable,
+but also to support some kind of domain structure.
 %Unfortunately, $\omega$-CPO, the most obvious category
 %of domains to replace $\set$, is not locally finitely presentable.
-
-\noindent
 
 %Won't print in anonymous mode.
 %\begin{acks}
@@ -5985,7 +6062,7 @@ structure as well.
 %discussions. Supported by NSF awards CCR-1906388 and 1420175.
 %\end{acks}
 
-
+\pagebreak
 
 \begin{thebibliography}{8}
 
