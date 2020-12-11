@@ -1,60 +1,10 @@
-% double-blind review submission, w/o CCS and ACM Reference (max
-% submission space)
-\documentclass[acmsmall,review]{acmart}
-\settopmatter{printfolios=true,printccs=false,printacmref=false}
-%% For double-blind review submission, w/ CCS and ACM Reference
-%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
-%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
-%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
-%% For single-blind review submission, w/ CCS and ACM Reference
-%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
-%% For final camera-ready submission, w/ required CCS and ACM Reference
-%\documentclass[acmsmall]{acmart}\settopmatter{}
+\documentclass{lmcs}
 
-
-%% Journal information
-%% Supplied to authors by publisher for camera-ready submission;
-%% use defaults for review submission.
-\acmJournal{PACMPL}
-\acmVolume{1}
-\acmNumber{POPL} % CONF = POPL or ICFP or OOPSLA
-\acmArticle{1}
-\acmYear{2020}
-\acmMonth{1}
-\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
-\startPage{1}
-
-%% Copyright information
-%% Supplied to authors (based on authors' rights management selection;
-%% see authors.acm.org) by publisher for camera-ready submission;
-%% use 'none' for review submission.
-\setcopyright{none}
-%\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\copyrightyear{2018}           %% If different from \acmYear
-
-%% Bibliography style
-\bibliographystyle{ACM-Reference-Format}
-%% Citation style
-%% Note: author/year citations are required for papers published as an
-%% issue of PACMPL.
-\citestyle{acmauthoryear}   %% For author/year citations
-%\citestyle{acmnumeric}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Note: Authors migrating a paper from PACMPL format to traditional
-%% SIGPLAN proceedings format must update the '\documentclass' and
-%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\keywords{MANDATORY list of keywords}
 
 \usepackage[utf8]{inputenc}
-\usepackage{ccicons}
+%\usepackage{ccicons}
 \usepackage{verbatim}
-
-
 \usepackage{adjustbox}
 \usepackage{marvosym}
 \usepackage{graphicx}
@@ -67,7 +17,7 @@
 \usepackage{bbold}
 \usepackage{url}
 \usepackage{upgreek}
-%\usepackage{stmaryrd}
+\usepackage{stmaryrd}
 
 \usepackage{lipsum}
 \usepackage{tikz-cd}
@@ -78,21 +28,28 @@
 \usepackage{bussproofs}
 \EnableBpAbbreviations
 
+\usepackage{hyperref}
+
 \input{macros}
-\input{mytheorem}
+%\input{mytheorem}
 
-\theoremstyle{definition}
-\newtheorem{exmpl}{Example}
+\theoremstyle{plain}\newtheorem{satz}[thm]{Satz}
 
-\renewcommand{\greyout}[1]{} %{{\color{gray} {#1}}} -- toggle to remove greyed text
+\def\eg{{\em e.g.}}
+\def\cf{{\em cf.}}
 
+%\theoremstyle{definition}
+
+\newcommand{\inl}{\mathsf{inl}}
+\newcommand{\inr}{\mathsf{inr}}
+\newcommand{\fold}{\mathsf{fold}}
 \newcommand{\ininv}[2]{(\tin^{-1}_{\onet +
   \beta \times \phi (\phi\beta)})_{#1}\, #2}
 \newcommand{\emptyfun}{{[]}}
 \newcommand{\cal}{\mathcal}
 %\newcommand{\fold}{\mathit{fold}}
 \newcommand{\F}{\mathcal{F}}
-\renewcommand{\G}{\mathcal{G}}
+\newcommand{\G}{\mathcal{G}}
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\B}{\mathcal{B}}
@@ -101,7 +58,7 @@
 \newcommand{\env}{\mathsf{Env}}
 \newcommand{\set}{\mathsf{Set}}
 \renewcommand{\S}{\mathcal S}
-\renewcommand{\C}{\mathcal{C}}
+\newcommand{\C}{\mathcal{C}}
 \newcommand{\D}{\mathcal{D}}
 \newcommand{\A}{\mathcal{A}}
 \renewcommand{\id}{\mathit{id}}
@@ -138,48 +95,32 @@
 \newcommand{\Bcons}{\mathit{Bcons}}
 \newcommand{\Bnil}{\mathit{Bnil}}
 
-\title[Paramrtricity for Primitive Nested Types and
-  GADTs]{Parametricity for Primitive
-  Nested Types and GADTs} %% [Short Title] is optional; when present,
-                         %% will be used in header instead of Full
-                         %% Title.
-%\titlenote{with title note}             %% \titlenote is optional;
-                                        %% can be repeated if necessary;
-                                        %% contents suppressed with 'anonymous'
-%\subtitle{Subtitle}                     %% \subtitle is optional
-%\subtitlenote{with subtitle note}       %% \subtitlenote is optional;
-                                        %% can be repeated if necessary;
-                                        %% contents suppressed with 'anonymous'
 
-
-%% Author information
-%% Contents and number of authors suppressed with 'anonymous'.
-%% Each author should be introduced by \author, followed by
-%% \authornote (optional), \orcid (optional), \affiliation, and
-%% \email.
-%% An author may have multiple affiliations and/or emails; repeat the
-%% appropriate command.
-%% Many elements are not rendered, but should be provided for metadata
-%% extraction tools.
-
-%% Author with single affiliation.
-\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
-%\authornote{with author1 note}          %% \authornote is optional;
-%                                        %% can be repeated if necessary
-%\orcid{nnnn-nnnn-nnnn-nnnn}             %% \orcid is optional
-\affiliation{
-%  \position{Position1}
-%  \department{Department1}              %% \department is recommended
-  \institution{Appalachian State University}            %% \institution is required
-%  \streetaddress{Street1 Address1}
-%  \city{City1}
-%  \state{State1}
-%  \postcode{Post-Code1}
-%  \country{Country1}                    %% \country is recommended
-}
-\email{johannp@appstate.edu, ghiorzie@appstate.edu, jeffriesd@appstate.edu}          %% \email is recommended
+%% due to the dependence on amsart.cls, \begin{document} has to occur
+%% BEFORE the title and author information:
 
 \begin{document}
+
+\title[Parametricity for Primitive
+  Nested Types and GADTs]{Parametricity for Primitive
+  Nested Types and GADTs}
+\titlecomment{{\lsuper*}OPTIONAL comment concerning the title, \eg,
+  if a variant or an extended abstract of the paper has appeared elsewhere.}
+
+\author[P.~Johann]{Patricia Johann}	%required
+\address{Appalachian State University}	%required
+\email{johannp@appstate.edu}  %optional
+%\thanks{thanks 1, optional.}	%optional
+
+\author[E.~Ghiorzi]{Enrico Ghiorzi}	%optional
+\address{Appalachian State University}	%optional
+\email{ghiorzie@appstate.edu}  %optional
+%\thanks{thanks 2, optional.}	%optional
+
+\author[D.~Jeffries]{Daniel Jeffries}	%optional
+\address{Appalachian State University}	%optional
+\email{jeffriesd@appstate.edu}
+%\thanks{thanks 3, optional.}	%optional
 
 \begin{abstract}
 This paper considers parametricity and its consequent free theorems
@@ -204,7 +145,6 @@ primitive nested types. In particular, we give several examples
 illustrating how how our model can be used to derive useful free
 theorems for programs over nested types.
 \end{abstract}
-
 
 \maketitle
 
@@ -558,7 +498,7 @@ $\Gamma;\Phi \vdash F$ indicates that the type $F$ is intended to be
 functorial in the variables in $\Phi$ but not necessarily in those in
 $\Gamma$.
 
-\begin{dfn}\label{def:wftypes}
+\begin{defi}\label{def:wftypes}
 The formation rules for the set $\F$ of\, {\em well-formed types
   {\color{red} over $\Gamma$ and $\Phi$?}} are
 
@@ -605,7 +545,7 @@ The formation rules for the set $\F$ of\, {\em well-formed types
 \BIC{$\Gamma; \Phi \vdash F \times G$}
 \DisplayProof
 \end{array}\]
-\end{dfn}
+\end{defi}
 
 We write $\vdash F$ for $\emptyset;\emptyset \vdash F$.
 Definition~\ref{def:wftypes} ensures that the expected weakening rules
@@ -684,7 +624,7 @@ substitution. We omit $\ol\alpha$ when convenient, but note that it
 is not correct to substitute along non-functorial variables.
 
 {\color{red} Check no change needed for new $\mu$-rule in next def.}
-\begin{dfn}\label{def:second-order-subst}
+\begin{defi}\label{def:second-order-subst}
 If \,$\Gamma; \Phi,\phi^k \vdash H$ and $\Gamma;\Phi, \ol{\alpha}
 \vdash F$ with $|\ol\alpha| = k$, then the operation $H[\phi :=_{\ol
     \alpha} F]$ of {\em second-order type substitution along
@@ -710,7 +650,7 @@ G[\phi :=_{\ol{\alpha}} F] \times K[\phi
   F] & = & (\mu \psi. \lambda \ol{\beta}. \,G[\phi :=_{\ol{\alpha}}
   F])\, \ol{K[\phi :=_{\ol{\alpha}} F]}
 \end{array}\]
-\end{dfn}
+\end{defi}
 \noindent
 It is not hard to see that $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
   F]$. In addition, if \,$\Gamma, \phi^k; \Phi \vdash H$,\, $\Gamma;
@@ -1159,7 +1099,7 @@ $\omega$-cocontinuous functors from $\C$ to $\D$.
 %Note that the categories $\set$ and $\rel$ are both locally finitely
 %presentable.
 
-\begin{dfn}\label{def:set-env}
+\begin{defi}\label{def:set-env}
 A {\em set environment} maps each type variable in $\tvars^k \cup
 \fvars^k$ to an element of $[\set^k,\set]$.  A morphism $f : \rho \to
 \rho'$ for set environments $\rho$ and $\rho'$ with $\rho|_\tvars =
@@ -1171,7 +1111,7 @@ $k$-ary functor $\rho' \phi^k$ on $\set$.  Composition of morphisms on
 set environments is given componentwise, with the identity morphism
 mapping each set environment to itself. This gives a category of set
 environments and morphisms between them, which we denote $\setenv$.
-\end{dfn}
+\end{defi}
 When convenient we identify a functor in $[\set^0, \set]$ with its
 value on $\ast$ and consider a set environment to map a type variable
 of arity $0$ to a set.  If $\ol{\alpha} = \{\alpha_1,...,\alpha_k\}$
@@ -1188,7 +1128,7 @@ interpretations appearing in the second clause of
 Definition~\ref{def:set-sem} are given in
 Definition~\ref{def:rel-sem}.
 
-\begin{dfn}\label{def:set-sem}
+\begin{defi}\label{def:set-sem}
 {\color{red} Check clause for $\mu$-types.} The {\em set
   interpretation} $\setsem{\cdot} : \F \to [\setenv, \set]$ is defined
 by:
@@ -1227,7 +1167,7 @@ by:
   \ol{A}. \setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
-\end{dfn}
+\end{defi}
 %The interpretations in Definition~\ref{def:set-sem} respect weakening,
 %i.e., a type and its weakenings have the same set interpretations.
 %
@@ -1286,7 +1226,7 @@ $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} = \setsem{\Gamma;
 
 Using $T^\set_H$, we can define the functorial action of set
 interpretation.
-\begin{dfn}\label{def:set-sem-funcs}
+\begin{defi}\label{def:set-sem-funcs}
 Let $f: \rho \to \rho'$ be a morphism between set environments $\rho$
 and $\rho'$ (so that $\rho|_\tvars = \rho'|_\tvars$). The action
 $\setsem{\Gamma;\Phi \vdash F}f$ of\, $\setsem{\Gamma;\Phi \vdash F}$
@@ -1371,7 +1311,7 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
 \end{CD}
 \end{equation}}
 \end{itemize}
-\end{dfn}
+\end{defi}
 
 Definitions~\ref{def:set-sem} and~\ref{def:set-sem-funcs} respect
 weakening, i.e., ensure that a type and its weakenings have the same
@@ -1379,7 +1319,7 @@ set interpretations.
 
 \subsection{Interpreting Types as Relations}\label{sec:rel-interp}
 
-\begin{dfn}\label{def:rel-transf}
+\begin{defi}\label{def:rel-transf}
 A {\em $k$-ary relation transformer} $F$ is a triple $(F^1, F^2,F^*)$,
 where
 \begin{itemize}
@@ -1393,7 +1333,7 @@ where
 \end{itemize}
 We define $F\ol{R}$ to be $F^*\overline{R}$ and
 $F\overline{(\alpha,\beta)}$ to be $F^*\overline{(\alpha,\beta)}$.
-\end{dfn}
+\end{defi}
 The last clause of Definition~\ref{def:rel-transf} expands to: if
 $\ol{(a,b) \in R}$ implies $\ol{(\alpha\,a,\beta\,b) \in S}$ then
 $(c,d) \in F^*\ol{R}$ implies $(F^1 \ol{\alpha}\,c,F^2 \ol{\beta}\,d)
@@ -1402,7 +1342,7 @@ transformer $(A,B,R)$ with $R : \rel(A,B)$, and write $\pi_1 F$ for
 $F^1$ and $\pi_2 F$ for $F^2$. Below we extend these conventions to
 relation environments in the obvious ways.
 
-\begin{dfn}
+\begin{defi}
 The category $RT_k$ of $k$-ary relation transformers is given by the
 following data:
 \begin{itemize}
@@ -1415,9 +1355,9 @@ following data:
 \item Identity morphisms and composition are inherited from the
   category of functors on $\set$
 \end{itemize}
-\end{dfn}
+\end{defi}
 
-\begin{dfn}\label{def:RT-functor}
+\begin{defi}\label{def:RT-functor}
 An endofunctor $H$ on $RT_k$ is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are functors from $[\set^k,\set]$ to $[\set^k,\set]$
@@ -1433,7 +1373,7 @@ An endofunctor $H$ on $RT_k$ is a triple $H = (H^1,H^2,H^*)$, where
   $H\,(\delta^1,\delta^2) = (H^1\delta^1,H^2\delta^2)$ for
   $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$
 \end{itemize}
-\end{dfn}
+\end{defi}
 Since the results of applying an endofunctor $H$ to $k$-ary relation
 transformers and morphisms between them must again be $k$-ary relation
 transformers and morphisms between them, respectively,
@@ -1454,14 +1394,14 @@ three conditions hold:
   automatically satisfied because it is implied by the third bullet
   point of Definition~\ref{def:RT-functor}.
 
-\begin{dfn}\label{def:RT-nat-trans}
+\begin{defi}\label{def:RT-nat-trans}
 For endofunctors $H$ and $K$ on $RT_k$, a {\em natural transformation}
 $\sigma : H \to K$ is a pair $\sigma = (\sigma^1, \sigma^2)$, where
 $\sigma^1 : H^1 \to K^1$ and $\sigma^2 : H^2 \to K^2$ are natural
 transformations between endofunctors on $[\set^k,\set]$ and the
 component of $\sigma$ at $F = (F^1,F^2,F^*) \in RT_k$ is given by
 $\sigma_F = (\sigma^1_{F^1}, \sigma^2_{F^2})$.
-\end{dfn}
+\end{defi}
 Definition~\ref{def:RT-nat-trans} entails that $\sigma^i_{F^i}$ is
 natural in $F^i : [\set^k,\set]$, and, for every $F$, both
 $(\sigma^1_{F^1})_{\overline{A}}$ and
@@ -1542,13 +1482,13 @@ in $[RT_k,[\rel^k,\rel]]$.
 %$C$ in $RT_k$.
 %\end{proof}
 \begin{comment}
-\begin{dfn}\label{def:omega-cocont}
+\begin{defi}\label{def:omega-cocont}
 An endofunctor $T = (T^1,T^2,T^*)$ on $RT_k$ is {\em
 $\omega$-cocontinuous} if $T^1$ and $T^2$ are $\omega$-cocontinuous
 endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
 functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
 $[RT_k,[\rel^k,\rel]]$.
-\end{dfn}
+\end{defi}
 \end{comment}
 Now, for any $k$, any $A : \set$, and any $R : \rel(A, B)$, let
 $K^\set_A$ be the constantly $A$-valued functor from $\set^k$ to
@@ -1566,9 +1506,9 @@ define the relation transformer $\mu T$ to be $\colim{n \in \nat}{T^n
 \end{equation}
 Moreover, $\mu T$ really is a fixpoint for $T$ if $T$ is
 $\omega$-cocontinuous:
-\begin{lemma}\label{lem:fp}
+\begin{lem}\label{lem:fp}
 For any $T : [RT_k,RT_k]$, $\mu T \cong T(\mu T)$.
-\end{lemma}
+\end{lem}
 \noindent
 The isomorphism is given by the morphisms $(\mathit{in}_1,
 \mathit{in}_2) : T(\mu T) \to \mu T$ and $(in_1^{-1}, in_2^{-1}) : \mu
@@ -1588,7 +1528,7 @@ $[\rel^k,\rel]$. {\color{red} KEEP? In particular, although we can
   define it for an arbitrary $F : [\rel^k,\rel]$. This observation
   will also be critical in Section~\ref{sec:GADTs}.}
 
-\begin{dfn}\label{def:reln-env}
+\begin{defi}\label{def:reln-env}
 A {\em relation environment} maps each type variable in $\tvars^k \cup
 \fvars^k$ to a $k$-ary relation transformer.  A morphism $f : \rho \to
 \rho'$ between relation environments $\rho$ and $\rho'$ with
@@ -1601,7 +1541,7 @@ relation environments is given componentwise, with the identity
 morphism mapping each relation environment to itself. This gives a
 category of relation environments and morphisms between them, which we
 denote $\relenv$.
-\end{dfn}
+\end{defi}
 We identify a $0$-ary relation transformer with the relation
 (transformer) that is its codomain and consider a relation environment
 to map a type variable of arity $0$ to a relation.  We write
@@ -1612,7 +1552,7 @@ is a relation environment, we write $\pi_1 \rho$ and $\pi_2 \rho$ for
 the set environments mapping each type variable $\phi$ to the functors
 $(\rho\phi)^1$ and $(\rho\phi)^2$, respectively.
 
-\begin{dfn}\label{def:relenv-functor}
+\begin{defi}\label{def:relenv-functor}
 For each $k$, an $\omega$-cocontinuous functor $H : [\relenv, RT_k]$
 is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
@@ -1627,7 +1567,7 @@ is a triple $H = (H^1,H^2,H^*)$, where
 \item The action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
   is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2 f))$
 \end{itemize}
-\end{dfn}
+\end{defi}
 \noindent Spelling out the last two bullet points above gives the
 following analogues of the three conditions immediately following
 Definition~\ref{def:RT-functor}:
@@ -1656,7 +1596,7 @@ Definition~\ref{def:rel-sem} is given mutually inductively with
 Definition~\ref{def:set-sem} we can now define our relational
 interpretations.
 
-\begin{dfn}\label{def:rel-sem}
+\begin{defi}\label{def:rel-sem}
 The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
  \rel]$ is defined by
 \begin{align*}
@@ -1706,7 +1646,7 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
       \Gamma;\ol\gamma,\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
     \delta][\ol{\alpha := \id_{\ol{R}}}]
 \end{align*}
-\end{dfn}
+\end{defi}
 
 The interpretations in Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} below respect weakening, and also ensure
@@ -1744,7 +1684,7 @@ F)_{\ol{R}} = \relsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash
 
 Using $T_H$, we can define the functorial action of relational
 interpretation.
-\begin{dfn}\label{def:rel-sem-funcs}
+\begin{defi}\label{def:rel-sem-funcs}
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
 (so that $\rho|_\tvars = \rho'|_\tvars$). The action
 $\relsem{\Gamma;\Phi \vdash F}f$ of $\relsem{\Gamma;\Phi \vdash F}$ on
@@ -1795,7 +1735,7 @@ as follows:
   T_{H,f})\ol{\relsem{\Gamma;\Phi \vdash \tau}\rho}$
 \end{itemize}
 \end{comment}
-\end{dfn}
+\end{defi}
 
 For the functors given in Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} to be well-defined we need that, for every
@@ -1804,12 +1744,12 @@ transformer $F$, and that $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ is a morphism of relation transformers for every
 relation transformer $F$ and every morphism $f : \rho \to \rho'$ in
 $\relenv$. This is an immediate consequence of
-\begin{lemma}\label{lem:rel-transf-morph}
+\begin{lem}\label{lem:rel-transf-morph}
 For every $\Gamma;\Phi \vdash F$,
 \[\sem{\Gamma;\Phi \vdash F} = (\setsem{\Gamma;\Phi \vdash F},
 \setsem{\Gamma;\Phi \vdash F},\relsem{\Gamma;\Phi \vdash F})
 \in[\relenv,RT_0]\] 
-\end{lemma}
+\end{lem}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
 using an appropriate result from~\cite{jp19} to deduce
@@ -1874,7 +1814,7 @@ $\set$ is the relation $\graph{f} : \rel(A,B)$ defined by $(x,y) \in
 associate to each natural transformation between $k$-ary functors on
 $\set$ a $k$-ary relation transformer as follows:
 
-\begin{dfn}\label{dfn:graph-nat-transf}
+\begin{defi}\label{dfn:graph-nat-transf}
 If $F, G: \Set^k \to \Set$ and $\alpha : F \to G$ is a natural
 transformation, then the functor $\graph{\alpha}^*: \rel^k \to \rel$
 is defined as follows. Given $R_1 : \rel(A_1, B_1),...,R_k :
@@ -1920,17 +1860,17 @@ objects can be given by $\langle \alpha \rangle^* \overline{(A,B,R)} =
   \overline{R}}\alpha^\wedge\overline{R})$. Its action on morphisms is
 given by $\graph{\alpha}^*\overline{(\beta, \beta')} =
 (F\overline\beta, G\overline\beta')$.
-\end{dfn}
+\end{defi}
 
 The data in Definition~\ref{dfn:graph-nat-transf} yield the {\em graph
   relation transformer for $\alpha$}, denoted $\graph{\alpha} = (F, G,
 \graph{\alpha}^*)$.
 
-\begin{lemma}\label{lem:graph-reln-functors}
+\begin{lem}\label{lem:graph-reln-functors}
 If $F,G : [\set^k,\set]$, and if $\alpha : F \to G$ is a natural
 transformation, then $\graph{\alpha}$ is in $RT_k$.
-\end{lemma}
-\begin{proof}
+\end{lem}
+\proof
 Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous, so
 $\graph{\alpha}^* : [\rel^k,\rel]$. Now, let $\overline{R :
   \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and $\overline{(\beta,
@@ -2076,7 +2016,7 @@ Finally, by the left-lifting property of $q_{F^\wedge\overline{R}}$
 
       \vspace*{-0.1in}
 \end{comment}
-\end{proof}
+\qed
 
 \vspace*{0.1in}
 
@@ -2138,24 +2078,24 @@ $\graph{\id_B}$, the graph of the identity on the set, so we can
 define the equality relation transformer to be the graph of the
 identity natural transformation. This gives
 
-\begin{dfn}
+\begin{defi}
 Let $F : [\set^k, \set]$.  The equality relation transformer on $F$ is
 defined to be $\Eq_F = \graph{\id_{F}}$. This entails that $Eq_F = (F,
 F, \Eq_F^*)$ with $\Eq_F^* = \graph{\id_{F}}^*$.
-\end{dfn}
+\end{defi}
 \end{comment}
 
 The action of a graph relation transformer on a graph relation can be
 computed explicitly:  
 
-\begin{lemma}\label{lem:eq-reln-equalities}
+\begin{lem}\label{lem:eq-reln-equalities}
 If $\alpha : F \to G$ is a morphism in $[\Set^k, \Set]$
 and $f_1: A_1 \to B_1, ..., f_k : A_k \to B_k$,
 then $\graph{\alpha}^* \graph{\overline{f}}
 = \langle G \ol{f} \circ \alpha_{\ol{A}} \rangle
 = \langle \alpha_{\ol{B}} \circ F \ol{f} \rangle$.
-\end{lemma}
-\begin{proof}
+\end{lem}
+\proof
 Since $h_{\overline{A \times B}}$ is the unique morphism making the
 bottom triangle of the diagram on the left below commute, and since
 $h_{\graph{\overline{f}}} = h_{\overline{A \times B}} \circ F
@@ -2223,7 +2163,7 @@ F\overline{A}$.  Then $\iota_{\alpha^\wedge \graph{\overline{f}}}
   \alpha_{\ol{B}} \circ F\ol{f} }^*) = \graph{ \alpha_{\ol{B}} \circ
   F\ol{f} }$.  Finally, $\alpha_{\ol{B}} \circ F\ol{f} = G\ol{f} \circ
 \alpha_{\ol{A}}$ by naturality of $\alpha$.
-\end{proof}
+\qed
 
 To prove the IEL, we also need to know that the equality relation
 transformer preserves equality relations.  The {\em equality relation
@@ -2294,7 +2234,7 @@ than $0$ were allowed to appear in the bodies of $\mu$-types, then the
 IEL would fail.
 
 \begin{comment}
-\begin{proof}
+\proof
 By induction on the structure of $\tau$.
 \begin{itemize}
 \item $\relsem{\Gamma; \emptyset \vdash v}\Eq_{\rho} = \Eq_{\rho} v =
@@ -2492,17 +2432,17 @@ for~\eqref{eq:iel-fix-point-intermediate1}.
     \setsem{\Gamma; \Phi \vdash \tau}\rho} = \Eq_{\setsem{\Gamma;
       \Phi \vdash \sigma \times \tau}\rho}$
 \end{itemize}
-\end{proof}
+\qed
 \end{comment}
 
 With the IEL in hand we can prove a Graph Lemma appropriate to our
 setting:
-\begin{lemma}[Graph Lemma]\label{lem:graph}
+\begin{lem}[Graph Lemma]\label{lem:graph}
 If $\rho, \rho' : \setenv$ and $f : \rho \to \rho'$ then
 $\graph{\setsem{\Gamma; \Phi \vdash F} f} = \relsem{\Gamma; \Phi
   \vdash F}\graph{f}$.
-\end{lemma}
-\begin{proof}
+\end{lem}
+\proof
 Applying Lemma~\ref{lem:rel-transf-morph} to the morphisms $(f,
 \id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$ and $(\id_{\rho}, f) :
 \Eq_{\rho} \to \graph{f}$ of relation environments gives that
@@ -2543,7 +2483,7 @@ f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$ then $(x,
 \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash
   F} \graph{f}$, i.e., $\graph{\setsem{\Gamma; \Phi \vdash F}f}
 \subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.
-\end{proof}
+\qed
 
 
 
@@ -2629,14 +2569,14 @@ $\setsem{\Gamma; \Phi \vdash F}\rho$, and, for every $\rho \in
 $\relsem{\Gamma; \Phi \vdash \Delta}\rho$ to $\relsem{\Gamma; \Phi
   \vdash F}\rho$. These are given in Definition~\ref{def:set-interp}.
 
-\begin{dfn}\label{def:set-interp}
+\begin{defi}\label{def:set-interp}
 If $\rho$ is a set (resp., relation) environment and
 $\Gamma;\Phi~|~\Delta \vdash t : F$ then
 $\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$ (resp.,
 $\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$) is defined as in
 Figure~\ref{fig:term-sem}, where $\mathsf D$ is either $\set$ or
 $\rel$ as appropriate.
-\end{dfn}
+\end{defi}
 
 \subsection{Basic Properties of Term Interpretations}
 
@@ -2747,7 +2687,7 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
 \end{figure*}
 
 \begin{comment}
-\begin{dfn}\label{def:rel-interp}
+\begin{defi}\label{def:rel-interp}
 If $\rho$ is a relation environment and $\Gamma;\Phi~|~\Delta \vdash t :
 \tau$ then $\relsem{\Gamma;\Phi~|~\Delta \vdash t : \tau}\rho$ is
 defined as follows:
@@ -2828,7 +2768,7 @@ Nat^{\ol{\beta},\ol{\gamma}} \, H[\phi := (\mu \phi.\lambda {\overline
   \phi.\lambda \overline \alpha.H)\overline \beta\;F)
 \rrbracket^\rel \rho & & 
 \end{array}\]
-\end{dfn}
+\end{defi}
 {\color{blue} Add return type for fold in last clause? Should be
   $\relsem{\Gamma;\ol\beta,\ol\gamma \vdash F}\rho[\ol{\gamma :=
   C}]$.}
@@ -3478,7 +3418,7 @@ and, for all $\rho : \relenv$,
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_2 \rho))
 \end{equation}
 \end{thm}
-\begin{proof}
+\proof
 By structural induction on the type judgment for $t$. The overall
 challenge of our development manifests in this proof. It lies in
 showing that the set and relational interpretations of each term
@@ -3500,7 +3440,7 @@ proof that Equation~\ref{eq:projs} holds in each case is by direct
 calculation, using the facts that projections are surjective and that
 the set and relational interpretations are defined ``in parallel'',
 i.e., are fibred.
-\end{proof}
+\qed
 
 The following theorem is an immediate consequence of
 Theorem~\ref{thm:at-gen}:
@@ -3625,7 +3565,7 @@ $\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
 \rho) \, a \, (s \circ g) = \mathit{filter}\, (\pi_2\rho) \, b \, s
 \circ \mathit{map}_{\mathit{List}} \,g\]
 \end{thm}
-\begin{proof}
+\proof
 By Theorem~\ref{thm:at-gen-rel}, \[(\mathit{filter}\, (\pi_1 \rho)\, a,
 \mathit{filter}\, (\pi_2 \rho)\, b) \in \relsem{\alpha; \emptyset
   \vdash \filtype} \rho\] so if $(s', s) \in \relsem{\alpha; \emptyset
@@ -3650,7 +3590,8 @@ and Equation~\ref{thm:demotion-objects}.  Moreover, $xs =
 \mathit{map}_{\mathit{List}} \,g \,xs'$ and $(s', s) \in \graph{g} \to
 \Eq_{\mathit{Bool}}$, so $s' = s \circ g$. The result
 follows from % Instantiating
-Equation~\ref{eq:filter-thm-list}.\end{proof}
+Equation~\ref{eq:filter-thm-list}.
+\qed
 %gives the result.
 % \begin{align*}
 %    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map%}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
@@ -3671,9 +3612,9 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
       \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau } (\pi_2 \rho) \,b) \in 
     \relsem{\Gamma; \Phi \vdash \tau} \rho$
 \end{thm}
-\begin{proof}
+\proof
  Immediate from Theorem~\ref{thm:at-gen}.
-\end{proof}
+\qed
 \end{comment}
 
 \begin{comment}
@@ -3689,7 +3630,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
   \mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ \mathit{map}_{\mathit{List}} \,g
   \end{align*}
 \end{thm}
-\begin{proof}
+\proof
   By Theorem~\ref{thm:at-gen-rel},
   $(t (\pi_1 \rho) a, t (\pi_2 \rho) b) \in \relsem{\alpha; \emptyset \vdash \filtype} \rho$.
   Thus if 
@@ -3720,7 +3661,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
     &\mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ \mathit{map}_{\mathit{List}} \,g
   \end{align*}
   as desired.
-\end{proof}
+\qed
 \end{comment}
 
 %\subsection{Free Theorem for Type of $\mathit{filter}$ for
@@ -3767,7 +3708,7 @@ $G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
 \setsem{\vdash F})\,\mathit{nil} \,\mathit{cons}) = G \,\setsem{\vdash
   H}\, n\, c \]
 \end{thm}
-\begin{proof}
+\proof
 %Let $\vdash \tau : \F$ and $\vdash \tau' : \F$, let
 %\[\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
 %(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta\]
@@ -3859,7 +3800,7 @@ n\, c) \in \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c}$, i.e
 that $\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (G\;
 (\mathit{List}\,\setsem{\vdash F})\, \mathit{nil}\, \mathit{cons})
 = G \,\setsem{\vdash H}\, n\, c$.
-\end{proof}
+\qed
 
 We can extend short cut fusion results to arbitrary ADTs, as
 in~\cite{joh02,pit98}.
@@ -3886,7 +3827,7 @@ as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
 
 \vspace*{0.2in}
 
-\begin{proof}
+\proof
   We first note that the type of $g$ is well-formed, since
   $\emptyset;\beta \vdash F[\ol{\alpha := \tau}]$ so our
   promotion theorem gives that $\beta;\emptyset\vdash F[\ol{\alpha :=
@@ -3995,7 +3936,7 @@ G\,(\pi_2 \rho)\,B\]
 Since $\beta$ is the only free variable in $G$, this simplifies to
 \[\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\vdash \tau'}\,B\]  
-\end{proof}
+\qed
 \end{comment}
 
 \subsection{Short Cut Fusion for Arbitrary Nested
@@ -4034,7 +3975,7 @@ $\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
 \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 \end{thm}
 
-\begin{proof}
+\proof
 %We first note that the type of $g$ is well-formed since
 %$\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
 %that $\phi;\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
@@ -4157,7 +4098,7 @@ B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
 since $\phi$ is the only free variable in $G$, this simplifies to
 $\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
 G\,\setsem{\emptyset;\alpha\vdash K}\,B$. 
-\end{proof}
+\qed
 
 \vspace*{-0.08in}
 
@@ -4345,72 +4286,17 @@ well.
 
 \noindent
 
-%Won't print in anonymous mode.
-\begin{acks}
-We thank Andrew Polonsky for valuable feedback and fruitful
-discussions. Supported by NSF awards CCR-1906388 and 1420175.
-\end{acks}
+\section*{Acknowledgement}
+Supported by NSF awards CCR-1906388 and 1420175.
 
 
-\bibliography{references}
 
-\end{document}
-
+\begin{thebibliography}{key}
+%\bibliography{references}
+\end{thebibliography}
 
   
-fixpoints at term level ala Pitts:
-
-I'm not sure if we actually want to do this or not (because not all
-fixpoints will necessarily exist, and this will have consequences, and
-because of the restriction to strict functions it will entail and the
-fact that I haven't yet thought about how those will thread through
-our calculus), but another idea we might consider is adding fixpoints
-at the term level. This is done for System F in Wadler's section
-7. [It is also done in Pitts' Parametric Polymorphism and Operational
-  Equivalence paper, where the term introduction rule is SEE SOURCE
-
-%Gamma \vdash F : \tau \to \tau
-%-------------------------------
-%Gamma \vdash fix (F) : tau
-
-But of course the model there is entirely operational rather than
-categorical.]
-
-
-On the other hand, check out the last paragraph of Wadler's paper, which
-suggests that (at least in 1989) there was some interest in calculi like
-ours:
-
-"The desire to derive theorems from types therefore suggests that it would be
-valuable to explore programming languages that prohibit recursion or only
-allow its restricted use. In theory, this is well understood; we have already
-noted that any computable function that is provably total in second-order
-Peano arithmetic can be defined in the pure polymorphic lambda calculus,
-without using the fixpoint as a primitive. However, practical languages based
-on this notion remain terra incognita."
-
-Of course we are not working in System F, but perhaps the same desire applies
-here, and we do get the same kinds of theorems as Wadler, many just as a
-consequence of our interpretation, without invoking parametricity.
-
-In any case, I guess Wadler could be cited as justifying restricting
-our attention to our calculus since it could be seen as a way to have
-a practical language that ensures that all programs are
-terminating. This has been considered in the past, e.g., in ADL,
-Charity, PolyP.
-
-
-TERMINATING RECURSION
-Another possible solution to the expressivity issue is extend folds to
-track of deep structure of nested types as in~\cite{jp19}, so that
-specialization of fixpoint can be computed as fixpoint of
-specialization.
-
-Add more polymorphism (all foralls), even though most free theorems
-only use one level (or maybe two, like short cut).
-
-
-%test
+\end{document}
 
 
 
