@@ -134,8 +134,8 @@ model satisfies an appropriate Abstraction Theorem, as well as that it
 verifies all standard consequences of parametricity in the presence of
 primitive nested types. In particular, we give several examples
 illustrating how how our model can be used to derive useful free
-theorems for programs over nested types. {\color{red} Add ainfo about
-  GADTs and implementation}
+theorems for programs over nested types. {\color{red} Add info about
+  GADTs and implementation.}
 \end{abstract}
 
 \maketitle
@@ -431,10 +431,8 @@ akin to that presented here.
 {\color{red} Say extended version of FoSSaCS paper. Say what's
   new/different. GADTs, implementation.
 
-  Send to LMCS? Editor?
-
-Can bind variables of arity > 0 in Nat-types? Improves expressibilty?
-Worth it?}   
+Can bind variables of arity greater than 0 in Nat-types? Improves
+expressibility?  Worth it?}
 
 \section{The Calculus}\label{sec:calculus}
 
@@ -516,11 +514,11 @@ The formation rules for the set $\F$ of\, {\em well-formed types
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{F}$}
 \DisplayProof
 \\[3ex]
-\AXC{$\Gamma;\ol{\gamma^0},\ol{\alpha^0},\phi^k \vdash F$}
+\AXC{$\Gamma;{\color{red}\ol{\gamma^0}},\ol{\alpha^0},\phi^k \vdash F$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash G}$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash H}$}
 \TIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda
-  \ol{\alpha^0}. \,F[\ol{\gamma := H}])\,\ol{G}$}  
+  \ol{\alpha^0}. \,F {\color{red} [\ol{\gamma := H}]})\,\ol{G}$}  
 \DisplayProof
 \end{array}\]
 
@@ -565,8 +563,9 @@ $\Gamma \vdash F \to G$ and $\forall$-type $\Gamma; \emptyset \vdash
 such as $\forall \alpha. (\alpha \to \alpha) \to \alpha$, are not
 representable in our calculus.
 
+{\color{red} CHANGE TEXT FOR NEW $\mu$-RULE.}
 Definition~\ref{def:wftypes} allows the formation of all of the
-(closed) nested types from the introduction:
+(closed {\color{red} NOT!}) nested types from the introduction:
 \[\begin{array}{lll}
 \mathit{List}\, \alpha & = & \mu \beta. \,\onet + \alpha \times
 \beta\; = \; (\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
@@ -578,33 +577,39 @@ Definition~\ref{def:wftypes} allows the formation of all of the
 \mathit{Bush}\,\alpha & = & (\mu \phi.\lambda \beta. \,\onet + \beta
 \times \phi\,(\phi\beta))\,\alpha 
 \end{array}\]
-Each of these types can be considered either functorial in $\alpha$ or
-not, according to whether $\alpha$ is in the functorial or
-non-functorial context in which it is formed. In particular, if
-$\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then $\vdash
-\Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is well-formed; if
-$\alpha;\emptyset \vdash \List \,\alpha$, then it is not.  Similarly,
-if $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta
-\times \gamma \times \beta$, then $\gamma;\emptyset \vdash \Nat^\alpha
+{\color{red} The representation of $\mathit{List}\,\alpha$ as the ADT
+  $\mu \beta. \onet + \alpha \times \beta$ cannot be functorial in
+  $\alpha$. By contrast, the representation of $\mathit{List}\,\alpha$
+  as the nested type $(\mu \phi. \lambda \beta.\,\onet + \beta \times
+  \phi \beta)\,\alpha$
+%Each of these types
+  can be considered either functorial in $\alpha$ or not, according to
+  whether $\alpha$ is in the functorial or non-functorial context in
+  which this type is formed.} In particular, if $\emptyset;\alpha
+\vdash \mathit{List} \,\alpha$, then $\vdash \Nat^\alpha \onet\,
+(\mathit{List}\,\alpha)$ is well-formed; if $\alpha;\emptyset \vdash
+\List \,\alpha$, then it is not.  Similarly, if
+$\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha + \beta \times
+\gamma \times \beta$, then $\gamma;\emptyset \vdash \Nat^\alpha
 (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is
 well-formed, but $\emptyset;\gamma \vdash \Nat^\alpha (\mathit{List}\,
-\alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is not. Although types
-can be functorial in variables of arity greater than $0$, the body $F$
-of a type $(\mu \phi.\lambda \ol\alpha.F)\ol G$ cannot. For example,
-the type $\mathit{GRose}\, \phi \, \alpha = \mu\beta . \alpha \times
-\phi \beta$ can be functorial or not in $\alpha$, but cannot be
-functorial in $\phi$. Moreover, $\mathit{GRose}\,\phi\,\alpha$ cannot
-be the (co)domain of a $\Nat$-type representing a natural
-transformation functorial in $\phi$, and the type $\mu \phi. \lambda
+\alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is not. {\color{red}
+  KEEP? Although types can be functorial in variables of arity greater
+  than $0$, the body $F$ of a type $(\mu \phi.\lambda \ol\alpha.F)\ol
+  G$ cannot.} For example, the type $\mathit{GRose}\, \phi \, \alpha =
+\mu\beta . \alpha \times \phi \beta$ {\color{red} can be functorial
+  --- NOT!} or not in $\alpha$, but cannot be functorial in
+$\phi$. Moreover, $\mathit{GRose}\,\phi\,\alpha$ cannot be the
+(co)domain of a $\Nat$-type representing a natural transformation
+functorial in $\phi$, and the type $\mu \phi. \lambda
 \alpha. \mathit{GRose}\,\phi\,\alpha$ is not well-formed in our
 system. These restrictions ensure that the set and relational
 interpretations of types in Section~\ref{sec:type-interp} are
-functors. In Section~\ref{sec:conclusion} we discuss how
-more expressive types might be accommodated.
+functors. In Section~\ref{sec:conclusion} we discuss how more
+expressive types might be accommodated.
 
-Definition~\ref{def:wftypes} allows well-formed types to be 
-functorial in no variables
-Functorial variables
+Definition~\ref{def:wftypes} allows well-formed types to be functorial
+in no variables. Functorial variables
 %in a well-formed type $\tau$
 can also be demoted to non-functorial status: if\,$F[\phi :== \psi]$
 is the textual replacement of $\phi$ in $F$, then $\Gamma, \psi^k;
@@ -629,7 +634,9 @@ Of course, $(\cdot)[\phi^0 :=_\emptyset F]$ coincides with first-order
 substitution. We omit $\ol\alpha$ when convenient, but note that it
 is not correct to substitute along non-functorial variables.
 
-{\color{red} Check no change needed for new $\mu$-rule in next def.}
+{\color{red} Check no change needed for new $\mu$-rule in next
+  def. Just note that in application case the args to $\phi$ go in for
+  the $\alpha$s in $F$s replacing $\phi$.}
 \begin{defi}\label{def:second-order-subst}
 If \,$\Gamma; \Phi,\phi^k \vdash H$ and $\Gamma;\Phi, \ol{\alpha}
 \vdash F$ with $|\ol\alpha| = k$, then the operation $H[\phi :=_{\ol
@@ -751,26 +758,27 @@ It is not hard to see that $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
              :=_{\ol{\beta}} G}])$} 
        \DisplayProof\vspace*{-0.1in}
        \\\\
-       \AXC{$\Gamma; \phi, \ol{\alpha},\ol{\gamma} \vdash H$}
+       \AXC{$\Gamma; \phi, \ol{\alpha}, {\color{red}\ol{\gamma}} \vdash H$}
        \UIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \tin_H :
-         \Nat^{\ol{\beta},\ol{\gamma}} H[\phi :=_{\ol{\beta}} (\mu
+         \Nat^{\ol{\beta},{\color{red}\ol{\gamma}}} H[\phi :=_{\ol{\beta}} (\mu
            \phi.\lambda \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \beta}]\,(\mu
          \phi.\lambda \ol{\alpha}.H)\ol{\beta}$}
        \hspace*{0.2in}\DisplayProof\vspace*{-0.1in}
        \\\\
-       \AXC{$\Gamma; \phi,\ol{\alpha}, \ol{\gamma} \vdash H$}
-       \AXC{$\Gamma; \ol{\beta}, \ol{\gamma} \vdash F$}
+       \AXC{$\Gamma; \phi,\ol{\alpha}, {\color{red} \ol{\gamma}} \vdash H$}
+       \AXC{$\Gamma; \ol{\beta}, {\color{red} \ol{\gamma}} \vdash F$}
        \BIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \fold^F_H :
-         \Nat^\emptyset\; (\Nat^{\ol{\beta}, \ol{\gamma}}\,H[\phi
+         \Nat^\emptyset\; (\Nat^{\ol{\beta}, {\color{red} \ol{\gamma}}}\,H[\phi
            :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\; (\Nat^{\ol{\beta},
-           \ol{\gamma}}\,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
+          {\color{red} \ol{\gamma}}}\,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
        \hspace*{0.2in}\DisplayProof\vspace*{-0.1in}
        \end{array}\]
 
        \vspace*{0.05in}
 
-       \caption{Well-formed terms {\color{red} Change last three
-           judgements for new $\mu$ rule???}}\label{fig:terms} \vspace*{-0.00in}
+       \caption{Well-formed terms {\color{red} Remove red $\gamma$s?
+           Leave rule for map as
+           is???}}\label{fig:terms} \vspace*{-0.00in}
 \end{adjustbox}
 %       \vspace*{-0.25in}
 \end{figure*}
@@ -801,11 +809,11 @@ rules of Figure~\ref{fig:terms} ensure that weakening is respected.
 
 {\color{red} Change the rest of the section to agree with new term
   formation rules.}  The ``extra'' functorial variables $\ol{\gamma}$
-in the rules for $\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\fold^F_H$
-(i.e., those variables not affected by the substitution of $\phi$)
-deserve comment. They allow us to map or fold polymorphic functions
-over nested types. Suppose, for example, we want to map the
-polymorphic function $\mathit{flatten} : \Nat^\beta
+in the rules for $\map^{\ol{F},\ol{G}}_H$ {\color{red} , $\tin_H$, and
+  $\fold^F_H$} (i.e., those variables not affected by the substitution
+of $\phi$) deserve comment. They allow us to map {\color{red} or fold}
+polymorphic functions over nested types. Suppose, for example, we want
+to map the polymorphic function $\mathit{flatten} : \Nat^\beta
 (\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ over a list.  Even in
 the absence of extra variables the instance of $\map$ required to map
 each non-functorial monomorphic instantiation of $\mathit{flatten}$
@@ -864,6 +872,7 @@ follows:
 Similar remarks justify the appearance of $\ol \gamma$ in the typing
 rules for $\tin$ and $\mathsf{fold}$.
 
+{\color{red} The next discussion should still be OK.}
 Our calculus is expressive enough to define a function
 $\mathit{reversePTree :
   \Nat^\alpha\,(\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)}$
@@ -973,19 +982,20 @@ not a $\mu$-type.  Our calculus can, however, express types of
 recursive functions that take multiple nested types as arguments,
 provided they are parameterized over disjoint sets of type variables
 and the return type of the function is parameterized over only the
-variables occurring in the type of its final argument.  Even for ADTs
-there is a difference between which folds over them we can type when
-they are viewed as ADTs (i.e., as fixpoints of first-order functors)
-versus as proper nested types (i.e., as fixpoints of higher-order
-functors). This is because, in the return type of $\mathsf{fold}$, the
-arguments of the $\mu$-type must be variables bound by $\Nat$.  For
-ADTs, the $\mu$-type takes no arguments, making it possible to write
-recursive functions, such as a concatenation function for lists of
-type $\alpha ; \emptyset \vdash \Nat^\emptyset \ (\mu \beta. \onet +
-\alpha \times \beta)\, (\Nat^\emptyset (\mu \beta. \onet + \alpha
-\times \beta) \, (\mu \beta. \onet + \alpha \times \beta))$.  This is
-not possible for nested types --- even when they are semantically
-equivalent to ADTs.
+variables occurring in the type of its final argument.  {\color{red}
+  CHECK THE FOLLOWING! SHOULD BE OK.}  Even for ADTs there is a
+difference between which folds over them we can type when they are
+viewed as ADTs {\color{red} (i.e., as fixpoints of first-order
+  functors) EARLIER?}  versus as proper nested types {\color{red}
+  (i.e., as fixpoints of higher-order functors) EARLIER?}. This is
+because, in the return type of $\mathsf{fold}$, the arguments of the
+$\mu$-type must be variables bound by $\Nat$.  For ADTs, the
+$\mu$-type takes no arguments, making it possible to write recursive
+functions, such as a concatenation function for lists of type $\alpha
+; \emptyset \vdash \Nat^\emptyset \ (\mu \beta. \onet + \alpha \times
+\beta)\, (\Nat^\emptyset (\mu \beta. \onet + \alpha \times \beta) \,
+(\mu \beta. \onet + \alpha \times \beta))$.  This is not possible for
+nested types --- even when they are semantically equivalent to ADTs.
 
 Interestingly, even some recursive functions of a single proper nested
 type --- e.g., a reverse function for bushes --- cannot be expressed
@@ -1122,14 +1132,14 @@ by:
   \setsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \setsem{\Gamma;\Phi \vdash F}\rho \times
   \setsem{\Gamma;\Phi \vdash G}\rho\\ 
-  \setsem{\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda
+  \setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho &= (\mu
-    T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho}\\
+    T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,{\color{red} \ol\gamma} \vdash G}\rho}\\
     \text{where } T^\set_{H,\rho}\,F & = \lambda
-  \ol{A}. \setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
+  \ol{A}. \setsem{\Gamma;{\color{red}\ol\gamma},\phi, \ol{\alpha} \vdash
     H}\rho[\phi :=  F][\ol{\alpha := A}]\\
   \text{and } T^\set_{H,\rho}\,\eta &= \lambda
-  \ol{A}. \setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash
+  \ol{A}. \setsem{\Gamma;{\color{red}\ol\gamma},\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \end{defi}
@@ -1167,14 +1177,14 @@ To make sense of the last clause in Definition~\ref{def:set-sem}, we
 need to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is
 an $\omega$-cocontinuous endofunctor on $[\set^k, \set]$, and thus
 admits a fixpoint.  Since $T_{H,\rho}^\set$ is defined in terms of
-$\setsem{\Gamma;\ol\gamma,\phi, \ol{\alpha} \vdash H}$, this means
+$\setsem{\Gamma;{\color{red} \ol\gamma},\phi, \ol{\alpha} \vdash H}$, this means
 that interpretations of types must be such functors, which in turn
 means that the actions of set interpretations of types on objects and
 on morphisms in $\setenv$ are intertwined. Fortunately, we know
 from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash G$,
 $\setsem{\Gamma; \ol{\alpha} \vdash G}$ is actually in $[\set^k,\set]$
 where $k = |\ol \alpha|$. This means that for each $\setsem{\Gamma;
-  \ol\gamma, \phi^k, \ol{\alpha} \vdash H}$, the corresponding
+ {\color{red} \ol\gamma}, \phi^k, \ol{\alpha} \vdash H}$, the corresponding
 operator $T^\set_{H}$ can be extended to a {\em functor} from
 $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The action of $T^\set_H$
 on an object $\rho \in \setenv$ is given by the higher-order functor
@@ -1186,7 +1196,7 @@ $T^\set_{H,f} : T^\set_{H,\rho} \to T^\set_{H,\rho'}$ whose action on
 $F : [\set^k,\set]$ is the natural transformation $T^\set_{H,f}\, F :
 T^\set_{H,\rho}\,F \to T^\set_{H,\rho'}\,F$ whose component at
 $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} = \setsem{\Gamma;
-  \ol\gamma,\phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
+  {\color{red}\ol\gamma},\phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
     \id_A}]$.
 
 Using $T^\set_H$, we can define the functorial action of set
@@ -1241,38 +1251,38 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
   $\setsem{\Gamma;\Phi \vdash F \times G}f = 
   \setsem{\Gamma;\Phi \vdash F}f \times \setsem{\Gamma;\Phi \vdash
     G}f$
-\item If \,$\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda
+\item If \,$\Gamma;\Phi,{\color{red}\ol\gamma} \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{G}$ then
   \[\begin{array}{lll}
-  \setsem{\Gamma;\Phi,\ol\gamma \vdash (\mu  \phi.\lambda
-    \ol{\alpha}. H)\ol{G}} f &: &\setsem{\Gamma;\Phi,\ol\gamma 
+  \setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash (\mu  \phi.\lambda
+    \ol{\alpha}. H)\ol{G}} f &: &\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} 
     \vdash (\mu \phi.\lambda \ol{\alpha}. H)\ol{G}} \rho \to
-  \setsem{\Gamma;\Phi,\ol\gamma \vdash (\mu
+  \setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash (\mu
     \phi.\lambda\ol{\alpha}. H)\ol{G}} \rho'\\
   &= &(\mu
-  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} \to (\mu
-  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}
+  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho} \to (\mu
+  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho'}
   \end{array}\]
   is
   defined by
-  \[\begin{array}{ll} & (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash
-      G}\rho'} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,\ol\gamma
-      \vdash G}f}\\ = & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi,\ol\gamma
-      \vdash G}f} \circ (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi,\ol\gamma
+  \[\begin{array}{ll} & (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash
+      G}\rho'} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma}
+      \vdash G}f}\\ = & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma}
+      \vdash G}f} \circ (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma}
       \vdash G}\rho}\end{array}\]  The latter equality holds because $\mu
   T^\set_{H,\rho}$ and $\mu T^\set_{H,\rho'}$ are functors and $\mu
   T_{H,f}^\set : \mu T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a
   natural transformation, so the following naturality square commutes:
 {\footnotesize\begin{equation}\label{eq:cd3}
 \begin{CD}
- (\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} @> (\mu
-  T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho}} >> (\mu
-  T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho} \\ 
- @V(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}f}VV @V  (\mu
- T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}f} VV \\ 
-(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'} @>(\mu
- T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}}>> (\mu
- T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,\ol\gamma \vdash G}\rho'}
+ (\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,{\color{red} \ol\gamma} \vdash G}\rho} @> (\mu
+  T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho}} >> (\mu
+  T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho} \\ 
+ @V(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}f}VV @V  (\mu
+ T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}f} VV \\ 
+(\mu T^\set_{H,\rho}) \ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho'} @>(\mu
+ T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho'}}>> (\mu
+ T^\set_{H,\rho'}) \ol{\setsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash G}\rho'}
 \end{CD}
 \end{equation}}
 \end{itemize}
@@ -1596,19 +1606,19 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \relsem{\Gamma;\Phi \vdash F}\rho \times
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
-   \relsem{\Gamma;\Phi,\ol\gamma \vdash (\mu \phi.\lambda
+   \relsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
-  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi,\ol\gamma \vdash
+  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi,{\color{red}\ol\gamma} \vdash
      G}\rho}\\
   \text{where }	T_{H,\rho}
     &= (T^\set_{H,\pi_1\rho}, T^\set_{H,\pi_2\rho}, T^\rel_{H,\rho}) \\
   \text{and } T^\rel_{H,\rho}\,F
     &= \lambda \ol{R}. \relsem{
-      \Gamma;\ol\gamma,\phi,\ol{\alpha} \vdash H}\rho[\phi :=
+      \Gamma;{\color{red}\ol\gamma},\phi,\ol{\alpha} \vdash H}\rho[\phi :=
     F][\ol{\alpha := R}]\\
   \text{and } T^\rel_{H,\rho}\,\delta
     &= \lambda \ol{R}. \relsem{
-      \Gamma;\ol\gamma,\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
+      \Gamma;{\color{red}\ol\gamma},\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
     \delta][\ol{\alpha := \id_{\ol{R}}}]
 \end{align*}
 \end{defi}
@@ -1625,7 +1635,7 @@ F$, then we write $\relsem{\vdash F}$ instead of $\relsem{\vdash
 well-defined we need $T_{H,\rho}$ to be an $\omega$-cocontinuous
 endofunctor on $RT$ so that, by Lemma~\ref{lem:fp}, it admits a
 fixpoint. Since $T_{H,\rho}$ is defined in terms of
-$\relsem{\Gamma;\ol\gamma,\phi^k, \ol{\alpha} \vdash H}$, this means
+$\relsem{\Gamma;{\color{red}\ol\gamma},\phi^k, \ol{\alpha} \vdash H}$, this means
 that relational interpretations of types must be $\omega$-cocontinuous
 functors from $\relenv$ to $RT_0$, which in turn entails that the
 actions of relational interpretations of types on objects and on
@@ -1644,7 +1654,7 @@ Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
 the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \relsem{\Gamma; \ol\gamma,\phi,\ol{\alpha} \vdash
+F)_{\ol{R}} = \relsem{\Gamma; {\color{red}\ol\gamma},\phi,\ol{\alpha} \vdash
   H}f[\phi := \id_F][\ol{\alpha := \id_R}]$.
 
 Using $T_H$, we can define the functorial action of relational
@@ -2213,8 +2223,7 @@ application, and fixpoint cases are non-routine.
   equalities, where the second equality is by the induction hypothesis
   and the definition of the relation environment $\Eq_\rho$, the third
   is by the definition of application of relation transformers from
-  Definition~9, and the fourth is by
-  Lemma~21:
+  Definition~9, and the fourth is by Equation~\ref{eq:eq-pres-eq}:
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash \phi\ol{F}}\Eq_{\rho} &=
@@ -2231,27 +2240,28 @@ application, and fixpoint cases are non-routine.
 \item  The fixpoint case is proven by the sequence of equalities
 \[
 \begin{split}
-\relsem{\Gamma; \Phi, \ol\gamma \vdash (\mu \phi.\lambda
+\relsem{\Gamma; \Phi, {\color{red}\ol\gamma} \vdash (\mu \phi.\lambda
   \ol{\alpha}. H)\ol{F}}\Eq_{\rho} 
-&=(\mu {T_{H, \Eq_{\rho}}}) \,\ol{\relsem{\Gamma; \Phi, \ol\gamma  \vdash F}\Eq_{\rho}}\\ 
-&= \colim{n \in \nat}{T^n_{H, \Eq_{\rho}} K_0}\, \ol{\relsem{\Gamma; \Phi, \ol\gamma 
+&=(\mu {T_{H, \Eq_{\rho}}}) \,\ol{\relsem{\Gamma; \Phi, {\color{red} \ol\gamma}  \vdash F}\Eq_{\rho}}\\ 
+&= \colim{n \in \nat}{T^n_{H, \Eq_{\rho}} K_0}\, \ol{\relsem{\Gamma; \Phi, {\color{red}\ol\gamma} 
   \vdash F}\Eq_{\rho}}\\
 &= \colim{n \in \nat}{ T^n_{H, \Eq_{\rho}} K_0 \,\ol{\Eq_{\setsem{\Gamma;
-    \Phi, \ol\gamma  \vdash F}\rho}}}\\
+    \Phi, {\color{red}\ol\gamma}  \vdash F}\rho}}}\\
 &= \colim{n \in \nat}{(\Eq_{(T^\set_{H,\rho})^n K_0})^*
-  \ol{\Eq_{\setsem{\Gamma; \Phi, \ol\gamma  \vdash F}\rho}}}\\
+  \ol{\Eq_{\setsem{\Gamma; \Phi, {\color{red}\ol\gamma}  \vdash F}\rho}}}\\
 &= \colim{n \in \nat}{\Eq_{(T^\set_{H,\rho})^n K_0 \,\ol{\setsem{\Gamma;
-        \Phi, \ol\gamma  \vdash F}\rho}}}\\ 
+        \Phi, {\color{red}\ol\gamma}  \vdash F}\rho}}}\\ 
 &= \Eq_{\colim{n \in \nat}{ (T^\set_{H,\rho})^n K_0\,
-    \ol{\setsem{\Gamma; \Phi, \ol\gamma  \vdash F}\rho}}}\\
-&= \Eq_{\setsem{\Gamma; \Phi, \ol\gamma  \vdash (\mu \phi.\lambda
+    \ol{\setsem{\Gamma; \Phi, {\color{red}\ol\gamma}  \vdash F}\rho}}}\\
+&= \Eq_{\setsem{\Gamma; \Phi, {\color{red}\ol\gamma}  \vdash (\mu \phi.\lambda
       \ol{\alpha}. H)\ol{F}}\rho}
 \end{split}
 \]
 Here, the third equality is by induction hypothesis, the fifth is by
-Lemma~21 and the fourth equality is because, for every $n \in \nat$,
-the following two statements can be proved by simultaneous induction:
-and for any $H$, $\rho$, $A$, and subformula $J$ of $H$,
+Equation~\ref{eq:eq-pres-eq}, and the fourth equality is because, for
+every $n \in \nat$, the following two statements can be proved by
+simultaneous induction: and for any $H$, $\rho$, $A$, and subformula
+$J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
 T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
 \ol{\Eq_A}
@@ -2265,8 +2275,8 @@ and
 [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}
 \end{split}
 \end{equation}
-(Notice that we don't know what's in the context $\Phi'$.)
-We prove~\eqref{eq:iel-fix-point-intermediate1} by induction on $n$.
+(Notice that we don't know what's in the context $\Phi'$.)  We prove
+Equation~\ref{eq:iel-fix-point-intermediate1} by induction on $n$.
 The case $n=0$ is trivial, because $T^0_{H,\Eq_{\rho}} K_0 = K_0$ and
 $(T^\set_{H,\rho})^0 K_0 = K_0$; the inductive step is proved by the
 following sequence of equalities:
@@ -2275,31 +2285,32 @@ following sequence of equalities:
 T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
 &= T^\rel_{H,\Eq_{\rho}} (T^{n}_{H,\Eq_{\rho}} K_0)
 \overline{\Eq_A} \\ 
-&= \relsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho} [\phi
+&= \relsem{\Gamma; \phi, \ol{\alpha}, {\color{red}\ol\gamma} \vdash H} \Eq_{\rho} [\phi
   := T^{n}_{H, \Eq_{\rho}} K_0] \overline{[\alpha :=
     \Eq_A]} \\ 
-&= \relsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho} [\phi
+&= \relsem{\Gamma; \phi, \ol{\alpha}, {\color{red}\ol\gamma} \vdash H} \Eq_{\rho} [\phi
   := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha :=
     \Eq_A]} \\ 
-&= \relsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \Eq_{\rho [\phi
+&= \relsem{\Gamma; \phi, \ol{\alpha}, {\color{red}\ol\gamma} \vdash H} \Eq_{\rho [\phi
     := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
       A]}} \\ 
-&= \Eq_{\setsem{\Gamma; \phi, \ol{\alpha}, \ol\gamma \vdash H} \rho [\phi
+&= \Eq_{\setsem{\Gamma; \phi, \ol{\alpha}, {\color{red}\ol\gamma} \vdash H} \rho [\phi
     := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
       A]}} \\ 
 &= \Eq_{(T^\set_{H,\rho})^{n+1} K_0 \overline{A}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^*\, \overline{\Eq_A} 
 \end{split}
 \]
-Here, the third equality is by~\eqref{eq:iel-fix-point-intermediate2}
-for $J = H$, the fifth by the induction hypothesis of the IEL on $H$,
-and the last is by Lemma~21.
+Here, the third equality is by
+Equation~\ref{eq:iel-fix-point-intermediate2} for $J = H$, the fifth
+by the induction hypothesis of the IEL on $H$, and the last is by
+Equation~\ref{eq:eq-pres-eq}.
 
 \vspace*{0.1in}
 
-We prove~\eqref{eq:iel-fix-point-intermediate2} by structural
-induction on $J$. The only interesting cases, though, are when
-$J = \phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
+We prove Equation~\ref{eq:iel-fix-point-intermediate2} by structural
+induction on $J$. The only interesting cases, though, are when $J =
+\phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
 \begin{itemize}
 \item The case $J = \phi \ol G$ is proved by the sequence of equalities:
 \[
@@ -2320,11 +2331,11 @@ $J = \phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\set_{H,\rho})^{n}
         K_0] \overline{[\alpha := A]}}} \\ 
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
-        \Phi', \phi, \ol{\alpha} \vdash G} \rho [\phi :=
+        \Phi', \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
           A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
-        \Phi', \phi, \ol{\alpha} \vdash G} \rho [\phi :=
+        \Phi', \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
           A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
@@ -2336,63 +2347,42 @@ $J = \phi \ol{G}$ and when $J = (\mu \psi.\lambda \ol\beta. G)\ol K$.
   \overline{[\alpha := \Eq_A]} 
 \end{split}
 \]
-Here, the second equality is by the induction hypothesis
-for~\eqref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth is
-by the induction hypothesis for the IEL on the $G$s, and the fifth is
-by the induction hypothesis on $n$
-for~\eqref{eq:iel-fix-point-intermediate1}.
+Here, the second equality is by the induction hypothesis for
+Equation~\ref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth
+is by the induction hypothesis for the IEL on the $G$s, and the fifth
+is by the induction hypothesis on $n$ for
+Equation~\ref{eq:iel-fix-point-intermediate1}.
 
 \item 
   The case $J = (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}$
-is proved by the sequence of equalities (where $\Phi' = \Phi'', \ol\gamma$):
+is proved by the sequence of equalities {\color{red} (where $\Phi' = \Phi'', \ol\gamma$)}:
 \[
 \begin{split}
-& \relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}}
+& \relsem{\Gamma; {\color{red} \Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}}
   \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
   [\overline{\alpha := \Eq_A}] \\
 &= (\mu {T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
-  \,\ol{\relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,\ol{\relsem{\Gamma; {\color{red}\Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; {\color{red} \Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; {\color{red}\Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
-%% &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho[\overline{\alpha := A}]}}}\,K_0
-%%   \,(\ol{\relsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \Eq_{\rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}}) \\ 
-%% &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho[\overline{\alpha := A}]}}}\,K_0
-%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
-%% &= \colim{m \in \nat} (\Eq_{{(T^{\set}_{G, \rho[\overline{\alpha := A}]}})^m\,K_0})^*
-%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
-%% &= (\Eq_{\colim{m \in \nat} {(T^{\set}_{G, \rho[\overline{\alpha := A}]}})^m\,K_0})^*
-%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\ 
-%% &= (\Eq_{{\mu T^{\set}_{G, \rho[\overline{\alpha := A}]}}})^*
-%%   \,\ol{\Eq_{\setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\
-%% &= \Eq_{{\mu T^{\set}_{G, \rho[\overline{\alpha := A}]}}
-%%   \,\ol{\setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%%   \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}} \\
-%=& \Eq_{\setsem{\Gamma; \Phi, \ol\gamma, \ol{\alpha}, \ol{\gamma} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{\gamma}}
-%  \rho[\overline{\alpha := A}][\ol{\gamma := \setsem{\Gamma; \Phi, \ol\gamma, \phi, \ol{\alpha} \vdash K}
-%  \rho[\phi := (T^{\set}_{H,\rho})^n K_0][\overline{\alpha := A}]}]} \\
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; {\color{red}\Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\ 
 &= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}})
-  \,\ol{\relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,\ol{\relsem{\Gamma; {\color{red}\Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]} \\ 
-&= \relsem{\Gamma; \Phi'', \ol\gamma, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
+&= \relsem{\Gamma; {\color{red}\Phi'', \ol\gamma}, \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
   \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_{A}}]
 \end{split}
 \]
-Here, the third equality is by the induction hypothesis
-for~\eqref{eq:iel-fix-point-intermediate2} on the $K$s, and the fourth
-equality holds because we can prove that, for all $m \in \nat$,
+Here, the third equality is by the induction hypothesis for
+Equation~\ref{eq:iel-fix-point-intermediate2} on the $K$s, and the
+fourth equality holds because we can prove that, for all $m \in \nat$,
 \begin{equation}\label{eq:helper}
 T^m_{G,
 \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
@@ -2400,7 +2390,7 @@ T^m_{G,
     \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
       \Eq_A}]}\,K_0
 \end{equation}
-Indeed, the base case of~\eqref{eq:helper} is trivial because
+Indeed, the base case of Equation~\ref{eq:helper} is trivial because
 \[T^0_{G,
   \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
       \Eq_A}]}\,K_0 \ = K_0 = T^0_{G, \Eq_{\rho}[\phi :=
@@ -2416,12 +2406,12 @@ and the inductive case is proved by: \\
         := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi :=
       \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
         \Eq_A}]}\,K_0) \\
-&= \lambda \ol{R}. \relsem{\Gamma; \ol\gamma, \phi, \ol\alpha, \psi,
+&= \lambda \ol{R}. \relsem{\Gamma; {\color{red}\ol\gamma}, \phi, \ol\alpha, \psi,
     \ol\beta \vdash G} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}}
     K_0][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G, \Eq_{\rho}[\phi
         := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
           \Eq_A}]}\,K_0][\overline{\beta := R}] \\
-&= \lambda \ol{R}. \relsem{\Gamma; \ol\gamma, \phi, \ol\alpha, \psi,
+&= \lambda \ol{R}. \relsem{\Gamma; {\color{red} \ol\gamma}, \phi, \ol\alpha, \psi,
     \ol\beta \vdash G} \Eq_{\rho} [\phi := \Eq_{(T^{\set}_{H,\rho})^n
       K_0}][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G,
       \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n
@@ -2435,12 +2425,12 @@ and the inductive case is proved by: \\
         K_0}][\overline{\alpha := \Eq_A}]}\,K_0
 \end{align*}
 
-Here, the second equality holds by the induction hypothesis
-for~\eqref{eq:helper} on $m$. The fourth equality holds because, due
-to typing rule restrictions for the $\mu$ types, $\phi$ either does
-not appear in $G$, or must have arity $0$, in which case $\ol\alpha$
-must be empty, if $\phi$ appears in $G$, and
-uses~\eqref{eq:iel-fix-point-intermediate2} for $G$ when $\phi$ has
+Here, the second equality holds by the induction hypothesis for
+Equation~\ref{eq:helper} on $m$. The fourth equality holds because,
+due to typing rule restrictions for the $\mu$ types, $\phi$ either
+does not appear in $G$, or must have arity $0$, in which case
+$\ol\alpha$ must be empty, if $\phi$ appears in $G$, and uses
+Equation~\ref{eq:iel-fix-point-intermediate2} for $G$ when $\phi$ has
 arity $0$. {\color{red} Note that if functorial variables of arity
   greater than $0$ were allowed to appear in the bodies of
   $\mu$-types, then the aboe clause of the IEL would fail.}
@@ -4309,9 +4299,8 @@ well.
 %Unfortunately, $\omega$-CPO, the most obvious category
 %of domains to replace $\set$, is not locally finitely presentable.
 
-\begin{thebibliography}{9}
-%\bibliography{references}
-\end{thebibliography}
+\bibliographystyle{alpha}
+\bibliography{references}
 
   
 \end{document}
