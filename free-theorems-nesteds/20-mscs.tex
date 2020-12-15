@@ -192,10 +192,7 @@ PForest\;A}
 \end{array}\]}
 \hspace{-0.04in}of perfect forests, whose recursive occurrences appear
 below type constructors for other nested types; and truly nested
-types,
-%\footnote{Nested types that are defined over themselves are known
-%  as {\em truly nested types}.}
-such as the nested type {\small
+types, such as the nested type {\small
 \[\begin{array}{l}
 \mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
@@ -289,31 +286,25 @@ fold combinators for nested types.\footnote{We leave incorporating
   as the development in this paper shows, constructing a parametric
   model even for our predicative calculus with primitive nested types
   --- and even without term-level fixpoints --- is already rather
-  involved.
-%  in part because, as
-%  Pitts~\cite{pit00} reminds us, ``it is hard to construct models of
-%  both impredicative polymorphism and fixpoint recursion'', and in
-%  part because constructing a parametric model even for a predicative
-%  calculus with primitive nested types is already rather involved.
-  On
-  the other hand, our calculus is strongly normalizing, so it perhaps
-  edges us toward the kind of provably total practical programming
-  language proposed in~\cite{wad89}.}  Our main contribution is the
-construction of a parametric model for our calculus. This is both
-delicate and challenging. To ensure the existence of semantic
-fixpoints interpreting nested types, and thus to establish a suitable
-Identity Extension Lemma, our type system must explicitly track
-functoriality of types, and cocontinuity conditions on the functors
-interpreting them must be appropriately threaded throughout the model
-construction. Our model validates all standard consequences of
-parametricity in the presence of primitive nested types, including the
-isomorphism of primitive ADTs and their Church encodings, and
-correctness of short cut fusion for nested types. The relationship
-between naturality and parametricity has long been of interest, and
-our inclusion of a primitive type of natural transformations allows us
-to clearly delineate those consequences of parametricity that follow
-from naturality, from those, such as short cut fusion for nested
-types, that require the full power of parametricity.
+  involved. On the other hand, our calculus is strongly normalizing,
+  so it perhaps edges us toward the kind of provably total practical
+  programming language proposed in~\cite{wad89}.}  Our main
+contribution is the construction of a parametric model for our
+calculus. This is both delicate and challenging. To ensure the
+existence of semantic fixpoints interpreting nested types, and thus to
+establish a suitable Identity Extension Lemma, our type system must
+explicitly track functoriality of types, and cocontinuity conditions
+on the functors interpreting them must be appropriately threaded
+throughout the model construction. Our model validates all standard
+consequences of parametricity in the presence of primitive nested
+types, including the isomorphism of primitive ADTs and their Church
+encodings, and correctness of short cut fusion for nested types. The
+relationship between naturality and parametricity has long been of
+interest, and our inclusion of a primitive type of natural
+transformations allows us to clearly delineate those consequences of
+parametricity that follow from naturality, from those, such as short
+cut fusion for nested types, that require the full power of
+parametricity.
 
 \vspace*{0.1in}
 
@@ -460,16 +451,16 @@ $\{\phi\}$.
 If $\Gamma$ is a finite subset of\, $\tvars$, $\Phi$ is a finite
 subset of\, $\fvars$, $\overline{\alpha}$ is a finite subset of\,
 $\fvars^0$ disjoint from $\Phi$, and $\phi^k \in \fvars^k \setminus
-\Phi$, then the set $\mcF^\Pos(V)$ of {\em functorial expressions}
-over $\Gamma$ and $\Phi$ are given in
-Definition~\ref{def:wftypes}. The notation there entails that an
-application $F F_1...F_k$ is allowed only when $F$ is a type variable
-of arity $k$, or $F$ is a subexpression of the form $\mu
-\phi^{k}.\lambda \alpha_1...\alpha_k.F'$. Moreover, if $F$ has arity
-$k$ then $F$ must be applied to exactly $k$ arguments.  Accordingly,
-an overbar indicates a sequence of subexpressions whose length matches
-the arity of the type applied to it.  Requiring that types are always
-in such \emph{$\eta$-long normal form} avoids having to consider
+\Phi$, then the set $\mcF$ of {\em functorial expressions} over
+$\Gamma$ and $\Phi$ are given in Definition~\ref{def:wftypes}. The
+notation there entails that an application $F F_1...F_k$ is allowed
+only when $F$ is a type variable of arity $k$, or $F$ is a
+subexpression of the form $\mu \phi^{k}.\lambda
+\alpha_1...\alpha_k.F'$. Moreover, if $F$ has arity $k$ then $F$ must
+be applied to exactly $k$ arguments.  Accordingly, an overbar
+indicates a sequence of subexpressions whose length matches the arity
+of the type applied to it.  Requiring that types are always in such
+\emph{$\eta$-long normal form} avoids having to consider
 $\beta$-conversion at the level of types. In a subexpression
 $\Nat^{\ol{\alpha}}F\,G$, the $\Nat$ operator binds all occurrences of
 the variables in $\ol{\alpha}$ in $F$ and $G$; intuitively,
@@ -584,18 +575,16 @@ no type of the form $(\mu \phi. \lambda
 system. These restrictions ensure that the set and relational
 interpretations of types in Section~\ref{sec:type-interp} are
 functors. In Section~\ref{sec:conclusion} we discuss how more
-expressive types might be accommodated. {\color{red} Daniel: Check the
-  above carefully?}
+expressive types might be accommodated. 
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
-in no variables. Functorial variables
-%in a well-formed type $\tau$
-can also be demoted to non-functorial status: if\,$F[\phi :== \psi]$
-is the textual replacement of $\phi$ in $F$, then $\Gamma, \psi^k;
-\Phi \vdash F[\phi^k :== \psi^k]$ is derivable whenever $\Gamma; \Phi,
-\phi^k \vdash F$ is. The proof is by induction on the structure of
-$F$. In addition to textual replacement, we also have a
-substitution operation on types.
+in no variables. Functorial variables can also be demoted to
+non-functorial status: if\,$F[\phi :== \psi]$ is the textual
+replacement of $\phi$ in $F$, then $\Gamma, \psi^k; \Phi \vdash
+F[\phi^k :== \psi^k]$ is derivable whenever $\Gamma; \Phi, \phi^k
+\vdash F$ is. The proof is by induction on the structure of $F$. In
+addition to textual replacement, we also have a substitution operation
+on types.
 
 If $\Gamma; \Phi \vdash F$ is a type, if $\Gamma$ and $\Phi$ contain
 only type variables of arity $0$, and if $k=0$ for every occurrence of
@@ -639,13 +628,13 @@ G[\phi :=_{\ol{\alpha}} F] \times K[\phi
 \end{array}\]
 \end{defi}
 \noindent
-{\color{red} Daniel: Agree?} The idea is that the arguments to $\phi$
-get substituted for the variables in $\ol\alpha$ in each $F$ replacing
-an occurrence of $\phi$. It is not hard to see that $\Gamma;\Phi
-\vdash H[\phi :=_{\ol{\alpha}} F]$. In addition, if \,$\Gamma, \phi^k;
-\Phi \vdash H$,\, $\Gamma; \ol\psi,\ol{\alpha} \vdash F$, $|\ol\alpha|
-= k$, and $\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi
-\vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$.
+The idea is that the arguments to $\phi$ get substituted for the
+variables in $\ol\alpha$ in each $F$ replacing an occurrence of
+$\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
+  :=_{\ol{\alpha}} F]$. In addition, if \,$\Gamma, \phi^k; \Phi \vdash
+H$,\, $\Gamma; \ol\psi,\ol{\alpha} \vdash F$, $|\ol\alpha| = k$, and
+$\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi \vdash
+H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$.
 
 \subsection{Terms}\label{sec:terms}
 
@@ -755,7 +744,6 @@ an occurrence of $\phi$. It is not hard to see that $\Gamma;\Phi
 
        \caption{Well-formed terms}\label{fig:terms} \vspace*{-0.00in}
 \end{adjustbox}
-%       \vspace*{-0.25in}
 \end{figure*}
 
 To define our term calculus we assume an infinite set $\cal V$ of term
@@ -792,7 +780,7 @@ the absence of extra variables the instance of $\map$ required to map
 each non-functorial monomorphic instantiation of $\mathit{flatten}$
 over a list of perfect trees is well-typed:
 \[\begin{array}{l}
-\AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
+\hspace*{-0.1in}\AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,F$}
 \AXC{$\Gamma;\emptyset \vdash \mathit{List}\,G$}
 \TIC{$\Gamma;\emptyset \,|\, \emptyset \vdash \map^{\mathit{PTree}\,F,
@@ -811,11 +799,11 @@ But in the absence of $\ol \gamma$, the instance
 function over a list of perfect trees is not: indeed, the functorial
 contexts for $F$ and $G$ in the rule for $\map^{F,G}_H$ would have to
 be empty, but because the polymorphic $\mathit{flatten}$ function is
-natural in some variable, say $\delta$, it cannot possibly have a type
-of the form $\Nat^\emptyset F\, G$ as would be required for it to be
-the function input to $\map$. Untypeability of this instance of $\map$
-is unsatisfactory in a polymorphic calculus, where we naturally expect
-to be able to manipulate entire polymorphic functions rather than just
+natural in $\beta$ it cannot possibly have a type of the form
+$\Nat^\emptyset F\, G$ as would be required for it to be the function
+input to $\map$. Untypeability of this instance of $\map$ is
+unsatisfactory in a polymorphic calculus, where we naturally expect to
+be able to manipulate entire polymorphic functions rather than just
 their monomorphic instances, but the ``extra'' variables $\ol \gamma$
 remedy the situation, ensuring that the instance of $\map$ needed to
 map the polymorphic $\mathit{flatten}$ function is typeable as
@@ -845,9 +833,15 @@ Our calculus is expressive enough to define a function
 $\mathit{reversePTree :
   \Nat^\alpha\,(\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)}$
 that reverses the order of the leaves in a perfect tree. This function
-maps, e.g., the perfect tree $((1,2),(3,4))$ to $((4,3),(2,1))$
-{\color{red} CHANGE TO $pnil/pnode$ NOTATION?}, and
-can be defined as
+maps, e.g., the perfect tree
+\[\mathit{pnode}\,(\mathit{pnode}\,
+(\mathit{pleaf}\,1,\mathit{pleaf}\,2))\,(\mathit{pnode}\,
+(\mathit{pleaf}\,3,\mathit{pleaf}\,4) )\]
+to the perfect tree
+\[\mathit{pnode}\,(\mathit{pnode}\,
+(\mathit{pleaf}\,4,\mathit{pleaf}\,3))\,(\mathit{pnode}\,
+(\mathit{pleaf}\,2,\mathit{pleaf}\,1) )\] i.e., maps $((1,2),(3,4))$
+to $((4,3),(2,1))$.  It can be defined as
 \[\vdash (\fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,
   \alpha})_\emptyset \, s : \Nat^{\alpha}
 (\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)\] where
@@ -893,7 +887,7 @@ function maps, e.g., the bush
 (\mathit{bcons}\, 2 \, (\mathit{bcons}\, (\mathit{bcons}\, 3\,
 \mathit{bnil})\,  \mathit{bnil}))\, \mathit{bnil})\, \mathit{bnil}))
 \end{array}\]
-to
+to the bush
 \[\begin{array}{c}
 \hspace*{-1.64in}\mathit{bcons}\,3\, (\mathit{bcons}\, (\mathit{bcons}\, 0
 \,(\mathit{bcons}\, (\mathit{bcons}\, 2 \, \mathit{bnil}) \,
@@ -1126,11 +1120,6 @@ is defined by:
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \end{defi}
-%The interpretations in Definition~\ref{def:set-sem} respect weakening,
-%i.e., a type and its weakenings have the same set interpretations.
-%
-%= \setsem{\Gamma \vdash \sigma} \rho \to
-%\setsem{\Gamma \vdash \tau} \rho$, as expected {\color{blue} by IEL}.
 If $\rho \in \setenv$ and $\vdash F$ then we write $\setsem{\vdash F}$
 instead of $\setsem{\vdash F}\rho$ since the environment is
 immaterial. The third clause of Definition~\ref{def:set-sem} does
@@ -2250,17 +2239,16 @@ T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
 and 
 \begin{equation}\label{eq:iel-fix-point-intermediate2}
 \begin{split}
-& \relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
+& \relsem{\Gamma; \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
     := T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha := \Eq_A]} \\
-=\;\; & \relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash J} \Eq_{\rho}
+=\;\; & \relsem{\Gamma; \phi, \ol{\alpha} \vdash J} \Eq_{\rho}
 [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}
 \end{split}
 \end{equation}
-{\color{red}(Notice that we don't know what's in the context
-  $\Phi'$.)}  We prove Equation~\ref{eq:iel-fix-point-intermediate1}
-by induction on $n$.  The case $n=0$ is trivial, because
-$T^0_{H,\Eq_{\rho}} K_0 = K_0$ and $(T^\set_{H,\rho})^0 K_0 = K_0$;
-the inductive step is proved by the following sequence of equalities:
+We prove Equation~\ref{eq:iel-fix-point-intermediate1} by induction on
+$n$.  The case $n=0$ is trivial, because $T^0_{H,\Eq_{\rho}} K_0 =
+K_0$ and $(T^\set_{H,\rho})^0 K_0 = K_0$; the inductive step is proved
+by the following sequence of equalities:
 \[
 \begin{split}
 T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
@@ -2296,34 +2284,34 @@ induction on $J$. The only interesting cases, though, are when $J =
 \item The case $J = \phi \ol G$ is proved by the sequence of equalities:
 \[
 \begin{split}
-& \relsem{\Gamma; {\color{red} \Phi',} \phi, \ol{\alpha} \vdash \phi
+& \relsem{\Gamma; \phi, \ol{\alpha} \vdash \phi
     \ol{G}} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
   \overline{[\alpha := \Eq_A]}
   \\
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; {\color{red} \Phi',}
+&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
         \Eq_A]}} \\ 
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; {\color{red} \Phi',}
+&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
         \Eq_A]}} \\ 
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; {\color{red}\Phi',}
+&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\set_{H,\rho})^{n}
         K_0] \overline{[\alpha := A]}}} \\ 
 &= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
-        {\color{red}\Phi',} \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
+        \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
           A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
-        {\color{red}\Phi',} \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
+        \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
         (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
           A]}}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
-      {\color{red}\Phi',} \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
+      \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
       \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
         \Eq_A]}} \\ 
-&= \relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash \phi \ol{G}}
+&= \relsem{\Gamma; \phi, \ol{\alpha} \vdash \phi \ol{G}}
   \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^{n} K_0}]
   \overline{[\alpha := \Eq_A]} 
 \end{split}
@@ -2339,26 +2327,26 @@ Equation~\ref{eq:iel-fix-point-intermediate1}.
 is proved by the sequence of equalities 
 \[
 \begin{split}
-& \relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda
+& \relsem{\Gamma; \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda
     \ol{\beta}.\, G) \ol{K}} 
   \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
   [\overline{\alpha := \Eq_A}] \\
 &= (\mu {T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
-  \,\ol{\relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
 &= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
-  \,(\ol{\relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\ 
 &= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}})
-  \,\ol{\relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
+  \,\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
   [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]} \\ 
-&= \relsem{\Gamma; {\color{red}\Phi',} \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
+&= \relsem{\Gamma; \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
   \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_{A}}]
 \end{split}
 \]
@@ -2388,12 +2376,12 @@ and the inductive case is proved by: \\
         := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi :=
       \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
         \Eq_A}]}\,K_0) \\
-&= \lambda \ol{R}. \relsem{\Gamma; {\color{red}\phi, \ol\alpha,} \psi,
+&= \lambda \ol{R}. \relsem{\Gamma; \psi,
     \ol\beta \vdash G} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}}
     K_0][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G, \Eq_{\rho}[\phi
         := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
           \Eq_A}]}\,K_0][\overline{\beta := R}] \\
-&= \lambda \ol{R}. \relsem{\Gamma; {\color{red}\phi, \ol\alpha,} \psi,
+&= \lambda \ol{R}. \relsem{\Gamma; \psi,
     \ol\beta \vdash G} \Eq_{\rho} [\phi := \Eq_{(T^{\set}_{H,\rho})^n
       K_0}][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G,
       \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n
@@ -2445,47 +2433,54 @@ $\graph{\setsem{\Gamma; \Phi \vdash F} f} = \relsem{\Gamma; \Phi
 \proof
 Applying Lemma~\ref{lem:rel-transf-morph} to the morphisms $(f,
 \id_{\rho'}) : \graph{f} \to \Eq_{\rho'}$ and $(\id_{\rho}, f) :
-\Eq_{\rho} \to \graph{f}$ of relation environments gives that
-$(\setsem{\Gamma; \Phi \vdash F}f, \setsem{\Gamma; \Phi \vdash
-  F}\id_{\rho'}) = \relsem{\Gamma; \Phi \vdash F} (f, \id_{\rho'}) :
+\Eq_{\rho} \to \graph{f}$ of relation environments gives 
+\[\begin{array}{ll}
+  & (\setsem{\Gamma; \Phi \vdash F}f, \setsem{\Gamma; \Phi \vdash
+  F}\id_{\rho'})\\
+= & \relsem{\Gamma; \Phi \vdash F} (f, \id_{\rho'}) :
 \relsem{\Gamma; \Phi \vdash F}\graph{f} \to \relsem{\Gamma; \Phi
-  \vdash F}\Eq_{\rho'}$ and $(\setsem{\Gamma; \Phi \vdash
-  F}\id_{\rho}, \setsem{\Gamma; \Phi \vdash F}f) = \relsem{\Gamma;
-  \Phi \vdash F} (\id_{\rho}, f) : \relsem{\Gamma; \Phi \vdash
-  F}\Eq_{\rho} \to \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+  \vdash F}\Eq_{\rho'}
+\end{array}\] and
+\[\begin{array}{ll}
+  & (\setsem{\Gamma; \Phi \vdash F}\id_{\rho}, \setsem{\Gamma; \Phi
+  \vdash F}f)\\
+= & \relsem{\Gamma; \Phi \vdash F} (\id_{\rho}, f) : \relsem{\Gamma;
+  \Phi \vdash F}\Eq_{\rho} \to \relsem{\Gamma; \Phi \vdash
+  F}\graph{f}
+\end{array}\] 
+
 Expanding the first equation gives that if $(x,y) \in \relsem{\Gamma;
-  \Phi \vdash F}\graph{f}$ then $(\setsem{\Gamma; \Phi \vdash F} f\,
+  \Phi \vdash F}\graph{f}$ then
+\[(\setsem{\Gamma; \Phi \vdash F} f\,
 x, \setsem{\Gamma; \Phi \vdash F}\id_{\rho'}\, y) \in \relsem{\Gamma;
-  \Phi \vdash F}\Eq_{\rho'}$. So $\setsem{\Gamma; \Phi \vdash
+  \Phi \vdash F}\Eq_{\rho'}\] So $\setsem{\Gamma; \Phi \vdash
   F}\id_{\rho'}\, y = \id_{\setsem{\Gamma; \Phi \vdash F}\rho'}\, y =
 y$ and $\relsem{\Gamma; \Phi \vdash F}\Eq_{\rho'} =
 \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$, and if $(x,y) \in
 \relsem{\Gamma; \Phi \vdash F}\graph{f}$ then $(\setsem{\Gamma; \Phi
   \vdash F} f\, x, y) \in \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho'}$,
 i.e., $\setsem{\Gamma; \Phi \vdash F} f\, x = y$, i.e., $(x, y) \in
-\graph{\setsem{\Gamma; \Phi \vdash F} f}$.  So, we have that
+\graph{\setsem{\Gamma; \Phi \vdash F} f}$.  So, we have
 $\relsem{\Gamma; \Phi \vdash F}\graph{f} \subseteq
-\graph{\setsem{\Gamma; \Phi \vdash F}f}$.  Expanding the second
-equation gives that if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$ then
-$(\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x,$\\
-$\setsem{\Gamma; \Phi
-  \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.  Then
-$\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x = \id_{\setsem{\Gamma;
-    \Phi \vdash F}\rho} x = x$, so for any $x \in \setsem{\Gamma; \Phi
-  \vdash F}\rho$ we have that $(x, \setsem{\Gamma; \Phi \vdash F}f\,
-x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.  Moreover, $x \in
-\setsem{\Gamma; \Phi \vdash F}\rho$ if and only if $(x,
-\setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi
-    \vdash F}f}$ and, if $x \in \setsem{\Gamma; \Phi \vdash F}\rho$
+\graph{\setsem{\Gamma; \Phi \vdash F}f}$.
+
+Expanding the second equation gives that if $x \in \setsem{\Gamma;
+  \Phi \vdash F}\rho$ then
+\[(\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x, \setsem{\Gamma;
+  \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}\]
+Then $\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x =
+\id_{\setsem{\Gamma; \Phi \vdash F}\rho} x = x$, so for any $x \in
+\setsem{\Gamma; \Phi \vdash F}\rho$ we have that $(x, \setsem{\Gamma;
+  \Phi \vdash F}f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+Moreover, $x \in \setsem{\Gamma; \Phi \vdash F}\rho$ if and only if
+$(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma;
+    \Phi \vdash F}f}$ and, if $x \in \setsem{\Gamma; \Phi \vdash
+  F}\rho$ then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in
+\relsem{\Gamma; \Phi \vdash F} \graph{f}$. Thus, if $(x, \setsem{\Gamma;
+  \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$
 then $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma;
-  \Phi \vdash F} \graph{f}$, so if $(x, \setsem{\Gamma; \Phi \vdash F}
-f\, x) \in \graph{\setsem{\Gamma; \Phi \vdash F}f}$ then $(x,
-\setsem{\Gamma; \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash
-  F} \graph{f}$, i.e., $\graph{\setsem{\Gamma; \Phi \vdash F}f}
-\subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.
-\qed
-
-
+  \Phi \vdash F} \graph{f}$, i.e., $\graph{\setsem{\Gamma; \Phi \vdash
+    F}f} \subseteq \relsem{\Gamma; \Phi \vdash F} \graph{f}$.  \qed
 
 \begin{comment}
 
@@ -2576,11 +2571,12 @@ Figure~\ref{fig:term-sem}, where $\mathsf D$ is either $\set$ or
 $\rel$ as appropriate.
 \end{defi}
 
-\subsection{Basic Properties of Term Interpretations}
-
-The interpretations in Definition~\ref{def:set-interp} respect
-weakening, i.e., a term and its weakenings all have the same set and
-relational interpretations. Specifically, for any $\rho \in \setenv$,
+If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
+: F$, then we write $\dsem{\vdash t : F}$ instead of $\dsem{\emptyset;
+  \emptyset~|~\emptyset \vdash t : F}$.  The interpretations in
+Definition~\ref{def:set-interp} respect weakening, i.e., a term and
+its weakenings all have the same set and relational
+interpretations. Specifically, for any $\rho \in \setenv$,
 \[\setsem{\Gamma;\Phi \,|\, \Delta, x : F \vdash t : G}\rho =
 (\setsem{\Gamma;\Phi \,|\, \Delta \vdash t : G}\rho) \circ
 \pi_{\Delta}\] where $\pi_{\Delta}$ is the projection
@@ -2698,13 +2694,11 @@ and
 
 \noindent
 so it specializes to the standard interpretations for System F terms.
-If $t$ is closed, i.e., if $\emptyset; \emptyset~|~\emptyset \vdash t
-: F$, then we write $\dsem{\vdash t : F}$ instead of $\dsem{\emptyset;
-  \emptyset~|~\emptyset \vdash t : F}$.  Moreover, term interpretation
-respects substitution for both functorial and non-functorial type
-variables, as well as term substitution, i.e., if $\Gamma,\alpha;\Phi
-\,|\, \Delta \vdash t : F$ and $\Gamma;\Phi,\alpha \,|\, \Delta \vdash
-t' : F$ and $\Gamma;\Phi \vdash G$ then
+Term interpretation also respects substitution for both functorial and
+non-functorial type variables, as well as term substitution. That is,
+if $\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : F$ and
+$\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : F$ and $\Gamma;\Phi
+\vdash G$ then
 \[\dsem{\Gamma;\Phi \,|\, \Delta[\alpha := G] \vdash t[\alpha :=
     G] : F[\alpha := G]}\rho = \dsem{\Gamma,\alpha;\Phi \,|\, \Delta
   \vdash t : F }\rho [ \alpha := \dsem{\Gamma;\Phi\vdash G}\rho ]\]
@@ -2716,7 +2710,7 @@ and
 \vspace*{0.05in}
 
 \noindent
-Moreover, if $\Gamma;\Phi \,|\, \Delta, x: G \vdash t : F$ and $\Gamma;\Phi
+and if $\Gamma;\Phi \,|\, \Delta, x: G \vdash t : F$ and $\Gamma;\Phi
 \,|\, \Delta \vdash s : G$ then
 \[\lambda A.\, \dsem{\Gamma;\Phi \,|\, \Delta \vdash t[x := s] :
   F }\rho \, A = \lambda A.\,\dsem{\Gamma;\Phi \,|\, \Delta, x: G
@@ -2726,30 +2720,30 @@ Moreover, if $\Gamma;\Phi \,|\, \Delta, x: G \vdash t : F$ and $\Gamma;\Phi
 \vspace*{0.05in}
 
 \noindent
-Direct calculation reveals that term interpretations also satisfy
+Direct calculation further reveals that term interpretations also
+satisfy
 \[\dsem{\Gamma; \Phi~|~\Delta \vdash
   (L_{\ol{\alpha}}x.t)_{\ol{K}}s} = \dsem{\Gamma; \Phi~|~\Delta \vdash
   t [\ol{\alpha := K}][x := s]}\] Term extensionality for both types
-and terms --- i.e., $\dsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha
-  \top : F} = \dsem{\Gamma;\Phi \vdash t : F}$ and
-$\dsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha x : F} =
-\dsem{\Gamma;\Phi \vdash t : F}$ --- follow (when both sides of these
-equations are defined).
+and terms --- i.e., \[\dsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha
+  \top : F} = \dsem{\Gamma;\Phi \vdash t : F}\] and
+\[\dsem{\Gamma;\Phi\vdash (L_\alpha x.t)_\alpha x : F} =
+\dsem{\Gamma;\Phi \vdash t : F}\] --- then follow (assuming both sides
+of these equations are defined).
 
 \section{Free Theorems for Nested Types}\label{sec:free-theorems}
 
-\subsection{Consequences of Naturality}\label{sec:Nat-type-terms}
+\subsection{Naturality and Its Consequences}\label{sec:Nat-type-terms}
 
-Define, for $\Gamma; \ol{\alpha} \vdash F$, the {\em identity} $\id_F$
-on $F$ to be
-\[\id_F = \Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
-\Nat^{\ol{\alpha}} F\,F\] and, for terms $\Gamma; \emptyset \,|\,
-\Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset
-\,|\, \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$, the {\em
-  composition} $s \circ t$ of $t$ and $s$ to be \[s \circ t = \Gamma;
-\emptyset\,|\, \Delta \vdash L_{\overline{\alpha}}
-x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
-\Nat^{\overline{\alpha}} F\,H\] Then \[\setsem{\Gamma; \emptyset \,|\,
+If $\Gamma; \ol{\alpha} \vdash F$ then the {\em identity} $\id_F$ on
+$F$ is defined by $\id_F = \Gamma;\emptyset~|~\emptyset \vdash
+L_{\ol{\alpha}}x.x : \Nat^{\ol{\alpha}} F\,F$, and if $\Gamma;
+\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and
+$\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}}
+G\,H$ are terms then the {\em composition} $s \circ t$ of $t$ and $s$
+is defined by $s \circ t = \Gamma; \emptyset\,|\, \Delta \vdash
+L_{\overline{\alpha}} x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
+\Nat^{\overline{\alpha}} F\,H$. Then \[\setsem{\Gamma; \emptyset \,|\,
   \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
 \id_{\lambda \ol{A}. \setsem{\Gamma; \ol{\alpha} \vdash F} \rho
   [\ol{\alpha := A}]}\] for any set environment $\rho$, and
@@ -2757,9 +2751,10 @@ x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
   \Nat^{\overline{\alpha}} F\,H} = \setsem{\Gamma; \emptyset \,|\,
   \Delta \vdash s: \Nat^{\overline{\alpha}} G\,H} \circ
 \setsem{\Gamma; \emptyset \,|\, \Delta \vdash t:
-  \Nat^{\overline{\alpha}} F\,G}\] Straightforward calculation shows
-that terms of $\Nat$-type behave as natural transformations with
-respect to their source and target functorial types, i.e., we have
+  \Nat^{\overline{\alpha}} F\,G}\]
+Straightforward calculation shows that terms of $\Nat$-type behave as
+natural transformations with respect to their source and target
+functorial types, i.e., that
 \begin{thm}\label{eq:ft-from-nat} 
   If\, $\Gamma; \emptyset \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
   \overline{\gamma}} F\,G$ and $\overline{\Gamma; \emptyset \,|\,
@@ -2782,42 +2777,16 @@ respect to their source and target functorial types, i.e., we have
 \end{array}\]
 \end{thm}
 \noindent
-%{\color{red} When $s = \mathsf{in}_H$, and
-%$\overline{\Gamma; \emptyset \,|\, t :
-% \Nat^{\overline{\gamma}} F\, G}$,
-%and $\xi = \Nat^{\overline{\gamma}} H[\phi :=
-%  (\mu \phi. \lambda \overline{\alpha}. H)
-%  \overline{\beta}][\overline{\alpha := F}]\, (\mu \phi. \lambda
-%\overline{\alpha}. H)\overline{G}$, Theorem~\ref{eq:ft-from-nat}
-%specializes to
-%\begin{equation}\label{thm:subst}
-%\begin{array}{l}
-%\hspace*{0.135in}\setsem{\Gamma; \emptyset \,|\, \Delta \vdash
-%((\map_{(\mu \phi. \lambda
-%    \overline{\alpha}. H) \overline{\beta}}^{\overline{F},
-%    \overline{G}})_\emptyset\, \overline{t}) \circ (L_{\overline{\gamma}} z.
-%  (\tin_{H})_{\overline{F},
-%  \overline{\gamma}} z) : \xi}\\
-%= \setsem{\Gamma; \emptyset \,|\, \Delta
-%\vdash (L_{\overline{\gamma}} z. (\tin_H)_{\overline{G},
-%  \overline{\gamma}} z) \circ
-%  ((\map_{H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)
-%      \overline{\beta}]}^{\overline{F},
-%    \overline{G}})_\emptyset\, \overline{t})
-%  : \xi}
-%\end{array}
-%\end{equation}
-%\noindent
-%stating that $\map$ and $\tin$ commute.}  More generally,
-Theorem~\ref{eq:ft-from-nat} gives a family of free theorems that are
-consequences of naturality, and thus do not require the full power of
-parametricity. All of Wadler's free theorems apart from short cut
-fusion are in this family.  We can also prove that the interpretation
-of every $\map_H$ is a functor, and that $\map$ is itself a
-higher-order functor. For example, the former property can be stated
-as: if $\Gamma; \ol\alpha, \ol\gamma \vdash H$, $\ol{\Gamma; \emptyset
-  \,|\, \Delta \vdash g : \Nat^{\ol\gamma} F \, G}$, and $\ol{\Gamma;
-  \emptyset \,|\, \Delta \vdash f : \Nat^{\ol\gamma} G \, K}$, then
+
+Theorem~\ref{eq:ft-from-nat} gives rise to an entire family of free
+theorems that are consequences of naturality, and thus do not require
+the full power of parametricity. In particular, we can prove all of
+the standard properties of the initial algebraic constructs $\map$,
+$\tin$, and $\fold$. We have, for example, that the interpretation of
+every $\map_H$ is a functor, i.e., if $\Gamma; \ol\alpha, \ol\gamma
+\vdash H$, $\ol{\Gamma; \emptyset \,|\, \Delta \vdash g :
+  \Nat^{\ol\gamma} F \, G}$, and $\ol{\Gamma; \emptyset \,|\, \Delta
+  \vdash f : \Nat^{\ol\gamma} G \, K}$, then
   \begin{align*}
 &\setsem{
 \Gamma; \emptyset \,|\, \Delta \vdash 
@@ -2830,162 +2799,65 @@ as: if $\Gamma; \ol\alpha, \ol\gamma \vdash H$, $\ol{\Gamma; \emptyset
   (\map^{\ol{F}, \ol{G}}_H \,)_{\emptyset} \, \ol{g}
   : \Nat^{\ol\gamma} H[\ol{\alpha := F}] \, H[\ol{\alpha := K}]}
 \end{align*}
-\noindent
-We can also prove the expected properties of $\map$, $\tin$, and
-$\fold$, and their interpretations, e.g., that uniqueness and the
-universal property of the interpretation of $\fold$, and that the
-interpretation of $\tin$ is an isomorphism. 
-
-{\color{red} INCLUDE THEOREMS AND PROOFS?}
-
-{\color{red} WAS HERE, BUT CONSEQ OF NAT OR MORE GENERAL?} Further,
-our calculus admits no terms with the type $\Nat^\alpha \onet
-\,\alpha$ of the polymorphic bottom, and every closed term $g$ of type
-$\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic identity
-function.
-
-\subsection{Properties of Initial Algebraic Constructs}\label{sec:iaps}
-
-Our semantics interprets applications of $\map$ as applications of
-semantic $\mathit{map}$ functions.
-\begin{comment}
-Indeed, if \(\Gamma; \ol{\phi},
-\ol{\gamma} \vdash H\), \(\ol{\Gamma; \emptyset, \ol{\gamma} \vdash
-  F}\), and \(\ol{\Gamma; \Phi, \emptyset, \ol{\gamma} \vdash G}\),
-%and $\Gamma;\Phi\,|\,\Delta \vdash t :
-%\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G$
-then 
-Definition~\ref{def:set-interp} gives
-%\begin{multline}\label{eq:map-sem-def}
-\begin{align}
-& \setsem{
-\Gamma;\Phi \,|\, \Delta
-\vdash \map^{\ol{F},\ol{G}}_H \,\ol t
-: %\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\; {}
-\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi :=_{\ol{\beta}} G}]
-} \rho \nonumber \\ 
-=\;\; & \lambda d\, \ol{\eta}\,\ol{B}.\,
-\setsem{\Gamma; \ol{\phi},\ol{\gamma}\vdash H}
-\id_{\rho[\ol{\gamma := B}]}[\ol{\phi := \lambda
-    \ol{A}.\eta_{\ol{A}\,\ol{B}}}] \label{eq:map-sem-def}
-\end{align}
-%\end{multline}
-\end{comment}
-In particular, if $\Gamma; \ol{\alpha} \vdash H$, $\ol{\Gamma;
-  \emptyset \vdash F}$, and $\ol{\Gamma; \emptyset \vdash G}$, then
-Definition~\ref{def:set-interp} gives, for all $\ol{f :
-  \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset F\,G}\rho}$, that
+In fact, we have that if $\Gamma; \ol{\alpha} \vdash H$, $\ol{\Gamma;
+  \emptyset \vdash F}$, and $\ol{\Gamma; \emptyset \vdash G}$, then,
+for all $\ol{f : \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset
+    F\,G}\rho}$,
 \[\begin{array}{rl}
 &\setsem{ \Gamma;\emptyset\,|\,\ol{x : \Nat^\emptyset F \, G}
   \vdash (\map^{\ol{F},\ol{G}}_H)_\emptyset\,\ol x :
   \Nat^{\emptyset}\,H[\ol{\alpha := F}]\,H[\ol{\alpha := G}]}
 \rho\,\ol f\\ =& \setsem{\Gamma; \ol{\alpha}\vdash H}
 \id_{\rho}[\ol{\alpha := f}] \\ =&
-%\lambda \ol{f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma%; \emptyset \vdash \tau}\rho}.\,
 \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
-%=& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
-\end{array}
-\]
-\begin{comment}
-\[\begin{array}{rl}
-&\setsem{
-\Gamma;\emptyset \,|\, \emptyset
-\vdash \map^{\ol{\sigma},\ol{\tau}}_H
-: \Nat^\emptyset\;(\ol{\Nat^{\emptyset}\,\sigma\,\tau})\; {}
-(\Nat^{\emptyset}\,H[\ol{\alpha := \sigma}]\,H[\ol{\alpha := \tau}])
-} \rho\, \ast \\
-=& \lambda \ol{f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma; \emptyset \vdash \tau}\rho}.\,
-\setsem{\Gamma; \ol{\alpha}\vdash H}
-\id_{\rho}[\ol{\alpha := f}] \\
-=& \lambda \ol{f : \setsem{\Gamma; \emptyset \vdash \sigma}\rho \to \setsem{\Gamma; \emptyset \vdash \tau}\rho}.\,
-\mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]} \ol{f} \\
-=& \mathit{map}_{\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho [\ol{\alpha := A}]}
-\end{array}
-\]
-\end{comment}
-
-\vspace*{0.05in}
-
-\noindent
+\end{array}\]
 Here, we obtain the first equality from the appropriate instance of
 Definition~\ref{def:set-interp}, and the second one by noting that
 $\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho
 [\ol{\alpha := A}]$ is a functor in $\alpha$ and using
 $\mathit{map}_G\,\ol f$ to denote the action of the semantic functor
-$G$ on morphisms $\ol f$.
-
-\vspace*{0.1in}
-
-We have the expected properties of the interpretations of $\map$,
-$\tin$, and $\fold$, namely:
+$G$ on morphisms $\ol f$. We also have, e.g., that:
 
 \vspace*{0.1in}
 
 \noindent
-$\bullet$\;  If
-$\Gamma; \ol{\psi}, \ol{\gamma} \vdash H$,\;
-$\ol{\Gamma; \ol{\alpha}, \ol{\gamma}, \ol{\phi} \vdash K}$,\;
-$\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}$,\; and
-$\ol{\Gamma; \ol{\beta}, \ol{\gamma} \vdash G}$,
-then
+$\bullet$\; $\map$ is a higher-order functor, i.e., if $\Gamma;
+\ol{\psi}, \ol{\gamma} \vdash H$,\; $\ol{\Gamma; \ol{\alpha},
+  \ol{\gamma}, \ol{\phi} \vdash K}$,\; $\ol{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F}$,\; $\ol{\Gamma; \ol{\beta}, \ol{\gamma}
+  \vdash G}$, and $\xi = \Nat^{\emptyset} (\ol{\Nat^{\ol{\alpha},
+    \ol{\beta}, \ol{\gamma}} F\, G})\, (\Nat^{\ol{\gamma}} H[\ol{\psi
+    := K}][\ol{\phi := F}]\, H[\ol{\psi := K}][\ol{\phi := G}])$, then
+
+\vspace*{-0.08in}
+
 \[\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash
 \map_{H[\ol{\psi := K}]}^{\ol{F}, \ol{G}} : \xi} = \setsem{\Gamma;
   \emptyset \,|\, \emptyset \vdash L_\emptyset \ol
-  z. (\map_H^{\ol{K[\ol{\phi := F}]}, 
-    \ol{K[\ol{\phi := G}]}})_\emptyset \,(\ol{(\map_K^{\ol{F}, \ol{G}})_\emptyset \, \ol z}) :
-  \xi}\]
-for $\xi = \Nat^{\emptyset} (\ol{\Nat^{\ol{\alpha}, \ol{\beta},
-    \ol{\gamma}} F\, G})\, (\Nat^{\ol{\gamma}} H[\ol{\psi :=
-    K}][\ol{\phi := F}]\, H[\ol{\psi := K}][\ol{\phi := G}])$
+  z. (\map_H^{\ol{K[\ol{\phi := F}]}, \ol{K[\ol{\phi :=
+          G}]}})_\emptyset \,(\ol{(\map_K^{\ol{F}, \ol{G}})_\emptyset
+    \, \ol z}) : \xi}\]
 
-\vspace*{0.18in}
+\vspace*{0.1in}
 
 \noindent
-$\bullet$\; If $\Gamma; \overline{\beta}, \overline{\gamma} \vdash
-H$,\; $\Gamma; \overline{\beta}, \overline{\gamma} \vdash K$,\;
-$\overline{\Gamma; \overline{\alpha}, \overline{\gamma} \vdash F}$,\;
-$\overline{\Gamma; \emptyset, \overline{\alpha}, \overline{\gamma}
-  \vdash G}$,\; 
-$\overline{\Gamma; \phi, \overline{\psi}, \overline{\gamma} \vdash
-  M}$,\; $\overline{I}$ is the sequence $\overline{F}, H$,\;
-$\overline{J}$ is the sequence $\overline{G}, K$, and $\Gamma;
-\emptyset\,|\,\Delta \vdash s : \Nat^{\overline{\beta},
-  \overline{\gamma}} H\, K$ and $\ol{\Gamma; \emptyset \,|\,\Delta \vdash
-  t : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G}$, then
-\[\hspace*{0.13in}\setsem{\Gamma; \emptyset \,|\, \Delta
-    \vdash L_{\overline{\gamma}} z.\,
-    s_{\overline{M [\overline{\psi := G}] [\phi := K]},
-      \overline{\gamma}} \Big(\big( (\map_{H}^{\overline{M
-        [\overline{\psi := F}] [\phi := H]}, \overline{M
-        [\overline{\psi := G}] [\phi := K]}})_\emptyset
-    (\overline{(\map_{M}^{\overline{I}, \overline{J}})_\emptyset
-      (s, \overline{t})}) \big)_{\overline{\gamma}} z \Big) : \xi}\]
-\[= \setsem{\Gamma; \emptyset\,|\, \Delta \vdash
-    L_{\overline{\gamma}} z.\, \big( (\map_{K}^{\overline{M
-      [\overline{\psi := F}] [\phi := H]}, \overline{M [\overline{\psi
-          := G}] [\phi := K]}})_\emptyset (\overline{(\map_{M}^{\overline{I},
-    \overline{J}})_\emptyset (s, \overline{t})}) \big)_{\overline{\gamma}} \Big(
-s_{\overline{M [\overline{\psi := F}] [\phi := H]}, \overline{\gamma}}
-z \Big) : \xi}\] for $\xi = \Nat^{\overline{\gamma}}\,
-  H[\overline{\beta:= M}] [\overline{\psi := F}] [\phi := H]\;
-  K[\overline{\beta := M}] [\overline{\psi := G}] [\phi := K]$
-
-\vspace*{0.18in}
-
-\noindent
-$\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}\,
-H[\phi := (\mu \phi. \lambda
+$\bullet$\; $\fold$ satisfies its universal property, i.e., if $\xi =
+\Nat^{\overline{\beta}{\color{red}, \overline{\gamma}}}\, H[\phi :=
+  (\mu \phi. \lambda
   \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}]\;
 F$, then
-\[\hspace*{-0.72in}\setsem{\Gamma; \emptyset \,|\, x:
-  \Nat^{\overline{\beta}, \overline{\gamma}} H[\phi :=
+
+\vspace*{-0.05in}
+
+\[\hspace*{-1in}\setsem{\Gamma; \emptyset \,|\, x:
+  \Nat^{\overline{\beta}{\color{red}, \overline{\gamma}}} H[\phi :=
     F][\overline{\alpha := \beta}]\, F \vdash ((\fold_{H,
     F})_{\emptyset} x) \circ \tin_{H} : \xi}\]
 
 \vspace*{-0.15in}
 
-\[= \setsem{ \Gamma; \emptyset \,|\, x: \Nat^{\overline{\beta},
-    \overline{\gamma}} H[\phi := F][\overline{\alpha := \beta}]\, F
+\[= \setsem{ \Gamma; \emptyset \,|\, x: \Nat^{\overline{\beta}{\color{red},
+    \overline{\gamma}}} H[\phi := F][\overline{\alpha := \beta}]\, F
   \vdash x \circ \big( (\map_{H [\ol{\alpha := \beta}]}^{(\mu
     \phi. \lambda \overline{\alpha} H) \overline{\beta},
     F})_\emptyset ((\fold_{H, F})_{\emptyset} x) \big) : \xi}\]
@@ -2993,10 +2865,14 @@ F$, then
 \vspace*{0.1in}
 
 \noindent
-$\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}\, (\mu
-\phi. \lambda \overline{\alpha}. H)\overline{\beta}\; (\mu
-\phi. \lambda \overline{\alpha}. H)\overline{\beta}$, then
-\[\setsem{\Gamma; \emptyset \,|\, \emptyset
+$\bullet$\; $\tin$ has a right inverse, i.e., if $\xi =
+\Nat^{\overline{\beta}{\color{red}, \overline{\gamma}}}\, (\mu \phi. \lambda
+\overline{\alpha}. H)\overline{\beta}\; (\mu \phi. \lambda
+\overline{\alpha}. H)\overline{\beta}$, then
+
+\vspace*{-0.05in}
+
+\[\hspace*{0.43in}\setsem{\Gamma; \emptyset \,|\, \emptyset
   \vdash \tin_H \circ (\fold_{H, H[\phi := (\mu \phi. \lambda
       \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
   ((\map_{H}^{H[\phi := (\mu \phi. \lambda
@@ -3007,17 +2883,19 @@ $\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}\, (\mu
 
 \vspace*{-0.15in}
 
-\[\hspace*{-3.46in} = \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \mathit{id}_{(\mu
-    \phi. \lambda \overline{\alpha}. H)\overline{\beta}} : \xi}\]
+\[\hspace*{-3.46in} = \setsem{\Gamma; \emptyset \,|\, \emptyset \vdash \mathit{id}_{(\mu  \phi. \lambda \overline{\alpha}. H)\overline{\beta}} : \xi}\]
 
 \vspace*{0.15in}
 
 \noindent
-$\bullet$\; If $\xi = \Nat^{\overline{\beta}, \overline{\gamma}}
-H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]\,
-H[\phi := (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]$,
-then
-\[\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash
+$\bullet$\; $\tin$ has a left inverse, i.e., if $\xi =
+\Nat^{\overline{\beta}{\color{red}, \overline{\gamma}}} H[\phi := (\mu
+  \phi. \lambda \overline{\alpha}. H)\overline{\beta}]\, H[\phi :=
+  (\mu \phi. \lambda \overline{\alpha}. H)\overline{\beta}]$, then
+
+\vspace*{-0.05in}
+
+\[\hspace*{0.41in}\setsem{\Gamma; \emptyset \,|\, \emptyset \vdash
 (\fold_{H, H[\phi := (\mu \phi. \lambda
       \overline{\alpha}. H)\overline{\beta}]})_{\emptyset}
   ((\map_{H}^{H[\phi := (\mu \phi. \lambda
@@ -3036,187 +2914,16 @@ then
 
 \noindent
 Analogous results hold for relational interpretations of terms and
-relational environments.
-
-\begin{comment}
-\subsection{Free Theorems Derived from Naturality}\label{sec:ft-nat}
-
-In our setting, free theorems of a certain familiar form are derivable
-directly from the semantic properties of $\Nat$-types. Indeed, the
-following theorem is immediate from Equation~\ref{thm:subst}, by taking
-$\gamma$ to be empty, expanding the interpretations on the left- and
-right-hand sides, and using the fact from Section~\ref{sec:iaps} that
-$\map$ terms are interpreted as semantic $\mathit{map}$ functions:
-\begin{thm}\label{thm:ft-nat}
-If\, $\Gamma; \ol\alpha \vdash F : \F$,\, $\Gamma; \ol\alpha \vdash G :
-\F$, $\rho : \setenv$, $x \in \setsem{\Gamma; \emptyset \vdash
-  \Nat^{\ol\alpha} F\, G } \rho$, and, for vectors of length
-$|\ol\alpha|$, \, $\ol{\Gamma; \emptyset \vdash \sigma : \F}$,\,
-$\ol{\Gamma; \emptyset \vdash \tau: \F}$, and $\ol{y \in
-  \setsem{\Gamma; \emptyset \vdash \Nat^{\emptyset} \sigma\, \tau }
-  \rho}$, then
-\[\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
-  \circ x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}} =
-  x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} } \circ
-  \mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash F} \rho[\ol{\alpha :=
-        \_}]} \, \ol{y}\]
-\end{thm}
-\noindent
-%INCORRECT
-%In particular, for $\ol{A, B: \set}$, variables $\ol{v}$ and $\ol{w}$
-%with $\ol{\rho v = A}$ and $\ol{\rho w = B}$, and functions $\ol{f : A
-%  \to B}$, the following holds: $\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash G}
-%  \rho[\ol{\alpha := \_}]} \ol{f} \circ x_{\ol{A}} = x_{\ol{B}} \circ
-%\mathit{map}_{\setsem{\Gamma; \ol\alpha \vdash F} \rho[\ol{\alpha :=
-%      \_}]} \, \ol{f}$.
-A similar result holds for relational interpretations.
-
-Specific instances of Theorem~\ref{thm:ft-nat} include {\color{blue}
-  Wadler free theorems, map-reverse theorems from intro, ???}
-\end{comment}
-
-\begin{comment}
-We already know from Equation~\ref{thm:subst} that 
-\begin{multline}
-\setsem{\Gamma; \emptyset \,|\, x :
-  \Nat^{\overline{\alpha}, 
-    \overline{\gamma}} F\,G, \overline{y : \Nat^{\overline{\gamma}}
-    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) \circ
-  (L_{\overline{\gamma}} z. x_{\overline{\sigma}, \overline{\gamma}}
-  z) : \Nat^{\overline{\gamma}} F[\overline{\alpha := \sigma}]\,
-  G[\overline{\alpha := \tau}]} \\
-= \setsem{ \Gamma; \emptyset \,|\, x
-  : \Nat^{\overline{\alpha}, \overline{\gamma}} F\, G, \overline{y :
-    \Nat^{\overline{\gamma}} \sigma\, \tau} \vdash
-  (L_{\overline{\gamma}} z. x_{\overline{\tau}, \overline{\gamma}} z)
-  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
-  \overline{y}) : \Nat^{\overline{\gamma}} F[\overline{\alpha :=
-      \sigma}]\, G[\overline{\alpha := \tau}]}
-\end{multline}
-
-In particular, for any set environment $\rho$, natural transformation 
-$x \in \setsem{\Gamma; \emptyset \vdash \Nat^{\ol\alpha} F\, G } \rho$, and functions
-$\ol{y \in \setsem{\Gamma; \emptyset \vdash \Nat^{\emptyset} \sigma\, \tau } \rho}$
-(thus specializing to the case where there are no $\gamma$’s), we have
-\begin{multline}
-\setsem{\Gamma; \emptyset \,|\, x :
-  \Nat^{\overline{\alpha}} F\,G, \overline{y : \Nat^{\emptyset}
-    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) \circ
-  (L_{\emptyset} z. x_{\overline{\sigma}}
-  z) : \Nat^{\emptyset} F[\overline{\alpha := \sigma}]\,
-  G[\overline{\alpha := \tau}]} \rho (x, \ol{y}) \\
-= \setsem{ \Gamma; \emptyset \,|\, x
-  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
-    \Nat^{\emptyset} \sigma\, \tau} \vdash
-  (L_{\emptyset} z. x_{\overline{\tau}} z)
-  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
-  \overline{y}) : \Nat^{\emptyset} F[\overline{\alpha :=
-      \sigma}]\, G[\overline{\alpha := \tau}]} \rho (x, \ol{y})
-\end{multline}
-
-Unwinding these interpretations yields
-\begin{multline}
-\setsem{\Gamma; \emptyset \,|\, x :
-  \Nat^{\overline{\alpha}} F\,G, \overline{y : \Nat^{\emptyset}
-    \sigma\, \tau} \vdash ((\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y}) \circ
-  (L_\emptyset z. x_{\overline{\sigma}}
-  z) : \Nat^{\emptyset} F[\overline{\alpha := \sigma}]\,
-  G[\overline{\alpha := \tau}]} \rho \, (x , \ol{y}) \\
-= 
-\setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G, 
-  \overline{y : \Nat^{\emptyset}
-    \sigma\, \tau} \vdash (\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y} } \rho \, (x, \ol{y})
-   \circ
-  \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G 
-   , \overline{y : \Nat^{\emptyset}
-      \sigma\, \tau} \vdash
-   L_{\emptyset} z. x_{\overline{\sigma}}
-  z } \rho \, (x, \ol{y}) \\
-= 
-\setsem{\Gamma; \emptyset \,|\, \overline{y : \Nat^{\emptyset}
-    \sigma\, \tau} \vdash (\map_G^{\overline{\sigma},
-    \overline{\tau}})_{\emptyset} \overline{y} } \rho \, \ol{y}
-   \circ
-  \setsem{\Gamma; \emptyset \,|\, x : \Nat^{\overline{\alpha}} F\,G \vdash
-    L_{\emptyset} z. x_{\overline{\sigma}}
-  z } \rho \, x \\
-= \map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
-  \circ 
-  x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}}
-\end{multline}
-
-
-and 
-\begin{multline}
-\setsem{ \Gamma; \emptyset \,|\, x
-  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
-    \Nat^{\emptyset} \sigma\, \tau} \vdash
-  (L_{\emptyset} z. x_{\overline{\tau}} z)
-  \circ ((\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
-  \overline{y}) : \Nat^{\emptyset} F[\overline{\alpha :=
-      \sigma}]\, G[\overline{\alpha := \tau}]} \rho (x, \ol{y}) \\
-=
-\setsem{ \Gamma; \emptyset \,|\, x
-  : \Nat^{\overline{\alpha}} F\, G, \overline{y :
-    \Nat^{\emptyset} \sigma\, \tau} \vdash
-  L_{\emptyset} z. x_{\overline{\tau}} z)} \rho (x, \ol{y})
-  \circ 
-  \setsem{\Gamma; \emptyset
-  \,|\, x : \Nat^{\overline{\alpha}} F\, G, \overline{y :
-    \Nat^{\emptyset} \sigma\, \tau} \vdash 
-  (\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
-  \overline{y} } \rho (x, \ol{y}) \\
-= \setsem{\Gamma; \emptyset \,|\, x
-  : \Nat^{\overline{\alpha}} F\, G \vdash 
-  L_{\emptyset} z. x_{\overline{\tau}} z} \rho \, x
-  \circ 
-  \setsem{\Gamma;\emptyset \,|\, \overline{y :
-    \Nat^{\emptyset} \sigma\, \tau} \vdash
-    (\map_F^{\overline{\sigma}, \overline{\tau}})_{\emptyset}
-  \overline{y} } \rho \, \ol{y}  \\
-  = x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} }
-  \circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
-    \rho[\ol{\alpha := \_}]} \, \ol{y}
-\end{multline}
-
-
-So, we can conclude that
-\begin{equation}
-\map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{y}
-  \circ 
-  x_{\ol{{\setsem{\Gamma; \emptyset \vdash \sigma} \rho}}}
-= x_{\ol{\setsem{\Gamma; \emptyset \vdash \tau} \rho} }
-\circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
-  \rho[\ol{\alpha := \_}]} \, \ol{y}
-\end{equation}
-
-Moreover, for any $\ol{A, B: \set}$,
-we can choose $\ol{\sigma = v}$ and $\ol{\tau = w}$ to be variables such that
-$\ol{\rho v = A}$ and $\ol{\rho w = B}$.
-Then for any functions $\ol{f : A \to B}$ we have that
-\begin{equation}
-\map_{\setsem{\Gamma; \ol\alpha \vdash G} \rho[\ol{\alpha := \_}]} \ol{f}
-  \circ 
-  x_{\ol{A}}
-  = x_{\ol{B}}
-\circ \map_{\setsem{\Gamma; \ol\alpha \vdash F} 
-  \rho[\ol{\alpha := \_}]} \, \ol{f}
-\end{equation}
-\end{proof}
-\end{comment}
+relation environments.
 
 \subsection{The Abstraction Theorem}\label{sec:thms} 
 
-To go beyond naturality and get {\em all} consequences of
-parametricity, we prove an Abstraction Theorem for our calculus. As
-usual for such theorems, we prove a more general result in
-Theorem~\ref{thm:at-gen} that handles possibly open terms. We then
-recover the Abstraction Theorem (Theorem~\ref{thm:abstraction}) as the
-special case Theorem~\ref{thm:at-gen} for closed terms of closed type.
+To get consequences of parametricity that are not merely consequences
+of naturality, we prove an Abstraction Theorem
+(Theorem~\ref{thm:abstraction}) for our calculus. As is usual for such
+theorems, we first prove a more general result
+(Theorem~\ref{thm:at-gen}) for open terms, and recover our Abstraction
+Theorem as a special case of it for closed terms of closed type.
 
 \begin{thm}\label{thm:at-gen}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ induces
@@ -3226,58 +2933,818 @@ transformations
 \[(\setsem{\Gamma;\Phi~|~\Delta \vdash t : F},\,
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : F},\,
 \relsem{\Gamma;\Phi~|~\Delta \vdash t : F})\]
-where
+where, for $\mathsf{D} \in \{\set,\rel\}$ and for $\rho \in \setenv$
+or $\rho \in \relenv$ as appropriate,
 \[\begin{array}{lll}
-\setsem{\Gamma;\Phi~|~\Delta \vdash t : F} & : & \setsem{\Gamma;
-  \Phi \vdash \Delta} \to \setsem{\Gamma; \Phi \vdash F}
+\dsem{\Gamma;\Phi~|~\Delta \vdash t : F} & : & \dsem{\Gamma;
+  \Phi \vdash \Delta} \to \dsem{\Gamma; \Phi \vdash F}
 \end{array}\]
 has as its component at $\rho : \setenv$ a morphism
 \[\begin{array}{lll}
-\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \setsem{\Gamma;
-  \Phi \vdash \Delta}\rho \to \setsem{\Gamma; \Phi \vdash F}\rho
+\dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \dsem{\Gamma;
+  \Phi \vdash \Delta}\rho \to \dsem{\Gamma; \Phi \vdash F}\rho
 \end{array}\]
-in $\set$,
-\[\begin{array}{lll}
-\relsem{\Gamma;\Phi~|~\Delta \vdash t : F} & : & \relsem{\Gamma;
-  \Phi \vdash \Delta} \to \relsem{\Gamma; \Phi \vdash F}
-\end{array}\]
-has as its component at $\rho : \relenv$ a morphism
-\[\begin{array}{lll}
-\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \relsem{\Gamma;
-  \Phi \vdash \Delta}\rho \to \relsem{\Gamma; \Phi \vdash F}\rho
-\end{array}\]
-in $\rel$,
-and, for all $\rho : \relenv$,
+Moreover, for all $\rho : \relenv$, 
 \begin{equation}\label{eq:projs}
 \relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho =
 (\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_1 \rho),\,
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_2 \rho))
 \end{equation}
 \end{thm}
-\proof
-{\color{red} ADD IN PROOF HERE}
-By structural induction on the type judgment for $t$. The overall
-challenge of our development manifests in this proof. It lies in
-showing that the set and relational interpretations of each term
-judgment are natural transformations, and that all set interpretations
-of terms of $\Nat$-types satisfy the appropriate equality preservation
-conditions from Definition~\ref{def:set-sem}.  For the interesting
-cases of abstraction, application, $\map$, $\tin$, and $\fold$ terms,
+\proof The proof is by induction on $t$. It requires showing that set
+and relational interpretations of term judgments are natural
+transformations, and that all set interpretations of terms of $\Nat$
+types satisfy the appropriate equality preservation conditions from
+Definition~\ref{def:set-sem}.  For the interesting cases of
+abstraction, application, $\map$, $\tin$, and $\mathsf{fold}$ terms,
 propagating the naturality conditions is quite involved; the latter
-two cases especially require some rather delicate diagram
-chasing. That this is possible provides strong evidence that our
-definitions and development are sensible, natural, and at an
-appropriate level of abstraction. Detailed proofs for the set
-interpretations for the five interesting forms of terms are included
-in the accompanying anonymous supplementary material. Even in the
-supplementary material we omit the other, straightforward, cases.  The
-proofs for the relational interpretations of all term judgments are
-entirely analogous to the proofs for their set interpretations. The
-proof that Equation~\ref{eq:projs} holds in each case is by direct
-calculation, using the facts that projections are surjective and that
-the set and relational interpretations are defined ``in parallel'',
-i.e., are fibred.
+two especially require some rather delicate diagram chasing. That it
+is possible provides strong evidence that our development is sensible,
+natural, and at an appropriate level of abstraction.
+
+The only interesting cases are the cases for abstraction, application,
+$\map$, $\tin$, and $\fold$. We omit the others.
+
+\begin{itemize}
+\item $\underline{\Gamma; \emptyset \,|\, \Delta \vdash
+  L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}$ \; To
+  see that $\setsem{\Gamma; \emptyset \,|\, \Delta \vdash
+    L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}$ is
+  a natural transformation from $\setsem{\Gamma; \emptyset \vdash
+    \Delta}$ to $\setsem{\Gamma; \emptyset \vdash
+    \Nat^{\overline{\alpha}} \,F \,G}$ we need to show that, for every
+  $\rho : \setenv$, $\setsem{\Gamma; \emptyset \,|\, \Delta \vdash
+    L_{\overline{\alpha}} x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho$
+  is a morphism in $\set$ from $\setsem{\Gamma; \emptyset \vdash
+    \Delta}\rho$ to $\setsem{\Gamma; \emptyset \vdash
+    \Nat^{\overline{\alpha}} \,F \,G}\rho$, and that such a family of
+  morphisms is natural.  First, we need to show that, for all $\ol{A :
+    \set}$ and all $d : \setsem{\Gamma; \emptyset \vdash \Delta}\rho =
+  \setsem{\Gamma; \ol{\alpha} \vdash \Delta}\rho[\overline{\alpha :=
+      A}]$, we have that
+  \begin{align*}
+      &(\setsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+      x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,d)_{\ol{A}} :  \\
+      &\hspace{1in} \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := A}]
+    \to \setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha :=
+        A}]
+  \end{align*}
+      but this follows easily from the induction hypothesis.
+That these maps comprise a natural transformation $\eta :
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := \_}] \to
+\setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha := \_}]$ is
+clear since $\eta_{\ol{A}} \, = \, \curry\,
+(\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := A}])\,d$ is the component at $\ol{A}$ of
+the partial specialization to $d$ of the natural transformation
+$$\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := \_}]$$  To see that the components of
+$\eta$ also satisfy the additional condition needed for $\eta$ to
+be in $\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F
+  \,G}\rho$, let $\overline{R : \rel(A, B)}$ and suppose
+\[\begin{array}{lll}
+(u, v) &  \in & \relsem{\Gamma;\overline{\alpha} \vdash F}
+\Eq_{\rho}[\overline{\alpha := R}]\\
+&  = & (\setsem{\Gamma;\overline{\alpha} \vdash F}
+\rho[\overline{\alpha := A}], \\ 
+  & &\,\,\setsem{\Gamma;\overline{\alpha} \vdash
+  F} \rho[\overline{\alpha := B}],
+(\relsem{\Gamma;\overline{\alpha} \vdash F}
+\Eq_{\rho}[\overline{\alpha := R}])^*)
+\end{array}\]
+Then the induction hypothesis and 
+$(d,d) \in \relsem{\Gamma; \emptyset \vdash \Delta} \Eq_\rho =
+\relsem{\Gamma; \emptyset \vdash \Delta} \Eq_\rho[\ol{\alpha := R}]$
+ensure that
+\[\begin{array}{ll}
+& (\eta_{\ol{A}}u,\eta_{\ol{B}}v)\\
+= & (\curry\, (\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F
+  \vdash t: G}\rho[\overline{\alpha := A}])\,d\,u, \\
+  &\hspace{0.5in} \curry\,
+(\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
+  G}\rho[\overline{\alpha := B}])\,d\,v)\\
+= & \curry\, (\relsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F
+  \vdash t: G}\Eq_\rho[\overline{\alpha := R}])\,(d,d)\,(u,v)\\
+: & \relsem{\Gamma; \overline{\alpha} \vdash G}
+\Eq_{\rho}[\overline{\alpha := R}]  
+\end{array}\]
+Moreover,
+$\setsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}} x.t
+: \Nat^{\overline{\alpha}} \,F \,G} \rho$
+is trivially natural in $\rho$,
+as the functorial action of
+$\setsem{\Gamma; \emptyset \vdash \Delta}$
+and $\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}$
+on morphisms is the identity.
+
+\item 
+$\underline{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
+  [\overline{\alpha := K}]}$\; 
+  To see that $\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}$ is a
+  natural transformation from $\setsem{\Gamma; \Phi \vdash \Delta}$ to
+  $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}$ we 
+  show that, for every $\rho : \setenv$, $\setsem{\Gamma;\Phi \,|\,
+    \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}\rho$
+  is a morphism from $\setsem{\Gamma; \Phi \vdash \Delta}\rho$ to
+  $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho$, and
+  that this family of morphisms is natural in $\rho$. Let $d :
+  \setsem{\Gamma; \Phi \vdash \Delta}\rho$. Then
+  \[\begin{array}{ll}
+  & \setsem{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
+  [\overline{\alpha := K}]}\,\rho\,d\\
+= & (\eval \circ \langle (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash
+  t : \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}},\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho \rangle)\,d\\
+= & \eval ((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+\_)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}} \,d,\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho\, d)\\
+= & \eval ((\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t :
+  \Nat^{\overline{\alpha}} \,F \,G}\rho\;
+d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}},\,
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}\rho\, d)\\
+\end{array}\]
+The induction hypothesis ensures that $(\setsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,
+d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}}$ has type
+$\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho}] \to \setsem{\Gamma;
+  \ol{\alpha} \vdash G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
+      K}\rho}]$.  Since, in addition, 
+\[\begin{array}{ll}
+  &\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash s: F [\overline{\alpha := K}]}\rho\, d :
+\setsem{\Gamma; \Phi \vdash F[\ol{\alpha := K}]}\rho \\ 
+  =&\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho}] \\
+    =& \setsem{\Gamma;
+  \ol{\alpha} \vdash F}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
+      K}\rho}] 
+\end{array}\]
+      we have that 
+\[\begin{array}{ll}
+  &\setsem{\Gamma;\Phi \,|\, \Delta
+  \vdash t_{\overline K} s: G [\overline{\alpha :=
+      K}]}\,\rho\,d : \setsem{\Gamma; \Phi ,\ol{\alpha} \vdash
+  G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}\rho}]  \\
+  =&\setsem{\Gamma; \Phi \vdash G[\ol{\alpha := K}]}\rho
+\end{array}\]
+as desired.
+
+\vspace*{0.1in}
+
+To see that the family of maps comprising $\setsem{\Gamma;\Phi \,|\,
+  \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}$
+is natural in $\rho$
+we need to show that, if $f : \rho \to \rho'$ in $\setenv$, then the
+following diagram commutes, where $g = \setsem{\Gamma; \emptyset \,|\,
+  \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}$ and $h =
+\setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
+      K}]}$:
+{\footnotesize
+\[\hspace*{-0.6in}
+\begin{tikzcd}
+\setsem{\Gamma;\Phi \vdash \Delta}\rho \ar[r, "{\setsem{\Gamma;\Phi
+  \vdash \Delta}f}"] \ar[d, "{\langle g \rho, h \rho\rangle}"']
+& \setsem{\Gamma;\Phi \vdash 
+  \Delta}\rho' \ar[d, "{\langle g \rho', h \rho' \rangle}"]\\
+\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho
+\times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi \vdash K}\rho}} \times
+    \id)}"']
+\ar[r, bend left = 5, "{\setsem{\Gamma;\emptyset\vdash
+      \Nat^{\overline{\alpha}} \,F \,G}f\, \times\, \setsem{\Gamma;\Phi
+      \vdash F [\overline{\alpha := K}]}f}"] &
+\setsem{\Gamma;\emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G}\rho'
+\times \setsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho'
+\ar[d, "{\eval \circ ((-)_{\overline{\sem{\Gamma;\Phi \vdash
+          K}\rho'}} \times \id)}"] \\
+\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho
+\ar[r, "{\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}f}"']
+&
+\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho'
+\end{tikzcd}\]}
+
+\noindent
+The top diagram commutes because $g$ and $h$ are natural in $\rho$ by
+the induction hypothesis.
+To see that the bottom diagram commutes,
+we need to show that
+\[\begin{array}{ll}
+& \setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}f
+(\eta_{\overline{\sem{\Gamma;\Phi \vdash K}\rho}} x)\\
+= &
+(\setsem{\Gamma; \emptyset \vdash \Nat^{\overline{\alpha}} \,F \,G} f\, \eta
+)_{\overline{\sem{\Gamma;\Phi \vdash K}\rho'}}
+(\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}f x)
+\end{array}\]
+holds for all $\eta \in \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$ and $x \in
+\setsem{\Gamma;\Phi \vdash F [\overline{\alpha := K}]}\rho$,
+i.e.,
+%{\color{red} by remembering the following facts,
+%\begin{align*}
+%\setsem{\Gamma;\Phi \vdash F[\ol{\alpha := K}]}\rho
+%&= \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+%    \setsem{\Gamma;\Phi \vdash K}\rho}] \\
+%\setsem{\Gamma;\Phi \vdash F[\ol{\alpha := K}]}f
+%&= \setsem{\Gamma; \ol{\alpha} \vdash F}
+%  f [\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}f}] \\
+%\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}\rho
+%&= \setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\ol{\alpha :=
+%    \setsem{\Gamma;\Phi \vdash K}\rho}] \\
+%\setsem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}f
+%&= \setsem{\Gamma; \ol{\alpha} \vdash
+%  G} f [\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}f}]
+%\end{align*}}
+%we need to show
+that
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\alpha} \vdash G} f[\overline{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K} f }] \circ
+\eta_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}} \\ 
+=\;&
+\eta_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho'}}
+\circ
+\setsem{\Gamma; \ol{\alpha} \vdash F} f [\ol{\alpha := \setsem{\Gamma;\Phi \vdash K}f}]
+\end{array}\]
+for all $\eta \in \setsem{\Gamma;\emptyset \vdash
+  \Nat^{\overline{\alpha}} \,F \,G}\rho$.
+But this follows from the naturality of $\eta$, which indeed ensures
+the commutativity of 
+{\footnotesize
+\[\hspace*{-0.3in}\begin{tikzcd}[column sep = large]
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho}] \ar[r,
+  "{\;\;\;\eta_{\ol{\setsem{\Gamma;\Phi \vdash K}\rho}}\;\;\; }"]
+\ar[d, "{\setsem{\Gamma; \ol{\alpha} \vdash F} f [\ol{\alpha := 
+        \setsem{\Gamma;\Phi \vdash K}f}]}"']
+& \setsem{\Gamma;
+  \ol{\alpha} \vdash G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
+      K}\rho}]
+\ar[d, "{\setsem{\Gamma; \ol{\alpha} \vdash G} f [\ol{\alpha := 
+        \setsem{\Gamma;\Phi \vdash K}f}]}"]\\
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho'[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho'}] \ar[r,
+  "{\eta_{\ol{\setsem{\Gamma;\Phi \vdash K}\rho'}} }"]
+& \setsem{\Gamma; \ol{\alpha} \vdash G}\rho'[\ol{\alpha :=
+    \setsem{\Gamma;\Phi \vdash K}\rho'}]
+\end{tikzcd}\]}
+
+\item 
+  $\underline{\Gamma;\emptyset~|~\emptyset \vdash
+  \map^{\ol{F},\ol{G}}_H :
+  \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+  (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}])}$\;
+To see that
+\[
+\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}
+\]
+is in $\setsem{\Gamma; \emptyset \vdash
+    \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}]} \rho$
+for all $\rho : \setenv$, $d : \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$,
+and $\ol{\eta : \setsem{\Gamma; \emptyset
+  \vdash\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho}$,
+  we first note that
+$\setsem{\Gamma ;\ol{\phi}, \ol{\gamma} \vdash H}$ is a functor from
+  $\setenv$ to $\set$ and, for any $\ol C$, $\id_{\rho[\ol{\gamma :=
+        C}]}[\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}\,\ol{C}}}]$ is a
+  morphism in $\setenv$ from \[\rho[\ol{\gamma := C}][\ol{\phi :=
+      \lambda \ol{B}.\setsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash
+        F}\rho[\ol{\gamma := C}][\ol{\beta := B}]}]\] to
+\[\rho[\ol{\gamma := C}][\ol{\phi := \lambda \ol{B}.\setsem{\Gamma;
+\ol{\gamma},\ol{\beta} \vdash G}\rho[\ol{\gamma := C}][\ol{\beta := B}]}]\]
+so that
+\begin{align*}
+&(\setsem{\Gamma; \emptyset~|~\emptyset \vdash
+  \map^{\ol{F},\ol{G}}_H :
+\Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+(\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+    :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta})_{\ol{C}} \\
+  &=  \setsem{\Gamma; \ol{\phi},\ol{\gamma} \vdash H}\id_{\rho[\ol{\gamma
+      := C}]}[\ol{\phi := \lambda \ol{B}. \eta_{\ol{B}\,\ol{C}}}]
+\end{align*}
+is indeed a morphism of type
+$$\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C}]% $
+\to 
+% $ 
+\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C}]$$
+This family of morphisms is natural in $\ol C$: if $\ol{f : C \to C'}$
+then, writing $\xi$ for
+\[
+\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\,\rho\,d\, \ol{\eta}
+\]
+the naturality of $\eta$,
+together with the fact that composition of environments is
+computed componentwise, ensure that the following naturality diagram
+for $\xi$ commutes:
+{\footnotesize
+\[\begin{tikzcd}
+\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C}] \ar[r, "{\xi_{\ol{C}}}"]
+\ar[d, "{\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi :=
+          F}]}\id_{\rho}[\ol{\gamma := f}]}"']
+& \setsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C}]
+\ar[d, "{\setsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi :=
+          G}]}\id_{\rho}[\ol{\gamma := f}]}"]\\
+\setsem{\Gamma ;\ol{\gamma} \vdash H[\ol{\phi := F}]}\rho[\ol{\gamma
+      := C'}] \ar[r, "{\xi_{\ol{C'}}}"]
+& \setsem{\Gamma ; \ol{\gamma} \vdash H[\ol{\phi := G}]}\rho[\ol{\gamma
+      := C'}] 
+\end{tikzcd}\]}
+That, for all $\rho : \setenv$ and $d : \setsem{\Gamma; \emptyset \vdash
+  \emptyset}\rho$, $\xi$ satisfies the additional condition needed for
+it to be in $\setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+      :=_{\ol{\beta}} G}]}\rho$ follows from the fact
+that $\eta$ satisfies the extra
+condition needed for it to be in its corresponding
+$\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},\ol{\gamma}}\,F\,G} \rho$.
+Finally, since $\Phi = \emptyset$, the naturality of
+\[
+\setsem{\Gamma; \emptyset~|~\emptyset \vdash \map^{\ol{F},\ol{G}}_H
+    : \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
+    (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
+        :=_{\ol{\beta}} G}])}\rho
+\]
+in $\rho$ is trivial.
+
+
+\item
+$\underline{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}$\; To
+  see that if $d : \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$
+  then $$\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho\,d$$ 
+  is in $\setsem{\Gamma;\emptyset \vdash
+    \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho$, we first note that, for all $\ol{B}$ {\color{red} and $\ol{C}$},
+  \begin{align*}
+    &(\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,
+  \rho\,d)_{\ol{B}{\color{red}\,\ol{C}}}\, \\
+    =\,
+    &(\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}})_{\ol{B}}
+  \end{align*}
+  maps
+  \begin{align*}
+    &\setsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} \vdash H[\phi := (\mu
+      \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha
+        := \beta}]}\rho[\ol{\beta := B}]{\color{red}[\ol{\gamma := C}]} 
+        \\ = \,
+    &T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}\, (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma
+        := C}]}}) \, \ol{B}
+  \end{align*}
+        to $\setsem{\Gamma;\ol{\beta},{\color{red}\ol{\gamma}}
+    \vdash (\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}
+  \rho[\ol{\beta := B}]{\color{red}[\ol{\gamma := C}]} = (\mu
+  T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}) \, \ol{B}$.  \\
+  Secondly, we observe
+  that
+  \begin{align*}
+    &\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+    \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+      {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+    \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+      \beta}}\,\rho\,d \\ 
+      = \, &\lambda
+  \ol{B}{\color{red}\,\ol{C}}.\,(\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma :=
+          C}]}}})_{\ol{B}}
+  \end{align*}
+  is natural in $\ol{B}$ {\color{red} and $\ol{C}$}, since
+  naturality of $\mathit{in}$ with respect to its functor argument and
+  naturality of $\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}}$ ensure
+  that the following diagram commutes for all $\ol{f : B \to B'}$
+  {\color{red} and
+  $\ol{g : C \to C'}$}:
+
+  {\tiny
+  \[\hspace*{-0.15in}\begin{tikzcd}[column sep=2.5in, row sep=0.75in]
+%T^\set_{H,\rho[\ol{\gamma := C}]}\, (\mu T^\set_{H,\rho[\ol{\gamma := C}]})\, \ol{B}
+%\ar[d, "{T^\set_{H,\id_\rho[\ol{\gamma := g}]}\,(\mu
+%    T^\set_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"] \ar[r,
+%  "{(\mathit{in}_{T^\set_{H,\rho[\ol{\gamma := C}]}})_{\ol{B}}}" ]
+%& (\mu T^\set_{H,\rho[\ol{\gamma := C}]})\, \ol{B} \ar[d, "{(\mu
+%    T^\set_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"]\\
+T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}\, (\mu
+T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\, \ol{B} \ar[d, "{T^\set_{H,\rho{\color{red}[\ol{\gamma :=
+          C'}]}}\, (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\, \ol{f}}"]
+\ar[r,"{(\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})_{\ol{B}}}}" ] & 
+  (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\, \ol{B}
+\ar[d,"{\mu {T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}}\, {\ol{f}}}" ] 
+\\
+T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}\, (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\,
+\ol{B'} \ar[r, "{(\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma :=
+            C'}]}}})_{\ol{B'}}}"] & (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\,
+\ol{B'}
+\end{tikzcd}\]
+}
+  That, for all $\rho : \setenv$ and $d :
+\setsem{\Gamma;\emptyset \vdash \emptyset}\rho$,
+\[\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash
+  \tin_H : \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+    \beta}}\,\rho\,d\] satisfies the additional property needed for
+it to be in 
+\[\setsem{\Gamma;\emptyset \vdash
+  \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}\,\rho\]
+follows from the fact that, for every $\ol{R : \rel(B,B')}$
+{\color{red} and $\ol{S : \rel(C,C')}$},
+\[\hspace*{-0.2in}
+  \begin{array}{ll}
+ & (\,(\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+      \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+        {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+      \;(\mu \phi.\lambda {\overline \alpha}.H){\overline
+        \beta}}\,\rho\,d)_{\ol{B}{\color{red},\ol{C}}},\,\\ & \hspace*{0.5in}(\setsem{\Gamma;\emptyset
+      \,|\, \emptyset \vdash \tin_H : \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \,
+      H[\phi := (\mu \phi.\lambda {\overline \alpha}.H){\overline
+          \beta}][\ol{\alpha := \beta}] \;(\mu \phi.\lambda {\overline
+        \alpha}.H){\overline
+        \beta}}\,\rho\,d)_{\ol{B'}{\color{red},\ol{C'}}}\,)\\ &= (\,
+    (\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}})_{\ol{B}},
+    (\mathit{in}_{T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}})_{\ol{B'}}\,)
+\end{array}\]
+has type
+\[\begin{array}{ll}
+& (\, T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}\, (\mu
+T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}) \, 
+\ol{B} \to (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}}) \, \ol{B}, \, \\
+& \hspace*{0.5in}T^\set_{H,\rho{\color{red} [\ol{\gamma := C'}]}}\, (\mu
+T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}) \, 
+\ol{B'} \to (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}) \,\ol{B'} \, )\\
+= &
+ \relsem{\Gamma;\ol{\beta},{\color{red}\ol{\gamma}} \vdash H[\phi := (\mu
+    \phi.\lambda {\overline \alpha}.H){\overline \beta}][\ol{\alpha :=
+      \beta}]}\Eq_\rho[\ol{\beta := R}]{\color{red}[\ol{\gamma := S}]} \to\\
+ & \hspace*{0.5in} \relsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} \vdash (\mu
+  \phi.\lambda \ol{\alpha}.H)\ol{\beta}} \Eq_\rho[\ol{\beta:=
+    R}]{\color{red}[\ol{\gamma :=S}]}
+\end{array}\]
+
+Finally, since $\Phi = \emptyset$, the naturality of
+\[
+\setsem{\Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
+  \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda
+    {\overline \alpha}.H){\overline \beta}][\ol{\alpha := \beta}]
+  \;(\mu \phi.\lambda {\overline \alpha}.H){\overline \beta}}
+\]
+in $\rho$ is trivial.
+
+\item
+$\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red}, \ol{\gamma}}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta \;F)}$ \; Since $\Phi$ is empty, to see
+  that 
+  $$\setsem{ \Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+    \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red}, \ol{\gamma}}}\,H[\phi
+      :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+    (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu \phi.\lambda \overline
+    \alpha.H)\overline \beta \;F)}$$
+    is a natural transformation from
+  $\setsem{\Gamma;\emptyset \vdash \emptyset}$ to \[\setsem{\Gamma;
+    \emptyset \vdash \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red},
+      \ol{\gamma}}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+        \beta}]\,F)\; (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu
+    \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\] we need only
+  show that, for all $\rho : \setenv$, the unique $d :
+  \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$, and all $\eta :
+  \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta}{\color{red},
+      \ol{\gamma}}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+        \beta}]\,F} \rho$,
+\[ \setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red}, \ol{\gamma}}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\] has type
+$\setsem{\Gamma; \emptyset \vdash \Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}}
+  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\,F}\,\rho$,
+i.e., for any $\ol{B}$ {\color{red} and $\ol{C}$},
+\[(\setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red}, \ol{\gamma}}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}{\color{red}\,\ol{C}}}\] is a
+morphism from $\setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}} \vdash (\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
+    B}]{\color{red}[\ol{\gamma := C}]} \,=\,(\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}})
+\ol{B}$\\ to $\setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}} \vdash
+  F}\rho[\ol{\beta := B}]{\color{red}[\ol{\gamma := C}]}$.  To see this, note
+that $\eta$ is a natural transformation from
+\[\begin{array}{ll}
+ & \lambda \ol{B}{\color{red}\,\ol{C}}.\,\setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}}
+  \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho[\ol{\beta :=
+    B}]{\color{red}[\ol{\gamma := C}]}\\
+= & \lambda \ol{B}{\color{red}\,\ol{C}}.\,T^\set_{H,\rho{\color{red}[\ol{\gamma:=
+     C}]}}\,(\lambda \ol{A}. \, \setsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} 
+  \vdash F}\rho[\ol{\beta := A}]{\color{red}[\ol{\gamma := C}]}) \, \ol{B}
+\end{array}\]
+to
+\[\begin{array}{ll}
+ & \lambda \ol{B}{\color{red}\,\ol{C}}.\,(\lambda
+\ol{A}.\,\setsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} \vdash F}\rho[\ol{\beta
+    := A}]{\color{red}[\ol{\gamma := C}]}) \ol{B}\\
+= & \lambda
+\ol{B}{\color{red}\,\ol{C}}.\,\setsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} \vdash
+  F}\rho[\ol{\beta := B}]{\color{red}[\ol{\gamma := C}]}
+\end{array}\]
+and thus for each $\ol{B}$ {\color{red} and $\ol{C}$},
+\[(\setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
+  \Nat^\emptyset\;(\Nat^{\ol{\beta}{\color{red}, \ol{\gamma}}}\,H[\phi
+    :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
+  (\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu \phi.\lambda \overline
+  \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta)_{\ol{B}{\color{red}\,\ol{C}}}\] is a
+morphism from
+$\setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}} \vdash (\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta}\rho[\ol{\beta :=
+    B}]{\color{red}[\ol{\gamma := C}]}\,=\, (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C}]}})
+\ol{B}$ to $\setsem{\Gamma;\ol{\beta}{\color{red},\ol{\gamma}} \vdash
+  F}\rho[\ol{\beta := B}]{\color{red}[\ol{\gamma := C}]}$.
+To see that this family of morphisms is natural in $\ol{B}$
+{\color{red} and
+$\ol{C}$}, we observe that the following diagram commutes for all
+$\ol{f : B \to B'}$ {\color{red} and $\ol{g : C \to C'}$}:
+{\tiny
+\[\hspace*{-0.3in}\begin{tikzcd}[column sep=2.5in, row sep=0.75in]
+%(\mu T^\set_{H,\rho[\ol{\gamma := C}]})\, \ol{B}
+%\ar[d, "{(\mu T^\set_{H,\id_\rho[\ol{\gamma := g}]}) \, \ol{B}}"'] \ar[r, 
+%  "{(\mathit{fold}_{T^\set_{H,\rho[\ol{\gamma := C}]}}\,(\lambda
+%    \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}}}"] 
+%& \setsem{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}\rho[\ol{\gamma :=
+%    C}][\ol{\beta := B}]\ar[d, "{\setsem{\Gamma;
+%      \ol{\beta},\ol{\gamma} \vdash F}\id_\rho[\ol{\gamma := 
+%    g}][\ol{\beta := \id_B}]}"]\\
+(\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\, \ol{B} 
+\ar[r,"{(\mathit{fold}_{T^\set_{H,\rho{\color{red}[\ol{\gamma :=
+            C'}]}}}\,(\lambda \ol{A}.\,\eta_{\ol{A}{\color{red}\,\ol{C'}}}))_{\ol{B}}\,}" ] 
+\ar[d, "{(\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}}) \, \ol{f}}"'] & 
+ \setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}} \vdash F}\rho{\color{red}[\ol{\gamma :=
+    C'}]}[\ol{\beta := B}]\ar[d, "{\setsem{\Gamma;
+      \ol{\beta}{\color{red},\ol{\gamma}} \vdash F}\id_\rho{\color{red}[\ol{\gamma := 
+    \id_{C'}}]}[\ol{\beta := f}]}"]\\
+ (\mu T^\set_{H,\rho{\color{red}[\ol{\gamma := C'}]}})\, \ol{B'} 
+\ar[r,"{(\mathit{fold}_{T^\set_{H,\rho{\color{red}[\ol{\gamma :=
+            C'}]}}}\,(\lambda \ol{A}.\,\eta_{\ol{A}{\color{red}\,\ol{C'}}}))_{\ol{B'}}\,}"
+] &  
+ \setsem{\Gamma; \ol{\beta}{\color{red},\ol{\gamma}} \vdash F}\rho{\color{red}[\ol{\gamma :=
+    C'}]}[\ol{\beta := B'}]
+\end{tikzcd}\]}
+%Indeed,
+by naturality of $\mathit{fold}_{T^\set_{H,\rho[{\color{red}\ol{\gamma
+          := C'}]}}}\,(\lambda
+\ol{A}.\,\eta_{\ol{A}{\color{red}\,\ol{C'}}})$.
+%
+%ensures that the bottom diagram commutes. {\color{red} BOTTOM!}
+%To see that the top one commutes we first observe that, given a
+%natural transformation $\Theta : H \to K : [\set^k, \set] \to [\set^k,
+%  \set]$, the fixpoint natural transformation $\mu \Theta : \mu H \to
+%\mu K : \set^k \to \set$ is defined to be
+%$\mathit{fold}_{H}(\Theta\,(\mu K) \circ \mathit{in}_{K})$, i.e., the
+%unique morphism making the following diagram commute:\label{page:dia1}
+%{\footnotesize
+%\[\begin{tikzcd}[column sep = large]
+%H(\mu H)
+%	\ar[dd, "{\mathit{in}_H}"']
+%	\ar[r, "{H(\mu \Theta)}"]
+%& H(\mu K)
+%	\ar[d, "{\Theta (\mu K)}"] \\
+%& K(\mu K)
+%	\ar[d, "{\mathit{in}_K}"] \\
+%\mu H
+%	\ar[r, "{\mu \Theta}"']
+%& \mu K
+%\end{tikzcd}\]}
+%Taking $\Theta = T^{\set}_{H,f}: T^{\set}_{H,\rho} \to
+%T^{\set}_{H,\rho'}$ thus gives that, for any $f : \rho \to \rho'$ in
+%$\setenv$,
+%\begin{equation}\label{eq:mu-sigma-def}
+%\mathit{in}_{T^{\set}_{H,\rho'}} \circ 
+%T^{\set}_{H,f} (\mu T^{\set}_{H,\rho'}) \circ 
+%T^{\set}_{H,\rho}(\mu T^{\set}_{H,f}) \,=\, 
+%\mu T^{\set}_{H,f} \circ \mathit{in}_{T^{\set}_{H,\rho}}
+%\end{equation}
+Next, note that the action of the functor
+\[\lambda \ol{B}.{\color{red} \lambda \ol{C}.} \setsem{\Gamma; \ol{\beta}{\color{red},
+  \ol{\gamma}} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+        [\ol{\beta := B}] {\color{red}[\ol{\gamma := C}]}\]
+on the morphisms $\ol{f : B \to B'}{\color{red}, \ol{g : C \to C'}}$ is given by
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\beta{\color{red}, \ol{\gamma}}} \vdash H[\phi :=
+      F][\ol{\alpha := \beta}]} \id_{\rho} [\ol{\beta := f}]
+           {\color{red}[\ol{\gamma := g}]}\\
+= & \setsem{\Gamma; \phi, \ol{\alpha}{\color{red}, \ol{\gamma}} \vdash H}
+\id_{\rho}[\ol{\alpha := f}] {\color{red}[\ol{\gamma := g}]}[\phi := \lambda
+  \ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \id_{\rho
+    [\ol{\beta := A}]}{\color{red} [\ol{\gamma := g}]}] \\ 
+=& \setsem{\Gamma; \phi, \ol{\alpha}{\color{red}, \ol{\gamma}} \vdash H} \id_{\rho
+  {\color{red}[\ol{\gamma := C'}]}[\phi := \lambda \ol{A}. \setsem{\Gamma;
+      \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F} \rho [\ol{\beta := A}]
+   {\color{red} [\ol{\gamma := C'}]}]} [\ol{\alpha := f}] \\
+&\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha}{\color{red}, \ol{\gamma}}
+  \vdash H} \id_{\rho [\ol{\alpha := B}][\phi := \lambda
+    \ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \rho
+       [\ol{\beta := A}]{\color{red} [\ol{\gamma := C'}]}]} {\color{red}[\ol{\gamma := g}]} \\
+&\hspace{3em} \circ \setsem{\Gamma; \phi, \ol{\alpha} {\color{red}, \ol{\gamma}}
+  \vdash H} \id_{\rho [\ol{\alpha := B}] {\color{red}[\ol{\gamma := C}]}} [\phi :=
+  \lambda \ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F}
+  \id_{\rho [\ol{\beta := A}]}{\color{red} [\ol{\gamma := g}]}] \\
+= & T^{\set}_{H,\rho {\color{red}[\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F} \rho
+   [\ol{\beta := A}]{\color{red} [\ol{\gamma := C'}]}) \ol{f} \\
+&\hspace{3em} \circ \big( T^{\set}_{H,\id_{\rho}{\color{red}[\ol{\gamma := g}]}}
+   (\lambda \ol{A}. \setsem{\Gamma; \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F}
+   \rho [\ol{\beta := A}] {\color{red}[\ol{\gamma := C'}]}) \big)_{\ol{B}} \\
+&\hspace{3em} \circ \big( T^{\set}_{H,\rho {\color{red}[\ol{\gamma := C}]}} (\lambda
+   \ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma} }\vdash F} \id_{\rho
+     [\ol{\beta := A}]} {\color{red}[\ol{\gamma := g}]}) \big)_{\ol{B}}
+\end{array}\]
+So if $\eta$ is a natural transformation such that $\eta_{\ol B {\color{red}, \ol
+  C}}$ has type
+\[
+\setsem{\Gamma; \ol{\beta},
+  {\color{red}\ol{\gamma}} \vdash H[\phi := F][\ol{\alpha := \beta}]}\rho
+[\ol{\beta := B}] {\color{red}[\ol{\gamma := C}]}
+\to
+\setsem{\Gamma; \ol{\beta},
+  {\color{red} \ol{\gamma}} \vdash F}\rho [\ol{\beta := B}]
+   {\color{red}    [\ol{\gamma := C}]}\] 
+then, by naturality,
+\[\begin{array}{ll}
+ & \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \id_{\rho}
+       [\ol{\beta := f}] {\color{red}[\ol{\gamma := g}]} \circ \eta_{\ol{B}{\color{red},
+         \ol{C}}} \\ 
+= & \eta_{\ol{B'}{\color{red}, \ol{C'}}} \circ T^{\set}_{H,\rho{\color{red} [\ol{\gamma := C'}]}}
+(\lambda \ol{A}. \setsem{\Gamma; \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F}
+\rho [\ol{\beta := A}]{\color{red} [\ol{\gamma := C'}]}) \ol{f} \\
+& \circ \big( T^{\set}_{H,\id_{\rho}{\color{red}[\ol{\gamma := g}]}} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \rho
+   [\ol{\beta := A}]{\color{red} [\ol{\gamma := C'}]}) \big)_{\ol{B}} \\
+& \circ \big( T^{\set}_{H,\rho {\color{red}[\ol{\gamma := C}]}} (\lambda
+   \ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \id_{\rho
+     [\ol{\beta := A}]} {\color{red}[\ol{\gamma := g}]}) \big)_{\ol{B}}
+\end{array}\]
+As a special case when $\ol{f = \id_B}$ we have
+\begin{equation}\label{eq:T-sigma-functor}
+\begin{split}
+  & \lambda \ol{B}. \setsem{\Gamma; \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F}
+\id_{\rho [\ol{\beta := B}]} {\color{red}[\ol{\gamma := g}]} \circ \lambda
+\ol{B}.\eta_{\ol{B}{\color{red}, \ol{C}}} \\  
+=\;\;\; & \lambda \ol{B}.\eta_{\ol{B}{\color{red}, \ol{C'}}} \circ
+T^{\set}_{H,\id_{\rho}{\color{red}[\ol{\gamma := g}]}} (\lambda
+\ol{A}. \setsem{\Gamma; \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \rho
+   [\ol{\beta := A}]{\color{red} [\ol{\gamma := C'}]}) \\
+ & \hspace*{0.5in} \circ
+   T^{\set}_{H,\rho {\color{red}[\ol{\gamma := C}]}} (\lambda \ol{A}. \setsem{\Gamma;
+     \ol{\beta}{\color{red}, \ol{\gamma}} \vdash F} \id_{\rho [\ol{\beta := A}]}
+ {\color{red}  [\ol{\gamma := g}]}) 
+\end{split}
+\end{equation}
+
+HERE!!!!
+
+
+Finally, to see that the top diagram in the diagram on
+page~\pageref{page:dia1} commutes we first note that functoriality of
+$T^{\set}_{H,\rho [\ol{\gamma := C}]}$, naturality of
+$T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]}$, the universal property of
+$\mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C'}})$ and Equation~\ref{eq:mu-sigma-def}
+ensure that the following diagram commutes: {\footnotesize
+\begin{equation}\label{eq:one-side}
+\hspace*{-0.7in}  \begin{tikzcd}[column sep = huge, row sep = huge]
+T^{\set}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\set}_{H,\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\set}_{H,\rho [\ol{\gamma := C}]} (
+    \mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}}) \circ \mu
+    T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]} )}"] \ar[dd,
+    "{\mathit{in}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}}}"']
+&& T^{\set}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}. \setsem{\Gamma;
+  \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma
+    := C'}]) \ar[d, "{ T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+    \rho [\ol{\beta := B}] [\ol{\gamma := C'}]) }" description] \\
+&& T^{\set}_{H,\rho [\ol{\gamma := C'}]} (\lambda
+\ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho
+   [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda \ol{A}. \eta_{\ol{A}, \ol{C'}}
+     }" description] \\
+\mu T^{\set}_{H,\rho [\ol{\gamma := C}]}\ar[r, "{\mu
+    T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]}}"'] 
+&\mu T^{\set}_{H,\rho [\ol{\gamma := C'}]} \ar[r, bend right = 10,
+  "{\mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C'}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}})}"']
+& \lambda \ol{B}. \setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F}
+\rho [\ol{\beta := B}] [\ol{\gamma := C'}]
+  \end{tikzcd}
+  \end{equation}}
+Next, we note that functoriality of $T^{\set}_{H,\rho [\ol{\gamma :=
+      C}]}$, Equation~\ref{eq:T-sigma-functor}, and the universal
+property of $\mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+\ol{A}. \eta_{\ol{A}, \ol{C}})$ ensure that the following diagram
+commutes: {\footnotesize
+\begin{equation}\label{eq:other-side}
+\hspace*{-1in}\begin{tikzcd}[row sep = huge]
+T^{\set}_{H,\rho [\ol{\gamma := C}]} (\mu T^{\set}_{H,\rho [\ol{\gamma :=
+      C}]}) \ar[rr, "{T^{\set}_{H,\rho [\ol{\gamma := C}]} (
+    \lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \id_{\rho
+      [\ol{\beta := B}]} [\ol{\gamma := g}] \circ
+    \mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}}) )}"] \ar[dd, "{\mathit{in}_{T^{\set}_{H,\rho
+        [\ol{\gamma := C}]}}}"']
+&& T^{\set}_{H,\rho [\ol{\gamma := C}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C'}])
+\ar[d, "{ T^{\set}_{H,\id_{\rho}[\ol{\gamma := g}]}
+    (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta
+        := B}] [\ol{\gamma := C'}]) }" description]\\
+&& T^{\set}_{H,\rho [\ol{\gamma := C'}]} (\lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}][\ol{\gamma := C'}]) \ar[d, "{ \lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C'}} }" description] \\
+\mu T^{\set}_{H,\rho [\ol{\gamma := C}]} \ar[r, bend right = 10,
+  "{\mathit{fold}_{T^{\set}_{H,\rho [\ol{\gamma := C}]}} (\lambda
+    \ol{A}. \eta_{\ol{A}, \ol{C}})}"'] & \lambda \ol{B}.\setsem{\Gamma; \ol{\beta},
+  \ol{\gamma} \vdash F} \rho [\ol{\beta := B}] [\ol{\gamma := C}]
+\ar[r, bend right = 10, "{\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma}
+      \vdash F} \id_{\rho [\ol{\beta := B}]} [\ol{\gamma := g}]}"'] &
+\lambda \ol{B}.\setsem{\Gamma; \ol{\beta}, \ol{\gamma} \vdash F} \rho [\ol{\beta :=
+    B}] [\ol{\gamma := C'}]
+\end{tikzcd}
+\end{equation}}
+Combining the equations entailed by~\ref{eq:one-side}
+and~\ref{eq:other-side}, we get that
+the top diagram in the diagram on
+  page~\pageref{page:dia1} commutes, as desired.
+To see that, for all $\rho : \setenv$, $d \in
+\setsem{\Gamma; \emptyset \vdash \emptyset}\rho$, and $\eta :
+\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
+    \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F}
+\rho$,
+\[\setsem{\Gamma; \emptyset~|~\emptyset
+  \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta},
+    \ol{\gamma}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+      \beta}]\,F)\; (\Nat^{{\ol{\beta},\ol{\gamma}} }\,(\mu
+  \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\,\rho\,d\,\eta\]
+satisfies the additional condition needed for it to be in
+$\setsem{\Gamma;\emptyset \vdash \Nat^{{\ol{\beta},\ol{\gamma}}
+  }\,(\mu \phi.\lambda \overline \alpha.H)\overline \beta\;F}\,\rho$,
+let $\ol{R : \rel(B,B')}$ and $\ol{S : \rel(C,C')}$.  Since $\eta$
+satisfies the additional condition needed for it to be in
+$\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta},
+    \ol{\gamma}}\,(H[\phi := F][\ol{\alpha := \beta}])\,F} \rho$,
+\[\begin{array}{ll}
+ & (\,(\mathit{fold}_{T^\set_{H,\rho[\ol{\gamma :=
+        C}]}}\,(\lambda \ol{A}.\,\eta_{\ol{A}\,\ol{C}}))_{\ol{B}},\,
+(\mathit{fold}_{T^\set_{H,\rho[\ol{\gamma :=
+        C'}]}}\,(\lambda \ol{A}.\eta_{\ol{A}\,\ol{C'}}))_{\ol{B'}}\,) 
+\end{array}\]
+has type
+\[\begin{array}{ll}
+  & (\mu T_{H,\Eq_\rho[\ol{\gamma := S}]}) \,\ol{R} \to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & (\mu T_{H,\Eq_\rho[\ol{\gamma :=
+      S}]})\,\ol{\relsem{\Gamma;\ol{\gamma},\ol{\beta} 
+  \vdash \beta}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}]} \\ 
+  &\hspace{1.5in} \to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]\\ 
+= & \relsem{\Gamma; \ol{\gamma},\ol{\beta} \vdash (\mu \phi. \lambda
+  \ol{\alpha}. H)\ol{\beta}}\Eq_\rho[\ol{\gamma := S}][\ol{\beta := R}] \\ 
+  &\hspace{1.5in}\to
+\relsem{\Gamma;\ol{\gamma},\ol{\beta} \vdash F}\Eq_\rho[\ol{\gamma := 
+    S}][\ol{\beta:= R}]
+\end{array}\]
+\end{itemize}
 \qed
+
 
 The following theorem is an immediate consequence of
 Theorem~\ref{thm:at-gen}:
@@ -3299,66 +3766,53 @@ If $\vdash t : F$, then $(\setsem{\vdash t : F},\setsem{\vdash t
 
 \section{Free Theorems for Nested Types}\label{sec:ftnt}
 
-In this section we show how Theorem~\ref{thm:abstraction} can be used
-to prove free theorems, such as that for the type of the standard
-$\mathit{filter}$ function for lists, that go beyond mere naturality,
-and extend them to those nested types for which analogous functions
-can be defined. In particular, we can extend short cut short cut
+In this section we show how Theorem~\ref{thm:at-gen} and its
+consequences can be used to prove free theorems that go beyond mere
+naturality.  We also show that we can extend short cut short cut
 fusion for lists~\cite{glp93} to nested types, thereby formally
 proving correctness of the categorically inspired theorem
-from~\cite{jg10}. 
+from~\cite{jg10}.
 
 \subsection{Free Theorem for Type of Polymorphic
   Bottom}\label{sec:bottom} 
 
-Suppose $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $G^\set =
-\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$, and let $G^\rel =
+Let $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $G^\set =
+\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$ and $G^\rel =
 \relsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho))
-= G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
+Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho)) =
+G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that
-%\[\begin{array}{lll}
-$(G^\set,G^\set) \;= \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$
-$ \in  \relsem{\vdash \Nat^\alpha \,\onet\,\alpha}\rho$
-$ =  \{\eta : K_1 \Rightarrow \id\}$
-$ =  \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
-\id)\}$ 
-%\end{array}\]
-That is, $G^\set$ is a natural transformation from the constantly
-$1$-valued functor to the identity functor in $\set$. In particular,
-for every $S : \set$, $G^\set_S : 1 \to S$. Note, however, that if $S
-= \emptyset$, then there can be no such morphism, so no such natural
-transformation,
-%in $\set$,
-and thus no term $\vdash g : \Nat^\alpha \onet \,\alpha$, can exist.
-%in our calculus.
-That is, our calculus admits no non-terminating terms, i.e., terms
-with the closed type $\Nat^\alpha \onet \,\alpha$ of the polymorphic
-bottom.
+instantiations of $a$ and $b$ gives that $(G^\set,G^\set) \;= \;
+(G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
+  \Nat^\alpha \,\onet\,\alpha}\rho$ $ = \{\eta : K_1 \Rightarrow
+\id\}$ $ = \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
+\id)\}$ That is, $G^\set$ is a natural transformation from the
+constantly $1$-valued functor to the identity functor in $\set$. In
+particular, for every $S : \set$, $G^\set_S : 1 \to S$. Note, however,
+that if $S = \emptyset$, then there can be no such morphism, so no
+such natural transformation, and thus no term $\vdash g : \Nat^\alpha
+\onet \,\alpha$, can exist.  That is, our calculus admits no
+non-terminating terms, i.e., terms with the closed type $\Nat^\alpha
+\onet \,\alpha$ of the polymorphic bottom.
 
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
 
-Suppose $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, let $G^\set =
-\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and let $G^\rel =
+Let $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, \/$G^\set =
+\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and $G^\rel =
 \relsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho))
-= G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
+Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho)) =
+G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that
-%\[\begin{array}{lll}
-$(G^\set, G^\set) \; = \; (G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$
-$ \in \relsem{\vdash \Nat^\alpha \,\alpha\,\alpha}\rho$
-$ =  \{\eta : \id \Rightarrow \id\}$
-$ =  \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
-\id)\}$
-%\end{array}\]
-That is, $G^\set$ is a natural transformation from the identity
-functor on $\set$ to itself. Now let $S$ be any set.  If $S =
+instantiations of $a$ and $b$ gives that $(G^\set, G^\set) \; = \;
+(G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
+  \Nat^\alpha \,\alpha\,\alpha}\rho$ $ = \{\eta : \id \Rightarrow
+\id\}$ $ = \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
+\id)\}$ That is, $G^\set$ is a natural transformation from the
+identity functor on $\set$ to itself. Now let $S$ be any set.  If $S =
 \emptyset$, then there is exactly one morphism $\id_S: S \to S$, so
-$G^\set_S : S \to S$ must be $\id_S$. If $S \not = \emptyset$, if
-$a$ is any element of $S$, and if $K_a :S \to S$ is the constantly
+$G^\set_S : S \to S$ must be $\id_S$. If $S \not = \emptyset$, if $a$
+is any element of $S$, and if $K_a :S \to S$ is the constantly
 $a$-valued morphism on $S$, then instantiating the naturality square
 implied by the above equality gives that $G^\set_S \circ K_a = K_a
 \circ G^\set_S$, i.e., $G^\set_S \, a = a$, i.e., $G^\set_S = \id_S$.
@@ -3370,55 +3824,33 @@ identity natural transformation for the identity functor on $\set$,
 i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
 denotes the polymorphic identity function.
 
-\subsection{Standard Free Theorems for ADTs and Their Analogues for
-  Nested types}\label{sec:ft-adt}
+\subsection{Standard Free Theorems for ADTs and Nested
+  types}\label{sec:ft-adt} 
 
 We can derive in our calculus even those free theorems for polymorphic
 functions over ADTs that are not consequences of naturality.  We can,
 e.g., prove the free theorem for $\mathit{filter}$'s type as follows:
 
-%\begin{lemma}\label{lem:list-graph}
-%If $g : A \to B$, $\rho : \relenv$, and $\rho\alpha = (A, B,
-%\graph{g})$, then $\relsem{\alpha; \emptyset \vdash List \, \alpha}
-%\rho = \graph{map_{\mathit{List}} \, g}$.
-%\end{lemma}
-%\begin{proof}
-%The result follows by straightforward calculation using
-%Definition~\ref{def:rel-sem} and Equation~\ref{eq:mu}, together with
-%the facts that $\mathit{List} \,(A, B, \graph{g}) =
-%\graph{\mathit{map}_{\mathit{List}} \,g}$ and, if $H = \onet + \beta
-%\times\phi \beta$ {\color{blue} Why not $H = \onet + \alpha \times
-%  \beta$? Does it matter?}, then $(T_{H,\rho}^n K_0)^* R =
-%\Sigma_{i=0}^n R^i$ for all $n \in \nat$ and $R \in \rel$ by induction
-%on $n$.
-%\end{proof}
-
 \begin{thm} 
-If $g : A \to B$, $\rho : \relenv$, $\rho \alpha = (A, B, \graph{g})$,
+If $g : A \to B$, $\rho \in \relenv$, $\rho \alpha = (A, B, \graph{g})$,
 $(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, $(s \circ
 g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
-  \mathit{Bool}} \rho$, and % for $s : A \to \mathit{Bool}$, and
-%$\alpha; \emptyset \,|\, \Delta \vdash t :
-%\filtype$, if
-$\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
-  \filtype}$ for some $t$, then
+  \mathit{Bool}} \rho$, and
+\[\mathit{filter} = \setsem{\alpha; \emptyset \,|\, \Delta \vdash t :
+  \filtype}\]
+\noindent
+for some $t$, then
 \[  \mathit{map}_{\mathit{List}} \,g \circ \mathit{filter} \, (\pi_1
 \rho) \, a \, (s \circ g) = \mathit{filter}\, (\pi_2\rho) \, b \, s
 \circ \mathit{map}_{\mathit{List}} \,g\]
 \end{thm}
 \proof
-By Theorem~\ref{thm:at-gen-rel}, \[(\mathit{filter}\, (\pi_1 \rho)\, a,
-\mathit{filter}\, (\pi_2 \rho)\, b) \in \relsem{\alpha; \emptyset
+By Theorem~\ref{thm:abstraction}, \[(\mathit{filter}\, (\pi_1 \rho)\,
+a, \mathit{filter}\, (\pi_2 \rho)\, b) \in \relsem{\alpha; \emptyset
   \vdash \filtype} \rho\] so if $(s', s) \in \relsem{\alpha; \emptyset
   \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to
 \Eq_{\mathit{Bool}}$ and $(xs', xs) \in \relsem{\alpha; \emptyset
   \vdash List \, \alpha} \rho$ then
-% then
-%  \begin{align*}
-%    (t (\pi_1 \rho) \,a \,s, t (\pi_2 \rho) \,b \,s') &\in \relsem{\alpha; \emptys%et \vdash \Nat^\emptyset (List \, \alpha) \, (List \, \alpha)} \rho \\
-%   &= \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \to \relsem{\alpha; \e%mptyset \vdash List \, \alpha} \rho \\
-%  \end{align*}
-%  So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$ then,
 \begin{equation}\label{eq:filter-thm-list}
   (\mathit{filter}\, (\pi_1\rho) \,a \,s' \,xs', \mathit{filter} \,
   (\pi_2\rho) \,b \,s \,xs) \in \relsem{\alpha; \emptyset \vdash
@@ -3427,93 +3859,18 @@ By Theorem~\ref{thm:at-gen-rel}, \[(\mathit{filter}\, (\pi_1 \rho)\, a,
 If $\rho\alpha = (A, B, \graph{g})$, then $\relsem{\alpha; \emptyset
   \vdash \mathit{List} \, \alpha} \rho =
 \graph{\mathit{map}_{\mathit{List}} \, g}$ by Lemma~\ref{lem:graph}
-and Equation~\ref{thm:demotion-objects}.  Moreover, $xs =
+and demotion.  Moreover, $xs =
 \mathit{map}_{\mathit{List}} \,g \,xs'$ and $(s', s) \in \graph{g} \to
 \Eq_{\mathit{Bool}}$, so $s' = s \circ g$. The result
-follows from % Instantiating
-Equation~\ref{eq:filter-thm-list}.
-\qed
-%gives the result.
-% \begin{align*}
-%    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map%}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
-%    & i.e., \\ 
-%    &\mathit{map}_{\mathit{List}} \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) =% t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs), \\ 
-%    & i.e., \\
-%    &\mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = %t (\pi_2\rho) \, b \, s' \circ \mathit{map}_{\mathit{List}} \,g
-%  \end{align*}
-%  as desired.
-%\end{proof}
-
-\begin{comment}
-\begin{thm}\label{thm:at-gen-rel}
-If \,$\Gamma; \Phi \,|\, \Delta \vdash t : \tau$ and \,$\rho \in \relenv$,
-  and if \,$(a, b) \in \relsem{\Gamma; \Phi \vdash \Delta} \rho$,
-  then \\
-  $(\setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau} (\pi_1 \rho) \,a \, ,
-      \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : \tau } (\pi_2 \rho) \,b) \in 
-    \relsem{\Gamma; \Phi \vdash \tau} \rho$
-\end{thm}
-\proof
- Immediate from Theorem~\ref{thm:at-gen}.
-\qed
-\end{comment}
-
-\begin{comment}
-\begin{thm} 
-  If $g : A \to B$, 
-  $\rho : \relenv$, 
-  $\rho \alpha = (A, B, \graph{g})$,
-  $(a, b) \in \relsem{\alpha ;\emptyset \vdash \Delta} \rho$, 
-  $(s \circ g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho$,
-  and, for some well-formed term $\mathit{filter}$, \\
-  $$t = \setsem{\alpha; \emptyset \,|\, \Delta \vdash \mathit{filter} : \filtype} \emph{, then }$$
-  \begin{align*}
-  \mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s \circ g) = t (\pi_2\rho) \, b \, s \circ \mathit{map}_{\mathit{List}} \,g
-  \end{align*}
-\end{thm}
-\proof
-  By Theorem~\ref{thm:at-gen-rel},
-  $(t (\pi_1 \rho) a, t (\pi_2 \rho) b) \in \relsem{\alpha; \emptyset \vdash \filtype} \rho$.
-  Thus if 
-  $(s, s') \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \, \mathit{Bool}} \rho = \rho\alpha \to \Eq_{\mathit{Bool}}$,
-  then 
-  \begin{align*}
-    (t (\pi_1 \rho) \,a \,s, t (\pi_2 \rho) \,b \,s') &\in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset (List \, \alpha) \, (List \, \alpha)} \rho \\
-   &= \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \to \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho \\
-  \end{align*}
-  So if $(xs, xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho$ then,
-  \begin{equation}\label{eq:filter-thm}
-  (t (\pi_1\rho) \,a \,s \,xs, t (\pi_2\rho) \,b \,s' \,xs') \in \relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
-  \end{equation}
-
-  Consider the case in which $\rho\alpha = (A, B, \graph{g})$. Then $\relsem{\alpha; \emptyset \vdash List \, \alpha} \rho
-  = \graph{\mathit{map}_{\mathit{List}} \, g}$, by Lemma~\ref{lem:list-graph}, and $(xs, xs') \in \graph{\mathit{map}_{\mathit{List}} \,g}$ 
-  implies $xs' = \mathit{map}_{\mathit{List}} \,g \,xs$. We also have that 
-  $(s, s') \in \graph{g} \to \Eq_{\mathit{Bool}}$ implies 
-  $\forall (x, g x) \in \graph{g}. \,\, s x = s' (g x)$ and thus
-  $s = s' \circ g$ due to the definition of morphisms between relations.
-  %% TODO show (s, s') \in <g> -> \mathit{Bool} implies s = s' \circ g %% 
-  With these instantiations, Equation~\ref{eq:filter-thm} becomes
-  \begin{align*}
-    &(t (\pi_1\rho) \,a \,(s' \circ g) \,xs, t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs)) \in \graph{\mathit{map}_{\mathit{List}} \,g}, \\ 
-    & i.e., \\ 
-    &\mathit{map}_{\mathit{List}} \,g \, (t (\pi_1\rho) \,a \,(s' \circ g) \,xs) = t (\pi_2\rho) \,b \,s' \,(\mathit{map}_{\mathit{List}} \,g \,xs), \\ 
-    & i.e., \\
-    &\mathit{map}_{\mathit{List}} \,g \circ t (\pi_1 \rho) \, a \, (s' \circ g) = t (\pi_2\rho) \, b \, s' \circ \mathit{map}_{\mathit{List}} \,g
-  \end{align*}
-  as desired.
-\qed
-\end{comment}
-
-%\subsection{Free Theorem for Type of $\mathit{filter}$ for
-%  $\GRose$}\label{sec:filter-grose} 
+follows from 
+Equation~\ref{eq:filter-thm-list}.\qed
 
 A similar proof establishes the analogous result for, say, generalized
 rose trees. 
 \begin{thm} 
   If $g : A \to B$,
 $F, G : \set \to \set$,
-  $\eta : F \to G$ in $\set$, $\rho : \relenv$, $\rho \alpha =
+  $\eta : F \to G$ in $\set$, $\rho \in \relenv$, $\rho \alpha =
  (A, B, \graph{g})$, $\rho \psi = (F, G, \graph{\eta})$, $(a, b) \in
  \relsem{\alpha, \psi ;\emptyset \vdash \Delta} \rho$, $(s \circ
  g, s) \in \relsem{\alpha; \emptyset \vdash \Nat^\emptyset \alpha \,
@@ -3539,102 +3896,52 @@ We can recover standard short cut fusion for lists~\cite{glp93} in our
 calculus: 
 \begin{thm}
 If \,$\vdash F$, $\vdash H$, and 
-%$\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-%(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta$. 
-%If
 $G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
   \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + F \times \beta)\,
-  \beta)\, \beta}$ for some $g$, then
+  \beta)\, \beta}$ for some $g$, and if $c \in \setsem{\vdash F}
+\,\times\, \setsem{\vdash H} \to \setsem{\vdash H}$ and $n \in
+\setsem{\vdash H}$, then
 \[\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (G\; (\mathit{List}\,
 \setsem{\vdash F})\,\mathit{nil} \,\mathit{cons}) = G \,\setsem{\vdash
   H}\, n\, c \]
 \end{thm}
 \proof
-%Let $\vdash \tau : \F$ and $\vdash \tau' : \F$, let
-%\[\beta; \emptyset \,|\, \emptyset \vdash g : \Nat^{\emptyset}
-%(\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta\]
-%and let
-%\[G = \setsem{\beta; \emptyset \,|\, \emptyset
-%  \vdash g : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + \tau \times
-  %  \beta)\, \beta)\, \beta}\] Then
 Theorem~\ref{thm:abstraction} gives
-that, for any $\rho : \relenv$,
-%and any $(a, b) \in
-%\relsem{\beta; \emptyset \vdash \emptyset}\rho = 1$, then (eliding the
-%only possible instantiations of $a$ and $b$) we have
-\[(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
- \in  \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  (\onet + F \times \beta)\, \beta)\, \beta} \rho\\
-\cong (((\relsem{\vdash F} \rho \times
-\rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta\] 
-%\[\begin{array}{lll}
-%(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
-% & \in & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-%  (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\\
-%& \cong& (((\relsem{\vdash \tau} \rho \times
-%\rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta 
-%\end{array}\]
-%
-%Since
-%\[\begin{array}{rl}
-% & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-%  (\Nat^{\emptyset} (\onet + \tau \times \beta)\, \beta)\, \beta} \rho\\  
-%=& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\onet +
-%  \tau \times \beta)\, \beta} \rho \to \rho\beta \\ 
-%=& (\relsem{\beta; \emptyset \vdash \onet + \tau \times \beta}
-%\rho \to \rho\beta) \to \rho\beta \\ 
-%=& ((\onet + \relsem{\vdash \tau} \rho \times
-%\rho\beta) \to \rho\beta) \to \rho\beta \\ 
-%\cong& (((\relsem{\vdash \tau} \rho \times
-%\rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta 
-%\end{array}\]
-%we have that
+that, for any $\rho \in \relenv$,
+\[\begin{array}{lll}
+(G \,(\pi_1 \rho), \,G\, (\pi_2 \rho)) & \in 
+& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
+  (\onet + F \times \beta)\, \beta)\, \beta} \rho \\
+& \cong & (((\relsem{\vdash F} \rho \times
+\rho\beta) \to \rho\beta) \times \rho\beta) \to \rho\beta
+\end{array}\]
 so if $(c', c) \in \relsem{\vdash F} \rho \times
 \rho\beta \to \rho\beta$ and $(n', n) \in \rho\beta$ then
 $(G \,(\pi_1 \rho)\, n'\, c', G\, (\pi_2 \rho)\, n\, c)
 \in \rho \beta$.
 In addition,
-\[\setsem{\vdash \fold_{\onet + F
+\begin{align*}
+  &\setsem{\vdash \fold_{\onet + F
     \times \beta}^{H} : \Nat^{\emptyset} (\Nat^{\emptyset} (\onet
   + F \times H)\, H)\, (\Nat^{\emptyset} (\mu \alpha. \onet
-  + F \times \alpha)\, H)} =
-\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\] so that if $c \in
+  + F \times \alpha)\, H)} \\ =\;
+& \mathit{fold}_{1 + \setsem{\vdash F} \times \_}
+\end{align*}
+so that if $c \in
 \setsem{\vdash F} \,\times\, \setsem{\vdash H} \to
-\setsem{\vdash H}$ and $n \in \setsem{\vdash H}$, then
-$(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + F \times H)\,
-  H}$. The instantiation
-$\pi_1 \rho \beta = \setsem{\vdash \mu \alpha. \onet + F \times
-  \alpha}=\mathit{List}\,\setsem{\vdash F}$,\, 
-$\pi_2 \rho \beta = \setsem{\vdash H}$,\,
-$\rho \beta = \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c} :
-\rel(\pi_1 \rho \beta, \pi_2 \rho \beta)$,\,
-$c' = \mathit{cons}$,\, and 
-$n' = \mathit{nil}$
-%Consider the instantiation:
-%\[\begin{array}{rcl}
-%\pi_1 \rho \beta &=& \setsem{\vdash \mu \alpha. \onet + \tau \times
-%  \alpha} \;=\;\List\,\setsem{\vdash \tau}\\   
-%\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
-%\rho \beta &=& \graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c} :
-%\rel(\pi_1 \rho \beta, \pi_2 \rho \beta) \\ 
-%c' &=& \mathit{cons}\\
-%n' &=& \mathit{nil}
-%\end{array}\]
-%Clearly, $(\mathit{nil}, n) \in \rho\beta =
-%\graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c}$ because $
-%\mathit{fold}_{1 + \tau \times \_}\, n\, c \,\mathit{nil} = n$.  Moreover,
-%$(\mathit{cons}, c) \in \relsem{\vdash \tau} \,\times\, \rho\beta \to
-%\rho\beta$ since if $(x, x') \in \relsem{\vdash \tau}$, i.e., $x =
-%x'$, and if $(y, y') \in \rho\beta =
-%\graph{\mathit{fold}_{1 + \tau \times \_} n\, c}$, i.e., $y' =
-%\mathit{fold}_{1 + \tau \times \_} n\, c\, y$, then
-%\[(\mathit{cons}\, x\, y, c\, x\, (\mathit{fold}_{1 + \tau \times \_}\, n\,
-%c\, y)) \in \graph{\mathit{fold}_{1 + \tau \times \_}\, n\, c}\]
-%i.e.,
-%\[c\, x\, (\mathit{fold}_{1 + \tau \times \_}\, n\, c\, y)
-%= \mathit{fold}_{1 + \tau \times \_}\, n\, c\, (\mathit{cons} \,x\, y)\]
-%holds by definition of $\mathit{fold}_{1 + \tau \times \_}$.  We
-%therefore conclude that
+\setsem{\vdash H}$ and $n \in \setsem{\vdash H}$,
+ then
+\[(n, c) \in \setsem{\vdash \Nat^{\emptyset} (\onet + F \times H)\,
+  H}\] The instantiation
+\[\begin{array}{lll}
+\pi_1 \rho \beta & = & \setsem{\vdash \mu \alpha. \onet + F \times
+  \alpha}=\mathit{List}\,\setsem{\vdash F}\\
+\pi_2 \rho \beta & = & \setsem{\vdash H}\\
+\rho \beta & = & \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c} :
+\rel(\pi_1 \rho \beta, \pi_2 \rho \beta)\\
+c' & = & \mathit{cons}\\
+n' & = & \mathit{nil}
+\end{array}\]
 thus gives that $(G \;(\mathit{List}\,\setsem{\vdash
   F})\,\mathit{nil} \,\mathit{cons}, G \,\setsem{\vdash H} \,
 n\, c) \in \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c}$, i.e.,
@@ -3646,161 +3953,15 @@ that $\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (G\;
 We can extend short cut fusion results to arbitrary ADTs, as
 in~\cite{joh02,pit98}.
 
-\begin{comment}
-\subsection{Short Cut Fusion for Arbitrary ADTs}\label{sec:short-cut-adt}
-
-\begin{thm}
-Let $\ol{\vdash \tau}$, let $\vdash \tau'$, let $\ol{\alpha}; \beta
-\vdash F$, and let $\beta; \emptyset  \,|\,
-\emptyset \vdash g : \Nat^{\emptyset} (\Nat^{\emptyset} F[\ol{\alpha
-    := \tau}]\, \beta)\, \beta$.  If we regard
-\[\begin{array}{lll}
-H & = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha :=
-      \tau}]}\\
-G & = & \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
-  \Nat^{\emptyset} (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}]\,
-  \beta)\, \beta}
-\end{array}\]
-as functors in $\beta$, then for every $B \in H \setsem{\vdash \tau'}
-\rightarrow \setsem{\vdash \tau'}$ we have
-\[\mathit{fold}_H\, B \; (G\; \mu H \; in_H) = G \,\setsem{\vdash \tau'}\, B\]
-\end{thm}
-
-\vspace*{0.2in}
-
-\proof
-  We first note that the type of $g$ is well-formed, since
-  $\emptyset;\beta \vdash F[\ol{\alpha := \tau}]$ so our
-  promotion theorem gives that $\beta;\emptyset\vdash F[\ol{\alpha :=
-      \tau}]$, and $\emptyset;\beta\vdash\beta$ so that our
-  promotion theorem gives $\beta;\emptyset\vdash\beta$. From
-  these facts we deduce that $\beta;\emptyset \vdash
-  \Nat^\emptyset\,F[\ol{\alpha := \tau}]\,\beta : \T$, and thus that
-  $\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  F[\ol{\alpha := \tau}]\, \beta)\, \beta : \T$.
-
-  Theorem~\ref{thm:abstraction} gives that, for any $\rho : \relenv$
-  and any $(a, b) \in \relsem{\beta; \emptyset \vdash \emptyset}\rho =
-  1$, eliding the only possible instantiations of $a$ and $b$ gives
-  that
-\[(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
-\in \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
-  F[\ol{\alpha := \tau}]\, \beta)\, \beta} \rho\]
-Since
-\[\begin{array}{rl}
- & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-  (\Nat^{\emptyset} F[\ol{\alpha := \tau}]\, \beta)\, \beta} \rho\\  
-=& \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} F[\ol{\alpha :=
-      \tau}] \, \beta} \rho \to \rho\beta \\ 
-\end{array}\]
-we have that if $(A, B) \in \relsem{\beta; \emptyset \vdash
-  \Nat^{\emptyset} F[\ol{\alpha := \tau}] \, \beta} \rho$
-then
-\[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B)
-\in \rho \beta\]
-Now note that
-\[\setsem{\vdash \fold_{F[\ol{\alpha := \tau}]}^{\tau'} :
-  \Nat^{\emptyset}\, (\Nat^{\emptyset}\, F[\ol{\alpha := \tau}][\beta
-    := \tau'] \, \tau')\, (\Nat^{\emptyset} \,(\mu
-  \beta. F[\ol{\alpha := \tau}] \, \tau')} =
-\mathit{fold}_H\]
-and consider the instantiation
-\[\begin{array}{lll}
-A &=& \mathit{in}_H :  H (\mu H) \to \mu H\\
-B & : & H\setsem{\vdash \tau'} \to \setsem{\vdash \tau'}\\
-\rho \beta &=& \graph{\mathit{fold}_H\, B}
-\end{array}\]
-(Note that all the types here are well-formed.)  This gives
-\[\begin{array}{lll}
-\pi_1 \rho \beta &=& \setsem{\vdash \mu \beta. F[\ol{\alpha := \tau}]}
-\; = \; \mu H\\
-\pi_2 \rho \beta &=& \setsem{\vdash \tau'}\\
-\rho \beta &:& \rel(\pi_1 \rho \beta, \pi_2 \rho \beta)\\
-A & : & \setsem{\beta; \emptyset \vdash \Nat^{\emptyset}
-  F[\ol{\alpha := \tau}] \, \beta} (\pi_1 \rho)\\
-B & : & \setsem{\beta; \emptyset \vdash \Nat^{\emptyset} F[\ol{\alpha
-      := \tau}] \, \beta}(\pi_2 \rho)\\
-\end{array}\]
-since
-\[\begin{array}{lll}
-A \; = \; \mathit{in}_H & : & H(\mu H) \to \mu H\\
- & = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}(\mu
-\setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}) \to \mu
-\setsem{\emptyset;\beta \vdash F[\ol{\alpha := \tau}]}\\
-& = & \setsem{\emptyset;\beta \vdash F[\ol{\alpha :=
-      \tau}]}(\pi_1\rho) \to \setsem{\emptyset;\beta \vdash
-  \beta}(\pi_1 \rho)\\
-& = & \setsem{\beta;\emptyset \vdash F[\ol{\alpha :=
-      \tau}]}(\pi_1\rho) \to \setsem{\beta; \emptyset \vdash
-  \beta}(\pi_1 \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's
-    trick; now a theorem}} \\ 
-& = & \setsem{\beta;\emptyset \vdash \Nat^\emptyset F[\ol{\alpha :=
-      \tau}]\,\beta}(\pi_1 \rho) 
-\end{array}\]
-{\color{red} where ``Daniel's trick'' is the observation that a
-  functor can be seen as non-functorial when we only care about its
-  action on objects. This is now a theorem.}  We also have
-\[\begin{array}{lll}
-(A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\beta; \emptyset \vdash
-  \Nat^{\emptyset} F[\ol{\alpha := \tau}] \, \beta} \rho \\
- & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\rho[\beta := \graph{\mathit{fold}_H\, B}] \to
-\graph{\mathit{fold}_H\, B}\\
- & = & \relsem{\beta; \emptyset \vdash F[\ol{\alpha :=
-      \tau}]}\graph{\mathit{fold}_H\, B} \to
-\graph{\mathit{fold}_H\, B}\\
- & = & \relsem{\emptyset; \beta\vdash F[\ol{\alpha :=
-      \tau}]}\graph{\mathit{fold}_H\, B} \to
-\graph{\mathit{fold}_H\, B} \hspace*{0.35in} {\color{red}
-  \mbox{Daniel's trick; now a theorem}}\\  
-& = & \graph{\setsem{\emptyset; \beta \vdash F[\ol{\alpha :=
-      \tau}]}\,(\mathit{fold}_H\, B)} \to
-\graph{\mathit{fold}_H\, B} \hspace*{0.25in} {\color{red} \mbox{by the
-    graph lemma}}\\ 
-& = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \to
-\graph{\mathit{fold}_H\, B}\\
-\end{array}\]
-since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
-i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$, then
-$\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\, (\mathit{map}_H
-\,(\mathit{fold}_H\,B) \, x)$ by the definition of $\mathit{fold}_H$
-as a (indeed, the unique) morphism from $\mathit{in}_H$ to $B$. Thus,
-\[(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\, B) \in
-\graph{\mathit{fold}_H\, B}\]
-i.e.,
-\[\mathit{fold}_H \, B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) =
-G\,(\pi_2 \rho)\,B\] 
-
-\vspace*{0.1in}
-
-\noindent
-Since $\beta$ is the only free variable in $G$, this simplifies to
-\[\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\vdash \tau'}\,B\]  
-\qed
-\end{comment}
-
 \subsection{Short Cut Fusion for Arbitrary Nested
   Types}\label{sec:short-cut-nested} 
 
-%fold/build rule shows that Church encodings for nested types are iso
-%(have the same interp) as the nested types themselves. Just like Ex
-%2.8 in parpoe, but categorical rather than operational semantics. But
-%built-in data types are more versatile in implementations. They can be
-%inducted on, e.g. And they are stored in the heap, not the run-time
-%stack, and are therefore more efficient.
-%``Most higher order type languages meant for human programmers eschew
-%fully impredicative polymorphism'' says Andy on p322.
-
-We can also, finally, formally prove correctness of the categorically
-inspired short cut fusion for nested types from~\cite{jg10}. Indeed,
-we have:
+We can extend short cut fusion for lists~\cite{glp93} to nested types,
+thereby formally prove correctness of the categorically inspired
+theorem from~\cite{jg10}.  We have:
 \begin{thm}\label{thm:short-cut-nested}
 If $\emptyset;\phi,\alpha \vdash F$, \,$\emptyset; \alpha
 \vdash K$, \,
-%let $\phi ;\emptyset\,|\,\emptyset\vdash g :
-%\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
-%(\Nat^\alpha\,\onet \, (\phi\alpha))$. If we let
 $H : [\set,\set] \to [\set,\set]$ is defined by
 \[\begin{array}{lll}
 H\,f\,x & = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
@@ -3812,41 +3973,21 @@ and
 (\phi\alpha))}\] for some $g$, then, for every $B \in H
 \setsem{\emptyset;\alpha \vdash K} \rightarrow \setsem{\emptyset;
   \alpha \vdash K}$,
-$\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
-\,\setsem{\emptyset;\alpha \vdash K}\, B$.
+$$\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B$$
 \end{thm}
 
 \proof
-%We first note that the type of $g$ is well-formed since
-%$\emptyset;\phi,\alpha \vdash F : \F$ so our promotion theorem gives
-%that $\phi;\alpha \vdash F : \F$, and $\phi;\alpha \vdash \phi\alpha :
-%\F$, so that $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \T$
-%and $\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \T$.
-%Then $\phi;\emptyset \vdash \Nat^\alpha F\,(\phi\alpha) : \F$ and
-%$\phi;\emptyset \vdash \Nat^\alpha \onet \,(\phi\alpha) : \F$ also
-%%%hold, and, finally, 
-%$\phi ;\emptyset\vdash 
-%\Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha)) \,
-%(\Nat^\alpha\,\onet \, (\phi\alpha)) : \T$
-%  
 Theorem~\ref{thm:abstraction} gives that, for any 
-$\rho : \relenv$,
-%and any $(a, b) \in \relsem{\phi,\alpha;\emptyset \vdash
-%  \emptyset}\rho = 1$, eliding the only possible instantiations
-%of $a$ and $b$ gives that
+$\rho \in \relenv$,
 \[\begin{array}{lll}
-(G \,(\pi_1 \rho), G\, (\pi_2 \rho))
-& \in & \relsem{\phi;\emptyset\vdash \Nat^{\emptyset} (\Nat^\alpha
+(G \,(\pi_1 \rho), G\, (\pi_2 \rho)) & \in &
+\relsem{\phi;\emptyset\vdash \Nat^{\emptyset} (\Nat^\alpha 
   F\, (\phi\alpha))\, (\Nat^\alpha\,\onet \, (\phi\alpha))}
 \rho\\ 
 & = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho \to \relsem{\phi;\emptyset\vdash
   \Nat^\alpha\,\onet \, (\phi\alpha)}\rho\\ 
-%& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-%  (\phi\alpha)}\rho \to (\,\lambda A. 1 \Rightarrow \lambda A.\,(\rho
-%\phi) A\,)\\   
-%& = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-%  (\phi\alpha)}\rho \to (1 \Rightarrow \rho \phi)\\ 
 & = & \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho \to \rho \phi
 \end{array}\]
@@ -3854,14 +3995,11 @@ $\rho : \relenv$,
 so if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
   (\phi\alpha)}\rho$ then $(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\,
 B) \in \rho \phi$.
-In addition,
-%$\mathit{fold}_H = \setsem{\vdash \fold_F^K :
-%  \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha
-%  ((\mu \phi.\lambda\alpha.F)\alpha)\,K)}$.
+Also,
 \[\setsem{\vdash \fold_F^K :
   \Nat^{\emptyset}\, (\Nat^\alpha F[\phi := K]\,K)\, (\Nat^\alpha
   ((\mu \phi.\lambda\alpha.F)\alpha)\,K)} = \mathit{fold}_H\]
-Consider the instantiation $A = \mathit{in}_H : H (\mu H) \Rightarrow
+Now let $A = \mathit{in}_H : H (\mu H) \Rightarrow
 \mu H$,\, $B : H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
 \setsem{\emptyset;\alpha \vdash K}$,\, $\rho \phi =
 \graph{\mathit{fold}_H\, B}$,\, $\pi_1 \rho \phi = \mu H$,\, $\pi_2
@@ -3870,83 +4008,45 @@ Consider the instantiation $A = \mathit{in}_H : H (\mu H) \Rightarrow
   \emptyset \vdash \Nat^\alpha F \, (\phi \alpha)} (\pi_1 \rho)$,\,
 and $B : \setsem{\phi; \emptyset \vdash \Nat^\alpha F \, (\phi
   \alpha)} (\pi_2 \rho)$.
-%\[\begin{array}{lll}
-%A &=& \mathit{in}_H :  H (\mu H) \Rightarrow \mu H\\
-%B & : & H\setsem{\emptyset;\alpha\vdash K} \Rightarrow
-%\setsem{\emptyset;\alpha \vdash K}\\
-%\rho \phi &=& \graph{\mathit{fold}_H\, B} \hspace*{0.2in} {
-%  \color{red} \mbox{a graph of a natural transformation, defined in
-%    Enrico's notes}} 
-%\end{array}\]
-%(Note that all the types here are well-formed.) This gives
-%\[\begin{array}{lll}
-%\pi_1 \rho \phi &=& \mu H\\
-%\pi_2 \rho \phi &=& \setsem{\emptyset;\alpha\vdash K}\\
-%\rho \phi &:& \rel(\pi_1 \rho \phi, \pi_2 \rho \phi)\\
-%A & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
-%  F \, (\phi \alpha)} (\pi_1 \rho)\\
-%B & : & \setsem{\phi; \emptyset \vdash \Nat^\alpha
-%  F \, (\phi \alpha)} (\pi_2 \rho)\\
-%\end{array}\]
-%since
-Equation~\ref{thm:demotion-objects} ensures that $A = \mathit{in}_H :
-H(\mu H) \Rightarrow \mu H = \setsem{\phi;\emptyset \vdash \Nat^\alpha
-  F \,(\phi\alpha)}(\pi_1\rho)$,
-%\[\begin{array}{lll}
-%A \; = \; \mathit{in}_H & : & H(\mu H) \Rightarrow \mu H\\
-%& = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi := \mu
-%  \setsem{\emptyset; \phi, \alpha \vdash F}] \Rightarrow \mu
-%  \setsem{\emptyset; \phi, \alpha \vdash F}\\  
-%& = & \setsem{\emptyset; \phi, \alpha \vdash F}(\pi_1\rho)
-%  \Rightarrow \setsem{\emptyset; \phi,\alpha \vdash \phi\alpha}(\pi_1 \rho)\\
-%& = & \setsem{\phi; \alpha \vdash F}(\pi_1\rho)
-%  \Rightarrow \setsem{\phi;\alpha \vdash \phi\alpha}(\pi_1
-%  \rho) \hspace*{0.25in} {\color{red} \mbox{Daniel's trick; now a theorem}}\\
-%& = & \setsem{\phi;\emptyset \vdash \Nat^\alpha F
-%    \,(\phi\alpha)}(\pi_1\rho) 
-%\end{array}\]
-and Equation~\ref{thm:demotion-objects} and Lemma~\ref{lem:graph}
-together give that
+Demotion ensures that $A = \mathit{in}_H : H(\mu H) \Rightarrow \mu H
+= \setsem{\phi;\emptyset \vdash \Nat^\alpha F
+  \,(\phi\alpha)}(\pi_1\rho)$,
+and demotion and Lemma~\ref{lem:graph} together give that
 \[\begin{array}{lll}
 (A,B) \,=\, (\mathit{in}_H,B) & \in & \relsem{\phi;\emptyset\vdash
   \Nat^\alpha F\, (\phi\alpha)}\rho\\
-% & = & \lambda A. \relsem{\phi;\alpha\vdash F}\rho[\alpha := A]
-%\Rightarrow \lambda A. (\rho\phi) A\\
 & = & \lambda A. \relsem{\phi;\alpha\vdash F}[\phi :=
   \graph{\mathit{fold}_H\, B}][\alpha := A] \Rightarrow 
  \graph{\mathit{fold}_H\, B} \\ 
-%& = & \lambda A. \relsem{\emptyset;\phi,\alpha\vdash F}[\phi :=
-%  \graph{\mathit{fold}_H\, B}][\alpha := A] \Rightarrow 
-%\graph{\mathit{fold}_H\, B}  \hspace*{0.25in} {\color{red}
-%  \mbox{Daniel's trick; now a theorem}}\\  
 & = & \relsem{\emptyset;\phi,\alpha\vdash F}
   \graph{\mathit{fold}_H\, B} \Rightarrow \graph{\mathit{fold}_H\,
     B}\\
   & = & \graph{\setsem{\emptyset;\phi,\alpha\vdash F}
     \,(\mathit{fold}_H\,B)} \Rightarrow \graph{\mathit{fold}_H\, B}\\
-%\hspace*{0.25in} {\color{red} \mbox{Graph Lemma}}\\
   & = & \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)} \Rightarrow
 \graph{\mathit{fold}_H\, B}\\
 \end{array}\]
 since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
-%i.e., if $\mathit{map}_H \,(\mathit{fold}_H\,B) \, x = y$,
-then $\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
-(\mathit{map}_H \,(\mathit{fold}_H\,B) \, x)$ by the definition of
+then $$\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
+(\mathit{map}_H \,(\mathit{fold}_H\,B) \, x)$$ by the definition of
 $\mathit{fold}_H$ as a (indeed, the unique) morphism from
 $\mathit{in}_H$ to $B$.  Thus, $(G \,(\pi_1 \rho)\, A, G\, (\pi_2
 \rho)\, B) \in \graph{\mathit{fold}_H\, B}$, i.e., $\mathit{fold}_H \,
 B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
 since $\phi$ is the only free variable in $G$, this simplifies to
 $\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\emptyset;\alpha\vdash K}\,B$. 
-\qed
+G\,\setsem{\emptyset;\alpha\vdash K}\,B$. \qed
+
+\vspace*{0.05in}
 
 As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
-\vdash C$ generalizes
-%with $\setsem{\emptyset;\alpha \vdash c}\rho = C$
-Theorem~\ref{thm:short-cut-nested} to deliver more general a free
-theorem whose conclusion is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu
-H \; \mathit{in}_{H} = G \,\setsem{\emptyset;\alpha \vdash K}\, B$.
+\vdash C$ generalizes Theorem~\ref{thm:short-cut-nested} to deliver a
+more general a free theorem whose conclusion is $\mathit{fold}_{H}\, B
+\; \circ \; G\; \mu H \; \mathit{in}_{H} = G
+\,\setsem{\emptyset;\alpha \vdash K}\, B$.
+
+\vspace*{0.05in}
+
 Although it is standard to prove that the parametric model constructed
 verifies the existence of initial algebras, this is unnecessary here
 since initial algebras are built directly into our model.
@@ -3955,7 +4055,30 @@ since initial algebras are built directly into our model.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
-{\color{red} CHANGE? COMPARE AGAINST INTRO.}
+We have constructed a parametric model for a calculus supporting
+primitive nested types, and used its Abstraction Theorem to derive
+free theorems for nested types.  This was not possible
+before~\cite{jp19} because these types were not previously known to
+have well-defined interpretations in locally finitely presentable
+categories (here, $\set$ and $\rel$), and, to our knowledge, no term
+calculus for them existed.  We naturally expect the construction
+elaborated here to guide its generalization to more advanced data
+types.  For example, GADTs can be represented using left Kan
+extensions, and it was shown in~\cite{jp19} that adding a
+$\mathsf{Lan}$ construct to a calculus such as ours preserves the
+$\lambda$-cocontinuity needed for the data types it defines to have
+well-defined interpretations in locally $\lambda$-presentable
+categories. (Interestingly, $\lambda > \aleph_1$ is required to
+interpret even common GADTs.) This suggests carrying out our model
+construction in locally $\lambda$-presentable cartesian closed
+categories (lpcccs) $\cal C$ whose categories of (abstract) relations,
+obtained by pullback as in~\cite{jac99}, are also lpcccs and are
+appropriately fibred over $\cal C$.  Adding term-level fixpoints
+further requires our semantic categories not just to be locally
+$\lambda$-presentable, but also to support some kind of domain
+structure.
+
+{\color{red} KEEP ANYTHING FROM THIS? ADD GADTS, AT LEAST TO SUMMARY.
 
 We have constructed a parametric model for a calculus
 providing primitives for constructing nested types directly as
@@ -4124,6 +4247,8 @@ $\lambda$-presentable, but to support some kind of domain structure as
 well.
 %Unfortunately, $\omega$-CPO, the most obvious category
 %of domains to replace $\set$, is not locally finitely presentable.
+}
+
 
 \bibliographystyle{alpha}
 \bibliography{references}
