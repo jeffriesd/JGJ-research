@@ -566,16 +566,17 @@ if $\mathit{Tree}\,\alpha\,\gamma = \mu \beta. \alpha + \beta \times
 \gamma \vdash \mathit{Tree}\,\alpha\,\gamma$ is not. And it also
 applies to some non-ADT types, such as $\mathit{GRose}\,\phi\,\alpha =
 \mu \beta. \onet + \alpha \times \phi\beta$, in which $\phi$ and
-$\alpha$ must both be non-functorial variables. {\color{red} It is in
-  fact possible to allow ``extra'' $0$-ary functorial variables in the
-  body of $\mu$-types (functorial variables of higher arity are the
-  real problem), which would allow the first-order representations of
-  ADTs to be functorial.  However, it simplifies the formation rule
-  for $\mu$-types considerably to disallow even these $0$-ary
-  functorial variables. Since we can always use an ADT's (semantically
-  equivalent) second-order representation when functoriality is
-  needed, this restriction allows us to simplify the type syntax
-  without sacrificing the expressivity of the calculus.}
+$\alpha$ must both be non-functorial variables.  It is in fact
+possible to allow ``extra'' $0$-ary functorial variables in the body
+of $\mu$-types (functorial variables of higher arity are the real
+problem), which would allow the first-order representations of ADTs to
+be functorial. However, doing this requires some changes to the
+formation rule for $\mu$-types, as well as the delicate threading of
+some additional conditions throughout the model construction.  But
+since we can always use an ADT's (semantically equivalent)
+second-order representation when functoriality is needed, disallowing
+such ``extra'' variables does not negatively impact the expressivity
+of our calculus. We therefore pursue the simpler syntax here.
 %The representation of $\mathit{List}\,\alpha$ as the ADT $\mu
 %\beta. \onet + \alpha \times \beta$ cannot be functorial in
 %$\alpha$. By contrast, its representation as the nested type $(\mu
@@ -599,10 +600,10 @@ $\alpha$ must both be non-functorial variables. {\color{red} It is in
 %no type of the form $(\mu \phi. \lambda
 %\alpha. \mathit{GRose}\,\phi\,\alpha)\tau$ is well-formed in our
 %system.
-These restrictions ensure that the set and relational interpretations
-of types in Section~\ref{sec:type-interp} are functors. In
-Section~\ref{sec:conclusion} we discuss how more expressive types
-might be accommodated.
+%These restrictions ensure that the set and relational interpretations
+%of types in Section~\ref{sec:type-interp} are functors. In
+%Section~\ref{sec:conclusion} we discuss how more expressive types
+%might be accommodated.
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
 in no variables. Functorial variables can also be demoted to
@@ -2765,14 +2766,14 @@ of these equations are defined).
 
 We first show that terms of $\Nat$-type behave as natural
 transformations with respect to their source and target functorial
-types. If $\Gamma; \ol{\alpha} \vdash F$ then define the {\em
-  identity} $\id_F$ on $F$ by $\id_F = \Gamma;\emptyset~|~\emptyset
-\vdash L_{\ol{\alpha}}x.x : \Nat^{\ol{\alpha}} F\,F$, and if $\Gamma;
-\emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}} F\,G$ and
-$\Gamma; \emptyset \,|\, \Delta \vdash s: \Nat^{\overline{\alpha}}
-G\,H$ are terms then define the {\em composition} $s \circ t$ of $t$
-and $s$ by $s \circ t = \Gamma; \emptyset\,|\, \Delta \vdash
-L_{\overline{\alpha}}
+types, and derive some conseqences of this observation. If $\Gamma;
+\ol{\alpha} \vdash F$ then define the {\em identity} $\id_F$ on $F$ by
+$\id_F = \Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
+\Nat^{\ol{\alpha}} F\,F$, and if $\Gamma; \emptyset \,|\, \Delta
+\vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset \,|\,
+\Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$ are terms then define
+the {\em composition} $s \circ t$ of $t$ and $s$ by $s \circ t =
+\Gamma; \emptyset\,|\, \Delta \vdash L_{\overline{\alpha}}
 x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
 \Nat^{\overline{\alpha}} F\,H$. Then \[\setsem{\Gamma; \emptyset \,|\,
   \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
