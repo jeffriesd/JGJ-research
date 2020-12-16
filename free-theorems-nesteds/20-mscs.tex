@@ -577,33 +577,6 @@ since we can always use an ADT's (semantically equivalent)
 second-order representation when functoriality is needed, disallowing
 such ``extra'' variables does not negatively impact the expressivity
 of our calculus. We therefore pursue the simpler syntax here.
-%The representation of $\mathit{List}\,\alpha$ as the ADT $\mu
-%\beta. \onet + \alpha \times \beta$ cannot be functorial in
-%$\alpha$. By contrast, its representation as the nested type $(\mu
-%\phi. \lambda \beta.\,\onet + \beta \times \phi \beta)\,\alpha$ can be
-%considered either functorial in $\alpha$ or not, according to whether
-%$\alpha$ is in the functorial or non-functorial context in which this
-%type is formed. If $\emptyset;\alpha \vdash \mathit{List} \,\alpha$,
-%then $\vdash \Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is
-%well-formed; if $\alpha;\emptyset \vdash \List \,\alpha$, then it is
-%not.  Similarly, if $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\,
-%\alpha + \beta \times \gamma \times \beta$, then $\gamma;\emptyset
-%\vdash \Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \,
-%\alpha\, \gamma)$ is well-formed, but $\emptyset;\gamma \vdash
-%\Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\,
-%\gamma)$ is not. The body $F$ of a type $(\mu \phi.\lambda
-%\ol\alpha.F)\ol G$ can only be functorial in $\phi$ and the variables
-%in $\ol\alpha$. As a result, both $\phi$ and the variables in
-%$\ol\alpha$ must be non-functorial in $\mathit{GRose}\, \phi \, \alpha
-%= \mu\beta . \alpha \times \phi \beta$, $\mathit{GRose}\,\phi\,\alpha$
-%cannot be the (co)domain of a $\Nat$-type binding any variables, and
-%no type of the form $(\mu \phi. \lambda
-%\alpha. \mathit{GRose}\,\phi\,\alpha)\tau$ is well-formed in our
-%system.
-%These restrictions ensure that the set and relational interpretations
-%of types in Section~\ref{sec:type-interp} are functors. In
-%Section~\ref{sec:conclusion} we discuss how more expressive types
-%might be accommodated.
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
 in no variables. Functorial variables can also be demoted to
@@ -1004,15 +977,15 @@ not possible for nested types --- even when they are semantically
 equivalent to ADTs.
 
 Interestingly, even some recursive functions of a single proper nested
-type --- e.g., a reverse function for bushes --- cannot be expressed
-as folds because the algebra arguments needed to define them are again
-recursive functions with types of the same problematic form as the
-type of, e.g., a zip function for perfect trees.  Expressivity of
-folds for nested types has long been a vexing issue, and this is
-naturally inherited by our calculus. Adding more expressive recursion
-combinators could help, but since this is orthogonal to the issue of
-parametricity in the presence of primitive nested types we do not
-consider it further here.
+type --- e.g., a reverse function for bushes that is a true involution
+--- cannot be expressed as folds because the algebra arguments needed
+to define them are again recursive functions with types of the same
+problematic form as the type of, e.g., a zip function for perfect
+trees.  Expressivity of folds for nested types has long been a vexing
+issue, and this is naturally inherited by our calculus. Adding more
+expressive recursion combinators could help, but since this is
+orthogonal to the issue of parametricity in the presence of primitive
+nested types we do not consider it further here.
 
 \section{Interpreting Types}\label{sec:type-interp}
 
