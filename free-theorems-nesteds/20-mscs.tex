@@ -3486,10 +3486,10 @@ Finally, since $\Phi = \emptyset$, naturality of
   \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
   (\Nat^{{\ol{\beta}} }\,(\mu \phi.\lambda
-  \overline \alpha.H)\overline \beta \;F)}\] in $\rho$ is trivial.
+  \overline \alpha.H)\overline \beta \;F)}\] in $\rho$ is trivial.\qed
 \end{itemize}
-\qed
 
+\vspace*{0.1in}
 
 The following theorem is an immediate consequence of
 Theorem~\ref{thm:at-gen}:
@@ -3797,6 +3797,508 @@ verifies the existence of initial algebras, this is unnecessary here
 since initial algebras are built directly into our model.
 
 \section{Parametricity for GADTs}\label{sec:GADTs}
+
+Generalized algebraic datatypes (GADTs) generalize nested types by...
+
+
+
+For example, ...
+
+
+A natural next step in this line of work is to extend our
+parametricity results to GADTs.  It was shown in~\cite{jg08} that (the
+data of) GADTs can be represented using object-level left Kan
+extensions (over discrete categories), and further shown
+in~\cite{jp19} that adding a carefully designed left Kan extension
+construct to a calculus supporting primitive nested types preserves
+the cocontinuity needed for primitive GADTs to have well-defined,
+properly functorial interpretations.
+
+This suggests adding GADTs to our calculus by extending
+Definition~\ref{def:wftypes} with such object-level constructs, and
+extending Figure~\ref{fig:terms} with categorically inspired
+constructs to introduce and eliminate terms of these types, along the
+same entirely standard lines as we did there for products, coproducts,
+and fixpoints.  In this section we outline how our model from
+Section~\ref{sec:term-interp} can be extended to a parametric model
+when some classes of GADTs are incorporated as primitives in this
+way. However, as we argue in~???? below, we suspect this is not
+possible in general.
+
+
+
+
+
+HERE!!
+
+
+
+
+
+
+
+To show when this can be done, as well as to give a sense of what goes
+wrong in the general case, we begin by recalling that GADTs are
+naturally interpreted as initial algebras of left Kan extensions, as
+suggested in discrete~\cite{jg08} and
+
+
+
+Functorial semantics in~\cite{jp19}.
+
+introducing a new
+type, $\Lan$, to represent left Kan extensions.  Indeed, 
+
+To begin with, we add the following type formation rule for $\Lan$
+types to our type system.
+\[
+\AXC{$\Gamma; \Phi,\ol\alpha^0 \vdash F$}
+\AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
+\AXC{$\ol{\Gamma;\Phi \vdash A}$}
+\TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F) \ol A$}
+\DisplayProof
+\]
+Notice that the length of $\ol K$ coincides with that of $\ol A$.
+Introducing the new type also requires the following additional clause in the inductive definition of higher-order substitution.
+\[
+((\Lan^{\ol{\alpha}}_{\ol K}\,F) \ol A)[\phi :=_{\ol{\beta}} G]
+  = (\Lan^{\ol\alpha}_{\ol K}\,F[\phi :=_{\ol{\beta}} G])\, \ol{A[\phi :=_{\ol{\beta}} G]}
+\]
+
+Before we extend the term calculus with the term introduction and elimination rules for $\Lan$ types,
+it is necessary to generalize $\Nat$ types to bind type constructor variables of arbitrary arity.
+So, the formation rule for $\Nat$ types will be modified as
+\[
+\AXC{$\Gamma;\Phi \vdash F$}
+\AXC{$\Gamma;\Phi  \vdash G$}
+\BIC{$\Gamma;\emptyset \vdash \Nat^\Phi F \,G$}
+\DisplayProof
+\]
+and the term introduction and elimination rules will be
+\[
+\AXC{$\Gamma; \Phi \vdash F$}
+\AXC{$\Gamma; \Phi \vdash G$}
+\AXC{$\Gamma; \Phi \,|\, \Delta, x : F \vdash t: G$} 
+\TIC{$\Gamma; \emptyset
+  \,|\, \Delta \vdash L_\Phi x.t : \Nat^\Phi \,F \,G$}
+\DisplayProof
+\]
+and
+\[
+\AXC{$\ol{\Gamma;\Phi,\ol\beta \vdash K}$}
+\AXC{$\Gamma; \emptyset
+  \,|\, \Delta \vdash t : \Nat^{\ol\psi} \,F \,G$}
+\AXC{$\Gamma;\Phi \,|\, \Delta \vdash s: F[\overline{\psi :=_{\ol\beta} K}]$}
+\TIC{$\Gamma;\Phi\,|\, \Delta \vdash t_{\ol K} s:
+  G[\overline{\psi :=_{\ol\beta} K}]$}
+\DisplayProof
+\]
+respectively.
+It is necessary, of course, to suitably extend the semantic interpretations of $\Nat$ types and terms.
+The type constructor variables bound by $\Nat$ will be interpreted as either functors
+or relation transformers.
+The set and relational interpretations for $\Nat$ types are defined as follows.
+\begin{align*}
+\setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
+&= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol K] 
+  \Rightarrow \lambda \ol{K}.\,\setsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol K]~|~\\ 
+&\hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_k}.\\
+&\hspace{0.4in} (\eta_{\overline{K^1}}, \eta_{\overline{K^2}})
+: \setsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol K]
+\rightarrow \setsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol K] \} \\
+%%%
+\relsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho
+&= \{\eta : \lambda \ol{K}.\,\relsem{\Gamma; \Phi \vdash F}\rho[\ol{\Phi := K}]
+\Rightarrow \lambda \ol{K}. \,\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\phi := K}]\}\\
+&=
+  \{(\eta_1,\eta_2) \in \setsem{\Gamma; \emptyset
+    \vdash \Nat^\Phi
+    \,F\,G} (\pi_1 \rho) \times \setsem{ 
+    \Gamma;\emptyset
+    \vdash \Nat^\Phi \,F\,G} (\pi_2
+  \rho)~|~\\
+& \hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_{k}}.\\
+& \hspace{0.4in} ((\eta_1)_{\ol{K^1}},(\eta_2)_{\ol{K^2}}) \in
+  (\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi := K}])^{\relsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
+\end{align*}
+
+We can now give the term introduction and elimination rules for $\Lan$, which are
+\[
+\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
+\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
+\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} : \Nat^{\Phi}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
+\DisplayProof
+\]
+and
+\[
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
+  F\;G[\ol{\beta := K}]$}
+\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+\Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F)\ol\beta\, G$}
+\DisplayProof
+\]
+respectively.
+Notice that, in these rules, we make essential use of the extended $\Nat$ types.
+
+To give the semantics for $\Lan$ types we follow~\cite{jp19}
+and use the fundamental idea that these have to be interpreted as left Kan extensions.
+We give the definition of left Kan extension and some useful notation in the following definition.
+
+\begin{defi}
+Let $F : \set^k \to \set$ and $K : \set^k \to \set^h$.
+Then, the left Kan extension of $F$ along $\ol K$ is given by a functor $\Lan_K\,F : \set^h \to \set$
+and a natural transformation $\epsilon : F \to (\Lan_K\,F) \circ K$
+which are initial among such pairs of functor and natural transformations, i.e.,
+such that for every $L : \set^h \to \set$ and $\eta :  F \to L \circ K$
+there exists a unique natural transformation $\mu : \Lan_K\,F \to L$
+such that $(\mu K) \circ \epsilon = \eta$, as shown in the following diagram.
+\[
+\begin{tikzcd}[row sep = huge]
+\set^k
+\ar[rr, "{F}"{name=Fa}, ""{name=F, below}]
+\ar[rd, "{K}"']
+&& \set \\
+& \set^h
+\ar[Rightarrow, bend right = 10, from=F, "{\epsilon}" description]
+\ar[ur, bend left, "{\Lan_K\,F}"{name=Lan, description}]
+\ar[ur, bend right, "{L}"'{name=L, right}, ""'{name=Lr, right}]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\eta}"]
+\ar[Rightarrow, from=Lan, to=L, "{\mu}"]
+\end{tikzcd}
+\]
+Of course, we can similarly define the left Kan extension for functors on $\rel$.
+\end{defi}
+
+One might try to restrict the semantic interpretation of $\Lan$ types to a subset of the set produced by the left Kan extension.
+We show in the following proposition that this is not possible, if we want such interpretation to include the interpretation of the terms given by the term-introduction rule.
+
+\begin{prop}\label{prop:full-lan}
+Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set}$ be functors.
+Assume that $L : \set^k \to \set$ is a functor such that the following properties hold:
+\begin{enumerate}
+\item for all $\ol{A : \set}$, we have that $L \ol{A} \subseteq (\textit{Lan}_{\ol K}\, F)\ol{A}$
+\item for all $\ol{f : A \to B}$ and $\ol{x \in A}$, we have that $(\textit{Lan}_{\ol K}\, F)\ol{f}|_{L \ol{A}}\, x \in L \ol{B}$
+\item for all $\ol{A : \set}$ and $y \in F \ol{A}$, we have that $\epsilon_{\ol{A}} y \in L ( \ol{K \ol{A}} )$
+\end{enumerate}
+Then $L = \textit{Lan}_{\ol K}\, F$.
+\end{prop}
+\begin{proof}
+For every $\ol{A : \set}$ and $z \in (\textit{Lan}_{\ol K}\, F)\ol{A}$
+there exist $\ol{S : \set_0}$, $\ol{f : K \ol{S} \to A}$ and $w \in F \ol{S}$ such that $z = \iota_{\ol{S}, \ol{f}} w$.
+Thus, $z = \iota_{\ol{S}, \ol{f}} w = (\textit{Lan}_{\ol K}\, F) \ol{f} (\epsilon_{\ol{S}} w)$;
+by the third assumption we have that $\epsilon_{\ol{S}} w \in L ( \ol{K \ol{S}} )$
+and by the second assumption we have that $z \in L \ol{A}$.
+We can than conclude that $L \ol{A} = (\textit{Lan}_{\ol K}\, F)\ol{A}$.
+\end{proof}
+
+Thus, we are forced to interpret $\Lan$ types as whole left Kan extensions, without any cutting down.
+The set interpretation of the $\Lan$ type then is
+\[
+  \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
+  = (\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+  \rho[\ol{\alpha := \_}]}}\,
+  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
+  \rho[\ol{\alpha := \_}])\,
+  \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
+\]
+and the relational interpretation is
+\[
+  \relsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
+  = (\textit{Lan}_{\ol{\relsem{\Gamma; \ol\alpha \vdash
+          K}\rho[\ol{\alpha := \_}]}}\, \relsem{\Gamma; \Phi, \ol\alpha
+      \vdash F}\rho[\ol{\alpha := \_}])\, \ol{\relsem{\Gamma; \Phi
+        \vdash A}\rho}
+\]
+We also need to define the functorial action of the interpretation on morphisms.
+Let $f : \rho \to \rho'$ be a morphism of set environments.
+Then
+\[
+\setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}f
+: \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
+\to \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho'
+\]
+is defined as
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}\rho'} \\
+\circ\;
+  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}f}
+\end{multline*}
+or, equivalently by naturality,
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}f} \\
+\circ\;
+  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
+\end{multline*}
+The functorial action for the relational interpretation is defined analogously.
+
+The left Kan extension can be expressed via a colimit formula~\cite{rie16} as
+\[
+	(\Lan_K\,F) \ol{A} = \colim{\ol{S} : \set^k_0, \ol{f : K\ol{S} \to A}}{F \ol{S}}
+\]
+for any $\ol{A} : \set^h$, and where $\set_0$ is the category finite sets
+(i.e., the full subcategory of $\omega$-presentable objects in $\set$).
+For any $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$, let
+$j_{\ol{S}, \ol{f}} : F \ol{S} \to (\Lan_K\,F) \ol{A}$
+be the morphism indexed by $\ol{S}$ and $\ol{f}$ of the cocone into the colimit.
+Moreover, for any $h$-tuple of functions $\ol{g : A \to B}$,
+the functorial action $(\Lan_K\,F) \ol{g}$ is the unique function $(\Lan_K\,F) \ol{A} \to (\Lan_K\,F) \ol{B}$
+such that, for every $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$,
+we have that $((\Lan_K\,F) \ol{g}) \circ j_{\ol{S}, \ol{f}} = j_{\ol{S}, \ol{g \circ f}}$.
+We can similarly express via a colimit formula the left Kan extension of functors on $\rel$,
+and in that case we call the cocone over it $\iota$.
+
+We define the semantics for the terms from the introduction and elimination rules for $\Lan$ types as, respectively,
+\begin{multline*}
+\setsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol{K}}\, F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d \\
+= j_{\ol{\setsem{\Gamma;\Phi \vdash A}\rho},
+  \ol{\id_{\setsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
+(\setsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, d)
+\end{multline*}
+and
+\[
+\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta 
+: \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
+= \lambda \ol{N} \, \ol{B}.\, (\mu_{\ol{N}})_{\ol{B}}
+\]
+where
+  \[\mu_{\ol{N}} : \Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
+  {[\ol{\alpha := \_} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash
+    F}\rho {[\Phi, \ol \alpha := \ol N, \_ ]} \to \setsem{\Gamma;
+    \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \_]\]
+  is the unique natural transformation such that
+\begin{equation}\label{eq:defn-of-mu-sub-N}
+    (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi,
+    \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}} =
+(\mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K}
+  \rho[\ol{\alpha := \_}]}) \circ \epsilon_{\ol{N}}
+  \end{equation}
+as given by the universal property of the left Kan extension.
+Here, $\epsilon_{\ol{N}}$ is the natural transformation associated
+with the left Kan extension, as shown in the following diagram.
+\[\begin{tikzcd} [column sep = large, row sep = large]
+\set^{|\ol \alpha|}
+\ar[rr, "\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol
+      \alpha := \ol N, \_ ]}"{name=F}] 
+\ar[dr, "\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}"{left}] && \set \\ 
+&\set^{|\ol K|} \ar[ur, "\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}}\,
+\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
+    \ol N, \_ ]}"{right}]
+\ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
+          from=F, to=2-2,  "\epsilon_{\ol{N}}"{}]
+\end{tikzcd}\]
+The relational interpretations are define analogously.
+
+Having defined the syntax and both the set and relational semantics for $\Lan$ types and terms,
+we need to check that these definitions yield a parametric model.
+The first step would be to extend Lemma~\ref{lem:rel-transf-morph} to $\Lan$ types,
+by proving a new clause of the inductive step of the proof.
+Unfortunately, it turns out that, in general, this is not possible, as the following example shows.
+
+\begin{exa}
+We provide a counterexample to Lemma~\ref{lem:rel-transf-morph} for $\Lan$ types.
+Consider the type $\emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha$.
+Then, using the colimit formula for left Kan extensions, we have
+\[
+\begin{array}{rl}
+\relsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } \rho [\alpha := (1, 0, 0)]
+&= (\textit{Lan}_{\Eq_1}\, \Eq_1)(1, 0, 0) \\
+&= \colim{f : \Eq_1 \to (1, 0, 0)}{\Eq_1} \\
+&= (0, 0, 0)
+\end{array}
+\]
+because there exists no morphism $f : \Eq_1 \to (1, 0, 0)$ in $\rel$.
+But, considering the set interpretation on the first projection of the relation environment, we have
+\[
+\begin{array}{rl}
+\setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } ( \pi_1 ( \rho [\alpha := (1, 0, 0)] ) )
+&= \setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } (\pi_1 \rho) [\alpha := 1] \\
+&= (\textit{Lan}_{1}\, 1) 1 \\
+&= \colim{1 \to 1}{1} \\
+&= 1
+\end{array}
+\]
+because there exist a unique arrow $1 \to 1$ in $\set$, which is the identity on $1$.
+\end{exa}
+
+The issue lies in the fact that the functor along which we extend contains constants (such as $\onet$).
+Indeed, if we assume that $\ol{\emptyset; \overline{\alpha} \vdash K}$ are polynomial functors not containing constants,
+then we can prove that the relational interpretation of
+$\Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$
+is fibered over its set interpretation, as proven in the following proposition.
+
+\begin{prop}
+Assume that the types in $\ol{K}$ are polynomial and contain no constants
+(i.e., they are formed only by the functorial type variables $\ol\alpha$, $+$ and $\times$).
+Then
+\[
+\pi_i (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+)
+=
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i \rho)
+\]
+for every relation environment $\rho$ and $i = 1, 2$.
+\end{prop}
+\begin{proof}
+Notice that, by the colimit formula,
+\[
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+=
+\colim{\ol{R}, \ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}}{
+\relsem{ \Gamma; \Phi, \ol\alpha \vdash F } \rho[\ol{\alpha := R}]
+}
+\]
+(where we call $\iota$ the cocone of the colimit)
+and thus
+\[
+\pi_i (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+)
+=
+\colim{\ol{R : \rel_0}, \ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}}{
+\relsem{ \Gamma; \Phi, \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := \pi_i R}]}
+\]
+(where the cocone of the colimit is $\pi_i \iota$),
+whereas, again by the colimit formula,
+\[
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i \rho)
+=
+\colim{\ol{S : \set_0}, \ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_i \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_i \rho)}}{
+\setsem{ \Gamma; \Phi, \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := S}]}
+\]
+(where we call $j$ the cocone of the colimit).
+
+We now prove that
+\[
+\pi_1 (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+)
+=
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
+\]
+by providing a pair of inverse functions
+(the proof for the second projection is analogous).
+Define
+\[
+h :
+\pi_1 (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+)
+\to
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
+\]
+as the unique function given by the universal property of the colimit such that, for any $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have that $h \circ (\pi_1 \iota_{\ol{R}, \ol{m}}) = j_{\ol{\pi_1 R}, \ol{\pi_1 m}}$.
+
+Observe that, since $K$ does not contain constants, then $\setsem{ \emptyset; \ol\alpha \vdash K } (\pi_2 \rho) [\ol{\alpha := 0}] = 0$.
+For any
+\[
+\ol{S : \set_0}
+\qquad \text{and} \qquad
+\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}
+\]
+consider the relations $\ol{(S, 0, 0)}$ and the morphisms $\ol{(f, !) : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := (S, 0, 0)}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$ (where $!$ is the unique function from the empty set).
+Then, define
+\[
+k :
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
+\to
+\pi_1 (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
+)
+\]
+as the unique function given by the universal property of the colimit such that, for any $\ol{S : \set_0}$ and $\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$, we have that $k \circ j_{\ol{S}, \ol{f}} = \pi_1 \iota_{\ol{(S, 0, 0)}, \ol{(f, !)}}$.
+
+We now have to show that $h$ and $k$ are mutually inverse.
+First, we prove that $h \circ k = \id$.
+Indeed, observe that
+\[
+h \circ k \circ j_{\ol{S}, \ol{f}}
+= h \circ (\pi_1 \iota_{\ol{(S, 0, 0)}, \ol{(f, !)}})
+= j_{\ol{\pi_1 (S, 0, 0)}, \ol{\pi_1 (f, !)}}
+= j_{\ol{S}, \ol{f}}
+\]
+for every $\ol{S : \set_0}$ and
+$\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$
+and thus $h \circ k = \id$.
+Secondly, we prove that $k \circ h = \id$.
+Indeed, observe that
+\[
+k \circ h \circ (\pi_1 \iota_{\ol{R}, \ol{m}})
+= k \circ j_{\ol{\pi_1 R}, \ol{\pi_1 m}}
+= \pi_1 \iota_{\ol{(\pi_1 R, 0, 0)}, \ol{(\pi_1 m, !)}}
+\]
+for every $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$.
+Moreover, consider the morphisms $\ol{(\id_{\pi_1 R}, !) : (\pi_1 R, 0, 0) \to R}$ and observe that $m \circ \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := (\id_{\pi_1 R}, !)}] = (\pi_1 m, !)$, implying that $\iota_{\ol{R}, \ol{m}} = \iota_{\ol{(\pi_1 R, 0, 0)}, \ol{(\pi_1 m, !)}}$.
+Then $k \circ h \circ (\pi_1 \iota_{\ol{R}, \ol{m}}) = \pi_1 \iota_{\ol{R}, \ol{m}}$ for every $R$ and $m$, and thus $h \circ k = \id$.
+
+We can also prove that
+\[
+\pi_i (
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f
+)
+=
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)
+\]
+for every morphism of relation environments $f : \rho \to \rho'$ and $i = 1, 2$.
+Let $\iota$ be the cocone for the colimit $\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho$,
+$j$ the cocone for the colimit $\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$
+and $h$ and $k$ the isomorphisms showing that
+$\pi_i(\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$;
+analogously, let $\iota'$, $j'$, $h'$ and $k'$ be as above but for interpretations in $\rho'$ in place of $\rho$.
+Then $\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f$
+is the unique morphism of relations such that, for any $\ol{R : \rel_0}$ and
+$\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$,
+we have that
+\[
+(\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ \iota_{\ol{R}, \ol{m}}
+= \iota'_{\ol{R}, \ol{\relsem{ \Gamma; \Phi \vdash A } f \circ m}}
+\]
+but then, by projecting the $i$-th component, we have that
+\[
+\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ \pi_i \iota_{\ol{R}, \ol{m}}
+= \pi_i \iota'_{\ol{R}, \ol{\relsem{ \Gamma; \Phi \vdash A } f \circ m}}
+\]
+and thus, using the facts that $h \circ (\pi_i \iota_{\ol{R}, \ol{m}}) = j_{\ol{\pi_i R}, \ol{\pi_i m}}$
+and $h' \circ (\pi_i \iota'_{\ol{R}, \ol{m}}) = j'_{\ol{\pi_i R}, \ol{\pi_i m}}$ from above,
+we get
+\[
+\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ k \circ j_{\ol{\pi_i R}, \ol{\pi_i m}}
+= k' \circ j'_{\ol{\pi_i R}, \ol{\relsem{ \Gamma; \Phi \vdash A } (\pi_i f) \circ (\pi_i m)}}
+\]
+i.e., $\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f)$
+satisfy the universal property of $\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)$,
+and thus they are equal (up to natural isomorphism).
+\end{proof}
+
+The requirement that the $\ol{K}$s be polynomial functors without constants is quite restrictive,
+as it precludes the possibility of expressing GADTs used in practice, such as the following type $\mathtt{Expr}$ of typed expressions.
+\[
+\begin{array}{l}
+\mathtt{data\; Expr \;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{const\;:\; Int \to Expr\; Int}\\
+\hspace*{0.4in}\mathtt{is\_zero\;:\; Expr\; Int \rightarrow Expr\; Bool}\\
+\hspace*{0.4in}\mathtt{if\;:\; Expr\; Bool \to Expr\; A \to Expr\; A \to Expr\; A}
+\end{array}
+\]
+
+{\color{red} This is not quite right.}
+Even when extending along polynomials containing no constants, it is unclear how to prove the Identity Extension Lemma for $\Lan$ types, or if it holds at all.
+In order to satisfy the identity extension lemma in the case of $\Nat$ types, for example, it is necessary to cut down the semantic interpretation by requiring that the natural transformations in the set interpretation preserve equalities.
+The impossibility of restricting the semantic interpretation of $\Lan$, as proved by Proposition~\ref{prop:full-lan}, suggests that the Identity Extension Lemma might indeed not hold for a type system that features such types.
+
+We must then conclude that it is not possible to use functorial semantics to provide a parametric model for $\Lan$ types.
+
+
+
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
