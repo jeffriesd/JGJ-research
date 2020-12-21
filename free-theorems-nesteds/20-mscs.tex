@@ -3798,59 +3798,132 @@ since initial algebras are built directly into our model.
 
 \section{Parametricity for GADTs}\label{sec:GADTs}
 
-Generalized algebraic datatypes (GADTs) generalize nested types by...
+As discussed in Section~\ref{sec:intro}, type indices for nested types
+can be any types, including, in the case of truly nested types like
+that of bushes, types involving the very same nested type that is
+being defined. But every data constructor for a nested type must still
+have as its return type exactly the instance being defined. For
+example, the data constructors for the instance $\mathtt{PTree\; A}$ of the
+nested type $\mathtt{PTree}$ are $\mathtt{pleaf :: PTree\; A}$ and
+$\mathtt{pnode :: PTree\; (A \times A) \to PTree\; A}$, and
+the data constructors for the instance $\mathtt{Bush \;A}$ of the truly
+nested type $\mathtt{Bush}$ are $\mathtt{bnil :: Bush\; A}$ and
+$\mathtt{bcons :: A \to Bush\; (Bush\; A) \to Bush\; A}$.
+
+Generalized algebraic datatypes (GADTs){\color{red}~\cite{???}} generalize nested
+types by relaxing the above restriction to allow the return types of
+data constructors to be different instances of the datatype than the
+one being defined. For example, the GADT
+{\small
+\[\begin{array}{l}
+\mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow List\;A}\\
+\hspace*{0.4in}\mathtt{spair\;:\;Seq\;A \rightarrow Seq\;B \rightarrow
+  Seq\;(A\times B)}\\
+\hspace*{0.4in}\mathtt{sseq\;:\;(Nat \rightarrow Seq\;A) \rightarrow
+  Seq\;(Nat \to A)}
+\end{array}\]}
+\noindent
+\!\!has data constructors $\mathtt{spair}$ and $\mathtt{sseq}$ with
+return types $\mathtt{Seq\; (A \times B)}$ and $\mathtt{Seq\;(Nat \to
+  A)}$. These types are not only at different instances of \verb|Seq|
+from the instance $\mathtt{Seq\; A}$ being defined, but also at
+different instances from one another. The resulting interdependence of
+different instances of GADTs means that they can express more
+constraints than ADTs and nested types. For example, the ADT
+$\mathtt{List}$ expresses the invariant that all of the data in the
+lists it defines is of the same type, while the nested type
+$\mathtt{PTree}$ expresses this invariant {\em as well as} the
+invariant that all of the lists it defines have lengths that are
+powers of 2. The GADT $\mathtt{Seq}$ enforces {\em even more general}
+well-formedness conditions for sequences of values that simply cannot
+be expressed with ADTs and nested types alone.
+
+GADTs are widely used in modern functional languages, such as Haskell,
+as well as in proof assistants, such as Agda, that are based on
+dependent type theories. A natural next step in the line of work
+reported in this paper is therefore to extend our parametricity
+results to GADTs. A promising starting point for this endeavor is the
+observation from~\cite{jg08} that the data objects of GADTs can be
+represented using object-level left Kan extensions over discrete
+categories. The more recent results of~\cite{jp19} further show that
+adding a carefully designed object-level left Kan extension construct
+to a calculus supporting primitive nested types preserves the
+cocontinuity needed for primitive GADTs to have well-defined, properly
+functorial interpretations. Together this suggests extending the type
+system in Definition~\ref{def:wftypes} with such a left Kan extension
+construct, and extending the calculus in Figure~\ref{fig:terms} with
+corresponding categorically inspired constructs to introduce and
+eliminate terms of these richer types. This approach exactly mirrors
+the (entirely standard) approach taken above for product, coproduct,
+and fixpoint types. In this section we outline this approach and show
+how our model from Section~\ref{sec:term-interp} can be extended to a
+parametric model when some classes of primitive GADTs are incorporated
+in this manner. However, as we argue in{\color{red}~????} below, such
+extension is not possible in general.
+
+\subsection{Left Kan Extensions}\label{sec:lke}
+
+We begin by recalling the definition of a left Kan extension and
+establishing some useful notation surounding them.
+
+\begin{defi}\label{def:lke}
+If $F : \set^k \to \set$ and $\ol{K : \set^k \to \set^h}$ are functors
+over $\set$, then the {\em left Kan extension of $F$ along $\ol K$} is
+a functor $\mathit{Lan}_{\ol K}\,F : \set^h \to \set$ together with a
+natural transformation $\epsilon : F \to (\mathit{Lan}_{\ol K}\,F)
+\circ \ol K$
+%are initial among such pairs of functor and natural transformations,
+%i.e.,
+such that, for every functor $L : \set^h \to \set$ and natural
+transformation $\eta : F \to L \circ \ol K$, there exists a unique
+natural transformation $\mu : \mathit{Lan}_{\ol K}\,F \to L$ such that
+$(\mu {\ol K}) \circ \epsilon = \eta$. This is depicted in the
+following diagram:
+
+\vspace*{-0.15in}
+
+\[
+\begin{tikzcd}[row sep = huge]
+\set^k
+\ar[rr, "{F}"{name=Fa}, ""{name=F, below}]
+\ar[rd, "{\ol K}"']
+&& \set \\
+& \set^h
+\ar[Rightarrow, bend right = 10, from=F, "{\epsilon}" description]
+\ar[ur, bend left, "{\mathit{Lan}_K\,F}"{name=Lan, description}]
+\ar[ur, bend right, "{L}"'{name=L, right}, ""'{name=Lr, right}]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\eta}"]
+\ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"]
+\end{tikzcd}
+\]
+
+\vspace*{0.05in}
+
+\noindent
+Replacing $\set$ by $\rel$ everywhere in Definition~\ref{def:lke} we
+can similarly define the left Kan extension of $F$ along $\ol K$ for
+functors $F$ and $\ol K$ over $\rel$.
+\end{defi}
 
 
+{\color{red}
 
-For example, ...
+An alternative presentation of left Kan extensions characterizes them
+in terms of an adjunction.
 
+Using this adjunction we can represent the types of the data
+constructors for $\mathtt{Seq}$ as:
+}
 
-A natural next step in this line of work is to extend our
-parametricity results to GADTs.  It was shown in~\cite{jg08} that (the
-data of) GADTs can be represented using object-level left Kan
-extensions (over discrete categories), and further shown
-in~\cite{jp19} that adding a carefully designed left Kan extension
-construct to a calculus supporting primitive nested types preserves
-the cocontinuity needed for primitive GADTs to have well-defined,
-properly functorial interpretations.
+\subsection{Extending the Calculus}
 
-This suggests adding GADTs to our calculus by extending
-Definition~\ref{def:wftypes} with such object-level constructs, and
-extending Figure~\ref{fig:terms} with categorically inspired
-constructs to introduce and eliminate terms of these types, along the
-same entirely standard lines as we did there for products, coproducts,
-and fixpoints.  In this section we outline how our model from
-Section~\ref{sec:term-interp} can be extended to a parametric model
-when some classes of GADTs are incorporated as primitives in this
-way. However, as we argue in~???? below, we suspect this is not
-possible in general.
+In light of the above, we incorporate GADTs into our calculus by first
+adding to Definition~\ref{def:wftypes} the following type formation
+rule for $\Lan$-types:
 
+\vspace*{0.05in}
 
-
-
-
-HERE!!
-
-
-
-
-
-
-
-To show when this can be done, as well as to give a sense of what goes
-wrong in the general case, we begin by recalling that GADTs are
-naturally interpreted as initial algebras of left Kan extensions, as
-suggested in discrete~\cite{jg08} and
-
-
-
-Functorial semantics in~\cite{jp19}.
-
-introducing a new
-type, $\Lan$, to represent left Kan extensions.  Indeed, 
-
-To begin with, we add the following type formation rule for $\Lan$
-types to our type system.
 \[
 \AXC{$\Gamma; \Phi,\ol\alpha^0 \vdash F$}
 \AXC{$\ol{\Gamma;\ol\alpha^0 \vdash K}$}
@@ -3858,23 +3931,73 @@ types to our type system.
 \TIC{$\Gamma;\Phi \vdash (\Lan^{\ol{\alpha^0}}_{\ol K} F) \ol A$}
 \DisplayProof
 \]
-Notice that the length of $\ol K$ coincides with that of $\ol A$.
-Introducing the new type also requires the following additional clause in the inductive definition of higher-order substitution.
-\[
-((\Lan^{\ol{\alpha}}_{\ol K}\,F) \ol A)[\phi :=_{\ol{\beta}} G]
-  = (\Lan^{\ol\alpha}_{\ol K}\,F[\phi :=_{\ol{\beta}} G])\, \ol{A[\phi :=_{\ol{\beta}} G]}
-\]
 
-Before we extend the term calculus with the term introduction and elimination rules for $\Lan$ types,
-it is necessary to generalize $\Nat$ types to bind type constructor variables of arbitrary arity.
-So, the formation rule for $\Nat$ types will be modified as
+\vspace*{0.05in}
+
+\noindent
+Here, $\Lan$ binds the variables in $\ol\alpha$, and these variables
+must always have arity $0$. In addition, the vectors $\ol K$ and $\ol
+A$ must have the same length.
+
+Intuitively, $\Lan^{\ol{\alpha^0}}_K F$ is a syntactic representation
+of the left Kan extension of the functor in the variables in
+$\ol\alpha$ denoted by $F$ along the functor in the variables in
+$\ol\alpha$ denoted by $K$. Using $\Lan$-types, we can therefore
+represent the GADT $\mathtt{Seq}$ in our calculus as {\color{red}
+  CHECK!!
+ \begin{align*}
+\mathtt{Seq}\,\alpha &\df \left( \mu \phi.\lambda \beta.
+\beta + \left(\Lan^{\gamma_1,\gamma_2}_{\gamma_1 \times \gamma_2}
+(\phi \gamma_1 \times \phi \gamma_2) \right) \beta \right. \\ &\qquad
+\left. + \left(\Lan^{\gamma}_{\mathtt{Nat} \to \gamma} (\mathtt{Nat} \to \phi
+\gamma) \right) \beta + \phi (\mathtt{Nat} \to \beta) \times
+\mathtt{Nat} \right) \alpha
+\end{align*}
+\noindent
+where $\mathtt{Nat} = \mu \alpha. \bone + \alpha$ and $\mathtt{Nat}
+\to D$ abbreviates $(\Lan^\beta_{\mathtt{Nat}} \bone)D$.} This
+representation corresponds exactly to the rewriting of $\mathit{Seq}$
+in Section~\ref{sec:lke}. As explained in Section~IV.D of~\cite{jp19},
+the more general construct $\Lan^{\ol{\alpha^0}}_{\ol K} F$ allowing
+extensions along vectors of functors makes it possible to represent
+GADTs with two or more type arguments that depend on one another. Such
+GADTs cannot be represented using just unary $\Lan$-types, i.e,
+$\Lan$-types of the form $(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
+{\color{red} $\Lan$ vs $\Lan$-type.}
+
+To define the term-formation rules for terms of $\Lan$-types we also
+need to generalize $\Nat$-types to bind type constructor variables not
+just of arity $0$, but of arbitrary arity. {\color{red} This is
+  because...WHY????}  Accordingly, we replace the rule for
+$\Nat$-types in Definition~\ref{def:wftypes} with
+
+\vspace*{0.05in}
+
 \[
 \AXC{$\Gamma;\Phi \vdash F$}
 \AXC{$\Gamma;\Phi  \vdash G$}
 \BIC{$\Gamma;\emptyset \vdash \Nat^\Phi F \,G$}
 \DisplayProof
 \]
-and the term introduction and elimination rules will be
+
+\vspace*{0.05in}
+
+Finally, adding $\Lan$-types to the types of our calculus also
+requires the extension of Definition~\ref{def:second-order-subst} with
+the following new clause:
+\[((\Lan^{\ol{\alpha}}_{\ol K}\,F) \ol A)[\phi :=_{\ol{\beta}} G] =
+(\Lan^{\ol\alpha}_{\ol K}\,F[\phi :=_{\ol{\beta}} G])\, \ol{A[\phi
+    :=_{\ol{\beta}} G]}\]
+
+\vspace*{0.1in}
+
+To also extend our term calculus to accommodate GADTs we must first
+give introduction and elimination rules appropriate to our generalized
+$\Nat$-types. We therefore replace the tenth and eleventh rules in
+Figure~\ref{fig:terms} with
+
+\vspace*{0.05in}
+
 \[
 \AXC{$\Gamma; \Phi \vdash F$}
 \AXC{$\Gamma; \Phi \vdash G$}
@@ -3884,6 +4007,9 @@ and the term introduction and elimination rules will be
 \DisplayProof
 \]
 and
+
+\vspace*{0.05in}
+
 \[
 \AXC{$\ol{\Gamma;\Phi,\ol\beta \vdash K}$}
 \AXC{$\Gamma; \emptyset
@@ -3893,11 +4019,45 @@ and
   G[\overline{\psi :=_{\ol\beta} K}]$}
 \DisplayProof
 \]
-respectively.
-It is necessary, of course, to suitably extend the semantic interpretations of $\Nat$ types and terms.
-The type constructor variables bound by $\Nat$ will be interpreted as either functors
-or relation transformers.
-The set and relational interpretations for $\Nat$ types are defined as follows.
+respectively. Finally, we add to the term calculus in
+Figure~\ref{fig:terms} the following introduction and elimination
+rules for terms of $\Lan$-types, respectively:
+
+\vspace*{0.05in}
+
+\[
+\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
+\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
+\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} : \Nat^{\Phi}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
+\DisplayProof
+\]
+
+\vspace*{0.05in}
+
+\[
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
+  F\;G[\ol{\beta := K}]$}
+\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+\Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F)\ol\beta\, G$}
+\DisplayProof
+\]
+
+\vspace*{0.05in}
+
+\noindent
+Note that these rules do indeed make essential use of our new,
+generalized $\Nat$-types.
+
+{\color{red} Say how these rules mirror real LKEs just as for
+  products, coproducts, etc.}
+
+\subsection{Extending the Semantics}
+
+It is necessary, of course, to suitably extend the semantic
+interpretations of $\Nat$ types and terms.  The type constructor
+variables bound by $\Nat$ will be interpreted as either functors or
+relation transformers.  The set and relational interpretations for
+$\Nat$ types are defined as follows.
 \begin{align*}
 \setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
 &= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol K] 
@@ -3922,55 +4082,23 @@ The set and relational interpretations for $\Nat$ types are defined as follows.
   (\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi := K}])^{\relsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
 \end{align*}
 
-We can now give the term introduction and elimination rules for $\Lan$, which are
-\[
-\AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
-\AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
-\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} : \Nat^{\Phi}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
-\DisplayProof
-\]
-and
-\[
-\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
-  F\;G[\ol{\beta := K}]$}
-\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
-\Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F)\ol\beta\, G$}
-\DisplayProof
-\]
-respectively.
-Notice that, in these rules, we make essential use of the extended $\Nat$ types.
 
-To give the semantics for $\Lan$ types we follow~\cite{jp19}
-and use the fundamental idea that these have to be interpreted as left Kan extensions.
-We give the definition of left Kan extension and some useful notation in the following definition.
+We intend to interpret $\Lan$-types as actual left Kan extensions. But
+in order to guarantee parametricity we might think we have to cut down
+their set interpretations by restricting to a well-behaved collection
+of the sets produced by such interpretations, just as we did both in
+our original interpretations of $\Nat$-types and the above
+interpretations of our generalized $\Nat$-types.
 
-\begin{defi}
-Let $F : \set^k \to \set$ and $K : \set^k \to \set^h$.
-Then, the left Kan extension of $F$ along $\ol K$ is given by a functor $\Lan_K\,F : \set^h \to \set$
-and a natural transformation $\epsilon : F \to (\Lan_K\,F) \circ K$
-which are initial among such pairs of functor and natural transformations, i.e.,
-such that for every $L : \set^h \to \set$ and $\eta :  F \to L \circ K$
-there exists a unique natural transformation $\mu : \Lan_K\,F \to L$
-such that $(\mu K) \circ \epsilon = \eta$, as shown in the following diagram.
-\[
-\begin{tikzcd}[row sep = huge]
-\set^k
-\ar[rr, "{F}"{name=Fa}, ""{name=F, below}]
-\ar[rd, "{K}"']
-&& \set \\
-& \set^h
-\ar[Rightarrow, bend right = 10, from=F, "{\epsilon}" description]
-\ar[ur, bend left, "{\Lan_K\,F}"{name=Lan, description}]
-\ar[ur, bend right, "{L}"'{name=L, right}, ""'{name=Lr, right}]
-\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\eta}"]
-\ar[Rightarrow, from=Lan, to=L, "{\mu}"]
-\end{tikzcd}
-\]
-Of course, we can similarly define the left Kan extension for functors on $\rel$.
-\end{defi}
+{\color{red} REORDER!!!!}
 
-One might try to restrict the semantic interpretation of $\Lan$ types to a subset of the set produced by the left Kan extension.
-We show in the following proposition that this is not possible, if we want such interpretation to include the interpretation of the terms given by the term-introduction rule.
+
+Along similar lines, we might try to restrict the semantic
+interpretation of $\Lan$ types to a subset of the set produced by the
+left Kan extension. {\color{red} WHY?????} We show in the following
+proposition that this is not possible, if we want such interpretation
+to include the interpretation of the terms given by the
+term-introduction rule.
 
 \begin{prop}\label{prop:full-lan}
 Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set}$ be functors.
