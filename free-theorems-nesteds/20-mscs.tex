@@ -3817,7 +3817,7 @@ one being defined. For example, the GADT
 {\small
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
-\hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow List\;A}\\
+\hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
 \hspace*{0.4in}\mathtt{spair\;:\;Seq\;A \rightarrow Seq\;B \rightarrow
   Seq\;(A\times B)}\\
 \hspace*{0.4in}\mathtt{sseq\;:\;(Nat \rightarrow Seq\;A) \rightarrow
@@ -3865,20 +3865,20 @@ extension is not possible in general.
 \subsection{Left Kan Extensions}\label{sec:lke}
 
 We begin by recalling the definition of a left Kan extension and
-establishing some useful notation surounding them.
+establishing some useful notation and results for them.
 
 \begin{defi}\label{def:lke}
-If $F : \set^k \to \set$ and $\ol{K : \set^k \to \set^h}$ are functors
+If $F : \set^k \to \set$ and $\ol{K} : \set^k \to \set^h$ are functors
 over $\set$, then the {\em left Kan extension of $F$ along $\ol K$} is
 a functor $\mathit{Lan}_{\ol K}\,F : \set^h \to \set$ together with a
-natural transformation $\epsilon : F \to (\mathit{Lan}_{\ol K}\,F)
+natural transformation $\eta : F \to (\mathit{Lan}_{\ol K}\,F)
 \circ \ol K$
 %are initial among such pairs of functor and natural transformations,
 %i.e.,
 such that, for every functor $L : \set^h \to \set$ and natural
-transformation $\eta : F \to L \circ \ol K$, there exists a unique
+transformation $\epsilon : F \to L \circ \ol K$, there exists a unique
 natural transformation $\mu : \mathit{Lan}_{\ol K}\,F \to L$ such that
-$(\mu {\ol K}) \circ \epsilon = \eta$. This is depicted in the
+$(\mu {\ol K}) \circ \eta = \epsilon$. This is depicted in the
 following diagram:
 
 \vspace*{-0.15in}
@@ -3890,10 +3890,10 @@ following diagram:
 \ar[rd, "{\ol K}"']
 && \set \\
 & \set^h
-\ar[Rightarrow, bend right = 10, from=F, "{\epsilon}" description]
+\ar[Rightarrow, bend right = 10, from=F, "{\eta}" description]
 \ar[ur, bend left, "{\mathit{Lan}_K\,F}"{name=Lan, description}]
 \ar[ur, bend right, "{L}"'{name=L, right}, ""'{name=Lr, right}]
-\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\eta}"]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\epsilon}"]
 \ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"]
 \end{tikzcd}
 \]
@@ -3906,21 +3906,70 @@ can similarly define the left Kan extension of $F$ along $\ol K$ for
 functors $F$ and $\ol K$ over $\rel$.
 \end{defi}
 
+An alternative presentation of characterizes the left Kan extension
+$(\mathit{Lan}_{\ol K} F, \eta)$ in terms of the adjunction between
+natural transformations from $F$ to $G \circ \ol{K}$ and natural
+transformations from $\mathit{Lan}_{\ol K} F$ to $G$, for which
+$\eta$ is the unit. If Agda were to support a primitive
+$\mathsf{Lan}$ for left Kan extensions, we could use this adjunction
+to rewrite the type of each data constructor for the GADT
+$\mathtt{Seq}$ to arrive at the following equivalent representation:
+{\small
+\[\begin{array}{l}
+\mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
+\hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
+\hspace*{0.4in}\mathtt{spair\;:\;(\mathsf{Lan}_{\lambda C\,D.\,C \times D}
+  (\lambda C\,D.\,Seq\;C\times Seq\;D))\;A \rightarrow Seq\;A}\\ 
+\hspace*{0.4in}\mathtt{sseq\;:\;(\mathsf{Lan}_{\lambda C.\,Nat \to C}
+  (\lambda C.\,Nat \rightarrow Seq\;C))\;A \rightarrow
+  Seq\;A}
+\end{array}\]}
+\noindent
+\!\!Our calculus will represent $\mathtt{Seq}$ and other GADTs in
+precisely this way.
 
-{\color{red}
+\vspace*{0.05in}
 
-An alternative presentation of left Kan extensions characterizes them
-in terms of an adjunction.
+A third representation of left Kan extensions in locally presentable
+categories is given in terms of colimits. Writing ${\mathcal C}_0$ for
+the full subcategory of finitely presentable objects in the locally
+presentable category $\mathcal C$, the left Kan extension can be
+expressed as
+\[(\mathit{Lan}_{\ol K} F)\ol A \;=\; \colim{(\ol{X : \,{\mathcal C}_0},\,
+  \ol{f : K{\ol X} \to A})}{F \ol X}\]
 
-Using this adjunction we can represent the types of the data
-constructors for $\mathtt{Seq}$ as:
-}
+Thus, if $F : \set^k \to \set$, $\ol{K} :
+  \set^k \to \set^h$, $\ol{A} : \set^h$, and $\set_0$ is the full
+  subcategory of finitely presentable objects in $\set$, --- i.e., is
+  the category finite sets --- we  have that
+\[(\mathit{Lan}_K F) \ol{A} = \colim{(\ol{S} : \set_0^k, \,\ol{f : K\ol{S} \to
+    A})}{F \ol{S}}\]
+If $\ol{S} : \set_0^k$ and $\ol{f : K\ol{S} \to A}$, let $j_{\ol{S},
+  \ol{f}} : F \ol{S} \to (\mathit{Lan}_KF) \ol{A}$ be the morphism
+indexed by $\ol{S}$ and $\ol{f}$ mapping the cocone into the colimit.
+Then for any $h$-tuple of functions $\ol{g : A \to B}$, the functorial
+action $(\mathit{Lan}_K F) \ol{g}$ is the unique function from
+$(\mathit{Lan}_K F) \ol{A}$ to $(\mathit{Lan}_K F) \ol{B}$ such that,
+for every $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$,\, 
+$(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}} = j_{\ol{S},\,
+  \ol{g\, \circ f}}$ holds.
 
-\subsection{Extending the Calculus}
+We can similarly represent left Kan extensions of functors over $\rel$
+in terms of colimits. In that setting we will denote the morphism
+mapping the cocone into the colimit $\iota$. We will make good use of
+both of these representations in Section~\ref{sec:term-sem} below.
 
-In light of the above, we incorporate GADTs into our calculus by first
-adding to Definition~\ref{def:wftypes} the following type formation
-rule for $\Lan$-types:
+\vspace*{0.05in}
+
+More about each of the above three representations of left Kan
+extensions and the connections between them can be found in,
+e.g.,~\cite{rie16}.
+
+\subsection{Extending the Calculus}\label{sec:ext-calc}
+
+We incorporate GADTs into our calculus by first adding to
+Definition~\ref{def:wftypes} the following type formation rule for
+$\Lan$-types:
 
 \vspace*{0.05in}
 
@@ -3935,41 +3984,40 @@ rule for $\Lan$-types:
 \vspace*{0.05in}
 
 \noindent
-Here, $\Lan$ binds the variables in $\ol\alpha$, and these variables
-must always have arity $0$. In addition, the vectors $\ol K$ and $\ol
-A$ must have the same length.
+Here, the type constructor $\Lan$ binds the variables in $\ol\alpha$,
+and these variables must always have arity $0$. In addition, the
+vectors $\ol K$ and $\ol A$ must have the same length.
 
 Intuitively, $\Lan^{\ol{\alpha^0}}_K F$ is a syntactic representation
 of the left Kan extension of the functor in the variables in
 $\ol\alpha$ denoted by $F$ along the functor in the variables in
 $\ol\alpha$ denoted by $K$. Using $\Lan$-types, we can therefore
 represent the GADT $\mathtt{Seq}$ in our calculus as {\color{red}
-  CHECK!!
+  CHECK!!}
  \begin{align*}
 \mathtt{Seq}\,\alpha &\df \left( \mu \phi.\lambda \beta.
 \beta + \left(\Lan^{\gamma_1,\gamma_2}_{\gamma_1 \times \gamma_2}
-(\phi \gamma_1 \times \phi \gamma_2) \right) \beta \right. \\ &\qquad
+(\phi \gamma_1 \times \phi \gamma_2) \right) \beta \right. 
 \left. + \left(\Lan^{\gamma}_{\mathtt{Nat} \to \gamma} (\mathtt{Nat} \to \phi
-\gamma) \right) \beta + \phi (\mathtt{Nat} \to \beta) \times
-\mathtt{Nat} \right) \alpha
+\gamma) \right) \beta \right) \alpha
 \end{align*}
 \noindent
-where $\mathtt{Nat} = \mu \alpha. \bone + \alpha$ and $\mathtt{Nat}
-\to D$ abbreviates $(\Lan^\beta_{\mathtt{Nat}} \bone)D$.} This
-representation corresponds exactly to the rewriting of $\mathit{Seq}$
-in Section~\ref{sec:lke}. As explained in Section~IV.D of~\cite{jp19},
-the more general construct $\Lan^{\ol{\alpha^0}}_{\ol K} F$ allowing
-extensions along vectors of functors makes it possible to represent
-GADTs with two or more type arguments that depend on one another. Such
-GADTs cannot be represented using just unary $\Lan$-types, i.e,
-$\Lan$-types of the form $(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
-{\color{red} $\Lan$ vs $\Lan$-type.}
+where $\mathtt{Nat} = \mu \alpha. 1 + \alpha$ and $\mathtt{Nat}
+\to C$ abbreviates $(\Lan^\alpha_{\mathtt{Nat}} 1)\,C$.  This
+representation of $\mathit{Seq}$ corresponds exactly to the rewriting
+in Section~\ref{sec:lke}.  As explained in Section~IV.\,D
+of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
+  K} F$ allowing extensions along vectors of functors as depicted
+above makes it possible to represent GADTs with two or more type
+arguments that depend on one another. Such GADTs cannot be represented
+using just unary $\Lan$-types, i.e, $\Lan$-types of the form
+$(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
 
-To define the term-formation rules for terms of $\Lan$-types we also
-need to generalize $\Nat$-types to bind type constructor variables not
-just of arity $0$, but of arbitrary arity. {\color{red} This is
-  because...WHY????}  Accordingly, we replace the rule for
-$\Nat$-types in Definition~\ref{def:wftypes} with
+As we will see below, in order to define the term-formation rules for
+terms of $\Lan$-types we also need to generalize $\Nat$-types to bind
+type constructor variables not just of arity $0$, but of arbitrary
+arity. Accordingly, we replace the rule for $\Nat$-types in
+Definition~\ref{def:wftypes} with
 
 \vspace*{0.05in}
 
@@ -3985,16 +4033,17 @@ $\Nat$-types in Definition~\ref{def:wftypes} with
 Finally, adding $\Lan$-types to the types of our calculus also
 requires the extension of Definition~\ref{def:second-order-subst} with
 the following new clause:
+
 \[((\Lan^{\ol{\alpha}}_{\ol K}\,F) \ol A)[\phi :=_{\ol{\beta}} G] =
-(\Lan^{\ol\alpha}_{\ol K}\,F[\phi :=_{\ol{\beta}} G])\, \ol{A[\phi
+(\Lan^{\ol\alpha}_{\ol K}\,F[\phi :=_{\ol{\beta}} G]) \ol{A[\phi
     :=_{\ol{\beta}} G]}\]
 
 \vspace*{0.1in}
 
-To also extend our term calculus to accommodate GADTs we must first
-give introduction and elimination rules appropriate to our generalized
-$\Nat$-types. We therefore replace the tenth and eleventh rules in
-Figure~\ref{fig:terms} with
+We must also extend our term calculus to accommodate GADTs. To this
+end, we first give introduction and elimination rules appropriate to
+our generalized $\Nat$-types, replacing the tenth and eleventh rules
+in Figure~\ref{fig:terms} with
 
 \vspace*{0.05in}
 
@@ -4019,9 +4068,10 @@ and
   G[\overline{\psi :=_{\ol\beta} K}]$}
 \DisplayProof
 \]
-respectively. Finally, we add to the term calculus in
-Figure~\ref{fig:terms} the following introduction and elimination
-rules for terms of $\Lan$-types, respectively:
+respectively. Next, we add to the term calculus in
+Figure~\ref{fig:terms} introduction and elimination rules for terms of
+$\Lan$-types according to Definition~\ref{def:lke}. This gives the
+rules 
 
 \vspace*{0.05in}
 
@@ -4031,9 +4081,7 @@ rules for terms of $\Lan$-types, respectively:
 \BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} : \Nat^{\Phi}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
 \DisplayProof
 \]
-
-\vspace*{0.05in}
-
+and
 \[
 \AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
   F\;G[\ol{\beta := K}]$}
@@ -4045,19 +4093,19 @@ rules for terms of $\Lan$-types, respectively:
 \vspace*{0.05in}
 
 \noindent
-Note that these rules do indeed make essential use of our new,
+respectively. Note that both of these rules make essential use of our
 generalized $\Nat$-types.
 
-{\color{red} Say how these rules mirror real LKEs just as for
-  products, coproducts, etc.}
+\subsection{Extending the Type Semantics}
 
-\subsection{Extending the Semantics}
-
-It is necessary, of course, to suitably extend the semantic
-interpretations of $\Nat$ types and terms.  The type constructor
-variables bound by $\Nat$ will be interpreted as either functors or
-relation transformers.  The set and relational interpretations for
-$\Nat$ types are defined as follows.
+To construct a parametric model of the kind we seek, we must give
+suitable interpretations of our generalized $\Nat$-types and
+$\Lan$-types, as well as of terms of both such types, in both $\set$
+and $\rel$. Recalling that the type constructor variables bound by
+$\Nat$ in the formation rule for generalized $\Nat$-types are
+interpreted in $\set$ as functors and in $\rel$ as relation
+transformers, we extend the set and relational interpretations for
+$\Nat$ types from Section~\ref{sec:type-interp} as follows:
 \begin{align*}
 \setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
 &= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol K] 
@@ -4082,23 +4130,144 @@ $\Nat$ types are defined as follows.
   (\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi := K}])^{\relsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
 \end{align*}
 
+Of course, we intend to interpret $\Lan$-types as actual left Kan
+extensions. To get started, we define their set and relational
+interpretations to be
+\[
+  \setsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (\lambda \ol{S}.\,
+  \textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := S}]}}\, \setsem{\Gamma; \Phi, \ol\alpha
+    \vdash F} \rho[\ol{\alpha := S}])\, \ol{\setsem{\Gamma; \Phi
+      \vdash A}\rho}
+\]
+and 
 
-We intend to interpret $\Lan$-types as actual left Kan extensions. But
-in order to guarantee parametricity we might think we have to cut down
-their set interpretations by restricting to a well-behaved collection
-of the sets produced by such interpretations, just as we did both in
-our original interpretations of $\Nat$-types and the above
-interpretations of our generalized $\Nat$-types.
+\[
+  \relsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (\lambda \ol R.\,
+    \textit{Lan}_{\ol{\relsem{\Gamma; \ol\alpha \vdash
+          K}\rho[\ol{\alpha := R}]}}\, \relsem{\Gamma; \Phi, \ol\alpha
+      \vdash F}\rho[\ol{\alpha := R}])\, \ol{\relsem{\Gamma; \Phi
+        \vdash A}\rho}
+\]
 
-{\color{red} REORDER!!!!}
+\vspace*{0.05in}
+
+\noindent
+respectively. But in order to guarantee that the IEL, and thus
+parametricity, continues to hold for the model we are constructing for
+our extended calculus, we might think we have to cut down the set
+interpretations of $\Lan$-types by restricting to the subcollection of
+those interpretations that are well-behaved with respect to the
+IEL. This would mirror the cutting down we have already seen in the
+set interpretations of both our original $\Nat$-types and our of
+generalized $\Nat$-types. However, as we will see in
+Proposition~\ref{prop:full-lan} below, this will not be possible if we
+want the set and relational interpretations of our $\Lan$-types to
+include the set and relational interpretations of the terms given by
+the $\Lan$-introduction rule. Since we do indeed want this, the upshot
+is that the above interpretations of $\Lan$-types are, in fact, the
+only possibility.
+
+We must also define the functorial actions of the above set and
+relational interpretations of $\Lan$-types on morphisms. If $f : \rho
+\to \rho'$ is a morphism of set environments, then
+\[
+\setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}f
+: \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
+\to \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho'
+\]
+
+\vspace*{0.05in}
+
+\noindent
+is defined to be
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}\rho'} \\
+\circ\;
+  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}f}
+\end{multline*}
+or, equivalently by naturality,
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}f} \\
+\circ\;
+  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
+\end{multline*}
+
+\vspace*{0.05in}
+
+\noindent
+The functorial action for the relational interpretations of
+$\Lan$-types is defined analogously.
+
+\subsection{Extending the Term Semantics}\label{sec:term-sem}
+
+Recalling the notation for the colimit representation of left Kan
+extensions from Section~\ref{sec:lke}, we define the set and
+relational interpretations of the terms from the introduction and
+elimination rules for $\Lan$ types from Section~\ref{sec:ext-calc} by 
+{\color{red} CAUTION: semantics don't match the rules!}
+\begin{multline*}
+\setsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
+  (\Lan^{\ol\alpha}_{\ol{K}}\, F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d \\
+= j_{\ol{\setsem{\Gamma;\Phi \vdash A}\rho},
+  \ol{\id_{\setsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
+(\setsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, d)
+\end{multline*}
+and
+\[
+\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta 
+: \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
+= \lambda \ol{N} \, \ol{B}.\, (\mu_{\ol{N}})_{\ol{B}}
+\]
+respectively, where
+\[\mu_{\ol{N}} : \mathit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
+  {[\ol{\alpha := \_} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash
+    F}\rho {[\Phi, \ol \alpha := \ol N, \_ ]} \to \setsem{\Gamma;
+    \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \_]\]
+  is the unique natural transformation such that
+\begin{equation}\label{eq:defn-of-mu-sub-N}
+    (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi,
+    \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}} =
+(\mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K}
+  \rho[\ol{\alpha := \_}]}) \circ \epsilon_{\ol{N}}
+  \end{equation}
+{\color{red} $\eta$ vs $\epsilon$}
+as given by the universal property of the left Kan extension.
+Here, $\epsilon_{\ol{N}}$ is the natural transformation associated
+with the left Kan extension, as shown in the following diagram.
+\[\begin{tikzcd} [column sep = large, row sep = large]
+\set^{|\ol \alpha|}
+\ar[rr, "\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol
+      \alpha := \ol N, \_ ]}"{name=F}] 
+\ar[dr, "\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}"{left}] && \set \\ 
+&\set^{|\ol K|} \ar[ur, "\mathit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}}\,
+\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
+    \ol N, \_ ]}"{right}]
+\ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
+          from=F, to=2-2,  "\epsilon_{\ol{N}}"{}]
+\end{tikzcd}\]
+The relational interpretations are define analogously.
+
+Having defined the syntax and both the set and relational semantics for $\Lan$ types and terms,
+we need to check that these definitions yield a parametric model.
+The first step would be to extend Lemma~\ref{lem:rel-transf-morph} to $\Lan$ types,
+by proving a new clause of the inductive step of the proof.
+Unfortunately, it turns out that, in general, this is not possible, as the following example shows.
 
 
-Along similar lines, we might try to restrict the semantic
-interpretation of $\Lan$ types to a subset of the set produced by the
-left Kan extension. {\color{red} WHY?????} We show in the following
-proposition that this is not possible, if we want such interpretation
-to include the interpretation of the terms given by the
-term-introduction rule.
+
+
+
 
 \begin{prop}\label{prop:full-lan}
 Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set}$ be functors.
@@ -4119,117 +4288,13 @@ and by the second assumption we have that $z \in L \ol{A}$.
 We can than conclude that $L \ol{A} = (\textit{Lan}_{\ol K}\, F)\ol{A}$.
 \end{proof}
 
-Thus, we are forced to interpret $\Lan$ types as whole left Kan extensions, without any cutting down.
-The set interpretation of the $\Lan$ type then is
-\[
-  \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
-  = (\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
-  \rho[\ol{\alpha := \_}]}}\,
-  \setsem{\Gamma; \Phi, \ol\alpha \vdash F}
-  \rho[\ol{\alpha := \_}])\,
-  \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
-\]
-and the relational interpretation is
-\[
-  \relsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
-  = (\textit{Lan}_{\ol{\relsem{\Gamma; \ol\alpha \vdash
-          K}\rho[\ol{\alpha := \_}]}}\, \relsem{\Gamma; \Phi, \ol\alpha
-      \vdash F}\rho[\ol{\alpha := \_}])\, \ol{\relsem{\Gamma; \Phi
-        \vdash A}\rho}
-\]
-We also need to define the functorial action of the interpretation on morphisms.
-Let $f : \rho \to \rho'$ be a morphism of set environments.
-Then
-\[
-\setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}f
-: \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho
-\to \setsem{\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho'
-\]
-is defined as
-\begin{multline*}
-\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
-    \ol{\setsem{\Gamma; \Phi \vdash A}\rho'} \\
-\circ\;
-  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)\,
-    \ol{\setsem{\Gamma; \Phi \vdash A}f}
-\end{multline*}
-or, equivalently by naturality,
-\begin{multline*}
-\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)\,
-    \ol{\setsem{\Gamma; \Phi \vdash A}f} \\
-\circ\;
-  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
-    \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
-\end{multline*}
-The functorial action for the relational interpretation is defined analogously.
 
-The left Kan extension can be expressed via a colimit formula~\cite{rie16} as
-\[
-	(\Lan_K\,F) \ol{A} = \colim{\ol{S} : \set^k_0, \ol{f : K\ol{S} \to A}}{F \ol{S}}
-\]
-for any $\ol{A} : \set^h$, and where $\set_0$ is the category finite sets
-(i.e., the full subcategory of $\omega$-presentable objects in $\set$).
-For any $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$, let
-$j_{\ol{S}, \ol{f}} : F \ol{S} \to (\Lan_K\,F) \ol{A}$
-be the morphism indexed by $\ol{S}$ and $\ol{f}$ of the cocone into the colimit.
-Moreover, for any $h$-tuple of functions $\ol{g : A \to B}$,
-the functorial action $(\Lan_K\,F) \ol{g}$ is the unique function $(\Lan_K\,F) \ol{A} \to (\Lan_K\,F) \ol{B}$
-such that, for every $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$,
-we have that $((\Lan_K\,F) \ol{g}) \circ j_{\ol{S}, \ol{f}} = j_{\ol{S}, \ol{g \circ f}}$.
-We can similarly express via a colimit formula the left Kan extension of functors on $\rel$,
-and in that case we call the cocone over it $\iota$.
 
-We define the semantics for the terms from the introduction and elimination rules for $\Lan$ types as, respectively,
-\begin{multline*}
-\setsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
-  (\Lan^{\ol\alpha}_{\ol{K}}\, F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d \\
-= j_{\ol{\setsem{\Gamma;\Phi \vdash A}\rho},
-  \ol{\id_{\setsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
-(\setsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, d)
-\end{multline*}
-and
-\[
-\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta 
-: \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
-= \lambda \ol{N} \, \ol{B}.\, (\mu_{\ol{N}})_{\ol{B}}
-\]
-where
-  \[\mu_{\ol{N}} : \Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
-  {[\ol{\alpha := \_} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash
-    F}\rho {[\Phi, \ol \alpha := \ol N, \_ ]} \to \setsem{\Gamma;
-    \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \_]\]
-  is the unique natural transformation such that
-\begin{equation}\label{eq:defn-of-mu-sub-N}
-    (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi,
-    \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}} =
-(\mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K}
-  \rho[\ol{\alpha := \_}]}) \circ \epsilon_{\ol{N}}
-  \end{equation}
-as given by the universal property of the left Kan extension.
-Here, $\epsilon_{\ol{N}}$ is the natural transformation associated
-with the left Kan extension, as shown in the following diagram.
-\[\begin{tikzcd} [column sep = large, row sep = large]
-\set^{|\ol \alpha|}
-\ar[rr, "\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol
-      \alpha := \ol N, \_ ]}"{name=F}] 
-\ar[dr, "\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}"{left}] && \set \\ 
-&\set^{|\ol K|} \ar[ur, "\Lan_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}}\,
-\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
-    \ol N, \_ ]}"{right}]
-\ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
-          from=F, to=2-2,  "\epsilon_{\ol{N}}"{}]
-\end{tikzcd}\]
-The relational interpretations are define analogously.
 
-Having defined the syntax and both the set and relational semantics for $\Lan$ types and terms,
-we need to check that these definitions yield a parametric model.
-The first step would be to extend Lemma~\ref{lem:rel-transf-morph} to $\Lan$ types,
-by proving a new clause of the inductive step of the proof.
-Unfortunately, it turns out that, in general, this is not possible, as the following example shows.
+
+
+
+
 
 \begin{exa}
 We provide a counterexample to Lemma~\ref{lem:rel-transf-morph} for $\Lan$ types.
