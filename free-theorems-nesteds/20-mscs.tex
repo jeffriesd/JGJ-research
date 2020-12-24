@@ -451,7 +451,7 @@ $\{\phi\}$.
 If $\Gamma$ is a finite subset of\, $\tvars$, $\Phi$ is a finite
 subset of\, $\fvars$, $\overline{\alpha}$ is a finite subset of\,
 $\fvars^0$ disjoint from $\Phi$, and $\phi^k \in \fvars^k \setminus
-\Phi$, then the set $\mcF$ of {\em functorial expressions} over
+\Phi$, then the set $\mcF$ of {\color{red} {\em functorial expressions}} over
 $\Gamma$ and $\Phi$ are given in Definition~\ref{def:wftypes}. The
 notation there entails that an application $F F_1...F_k$ is allowed
 only when $F$ is a type variable of arity $k$, or $F$ is a
@@ -480,7 +480,8 @@ functorial in the variables in $\Phi$ but not necessarily in those in
 $\Gamma$.
 
 \begin{defi}\label{def:wftypes}
-The formation rules for the set $\F$ of\, {\em well-formed types} are
+The formation rules for the set $\F$ of\, {\color{red} {\em
+    well-formed types}} are
 
 \vspace*{-0.2in}
 
@@ -3810,11 +3811,10 @@ the data constructors for the instance $\mathtt{Bush \;A}$ of the truly
 nested type $\mathtt{Bush}$ are $\mathtt{bnil :: Bush\; A}$ and
 $\mathtt{bcons :: A \to Bush\; (Bush\; A) \to Bush\; A}$.
 
-Generalized algebraic datatypes (GADTs){\color{red}~\cite{???}} generalize nested
-types by relaxing the above restriction to allow the return types of
-data constructors to be different instances of the datatype than the
-one being defined. For example, the GADT
-{\small
+Generalized algebraic datatypes (GADTs){\color{red}~\cite{???}}
+generalize nested types by relaxing the above restriction to allow the
+return types of data constructors to be different instances of the
+datatype than the one being defined. For example, the GADT {\small
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
@@ -3873,12 +3873,10 @@ over $\set$, then the {\em left Kan extension of $F$ along $\ol K$} is
 a functor $\mathit{Lan}_{\ol K}\,F : \set^h \to \set$ together with a
 natural transformation $\eta : F \to (\mathit{Lan}_{\ol K}\,F)
 \circ \ol K$
-%are initial among such pairs of functor and natural transformations,
-%i.e.,
-such that, for every functor $L : \set^h \to \set$ and natural
-transformation $\epsilon : F \to L \circ \ol K$, there exists a unique
-natural transformation $\mu : \mathit{Lan}_{\ol K}\,F \to L$ such that
-$(\mu {\ol K}) \circ \eta = \epsilon$. This is depicted in the
+such that, for every functor $G : \set^h \to \set$ and natural
+transformation $\gamma : F \to G \circ \ol K$, there exists a unique
+natural transformation $\mu : \mathit{Lan}_{\ol K}\,F \to G$ such that
+$(\mu {\ol K}) \circ \eta = \gamma$. This is depicted in the
 following diagram:
 
 \vspace*{-0.15in}
@@ -3892,8 +3890,8 @@ following diagram:
 & \set^h
 \ar[Rightarrow, bend right = 10, from=F, "{\eta}" description]
 \ar[ur, bend left, "{\mathit{Lan}_K\,F}"{name=Lan, description}]
-\ar[ur, bend right, "{L}"'{name=L, right}, ""'{name=Lr, right}]
-\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\epsilon}"]
+\ar[ur, bend right, "{G}"'{name=L, right}, ""'{name=Lr, right}]
+\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\gamma}"]
 \ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"]
 \end{tikzcd}
 \]
@@ -3935,29 +3933,34 @@ categories is given in terms of colimits. Writing ${\mathcal C}_0$ for
 the full subcategory of finitely presentable objects in the locally
 presentable category $\mathcal C$, the left Kan extension can be
 expressed as
-\[(\mathit{Lan}_{\ol K} F)\ol A \;=\; \colim{(\ol{X : \,{\mathcal C}_0},\,
-  \ol{f : K{\ol X} \to A})}{F \ol X}\]
-
+\[
+(\mathit{Lan}_{\ol K} F)\ol A \;=\; \colim{\ol{X : \,{\mathcal
+        C}_0},\, \ol{f : K{\ol X} \to A}}{F \ol X}\]
 Thus, if $F : \set^k \to \set$, $\ol{K} :
   \set^k \to \set^h$, $\ol{A} : \set^h$, and $\set_0$ is the full
   subcategory of finitely presentable objects in $\set$, --- i.e., is
   the category finite sets --- we  have that
-\[(\mathit{Lan}_K F) \ol{A} = \colim{(\ol{S} : \set_0^k, \,\ol{f : K\ol{S} \to
-    A})}{F \ol{S}}\]
+\begin{equation}\label{eq:colim-form}
+(\mathit{Lan}_K F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
+      K\ol{S} \to  A}}{F \ol{S}}
+\end{equation}
 If $\ol{S} : \set_0^k$ and $\ol{f : K\ol{S} \to A}$, let $j_{\ol{S},
   \ol{f}} : F \ol{S} \to (\mathit{Lan}_KF) \ol{A}$ be the morphism
-indexed by $\ol{S}$ and $\ol{f}$ mapping the cocone into the colimit.
-Then for any $h$-tuple of functions $\ol{g : A \to B}$, the functorial
-action $(\mathit{Lan}_K F) \ol{g}$ is the unique function from
-$(\mathit{Lan}_K F) \ol{A}$ to $(\mathit{Lan}_K F) \ol{B}$ such that,
-for every $\ol{S} : \set^k_0$ and $\ol{f : K\ol{S} \to A}$,\, 
-$(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}} = j_{\ol{S},\,
-  \ol{g\, \circ f}}$ holds.
-
-We can similarly represent left Kan extensions of functors over $\rel$
-in terms of colimits. In that setting we will denote the morphism
-mapping the cocone into the colimit $\iota$. We will make good use of
-both of these representations in Section~\ref{sec:term-sem} below.
+indexed by $\ol{S}$ and $\ol{f}$ mapping the cocone into the colimit
+in Equation~\ref{eq:colim-form}. Then for any $h$-tuple of functions
+$\ol{g : A \to B}$, the functorial action $(\mathit{Lan}_K F) \ol{g}$
+is the unique function from $(\mathit{Lan}_K F) \ol{A}$ to
+$(\mathit{Lan}_K F) \ol{B}$ such that, for all $\ol{S} : \set^k_0$ and
+$\ol{f : K\ol{S} \to A}$,\,
+\begin{equation}\label{eq:cocone-def}
+(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}} = j_{\ol{S},\,
+    \ol{g\, \circ f}}
+  \end{equation}
+holds.  We can similarly represent left Kan extensions of functors
+over $\rel$ in terms of colimits. In that setting we will denote the
+morphism mapping the cocone into the colimit $\iota$. We will make
+good use of both of these representations in
+Section~\ref{sec:term-sem} below.
 
 \vspace*{0.05in}
 
@@ -4078,14 +4081,14 @@ rules
 \[
 \AXC{$\Gamma; \Phi,\ol{\alpha}\vdash F$}
 \AXC{$\ol{\Gamma; \ol{\alpha} \vdash K}$}
-\BIC{$\Gamma;\emptyset~|~\Delta \vdash \int_{\ol K,F} : \Nat^{\Phi}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
+\BIC{$\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F} : \Nat^{\Phi,\ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}$}
 \DisplayProof
 \]
 and
 \[
-\AXC{$\Gamma;\emptyset~|~\Delta \vdash \eta : \Nat^{\Phi,\ol\alpha}\,
+\AXC{$\Gamma;\emptyset~|~\Delta \vdash t : \Nat^{\Phi,\ol\alpha}\,
   F\;G[\ol{\beta := K}]$}
-\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta :
+\UIC{$\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t :
 \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F)\ol\beta\, G$}
 \DisplayProof
 \]
@@ -4182,24 +4185,28 @@ relational interpretations of $\Lan$-types on morphisms. If $f : \rho
 \vspace*{0.05in}
 
 \noindent
-is defined to be
+is defined to be 
 \begin{multline*}
-\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+\big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := S}]}}\,  
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_S}]\big)\,
     \ol{\setsem{\Gamma; \Phi \vdash A}\rho'} \\
 \circ\;
-  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := \_}]\big)\,
+  \big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+        \vdash K}\rho[\ol{\alpha := S}]}}\,  
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := S}]\big)\,
     \ol{\setsem{\Gamma; \Phi \vdash A}f}
 \end{multline*}
 or, equivalently by naturality,
 \begin{multline*}
-\big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := \_}]\big)\,
+\big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := S}]}}\, 
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]\big)\,
     \ol{\setsem{\Gamma; \Phi \vdash A}f} \\
 \circ\;
-  \big(\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := \_}]}}\,
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_{\_}}]\big)\,
+  \big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+        \vdash K}\rho[\ol{\alpha := S}]}}\, 
+      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_S}]\big)\,
     \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
 \end{multline*}
 
@@ -4215,265 +4222,324 @@ Recalling the notation for the colimit representation of left Kan
 extensions from Section~\ref{sec:lke}, we define the set and
 relational interpretations of the terms from the introduction and
 elimination rules for $\Lan$ types from Section~\ref{sec:ext-calc} by 
-{\color{red} CAUTION: semantics don't match the rules!}
-\begin{multline*}
-\setsem{\Gamma;\Phi~|~\Delta \vdash \int_{\ol K,F} t :
-  (\Lan^{\ol\alpha}_{\ol{K}}\, F)\, \ol{K[\ol{\alpha := A}]}}\rho\;d \\
-= j_{\ol{\setsem{\Gamma;\Phi \vdash A}\rho},
-  \ol{\id_{\setsem{\Gamma; \Phi \vdash K[\ol{\alpha := A}]}\rho}}}\,
-(\setsem{\Gamma; \Phi~|~\Delta \vdash t : F[\ol{\alpha := A}]} \rho\, d)
-\end{multline*}
+\[
+\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+: \Nat^{\Phi, \ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,  F) \ol{K}}\rho\,d
+= \eta
+\]
 and
 \[
-\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F \eta 
+\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t 
 : \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
-= \lambda \ol{N} \, \ol{B}.\, (\mu_{\ol{N}})_{\ol{B}}
+= \mu
 \]
-respectively, where
-\[\mu_{\ol{N}} : \mathit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho
-  {[\ol{\alpha := \_} ]}}} \setsem{\Gamma; \Phi, \ol\alpha \vdash
-    F}\rho {[\Phi, \ol \alpha := \ol N, \_ ]} \to \setsem{\Gamma;
-    \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \_]\]
-  is the unique natural transformation such that
-\begin{equation}\label{eq:defn-of-mu-sub-N}
-    (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash \eta : \Nat^{\Phi,
-    \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}} =
-(\mu_{\ol{N}} \, \ol{\setsem{\Gamma; \ol\alpha \vdash K}
-  \rho[\ol{\alpha := \_}]}) \circ \epsilon_{\ol{N}}
-  \end{equation}
-{\color{red} $\eta$ vs $\epsilon$}
-as given by the universal property of the left Kan extension.
-Here, $\epsilon_{\ol{N}}$ is the natural transformation associated
-with the left Kan extension, as shown in the following diagram.
+respectively, where, for each $\ol{N} {\color{red} : ???}$,
+$\eta_{\ol{N}}$ is the natural transformation associated with the left
+Kan extension
 \[\begin{tikzcd} [column sep = large, row sep = large]
 \set^{|\ol \alpha|}
-\ar[rr, "\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol
-      \alpha := \ol N, \_ ]}"{name=F}] 
-\ar[dr, "\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}"{left}] && \set \\ 
-&\set^{|\ol K|} \ar[ur, "\mathit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := \_} ]}}}\,
-\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
-    \ol N, \_ ]}"{right}]
+\ar[rr, "\lambda \ol{A}.\,\setsem{\Gamma; \Phi, \ol\alpha
+    \vdash F}\rho {[\Phi, \ol \alpha := \ol{N}, \ol{A} ]}"{name=F}] 
+\ar[dr, "\ol{\lambda \ol{A}.\,\setsem{\Gamma; \ol\alpha \vdash
+      K}\rho {[\ol{\alpha := A} ]}}"{left}] && \set \\  
+&\set^{|\ol K|} \ar[ur, "\mathit{Lan}_{\ol{\lambda \ol A.\,
+      \setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := A}
+  ]}}}\, \lambda \ol A.\, \setsem{\Gamma; \Phi, \ol\alpha \vdash
+    F}\rho {[\Phi, \ol \alpha :=  \ol N, \ol A ]}"{right}]
 \ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
-          from=F, to=2-2,  "\epsilon_{\ol{N}}"{}]
+          from=F, to=2-2,  "\eta_{\ol{N}}"{}]
 \end{tikzcd}\]
-The relational interpretations are define analogously.
+and, for all $\ol N {\color{red} : ???}$ and $d {\color{red} : ???}$,
+\[\begin{array}{l}
+\mu_{\ol{N}\, d} : \lambda \ol{A}.\,
+\mathit{Lan}_{\ol{\lambda \ol A.\,\setsem{\Gamma; \ol\alpha \vdash K}\rho 
+  {[\ol{\alpha := A} ]}}} \lambda \ol A.\,\setsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha := \ol N, \ol A ]}\\[2ex]
+\hspace*{0.8in}\to \lambda \ol B.\, \setsem{\Gamma; 
+  \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \ol B]
+\end{array}\]
+is the unique natural transformation such that
+\begin{equation}\label{eq:defn-of-mu-sub-N}
+(\mu_{\ol{N}\, d} \, \ol{\lambda \ol A.\,\setsem{\Gamma; \ol\alpha \vdash K}
+  \rho[\ol{\alpha := A}]}) \circ \eta_{\ol{N}}
+= (\setsem{\Gamma; \emptyset \,|\, \Delta \vdash t : \Nat^{\Phi,
+  \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}}
+\end{equation}
+as given by the universal property of the left Kan extension.  The
+relational interpretations $\relsem{\Gamma;\emptyset~|~\emptyset
+  \vdash \int_{\ol K,F} : \Nat^{\Phi, \ol\alpha}\, F\,
+  (\Lan^{\ol\alpha}_{\ol{K}}\, F) \ol{K}}$ and
+$\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t :
+  \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\;
+  G}$ are defined entirely analogously.
 
-Having defined the syntax and both the set and relational semantics for $\Lan$ types and terms,
-we need to check that these definitions yield a parametric model.
-The first step would be to extend Lemma~\ref{lem:rel-transf-morph} to $\Lan$ types,
-by proving a new clause of the inductive step of the proof.
-Unfortunately, it turns out that, in general, this is not possible, as the following example shows.
+\vspace*{0.05in}
 
-
-
-
-
+We conclude this subsection by showing, as promised above, that no
+cutting down of set and relational interpretations of $\Lan$-types is
+possible. We have:
 
 \begin{prop}\label{prop:full-lan}
 Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set}$ be functors.
-Assume that $L : \set^k \to \set$ is a functor such that the following properties hold:
-\begin{enumerate}
-\item for all $\ol{A : \set}$, we have that $L \ol{A} \subseteq (\textit{Lan}_{\ol K}\, F)\ol{A}$
-\item for all $\ol{f : A \to B}$ and $\ol{x \in A}$, we have that $(\textit{Lan}_{\ol K}\, F)\ol{f}|_{L \ol{A}}\, x \in L \ol{B}$
-\item for all $\ol{A : \set}$ and $y \in F \ol{A}$, we have that $\epsilon_{\ol{A}} y \in L ( \ol{K \ol{A}} )$
-\end{enumerate}
-Then $L = \textit{Lan}_{\ol K}\, F$.
+If $L : \set^k \to \set$ is a functor such that 
+\begin{itemize}
+\item $L \ol{A} \subseteq
+  (\textit{Lan}_{\ol K} F)\ol{A}$ for all $\ol{A : \set}$,
+\item $(\textit{Lan}_{\ol K} F)\ol{f}\,|_{L \ol A}\; x \in L
+  \ol{B}$ for all $\ol{f : A \to B}$ and $x \in L \ol A$, and 
+\item $\eta_{\ol{A}}\, y \in L ( \ol{K \ol{A}} )$ for all $\ol{A :
+  \set}$ and $y \in F \ol{A}$, 
+\end{itemize}
+then $L = \textit{Lan}_{\ol K} F$.
 \end{prop}
 \begin{proof}
-For every $\ol{A : \set}$ and $z \in (\textit{Lan}_{\ol K}\, F)\ol{A}$
-there exist $\ol{S : \set_0}$, $\ol{f : K \ol{S} \to A}$ and $w \in F \ol{S}$ such that $z = \iota_{\ol{S}, \ol{f}} w$.
-Thus, $z = \iota_{\ol{S}, \ol{f}} w = (\textit{Lan}_{\ol K}\, F) \ol{f} (\epsilon_{\ol{S}} w)$;
-by the third assumption we have that $\epsilon_{\ol{S}} w \in L ( \ol{K \ol{S}} )$
-and by the second assumption we have that $z \in L \ol{A}$.
-We can than conclude that $L \ol{A} = (\textit{Lan}_{\ol K}\, F)\ol{A}$.
+For all $\ol{A : \set}$ and $z \in (\textit{Lan}_{\ol K} F)\ol{A}$
+there exist $\ol{S : \set_0}$, $\ol{f : K \ol{S} \to A}$, and $w \in F
+\ol{S}$ such that $z = \iota_{\ol{S}, \ol{f}}\, w$.  Thus, $z =
+\iota_{\ol{S}, \ol{f}}\, w = (\textit{Lan}_{\ol K} F) \ol{f}
+(\eta_{\ol{S}} \,w)$ by Equation~\ref{eq:cocone-def}. Then by the
+third assumption above we have that $\eta_{\ol{S}}\, w \in L (\ol{K
+  \ol{S}})$, and by the second assumption above we have that $z \in L
+\ol{A}$. This gives $(\textit{Lan}_{\ol K} F)\ol{A} \subseteq L \ol
+A$. Finally, by the first assumption above, we therefore have that $L
+\ol{A} = (\textit{Lan}_{\ol K} F)\ol{A}$.
 \end{proof}
+{\color{red} Thus, if $L \subseteq \mathit{Lan}_{\ol K}F$ were the
+  interpretation of $\Lan$-types, and if $L$ were to contain the set
+  interpretation $\eta$ of ?????, then ????????.
 
+An analogous result holds for relational interpretations of
+$\Lan$-types.}
 
+\subsection{Parametricity Results for GADTs}
 
+Having extended our calculus with both $\Lan$-types and terms of such
+types, and having given the only sensible set and relational
+interpretations for these types and terms, we now need to verify that
+these interpretations give rise to a parametric model. The first step
+in this process is to extend Lemma~\ref{lem:rel-transf-morph} to
+$\Lan$-types by adding a clause for $\Lan$-types to the proof.
+Unfortunately, however, Lemma~\ref{lem:rel-transf-morph} does not
+extend to arbitrary $\Lan$-types, as the following example shows.
 
-
-
-
-
-
-\begin{exa}
-We provide a counterexample to Lemma~\ref{lem:rel-transf-morph} for $\Lan$ types.
-Consider the type $\emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha$.
-Then, using the colimit formula for left Kan extensions, we have
+\begin{exa}\label{ex:no-rel-transf}
+Consider the type $\emptyset; \alpha \vdash
+(\Lan^{\emptyset}_{\onet}\, \onet) \alpha$. The analogue for $\rel$ of
+Equation~\ref{eq:colim-form} gives
 \[
 \begin{array}{rl}
-\relsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } \rho [\alpha := (1, 0, 0)]
-&= (\textit{Lan}_{\Eq_1}\, \Eq_1)(1, 0, 0) \\
+\relsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet} \onet)
+  \alpha } \rho [\alpha := (1, 0, 0)] 
+&= (\textit{Lan}_{\Eq_1} \Eq_1)(1, 0, 0) \\
 &= \colim{f : \Eq_1 \to (1, 0, 0)}{\Eq_1} \\
 &= (0, 0, 0)
 \end{array}
 \]
-because there exists no morphism $f : \Eq_1 \to (1, 0, 0)$ in $\rel$.
-But, considering the set interpretation on the first projection of the relation environment, we have
+Here, the last equality holds because there are no morphisms in $\rel$
+from $\Eq_1$ to $(1, 0, 0)$, and because $(0,0,0)$ is the initial
+object in that category. On the other hand, for the set interpretation
+with respect to the first projection of the relation environment
+$\rho[\alpha := (1,0,0)]$, Equation~\ref{eq:colim-form} gives
 \[
 \begin{array}{rl}
-\setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } ( \pi_1 ( \rho [\alpha := (1, 0, 0)] ) )
-&= \setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet}\, \onet) \alpha } (\pi_1 \rho) [\alpha := 1] \\
-&= (\textit{Lan}_{1}\, 1) 1 \\
+\setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet} \onet)
+  \alpha } ( \pi_1 ( \rho [\alpha := (1, 0, 0)] ) ) 
+&= \setsem{ \emptyset; \alpha \vdash (\Lan^{\emptyset}_{\onet} \onet)
+  \alpha } (\pi_1 \rho) [\alpha := 1] \\ 
+&= (\textit{Lan}_{1} 1) 1 \\
 &= \colim{1 \to 1}{1} \\
 &= 1
 \end{array}
 \]
-because there exist a unique arrow $1 \to 1$ in $\set$, which is the identity on $1$.
+because $\id_1$ is the unique arrow from $1$ to $1$ in $\set$.
+Lemma~\ref{lem:rel-transf-morph} therefore cannot hold.
 \end{exa}
 
-The issue lies in the fact that the functor along which we extend contains constants (such as $\onet$).
-Indeed, if we assume that $\ol{\emptyset; \overline{\alpha} \vdash K}$ are polynomial functors not containing constants,
-then we can prove that the relational interpretation of
-$\Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$
-is fibered over its set interpretation, as proven in the following proposition.
+The problem in Example~\ref{ex:no-rel-transf} lies in the fact that
+the {\color{red} functorial expression} along whose intepretation we
+extend contains constants, i.e., {\color{red} subexpressions}
+constructed from $\onet$. Indeed, if $\ol{\emptyset; \overline{\alpha}
+  \vdash K}$ consists only of polynomial (i.e., sum-of-products)
+expressions not containing constants (i.e., formed only from $+$,
+$\times$, and the variables in $\alpha$), then
+Lemma~\ref{lem:rel-transf-morph} actually does holds for $\Gamma; \Phi
+\vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$. This is proved in
 
 \begin{prop}
-Assume that the types in $\ol{K}$ are polynomial and contain no constants
-(i.e., they are formed only by the functorial type variables $\ol\alpha$, $+$ and $\times$).
-Then
-\[
-\pi_i (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-)
-=
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i \rho)
-\]
-for every relation environment $\rho$ and $i = 1, 2$.
+If $\ol{\emptyset; \overline{\alpha} \vdash K}$ consists only of
+polynomial expressions not containing constants, then
+\[(\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
+}, \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} },
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }) \in
+[\relenv,RT_0]\]
 \end{prop}
 \begin{proof}
-Notice that, by the colimit formula,
-\[
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-=
-\colim{\ol{R}, \ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}}{
-\relsem{ \Gamma; \Phi, \ol\alpha \vdash F } \rho[\ol{\alpha := R}]
-}
-\]
-(where we call $\iota$ the cocone of the colimit)
-and thus
-\[
-\pi_i (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-)
-=
-\colim{\ol{R : \rel_0}, \ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}}{
-\relsem{ \Gamma; \Phi, \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := \pi_i R}]}
-\]
-(where the cocone of the colimit is $\pi_i \iota$),
-whereas, again by the colimit formula,
-\[
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i \rho)
-=
-\colim{\ol{S : \set_0}, \ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_i \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_i \rho)}}{
-\setsem{ \Gamma; \Phi, \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := S}]}
-\]
-(where we call $j$ the cocone of the colimit).
+We need only show that
+\begin{equation}\label{eq:former}
+\pi_i \,( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
+} \rho ) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } (\pi_i \rho)
+\end{equation}
+and
+\begin{equation}\label{eq:latter}
+\pi_i \,( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
+} f ) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } (\pi_i f)
+\end{equation}
+for all $\rho$, $\rho'$, $f : \rho \to \rho'$, and $i \in \{1, 2\}$.
 
-We now prove that
+To prove Equation~\ref{eq:former} we first observe that, by (the
+analogue for $\rel$ of) Equation~\ref{eq:colim-form}, we have
 \[
-\pi_1 (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-)
-=
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } \rho =
+\colim{\ol{R : \rel_0},\, \ol{m : \relsem{ \emptyset; \ol\alpha \vdash K }
+    \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A }
+    \rho}}{ \relsem{ \Gamma; \Phi, \ol\alpha \vdash F }
+  \rho[\ol{\alpha := R}] }
 \]
-by providing a pair of inverse functions
-(the proof for the second projection is analogous).
-Define
+where $\iota$ is the morphism mapping the cocone into the colimit.
+Since each projection $\pi_i$ is cocontinuous, we therefore have that 
 \[
-h :
-\pi_1 (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-)
-\to
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
+\pi_i\, ( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } \rho ) = \colim{\ol{R : \rel_0}, \ol{m : \relsem{
+      \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to
+    \relsem{ \Gamma; \Phi \vdash A } \rho}}{ \relsem{ \Gamma; \Phi,
+    \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := \pi_i R}]}
 \]
-as the unique function given by the universal property of the colimit such that, for any $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have that $h \circ (\pi_1 \iota_{\ol{R}, \ol{m}}) = j_{\ol{\pi_1 R}, \ol{\pi_1 m}}$.
+with $\pi_i \iota$ mapping this cocone into this colimit.  On the
+other hand, Equation~\ref{eq:colim-form} also gives
+\[
+\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
+(\pi_i \rho) = \colim{\ol{S : \set_0}, \ol{f : \setsem{ \emptyset;
+      \ol\alpha \vdash K } (\pi_i \rho)[\ol{\alpha := S}] \to \setsem{
+      \Gamma; \Phi \vdash A } (\pi_i \rho)}}{ \setsem{ \Gamma; \Phi,
+    \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := S}]}
+\]
+where $j$ is the morphism mapping the cocone into the colimit.
 
-Observe that, since $K$ does not contain constants, then $\setsem{ \emptyset; \ol\alpha \vdash K } (\pi_2 \rho) [\ol{\alpha := 0}] = 0$.
-For any
+When $i = 1$ we prove that
 \[
-\ol{S : \set_0}
-\qquad \text{and} \qquad
-\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}
+\pi_1 \,( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } \rho ) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol
+    \alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
 \]
-consider the relations $\ol{(S, 0, 0)}$ and the morphisms $\ol{(f, !) : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := (S, 0, 0)}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$ (where $!$ is the unique function from the empty set).
-Then, define
+by
+providing a pair of inverse functions; the proof when $i=2$ is
+entirely analogous. To this end, we define
 \[
-k :
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
-\to
-\pi_1 (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho
-)
+h : \pi_1\, ( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } \rho ) \to \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol
+    \alpha}_{\ol{K}} F)\ol{A} } (\pi_1 \rho)
 \]
-as the unique function given by the universal property of the colimit such that, for any $\ol{S : \set_0}$ and $\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$, we have that $k \circ j_{\ol{S}, \ol{f}} = \pi_1 \iota_{\ol{(S, 0, 0)}, \ol{(f, !)}}$.
+to be the unique function given by the universal property of the
+colimit representation of $h$'s domain. That is, we take $h$ to be the
+unique morphism such that, for any $\ol{R : \rel_0}$ and $\ol{m :
+  \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to
+  \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have $h \circ (\pi_1
+\iota_{\ol{R},\, \ol{m}}) = j_{\ol{\pi_1 R}, \,\ol{\pi_1 m}}$.
 
-We now have to show that $h$ and $k$ are mutually inverse.
-First, we prove that $h \circ k = \id$.
-Indeed, observe that
+Now, since $K$ does not contain constants, $\setsem{ \emptyset;
+  \ol\alpha \vdash K } (\pi_2 \rho) [\ol{\alpha := 0}] = 0$. Thus, for
+any $\ol{S : \set_0}$ and $\ol{f : \setsem{ \emptyset; \ol\alpha
+    \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma;
+    \Phi \vdash A } (\pi_1 \rho)} $ we have relations $\ol{(S, 0, 0)}$
+and morphisms $\ol{(f, !) : \relsem{ \emptyset; \ol\alpha \vdash K }
+  \rho[\ol{\alpha := (S, 0, 0)}] \to \relsem{ \Gamma; \Phi \vdash A }
+  \rho}$, where, for any set $X$, we suppress the sub- and
+superscripts and write $!$ for the unique morphism $!^0_X$ from $0$ to
+$X$. We then define
 \[
-h \circ k \circ j_{\ol{S}, \ol{f}}
-= h \circ (\pi_1 \iota_{\ol{(S, 0, 0)}, \ol{(f, !)}})
-= j_{\ol{\pi_1 (S, 0, 0)}, \ol{\pi_1 (f, !)}}
-= j_{\ol{S}, \ol{f}}
+k : \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
+} (\pi_1 \rho) \to \pi_1 \,( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol
+    \alpha}_{\ol{K}} F)\ol{A} } \rho )
 \]
-for every $\ol{S : \set_0}$ and
-$\ol{f : \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$
-and thus $h \circ k = \id$.
-Secondly, we prove that $k \circ h = \id$.
-Indeed, observe that
-\[
-k \circ h \circ (\pi_1 \iota_{\ol{R}, \ol{m}})
-= k \circ j_{\ol{\pi_1 R}, \ol{\pi_1 m}}
-= \pi_1 \iota_{\ol{(\pi_1 R, 0, 0)}, \ol{(\pi_1 m, !)}}
-\]
-for every $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$.
-Moreover, consider the morphisms $\ol{(\id_{\pi_1 R}, !) : (\pi_1 R, 0, 0) \to R}$ and observe that $m \circ \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := (\id_{\pi_1 R}, !)}] = (\pi_1 m, !)$, implying that $\iota_{\ol{R}, \ol{m}} = \iota_{\ol{(\pi_1 R, 0, 0)}, \ol{(\pi_1 m, !)}}$.
-Then $k \circ h \circ (\pi_1 \iota_{\ol{R}, \ol{m}}) = \pi_1 \iota_{\ol{R}, \ol{m}}$ for every $R$ and $m$, and thus $h \circ k = \id$.
+to be the unique function given by the universal property of the
+colimit representation of $k$'s domain. That is, we take $k$ to be the
+unique morphism such that, for any $\ol{S : \set_0}$ and $\ol{f :
+  \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha :=
+      S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$, we have
+$k \circ j_{\ol{S},\, \ol{f}} = \pi_1 \iota_{\ol{(S, 0, 0)},\, \ol{(f,
+    !)}}$.
 
-We can also prove that
+To see that $h$ and $k$ are mutually inverse we first observe that
 \[
-\pi_i (
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f
-)
-=
-\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)
+h \circ k \circ j_{\ol{S},\, \ol{f}}
+= h \circ (\pi_1 \iota_{\ol{(S, 0, 0)}, \,\ol{(f, !)}})
+= j_{\ol{\pi_1 (S, 0, 0)}, \,\ol{\pi_1 (f, !)}}
+= j_{\ol{S},\, \ol{f}}
 \]
-for every morphism of relation environments $f : \rho \to \rho'$ and $i = 1, 2$.
-Let $\iota$ be the cocone for the colimit $\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho$,
-$j$ the cocone for the colimit $\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$
-and $h$ and $k$ the isomorphisms showing that
-$\pi_i(\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } \rho) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$;
-analogously, let $\iota'$, $j'$, $h'$ and $k'$ be as above but for interpretations in $\rho'$ in place of $\rho$.
-Then $\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f$
-is the unique morphism of relations such that, for any $\ol{R : \rel_0}$ and
-$\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$,
-we have that
+for all $\ol{S : \set_0}$ and $\ol{f : \setsem{ \emptyset; \ol\alpha
+    \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma;
+    \Phi \vdash A } (\pi_1 \rho)}$, so that $h \circ k = \id$.
+To see that  $k \circ h  = \id$ we first observe that
 \[
-(\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ \iota_{\ol{R}, \ol{m}}
-= \iota'_{\ol{R}, \ol{\relsem{ \Gamma; \Phi \vdash A } f \circ m}}
+k \circ h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = k \circ
+j_{\ol{\pi_1 R}, \,\ol{\pi_1 m}} = \pi_1 \iota_{\ol{(\pi_1 R, 0,
+    0)},\, \ol{(\pi_1 m, !)}}
 \]
-but then, by projecting the $i$-th component, we have that
+for all $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha
+    \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash
+    A } \rho}$. Then note that, for each sequence of morphisms
+$\ol{(\id_{\pi_1 R}, !) : (\pi_1 R, 0, 0) \to R}$, we have that $\ol m
+\,\circ\, \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha :=
+    (\id_{\pi_1 R}, !)}] = (\ol{\pi_1 m}, !)$ in the indexing category
+for the colimit representation of the codomain of $k$. This in turn
+implies that {\color{red} $\iota_{\ol{R},\, \ol{m}} =
+  \iota_{\ol{(\pi_1 R, 0, 0)},\, \ol{(\pi_1 m, !)}}$}, so that $k
+\circ h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = \pi_1
+\iota_{\ol{R},\, \ol{m}}$ for all $\ol R$ and $\ol m$, and thus $h
+\circ k = \id$.
+
+To prove Equation~\ref{eq:latter}, let $\iota$ be the cocone for the
+colimit $\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } \rho$, let $j$ be the cocone for the colimit $\setsem{
+  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
+(\pi_i\rho)$, and let $h$ and $k$ be the isomorphisms showing that
+$\pi_i(\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } \rho) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol
+    \alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$. Analogously, let
+$\iota'$, $j'$, $h'$ and $k'$ be as above but for interpretations with
+respect to $\rho'$ rather than $\rho$.  By definition, $\relsem{
+  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } f$ is the
+unique morphism of relations such that, for any $\ol{R : \rel_0}$ and
+$\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha :=
+      R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$,
 \[
-\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ \pi_i \iota_{\ol{R}, \ol{m}}
-= \pi_i \iota'_{\ol{R}, \ol{\relsem{ \Gamma; \Phi \vdash A } f \circ m}}
+(\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
+f) \circ \iota_{\ol{R},\, \ol{m}} = \iota'_{\ol{R},\, \ol{\relsem{ \Gamma;
+      \Phi \vdash A } f \, \circ\, m}}
 \]
-and thus, using the facts that $h \circ (\pi_i \iota_{\ol{R}, \ol{m}}) = j_{\ol{\pi_i R}, \ol{\pi_i m}}$
-and $h' \circ (\pi_i \iota'_{\ol{R}, \ol{m}}) = j'_{\ol{\pi_i R}, \ol{\pi_i m}}$ from above,
-we get
+holds. Projecting onto the $i^{th}$ component of both sides thus gives
+that
 \[
-\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f) \circ k \circ j_{\ol{\pi_i R}, \ol{\pi_i m}}
-= k' \circ j'_{\ol{\pi_i R}, \ol{\relsem{ \Gamma; \Phi \vdash A } (\pi_i f) \circ (\pi_i m)}}
+\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } f) \circ \pi_i \iota_{\ol{R}, \,\ol{m}} = \pi_i
+\iota'_{\ol{R},\, \ol{\relsem{ \Gamma; \Phi \vdash A } f \,\circ\, m}}
 \]
-i.e., $\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } f)$
-satisfy the universal property of $\setsem{ \Gamma; \Phi \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)$,
-and thus they are equal (up to natural isomorphism).
+Now, using the facts from above that $h \circ (\pi_i \iota_{\ol{R},
+  \,\ol{m}}) = j_{\ol{\pi_i R},\, \ol{\pi_i m}}$ and, analogously,
+that $h' \circ (\pi_i \iota'_{\ol{R},\, \ol{m}}) = j'_{\ol{\pi_i R},
+  \,\ol{\pi_i m}}$, we get
+{\color{red}
+\[
+\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } f) \circ k \circ j_{\ol{\pi_i R},\, \ol{\pi_i m}} = k'
+\circ j'_{\ol{\pi_i R},\, \ol{\relsem{ \Gamma; \Phi \vdash A } (\pi_i f)
+  \, \circ\, (\pi_i m)}}
+\]
+i.e., $\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
+  F)\ol{A} } f)$ satisfies the universal property for $\setsem{
+  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } (\pi_i
+f)$.} We therefore have that $\pi_i (\relsem{ \Gamma; \Phi \vdash
+  (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } f) = \setsem{ \Gamma; \Phi
+  \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)$ (up to
+natural isomorphism) as desired.
 \end{proof}
 
-The requirement that the $\ol{K}$s be polynomial functors without constants is quite restrictive,
-as it precludes the possibility of expressing GADTs used in practice, such as the following type $\mathtt{Expr}$ of typed expressions.
+The requirement that the {\color{red} expressions} in $\ol{K}$ be
+constant-free polynomials is quite restrictive. In fact, it precludes
+the expression of many GADTs commonly used in practice, such as the
+following GADT $\mathtt{Expr}$ of typed expressions:
 \[
 \begin{array}{l}
 \mathtt{data\; Expr \;(A : Set)\;:\;Set\;where}\\
@@ -4483,15 +4549,20 @@ as it precludes the possibility of expressing GADTs used in practice, such as th
 \end{array}
 \]
 
-{\color{red} This is not quite right.}
-Even when extending along polynomials containing no constants, it is unclear how to prove the Identity Extension Lemma for $\Lan$ types, or if it holds at all.
-In order to satisfy the identity extension lemma in the case of $\Nat$ types, for example, it is necessary to cut down the semantic interpretation by requiring that the natural transformations in the set interpretation preserve equalities.
-The impossibility of restricting the semantic interpretation of $\Lan$, as proved by Proposition~\ref{prop:full-lan}, suggests that the Identity Extension Lemma might indeed not hold for a type system that features such types.
-
-We must then conclude that it is not possible to use functorial semantics to provide a parametric model for $\Lan$ types.
-
-
-
+{\color{red} CHECK!} Even when extending along constant-free
+polynomials, it is unclear how to prove the Identity Extension Lemma
+for $\Lan$-types or, indeed, whether it holds at all in their
+presence. To prove the IEL for $\Nat$-types, for example, it is
+necessary to cut down the semantic interpretation by requiring that
+the natural transformations in the set interpretation preserve
+equalities. The impossibility of restricting the semantic
+interpretations of $\Lan$-types, as shown in
+Proposition~\ref{prop:full-lan}, suggests that the IEL may fail for
+them. We have been able neither to prove nor disprove it thus far, but
+our substantial and lengthy investigations into the issue lead us to
+conjecture that it is not possible to define a functorial semantics
+for $\Lan$-types that gives rise to parametric models for languages
+supporting even constant-free polynomial primitive GADTs.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
