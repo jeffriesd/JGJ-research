@@ -3947,20 +3947,45 @@ Thus, if $F : \set^k \to \set$, $\ol{K} :
 If $\ol{S} : \set_0^k$ and $\ol{f : K\ol{S} \to A}$, let $j_{\ol{S},
   \ol{f}} : F \ol{S} \to (\mathit{Lan}_KF) \ol{A}$ be the morphism
 indexed by $\ol{S}$ and $\ol{f}$ mapping the cocone into the colimit
-in Equation~\ref{eq:colim-form}. Then for any $h$-tuple of functions
+in Equation~\ref{eq:colim-form}.
+%Then for any $h$-tuple of functions
+%$\ol{g : A \to B}$, the functorial action $(\mathit{Lan}_K F) \ol{g}$
+%is the unique function from $(\mathit{Lan}_K F) \ol{A}$ to
+%$(\mathit{Lan}_K F) \ol{B}$ such that, for all $\ol{S} : \set^k_0$ and
+%$\ol{f : K\ol{S} \to A}$,\,
+%\begin{equation}\label{eq:cocone-def}
+%(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}} = j_{\ol{S},\,
+%    \ol{g\, \circ f}}
+%  \end{equation}
+%holds, where
+For any $h$-tuple of functions
 $\ol{g : A \to B}$, the functorial action $(\mathit{Lan}_K F) \ol{g}$
 is the unique function from $(\mathit{Lan}_K F) \ol{A}$ to
 $(\mathit{Lan}_K F) \ol{B}$ such that, for all $\ol{S} : \set^k_0$ and
 $\ol{f : K\ol{S} \to A}$,\,
 \begin{equation}\label{eq:cocone-def}
-(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}} = j_{\ol{S},\,
-    \ol{g\, \circ f}}
-  \end{equation}
-holds.  We can similarly represent left Kan extensions of functors
-over $\rel$ in terms of colimits. In that setting we will denote the
-morphism mapping the cocone into the colimit $\iota$. We will make
-good use of both of these representations in
-Section~\ref{sec:term-sem} below.
+(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}}
+= j'_{\ol{S},\, \ol{g\, \circ f}}
+: F \ol{S} \to (\mathit{Lan}_KF) \ol{B}
+\end{equation}
+holds, where $j$ is the morphism mapping the cocone into
+$(\mathit{Lan}_K F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
+    K\ol{S} \to A}}{F \ol{S}}$ and $j'$ is the morphism mapping the
+cocone into $(\mathit{Lan}_K F) \ol{B} = \colim{\ol{S} : \set_0^k,
+  \,\ol{f : K\ol{S} \to B}}{F \ol{S}}$.  Moreover, if $\alpha : F \to
+F'$ is a natural transformation, then $\mathit{Lan}_K \alpha :
+(\mathit{Lan}_K F) \to (\mathit{Lan}_K F')$ is defined to be the
+induced natural transformation whose component $(\mathit{Lan}_K
+\alpha) \ol{A} : (\mathit{Lan}_K F) \ol{A} \to (\mathit{Lan}_K F')
+\ol{A}$ is the unique function such that $(\mathit{Lan}_K \alpha)
+\ol{A} \,\circ\, j_{\ol{S}, \ol{f}} = j'_{\ol{S}, \ol{f}} \,\circ\,
+\alpha_{\ol{S}}$. {\color{red} where $j$ is the cocone into
+  $(\mathit{Lan}_K F) \ol{A}$ and $j'$ is the cocone into
+  $(\mathit{Lan}_K F') \ol{A}$. REDUNDANT?} We can similarly
+represent left Kan extensions of functors over $\rel$ in terms of
+colimits. In that setting we will denote the morphism mapping the
+cocone into the colimit $\iota$. We will make good use of both of
+these representations in Section~\ref{sec:term-sem} below.
 
 \vspace*{0.05in}
 
@@ -4138,9 +4163,9 @@ extensions. To get started, we define their set and relational
 interpretations to be
 \[
   \setsem{\Gamma;\Phi \vdash
-    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (\lambda \ol{S}.\,
-  \textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha \vdash K}
-      \rho[\ol{\alpha := S}]}}\, \setsem{\Gamma; \Phi, \ol\alpha
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (
+  \textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := S}]}}\, \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha
     \vdash F} \rho[\ol{\alpha := S}])\, \ol{\setsem{\Gamma; \Phi
       \vdash A}\rho}
 \]
@@ -4148,11 +4173,11 @@ and
 
 \[
   \relsem{\Gamma;\Phi \vdash
-    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (\lambda \ol R.\,
-    \textit{Lan}_{\ol{\relsem{\Gamma; \ol\alpha \vdash
-          K}\rho[\ol{\alpha := R}]}}\, \relsem{\Gamma; \Phi, \ol\alpha
-      \vdash F}\rho[\ol{\alpha := R}])\, \ol{\relsem{\Gamma; \Phi
-        \vdash A}\rho}
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (
+  \textit{Lan}_{\lambda \ol R.\,\ol{\relsem{\Gamma; \ol\alpha \vdash
+        K}\rho[\ol{\alpha := R}]}}\, \lambda \ol R.\,\relsem{\Gamma;
+    \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := R}])\,
+  \ol{\relsem{\Gamma; \Phi \vdash A}\rho}
 \]
 
 \vspace*{0.05in}
@@ -4187,26 +4212,30 @@ relational interpretations of $\Lan$-types on morphisms. If $f : \rho
 \noindent
 is defined to be 
 \begin{multline*}
-\big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+\big(\textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha
       \vdash K}\rho[\ol{\alpha := S}]}}\,  
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_S}]\big)\,
+      \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash
+        F}f[\ol{\alpha := \id_S}]\big)\, 
     \ol{\setsem{\Gamma; \Phi \vdash A}\rho'} \\
 \circ\;
-  \big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+  \big(\textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha
         \vdash K}\rho[\ol{\alpha := S}]}}\,  
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := S}]\big)\,
+      \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash
+        F}\rho[\ol{\alpha := S}]\big)\, 
     \ol{\setsem{\Gamma; \Phi \vdash A}f}
 \end{multline*}
 or, equivalently by naturality,
 \begin{multline*}
-\big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+\big(\textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha
       \vdash K}\rho[\ol{\alpha := S}]}}\, 
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha := S}]\big)\,
+      \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash
+        F}\rho'[\ol{\alpha := S}]\big)\, 
     \ol{\setsem{\Gamma; \Phi \vdash A}f} \\
 \circ\;
-  \big(\lambda \ol{S}.\,\textit{Lan}_{\ol{\setsem{\Gamma; \ol\alpha
+  \big(\textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha
         \vdash K}\rho[\ol{\alpha := S}]}}\, 
-      \setsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_S}]\big)\,
+     \lambda \ol{S}.\, \setsem{\Gamma; \Phi, \ol\alpha \vdash
+       F}f[\ol{\alpha := \id_S}]\big)\, 
     \ol{\setsem{\Gamma; \Phi \vdash A}\rho}
 \end{multline*}
 
@@ -4363,7 +4392,9 @@ constructed from $\onet$. Indeed, if $\ol{\emptyset; \overline{\alpha}
 expressions not containing constants (i.e., formed only from $+$,
 $\times$, and the variables in $\alpha$), then
 Lemma~\ref{lem:rel-transf-morph} actually does holds for $\Gamma; \Phi
-\vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$. This is proved in
+\vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$. This is proved in the
+following proposition, which covers the case of
+Lemma~\ref{lem:rel-transf-morph} for such $\Lan$-types.
 
 \begin{prop}
 If $\ol{\emptyset; \overline{\alpha} \vdash K}$ consists only of
@@ -4435,8 +4466,11 @@ to be the unique function given by the universal property of the
 colimit representation of $h$'s domain. That is, we take $h$ to be the
 unique morphism such that, for any $\ol{R : \rel_0}$ and $\ol{m :
   \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to
-  \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have $h \circ (\pi_1
-\iota_{\ol{R},\, \ol{m}}) = j_{\ol{\pi_1 R}, \,\ol{\pi_1 m}}$.
+  \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have
+\begin{equation}\label{eq:cocone-proj}
+h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = j_{\ol{\pi_1 R},
+  \,\ol{\pi_1 m}}
+\end{equation}
 
 Now, since $K$ does not contain constants, $\setsem{ \emptyset;
   \ol\alpha \vdash K } (\pi_2 \rho) [\ol{\alpha := 0}] = 0$. Thus, for
@@ -4472,68 +4506,302 @@ for all $\ol{S : \set_0}$ and $\ol{f : \setsem{ \emptyset; \ol\alpha
     \vdash K } (\pi_1 \rho)[\ol{\alpha := S}] \to \setsem{ \Gamma;
     \Phi \vdash A } (\pi_1 \rho)}$, so that $h \circ k = \id$.
 To see that  $k \circ h  = \id$ we first observe that
-\[
+\begin{equation}\label{eq:k-comp-h}
 k \circ h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = k \circ
 j_{\ol{\pi_1 R}, \,\ol{\pi_1 m}} = \pi_1 \iota_{\ol{(\pi_1 R, 0,
     0)},\, \ol{(\pi_1 m, !)}}
-\]
+\end{equation}
 for all $\ol{R : \rel_0}$ and $\ol{m : \relsem{ \emptyset; \ol\alpha
     \vdash K } \rho[\ol{\alpha := R}] \to \relsem{ \Gamma; \Phi \vdash
     A } \rho}$. Then note that, for each sequence of morphisms
-$\ol{(\id_{\pi_1 R}, !) : (\pi_1 R, 0, 0) \to R}$, we have that $\ol m
-\,\circ\, \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha :=
-    (\id_{\pi_1 R}, !)}] = (\ol{\pi_1 m}, !)$ in the indexing category
-for the colimit representation of the codomain of $k$. This in turn
-implies that {\color{red} $\iota_{\ol{R},\, \ol{m}} =
-  \iota_{\ol{(\pi_1 R, 0, 0)},\, \ol{(\pi_1 m, !)}}$}, so that $k
-\circ h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = \pi_1
-\iota_{\ol{R},\, \ol{m}}$ for all $\ol R$ and $\ol m$, and thus $h
-\circ k = \id$.
+$\ol{(\id_{\pi_1 R}, !) : (\pi_1 R, 0, 0) \to R}$, we have that
+\[\ol{m
+\,\circ\, \relsem{ \emptyset; \ol\alpha \vdash K } \id_\rho[\ol{\alpha
+    := (\id_{\pi_1 R}, !)}] = (\pi_1 m, !)}\]
+in the indexing category for the colimit representation of the
+codomain of $k$. This implies that
+\[\iota_{\ol{R},\, \ol{m}} \,\circ\, \relsem{ \Gamma; \Phi,
+  \ol\alpha \vdash F } \id_{\rho}[\ol{\alpha := (\id_{\pi_1 R}, !)}]
+= \iota_{\ol{(\pi_1 R, 0, 0)},\, \ol{(\pi_1 m, !)}}\] Projecting the
+first component thus gives
+\[(\pi_1 \iota_{\ol{R},\,
+  \ol{m}}) \, \circ\, \pi_1 ( \relsem{ \Gamma; \Phi, \ol\alpha \vdash
+  F } \id_{\rho}[\ol{\alpha := (\id_{\pi_1 R}, !)}]) = \pi_1
+\iota_{\ol{(\pi_1 R, 0, 0)},\, \ol{(\pi_1 m, !)}}\]
+Now, the induction hypothesis on $\Gamma;\Phi,\ol\alpha
+\vdash F$ gives that
+\[\begin{array}{lll}
+ &  & \pi_1 ( \relsem{ \Gamma; \Phi, \ol\alpha \vdash F}
+\id_{\rho}[\ol{\alpha := (\id_{\pi_1 R}, !)}])\\
+& = & \setsem{ \Gamma; \Phi, \ol\alpha \vdash F } \id_{\pi_1
+  \rho}[\ol{\alpha := \id_{\pi_1 R}}]\\
+& = & \id_{\setsem{ \Gamma; \Phi, \ol\alpha \vdash F } (\pi_1
+  \rho)[\ol{\alpha := \pi_1 R}]}
+\end{array}\]
+so that, in fact, $\pi_1 \iota_{\ol R,\,\ol m} =
+\pi_1\iota_{\ol{(\pi_1 R, 0, 0)},\, \ol{(\pi_1 m, !)}}$.  Finally, by
+Equation~\ref{eq:k-comp-h} we have $k \circ h \circ (\pi_1
+\iota_{\ol{R},\, \ol{m}}) = \pi_1 \iota_{\ol{(\pi_1 R, 0, 0)},\,
+  \ol{(\pi_1 m, !)}}  = \pi_1 \iota_{\ol{R},\, \ol{m}}$ for all $\ol
+R$ and $\ol m$, and thus $k \circ h = \id$.
 
-To prove Equation~\ref{eq:latter}, let $\iota$ be the cocone for the
-colimit $\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
-  F)\ol{A} } \rho$, let $j$ be the cocone for the colimit $\setsem{
-  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
-(\pi_i\rho)$, and let $h$ and $k$ be the isomorphisms showing that
-$\pi_i(\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
-  F)\ol{A} } \rho) = \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol
-    \alpha}_{\ol{K}} F)\ol{A} } (\pi_i\rho)$. Analogously, let
-$\iota'$, $j'$, $h'$ and $k'$ be as above but for interpretations with
-respect to $\rho'$ rather than $\rho$.  By definition, $\relsem{
-  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } f$ is the
-unique morphism of relations such that, for any $\ol{R : \rel_0}$ and
-$\ol{m : \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha :=
-      R}] \to \relsem{ \Gamma; \Phi \vdash A } \rho}$,
+To prove Equation~\ref{eq:latter}, first recall that
+$\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
+f$ is defined to be
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \\ \circ\;
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}f}
+\end{multline*}
+and $\setsem{\Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
+} (\pi_i f)$ is defined to be
+\begin{multline*}
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K}(\pi_i \rho)[\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i f)[\ol{\alpha
+    := \id_S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash A}(\pi_i
+  \rho')}\\ \circ\; \big(\textit{Lan}_{\ol{\lambda
+    \ol{S}.\,\setsem{\Gamma; \ol\alpha \vdash K}(\pi_i
+    \rho)[\ol{\alpha := S}]}}\, \lambda \ol{S}.\,\setsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}(\pi_i \rho)[\ol{\alpha := S}]\big)\,
+\ol{\relsem{\Gamma; \Phi \vdash A}(\pi_i f)}
+\end{multline*}
+It therefore suffices to show that
+\begin{multline}\label{eq:part-one}
+\pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\,  
+      \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha := \id_R}]\big)\,
+    \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big) \\
+= \big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K} (\pi_1 \rho) [\ol{\alpha := S}]}}\,  
+      \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i f)[\ol{\alpha := \id_S}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A}(\pi_i \rho')}
+\end{multline}
+and that
+\begin{multline}\label{eq:part-two}
+\pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+        \vdash K}\rho[\ol{\alpha := R}]}}\,  
+      \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := R}]\big)\,
+    \ol{\relsem{\Gamma; \Phi \vdash A}f} \Big) \\
+= \big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+        \vdash K} (\pi_i \rho) [\ol{\alpha := S}]}}\,  
+      \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i \rho) [\ol{\alpha := S}]\big)\,
+    \ol{\setsem{\Gamma; \Phi \vdash A} (\pi_i f)}
+\end{multline}
+
+\vspace*{0.1in}
+
+To prove Equation~\ref{eq:part-one} we first observe that
+  the universal property (Equation~\ref{eq:cocone-def}) of
 \[
-(\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
-f) \circ \iota_{\ol{R},\, \ol{m}} = \iota'_{\ol{R},\, \ol{\relsem{ \Gamma;
-      \Phi \vdash A } f \, \circ\, m}}
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
 \]
-holds. Projecting onto the $i^{th}$ component of both sides thus gives
-that
+gives that, for all $\ol{R : \rel_0}$ and $\ol{m : \relsem{\Gamma;
+    \ol\alpha \vdash K}\rho[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi
+    \vdash A}\rho'}$,
+\[\begin{array}{lll}
+& & \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \,\circ\,
+\iota_{\ol{R}, \ol{m}}\\[2ex]
+& = & \iota'_{\ol{R}, \ol{m}} \,\circ\, \relsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}f[\ol{\alpha := \id_R}]
+\end{array}\]
+Here, $\iota$ is the morphism mapping the cocone into the colimit
 \[
-\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
-  F)\ol{A} } f) \circ \pi_i \iota_{\ol{R}, \,\ol{m}} = \pi_i
-\iota'_{\ol{R},\, \ol{\relsem{ \Gamma; \Phi \vdash A } f \,\circ\, m}}
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
 \]
-Now, using the facts from above that $h \circ (\pi_i \iota_{\ol{R},
-  \,\ol{m}}) = j_{\ol{\pi_i R},\, \ol{\pi_i m}}$ and, analogously,
-that $h' \circ (\pi_i \iota'_{\ol{R},\, \ol{m}}) = j'_{\ol{\pi_i R},
-  \,\ol{\pi_i m}}$, we get
-{\color{red}
+and $\iota'$ is the morphism mapping the cocone into the colimit
 \[
-\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
-  F)\ol{A} } f) \circ k \circ j_{\ol{\pi_i R},\, \ol{\pi_i m}} = k'
-\circ j'_{\ol{\pi_i R},\, \ol{\relsem{ \Gamma; \Phi \vdash A } (\pi_i f)
-  \, \circ\, (\pi_i m)}}
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
 \]
-i.e., $\pi_i (\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
-  F)\ol{A} } f)$ satisfies the universal property for $\setsem{
-  \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } (\pi_i
-f)$.} We therefore have that $\pi_i (\relsem{ \Gamma; \Phi \vdash
-  (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } f) = \setsem{ \Gamma; \Phi
-  \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} } (\pi_i f)$ (up to
-natural isomorphism) as desired.
+Projecting, together with the induction hypothesis for $\Gamma; \Phi,
+\ol\alpha\vdash F$, thus gives
+\[\begin{array}{lll}
+ & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma;
+      \ol\alpha \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big)
+\,\circ\, \pi_i \iota_{\ol{R}, \ol{m}} \\[2ex]
+& = & \pi_i \iota'_{\ol{R},
+  \ol{m}} \,\circ\, \setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i
+f)[\ol{\alpha := \id_{\pi_i R}}]
+\end{array}\]
+Equation~\ref{eq:cocone-proj} {\color{red} and its analogue for
+  $\iota'$ and $j'$ then give --- HOW?????}
+\[\begin{array}{lll}
+ & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha :=
+        R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}f[\ol{\alpha := \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi
+    \vdash A}\rho'} \Big) \,\circ\, {\color{red} j?}f_{\ol{\pi_i R},
+  \ol{\pi_i m}} \\[2ex]
+& = & j'_{\ol{\pi_i R}, \ol{\pi_i m}} \,\circ\, \setsem{\Gamma; \Phi,
+      \ol\alpha \vdash F} (\pi_i f)[\ol{\alpha := \id_{\pi_i R}}]
+\end{array}\]
+where $j$ is the morphism mapping the cocone into the colimit
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K}(\pi_i \rho)[\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i
+\rho)[\ol{\alpha := S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash
+    A}(\pi_i \rho')}
+\]
+and $j'$ is the morphism mapping the cocone into the colimit
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := S}]}}\, \lambda
+\ol{R}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i
+\rho')[\ol{\alpha := S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash
+    A}(\pi_i \rho')}
+\]
+By the surjectivity of each $\pi_i : \rel \to \set$ we have that
+\[\begin{array}{lll}
+& & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; 
+      \ol\alpha \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big)
+\,\circ\, j_{\ol{S}, \ol{g}} \\[2ex]
+& = & j'_{\ol{S}, \ol{g}} \,\circ\, \setsem{\Gamma; \Phi, \ol\alpha
+  \vdash F} (\pi_i f)[\ol{\alpha := \id_{S}}]
+\end{array}\]
+for all $\ol{S: \set_0}$ and $\ol{g : \setsem{\Gamma; \ol\alpha \vdash
+    K}(\pi_i \rho)[\ol{\alpha := S}] \to \setsem{\Gamma; \Phi \vdash
+    A}(\pi_i \rho')}$.  That is, \[\pi_i \Big(
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big)\]
+satisfies the universal property (Equation~\ref{eq:cocone-def}) of 
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K} (\pi_1 \rho) [\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i f)[\ol{\alpha
+    := \id_S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash A}(\pi_i \rho')}
+\]
+The two expressions must therefore be equal, and thus
+Equation~\ref{eq:part-one} holds.
+
+\vspace*{0.1in}
+
+To prove Equation~\ref{eq:part-two} we first observe that 
+  the universal property (Equation~\ref{eq:cocone-def}) of 
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}f}
+\] gives that,
+for every $\ol{R : \rel_0}$ and $\ol{m : \relsem{\Gamma; \ol\alpha
+    \vdash K}\rho[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi \vdash
+    A}\rho}$, 
+\[\begin{array}{lll}
+ & & \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}f} \,\circ\,
+\iota_{\ol{R}, \ol{m}}\\[2ex]
+& = & \iota'_{\ol{R}, \ol{\relsem{\Gamma; \Phi \vdash A}f \,\circ\,
+    m}}
+\end{array}\]
+where $\iota$ is the cocone into the colimit
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho}
+\]
+and $\iota'$ is the cocone into the colimit
+\[\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+ \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma;
+  \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := R}\big)\,
+  \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
+\]
+Projecting, together with the induction hypothesis for
+$\Gamma;\Phi,\ol\alpha\vdash F$, thus gives
+\[\begin{array}{lll}
+ & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; \ol\alpha 
+    \vdash K}\rho[\ol{\alpha := R}]}}\,  
+    \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash
+      F}\rho[\ol{\alpha := R}]\big)\, 
+    \ol{\relsem{\Gamma; \Phi \vdash A}f} \Big)
+\,\circ\, \pi_i \iota_{\ol{R}, \ol{m}} \\[2ex]
+& = & \pi_i \iota'_{\ol{R}, \ol{\relsem{\Gamma; \Phi \vdash A}f \,\circ\,
+    m}} 
+\end{array}\]
+{\color{red} Equation~\ref{eq:cocone-proj} and its analogue for
+  $\iota'$ and $j'$ then give}
+\[\begin{array}{lll}
+ & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma;
+      \ol\alpha 
+    \vdash K}\rho[\ol{\alpha := R}]}}\,   
+    \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash
+      F}\rho[\ol{\alpha := R}]\big)\, 
+    \ol{\relsem{\Gamma; \Phi \vdash A}f} \Big)
+\,\circ\, j_{\ol{\pi_i R}, \ol{\pi_i m}} \\[2ex]
+& = & j'_{\ol{\pi_i R}, \ol{\relsem{\Gamma; \Phi \vdash A}(\pi_i f)
+    \,\circ\, \pi_i m}} 
+\end{array}\]
+where $j$ is the cocone into the colimit
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K}(\pi_i \rho)[\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i
+\rho)[\ol{\alpha := S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash
+    A}(\pi_i \rho)}
+\]
+and $j'$ is the cocone into the colimit
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K}(\pi_i \rho)[\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F}(\pi_i
+\rho)[\ol{\alpha := S}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash
+    A}(\pi_i \rho')}
+\]
+By the surjectivity of each $\pi_i : \rel \to \set$ we have that
+\[\begin{array}{lll}
+ & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha :=
+        R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho[\ol{\alpha := R}]\big)\, \ol{\relsem{\Gamma; \Phi
+    \vdash A}f} \Big) \,\circ\, j_{\ol{S}, \ol{g}} \\[2ex]
+& = & j'_{\ol{S}, \ol{\relsem{\Gamma; \Phi \vdash A}(\pi_i f) \,\circ\, g}}
+\end{array}\]
+for every $\ol{S: \set_0}$ and $\ol{g : \setsem{\Gamma; \ol\alpha
+    \vdash K}(\pi_i \rho)[\ol{\alpha := S}] \to \setsem{\Gamma; \Phi
+    \vdash A}(\pi_i \rho)}$. That is,
+\[\pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha :=
+        R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho[\ol{\alpha := R}]\big)\, \ol{\relsem{\Gamma; \Phi
+    \vdash A}f} \Big)\]
+satisfies the universal property (Equation~\ref{eq:cocone-def}) of
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{S}.\,\setsem{\Gamma; \ol\alpha
+      \vdash K} (\pi_i \rho) [\ol{\alpha := S}]}}\, \lambda
+\ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i \rho)
+   [\ol{\alpha := S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash A} (\pi_i
+     f)}
+\]
+The two expressions must therefore be equal, and thus
+Equation~\ref{eq:part-two} holds.
 \end{proof}
 
 The requirement that the {\color{red} expressions} in $\ol{K}$ be
