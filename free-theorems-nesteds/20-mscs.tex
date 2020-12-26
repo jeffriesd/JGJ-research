@@ -4596,17 +4596,32 @@ and that
 
 \vspace*{0.1in}
 
-To prove Equation~\ref{eq:part-one} we first observe that
-  the universal property (Equation~\ref{eq:cocone-def}) of
+To prove Equation~\ref{eq:part-one} we first observe that the
+morphisms $\iota'_{\ol{R}, \ol{m}} \,\circ\, \relsem{\Gamma; \Phi,
+  \ol\alpha \vdash F}f[\ol{\alpha := \id_R}]$ form a cocone for
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
+\]
+with vertex 
+\[
+\big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
+      \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho'[\ol{\alpha :=
+    R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
+\]
+The universal property (Equation~\ref{eq:cocone-def}) of
 \[
 \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
       \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
 \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
     \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'}
 \]
-gives that, for all $\ol{R : \rel_0}$ and $\ol{m : \relsem{\Gamma;
-    \ol\alpha \vdash K}\rho[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi
-    \vdash A}\rho'}$,
+therefore gives that, for all $\ol{R : \rel_0}$ and $\ol{m :
+  \relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha := R}] \to
+  \relsem{\Gamma; \Phi \vdash A}\rho'}$,
 \[\begin{array}{lll}
 & & \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma; \ol\alpha
       \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
@@ -4642,16 +4657,32 @@ Projecting, together with the induction hypothesis for $\Gamma; \Phi,
   \ol{m}} \,\circ\, \setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i
 f)[\ol{\alpha := \id_{\pi_i R}}]
 \end{array}\]
-Equation~\ref{eq:cocone-proj} {\color{red} and its analogue for
-  $\iota'$ and $j'$ then give --- HOW?????}
+Equation~\ref{eq:cocone-proj} and its analogue for
+  $\iota'$ and $j'$ then give 
 \[\begin{array}{lll}
- & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+& & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
     \ol{R}.\,\relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha :=
         R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha
   \vdash F}f[\ol{\alpha := \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi
-    \vdash A}\rho'} \Big) \,\circ\, {\color{red} j?}f_{\ol{\pi_i R},
+    \vdash A}\rho'} \Big) \,\circ \, k \,\circ\, j_{\ol{\pi_i R},
   \ol{\pi_i m}} \\[2ex]
-& = & j'_{\ol{\pi_i R}, \ol{\pi_i m}} \,\circ\, \setsem{\Gamma; \Phi,
+&  = & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma;
+      \ol\alpha \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big)
+\,\circ\, k \,\circ\, h \,\circ \,\pi_i \iota_{\ol{R}, \ol{m}} \\[2ex]
+& = & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma;
+      \ol\alpha \vdash K}\rho[\ol{\alpha := R}]}}\, \lambda
+\ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha \vdash F}f[\ol{\alpha :=
+    \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi \vdash A}\rho'} \Big)
+\,\circ\, \pi_i \iota_{\ol{R}, \ol{m}} \\[2ex]
+& = & \pi_i \iota'_{\ol{R},
+  \ol{m}} \,\circ\, \setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i
+f)[\ol{\alpha := \id_{\pi_i R}}]\\[2ex]
+& = & k' \, \circ \, h'\,\circ\,\pi_i \iota'_{\ol{R},
+  \ol{m}} \,\circ\, \setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_i
+f)[\ol{\alpha := \id_{\pi_i R}}]\\[2ex]
+& = & k' \,\circ \, j'_{\ol{\pi_i R}, \ol{\pi_i m}} \,\circ\, \setsem{\Gamma; \Phi,
       \ol\alpha \vdash F} (\pi_i f)[\ol{\alpha := \id_{\pi_i R}}]
 \end{array}\]
 where $j$ is the morphism mapping the cocone into the colimit
@@ -4670,6 +4701,18 @@ and $j'$ is the morphism mapping the cocone into the colimit
 \rho')[\ol{\alpha := S}]\big)\, \ol{\setsem{\Gamma; \Phi \vdash
     A}(\pi_i \rho')}
 \]
+Since both $k$ and $k'$ are isomorphisms, we have that, up to
+isomorphism, 
+\[\begin{array}{lll}
+& & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
+    \ol{R}.\,\relsem{\Gamma; \ol\alpha \vdash K}\rho[\ol{\alpha :=
+        R}]}}\, \lambda \ol{R}.\,\relsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}f[\ol{\alpha := \id_R}]\big)\, \ol{\relsem{\Gamma; \Phi
+    \vdash A}\rho'} \Big) \circ\, j_{\ol{\pi_i R},
+  \ol{\pi_i m}} \\[2ex]
+& = & j'_{\ol{\pi_i R}, \ol{\pi_i m}} \,\circ\, \setsem{\Gamma; \Phi,
+      \ol\alpha \vdash F} (\pi_i f)[\ol{\alpha := \id_{\pi_i R}}]
+\end{array}\]
 By the surjectivity of each $\pi_i : \rel \to \set$ we have that
 \[\begin{array}{lll}
 & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda
@@ -4746,8 +4789,8 @@ $\Gamma;\Phi,\ol\alpha\vdash F$, thus gives
 & = & \pi_i \iota'_{\ol{R}, \ol{\relsem{\Gamma; \Phi \vdash A}f \,\circ\,
     m}} 
 \end{array}\]
-{\color{red} Equation~\ref{eq:cocone-proj} and its analogue for
-  $\iota'$ and $j'$ then give}
+Equation~\ref{eq:cocone-proj} and its analogue for
+  $\iota'$ and $j'$ then give that, up to isomorphism,
 \[\begin{array}{lll}
  & & \pi_i \Big( \big(\textit{Lan}_{\ol{\lambda \ol{R}.\,\relsem{\Gamma;
       \ol\alpha 
