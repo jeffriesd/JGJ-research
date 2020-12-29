@@ -132,10 +132,13 @@ conditions on the functors interpreting them must be appropriately
 threaded throughout the model construction. We also prove that our
 model satisfies an appropriate Abstraction Theorem, as well as that it
 verifies all standard consequences of parametricity in the presence of
-primitive nested types. In particular, we give several examples
-illustrating how how our model can be used to derive useful free
-theorems for programs over nested types. {\color{red} Add info about
-  GADTs and implementation.}
+primitive nested types. We give several concrete examples illustrating
+how our model can be used to derive useful free theorems, including a
+short cut fusion transformation, for programs over nested
+types. Finally, we consider generalizing our results to GADTs, and
+argue that no extension of our parametric model for nested types can
+give a functorial interpretation of GADTs in terms of left Kan
+extensions and still be parametric.
 \end{abstract}
 
 \maketitle
@@ -348,10 +351,21 @@ over nested types. This scheme is very general, and is parameterized
 over both the data type and the type of the polymorphic function at
 hand. It has, for example, analogues for nested types of Wadler's
 map-rearrangement free theorems as instances. In
-Section~\ref{sec:thms} we prove that our model satisfies an
+Section~\ref{sec:abs-and-nat} we prove that our model satisfies an
 Abstraction Theorem (Theorem~\ref{thm:abstraction}), which we use to
-derive other parametricity results that go beyond naturality. We
-conclude in Section~\ref{sec:conclusion}.
+derive, in Section~\ref{sec:ftnt}, other parametricity results that go
+beyond mere naturality. In Section~\ref{sec:GADTs} we show that the
+results of this paper do not extend to arbitrary GADTs, and argue that
+no extension of the parametric model we construct here for nested
+types can give a functorial interpretation of GADTs in terms of left
+Kan extensions as proposed in~\cite{jp19} and still be parametric. We
+conclude and offer some directions for future work in
+Section~\ref{sec:conclusion}.
+
+This paper is an extended version of the conference
+paper~\cite{jgj21}. Compared to that paper, this one includes all
+proofs, as well as more examples. The discussion of GADTs in
+Section~\ref{sec:GADTs} is also entirely new.
 
 \vspace*{0.05in}
 
@@ -419,12 +433,6 @@ spelling out which types can be interpreted as strictly positive
 functors would result in a full higher-kinded extension of a calculus
 akin to that presented here.
 
-{\color{red} Say extended version of FoSSaCS paper. Say what's
-  new/different. GADTs, implementation.
-
-Can bind variables of arity greater than 0 in Nat-types? Improves
-expressibility?  Worth it?}
-
 \section{The Calculus}\label{sec:calculus}
 
 \subsection{Types}
@@ -451,17 +459,16 @@ $\{\phi\}$.
 If $\Gamma$ is a finite subset of\, $\tvars$, $\Phi$ is a finite
 subset of\, $\fvars$, $\overline{\alpha}$ is a finite subset of\,
 $\fvars^0$ disjoint from $\Phi$, and $\phi^k \in \fvars^k \setminus
-\Phi$, then the set $\mcF$ of {\color{red} {\em functorial expressions}} over
-$\Gamma$ and $\Phi$ are given in Definition~\ref{def:wftypes}. The
-notation there entails that an application $F F_1...F_k$ is allowed
-only when $F$ is a type variable of arity $k$, or $F$ is a
-subexpression of the form $\mu \phi^{k}.\lambda
-\alpha_1...\alpha_k.F'$. Moreover, if $F$ has arity $k$ then $F$ must
-be applied to exactly $k$ arguments.  Accordingly, an overbar
-indicates a sequence of subexpressions whose length matches the arity
-of the type applied to it.  Requiring that types are always in such
-\emph{$\eta$-long normal form} avoids having to consider
-$\beta$-conversion at the level of types. In a subexpression
+\Phi$, then the set $\mcF$ of well-formed types is given in
+Definition~\ref{def:wftypes}. The notation there entails that an
+application $F F_1...F_k$ is allowed only when $F$ is a type variable
+of arity $k$, or $F$ is a subexpression of the form $\mu
+\phi^{k}.\lambda \alpha_1...\alpha_k.F'$. Moreover, if $F$ has arity
+$k$ then $F$ must be applied to exactly $k$ arguments.  Accordingly,
+an overbar indicates a sequence of types whose length matches the
+arity of the type applied to it.  Requiring that types are always in
+such \emph{$\eta$-long normal form} avoids having to consider
+$\beta$-conversion at the level of types. In a type
 $\Nat^{\ol{\alpha}}F\,G$, the $\Nat$ operator binds all occurrences of
 the variables in $\ol{\alpha}$ in $F$ and $G$; intuitively,
 $\Nat^{\ol{\alpha}}F\,G$ represents the type of a natural
@@ -469,7 +476,9 @@ transformation in $\ol{\alpha}$ from the functor $F$ to the functor
 $G$.  In a subexpression $\mu \phi^k.\lambda \ol{\alpha}.F$, the $\mu$
 operator binds all occurrences of the variable $\phi$, and the
 $\lambda$ operator binds all occurrences of the variables in
-$\ol{\alpha}$, in the body $F$.
+$\ol{\alpha}$, in the body $F$. {\color{red} Can bind variables of
+  arity greater than 0 in Nat-types even just for nesteds? Improves
+  expressibility? Worth it? Worth mentioning?}
 
 A {\em type constructor context}, or {\em non-functorial context}, is
 a finite set $\Gamma$ of type constructor variables, and a {\em
@@ -480,8 +489,8 @@ functorial in the variables in $\Phi$ but not necessarily in those in
 $\Gamma$.
 
 \begin{defi}\label{def:wftypes}
-The formation rules for the set $\F$ of\, {\color{red} {\em
-    well-formed types}} are
+The formation rules for the set $\F$ of\, {\em (well-formed) types}
+are
 
 \vspace*{-0.2in}
 
@@ -760,12 +769,12 @@ and $\Phi$, then the formation rules for the set of {\em well-formed
 there for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all occurrences
 of the type variables in $\ol{\alpha}$ in the types of $x$ and $t$, as
 well as all occurrences of $x$ in $t$. In the rule for $t_{\ol K} s$
-there is one functorial expression in $\ol K$ for every functorial
+there is one type in $\ol K$ for every functorial
 variable in $\ol \alpha$. In the rule for $\map^{\ol{F},\ol{G}}_H$
-there is one functorial expression $F$ and one functorial expression
+there is one type $F$ and one type
 $G$ for each functorial variable in $\ol\phi$. Moreover, for each
 $\phi^k$ in $\ol\phi$ the number of functorial variables in $\ol\beta$
-in the judgments for its corresponding functorial expresssions $F$ and
+in the judgments for its corresponding type $F$ and
 $G$ is $k$. In the rules for $\tin_H$ and $\fold^F_H$, the functorial
 variables in $\ol{\beta}$ are fresh with respect to $H$, and there is
 one $\beta$ for every $\alpha$. Substitution for terms is the obvious
@@ -1041,18 +1050,17 @@ impact on the fact that they are given by mutual induction.
 \subsection{Interpreting Types as Sets}\label{sec:set-interp}
 
 We interpret types in our calculus as $\omega$-cocontinuous functors
-on locally finitely presentable categories~\cite{ar94}. The categories
-$\set$ and $\rel$ are both locally finitely presentable. Since functor
+on locally finitely presentable categories~\cite{ar94}. Both $\set$
+and $\rel$ are locally finitely presentable categories. Since functor
 categories of locally finitely presentable categories are again
-locally finitely presentable, this ensures that the fixpoints
-interpreting $\mu$-types in $\set$ and $\rel$ exist, and thus that
-both the set and relational interpretations of all of the types in
-Definition~\ref{def:wftypes} are well-defined~\cite{jp19}. To
-bootstrap this process, we interpret type variables as
-$\omega$-cocontinuous functors in Definitions~\ref{def:set-env}
-and~\ref{def:reln-env}. If $\C$ and $\D$ are locally finitely
-presentable categories, we write $[\C,\D]$ for the category of
-$\omega$-cocontinuous functors from $\C$ to $\D$.
+locally finitely presentable, the fixpoints interpreting $\mu$-types
+in $\set$ and $\rel$ must all exist, and thus the set and relational
+interpretations of all of the types in Definition~\ref{def:wftypes},
+are well-defined~\cite{jp19}. To bootstrap this process, we interpret
+type variables as $\omega$-cocontinuous functors in
+Definitions~\ref{def:set-env} and~\ref{def:reln-env}. If $\C$ and $\D$
+are locally finitely presentable categories, we write $[\C,\D]$ for
+the category of $\omega$-cocontinuous functors from $\C$ to $\D$.
 
 \begin{defi}\label{def:set-env}
 A {\em set environment} maps each type variable in $\tvars^k \cup
@@ -1065,7 +1073,7 @@ transformation from the $k$-ary functor $\rho \phi^k$ on $\set$ to the
 $k$-ary functor $\rho' \phi^k$ on $\set$.  Composition of morphisms on
 set environments is given componentwise, with the identity morphism
 mapping each set environment to itself. This gives a category of set
-environments and morphisms between them, which we denote $\setenv$.
+environments and morphisms between them, denoted $\setenv$.
 \end{defi}
 When convenient we identify a functor in $[\set^0, \set]$ with its
 value on $\ast$ and consider a set environment to map a type variable
@@ -1486,8 +1494,8 @@ from the $k$-ary relation transformer $\rho \phi$ to the $k$-ary
 relation transformer $\rho' \phi$. Composition of morphisms on
 relation environments is given componentwise, with the identity
 morphism mapping each relation environment to itself. This gives a
-category of relation environments and morphisms between them, which we
-denote $\relenv$.
+category of relation environments and morphisms between them, denoted
+$\relenv$.
 \end{defi}
 We identify a $0$-ary relation transformer with the relation
 (transformer) that is its codomain and consider a relation environment
@@ -2712,7 +2720,7 @@ and terms --- i.e., \[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha
 \dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\] --- then follow (assuming
 both sides of these equations are defined).
 
-\section{Naturality and the Abstraction Theorem}\label{sec:free-theorems}
+\section{Naturality and the Abstraction Theorem}\label{sec:abs-and-nat}
 
 \subsection{Naturality and Its Consequences}\label{sec:Nat-type-terms}
 
@@ -3811,10 +3819,11 @@ the data constructors for the instance $\mathtt{Bush \;A}$ of the truly
 nested type $\mathtt{Bush}$ are $\mathtt{bnil :: Bush\; A}$ and
 $\mathtt{bcons :: A \to Bush\; (Bush\; A) \to Bush\; A}$.
 
-Generalized algebraic datatypes (GADTs){\color{red}~\cite{???}}
-generalize nested types by relaxing the above restriction to allow the
-return types of data constructors to be different instances of the
-datatype than the one being defined. For example, the GADT {\small
+Generalized algebraic datatypes (GADTs) --- also known as guarded
+recursive data types or first-class phantom types --- generalize
+nested types by relaxing the above restriction to allow the return
+types of data constructors to be different instances of the datatype
+than the one being defined. For example, the GADT {\small
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
@@ -3859,8 +3868,8 @@ the (entirely standard) approach taken above for product, coproduct,
 and fixpoint types. In this section we outline this approach and show
 how our model from Section~\ref{sec:term-interp} can be extended to a
 parametric model when some classes of primitive GADTs are incorporated
-in this manner. However, as we argue in{\color{red}~????} below, such
-extension is not possible in general.
+in this manner. However, as we argue at the end of this section, such
+extension is likely not possible.
 
 \subsection{Left Kan Extensions}\label{sec:lke}
 
@@ -3979,12 +3988,11 @@ induced natural transformation whose component $(\mathit{Lan}_K
 \alpha) \ol{A} : (\mathit{Lan}_K F) \ol{A} \to (\mathit{Lan}_K F')
 \ol{A}$ is the unique function such that $(\mathit{Lan}_K \alpha)
 \ol{A} \,\circ\, j_{\ol{S}, \ol{f}} = j'_{\ol{S}, \ol{f}} \,\circ\,
-\alpha_{\ol{S}}$. {\color{red} where $j$ is the cocone into
-  $(\mathit{Lan}_K F) \ol{A}$ and $j'$ is the cocone into
-  $(\mathit{Lan}_K F') \ol{A}$. REDUNDANT?} We can similarly
-represent left Kan extensions of functors over $\rel$ in terms of
-colimits. In that setting we will denote the morphism mapping the
-cocone into the colimit $\iota$. We will make good use of both of
+\alpha_{\ol{S}}$, where $j$ is the cocone into $(\mathit{Lan}_K F)
+\ol{A}$ and $j'$ is the cocone into $(\mathit{Lan}_K F') \ol{A}$. We
+can similarly represent left Kan extensions of functors over $\rel$ in
+terms of colimits. In that setting we will denote the morphism mapping
+the cocone into the colimit $\iota$. We will make good use of both of
 these representations in Section~\ref{sec:term-sem} below.
 
 \vspace*{0.05in}
@@ -4134,6 +4142,7 @@ $\Nat$ in the formation rule for generalized $\Nat$-types are
 interpreted in $\set$ as functors and in $\rel$ as relation
 transformers, we extend the set and relational interpretations for
 $\Nat$ types from Section~\ref{sec:type-interp} as follows:
+{\color{red} Relate $k$ to arities in $\Phi$.}
 \begin{align*}
 \setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
 &= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol K] 
@@ -4262,9 +4271,12 @@ and
 : \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
 = \mu
 \]
-respectively, where, for each $\ol{N} {\color{red} : ???}$,
-$\eta_{\ol{N}}$ is the natural transformation associated with the left
-Kan extension
+respectively, where, for each $\ol{N : RT_k}$ {\color{red} Relate
+  $k$ to arities in $\Phi$.}, $\eta_{\ol{N}}$ is the natural
+transformation associated with the left Kan extension
+
+\vspace*{-0.1in}
+
 \[\begin{tikzcd} [column sep = large, row sep = large]
 \set^{|\ol \alpha|}
 \ar[rr, "\lambda \ol{A}.\,\setsem{\Gamma; \Phi, \ol\alpha
@@ -4278,7 +4290,8 @@ Kan extension
 \ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
           from=F, to=2-2,  "\eta_{\ol{N}}"{}]
 \end{tikzcd}\]
-and, for all $\ol N {\color{red} : ???}$ and $d {\color{red} : ???}$,
+and, for all $\ol{N : RT_k}$ {\color{red} Relate $k$ to arities in
+  $\Phi$.} and $d : \setsem{\Gamma;\emptyset \vdash \Delta}$, 
 \[\begin{array}{l}
 \mu_{\ol{N}\, d} : \lambda \ol{A}.\,
 \mathit{Lan}_{\ol{\lambda \ol A.\,\setsem{\Gamma; \ol\alpha \vdash K}\rho 
@@ -4309,7 +4322,7 @@ cutting down of set and relational interpretations of $\Lan$-types is
 possible. We have:
 
 \begin{prop}\label{prop:full-lan}
-Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set}$ be functors.
+Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set^k}$ be functors.
 If $L : \set^k \to \set$ is a functor such that 
 \begin{itemize}
 \item $L \ol{A} \subseteq
@@ -4333,12 +4346,20 @@ third assumption above we have that $\eta_{\ol{S}}\, w \in L (\ol{K
 A$. Finally, by the first assumption above, we therefore have that $L
 \ol{A} = (\textit{Lan}_{\ol K} F)\ol{A}$.
 \end{proof}
-{\color{red} Thus, if $L \subseteq \mathit{Lan}_{\ol K}F$ were the
-  interpretation of $\Lan$-types, and if $L$ were to contain the set
-  interpretation $\eta$ of ?????, then ????????.}
-
-An analogous result holds for relational interpretations of
-$\Lan$-types.
+Thus, {\color{red} CHECK!} if $L$ were a restriction of
+$\setsem{\Gamma; \Phi,\ol\alpha \vdash (\Lan^{\ol\alpha}_{\ol K}
+  F){\ol K}}\rho$, if the functorial action of $L$ were a restriction
+of that of $\setsem{\Gamma; \Phi,\ol\alpha \vdash
+  (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, and if
+$L(\ol{\setsem{\Gamma;\ol\alpha \vdash K}\rho \ol N \, \ol A})$ were
+to contain $\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
+  : \Nat^{\Phi, \ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\, F)
+  \ol{K}}\rho\,d\,\ol N\,\ol A\,y$ for all $\ol N$, $\ol A$, and $y$,
+then $L$ would have to be the entirety of $\mathit{Lan}_{\ol{\lambda
+    \ol A.\, \setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha :=
+          A} ]}}}\, \lambda \ol A.\, \setsem{\Gamma; \Phi, \ol\alpha
+  \vdash F}\rho {[\Phi, \ol \alpha := \ol N, \ol A ]}$. An analogous
+result holds for relational interpretations of $\Lan$-types.
 
 \subsection{Parametricity Results for GADTs}
 
@@ -4385,12 +4406,11 @@ Lemma~\ref{lem:rel-transf-morph} therefore cannot hold.
 \end{exa}
 
 The problem in Example~\ref{ex:no-rel-transf} lies in the fact that
-the {\color{red} functorial expression} along whose intepretation we
-extend contains constants, i.e., {\color{red} subexpressions}
-constructed from $\onet$. Indeed, if $\ol{\emptyset; \overline{\alpha}
-  \vdash K}$ consists only of polynomial (i.e., sum-of-products)
-expressions not containing constants (i.e., formed only from $+$,
-$\times$, and the variables in $\alpha$), then
+the type along whose intepretation we extend contains constants, i.e.,
+subtypes constructed from $\onet$. Indeed, if $\ol{\emptyset;
+  \overline{\alpha} \vdash K}$ consists only of polynomial (i.e.,
+sum-of-products) types not containing constants (i.e., formed only
+from $+$, $\times$, and the variables in $\alpha$), then
 Lemma~\ref{lem:rel-transf-morph} actually does holds for $\Gamma; \Phi
 \vdash (\Lan^{\alpha}_{\ol{K}} F)\ol{A}$. This is proved in the
 following proposition, which covers the case of
@@ -4398,7 +4418,7 @@ Lemma~\ref{lem:rel-transf-morph} for such $\Lan$-types.
 
 \begin{prop}
 If $\ol{\emptyset; \overline{\alpha} \vdash K}$ consists only of
-polynomial expressions not containing constants, then
+polynomial types not containing constants, then
 \[(\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
 }, \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} },
 \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }) \in
@@ -4847,10 +4867,10 @@ The two expressions must therefore be equal, and thus
 Equation~\ref{eq:part-two} holds.
 \end{proof}
 
-The requirement that the {\color{red} expressions} in $\ol{K}$ be
-constant-free polynomials is quite restrictive. In fact, it precludes
-the expression of many GADTs commonly used in practice, such as the
-following GADT $\mathtt{Expr}$ of typed expressions:
+The requirement that the types in $\ol{K}$ be constant-free
+polynomials is quite restrictive. In fact, it precludes the expression
+of many GADTs commonly used in practice, such as the following GADT
+$\mathtt{Expr}$ of typed expressions:
 \[
 \begin{array}{l}
 \mathtt{data\; Expr \;(A : Set)\;:\;Set\;where}\\
@@ -4877,200 +4897,58 @@ supporting even constant-free polynomial primitive GADTs.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
-We have constructed a parametric model for a calculus supporting
-primitive nested types, and used its Abstraction Theorem to derive
-free theorems for nested types.  This was not possible
-before~\cite{jp19} because these types were not previously known to
-have well-defined interpretations in locally finitely presentable
-categories (here, $\set$ and $\rel$), and, to our knowledge, no term
-calculus for them existed.  We naturally expect the construction
-elaborated here to guide its generalization to more advanced data
-types.  For example, GADTs can be represented using left Kan
-extensions, and it was shown in~\cite{jp19} that adding a
-$\mathsf{Lan}$ construct to a calculus such as ours preserves the
-$\lambda$-cocontinuity needed for the data types it defines to have
-well-defined interpretations in locally $\lambda$-presentable
-categories. (Interestingly, $\lambda > \aleph_1$ is required to
-interpret even common GADTs.) This suggests carrying out our model
+We have constructed a parametric model for a calculus providing
+primitives for constructing nested types directly as fixpoints, rather
+than representing them via their Church encodings. We have also used
+the Abstraction Theorem for this model to derive free theorems for
+nested types. This was not possible before~\cite{jp19} because such
+types were not previously known to have well-defined interpretations
+in locally finitely presentable categories (here, $\set$ and $\rel$),
+and, to our knowledge, no term calculus for them existed either. The
+key to obtaining our parametric model is the delicate threading of
+functoriality and its accompanying naturality conditions throughout
+the model construction.
+
+We were surprised to find that, although GADTs were shown
+in~\cite{jp19} to have appropriately cocontinuous functorial semantics
+when interpreted using left Kan extensions, our model construction
+does not extend to give a parametric model for them. It may be
+possible to modify the categories of relations and relation
+transformers so that these are always surjective on their domans and
+codomains; this would prohibit situations like that in
+Example~\ref{ex:no-rel-transf}, and might therefore allow us to
+recover our IEL and, ultimately, our Abstraction Theorem for GADTs.
+If this turns out to be possible, then extending this new model
+construction to locally $\lambda$-presentable categories for $\lambda
+> \omega$ would make it possible to handle broader classes of
+GADTs. (Interestingly, $\lambda > \aleph_1$ is required to interpret
+even common GADTs.) We could even attempt to carry out our
 construction in locally $\lambda$-presentable cartesian closed
 categories (lpcccs) $\cal C$ whose categories of (abstract) relations,
 obtained by pullback as in~\cite{jac99}, are also lpcccs and are
-appropriately fibred over $\cal C$.  Adding term-level fixpoints
-further requires our semantic categories not just to be locally
-$\lambda$-presentable, but also to support some kind of domain
-structure.
+appropriately fibred over $\cal C$. This would give a framework for
+constructing parametric models for calculi with primitive GADTs that
+is based on locally $\lambda$-presentable fibrations, for some
+appropriate definition thereof.
 
-{\color{red} KEEP ANYTHING FROM THIS? ADD GADTS, AT LEAST TO SUMMARY.
-
-We have constructed a parametric model for a calculus
-providing primitives for constructing nested types directly as
-fixpoints.
-%rather than representing them via their Church encodings. We
-We have also used the Abstraction Theorem for this model to derive
-free theorems in the presence of nested types. This was not possible
-before~\cite{jp19} because the nested types in our calculus were not
-previously known to have well-defined interpretations in locally
-finitely presentable categories like $\set$ and $\rel$. No calculus
-for terms of these types existed, either. The key to obtaining our
-parametric model is
-%{\color{blue} adjusting our type syntax to respect the accessibility
-%  cardinal for the semantic category and}
-the delicate threading of functoriality and its accompanying
-naturality conditions throughout the model construction.
-
-Even when nested types have well-defined interpretations in a semantic
-category, the types of standard functions over them may not. This is
-because all recursion in our calculus must be coded using standard
-folds.  Since folds for nested types can only express computations
-that return natural transformations, their expressivity has long been
-a vexing issue, and this is naturally inherited by our calculus.
-%indeed, such folds
-%Our calculus naturally inherits these constraints.
-%Of course our calculus inherits the constraints
-%standard folds for nested types impose, and thus is perhaps not as
-%expressive as we would ideally like.
-In addition, while there are many papers on higher-kinded types, we
-know of none that considers expressibility issues arising from the
-local $\lambda$-presentability cardinal $\lambda$ of the categories in
-which higher-kinded types are interpreted. Because $\lambda = \omega$
-for $\set$ and $\rel$, the expressivity of our
-%$\set$/$\rel$-based parametric model
-calculus is, unfortunately, not easily improved there. Construction of
-a $\set$/$\rel$-based parametric model for our calculus is
-nevertheless worthwhile.  For one thing, the expressivity issue is
-orthogonal to constructing parametric models,
-%in the presence of nested types built from primitives,
-and trying to address both in a single paper would
-detract from the conceptual clarity of our model construction.
-%our current focus on deriving principled parametricity
-%results for practical programming languages, such as Haskell and Agda,
-%that directly construct nested types as fixpoints.
-%
-%conceptual clarity of this paper.
-For another, if the construction in this paper
-%we couldn't
-%construct a $\set$/$\rel$-based parametric model for the calculus
-%presented here,
-weren't possible, then trying to construct a parametric model from
-richer semantic categories for fancier data types and/or recursion
-schemes would be futile. We naturally expect the construction reported
-here to guide its generalization to the locally $\lambda$-presentable
-categories for $\lambda > \omega$ that will be needed to accommodate
-more general data types and recursion schemes for them.
-
-% As is, the results reported here provide a
-%blueprint for deriving principled parametricity results for practical
-%programming languages, such as Haskell and Agda, that directly
-%construct nested types as fixpoints.
-
-%{\color{blue} Perhaps surprisingly, the accessibility cardinal
-%$\omega$ for the semantic categories $\set$ and $\rel$ also impacts
-%the types of functions (and thus the functions themselves), even over
-%expressible data types, that can be expressed. Although there are
-%many papers on higher-kinded types, no other work that we know of
-%even considers expressibility issues resulting from the semantic
-%settings in which they are interpreted.}
-%{\color{blue} In light of the aforementioned
-%  restrictions imposed by the accessibility cardinal of $\set$ and
-%  $\rel$, this paper is perhaps best read as a proof-of-concept for
-%  constructing parametric models in the locally finitely presentable
-%  categories $\set$ and $\rel$ for calculi that construct nested types
-%  and other advanced data types as fixed points (rather than
-%  representing them via their Church encodings) and that support
-%  structured recursion over them. If we couldn't construct such a
-%  model even in this restricted setting, then there'd be no point in
-%  trying to do so for more robust categories, data types, and/or
-%  recursion schemes. Moreover, our constructions in this simplest
-%  possible setting will guide their generalizations to the locally
-%  $\lambda$-presentable categories fopr $\lambda > \omega$ required to
-%  handle more general data types, structured recursive functions over
-%  then, and more general fixpoints.}
-
-
-
-%But since this expressivity issue is orthogonal to constructing
-%parametric models in the presence of nested types built from
-%primitives, and since it would detract from the conceptual clarity of
-%our presentation, we have deliberately chosen not to address it in
-%this paper. (However, we discuss some ideas for increasing
-%expressivity in the next paragraph.) Despite the limitations of
-%standard folds, our results provide a blueprint for deriving
-%principled parametricity results for practical programming languages,
-%such as Haskell and Agda, that directly construct nested types as
-%fixpoints.
-
-
-
-%All recursion in our calculus must be coded using folds. Expressivity
-%of standard folds for nested types has long been a vexing issue,
-%%indeed, such folds
-%since they can only express computations that return natural
-%transformations; our calculus naturally inherits these constraints.
-%%Of course our calculus inherits the constraints
-%%standard folds for nested types impose, and thus is perhaps not as
-%%expressive as we would ideally like.
-%But since this expressivity issue
-%is orthogonal to constructing parametric models in the presence of
-%nested types built from primitives, and since it would detract from
-%the conceptual clarity of our presentation, we have deliberately
-%chosen not to address it in this paper. (However, we discuss some
-%ideas for increasing expressivity in the next paragraph.) Despite the
-%limitations of standard folds, our results provide a blueprint for
-%deriving principled parametricity results for practical programming
-%languages, such as Haskell and Agda, that directly construct nested
-%types as fixpoints.
-
-%Many extensions of standard folds have been
-%proposed. Perhaps the most significant of these are
-Generalized folds~\cite{bp99} are an extension of standard folds that
-%and Mendler iterators~\cite{amu05}.
-%which
-can express computations whose results are not natural
-transformations. These were shown in~\cite{jg10} to be equivalent to
-standard folds in the presence of object-level {\em right} Kan
-extensions.
-%; interpreting such
-%a construct in $\set$ and $\rel$ should be unproblematic {\color{blue}
-%  since these categories have all(?) limits}.
-It was also shown in~\cite{jg08} that GADTs can be represented using
-object-level {\em left} Kan extensions, and
-%
-%This suggests
-%extending our term calculus with such object-level constructs.
-%
-%{\color{blue} We may need to impose restrictions inspired
-%  by those for $\mu$-types on LKEs.}
-adding a carefully designed left Kan extension construct to our
-calculus was shown in~\cite{jp19} to preserve the cocontinuity needed
-for GADTs to have well-defined interpretations. (Note, however, that
-%not necessarily in
-%However, this will not, in general, be
-%the case in locally finitely presentable categories. Indeed, as shown
-%in~\cite{jp19},
-locally $\lambda$-presentable categories for $\lambda > \aleph_1$ are
-required to interpret even commonly used GADTs.) This suggests
-extending our calculus with Kan extension constructs and
-%augmenting our type formation rules with such a construct.
-%The constructions of this paper should all be possible
-carrying out our model construction in a locally $\lambda$-presentable
-cartesian closed category (lpccc) $\cal C$ whose category of
-(abstract) relations, obtained by pullback as in~\cite{jac99},
-is also a lpccc and appropriately fibred over $\cal C$.  This would
-%extend the results presented here along the lines of~\cite{gjfor15},
-%thus giving
-give a framework for constructing parametric models for calculi
-with nested types built from primitives that is based on locally
-$\lambda$-presentable fibrations, for some appropriate definition
-thereof.  Another option is to add term-level fixpoints
-%, as in~\cite{pit00},
-to the calculus presented here. Of course, this would require the
+The expressivity of folds for nested types has long been a vexing
+issue (see, e.g.,~\cite{bm98}), and this is naturally inherited by the
+calculus presented here. Since it codes all recursion using standard
+folds, and since folds for nested types must return natural
+transformations, many standard functions over nested types cannot be
+represented in our calculus. Another important direction for future
+work would therefore be to improve its expressivity by adding, say,
+generalized folds~\cite{bp99}, Mendler iterators~\cite{amu05}, or
+otherwise extend standard folds to express computations whose results
+are not natural transformations. In particular, we may wish to add
+term-level fixpoints as, e.g., in~\cite{pit00}. This would require the
 categories interpreting types to be not just locally
 $\lambda$-presentable, but to support some kind of domain structure as
-well.
-%Unfortunately, $\omega$-CPO, the most obvious category
-%of domains to replace $\set$, is not locally finitely presentable.
-}
-
+well. At the moment it seems that such an endeavor will have to wait
+for a generalization of the results presented here to at least locally
+$\omega_1$-presentable categories: $\omega$-CPO, the most natural
+category of domains to replace $\set$, is not locally finitely
+presentable.
 
 \bibliographystyle{alpha}
 \bibliography{references}
