@@ -1,6 +1,6 @@
 \documentclass{lmcs}
 
-\keywords{MANDATORY list of keywords}
+\keywords{Nested types, GADTs, categorical semantics, parametricity}
 
 \usepackage[utf8]{inputenc}
 %\usepackage{ccicons}
@@ -362,10 +362,9 @@ Kan extensions as proposed in~\cite{jp19} and still be parametric. We
 conclude and offer some directions for future work in
 Section~\ref{sec:conclusion}.
 
-This paper is an extended version of the conference
-paper~\cite{jgj21}. Compared to that paper, this one includes all
-proofs, as well as more examples. The discussion of GADTs in
-Section~\ref{sec:GADTs} is also entirely new.
+This paper extends the conference paper~\cite{jgj21} by including
+proofs of all theorems, as well as more examples. The discussion of
+GADTs in Section~\ref{sec:GADTs} is also entirely new.
 
 \vspace*{0.05in}
 
@@ -582,7 +581,7 @@ of $\mu$-types (functorial variables of higher arity are the real
 problem), which would allow the first-order representations of ADTs to
 be functorial. However, doing this requires some changes to the
 formation rule for $\mu$-types, as well as the delicate threading of
-some additional conditions throughout the model construction.  But
+some additional conditions throughout our model construction.  But
 since we can always use an ADT's (semantically equivalent)
 second-order representation when functoriality is needed, disallowing
 such ``extra'' variables does not negatively impact the expressivity
@@ -4907,48 +4906,48 @@ in locally finitely presentable categories (here, $\set$ and $\rel$),
 and, to our knowledge, no term calculus for them existed either. The
 key to obtaining our parametric model is the delicate threading of
 functoriality and its accompanying naturality conditions throughout
-the model construction.
+our model construction.
 
 We were surprised to find that, although GADTs were shown
 in~\cite{jp19} to have appropriately cocontinuous functorial semantics
-when interpreted using left Kan extensions, our model construction
-does not extend to give a parametric model for them. It may be
-possible to modify the categories of relations and relation
-transformers so that these are always surjective on their domans and
-codomains; this would prohibit situations like that in
-Example~\ref{ex:no-rel-transf}, and might therefore allow us to
-recover our IEL and, ultimately, our Abstraction Theorem for GADTs.
-If this turns out to be possible, then extending this new model
-construction to locally $\lambda$-presentable categories for $\lambda
-> \omega$ would make it possible to handle broader classes of
-GADTs. (Interestingly, $\lambda > \aleph_1$ is required to interpret
-even common GADTs.) We could even attempt to carry out our
-construction in locally $\lambda$-presentable cartesian closed
-categories (lpcccs) $\cal C$ whose categories of (abstract) relations,
-obtained by pullback as in~\cite{jac99}, are also lpcccs and are
-appropriately fibred over $\cal C$. This would give a framework for
-constructing parametric models for calculi with primitive GADTs that
-is based on locally $\lambda$-presentable fibrations, for some
-appropriate definition thereof.
+in terms of left Kan extensions, our model construction does not
+extend to give a parametric model for them. It may be possible to
+modify the categories of relations and relation transformers so that
+these are always surjective on their domans and codomains; this would
+prohibit situations like that in Example~\ref{ex:no-rel-transf}, and
+might therefore allow us to recover our IEL and, ultimately, an
+Abstraction Theorem appropriate to GADTs.  If this turns out to be
+possible, then generalizing the resulting model construction to
+locally $\lambda$-presentable categories for $\lambda > \omega$ would
+make it possible to handle broader classes of GADTs. (As shown
+in~\cite{jp19}, $\lambda > \omega_1$ is required to interpret even
+common GADTs.) We could even attempt to carry out our construction in
+locally $\lambda$-presentable cartesian closed categories (lpcccs)
+$\cal C$ whose categories of (abstract) relations, obtained by
+pullback as in~\cite{jac99}, are also lpcccs and are appropriately
+fibred over $\cal C$. This would give a framework for constructing
+parametric models for calculi with primitive GADTs that is based on
+locally $\lambda$-presentable fibrations, for some appropriate
+definition thereof.
 
 The expressivity of folds for nested types has long been a vexing
 issue (see, e.g.,~\cite{bm98}), and this is naturally inherited by the
 calculus presented here. Since it codes all recursion using standard
 folds, and since folds for nested types must return natural
 transformations, many standard functions over nested types cannot be
-represented in our calculus. Another important direction for future
-work would therefore be to improve its expressivity by adding, say,
-generalized folds~\cite{bp99}, Mendler iterators~\cite{amu05}, or
-otherwise extend standard folds to express computations whose results
-are not natural transformations. In particular, we may wish to add
-term-level fixpoints as, e.g., in~\cite{pit00}. This would require the
-categories interpreting types to be not just locally
-$\lambda$-presentable, but to support some kind of domain structure as
-well. At the moment it seems that such an endeavor will have to wait
-for a generalization of the results presented here to at least locally
-$\omega_1$-presentable categories: $\omega$-CPO, the most natural
-category of domains to replace $\set$, is not locally finitely
-presentable.
+represented in this calculus. Another important direction for future
+work is therefore to improve the expressivity of our calculus by
+adding, say, generalized folds~\cite{bp99}, or Mendler
+iterators~\cite{amu05}, or otherwise extending standard folds to
+express computations whose results are not natural transformations. In
+particular, we may wish to add term-level fixpoints as, e.g.,
+in~\cite{pit00}. This would require the categories interpreting types
+to be not just locally $\lambda$-presentable, but also to support some
+kind of domain structure. At the moment it seems that such an endeavor
+will have to wait for a generalization of the results presented here
+to at least locally $\omega_1$-presentable categories, however:
+$\omega$-CPO, the most natural category of domains to replace $\set$,
+is not locally finitely presentable.
 
 \bibliographystyle{alpha}
 \bibliography{references}
