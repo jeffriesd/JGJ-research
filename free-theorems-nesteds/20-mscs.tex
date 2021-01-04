@@ -98,7 +98,7 @@
 \begin{document}
 
 \title[Parametricity for Primitive Nested Types and
-  GADTs]{Parametricity for Primitive Nested Types and GADTs}
+  GADTs]{Parametricity for Primitive Nested Types}
 
 \author[P.~Johann]{Patricia Johann}	
 \address{Appalachian State University}	
@@ -362,9 +362,10 @@ Kan extensions as proposed in~\cite{jp19} and still be parametric. We
 conclude and offer some directions for future work in
 Section~\ref{sec:conclusion}.
 
-This paper extends the conference paper~\cite{jgj21} by including
-proofs of all theorems, as well as more examples. The discussion of
-GADTs in Section~\ref{sec:GADTs} is also entirely new.
+This paper extends the conference paper~\cite{jgj21} of the same name
+by including more exposition, proofs of all theorems, and more
+examples. In addition, the discussion of parametricity for GADTs in
+Section~\ref{sec:GADTs} is entirely new.
 
 \vspace*{0.05in}
 
@@ -390,7 +391,7 @@ functors. Unfortunately, the model suggested in~\cite{mg01} is not
 entirely correct (see~\cite{jp19}), and parametricity is nowhere
 mentioned.  Matthes~\cite{mat11} treats System F with non-polynomial
 ADTs and nested types, but his focus is on expressivity of generalized
-Mendler iteration for them. He gives no semantics.
+Mendler iteration for them. He gives no semantics whatsoever.
 
 In~\cite{pit00}, Pitts adds list ADTs to full System F with a
 term-level fixpoint primitive. Other ADTs are included
@@ -475,9 +476,7 @@ transformation in $\ol{\alpha}$ from the functor $F$ to the functor
 $G$.  In a subexpression $\mu \phi^k.\lambda \ol{\alpha}.F$, the $\mu$
 operator binds all occurrences of the variable $\phi$, and the
 $\lambda$ operator binds all occurrences of the variables in
-$\ol{\alpha}$, in the body $F$. {\color{red} Can bind variables of
-  arity greater than 0 in Nat-types even just for nesteds? Improves
-  expressibility? Worth it? Worth mentioning?}
+$\ol{\alpha}$, in the body $F$.
 
 A {\em type constructor context}, or {\em non-functorial context}, is
 a finite set $\Gamma$ of type constructor variables, and a {\em
@@ -1556,11 +1555,6 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 \begin{align*}
   \relsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \relsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
-  \end{align*}
-
-\vspace*{-0.5in}
-
-\begin{align*}
   \relsem{\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}} \,F\,G}\rho &= \{\eta
   : \lambda \ol{R}.\,\relsem{\Gamma; \ol{\alpha} \vdash
     F}\rho[\ol{\alpha := R}] \Rightarrow \lambda \ol{R}. \,\relsem{
@@ -1585,6 +1579,11 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \relsem{\Gamma;\Phi \vdash F}\rho \times
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
+\end{align*}
+
+\vspace*{-0.5in}
+
+\begin{align*}
    \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
   &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
@@ -3578,7 +3577,7 @@ i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
 denotes the polymorphic identity function.
 
 \subsection{Standard Free Theorems for ADTs and Nested
-  types}\label{sec:ft-adt} 
+  Types}\label{sec:ft-adt} 
 
 We can derive in our calculus even those free theorems for polymorphic
 functions over ADTs that are not consequences of naturality.  We can,
@@ -4027,8 +4026,7 @@ Intuitively, $\Lan^{\ol{\alpha^0}}_K F$ is a syntactic representation
 of the left Kan extension of the functor in the variables in
 $\ol\alpha$ denoted by $F$ along the functor in the variables in
 $\ol\alpha$ denoted by $K$. Using $\Lan$-types, we can therefore
-represent the GADT $\mathtt{Seq}$ in our calculus as {\color{red}
-  CHECK!!}
+represent the GADT $\mathtt{Seq}$ in our calculus as 
  \begin{align*}
 \mathtt{Seq}\,\alpha &\df \left( \mu \phi.\lambda \beta.
 \beta + \left(\Lan^{\gamma_1,\gamma_2}_{\gamma_1 \times \gamma_2}
@@ -4139,21 +4137,21 @@ $\Lan$-types, as well as of terms of both such types, in both $\set$
 and $\rel$. Recalling that the type constructor variables bound by
 $\Nat$ in the formation rule for generalized $\Nat$-types are
 interpreted in $\set$ as functors and in $\rel$ as relation
-transformers, we extend the set and relational interpretations for
+transformers, we let $k_i$ be the arity of the $i^{th}$ element of the
+sequence $\Phi$ and extend the set and relational interpretations for
 $\Nat$ types from Section~\ref{sec:type-interp} as follows:
-{\color{red} Relate $k$ to arities in $\Phi$.}
 \begin{align*}
 \setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
-&= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol K] 
-  \Rightarrow \lambda \ol{K}.\,\setsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol K]~|~\\ 
+&= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol{K}] 
+  \Rightarrow \lambda \ol{K}.\,\setsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol{K}]~|~\\ 
 &\hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_k}.\\
 &\hspace{0.4in} (\eta_{\overline{K^1}}, \eta_{\overline{K^2}})
-: \setsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol K]
-\rightarrow \setsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol K] \} \\
+: \setsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol{K}]
+\rightarrow \setsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol{K}] \} \\
 %%%
 \relsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho
-&= \{\eta : \lambda \ol{K}.\,\relsem{\Gamma; \Phi \vdash F}\rho[\ol{\Phi := K}]
-\Rightarrow \lambda \ol{K}. \,\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\phi := K}]\}\\
+&= \{\eta : \lambda \ol{K}.\,\relsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol{K}]
+\Rightarrow \lambda \ol{K}. \,\relsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol{K}]\}\\
 &=
   \{(\eta_1,\eta_2) \in \setsem{\Gamma; \emptyset
     \vdash \Nat^\Phi
@@ -4161,9 +4159,9 @@ $\Nat$ types from Section~\ref{sec:type-interp} as follows:
     \Gamma;\emptyset
     \vdash \Nat^\Phi \,F\,G} (\pi_2
   \rho)~|~\\
-& \hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_{k}}.\\
+& \hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_k}.\\
 & \hspace{0.4in} ((\eta_1)_{\ol{K^1}},(\eta_2)_{\ol{K^2}}) \in
-  (\relsem{\Gamma; \Phi \vdash G}\rho[\ol{\Phi := K}])^{\relsem{\Gamma;\Phi\vdash F}\rho[\ol{\Phi := K}]} \}\\  
+  (\relsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol{K}])^{\relsem{\Gamma;\Phi\vdash F}\rho[\Phi := \ol{K}]} \}\\  
 \end{align*}
 
 Of course, we intend to interpret $\Lan$-types as actual left Kan
@@ -4270,9 +4268,8 @@ and
 : \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\; G}\rho
 = \mu
 \]
-respectively, where, for each $\ol{N : RT_k}$ {\color{red} Relate
-  $k$ to arities in $\Phi$.}, $\eta_{\ol{N}}$ is the natural
-transformation associated with the left Kan extension
+respectively, where, for each $\ol{N : RT_k}$, $\eta_{\ol{N}}$
+is the natural transformation associated with the left Kan extension
 
 \vspace*{-0.1in}
 
@@ -4289,8 +4286,8 @@ transformation associated with the left Kan extension
 \ar[d, Rightarrow, shorten <= 2mm, shorten >= 1mm, 
           from=F, to=2-2,  "\eta_{\ol{N}}"{}]
 \end{tikzcd}\]
-and, for all $\ol{N : RT_k}$ {\color{red} Relate $k$ to arities in
-  $\Phi$.} and $d : \setsem{\Gamma;\emptyset \vdash \Delta}$, 
+and, for all $\ol{N : RT_k}$ and $d : \setsem{\Gamma;\emptyset \vdash
+  \Delta}$,
 \[\begin{array}{l}
 \mu_{\ol{N}\, d} : \lambda \ol{A}.\,
 \mathit{Lan}_{\ol{\lambda \ol A.\,\setsem{\Gamma; \ol\alpha \vdash K}\rho 
@@ -4345,22 +4342,22 @@ third assumption above we have that $\eta_{\ol{S}}\, w \in L (\ol{K
 A$. Finally, by the first assumption above, we therefore have that $L
 \ol{A} = (\textit{Lan}_{\ol K} F)\ol{A}$.
 \end{proof}
-Thus, {\color{red} CHECK!} if $L$ were a restriction of
-$\setsem{\Gamma; \Phi,\ol\alpha \vdash (\Lan^{\ol\alpha}_{\ol K}
-  F){\ol K}}\rho$, if the functorial action of $L$ were a restriction
-of that of $\setsem{\Gamma; \Phi,\ol\alpha \vdash
-  (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, and if
-$L(\ol{\setsem{\Gamma;\ol\alpha \vdash K}\rho \ol N \, \ol A})$ were
-to contain $\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol K,F}
-  : \Nat^{\Phi, \ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\, F)
-  \ol{K}}\rho\,d\,\ol N\,\ol A\,y$ for all $\ol N$, $\ol A$, and $y$,
-then $L$ would have to be the entirety of $\mathit{Lan}_{\ol{\lambda
-    \ol A.\, \setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha :=
-          A} ]}}}\, \lambda \ol A.\, \setsem{\Gamma; \Phi, \ol\alpha
-  \vdash F}\rho {[\Phi, \ol \alpha := \ol N, \ol A ]}$. An analogous
-result holds for relational interpretations of $\Lan$-types.
+Thus, if $L$ were a restriction of $\setsem{\Gamma; \Phi,\ol\alpha
+  \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, if the functorial
+action of $L$ were a restriction of that of $\setsem{\Gamma;
+  \Phi,\ol\alpha \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, and
+if $L(\ol{\setsem{\Gamma;\ol\alpha \vdash K}\rho \ol N \, \ol A})$
+were to contain $\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol
+    K,F} : \Nat^{\Phi, \ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,
+  F) \ol{K}}\rho\,d\,\ol N\,\ol A\,y$ for all $\ol N$, $\ol A$, and
+$y$, then $L$ would have to be the entirety of
+$\mathit{Lan}_{\ol{\lambda \ol A.\, \setsem{\Gamma; \ol\alpha \vdash
+      K}\rho {[\ol{\alpha := A} ]}}}\, \lambda \ol A.\,
+\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
+    \ol N, \ol A ]}$. An analogous result holds for relational
+interpretations of $\Lan$-types.
 
-\subsection{Parametricity Results for GADTs}
+\subsection{Parametricity and GADTs}
 
 Having extended our calculus with both $\Lan$-types and terms of such
 types, and having given the only sensible set and relational
@@ -4879,14 +4876,13 @@ $\mathtt{Expr}$ of typed expressions:
 \end{array}
 \]
 
-{\color{red} CHECK!} Even when extending along constant-free
-polynomials, it is unclear how to prove the Identity Extension Lemma
-for $\Lan$-types or, indeed, whether it holds at all in their
-presence. To prove the IEL for $\Nat$-types, for example, it is
-necessary to cut down the semantic interpretation by requiring that
-the natural transformations in the set interpretation preserve
-equalities. The impossibility of restricting the semantic
-interpretations of $\Lan$-types, as shown in
+Even when extending along constant-free polynomials, it is unclear how
+to prove the Identity Extension Lemma for $\Lan$-types or, indeed,
+whether it holds at all in their presence. To prove the IEL for
+$\Nat$-types, for example, it is necessary to cut down the semantic
+interpretation by requiring that the natural transformations in the
+set interpretation preserve equalities. The impossibility of
+restricting the semantic interpretations of $\Lan$-types, as shown in
 Proposition~\ref{prop:full-lan}, suggests that the IEL may fail for
 them. We have been able neither to prove nor disprove it thus far, but
 our substantial and lengthy investigations into the issue lead us to
