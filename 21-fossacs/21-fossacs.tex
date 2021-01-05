@@ -209,10 +209,8 @@ PForest\;A}
 
 \noindent
 of perfect forests, whose recursive occurrences appear below type
-constructors for other nested types; and truly nested types,
-%\footnote{Nested types that are defined over themselves are known
-%  as {\em truly nested types}.}
-such as the nested type
+constructors for other nested types; and truly nested types, such as
+the nested type
 
 \vspace*{-0.05in}
 
@@ -335,7 +333,6 @@ cut fusion for nested types, that require the full power of
 parametricity.
 
 \pagebreak
-%\vspace*{0.1in}
 
 \noindent
 {\bf Structure of this Paper}\/ We introduce our calculus in
@@ -396,14 +393,12 @@ those in~\cite{mat11,mg01,pit98,pit00,wad89}.  Wadler~\cite{wad89}
 treats full System F, and sketches parametricity for its extension
 with lists. Martin and Gibbons~\cite{mg01} outline a semantics for a
 grammar of primitive nested types similar to that in~\cite{jp19}, but
-treat only polynomial nested types, i.e.,
-%, i.e., %nested types that are fixpoints of polynomial higher-order
-%functors.
-Unfortunately, the model suggested in~\cite{mg01} is not entirely
-correct (see~\cite{jp19}), and parametricity is nowhere mentioned.
-Matthes~\cite{mat11} treats System F with non-polynomial ADTs and
-nested types, but focuses on expressivity of generalized Mendler
-iteration for them. He gives no semantics.
+treat only polynomial nested types. Unfortunately, the model
+suggested in~\cite{mg01} is not entirely correct (see~\cite{jp19}),
+and parametricity is nowhere mentioned.  Matthes~\cite{mat11} treats
+System F with non-polynomial ADTs and nested types, but focuses on
+expressivity of generalized Mendler iteration for them. He gives no
+semantics.
 
 In~\cite{pit00}, Pitts adds list ADTs to full System F with a
 term-level fixpoint primitive. Other ADTs are included
@@ -456,18 +451,18 @@ akin to that presented here.
 \vspace*{-0.1in}
 
 For each $k \ge 0$, we assume countable sets $\tvars^k$ of \emph{type
-  constructor variables of arity $k$} {\color{red} (i.e., of kind
-  $\mathtt{* \to ... \to * \to *}$, with $k$ arrows and $k+1$ $*$s in
-  this sequence)} and $\fvars^k$ of \emph{functorial variables of
-  arity $k$}, all mutually disjoint.  The sets of all type constructor
-variables and functorial variables are $\tvars = \bigcup_{k \ge 0}
-\tvars^k$ and $\fvars = \bigcup_{k \ge 0} \fvars^k$, respectively, and
-a \emph{type variable} is any element of $\tvars \cup \fvars$.  We use
-lower case Greek letters for type variables, writing $\phi^k$ to
-indicate that $\phi \in \tvars^k \cup \fvars^k$, and omitting the
-arity indicator $k$ when convenient.  Letters from the beginning of
-the alphabet denote type variables of arity $0$, i.e., elements of
-$\tvars^0 \cup \fvars^0$. We write $\overline{\phi}$ for either a set
+  constructor variables of arity $k$} (i.e., of kind $\mathtt{* \to
+  ... \to * \to *}$, with $k$ arrows and $k+1$ $*$s in this sequence)
+and $\fvars^k$ of \emph{functorial variables of arity $k$}, all
+mutually disjoint.  The sets of all type constructor variables and
+functorial variables are $\tvars = \bigcup_{k \ge 0} \tvars^k$ and
+$\fvars = \bigcup_{k \ge 0} \fvars^k$, respectively, and a \emph{type
+  variable} is any element of $\tvars \cup \fvars$.  We use lower case
+Greek letters for type variables, writing $\phi^k$ to indicate that
+$\phi \in \tvars^k \cup \fvars^k$, and omitting the arity indicator
+$k$ when convenient.  Letters from the beginning of the alphabet
+denote type variables of arity $0$, i.e., elements of $\tvars^0 \cup
+\fvars^0$. We write $\overline{\phi}$ for either a set
 $\{\phi_1,...,\phi_n\}$ of type constructor variables or a set of
 functorial variables when the cardinality $n$ of the set is
 unimportant or clear from context. If $V$ is a set of type variables
@@ -547,9 +542,9 @@ $\Gamma$.
 \vspace*{-0.05in}
 
 \[\begin{array}{c}
-\AXC{$\Gamma;{\color{red}\ol{\gamma^0},}\ol{\alpha^0},\phi^k \vdash F$}
-\AXC{$\quad\quad\ol{\Gamma;\Phi{\color{red},\ol{\gamma^0}} \vdash G}$}
-\BIC{$\Gamma;\Phi {\color{red},\ol{\gamma^0}} \vdash (\mu \phi^k.\lambda
+\AXC{$\Gamma;\ol{\alpha^0},\phi^k \vdash F$}
+\AXC{$\quad\quad\ol{\Gamma;\Phi \vdash G}$}
+\BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda
   \ol{\alpha^0}. \,F)\,\ol{G}$} 
 \DisplayProof
 \end{array}\]
@@ -567,33 +562,32 @@ $\forall$-type $\Gamma; \emptyset \vdash \forall \ol\alpha . F$.  Some
 System F types, such as $\forall \alpha.\, (\alpha \to \alpha) \to
 \alpha$, are not representable in our calculus.
 
-{\color{red} Since the body F of a type $(\mu \phi. \lambda
-  \ol\alpha. F)\ol{G}$ can only be functorial in $\phi$ and the
-  variables in $\ol{\alpha}$, the representation of
-  $\mathit{List}\,\alpha$ as the ADT $\mu \beta. \,\onet + \alpha
-  \times \beta$ cannot be functorial in $\alpha$. By contrast, if
-  $\mathit{List}\,\alpha$ is represented as the nested type $(\mu
-  \phi. \lambda \beta.\,\onet + \beta \times \phi \beta)\,\alpha$ then
-  we can choose $\alpha$ to be a functorial variable or not when
-  forming the type. This observation holds for other ADTs as well; for
-  example, if $\mathit{Tree}\,\alpha\,\gamma = \mu \beta. \alpha +
-  \beta \times \gamma \times \beta$, then $\alpha, \gamma; \emptyset
-  \vdash \mathit{Tree}\,\alpha\,\gamma$ is well-formed, but
-  $\emptyset; \alpha, \gamma \vdash \mathit{Tree}\,\alpha\,\gamma$ is
-  not. It also applies to some non-ADT types, such as
-  $\mathit{GRose}\,\phi\,\alpha = \mu \beta. \onet + \alpha \times
-  \phi\beta$, in which $\phi$ and $\alpha$ must both be non-functorial
-  variables.  It is in fact possible to allow ``extra'' $0$-ary
-  functorial variables in the body of $\mu$-types (functorial
-  variables of higher arity are the real problem). This would allow
-  the first-order representations of ADTs to be functorial, but doing
-  so requires some changes to the formation rule for $\mu$-types, as
-  well as the delicate threading of some additional conditions
-  throughout our model construction.  But since we can always use an
-  ADT's (semantically equivalent) second-order representation when
-  functoriality is needed, disallowing such ``extra'' variables does
-  not negatively impact the expressivity of our calculus. We therefore
-  pursue the simpler syntax here.}
+Since the body F of a type $(\mu \phi. \lambda \ol\alpha. F)\ol{G}$
+can only be functorial in $\phi$ and the variables in $\ol{\alpha}$,
+the representation of $\mathit{List}\,\alpha$ as the ADT $\mu
+\beta. \,\onet + \alpha \times \beta$ cannot be functorial in
+$\alpha$. By contrast, if $\mathit{List}\,\alpha$ is represented as
+the nested type $(\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
+\beta)\,\alpha$ then we can choose $\alpha$ to be a functorial
+variable or not when forming the type. This observation holds for
+other ADTs as well; for example, if $\mathit{Tree}\,\alpha\,\gamma =
+\mu \beta. \alpha + \beta \times \gamma \times \beta$, then $\alpha,
+\gamma; \emptyset \vdash \mathit{Tree}\,\alpha\,\gamma$ is
+well-formed, but $\emptyset; \alpha, \gamma \vdash
+\mathit{Tree}\,\alpha\,\gamma$ is not. It also applies to some non-ADT
+types, such as $\mathit{GRose}\,\phi\,\alpha = \mu \beta. \onet +
+\alpha \times \phi\beta$, in which $\phi$ and $\alpha$ must both be
+non-functorial variables.  It is in fact possible to allow ``extra''
+$0$-ary functorial variables in the body of $\mu$-types (functorial
+variables of higher arity are the real problem). This would allow the
+first-order representations of ADTs to be functorial, but doing so
+requires some changes to the formation rule for $\mu$-types, as well
+as the delicate threading of some additional conditions throughout our
+model construction.  But since we can always use an ADT's
+(semantically equivalent) second-order representation when
+functoriality is needed, disallowing such ``extra'' variables does not
+negatively impact the expressivity of our calculus. We therefore
+pursue the simpler syntax here.
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
 in no variables. Functorial variables can also be demoted to
@@ -612,21 +606,20 @@ $F[\alpha_1 := F_1,...,\alpha_k := F_k]$, or $F[\ol{\alpha := F}]$
 when convenient, for $F[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k
   := F_k]$. The operation $(\cdot)[\phi :=_{\ol \alpha} F]$ of {\em
   second-order type substitution along $\ol\alpha$} is defined by
-induction on types exactly as expected.  {\color{red} The only
-  interesting clause is that for type application, which defines
-  $(\psi \ol G)[\phi :=_{\ol\alpha} F]$ to be $ F[\ol{\alpha := G[\phi
-        :=_{\ol\alpha} F]}$ if $\psi = \phi$ and $\ol{G[\phi
-        :=_{\ol\alpha} F]}$ otherwise.}  Of course, $(\cdot)[\phi^0
-    :=_\emptyset F]$ coincides with first-order substitution. We omit
-  $\ol\alpha$ when convenient, but note that it is not correct to
-  substitute along non-functorial variables. It is not hard to see
-  that if \,$\Gamma; \Phi,\phi^k \vdash H$ and\, $\Gamma;\Phi,
-  \ol{\alpha} \vdash F$ with $|\ol\alpha| = k$, then $\Gamma;\Phi
-  \vdash H[\phi :=_{\ol{\alpha}} F]$.  Similarly, if \,$\Gamma,
-  \phi^k; \Phi \vdash H$, and if\, $\Gamma; \ol\psi,\ol{\alpha} \vdash
-  F$ with $|\ol\alpha| = k$ and $\Phi \cap \ol\psi = \emptyset$, then
-  $\Gamma,\ol\psi';\Phi \vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi :==
-        \psi'}]]$.
+induction on types exactly as expected. The only interesting clause is
+that for type application, which defines $(\psi \ol G)[\phi
+  :=_{\ol\alpha} F]$ to be $ F[\ol{\alpha := G[\phi :=_{\ol\alpha}
+      F]}$ if $\psi = \phi$ and $\ol{G[\phi :=_{\ol\alpha} F]}$
+  otherwise. Of course, $(\cdot)[\phi^0 :=_\emptyset F]$ coincides
+  with first-order substitution. We omit $\ol\alpha$ when convenient,
+  but note that it is not correct to substitute along non-functorial
+  variables. It is not hard to see that if \,$\Gamma; \Phi,\phi^k
+  \vdash H$ and\, $\Gamma;\Phi, \ol{\alpha} \vdash F$ with
+  $|\ol\alpha| = k$, then $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
+    F]$.  Similarly, if \,$\Gamma, \phi^k; \Phi \vdash H$, and if\,
+  $\Gamma; \ol\psi,\ol{\alpha} \vdash F$ with $|\ol\alpha| = k$ and
+  $\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi \vdash
+  H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$.
 
 \begin{figure*}
 
@@ -711,20 +704,19 @@ induction on types exactly as expected.  {\color{red} The only
              :=_{\ol{\beta}} G}])$} 
        \DisplayProof\vspace*{-0.05in}
        \\\\
-       \AXC{$\Gamma; \phi, \ol{\alpha} {\color{red},\ol{\gamma}} \vdash H$}
+       \AXC{$\Gamma; \phi, \ol{\alpha} \vdash H$}
        \UIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \tin_H :
-         \Nat^{\ol{\beta}{\color{red},\ol{\gamma}}} H[\phi :=_{\ol{\beta}} (\mu
+         \Nat^{\ol{\beta}} H[\phi :=_{\ol{\beta}} (\mu
            \phi.\lambda \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \beta}]\,(\mu
          \phi.\lambda \ol{\alpha}.H)\ol{\beta}$}
        \hspace*{0.2in}\DisplayProof\vspace*{-0.05in}
        \\\\
-       \AXC{$\Gamma; \phi,\ol{\alpha} {\color{red}, \ol{\gamma}} \vdash H$}
-       \AXC{$\Gamma; \ol{\beta} {\color{red}, \ol{\gamma}} \vdash F$}
+       \AXC{$\Gamma; \phi,\ol{\alpha} \vdash H$}
+       \AXC{$\Gamma; \ol{\beta} \vdash F$}
        \BIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \fold^F_H :
-         \Nat^\emptyset\; (\Nat^{\ol{\beta} {\color{red}, \ol{\gamma}}}\,H[\phi
+         \Nat^\emptyset\; (\Nat^{\ol{\beta}}\,H[\phi
            :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
-         (\Nat^{\ol{\beta} {\color{red},
-           \ol{\gamma}}}\,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
+         (\Nat^{\ol{\beta}}\,(\mu \phi.\lambda \ol{\alpha}.H)\ol{\beta}\,F)$}
        \hspace*{0.2in}\DisplayProof\vspace*{-0.1in}
        \end{array}\]
 
@@ -792,8 +784,6 @@ $\map$ term for this is typeable as follows:
   \end{array}\]
 \end{adjustbox}
 
-%\vspace*{0.1in}
-
 \pagebreak
 
 \noindent
@@ -845,7 +835,7 @@ to define them are again recursive functions with types of the same
 problematic form as the type of, e.g., a zip function for perfect
 trees.  Expressivity of folds for nested types has long been a vexing
 issue, and this is naturally inherited by our calculus.  Adding more
-expressive recursion combinators --- e.g., generalized folds of
+expressive recursion combinators --- e.g., generalized folds or
 Mendler iterators --- could help, but since this is orthogonal to the
 issue of parametricity in the presence of primitive nested types we do
 not consider it further here.
@@ -944,9 +934,6 @@ in the second clause of Figure~\ref{fig:set-sem} are given in full
 in Figure~\ref{fig:rel-sem}.
 
 \begin{figure}[t]
-%\hspace*{0.1in}
-%\resizebox{1.1\linewidth}{!}{
-%\begin{minipage}[t]{0.5\textwidth}
   \begin{adjustbox}{varwidth=5in, max width=5in, fbox, center}
   \begin{align*}
   \setsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
@@ -973,19 +960,18 @@ in Figure~\ref{fig:rel-sem}.
   \setsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \setsem{\Gamma;\Phi \vdash F}\rho \times
   \setsem{\Gamma;\Phi \vdash G}\rho\\ 
-  \setsem{\Gamma;\Phi {\color{red},\ol\gamma} \vdash (\mu \phi.\lambda
+  \setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho &= (\mu
-    T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash G}\rho}\\
+    T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}\rho}\\
     \text{where } T^\set_{H,\rho}\,F & = \lambda
-  \ol{A}. \setsem{\Gamma; {\color{red}\ol\gamma,}\phi, \ol{\alpha} \vdash
+  \ol{A}. \setsem{\Gamma; \phi, \ol{\alpha} \vdash
     H}\rho[\phi :=  F][\ol{\alpha := A}]\\
   \text{and } T^\set_{H,\rho}\,\eta &= \lambda
-  \ol{A}. \setsem{\Gamma;{\color{red}\ol\gamma,}\phi, \ol{\alpha} \vdash
+  \ol{A}. \setsem{\Gamma;\phi, \ol{\alpha} \vdash
     H}\id_\rho[\phi := \eta][\ol{\alpha := \id_{A}}]
 \end{align*}
 \vspace*{-0.3in}\caption{Set interpretation}\label{fig:set-sem} 
 \vspace*{-0.3in}
-%\end{minipage}}
 \end{adjustbox}\vspace*{-0.17in}
   \end{figure}
 
@@ -1017,17 +1003,16 @@ To make sense of the last clause in Figure~\ref{fig:set-sem}, we need
 to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is an
 $\omega$-cocontinuous endofunctor on $[\set^k, \set]$, and thus admits
 a fixpoint.  Since $T_{H,\rho}^\set$ is defined in terms of
-$\setsem{\Gamma;{\color{red}\ol\gamma,}\phi, \ol{\alpha} \vdash H}$,
-interpretations of types must be such functors, which entails that the
-actions of set interpretations of types on objects and on morphisms in
-$\setenv$ are intertwined.  We know from~\cite{jp19} that, for every
-$\Gamma; \ol{\alpha} \vdash G$, $\setsem{\Gamma; \ol{\alpha} \vdash
-  G}$ is actually in $[\set^k,\set]$ where $k = |\ol \alpha|$, so
-that, for each $\setsem{\Gamma; {\color{red}\ol\gamma,} \phi^k,
-  \ol{\alpha} \vdash 
-  H}$, the corresponding operator $T^\set_{H}$ can be extended to a
-{\em functor} from $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The
-action of $T^\set_H$ on an object $\rho \in \setenv$ is given by the
+$\setsem{\Gamma;\phi, \ol{\alpha} \vdash H}$, interpretations of types
+must be such functors, which entails that the actions of set
+interpretations of types on objects and on morphisms in $\setenv$ are
+intertwined.  We know from~\cite{jp19} that, for every $\Gamma;
+\ol{\alpha} \vdash G$, $\setsem{\Gamma; \ol{\alpha} \vdash G}$ is
+actually in $[\set^k,\set]$ where $k = |\ol \alpha|$, so that, for
+each $\setsem{\Gamma; \phi^k, \ol{\alpha} \vdash H}$, the
+corresponding operator $T^\set_{H}$ can be extended to a {\em functor}
+from $\setenv$ to $[[\set^k,\set],[\set^k,\set]]$. The action of
+$T^\set_H$ on an object $\rho \in \setenv$ is given by the
 higher-order functor $T_{H,\rho}^\set$, whose actions on objects
 (functors in $[\set^k, \set]$) and morphisms between them are given in
 Figure~\ref{fig:set-sem}. Its action on a morphism $f : \rho \to
@@ -1036,7 +1021,7 @@ T^\set_{H,\rho} \to T^\set_{H,\rho'}$ whose action on $F :
 [\set^k,\set]$ is the natural transformation $T^\set_{H,f}\, F :
 T^\set_{H,\rho}\,F \to T^\set_{H,\rho'}\,F$ whose component at
 $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} = \setsem{\Gamma;
- {\color{red} \ol\gamma,}\phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
+  \phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha :=
     \id_A}]$. The next definition uses $T^\set_H$ to define the
 functorial action of set interpretation.
 
@@ -1079,19 +1064,19 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
   \setsem{\Gamma;\Phi \vdash F}f \times \setsem{\Gamma;\Phi \vdash
     G}f$
 \item 
-$\setsem{\Gamma;\Phi {\color{red},\ol\gamma} \vdash (\mu \phi.\lambda
-  \ol{\alpha}. H)\ol{G}} f \;: \;\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash
+$\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
+  \ol{\alpha}. H)\ol{G}} f \;: \;\setsem{\Gamma;\Phi \vdash
   (\mu \phi.\lambda \ol{\alpha}. H)\ol{G}} \rho \to
-  \setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash (\mu
+  \setsem{\Gamma;\Phi \vdash (\mu
     \phi.\lambda\ol{\alpha}. H)\ol{G}} \rho' \;= \;(\mu
-  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash G}\rho} \to
-  (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash
+  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}\rho} \to
+  (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash
       G}\rho'}$ is defined by $(\mu
-  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash G}\rho'} \circ
-  (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash G}f}\;
-  = \; (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash
+  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho'} \circ
+  (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}f}\;
+  = \; (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash
       G}f}\, \circ\, (\mu
-  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash G}\rho}$.  The
+  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho}$.  The
   latter equality holds because $\mu T^\set_{H,\rho}$ and $\mu
   T^\set_{H,\rho'}$ are functors and $\mu T_{H,f}^\set : \mu
   T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a natural
@@ -1246,15 +1231,10 @@ functors from $\relenv$ to $RT_k$.
 Our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
 \rel]$ is given in Figure~\ref{fig:rel-sem}.
 \begin{figure}[t]
-%\hspace*{0.1in}
-%\resizebox{1.1\linewidth}{!}{
-%\begin{minipage}[t]{0.5\textwidth}
 \begin{adjustbox}{varwidth=5in, max width=5in, fbox, center}
   \begin{align*}
   \relsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \relsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
-%  \end{align*}
-%  \begin{align*}
   \relsem{\Gamma; \emptyset \vdash \Nat^{\ol{\alpha}} \,F\,G}\rho &= \{\eta
   : \lambda \ol{R}.\,\relsem{\Gamma; \ol{\alpha} \vdash
     F}\rho[\ol{\alpha := R}] \Rightarrow \lambda \ol{R}. \,\relsem{
@@ -1279,24 +1259,23 @@ Our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \relsem{\Gamma;\Phi \vdash F}\rho \times
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
-   \relsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash (\mu \phi.\lambda
+   \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
-  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi{\color{red},\ol\gamma} \vdash
+  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash
      G}\rho}\\
   \text{where }	T_{H,\rho}
     &= (T^\set_{H,\pi_1\rho}, T^\set_{H,\pi_2\rho}, T^\rel_{H,\rho}) \\
   \text{and } T^\rel_{H,\rho}\,F
     &= \lambda \ol{R}. \relsem{
-      \Gamma;{\color{red}\ol\gamma,}\phi,\ol{\alpha} \vdash H}\rho[\phi :=
+      \Gamma;\phi,\ol{\alpha} \vdash H}\rho[\phi :=
     F][\ol{\alpha := R}]\\
   \text{and } T^\rel_{H,\rho}\,\delta
     &= \lambda \ol{R}. \relsem{
-      \Gamma;{\color{red}\ol\gamma,}\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
+      \Gamma;\phi,\ol{\alpha} \vdash H}\id_\rho[\phi :=
     \delta][\ol{\alpha := \id_R}]
 \end{align*}
 \vspace*{-0.3in}\caption{Relational
   interpretation}\label{fig:rel-sem} \vspace*{-0.3in} 
-%\end{minipage}}\vspace*{-0.2in}
 \end{adjustbox}\vspace*{-0.15in}
 \end{figure}
 It ensures that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma
@@ -1308,8 +1287,8 @@ $\relsem{\vdash F}$ for $\relsem{\vdash F}\rho$.  For the last clause
 in Figure~\ref{fig:rel-sem} to be well-defined we need $T_{H,\rho}$ to
 be an $\omega$-cocontinuous endofunctor on $RT$, so that it admits a
 fixpoint. Since $T_{H,\rho}$ is defined in terms of
-$\relsem{\Gamma;{\color{red}\ol\gamma,}\phi^k, \ol{\alpha} \vdash H}$, this means
-that relational interpretations of types must be $\omega$-cocontinuous
+$\relsem{\Gamma;\phi^k, \ol{\alpha} \vdash H}$, this means that
+relational interpretations of types must be $\omega$-cocontinuous
 functors from $\relenv$ to $RT_0$, which in turn entails that the
 actions of relational interpretations of types on objects and on
 morphisms in $\relenv$ are intertwined.  We know from~\cite{jp19}
@@ -1327,8 +1306,8 @@ Figure~\ref{fig:rel-sem}. Its action on a morphism $f : \rho \to
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
 the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \relsem{\Gamma; {\color{red}\ol\gamma,}\phi,\ol{\alpha} \vdash
-  H}f[\phi := \id_F][\ol{\alpha := \id_R}]$.
+F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_R}]$.
 
 Using $T_H$, we can define the functorial action of relational
 interpretation.  The action $\relsem{\Gamma;\Phi \vdash F}f$ of
@@ -1416,7 +1395,6 @@ given by $\graph{\alpha}^*\overline{(\beta, \beta')} =
 
 \begin{figure*}[ht]
 \vspace*{-0.3in}
-%  \hspace*{0.25in}
   \begin{minipage}[b]{0.25\linewidth}
 {\footnotesize\[\begin{tikzcd}[row sep = large]
         F\overline{A}
@@ -1502,7 +1480,7 @@ With the IEL in hand we can prove a Graph Lemma for our setting:
 
 \vspace*{-0.05in}
 
-\begin{lemma}%[Graph Lemma]
+\begin{lemma}
   \label{lem:graph}
   If $\rho, \rho' \in \setenv$ and $f : \rho \to \rho'$
   then $\graph{\setsem{\Gamma; \Phi \vdash F} f} =
@@ -1534,9 +1512,6 @@ $\pi_{\Delta}$ is the projection $\sem{\Gamma;\Phi \vdash \Delta, x :
 
 
 \begin{figure}[t]
-%\hspace*{-0.3in}
-%\resizebox{0.46\linewidth}{!}{
-%\begin{minipage}[t]{0.5\textwidth}
 \begin{adjustbox}{varwidth=6in, max width=5.3in, fbox, center}
 \[\begin{array}{lll}
 \dsem{\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F} \rho& = &
@@ -1591,7 +1566,7 @@ $\pi_{\Delta}$ is the projection $\sem{\Gamma;\Phi \vdash \Delta, x :
   (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\,H[\ol{\phi
       :=_{\ol{\beta}} G}]) \rrbracket^{\mathsf D} \rho & &\\
 \llbracket \Gamma;\emptyset \,|\, \emptyset \vdash \tin_H :
-Nat^{\ol{\beta} {\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda {\overline
+Nat^{\ol{\beta}} \, H[\phi := (\mu \phi.\lambda {\overline
     \alpha}.H){\overline \beta}][\ol{\alpha := \beta}] & = &
 \lambda d.\,\mathit{in}_{{T}^X_{H,\rho}} \;\;\mbox{ where } X \mbox{
   is } \set \mbox{ when } \\  
@@ -1600,25 +1575,23 @@ Nat^{\ol{\beta} {\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda {\over
 \mathsf{D} = \set \mbox{ and not present when }
 \mathsf{D} = \rel\\  
 \llbracket \Gamma;\emptyset \,|\, \emptyset \vdash
-  \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta} {\color{red}, \ol{\gamma}}}\,H[\phi
+  \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F) & = &  
-\lambda d{\color{red}\,\eta}.\,
-\mathit{fold}_{T^X_{H,\rho}} {\,\color{red} \eta}\\ 
-\hspace*{0.79in}(\Nat^{{\ol{\beta}{\color{red},\ol{\gamma}}} }\,(\mu
+\lambda d.\,
+\mathit{fold}_{T^X_{H,\rho}} \\ 
+\hspace*{0.79in}(\Nat^{{\ol{\beta}} }\,(\mu
   \phi.\lambda \overline \alpha.H)\overline \beta\;F)
 \rrbracket^{\mathsf{D}} \rho & & \hspace*{0.2in} \mbox{ where } X \mbox{ is as above
 }\vspace*{-0.1in} 
 \end{array}\]
 \caption{Term semantics}\label{fig:term-sem} 
-%\end{minipage}}
 \vspace*{-0.05in}
 \end{adjustbox}\vspace*{-0.1in}
 \end{figure}
 
 
-The return type for the semantic fold is
-$\dsem{\Gamma;\ol\beta{\color{red},\ol\gamma} \vdash F}\rho{\color{red}[\ol{\gamma :=
-    C}]}[\ol{\beta := B}]$.  This interpretation gives
+The return type for the semantic fold is $\dsem{\Gamma;\ol\beta \vdash
+  F}\rho[\ol{\beta := B}]$.  This interpretation gives
 $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : F \to G}\rho
 = \curry (\dsem{\Gamma;\emptyset \,|\, \Delta, x : F \vdash t :
   G}\rho)$ and $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st: G} \rho
@@ -1649,8 +1622,6 @@ sides of these equations are defined).
 
 \subsection{Consequences of Naturality}\label{sec:Nat-type-terms}   
 
-%\vspace*{-0.1in}
-
 Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
 $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
 \Nat^{\ol{\alpha}} F\,F$ and, for terms $\Gamma; \emptyset \,|\,
@@ -1670,8 +1641,6 @@ $\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
   \Nat^{\overline{\alpha}} F\,G}$. Also, terms of $\Nat$ type behave
 as natural transformations with respect to their source and target
 types:
-
-%  \vspace*{-0.05in}
 
 \begin{theorem}\label{eq:ft-from-nat} 
   If\, $\Gamma; \emptyset \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
@@ -1698,8 +1667,6 @@ types:
 \end{array}\]
 \end{theorem}
 
-%\vspace*{-0.1in}
-  
 \noindent
 Theorem~\ref{eq:ft-from-nat} gives rise to an entire family of free
 theorems that are consequences of naturality, and thus do not require
