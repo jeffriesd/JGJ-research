@@ -116,25 +116,24 @@
 
 \vspace*{-0.25in}
 
-This paper considers parametricity and its consequent free theorems
-for nested data types. Rather than representing nested types via their
+This paper considers parametricity and its resulting free theorems for
+nested data types. Rather than representing nested types via their
 Church encodings in a higher-kinded or dependently typed extension of
 System F, we adopt a functional programming perspective and design a
 Hindley-Milner-style calculus with primitives for constructing nested
 types directly as fixpoints. Our calculus can express all nested types
-appearing in the literature, including truly nested types. At the
-level of terms, it supports primitive pattern matching, map functions,
-and fold combinators for nested types. Our main contribution is the
+appearing in the literature, including truly nested types. At the term
+level, it supports primitive pattern matching, map functions, and fold
+combinators for nested types. Our main contribution is the
 construction of a parametric model for our calculus. This is both
-delicate and challenging. In particular, to ensure the existence of
-semantic fixpoints interpreting nested types, and thus to establish a
-suitable Identity Extension Lemma for our calculus, our type system
-must explicitly track functoriality of types, and cocontinuity
-conditions on the functors interpreting them must be appropriately
-threaded throughout the model construction. We also prove that our
-model satisfies an appropriate Abstraction Theorem, as well as that it
-verifies all standard consequences of parametricity in the presence of
-primitive nested types.
+delicate and challenging: to ensure the existence of semantic
+fixpoints interpreting nested types, and thus to establish a suitable
+Identity Extension Lemma for our calculus, our type system must
+explicitly track functoriality of types, and cocontinuity conditions
+on the functors interpreting them must be appropriately threaded
+throughout the model construction. We prove that our model satisfies
+an appropriate Abstraction Theorem and verifies all standard
+consequences of parametricity for primitive nested types.
 \end{abstract}
 
 \vspace*{-0.4in}
@@ -149,12 +148,16 @@ ML, Agda, Epigram, and Idris. ADTs, such as that of natural numbers,
 can be unindexed. But they can also be indexed over other types. For
 example, the ADT of lists (here coded in Agda)
 
+\vspace*{-0.05in}
+
 {\small
 \[\begin{array}{l}
 \mathtt{data\; List \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{nil\;:\; List\;A}\\
 \hspace*{0.4in}\mathtt{cons\;:\;A \rightarrow List\;A \rightarrow List\;A}
 \end{array}\]}
+
+\vspace*{-0.05in}
 
 \noindent
 is indexed over its element type $\mathtt{A}$.  The instance of
@@ -168,11 +171,17 @@ non-regular indexing can capture invariants and other sophisticated
 properties that can be used for program verification and other
 applications.  A simple example of such a type is given by Bird and
 Meertens'~\cite{bm98} prototypical nested type
+
+\vspace*{-0.05in}
+
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
 \hspace*{0.4in}\mathtt{pnode\;:\;PTree\;(A \times A) \rightarrow PTree\;A}
 \end{array}\]
+
+\vspace*{-0.05in}
+
 \noindent
 of perfect trees, which can be thought of as constraining lists to
 have lengths that are powers of 2.  The above code makes clear that
@@ -184,27 +193,42 @@ type thus defines not a family of inductive types, but rather an {\em
   inductive family of types}.  Nested types include simple nested
 types, like perfect trees, none of whose recursive occurrences occur
 below another type constructor; ``deep'' nested types~\cite{jp20},
-such as the nested type {\small
+such as the nested type
+
+\vspace*{-0.05in}
+
+{\small
 \[\begin{array}{l}
 \mathtt{data\; PForest\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{fempty\;:\;PForest\;A}\\
 \hspace*{0.4in}\mathtt{fnode\;:\; A \rightarrow PTree\;(PForest\;A) \to
 PForest\;A}
 \end{array}\]}
-\hspace{-0.04in}of perfect forests, whose recursive occurrences appear
-below type constructors for other nested types; and truly nested
-types,
+
+\vspace*{-0.05in}
+
+\noindent
+of perfect forests, whose recursive occurrences appear below type
+constructors for other nested types; and truly nested types,
 %\footnote{Nested types that are defined over themselves are known
 %  as {\em truly nested types}.}
-such as the nested type {\small
+such as the nested type
+
+\vspace*{-0.05in}
+
+{\small
 \[\begin{array}{l}
 \mathtt{data\; Bush\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
 \hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
   \rightarrow Bush\;A} 
 \end{array}\]}
-\hspace{-0.04in}of bushes, whose recursive occurrences appear below
-their own type constructors.
+
+\vspace*{-0.05in}
+
+\noindent
+of bushes, whose recursive occurrences appear below their own type
+constructors.
 
 {\em Relational parametricity} encodes a powerful notion of
 type-uniformity, or representation independence, for data types in
@@ -290,33 +314,28 @@ fold combinators for nested types.\footnote{We leave incorporating
   as the development in this paper shows, constructing a parametric
   model even for our predicative calculus with primitive nested types
   --- and even without term-level fixpoints --- is already rather
-  involved.
-%  in part because, as
-%  Pitts~\cite{pit00} reminds us, ``it is hard to construct models of
-%  both impredicative polymorphism and fixpoint recursion'', and in
-%  part because constructing a parametric model even for a predicative
-%  calculus with primitive nested types is already rather involved.
-  On
-  the other hand, our calculus is strongly normalizing, so it perhaps
-  edges us toward the kind of provably total practical programming
-  language proposed in~\cite{wad89}.}  Our main contribution is the
-construction of a parametric model for our calculus. This is both
-delicate and challenging. To ensure the existence of semantic
-fixpoints interpreting nested types, and thus to establish a suitable
-Identity Extension Lemma, our type system must explicitly track
-functoriality of types, and cocontinuity conditions on the functors
-interpreting them must be appropriately threaded throughout the model
-construction. Our model validates all standard consequences of
-parametricity in the presence of primitive nested types, including the
-isomorphism of primitive ADTs and their Church encodings, and
-correctness of short cut fusion for nested types. The relationship
-between naturality and parametricity has long been of interest, and
-our inclusion of a primitive type of natural transformations allows us
-to clearly delineate those consequences of parametricity that follow
-from naturality, from those, such as short cut fusion for nested
-types, that require the full power of parametricity.
+  involved.  On the other hand, our calculus is strongly normalizing,
+  so it perhaps edges us toward the kind of provably total practical
+  programming language proposed in~\cite{wad89}.}  Our main
+contribution is the construction of a parametric model for our
+calculus. This is both delicate and challenging. To ensure the
+existence of semantic fixpoints interpreting nested types, and thus to
+establish a suitable Identity Extension Lemma, our type system must
+explicitly track functoriality of types, and cocontinuity conditions
+on the functors interpreting them must be appropriately threaded
+throughout the model construction. Our model validates all standard
+consequences of parametricity in the presence of primitive nested
+types, including the isomorphism of primitive ADTs and their Church
+encodings, and correctness of short cut fusion for nested types. The
+relationship between naturality and parametricity has long been of
+interest, and our inclusion of a primitive type of natural
+transformations allows us to clearly delineate those consequences of
+parametricity that follow from naturality, from those, such as short
+cut fusion for nested types, that require the full power of
+parametricity.
 
-\vspace*{0.1in}
+\pagebreak
+%\vspace*{0.1in}
 
 \noindent
 {\bf Structure of this Paper}\/ We introduce our calculus in
@@ -363,31 +382,28 @@ Abstraction Theorem (Theorem~\ref{thm:abstraction}), which we use to
 derive other parametricity results that go beyond naturality. We
 conclude in Section~\ref{sec:conclusion}.
 
-\vspace*{0.05in}
-
 \noindent
 {\bf Related Work}\/ There is a long line of work on categorical
 models of parametricity for System F; see,
 e.g.,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}.  To our
 knowledge, all such models treat ADTs via their Church encodings,
-verifying in the just-constructed parametric model that each Church
-encoding is isomorphic to the data type it encodes.  The present paper
-draws on this rich tradition of categorical models of parametricity
-for System F, but modifies them to treat nested types (and therefore
-ADTs) as primitive data types.
-
-The only other extensions we know of System F with primitive data
-types are those in~\cite{mat11,mg01,pit98,pit00,wad89}.
-Wadler~\cite{wad89} treats full System F, and sketches parametricity
-for its extension with lists. Martin and Gibbons~\cite{mg01} outline a
-semantics for a grammar of primitive nested types similar to that
-in~\cite{jp19}, but treat only polynomial nested types, i.e., nested
-types that are fixpoints of polynomial higher-order
-functors. Unfortunately, the model suggested in~\cite{mg01} is not
-entirely correct (see~\cite{jp19}), and parametricity is nowhere
-mentioned.  Matthes~\cite{mat11} treats System F with non-polynomial
-ADTs and nested types, but his focus is on expressivity of generalized
-Mendler iteration for them. He gives no semantics.
+verifying in the just-constructed parametric model that each ADT is
+isomorphic to its encoding. This paper draws on this rich tradition of
+categorical models of parametricity for System F, but modifies them to
+treat nested types (and thus ADTs) as primitive data types. The only
+other extensions we know of System F with primitive data types are
+those in~\cite{mat11,mg01,pit98,pit00,wad89}.  Wadler~\cite{wad89}
+treats full System F, and sketches parametricity for its extension
+with lists. Martin and Gibbons~\cite{mg01} outline a semantics for a
+grammar of primitive nested types similar to that in~\cite{jp19}, but
+treat only polynomial nested types, i.e.,
+%, i.e., %nested types that are fixpoints of polynomial higher-order
+%functors.
+Unfortunately, the model suggested in~\cite{mg01} is not entirely
+correct (see~\cite{jp19}), and parametricity is nowhere mentioned.
+Matthes~\cite{mat11} treats System F with non-polynomial ADTs and
+nested types, but focuses on expressivity of generalized Mendler
+iteration for them. He gives no semantics.
 
 In~\cite{pit00}, Pitts adds list ADTs to full System F with a
 term-level fixpoint primitive. Other ADTs are included
@@ -441,24 +457,24 @@ akin to that presented here.
 
 For each $k \ge 0$, we assume countable sets $\tvars^k$ of \emph{type
   constructor variables of arity $k$} {\color{red} (i.e., of kind
-  $\mathtt{* \to ... \to * \to *}$, where there are $k$ arrows and
-  $k+1$ copies of $*$ in this sequence)} and $\fvars^k$ of
-\emph{functorial variables of arity $k$}, all mutually disjoint.  The
-sets of all type constructor variables and functorial variables are
-$\tvars = \bigcup_{k \ge 0} \tvars^k$ and $\fvars = \bigcup_{k \ge 0}
-\fvars^k$, respectively, and a \emph{type variable} is any element of
-$\tvars \cup \fvars$.  We use lower case Greek letters for type
-variables, writing $\phi^k$ to indicate that $\phi \in \tvars^k \cup
-\fvars^k$, and omitting the arity indicator $k$ when convenient.
-Letters from the beginning of the alphabet denote type variables of
-arity $0$, i.e., elements of $\tvars^0 \cup \fvars^0$. We write
-$\overline{\phi}$ for either a set $\{\phi_1,...,\phi_n\}$ of type
-constructor variables or a set of functorial variables when the
-cardinality $n$ of the set is unimportant or clear from context. If
-$V$ is a set of type variables we write $V, \overline{\phi}$ for $V\,
-\cup \overline{\phi}$ when $V\, \cap \overline{\phi} = \emptyset$.  We
-omit the vector notation for a singleton set, thus writing $\phi$,
-instead of $\overline{\phi}$, for $\{\phi\}$.
+  $\mathtt{* \to ... \to * \to *}$, with $k$ arrows and $k+1$ $*$s in
+  this sequence)} and $\fvars^k$ of \emph{functorial variables of
+  arity $k$}, all mutually disjoint.  The sets of all type constructor
+variables and functorial variables are $\tvars = \bigcup_{k \ge 0}
+\tvars^k$ and $\fvars = \bigcup_{k \ge 0} \fvars^k$, respectively, and
+a \emph{type variable} is any element of $\tvars \cup \fvars$.  We use
+lower case Greek letters for type variables, writing $\phi^k$ to
+indicate that $\phi \in \tvars^k \cup \fvars^k$, and omitting the
+arity indicator $k$ when convenient.  Letters from the beginning of
+the alphabet denote type variables of arity $0$, i.e., elements of
+$\tvars^0 \cup \fvars^0$. We write $\overline{\phi}$ for either a set
+$\{\phi_1,...,\phi_n\}$ of type constructor variables or a set of
+functorial variables when the cardinality $n$ of the set is
+unimportant or clear from context. If $V$ is a set of type variables
+we write $V, \overline{\phi}$ for $V\, \cup \overline{\phi}$ when $V\,
+\cap \overline{\phi} = \emptyset$.  We omit the vector notation for a
+singleton set, thus writing $\phi$, instead of $\overline{\phi}$, for
+$\{\phi\}$.
 
 If $\Gamma$ is a finite subset of\, $\tvars$, $\Phi$ is a finite
 subset of\, $\fvars$, $\overline{\alpha}$ is a finite subset of\,
@@ -551,74 +567,33 @@ $\forall$-type $\Gamma; \emptyset \vdash \forall \ol\alpha . F$.  Some
 System F types, such as $\forall \alpha.\, (\alpha \to \alpha) \to
 \alpha$, are not representable in our calculus.
 
-{\color{red} 
-Note that since the body F of a type $(\mu \phi. \lambda
-\ol\alpha. F)\ol{G}$ can only be functorial in $\phi$ and the
-variables in $\ol{\alpha}$, the representation of
-$\mathit{List}\,\alpha$ as the ADT $\mu \beta. \,\onet + \alpha \times
-\beta$ cannot be functorial in $\alpha$. By contrast, if
-$\mathit{List}\,\alpha$ is represented as the nested type $(\mu
-\phi. \lambda \beta.\,\onet + \beta \times \phi \beta)\,\alpha$ then
-we can choose $\alpha$ to be a functorial variable or not when forming
-the type. This observation holds for other ADTs as well; for example,
-if $\mathit{Tree}\,\alpha\,\gamma = \mu \beta. \alpha + \beta \times
-\gamma \times \beta$, then $\alpha, \gamma; \emptyset \vdash
-\mathit{Tree}\,\alpha\,\gamma$ is well-formed, but $\emptyset; \alpha,
-\gamma \vdash \mathit{Tree}\,\alpha\,\gamma$ is not. And it also
-applies to some non-ADT types, such as $\mathit{GRose}\,\phi\,\alpha =
-\mu \beta. \onet + \alpha \times \phi\beta$, in which $\phi$ and
-$\alpha$ must both be non-functorial variables.  It is in fact
-possible to allow ``extra'' $0$-ary functorial variables in the body
-of $\mu$-types (functorial variables of higher arity are the real
-problem), which would allow the first-order representations of ADTs to
-be functorial. However, doing this requires some changes to the
-formation rule for $\mu$-types, as well as the delicate threading of
-some additional conditions throughout our model construction.  But
-since we can always use an ADT's (semantically equivalent)
-second-order representation when functoriality is needed, disallowing
-such ``extra'' variables does not negatively impact the expressivity
-of our calculus. We therefore pursue the simpler syntax here.}
-\begin{comment}
-Definition~\ref{def:wftypes} supports the representation of all of the
-(closed) nested types from the introduction. Indeed, $\mathit{List}\,
-\alpha \; = \; \mu \beta. \,\onet + \alpha \times \beta\; = \; (\mu
-\phi. \lambda \beta.\,\onet + \beta \times \phi \beta)\,\alpha$,\,
-$\mathit{PTree}\,\alpha \; = \; (\mu \phi. \lambda \beta.\,\beta +
-\phi\,(\beta \times \beta))\,\alpha$, \, $\mathit{PForest}\,\alpha \;
-= \; (\mu \phi. \lambda \beta. \,\onet + \beta \times
-\mathit{PTree}\,(\phi \beta))\,\alpha$, and $\mathit{Bush}\,\alpha \;
-= \; (\mu \phi.\lambda \beta. \,\onet + \beta \times
-\phi\,(\phi\beta))\,\alpha$.  Each of these types can be considered
-either functorial in $\alpha$ or not, according to whether $\alpha$ is
-in the functorial or non-functorial context in which it is formed. In
-particular, if $\emptyset;\alpha \vdash \mathit{List} \,\alpha$, then
-$\vdash \Nat^\alpha \onet\, (\mathit{List}\,\alpha)$ is well-formed;
-if $\alpha;\emptyset \vdash \mathit{List} \,\alpha$, then it is not.
-Similarly, if $\mathit{Tree}\,\alpha\,\gamma = \mu \,\beta.\, \alpha +
-\beta \times \gamma \times \beta$, then $\gamma;\emptyset \vdash
-\Nat^\alpha (\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\,
-\gamma)$ is well-formed, but $\emptyset;\gamma \vdash \Nat^\alpha
-(\mathit{List}\, \alpha) \, (\mathit{Tree} \, \alpha\, \gamma)$ is
-not. Although types can be functorial in variables of arity greater
-than $0$, the only such variable allowed in $F$ in $(\mu \phi.\lambda
-\ol\alpha.F)\,\ol G$ is $\phi$.
-%the body $F$ of a type $(\mu \phi.\lambda \ol\alpha.F)\,\ol
-%G$ cannot.
-For example, the type $\mathit{GRose}\, \phi \, \alpha =
-\mu\beta . \onet + \alpha \times \phi \beta$ can be functorial or not in
-$\alpha$, but not in $\phi$. In addition,
-$\mathit{GRose}\,\phi\,\alpha$ cannot be the (co)domain of a $\Nat$
-type representing a natural transformation functorial in $\phi$, and
-the type $\mu \phi. \lambda \alpha. \mathit{GRose}\,\phi\,\alpha$ is
-not well-formed in our system. These restrictions ensure that the set
-and relational interpretations of types in
-Section~\ref{sec:type-interp} are $\omega$-cocontinuous functors. For
-example, the type $\emptyset; \alpha \vdash \Nat^\emptyset \, N \,
-\alpha$, where $N = \mu \alpha. \,\onet + \alpha$, is functorial in
-$\alpha$, but will not have an interpretation as an
-$\omega$-cocontinuous functor~\cite{jp19}.
-\end{comment}
-
+{\color{red} Since the body F of a type $(\mu \phi. \lambda
+  \ol\alpha. F)\ol{G}$ can only be functorial in $\phi$ and the
+  variables in $\ol{\alpha}$, the representation of
+  $\mathit{List}\,\alpha$ as the ADT $\mu \beta. \,\onet + \alpha
+  \times \beta$ cannot be functorial in $\alpha$. By contrast, if
+  $\mathit{List}\,\alpha$ is represented as the nested type $(\mu
+  \phi. \lambda \beta.\,\onet + \beta \times \phi \beta)\,\alpha$ then
+  we can choose $\alpha$ to be a functorial variable or not when
+  forming the type. This observation holds for other ADTs as well; for
+  example, if $\mathit{Tree}\,\alpha\,\gamma = \mu \beta. \alpha +
+  \beta \times \gamma \times \beta$, then $\alpha, \gamma; \emptyset
+  \vdash \mathit{Tree}\,\alpha\,\gamma$ is well-formed, but
+  $\emptyset; \alpha, \gamma \vdash \mathit{Tree}\,\alpha\,\gamma$ is
+  not. It also applies to some non-ADT types, such as
+  $\mathit{GRose}\,\phi\,\alpha = \mu \beta. \onet + \alpha \times
+  \phi\beta$, in which $\phi$ and $\alpha$ must both be non-functorial
+  variables.  It is in fact possible to allow ``extra'' $0$-ary
+  functorial variables in the body of $\mu$-types (functorial
+  variables of higher arity are the real problem). This would allow
+  the first-order representations of ADTs to be functorial, but doing
+  so requires some changes to the formation rule for $\mu$-types, as
+  well as the delicate threading of some additional conditions
+  throughout our model construction.  But since we can always use an
+  ADT's (semantically equivalent) second-order representation when
+  functoriality is needed, disallowing such ``extra'' variables does
+  not negatively impact the expressivity of our calculus. We therefore
+  pursue the simpler syntax here.}
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
 in no variables. Functorial variables can also be demoted to
@@ -626,31 +601,32 @@ non-functorial status: if $F[\phi :== \psi]$ is the textual
 replacement of $\phi$ in $F$, then $\Gamma, \psi^k; \Phi \vdash
 F[\phi^k :== \psi^k]$ is derivable whenever $\Gamma; \Phi, \phi^k
 \vdash F$ is.  In addition to textual replacement, we also have
-substitution for types. If $\Gamma;\Phi\vdash F$ is a type, if $\Gamma$ and
-$\Phi$ contain only type variables of arity $0$, and if $k=0$ for every
-occurrence of $\phi^k$ bound by $\mu$ in $F$, then we say that $F$ is
-{\em first-order}; otherwise we say that $F$ is {\em second-order}.
-Substitution for first-order types is the usual capture-avoiding
-textual substitution. We write $F[\alpha := \sigma]$ for the result of
-substituting $\sigma$ for $\alpha$ in $F$, and $F[\alpha_1 :=
-  F_1,...,\alpha_k := F_k]$, or $F[\ol{\alpha := F}]$ when convenient,
-for $F[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k := F_k]$. The
-operation $(\cdot)[\phi :=_{\ol \alpha} F]$ of {\em second-order type
-  substitution along $\ol\alpha$} is defined by induction on types
-exactly as expected.  {\color{red} The only interesting clause is that
-  for type application, which defines $(\psi \ol G)[\phi
-    :=_{\ol\alpha} F]$ to be $ F[\ol{\alpha := G[\phi :=_{\ol\alpha}
-        F]}$ if $\psi = \phi$ and $\ol{G[\phi :=_{\ol\alpha} F]}$
-    otherwise.}  Of course, $(\cdot)[\phi^0 :=_\emptyset F]$ coincides
-  with first-order substitution. We omit $\ol\alpha$ when convenient,
-  but note that it is not correct to substitute along non-functorial
-  variables. It is not hard to see that if \,$\Gamma; \Phi,\phi^k
-  \vdash H$ and\, $\Gamma;\Phi, \ol{\alpha} \vdash F$ with
-  $|\ol\alpha| = k$, then $\Gamma;\Phi \vdash H[\phi :=_{\ol{\alpha}}
-    F]$.  Similarly, if \,$\Gamma, \phi^k; \Phi \vdash H$, and if\,
-  $\Gamma; \ol\psi,\ol{\alpha} \vdash F$ with $|\ol\alpha| = k$ and
-  $\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi \vdash
-  H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$.
+substitution for types. If $\Gamma;\Phi\vdash F$ is a type, if
+$\Gamma$ and $\Phi$ contain only type variables of arity $0$, and if
+$k=0$ for every occurrence of $\phi^k$ bound by $\mu$ in $F$, then we
+say that $F$ is {\em first-order}; otherwise we say that $F$ is {\em
+  second-order}.  Substitution for first-order types is the usual
+capture-avoiding textual substitution. We write $F[\alpha := \sigma]$
+for the result of substituting $\sigma$ for $\alpha$ in $F$, and
+$F[\alpha_1 := F_1,...,\alpha_k := F_k]$, or $F[\ol{\alpha := F}]$
+when convenient, for $F[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k
+  := F_k]$. The operation $(\cdot)[\phi :=_{\ol \alpha} F]$ of {\em
+  second-order type substitution along $\ol\alpha$} is defined by
+induction on types exactly as expected.  {\color{red} The only
+  interesting clause is that for type application, which defines
+  $(\psi \ol G)[\phi :=_{\ol\alpha} F]$ to be $ F[\ol{\alpha := G[\phi
+        :=_{\ol\alpha} F]}$ if $\psi = \phi$ and $\ol{G[\phi
+        :=_{\ol\alpha} F]}$ otherwise.}  Of course, $(\cdot)[\phi^0
+    :=_\emptyset F]$ coincides with first-order substitution. We omit
+  $\ol\alpha$ when convenient, but note that it is not correct to
+  substitute along non-functorial variables. It is not hard to see
+  that if \,$\Gamma; \Phi,\phi^k \vdash H$ and\, $\Gamma;\Phi,
+  \ol{\alpha} \vdash F$ with $|\ol\alpha| = k$, then $\Gamma;\Phi
+  \vdash H[\phi :=_{\ol{\alpha}} F]$.  Similarly, if \,$\Gamma,
+  \phi^k; \Phi \vdash H$, and if\, $\Gamma; \ol\psi,\ol{\alpha} \vdash
+  F$ with $|\ol\alpha| = k$ and $\Phi \cap \ol\psi = \emptyset$, then
+  $\Gamma,\ol\psi';\Phi \vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi :==
+        \psi'}]]$.
 
 \begin{figure*}
 
@@ -760,9 +736,12 @@ exactly as expected.  {\color{red} The only interesting clause is that
 \end{figure*}
 
 
-\vspace*{-0.10in}
+\vspace*{-0.2in}
 
 \subsection{Terms}\label{sec:terms}
+
+\vspace*{-0.1in}
+
 Assume an infinite set $\cal V$ of term variables disjoint from
 $\tvars$ and $\fvars$. If $\Gamma$ is a type constructor context and
 $\Phi$ is a functorial context, then a {\em term context for $\Gamma$
@@ -813,40 +792,42 @@ $\map$ term for this is typeable as follows:
   \end{array}\]
 \end{adjustbox}
 
-\vspace*{0.1in}
+%\vspace*{0.1in}
+
+\pagebreak
 
 \noindent
-However, this derivation would not possible without the variables in
-$\ol\gamma$.  Similar remarks explain the appearance of $\ol \gamma$
-in the typing rules for $\tin$ and $\mathsf{fold}$.
+However, this derivation would not possible without the ``extra''
+variable $\gamma$.  Similar remarks explain the appearance of $\ol
+\gamma$ in the typing rules for $\tin$ and $\mathsf{fold}$.
 
 Our calculus is expressive enough to define, e.g., a function
 $\mathit{reversePTree}: \Nat^\alpha \, (\mathit{PTree}\,\alpha)
 (\mathit{PTree}\,\alpha)$ that reverses the order of the leaves in a
 perfect tree. It maps the perfect tree $((1, 2), (3, 4))$ to $((4, 3),
 (2, 1))$.  Unfortunately, we cannot define recursive functions ---
-such as a zip function for perfect trees --- that take as inputs a
-nested type and an argument of another type, both of which are
-parameterized over the same variable. The fundamental issue is that
-recursion is expressible only via $\mathsf{fold}$, which produces
-natural transformations in some variables $\ol{\alpha}$ from
-$\mu$-types to other functors $F$. The restrictions on $\Nat$-types
-entail that $F$ cannot itself be a $\Nat$-type containing
-$\ol{\alpha}$, so, e.g., $\Nat^\alpha \, (\mathit{PTree}\,\alpha)
-(\Nat^\emptyset \, (\mathit{PTree}\,\alpha) (\mathit{PTree}\,(\alpha
-\times \alpha)))$ is not well-typed.  Uncurrying gives $\Nat^\alpha \,
-(\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha)
-(\mathit{PTree}\,(\alpha \times \alpha))$, which is well-typed, but
-$\mathsf{fold}$ cannot produce a term of this type because
-$\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha$ is not a
-$\mu$-type.  Our calculus can, however, express types of recursive
-functions that take multiple nested types as arguments, provided they
-are parameterized over disjoint sets of type variables and the return
-type of the function is parameterized over only the variables
-occurring in the type of its final argument.  Even for ADTs there is a
-difference between which folds over them we can type when they are
-viewed as ADTs (i.e., as fixpoints of first-order functors) versus as
-proper nested types (i.e., as fixpoints of higher-order
+such as a concatenation function for perfect trees or a zip function
+for bushes --- that take as inputs a nested type and an argument of
+another type, both of which are parameterized over the same
+variable. The fundamental issue is that recursion is expressible only
+via $\mathsf{fold}$, which produces natural transformations in some
+variables $\ol{\alpha}$ from $\mu$-types to other functors $F$. The
+restrictions on $\Nat$-types entail that $F$ cannot itself be a
+$\Nat$-type containing $\ol{\alpha}$, so, e.g., $\Nat^\alpha \,
+(\mathit{PTree}\,\alpha) (\Nat^\emptyset \, (\mathit{PTree}\,\alpha)
+(\mathit{PTree}\,(\alpha \times \alpha)))$ is not well-typed.
+Uncurrying gives $\Nat^\alpha \, (\mathit{PTree}\,\alpha \times
+\mathit{PTree}\,\alpha) (\mathit{PTree}\,(\alpha \times \alpha))$,
+which is well-typed, but $\mathsf{fold}$ cannot produce a term of this
+type because $\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha$ is
+not a $\mu$-type.  Our calculus can, however, express types of
+recursive functions that take multiple nested types as arguments,
+provided they are parameterized over disjoint sets of type variables
+and the return type of the function is parameterized over only the
+variables occurring in the type of its final argument.  Even for ADTs
+there is a difference between which folds over them we can type when
+they are viewed as ADTs (i.e., as fixpoints of first-order functors)
+versus as proper nested types (i.e., as fixpoints of higher-order
 functors). This is because, in the return type of $\mathsf{fold}$, the
 arguments of the $\mu$-type must be variables bound by $\Nat$.  For
 ADTs, the $\mu$-type takes no arguments, making it possible to write
@@ -864,9 +845,10 @@ to define them are again recursive functions with types of the same
 problematic form as the type of, e.g., a zip function for perfect
 trees.  Expressivity of folds for nested types has long been a vexing
 issue, and this is naturally inherited by our calculus.  Adding more
-expressive recursion combinators could help, but since this is
-orthogonal to the issue of parametricity in the presence of primitive
-nested types we do not consider it further here.
+expressive recursion combinators --- e.g., generalized folds of
+Mendler iterators --- could help, but since this is orthogonal to the
+issue of parametricity in the presence of primitive nested types we do
+not consider it further here.
 
 \vspace*{-0.15in}
 
@@ -1635,8 +1617,8 @@ Nat^{\ol{\beta} {\color{red},\ol{\gamma}}} \, H[\phi := (\mu \phi.\lambda {\over
 
 
 The return type for the semantic fold is
-$\dsem{\Gamma;\ol\beta,\ol\gamma \vdash F}\rho[\ol{\gamma :=
-    C}][\ol{\beta := B}]$.  This interpretation gives
+$\dsem{\Gamma;\ol\beta{\color{red},\ol\gamma} \vdash F}\rho{\color{red}[\ol{\gamma :=
+    C}]}[\ol{\beta := B}]$.  This interpretation gives
 $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash \lambda x.t : F \to G}\rho
 = \curry (\dsem{\Gamma;\emptyset \,|\, \Delta, x : F \vdash t :
   G}\rho)$ and $\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st: G} \rho
@@ -1667,7 +1649,7 @@ sides of these equations are defined).
 
 \subsection{Consequences of Naturality}\label{sec:Nat-type-terms}   
 
-\vspace*{-0.1in}
+%\vspace*{-0.1in}
 
 Define, for $\Gamma; \ol{\alpha} \vdash F$, the term $\id_F$ to be
 $\Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
@@ -1689,7 +1671,7 @@ $\setsem{\Gamma; \emptyset \,|\, \Delta \vdash s \circ t:
 as natural transformations with respect to their source and target
 types:
 
-  \vspace*{-0.05in}
+%  \vspace*{-0.05in}
 
 \begin{theorem}\label{eq:ft-from-nat} 
   If\, $\Gamma; \emptyset \,|\, \Delta \vdash s : \Nat^{\overline{\alpha},
@@ -1716,7 +1698,7 @@ types:
 \end{array}\]
 \end{theorem}
 
-\vspace*{-0.1in}
+%\vspace*{-0.1in}
   
 \noindent
 Theorem~\ref{eq:ft-from-nat} gives rise to an entire family of free
@@ -1790,14 +1772,14 @@ $\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho =
 \end{theorem}
 The proof is by induction on $t$. It requires showing that set and
 relational interpretations of term judgments are natural
-transformations, and that all set interpretations of terms of $\Nat$
-types satisfy the appropriate equality preservation conditions from
-Figure~\ref{fig:set-sem}.  For the interesting cases of abstraction,
-application, $\map$, $\tin$, and $\mathsf{fold}$ terms, propagating
-the naturality conditions is quite involved; the latter two especially
-require some rather delicate diagram chasing. That it is possible
-provides strong evidence that our development is sensible, natural,
-and at an appropriate level of abstraction.
+transformations, and that all set interpretations of terms of
+$\Nat$-types satisfy the appropriate equality preservation conditions
+from Figure~\ref{fig:set-sem}.  For the interesting cases of
+abstraction, application, $\map$, $\tin$, and $\mathsf{fold}$ terms,
+propagating the naturality conditions is somewhat involved; the latter
+two especially require some delicate diagram chasing. That it is
+possible provides strong evidence that our development is sensible,
+natural, and at an appropriate level of abstraction.
 
 Using Theorem~\ref{thm:at-gen} we can prove that our calculus admits
 no terms with the type $\Nat^\alpha \onet \,\alpha$ of the polymorphic
@@ -1844,18 +1826,18 @@ $\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
-\vspace*{-0.1in}
+\vspace*{-0.08in}
 
 We have constructed a parametric model for a calculus supporting
 primitive nested types, and used its Abstraction Theorem to derive
-free theorems for nested types.  This was not possible
+free theorems for these types.  This was not possible
 before~\cite{jp19} because these types were not previously known to
 have well-defined interpretations in locally finitely presentable
 categories (here, $\set$ and $\rel$), and, to our knowledge, no term
-calculus for them existed.  We naturally expect the construction
-elaborated here to guide its generalization to more advanced data
-types.  For example, GADTs can be represented using left Kan
-extensions, and it was shown in~\cite{jp19} that adding a
+calculus for them existed either. We naturally hope (some appropriate
+variant of) the construction elaborated here will generalize to more
+advanced data types. For example, GADTs can be represented using left
+Kan extensions, and it was shown in~\cite{jp19} that adding a
 $\mathsf{Lan}$ construct to a calculus such as ours preserves the
 $\lambda$-cocontinuity needed for the data types it defines to have
 well-defined interpretations in locally $\lambda$-presentable
@@ -1864,10 +1846,10 @@ interpret even common GADTs.) This suggests carrying out our model
 construction in locally $\lambda$-presentable cartesian closed
 categories (lpcccs) $\cal C$ whose categories of (abstract) relations,
 obtained by pullback as in~\cite{jac99}, are also lpcccs and are
-appropriately fibred over $\cal C$.  Adding term-level fixpoints
+appropriately fibred over $\cal C$. Adding term-level fixpoints
 further requires our semantic categories not just to be locally
-$\lambda$-presentable, but also to support some kind of domain
-structure.
+$\lambda$-presentable, but to support some kind of domain structure as
+well.
 
 \pagebreak
 
