@@ -609,7 +609,7 @@ when convenient, for $F[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k
 induction on types exactly as expected. The only interesting clause is
 that for type application, which defines $(\psi \ol G)[\phi
   :=_{\ol\alpha} F]$ to be $ F[\ol{\alpha := G[\phi :=_{\ol\alpha}
-      F]}$ if $\psi = \phi$ and $\ol{G[\phi :=_{\ol\alpha} F]}$
+      F]}]$ if $\psi = \phi$ and $\ol{G[\phi :=_{\ol\alpha} F]}$
   otherwise. Of course, $(\cdot)[\phi^0 :=_\emptyset F]$ coincides
   with first-order substitution. We omit $\ol\alpha$ when convenient,
   but note that it is not correct to substitute along non-functorial
@@ -758,11 +758,10 @@ of the usual capture-avoiding textual substitution, and weakening is
 respected.
 
 The ``extra'' functorial variables in $\ol{\gamma}$ in the rules for
-$\map^{\ol{F},\ol{G}}_H$, $\tin_H$, and $\mathsf{fold}^F_H$ (i.e.,
-those variables not affected by the substitution of $\phi$) allow us
-to map or fold polymorphic functions over nested types.  Suppose, for
-example, that we want to map the polymorphic function
-$\mathit{flatten} : \Nat^\beta
+$\map^{\ol{F},\ol{G}}_H$ (i.e., those variables not affected by the
+substitution of $\phi$) allow us to map polymorphic functions over
+nested types.  Suppose, for example, that we want to map the
+polymorphic function $\mathit{flatten} : \Nat^\beta
 (\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ over lists.  The
 $\map$ term for this is typeable as follows:
 
@@ -788,8 +787,7 @@ $\map$ term for this is typeable as follows:
 
 \noindent
 However, this derivation would not possible without the ``extra''
-variable $\gamma$.  Similar remarks explain the appearance of $\ol
-\gamma$ in the typing rules for $\tin$ and $\mathsf{fold}$.
+variable $\gamma$.  
 
 Our calculus is expressive enough to define, e.g., a function
 $\mathit{reversePTree}: \Nat^\alpha \, (\mathit{PTree}\,\alpha)
@@ -1353,7 +1351,7 @@ $\sem{\Gamma;\Phi \vdash G[\ol{\alpha := K}]}^{\mathsf D}f =
   \vdash F[\phi := H]}^{\mathsf D}f = \sem{\Gamma; \Phi, \phi \vdash
   F}^{\mathsf D}f [\phi := \lambda
   \ol{A}.\,\sem{\Gamma;\Phi,\overline{\alpha}\vdash H}^{\mathsf
-    D}f[\overline{\alpha := \id_{\ol{A}}}]]$.
+    D}f[\overline{\alpha := \id_{A}}]]$.
 
 \vspace*{-0.1in}
 

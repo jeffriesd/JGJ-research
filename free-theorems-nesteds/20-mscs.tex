@@ -1741,7 +1741,7 @@ $\Gamma;\Phi,\ol{\alpha} \vdash G$,\, $\Gamma;\Phi,\alpha_1...\alpha_k
 \setsem{\Gamma; \Phi \vdash F[\phi := H]}f
 = \setsem{\Gamma; \Phi, \phi \vdash F}f
 [\phi := \lambda \ol{A}.\,\setsem{\Gamma;\Phi,\overline{\alpha}\vdash
-    H}f[\overline{\alpha := \id_{\ol{A}}}]] 
+    H}f[\overline{\alpha := \id_A}]] 
 \end{gather}
 Identities analogous to (\ref{thm:demotion-objects}) through
 (\ref{eq:subs-const-morph}) hold for relational interpretations as well.
@@ -2654,7 +2654,7 @@ d.\,\mathit{in}_{{T}^X_{H,\rho}} \;\;\mbox{ where } X \mbox{ is } \set \mbox{ wh
 \llbracket \Gamma;\emptyset \,|\, \emptyset \vdash
   \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F) & = &  
-\lambda d\,\eta. \,\mathit{fold}_{T^X_{H,\rho}} \, \eta\\ 
+\lambda d. \,\mathit{fold}_{T^X_{H,\rho}} \\ 
 \hspace*{0.79in}(\Nat^{{\ol{\beta}} }\,(\mu
   \phi.\lambda \overline \alpha.H)\overline \beta\;F)
 \rrbracket^{\mathsf{D}} \rho & & \hspace*{0.2in} \mbox{ where } X \mbox{ is as above
@@ -3896,7 +3896,7 @@ following diagram:
 && \set \\
 & \set^h
 \ar[Rightarrow, bend right = 10, from=F, "{\eta}" description]
-\ar[ur, bend left, "{\mathit{Lan}_K\,F}"{name=Lan, description}]
+\ar[ur, bend left, "{\mathit{Lan}_{\ol K}\,F}"{name=Lan, description}]
 \ar[ur, bend right, "{G}"'{name=L, right}, ""'{name=Lr, right}]
 \ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\gamma}"]
 \ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"]
@@ -3948,11 +3948,11 @@ Thus, if $F : \set^k \to \set$, $\ol{K} :
   subcategory of finitely presentable objects in $\set$, --- i.e., is
   the category finite sets --- we  have that
 \begin{equation}\label{eq:colim-form}
-(\mathit{Lan}_K F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
+(\mathit{Lan}_{\ol K} F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
       K\ol{S} \to  A}}{F \ol{S}}
 \end{equation}
 If $\ol{S} : \set_0^k$ and $\ol{f : K\ol{S} \to A}$, let $j_{\ol{S},
-  \ol{f}} : F \ol{S} \to (\mathit{Lan}_KF) \ol{A}$ be the morphism
+  \ol{f}} : F \ol{S} \to (\mathit{Lan}_{\ol K} F) \ol{A}$ be the morphism
 indexed by $\ol{S}$ and $\ol{f}$ mapping the cocone into the colimit
 in Equation~\ref{eq:colim-form}.
 %Then for any $h$-tuple of functions
@@ -3966,28 +3966,29 @@ in Equation~\ref{eq:colim-form}.
 %  \end{equation}
 %holds, where
 For any $h$-tuple of functions
-$\ol{g : A \to B}$, the functorial action $(\mathit{Lan}_K F) \ol{g}$
-is the unique function from $(\mathit{Lan}_K F) \ol{A}$ to
-$(\mathit{Lan}_K F) \ol{B}$ such that, for all $\ol{S} : \set^k_0$ and
+$\ol{g : A \to B}$, the functorial action $(\mathit{Lan}_{\ol K
+  }F) \ol{g}$
+is the unique function from $(\mathit{Lan}_{\ol K} F) \ol{A}$ to
+$(\mathit{Lan}_{\ol K} F) \ol{B}$ such that, for all $\ol{S} : \set^k_0$ and
 $\ol{f : K\ol{S} \to A}$,\,
 \begin{equation}\label{eq:cocone-def}
-(\mathit{Lan}_KF) \ol{g} \circ j_{\ol{S},\, \ol{f}}
+(\mathit{Lan}_{\ol K}F) \ol{g} \circ j_{\ol{S},\, \ol{f}}
 = j'_{\ol{S},\, \ol{g\, \circ f}}
-: F \ol{S} \to (\mathit{Lan}_KF) \ol{B}
+: F \ol{S} \to (\mathit{Lan}_{\ol K}F) \ol{B}
 \end{equation}
 holds, where $j$ is the morphism mapping the cocone into
-$(\mathit{Lan}_K F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
+$(\mathit{Lan}_{\ol K} F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
     K\ol{S} \to A}}{F \ol{S}}$ and $j'$ is the morphism mapping the
-cocone into $(\mathit{Lan}_K F) \ol{B} = \colim{\ol{S} : \set_0^k,
+cocone into $(\mathit{Lan}_{\ol K} F) \ol{B} = \colim{\ol{S} : \set_0^k,
   \,\ol{f : K\ol{S} \to B}}{F \ol{S}}$.  Moreover, if $\alpha : F \to
-F'$ is a natural transformation, then $\mathit{Lan}_K \alpha :
-(\mathit{Lan}_K F) \to (\mathit{Lan}_K F')$ is defined to be the
-induced natural transformation whose component $(\mathit{Lan}_K
-\alpha) \ol{A} : (\mathit{Lan}_K F) \ol{A} \to (\mathit{Lan}_K F')
-\ol{A}$ is the unique function such that $(\mathit{Lan}_K \alpha)
+F'$ is a natural transformation, then $\mathit{Lan}_{\ol K} \alpha :
+(\mathit{Lan}_{\ol K} F) \to (\mathit{Lan}_{\ol K} F')$ is defined to be the
+induced natural transformation whose component $(\mathit{Lan}_{\ol K}
+\alpha) \ol{A} : (\mathit{Lan}_{\ol K} F) \ol{A} \to (\mathit{Lan}_{\ol K} F')
+\ol{A}$ is the unique function such that $(\mathit{Lan}_{\ol K} \alpha)
 \ol{A} \,\circ\, j_{\ol{S}, \ol{f}} = j'_{\ol{S}, \ol{f}} \,\circ\,
-\alpha_{\ol{S}}$, where $j$ is the cocone into $(\mathit{Lan}_K F)
-\ol{A}$ and $j'$ is the cocone into $(\mathit{Lan}_K F') \ol{A}$. We
+\alpha_{\ol{S}}$, where $j$ is the cocone into $(\mathit{Lan}_{\ol K} F)
+\ol{A}$ and $j'$ is the cocone into $(\mathit{Lan}_{\ol K} F') \ol{A}$. We
 can similarly represent left Kan extensions of functors over $\rel$ in
 terms of colimits. In that setting we will denote the morphism mapping
 the cocone into the colimit $\iota$. We will make good use of both of
@@ -4022,10 +4023,10 @@ Here, the type constructor $\Lan$ binds the variables in $\ol\alpha$,
 and these variables must always have arity $0$. In addition, the
 vectors $\ol K$ and $\ol A$ must have the same length.
 
-Intuitively, $\Lan^{\ol{\alpha^0}}_K F$ is a syntactic representation
+Intuitively, $\Lan^{\ol{\alpha^0}}_{\ol K} F$ is a syntactic representation
 of the left Kan extension of the functor in the variables in
 $\ol\alpha$ denoted by $F$ along the functor in the variables in
-$\ol\alpha$ denoted by $K$. Using $\Lan$-types, we can therefore
+$\ol\alpha$ denoted by $\ol K$. Using $\Lan$-types, we can therefore
 represent the GADT $\mathtt{Seq}$ in our calculus as 
  \begin{align*}
 \mathtt{Seq}\,\alpha &\df \left( \mu \phi.\lambda \beta.
@@ -4044,7 +4045,7 @@ of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
 above makes it possible to represent GADTs with two or more type
 arguments that depend on one another. Such GADTs cannot be represented
 using just unary $\Lan$-types, i.e, $\Lan$-types of the form
-$(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
+$(\Lan^{\ol{\alpha^0}}_{\ol K} F)\ol A$.
 
 As we will see below, in order to define the term-formation rules for
 terms of $\Lan$-types we also need to generalize $\Nat$-types to bind
@@ -4146,8 +4147,8 @@ $\Nat$ types from Section~\ref{sec:type-interp} as follows:
   \Rightarrow \lambda \ol{K}.\,\setsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol{K}]~|~\\ 
 &\hspace{0.3in} \forall \ol{K = (K^1, K^2, K^*) : RT_k}.\\
 &\hspace{0.4in} (\eta_{\overline{K^1}}, \eta_{\overline{K^2}})
-: \setsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol{K}]
-\rightarrow \setsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol{K}] \} \\
+: \relsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol{K}]
+\rightarrow \relsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol{K}] \} \\
 %%%
 \relsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho
 &= \{\eta : \lambda \ol{K}.\,\relsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol{K}]
@@ -4318,8 +4319,8 @@ cutting down of set and relational interpretations of $\Lan$-types is
 possible. We have:
 
 \begin{prop}\label{prop:full-lan}
-Let $F : \set^h \to \set$ and $\ol{K : \set^h \to \set^k}$ be functors.
-If $L : \set^k \to \set$ is a functor such that 
+Let $F : \set^k \to \set$ and $\ol K : \set^k \to \set^h$ be functors.
+If $L : \set^h \to \set$ is a functor such that 
 \begin{itemize}
 \item $L \ol{A} \subseteq
   (\textit{Lan}_{\ol K} F)\ol{A}$ for all $\ol{A : \set}$,
