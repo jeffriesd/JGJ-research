@@ -98,7 +98,7 @@
 \begin{document}
 
 \title[Parametricity for Primitive Nested Types and
-  GADTs]{Parametricity for Primitive Nested Types}
+  GADTs]{Parametricity for Primitive Nested Types and GADTs}
 
 \author[P.~Johann]{Patricia Johann}	
 \address{Appalachian State University}	
@@ -362,10 +362,10 @@ Kan extensions as proposed in~\cite{jp19} and still be parametric. We
 conclude and offer some directions for future work in
 Section~\ref{sec:conclusion}.
 
-This paper extends the conference paper~\cite{jgj21} of the same name
-by including more exposition, proofs of all theorems, and more
-examples. In addition, the discussion of parametricity for GADTs in
-Section~\ref{sec:GADTs} is entirely new.
+This paper extends the conference paper~\cite{jgj21} by including more
+exposition, proofs of all theorems, and more examples. In addition,
+the discussion of parametricity for GADTs in Section~\ref{sec:GADTs}
+is entirely new.
 
 \vspace*{0.05in}
 
@@ -1337,7 +1337,7 @@ three conditions hold:
   whenever $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$
 \item $H^*(F^1,F^2,F^*)\, \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha},
   H^2F^2 \ol{\beta})$ whenever $(\alpha_1, \beta_1) \in
-  \Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$
+  \Homrel(R_1,S_1),..., (\alpha_k, \beta_k)$ $\in \Homrel(R_k,S_k)$
 \item If $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ and
   $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
   $((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
@@ -1824,7 +1824,7 @@ transformation, then $\graph{\alpha}$ is in $RT_k$.
 \end{lem}
 \proof
 Clearly, $\graph{\alpha}^*$ is $\omega$-cocontinuous, so
-$\graph{\alpha}^* : [\rel^k,\rel]$. Now, let $\overline{R :
+$\graph{\alpha}^* : [\rel^k,\rel]$. Let $\overline{R :
   \rel(A, B)}$, $\overline{S : \rel(C, D)}$, and $\overline{(\beta,
   \beta') : R \to S}$. We want to show that there exists a morphism
 $\epsilon : \alpha^\wedge\overline{R} \to \alpha^\wedge\overline{S}$
@@ -3886,20 +3886,20 @@ natural transformation $\mu : \mathit{Lan}_{\ol K}\,F \to G$ such that
 $(\mu {\ol K}) \circ \eta = \gamma$. This is depicted in the
 following diagram:
 
-\vspace*{-0.15in}
+\vspace*{-0.05in}
 
 \[
 \begin{tikzcd}[row sep = huge]
 \set^k
-\ar[rr, "{F}"{name=Fa}, ""{name=F, below}]
+\ar[rr, "{F}"{name=Fa, above}, ""{name=F, below}]
 \ar[rd, "{\ol K}"']
 && \set \\
 & \set^h
-\ar[Rightarrow, bend right = 10, from=F, "{\eta}" description]
+\ar[Rightarrow, bend right = 25, from=F, "{\eta}"']
 \ar[ur, bend left, "{\mathit{Lan}_{\ol K}\,F}"{name=Lan, description}]
 \ar[ur, bend right, "{G}"'{name=L, right}, ""'{name=Lr, right}]
-\ar[Rightarrow, bend left = 90, from=Fa, to=Lr, "{\gamma}"]
-\ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"]
+\ar[Rightarrow, bend left = 45, from=Fa, to=Lr, "{\gamma}" near start]
+\ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"']
 \end{tikzcd}
 \]
 
@@ -3911,7 +3911,7 @@ can similarly define the left Kan extension of $F$ along $\ol K$ for
 functors $F$ and $\ol K$ over $\rel$.
 \end{defi}
 
-An alternative presentation of characterizes the left Kan extension
+An alternative presentation characterizes the left Kan extension
 $(\mathit{Lan}_{\ol K} F, \eta)$ in terms of the adjunction between
 natural transformations from $F$ to $G \circ \ol{K}$ and natural
 transformations from $\mathit{Lan}_{\ol K} F$ to $G$, for which
@@ -3946,7 +3946,7 @@ expressed as
 Thus, if $F : \set^k \to \set$, $\ol{K} :
   \set^k \to \set^h$, $\ol{A} : \set^h$, and $\set_0$ is the full
   subcategory of finitely presentable objects in $\set$, --- i.e., is
-  the category finite sets --- we  have that
+  the category of finite sets --- we  have that
 \begin{equation}\label{eq:colim-form}
 (\mathit{Lan}_{\ol K} F) \ol{A} = \colim{\ol{S} : \set_0^k, \,\ol{f :
       K\ol{S} \to  A}}{F \ol{S}}
@@ -4045,7 +4045,7 @@ of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
 above makes it possible to represent GADTs with two or more type
 arguments that depend on one another. Such GADTs cannot be represented
 using just unary $\Lan$-types, i.e, $\Lan$-types of the form
-$(\Lan^{\ol{\alpha^0}}_{\ol K} F)\ol A$.
+$(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
 
 As we will see below, in order to define the term-formation rules for
 terms of $\Lan$-types we also need to generalize $\Nat$-types to bind
@@ -4178,6 +4178,8 @@ interpretations to be
 \]
 and 
 
+\vspace*{-0.1in}
+
 \[
   \relsem{\Gamma;\Phi \vdash
     (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{A}}\rho = (
@@ -4279,8 +4281,8 @@ is the natural transformation associated with the left Kan extension
 \ar[rr, "\lambda \ol{A}.\,\setsem{\Gamma; \Phi, \ol\alpha
     \vdash F}\rho {[\Phi, \ol \alpha := \ol{N}, \ol{A} ]}"{name=F}] 
 \ar[dr, "\ol{\lambda \ol{A}.\,\setsem{\Gamma; \ol\alpha \vdash
-      K}\rho {[\ol{\alpha := A} ]}}"{left}] && \set \\  
-&\set^{|\ol K|} \ar[ur, "\mathit{Lan}_{\ol{\lambda \ol A.\,
+      K}\rho {[\ol{\alpha := A} ]}}\;\;\;\;"{left}] && \set \\  
+&\set^{|\ol K|} \ar[ur, "\;\;\mathit{Lan}_{\ol{\lambda \ol A.\,
       \setsem{\Gamma; \ol\alpha \vdash K}\rho {[\ol{\alpha := A}
   ]}}}\, \lambda \ol A.\, \setsem{\Gamma; \Phi, \ol\alpha \vdash
     F}\rho {[\Phi, \ol \alpha :=  \ol N, \ol A ]}"{right}]
@@ -4343,19 +4345,26 @@ third assumption above we have that $\eta_{\ol{S}}\, w \in L (\ol{K
 A$. Finally, by the first assumption above, we therefore have that $L
 \ol{A} = (\textit{Lan}_{\ol K} F)\ol{A}$.
 \end{proof}
-Thus, if $L$ were a restriction of $\setsem{\Gamma; \Phi,\ol\alpha
-  \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, if the functorial
-action of $L$ were a restriction of that of $\setsem{\Gamma;
-  \Phi,\ol\alpha \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol K}}\rho$, and
-if $L(\ol{\setsem{\Gamma;\ol\alpha \vdash K}\rho \ol N \, \ol A})$
-were to contain $\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol
+Thus, if $L$ were a restriction of $\lambda \ol B. \setsem{\Gamma; \Phi,\ol\beta
+  \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol \beta}}\rho[\Phi := \ol
+  N][\ol{\beta := B}]$,
+if the functorial 
+action of $L$ were a restriction of that of $\lambda \ol B. \setsem{\Gamma;
+  \Phi,\ol\beta \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol
+    \beta}}\rho[\Phi := \ol N][\ol{\beta := B}]$, and if
+$L(\ol{\setsem{\Gamma;\ol\alpha \vdash K}\rho[\ol{\alpha := A}]})$ 
+contained $\setsem{\Gamma;\emptyset~|~\emptyset \vdash \int_{\ol
     K,F} : \Nat^{\Phi, \ol\alpha}\, F\, (\Lan^{\ol\alpha}_{\ol{K}}\,
   F) \ol{K}}\rho\,d\,\ol N\,\ol A\,y$ for all $\ol N$, $\ol A$, and
 $y$, then $L$ would have to be the entirety of
-$\mathit{Lan}_{\ol{\lambda \ol A.\, \setsem{\Gamma; \ol\alpha \vdash
-      K}\rho {[\ol{\alpha := A} ]}}}\, \lambda \ol A.\,
-\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
-    \ol N, \ol A ]}$. An analogous result holds for relational
+ $\lambda \ol B. \setsem{\Gamma; \Phi,\ol\beta
+  \vdash (\Lan^{\ol\alpha}_{\ol K} F){\ol \beta}}\rho[\Phi := \ol
+  N][\ol{\beta := B}]$.
+%$\mathit{Lan}_{\ol{\lambda \ol A.\, \setsem{\Gamma; \ol\alpha \vdash
+%      K}\rho {[\ol{\alpha := A} ]}}}\, \lambda \ol A.\,
+%\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
+%    \ol N, \ol A ]}$.
+An analogous result holds for relational
 interpretations of $\Lan$-types.
 
 \subsection{Parametricity and GADTs}
