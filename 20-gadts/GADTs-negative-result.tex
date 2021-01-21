@@ -1,0 +1,408 @@
+\documentclass{lmcs}
+
+\keywords{Nested types, GADTs, categorical semantics, parametricity}
+
+\usepackage[utf8]{inputenc}
+%\usepackage{ccicons}
+\usepackage{verbatim}
+\usepackage{adjustbox}
+\usepackage{marvosym}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amscd}
+%\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\usepackage{hyperref}
+
+\input{macros}
+%\input{mytheorem}
+
+\theoremstyle{plain}\newtheorem{satz}[thm]{Satz}
+
+\def\eg{{\em e.g.}}
+\def\cf{{\em cf.}}
+
+%\theoremstyle{definition}
+
+\newcommand{\inl}{\mathsf{inl}}
+\newcommand{\inr}{\mathsf{inr}}
+\newcommand{\fold}{\mathsf{fold}}
+\newcommand{\ininv}[2]{(\tin^{-1}_{\onet +
+  \beta \times \phi (\phi\beta)})_{#1}\, #2}
+\newcommand{\emptyfun}{{[]}}
+\newcommand{\cal}{\mathcal}
+%\newcommand{\fold}{\mathit{fold}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\renewcommand{\P}{\mathcal{A}}
+\newcommand{\pred}{\mathsf{Fam}}
+\newcommand{\env}{\mathsf{Env}}
+\newcommand{\set}{\mathsf{Set}}
+\renewcommand{\S}{\mathcal S}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\id}{\mathit{id}}
+\newcommand{\map}{\mathsf{map}}
+\newcommand{\pid}{\underline{\mathit{id}}}
+\newcommand{\pcirc}{\,\underline{\circ}\,}
+\newcommand{\pzero}{\underline{0}}
+\newcommand{\pone}{\underline{1}}
+\newcommand{\psum}{\,\underline{+}\,}
+\newcommand{\pinl}{\underline{\mathit{inL}}\,}
+\newcommand{\pinr}{\underline{\mathit{inR}}\,}
+\newcommand{\ptimes}{\,\underline{\times}\,}
+\newcommand{\ppi}{\underline{\pi_1}}
+\newcommand{\pppi}{\underline{\pi_2}}
+\newcommand{\pmu}{\underline{\mu}}
+\newcommand{\semmap}{\mathit{map}}
+\newcommand{\subst}{\mathit{subst}}
+
+\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
+\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
+  \phi \beta) #1} 
+\newcommand{\filtype}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (List \, \alpha) \, (List \, \alpha))} 
+\newcommand{\filtypeGRose}{\Nat^\emptyset 
+ (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
+  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
+  + \onet)))} 
+\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
+      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
+\newcommand{\PLeaves}{\mathsf{PLeaves}}
+\newcommand{\swap}{\mathsf{swap}}
+\newcommand{\reverse}{\mathsf{reverse}}
+\newcommand{\bcons}{\mathit{bcons}}
+\newcommand{\bnil}{\mathit{bnil}}
+
+\DeclareMathOperator{\SumIn}{in}
+
+\begin{document}
+
+\title[Negative result on parametricity for GADTs]{Negative result on parametricity for GADTs}
+
+\author[P.~Johann]{Patricia Johann}	
+\address{Appalachian State University}	
+\email{johannp@appstate.edu}  
+
+\author[E.~Ghiorzi]{Enrico Ghiorzi}	
+\address{Appalachian State University}	
+\email{ghiorzie@appstate.edu}  
+
+\author[D.~Jeffries]{Daniel Jeffries}	
+\address{Appalachian State University}	
+\email{jeffriesd@appstate.edu}
+
+\maketitle
+
+
+
+We augmented our calculus with $\Lan$ types to allow for primitive GADTs.
+We then found out that $\Lan$ types do not support relational semantics for the usual category of relations, and thus the calculus does not have a parametric model.
+Given that a counterexample was provided by relations of the form $(S, \emptyset, \emptyset)$, we consider restricting the category of relations to those relations that are onto their domain and codomain, i.e., those relations $R: \rel(A, B)$ such that for all $a \in A$ there exists $b \in B$ such that $(a, b) \in R$, and for all $b \in B$ there exists $a \in A$ such that $(a, b) \in R$.
+Each onto relation $R: \rel(A, B)$ also comes equipped with two choice functions: $c_R : A \to B$ and $d_R : B \to A$, such that for every $a : A$ we have $(a, c_R a) \in R$, and for every $b : B$ we have $(d_R b, b) \in R$.
+By abuse of notation, we still call $\rel$ this subcategory.
+
+In the following, we will discuss how restricting $\rel$ to onto relations is still insufficient to provide a relational semantics for $\Lan$ types.
+
+
+
+\section{Fibered interpretation of $\Lan$}
+
+For every $\Gamma; \Phi, \ol\alpha \vdash F$, $\ol{\emptyset; \alpha \vdash K}$, $\ol{\Gamma; \Phi \vdash B}$ and relation environment $\rho$, we define the set interpretation of $\Gamma;\Phi \vdash (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{B}$ as
+\[
+  \setsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{B}}\rho = (
+  \textit{Lan}_{\lambda \ol{S}.\,\ol{\setsem{\Gamma; \ol\alpha \vdash K}
+      \rho[\ol{\alpha := S}]}}\, \lambda \ol{S}.\,\setsem{\Gamma; \Phi, \ol\alpha
+    \vdash F} \rho[\ol{\alpha := S}])\, \ol{\setsem{\Gamma; \Phi
+      \vdash B}\rho}
+\]
+and its relational interpretation as
+\[
+  \relsem{\Gamma;\Phi \vdash
+    (\Lan^{\ol{\alpha}}_{\ol{K}}\,F)\ol{B}}\rho = (
+  \textit{Lan}_{\lambda \ol R.\,\ol{\relsem{\Gamma; \ol\alpha \vdash
+        K}\rho[\ol{\alpha := R}]}}\, \lambda \ol R.\,\relsem{\Gamma;
+    \Phi, \ol\alpha \vdash F}\rho[\ol{\alpha := R}])\,
+  \ol{\relsem{\Gamma; \Phi \vdash B}\rho}
+\]
+
+We want to show that the relational interpretation for $\Lan$ types is fibered over the set interpretation, i.e., that there is an isomorphism between
+\begin{equation}\label{eq:LHS}
+\colim{\ol{S : \set_0}, \ol{g : \setsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := S}] \to \setsem{\Gamma; \Phi \vdash B}(\pi_1 \rho)}}
+{\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}(\pi_1 \rho)[\ol{\alpha := S}]}
+\end{equation}
+where $\iota_{\ol{S}, \ol{g}} : \setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}(\pi_1 \rho)[\ol{\alpha := S}] \to \eqref{eq:LHS}$ is the cocone into the colimit~\eqref{eq:LHS}, and
+\begin{equation}\label{eq:RHS}
+\colim{\ol{R : \rel_0}, \ol{f : \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi \vdash B}\rho}}
+{\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}(\pi_1 \rho)[\ol{\alpha := \pi_1 R}]}
+\end{equation}
+where $j_{\ol{R}, \ol{f}} : \setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}(\pi_1 \rho)[\ol{\alpha := \pi_1 R}] \to \eqref{eq:RHS}$ is the cocone into the colimit~\eqref{eq:RHS}.
+
+We define $k : \eqref{eq:LHS} \to \eqref{eq:RHS}$ as the unique function such that $k \circ \iota_{\ol{S}, \ol{g}} = j_{\ol{\Eq_S}, \ol{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_g}}$ for every $\ol{S : \set_0}$ and $\ol{g : \setsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := S}] \to \setsem{\Gamma; \Phi \vdash B}(\pi_1 \rho)}$.
+
+We define $h : \eqref{eq:RHS} \to \eqref{eq:LHS}$ as the unique function such that $h \circ j_{\ol{R}, \ol{f}} = \iota_{\ol{\pi_1 R}, \ol{\pi_1 f}}$ for every $\ol{R : \rel_0}$ and $\ol{f : \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi \vdash B}\rho}$.
+
+We want to show that $h$ and $k$ are inverses.
+
+Consider the composition $h \circ k$.
+We have that
+\[
+h \circ k \circ \iota_{\ol{S}, \ol{g}}
+= h \circ j_{\ol{\Eq_S}, \ol{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_g}}
+= \iota_{\ol{\pi_1 \Eq_S}, \ol{\pi_1 ((\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_g)}}
+= \iota_{\ol{S}, \ol{g}}
+\]
+and so, $h \circ k = \id_{\eqref{eq:LHS}}$.
+
+Consider the composition $k \circ h$.
+We have that
+\[
+k \circ h \circ j_{\ol{R}, \ol{f}}
+= k \circ \iota_{\ol{\pi_1 R}, \ol{\pi_1 f}}
+= j_{\ol{\Eq_{\pi_1 R}}, \ol{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_{\pi_1 f}}}
+\]
+To prove that $j_{\ol{R}, \ol{f}} = j_{\ol{\Eq_{\pi_1 R}}, \ol{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_{\pi_1 f}}}$,
+it suffices to show that, in the indexing category of the colimit~\eqref{eq:RHS}, either the triangle
+\[
+\begin{tikzcd}[row sep = huge]
+\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}]
+	\ar[rr, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (\id, d_{R})}]}"]
+	\ar[dr, "{f}"']
+&& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_{\pi_1 R}}]
+	\ar[dl, "{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_{\pi_1 f}}"] \\
+&\relsem{\Gamma; \Phi \vdash B}\rho
+\end{tikzcd}
+\]
+or the triangle
+\[
+\begin{tikzcd}[row sep = huge]
+\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}]
+	\ar[dr, "{f}"']
+&& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_{\pi_1 R}}]
+	\ar[dl, "{(\id, \setsem{\Gamma; \Phi \vdash B} c_\rho) \circ \Eq_{\pi_1 f}}"]
+	\ar[ll, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (\id, c_{R})}]}"'] \\
+&\relsem{\Gamma; \Phi \vdash B}\rho
+\end{tikzcd}
+\]
+commutes, but that does not seem to be the case.
+Indeed, there is no reason why it should be true that $\setsem{\Gamma; \Phi \vdash B} c_\rho \circ (\pi_1 f) \circ \setsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := d_{R}}] = (\pi_1 f)$
+or $(\pi_1 f) \circ \setsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := c_{R}}] = \setsem{\Gamma; \Phi \vdash B} c_\rho \circ (\pi_1 f)$.
+
+Since our first approach did not work, we shall instead try to show that \eqref{eq:RHS} is isomorphic to
+\begin{equation}\label{eq:RHS_EQ}
+\colim{\ol{S : \set_0}, \ol{f : \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_S}] \to \relsem{\Gamma; \Phi \vdash B}\rho}}
+{\setsem{\Gamma; \Phi, \ol{\alpha} \vdash F}(\pi_1 \rho)[\ol{\alpha := S}]}
+\end{equation}
+which should hold true if equality relations are cofinal in $\rel$.
+Moreover, the fact that the colimit \eqref{eq:RHS_EQ} is indexed over sets suggests that it is also isomorphic to \eqref{eq:LHS}.
+Before proceeding, though, we need to introduce a way to associate a set to an arbitrary relation, which we shall do in the following section.
+
+
+
+
+
+
+\section{Sets from relations}
+
+Given a set $S$, there are a few canonical ways to produce a relation that represents it.
+\begin{itemize}
+\item The most obvious one is the equality relation, $\Eq_S = (S, S, \Delta_S)$.
+\item The relations $(S, \emptyset, \emptyset)$ and $(\emptyset, S, \emptyset)$, although they are not onto relations in the sense defined in the previous section.
+\item The relations $(S, 1, S \times 1)$ and $(1, S, 1 \times S)$, although they are more of a set seen as a relation than a relation representing $S$.
+\end{itemize}
+Overall, the most natural option is the equality relation over a set.
+Moreover, for the purposes of the Identity Extension Lemma, we really need to consider equality relations.
+
+There is an equality functor $\Eq : \set \to \rel$ sending a set to its equality relation.
+We want to find a left adjoint $\Sigma : \rel \to \set$, i.e., a way to construct a set $\Sigma{R}$ out of a relation $R$ together with a canonical arrow $R \to \Eq_{\Sigma{R}}$.
+
+\begin{defi}
+Given a relation $R : \rel(A, B)$, we define an equivalence relation $\sim$ on $A + B$ as the smallest equivalence relation generated by the pairs $(\SumIn_1 a, \SumIn_2 b)$ such that $(a, b) \in R$.
+Explicitly, $\SumIn_1 a \sim \SumIn_2 b$ if and only if there is a finite sequence $a_1, b_1, a_2, b_2, \dots, a_n, b_n$ such that $a_1 = a$, $b_n = b$, $(a_i, b_i) \in R$ for all $i = 1 \dots n$ and $(a_{i + 1}, b_i) \in R$ for all $i = 1 \dots n - 1$.
+We define $\sim$ analogously for the remaining three cases: $\SumIn_1 a \sim \SumIn_1 a'$, $\SumIn_2 b \sim \SumIn_2 b'$, and $\SumIn_2 b \sim \SumIn_1 a$.
+Finally, we define $\Sigma{R}$ as the quotient $A + B / \sim$.
+
+Given a morphism of relations $m = (m_1, m_2) : R \to Q$ we define the function $\Sigma{m} : \Sigma{R} \to \Sigma{Q}$ by $\Sigma{m}[\SumIn_1 a] = [ \SumIn_1 (m_1 a) ]$ and $\Sigma{m}[\SumIn_2 b] = [\SumIn_2 (m_2 b)]$.
+To verify that $\Sigma{m}$ is well-defined, consider two representatives of the same class of equivalence, $\SumIn_1 a \sim \SumIn_2 b$.
+Then there is a finite sequence $a_1, b_1, a_2, b_2, \dots, a_n, b_n$ such that $a_1 = a$, $b_n = b$, $(a_i, b_i) \in R$ for all $i = 1 \dots n$ and $(a_{i + 1}, b_{i}) \in R$ for all $i = 1 \dots n - 1$.
+The sequence $m_1 a_1, m_2 b_1, m_1 a_2, m_2 b_2, \dots, m_1 a_n, m_2 b_n$ is such that $(m_1 a_i, m_2 b_i) \in Q$ for all $i = 1 \dots n$ and $(m_1 a_{i + 1}, m_2 b_{i}) \in Q$ for all $i = 1 \dots n - 1$, thus proving that $\Sigma{m}[\SumIn_1 a] = [\SumIn_1 (m_1 a)] = [\SumIn_2 (m_2 b)] = \Sigma{m}[\SumIn_2 b]$.
+
+These data yield a functor $\Sigma : \rel \to \set$.
+\end{defi}
+
+We want to show that the above construction is the best way to represent a relation by a set, i.e., that there is an adjunction between the functors $\Sigma$ and $\Eq$.
+The intuition that this is the case is reinforced by noticing that, for every relation $R : \rel(A, B)$, there is a morphism $(q \circ \SumIn_1, q \circ \SumIn_2) : R \to \Eq_{\Sigma{R}}$, where $q : A + B \to A + B/\sim$ is the projection onto the quotient.
+The next proposition gives a complete proof of this fact.
+
+\begin{prop}
+There is an adjunction $\Sigma \dashv \Eq$.
+\end{prop}
+\begin{proof}
+Let $R : \rel(A, B)$ and $S: \set$.
+We want to show that there is a bijective correspondence between functions $\Sigma{R} \to S$ and morphisms of relations $R \to \Eq_S$.
+
+Let $f : \Sigma{R} \to S$ be a function.
+Define a morphism of relations $\tilde{f} = (\tilde{f}_1, \tilde{f}_2) : R \to \Eq_S$ as $\tilde{f}_1 a = f [ \SumIn_1 a ]$ and $\tilde{f}_2 b = f [ \SumIn_2 b ]$.
+This is a well-defined morphism of relations: indeed, if $(a, b) \in R$, then $\SumIn_1 a \sim \SumIn_2 b$ and thus $\tilde{f}_1 a = f [ \SumIn_1 a ] = f [ \SumIn_2 b ] = \tilde{f}_2 b$.
+
+Let $m = (m_1, m_2) : R \to \Eq_S$ be a morphism of relations.
+Define a function $\hat{m} : \Sigma{R} \to S$ as $\hat{m} [ \SumIn_1 a ] = m_1 a$ and $\hat{m} [ \SumIn_2 b ] = m_2 b$.
+This is well-defined: indeed, if $\SumIn_1 a \sim \SumIn_2 b$ (one out of four possible cases, the other three being $\SumIn_1 a \sim \SumIn_1 a'$, $\SumIn_2 b \sim \SumIn_1 a$, and $\SumIn_2 b \sim \SumIn_2 b'$), there is a finite sequence $a_1, b_1, a_2, b_2, \dots, a_n, b_n$ such that $a_1 = a$, $b_n = b$, $(a_i, b_i) \in R$ for all $i = 1 \dots n$ and $(a_{i + 1}, b_{i}) \in R$ for all $i = 1 \dots n - 1$.
+Then $m_1 a_1 = m_2 b_1 = m_1 a_2 = m_2 b_2 = \dots = m_1 a_n = m_2 b_n$, thus proving that $\hat{m}[\SumIn_1 a] = m_1 a = m_2 b = \hat{m}[\SumIn_2 b]$.
+We have analogous proofs for the other three cases.
+
+We now want to show that the two constructions are inverse to each other.
+In one direction, $\hat{\tilde{f}} [\SumIn_1 a] = \tilde{f}_1 a = f [\SumIn_1 a]$ and $\hat{\tilde{f}} [\SumIn_2 b] = \tilde{f}_2 b = f [\SumIn_2 b]$, and thus $\hat{\tilde{f}} = f$.
+In the other direction, $\tilde{\hat{m}}_1 a = \hat{m} [\SumIn_1 a] = m_1 a$ and $\tilde{\hat{m}}_2 b = \hat{m} [\SumIn_2 b] = m_2 b$, and thus $\tilde{\hat{m}} = m$.
+\end{proof}
+
+Observe that, for every relation $R : \rel(A, B)$, we can use the axiom of choice to define choice functions $\Xi_1 : \Sigma R \to A$ and $\Xi_2 : \Sigma R \to B$ such that $\SumIn_1 ( \Xi_1 x ) \in x$, $\SumIn_2 (\Xi_2 x ) \in x$, and $(\Xi_1 x, \Xi_2 x) \in R$ for every $x : \Sigma R$.
+In other words, $(\Xi_1, \Xi_2)$ chooses a pair of related elements out of each equivalence class of $\Sigma R$.
+Moreover, since $(\Xi_1 x, \Xi_2 x) \in R$ for every $x : \Sigma R$, it's immediate that $(\Xi_1, \Xi_2) : \Eq_{\Sigma R} \to R$ is a morphism of relations.
+
+
+
+
+\section{Counterexample to fibered interpretation of $\Lan$}
+
+We want to show that there is an isomorphism between \eqref{eq:RHS} and \eqref{eq:RHS_EQ}.
+The situation is represented in the following diagram
+\[
+\begin{tikzcd}[column sep = huge]
+&\setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 \rho) [\ol{\alpha := S}]
+\ar[d, "{l_{\ol{S}, \ol{g}}}"]
+\ar[dl, bend right = 15, "{j_{\ol{\Eq_{S}}, \ol{g}}}"'] \\
+\eqref{eq:RHS}
+\ar[r, bend right = 5, "{\Phi}"']
+&\eqref{eq:RHS_EQ}
+\ar[l, bend right = 5, "{\Psi}"'] \\
+\setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 \rho) [\ol{\alpha := \pi_1 R}]
+\ar[r, bend right = 5, "{\setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho} [\ol{\alpha := q \circ \SumIn_1}]}"']
+\ar[u, "{j_{\ol{R}, \ol{f}}}"]
+&\setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 \rho) [\ol{\alpha := \Sigma{R}}]
+\ar[u, "{l_{\ol{\Sigma{R}}, \ol{f \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}}}"']
+\end{tikzcd}
+\]
+where $l_{\ol{S}, \ol{g}} : \setsem{\Gamma; \Phi, \ol\alpha \vdash F} (\pi_1 \rho) [\ol{\alpha := S}] \to \eqref{eq:RHS_EQ}$ is the cocone into the colimit~\eqref{eq:RHS_EQ}.
+
+We define $\Phi : \eqref{eq:RHS} \to \eqref{eq:RHS_EQ}$ as the unique function such that $\Phi \circ j_{\ol{R}, \ol{f}} = l_{\ol{\Sigma{R}}, \ol{f \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]$ for every $\ol{R : \rel_0}$ and $\ol{f : \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}] \to \relsem{\Gamma; \Phi \vdash B}\rho}$.
+
+We define $\Psi : \eqref{eq:RHS_EQ} \to \eqref{eq:RHS}$ as the unique function such that $\Psi \circ l_{\ol{S}, \ol{g}} = j_{\ol{\Eq_S}, \ol{g}}$ for every $\ol{S : \set_0}$ and $\ol{g : \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_S}] \to \relsem{\Gamma; \Phi \vdash B}\rho}$.
+
+We want to show that $\Psi$ and $\Phi$ are inverses.
+For the composition $\Phi \circ \Psi$, we have that
+\[
+\Phi \circ \Psi \circ l_{\ol{S}, \ol{g}}
+= \Phi \circ j_{\ol{\Eq_S}, \ol{g}}
+= l_{\ol{\Sigma{\Eq_S}}, \ol{g \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]
+\]
+To show that $l_{\ol{S}, \ol{g}} = l_{\ol{\Sigma{\Eq_S}}, \ol{g \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]$, consider the following diagram in the indexing category:
+\[
+\begin{tikzcd}[column sep = huge]
+\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_S}]
+\ar[r, bend left = 5, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (q \circ \SumIn_1, q \circ \SumIn_2)}]}"]
+\ar[d, "{g}"']
+& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_{\Sigma{\Eq_S}}}]
+\ar[d, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}"] \\
+\relsem{\Gamma; \Phi \vdash B}\rho
+& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_{S}}]
+\ar[l, "{g}"]
+\end{tikzcd}
+\]
+The diagram commutes because $(\Xi_1 \circ q \circ \SumIn_1, \Xi_2 \circ q \circ \SumIn_2) = \id_{\Eq_S}$, i.e., $\Xi_1 \circ q \circ \SumIn_1 = \id_S$ and $\Xi_2 \circ q \circ \SumIn_2 = \id_S$.
+Indeed, $q$ is the projection into the quotient for the equivalence relation $\sim_{\Eq_S}$, for which $\SumIn_i x \sim_{\Eq_S} \SumIn_{i'} x'$ if and only if $x = x'$ for $i, i' = 1, 2$, so that $\Xi_1 ( q ( \SumIn_1 x ) ) = x$ and $\Xi_2 ( q ( \SumIn_2 x ) ) = x$.
+Thus, $l_{\ol{S}, \ol{g}} = l_{\ol{\Sigma{\Eq_S}}, \ol{g \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_1)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]$
+and we can conclude that $\Phi \circ \Psi = \id$.
+
+In the other direction, for the composition $\Psi \circ \Phi$, we have that
+\begin{align*}
+\Psi \circ \Phi \circ j_{\ol{R}, \ol{f}}
+&= \Psi \circ l_{\ol{\Sigma{R}}, \ol{f \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}] \\
+&= j_{\ol{\Eq_{\Sigma{R}}}, \ol{f \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]
+\end{align*}
+To show that
+\begin{equation}\label{eq:PsiPhi}
+j_{\ol{R}, \ol{f}} = j_{\ol{\Eq_{\Sigma{R}}}, \ol{f \circ \relsem{\emptyset; \ol\alpha \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}} \circ \setsem{\Gamma; \Phi, \ol\alpha \vdash F} \id_{\pi_1 \rho}[\ol{\alpha := q \circ \SumIn_1}]
+\end{equation}
+it would suffice the following diagram in the indexing category to commute:
+\begin{equation}\label{eq:index-comm}
+\begin{tikzcd}[column sep = huge]
+\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}]
+\ar[r, bend left = 5, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (q \circ \SumIn_1, q \circ \SumIn_2)}]}"]
+\ar[d, "{f}"']
+& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := \Eq_{\Sigma{R}}}]
+\ar[d, "{\relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := (\Xi_1, \Xi_2)}]}"] \\
+\relsem{\Gamma; \Phi \vdash B}\rho
+& \relsem{\emptyset; \ol{\alpha} \vdash K}[\ol{\alpha := R}]
+\ar[l, "{f}"]
+\end{tikzcd}
+\end{equation}
+As before, this requires $(\Xi_1 \circ q \circ \SumIn_1, \Xi_2 \circ q \circ \SumIn_2) = \id_{R}$, i.e., that $\Xi_1 \circ q \circ \SumIn_1 = \id_{\pi_1 R}$ and $\Xi_2 \circ q \circ \SumIn_2 = \id_{\pi_2 R}$, where $q$ is the projection into the quotient for the equivalence relation $\sim_{R}$.
+But that was true in the previous direction because we were considering an equality relation, for which the equivalence classes are singletons.
+For a generic relation $R$, as in this case, there seem to be no reason why this should be true, and indeed we shall provide a counterexample.
+
+It is worth noting that we have not definitively disproved Equation~\ref{eq:PsiPhi}, but we have just shown how this way of proving the equation does not work.
+
+\begin{exa}
+Let $R$ be the relation $(\{ 1, 2, 3\}, \{a, b\}, \{(1, a), (2, b), (3, b)\}, d_R, c_R)$ where $d_R$ maps $a$ into $1$ and $b$ into $2$, and $c_R$ maps $1$ into $a$, and $2$ and $3$ into $b$.
+Thus, $\Sigma{R}$ is the set $\{ \{1, a\}, \{2, 3, b\} \}$.
+We also have the morphism of relations $(q \circ \SumIn_1, q \circ \SumIn_2) : R \to \Eq_{\Sigma{R}}$ where $q \circ \SumIn_1$ sends $1$ into $\{1, a\}$, and $2$ and $3$ into $\{2, 3, b\}$; $q \circ \SumIn_2$ sends $a$ into $\{1, a\}$, and $b$ into $\{2, 3, b\}$.
+Moreover, we have the choice functions $\Xi_1 : \Sigma R \to \{ 1, 2, 3\}$ sending $\{1, a\}$ to $1$ and $\{2, 3, b\}$ to $2$, and $\Xi_2 : \Sigma_R \to \{a, b\}$ sending $\{1, a\}$ to $a$ and $\{2, 3, b\}$ to $b$.
+
+Let $K = \alpha$, $B = \beta$ with $\rho \beta = R$ and $f = \id_R$.
+Instantiating the above diagram, we get that it commutes if and only if $(\Xi_1, \Xi_2) \circ (q \circ \SumIn_1, q \circ \SumIn_2) = \id_R$.
+But $\Xi_1 \circ q \circ \SumIn_1$ is not the identity (as it is not injective, because $\Xi_1 ( q ( \SumIn_1 2 ) ) = \Xi_1 \{ 2, 3, b \} = \Xi_1 ( q ( \SumIn_1 3 ) )$) and thus the diagram does not commute.
+
+This still does not exclude that Equation~\eqref{eq:PsiPhi} might hold.
+Let $F = \alpha$.
+Then Equation~\eqref{eq:PsiPhi} becomes $j_{\ol{\Eq_{\Sigma{R}}}, \ol{(\Xi_1, \Xi_2)}} \circ q \circ \SumIn_1 = j_{\ol{R}, \ol{\id}}$, as shown in the following diagram:
+\[
+\begin{tikzcd}
+\pi_1 R
+\ar[r, "{j_{\ol{R}, \ol{\id}}}"]
+\ar[d, "{q \circ \SumIn_1}"']
+&\colim{Q: \rel_0, f: Q \to R}{\pi_1 Q} \\
+\Sigma{R}
+\ar[ur, "{j_{\ol{\Eq_{\Sigma{R}}}, \ol{(\Xi_1, \Xi_2)}}}"']
+\end{tikzcd}
+\]
+Notice that $\colim{Q: \rel_0, f: Q \to R}{\pi_1 Q} = \pi_1 \colim{Q: \rel_0, f: Q \to R}{Q} = \pi_1 R$, and thus $j_{\ol{R}, \ol{\id}} = \id_{\pi_1 R}$ and $j_{\ol{\Eq_{\Sigma{R}}}, \ol{(\Xi_1, \Xi_2)}} = \Xi_1$.
+Finally, Equation~\eqref{eq:PsiPhi} becomes $\Xi_1 \circ q \circ \SumIn_1 = \id_{\pi_1 R}$, which we already showed being false.
+\end{exa}
+
+Observe that, for the choice of $K$, $F$ and $B$ as in the example above, it is actually the case that $\eqref{eq:LHS} \cong \eqref{eq:RHS}$, as they are both equal to $\pi_1 R$.
+Indeed, by instantiating, we have that $\eqref{eq:LHS} = \colim{\ol{S : \set_0}, \ol{g : S \to \pi_1 R}}{S} = \pi_1 R$ and
+$\eqref{eq:RHS} = \colim{\ol{Q : \rel_0}, \ol{f : Q \to R}}{\pi_1 Q} = \pi_1 \colim{\ol{Q : \rel_0}, \ol{f : Q \to R}}{Q} = \pi_1 R$.
+So, the above is not a counterexample to $\eqref{eq:LHS} \cong \eqref{eq:RHS}$, but just to the commutativity of Diagram~\ref{eq:index-comm}.
+
+
+
+\bibliographystyle{alpha}
+\bibliography{references}
+  
+\end{document}
+
+
+
