@@ -623,7 +623,7 @@ that for type application, which defines $(\psi \ol G)[\phi
 
 \begin{figure*}
 
-  \begin{adjustbox}{varwidth=5.4in, max width=5in, fbox, center}
+  \begin{adjustbox}{varwidth=5.4in, max width=5in, margin=-0.1in 0in -0.3in 0in, fbox, center}
        \[\begin{array}{ccc}
        \AXC{$\Gamma;\Phi \vdash F$}
        \UIC{$\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F$}
@@ -932,7 +932,10 @@ in the second clause of Figure~\ref{fig:set-sem} are given in full
 in Figure~\ref{fig:rel-sem}.
 
 \begin{figure}[t]
-  \begin{adjustbox}{varwidth=5in, max width=5in, fbox, center}
+  \begin{adjustbox}{varwidth=5in, max width=4.6in, fbox, center}
+
+\vspace*{-0.15in}
+    
   \begin{align*}
   \setsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \setsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
@@ -943,9 +946,9 @@ in Figure~\ref{fig:rel-sem}.
     F}\rho[\ol{\alpha := A}] 
       \Rightarrow \lambda \ol{A}.\,\setsem{\Gamma; 
         \ol{\alpha} \vdash G}\rho[\ol{\alpha := A}] \\ 
-      &\hspace{0.2in}|~\forall \overline{A}, \overline{B} :
+      &\hspace*{0.2in}|~\forall \overline{A}, \overline{B} :
       \set. \forall \overline{R : \rel(A, B)}.\\ 
-      &\hspace{0.2in}(\eta_{\overline{A}}, \eta_{\overline{B}})
+      &\hspace*{0.2in}(\eta_{\overline{A}}, \eta_{\overline{B}})
       : \relsem{\Gamma; \ol{\alpha} \vdash F}\Eq_{\rho}[\ol{\alpha := R}]
       \rightarrow \relsem{\Gamma; \ol{\alpha} \vdash
         G}\Eq_{\rho}[\ol{\alpha := R}] \} \\
@@ -1034,51 +1037,47 @@ $f : \rho \to \rho'$ in $\setenv$ is given by:
  $\setsem{\Gamma;\Phi \vdash \zerot}f = \id_0$
 \item
   $\setsem{\Gamma;\Phi \vdash \onet}f = \id_1$
-\item 
+\item
   $\setsem{\Gamma; \emptyset
     \vdash \Nat^{\ol{\alpha}}\,F\,G} f =
   \id_{\setsem{\Gamma; \emptyset
       \vdash \Nat^{\ol{\alpha}}\,F\,G}\rho}$
-\item 
+\item
 $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
   \vdash \phi \ol{F}}\rho \to \setsem{\Gamma;\Phi \vdash
-  \phi\ol{F}}\rho' = (\rho\phi) \ol{\setsem{\Gamma;\Phi \vdash F}\rho}
-  \to (\rho'\phi) \ol{\setsem{\Gamma;\Phi \vdash F}\rho'}$ is defined
-  by $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f =
+  \phi\ol{F}}\rho' = (\rho\phi) \ol{\setsem{\Gamma;\Phi \vdash
+    F}\rho}$ $\to (\rho'\phi) \ol{\setsem{\Gamma;\Phi \vdash F}\rho'}$
+  is defined by $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f =
   (f\phi)_{\ol{\setsem{\Gamma;\Phi \vdash F}\rho'}}\, \circ\,
   (\rho\phi) {\ol{\setsem{\Gamma;\Phi \vdash F}f}} = (\rho'\phi)
   {\ol{\setsem{\Gamma;\Phi \vdash F}f}}\, \circ\, (f
-  \phi)_{\ol{\setsem{\Gamma;\Phi \vdash F}\rho}}$.  The latter
-  equality holds because $\rho\phi$ and $\rho'\phi$ are functors and
+  \phi)_{\ol{\setsem{\Gamma;\Phi \vdash F}\rho}}$.  This holds 
+  since $\rho\phi$ and $\rho'\phi$ are functors and
   $f\phi : \rho\phi \to \rho'\phi$ is a natural transformation.
-\item 
+\item
   $\setsem{\Gamma;\Phi
   \vdash F + G}f$ is defined by $\setsem{\Gamma;\Phi \vdash
-  F + G}f(\inl\,x) = \inl\,(\setsem{\Gamma;\Phi \vdash
+  F + G}f(\inl\,x) =$\\ $\inl\,(\setsem{\Gamma;\Phi \vdash
   F}f x)$ and $\setsem{\Gamma;\Phi \vdash F +
   G}f(\inr\,y) = \inr\,(\setsem{\Gamma;\Phi \vdash G}f y)$
-\item 
+\item
   $\setsem{\Gamma;\Phi \vdash F \times G}f = 
   \setsem{\Gamma;\Phi \vdash F}f \times \setsem{\Gamma;\Phi \vdash
     G}f$
-\item 
-$\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
-  \ol{\alpha}. H)\ol{G}} f \;: \;\setsem{\Gamma;\Phi \vdash
-  (\mu \phi.\lambda \ol{\alpha}. H)\ol{G}} \rho \to
-  \setsem{\Gamma;\Phi \vdash (\mu
-    \phi.\lambda\ol{\alpha}. H)\ol{G}} \rho' \;= \;(\mu
-  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}\rho} \to
-  (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash
-      G}\rho'}$ is defined by $(\mu
-  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho'} \circ
-  (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}f}\;
-  = \; (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash
-      G}f}\, \circ\, (\mu
-  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho}$.  The
-  latter equality holds because $\mu T^\set_{H,\rho}$ and $\mu
-  T^\set_{H,\rho'}$ are functors and $\mu T_{H,f}^\set : \mu
-  T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a natural
-  transformation.
+\item
+$\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda \ol{\alpha}. H)\ol{G}} f
+  \;: \;\setsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
+    \ol{\alpha}. H)\ol{G}} \rho \to$\\ $\setsem{\Gamma;\Phi \vdash (\mu
+    \phi.\lambda\ol{\alpha}. H)\ol{G}} \rho'\! = \!(\mu
+  T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}\rho} \to (\mu
+  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash G}\rho'}$ is defined
+  by $(\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho'} \circ
+  (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}f} =$\\ $(\mu
+  T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi \vdash G}f}\, \circ\, (\mu
+  T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash G}\rho}$.  This holds
+  since $\mu T^\set_{H,\rho}$ and $\mu T^\set_{H,\rho'}$ are functors
+  and $\mu T_{H,f}^\set : \mu T_{H,\rho}^\set \to \mu
+  T_{H,\rho'}^\set$ is a natural transformation.
 \end{itemize}
 \end{definition}
 
@@ -1123,18 +1122,18 @@ action of $H$ on morphisms is given by $H\,(\delta^1,\delta^2) =
 transformers and morphisms between them must give $k$-ary relation
 transformers and morphisms between them, this definition implicitly
 requires the following three conditions to hold: \,{\em i})
-$H^*(F^1,F^2,F^*) \ol{R} : \rel(H^1F^1 \ol{A}, H^2F^2 \ol{B})$
-whenever $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$; {\em ii})
+$H^*(F^1,F^2,F^*) \ol{R} : \rel(H^1F^1 \ol{A}, H^2F^2 \ol{B})$ if
+$R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$; {\em ii})
 $H^*(F^1,F^2,F^*)\, \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha}, H^2F^2
-\ol{\beta})$ whenever $(\alpha_1, \beta_1) \in \Homrel(R_1,S_1),...,
-(\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$; and {\em iii}) $(\delta^1,\delta^2) : 
-(F^1,F^2,F^*)\to (G^1,G^2,G^*)$ and
+\ol{\beta})$ if $(\alpha_1, \beta_1) \in \Homrel(R_1,S_1),...,
+(\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$; and {\em iii}) if
+$(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ and
 $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
 $((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
-H^*(G^1,G^2,G^*)\ol{R}$ whenever $(x, y) \in
-H^*(F^1,F^2,F^*)\ol{R}$. Note, however, that this last condition is
-automatically satisfied because it is implied by the third condition
-on functors on relation transformers.
+H^*(G^1,G^2,G^*)\ol{R}$ if $(x, y) \in H^*(F^1,F^2,F^*)\ol{R}$. Note,
+however, that this last condition is automatically satisfied because
+it is implied by the third condition on functors on relation
+transformers.
 
 If $H$ and $K$ are endofunctors on $RT_k$, then a {\em natural
   transformation} $\sigma : H \to K$ is a pair $\sigma = (\sigma^1,
@@ -1213,12 +1212,12 @@ on $\rho$ in $\relenv$ is given by $H \rho = (H^1 (\pi_1 \rho),\,H^2
 (\pi_2 \rho),\,H^*\rho)$; and the action of $H$ on morphisms $f : \rho
 \to \rho'$ in $\relenv$ is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2
 f))$.  The last two points above give: {\em i}) if $\ol{R_i :
-  \rel(A_i,B_i)}$ for $i = 1,...,k$ then $H^*\rho\, \ol{R} :
+  \rel(A_i,B_i)}$, $i = 1,...,k$, then $H^*\rho\, \ol{R} :
 \rel(H^1(\pi_1 \rho)\, \ol{A}, H^2(\pi_2 \rho)\, \ol{B})$; {\em ii})
-if $\ol{(\alpha_i, \beta_i) \in \Homrel(R_i,S_i)}$ for $i = 1,...,k$
+if $\ol{(\alpha_i, \beta_i) \in \Homrel(R_i,S_i)}$, $i = 1,...,k$,
 then $H^*\rho\, \ol{(\alpha, \beta)} = (H^1(\pi_1 \rho)\,\ol{\alpha},
 H^2(\pi_2 \rho)\, \ol{\beta})$; and {\em iii}) if $f : \rho \to \rho'$
-and $\ol{R_i:\rel(A_i,B_i)}$ for $i = 1,...,k$, then if $(x, y) \in
+and $\ol{R_i:\rel(A_i,B_i)}$, $i = 1,...,k$, then if $(x, y) \in
 H^*\rho\,\ol{R}$ then $(H^1(\pi_1 f)\,{\ol{A}}\,x, H^2(\pi_2
 f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$.
 
@@ -1229,7 +1228,10 @@ functors from $\relenv$ to $RT_k$.
 Our relational interpretation $\relsem{\cdot} : \F \to [\relenv,
 \rel]$ is given in Figure~\ref{fig:rel-sem}.
 \begin{figure}[t]
-\begin{adjustbox}{varwidth=5in, max width=5in, fbox, center}
+\begin{adjustbox}{varwidth=5in, max width=4.65in, fbox, center}
+
+\vspace*{-0.15in}
+
   \begin{align*}
   \relsem{\Gamma;\Phi \vdash \zerot}\rho &= 0\\
   \relsem{\Gamma;\Phi \vdash \onet}\rho &= 1\\
@@ -1481,8 +1483,8 @@ With the IEL in hand we can prove a Graph Lemma for our setting:
 \begin{lemma}
   \label{lem:graph}
   If $\rho, \rho' \in \setenv$ and $f : \rho \to \rho'$
-  then $\graph{\setsem{\Gamma; \Phi \vdash F} f} =
-\relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+  then \[\graph{\setsem{\Gamma; \Phi \vdash F} f} =
+\relsem{\Gamma; \Phi \vdash F}\graph{f}\]
 \end{lemma}
 
 
@@ -1510,8 +1512,11 @@ $\pi_{\Delta}$ is the projection $\sem{\Gamma;\Phi \vdash \Delta, x :
 
 
 \begin{figure}[t]
-\begin{adjustbox}{varwidth=6in, max width=5.3in, fbox, center}
-\[\begin{array}{lll}
+\begin{adjustbox}{varwidth=6in, max width=4.65in, fbox, center}
+
+\vspace*{-0.15in}
+
+  \[\begin{array}{lll}
 \dsem{\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F} \rho& = &
 \pi_{|\Delta|+1}\\
 \dsem{\Gamma;\emptyset \,|\, \Delta \vdash L_{\overline \alpha} x.t : \Nat^{\overline
@@ -1726,9 +1731,9 @@ appropriate, $\sem{\Gamma;\Phi~|~\Delta \vdash t : F}^{\mathsf D} :
 \sem{\Gamma; \Phi \vdash \Delta}^{\mathsf D} \to \sem{\Gamma; \Phi
   \vdash F}^{\mathsf D}$ has component $\sem{\Gamma;\Phi~|~\Delta
   \vdash t : F}^{\mathsf D}\rho : \sem{\Gamma; \Phi \vdash
-  \Delta}^{\mathsf D}\rho \to \sem{\Gamma; \Phi \vdash F}^{\mathsf
+  \Delta}^{\mathsf D}\rho$ $\to \sem{\Gamma; \Phi \vdash F}^{\mathsf
   D}\rho$ at $\rho$. Moreover, for all $\rho \in \relenv$, we have
-$\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho =
+$\relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho$ $=
 (\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_1 \rho),\,
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : F}(\pi_2 \rho))$.
 
@@ -1776,7 +1781,7 @@ is $\mathit{fold}_{H}\, B \; \circ \; G\; \mu H \; \mathit{in}_{H} = G
 \begin{theorem}\label{thm:short-cut-nested}
 If $\emptyset;\phi,\alpha \vdash F$, $\emptyset; \alpha
 \vdash K$, 
-$H : [\set,\set] \to [\set,\set]$ is defined by $H\,f\,x =
+$H : [\set,\set] \to [\set,\set]$ is defined by $Hfx =
 \setsem{\emptyset; \phi, \alpha \vdash F}[\phi := f][\alpha := x]$,
 and $G = \llbracket \phi;\emptyset\,|\,\emptyset \vdash g :
 \Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))$ \\
