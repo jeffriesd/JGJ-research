@@ -193,7 +193,7 @@ GADTs are traditionally represented via Church encodings. In this
 view, GADTs are completely determined by their syntax. For example,
 the GADT $\mathsf{G}$ defined by
 \[\begin{array}{l}
-\mathsf{data\,G : * \to *}\\
+\mathsf{data\,G : * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;c : G\,1}
 \end{array}\]
 {\color{blue} Use $\top$ instead of $1$ throughout?}
@@ -317,12 +317,12 @@ is determined by the types of its two constructors $\mathsf{Nil\, ::\,
 type $\mathsf{List\,a}$ are arranged linearly. The shape underlying
 the type $\mathsf{List\,a}$ is therefore given by the set $\nat$ of
 natural numbers, and the positions in a structure of this type are
-given by specific natural numbers. Since the argument to every
+given by specific natural numbers. Since the type argument to every
 occurrence of the type constructor $\mathsf{List}$ in the right-hand
-side of above definition is the same as on its left-hand side, the
-type $\mathsf{List\,a}$ enforces the invariant that all of the data in
-a structure of this type have the same type $\mathsf{a}$. In a similar
-way, the tree type
+side of above definition is the same the type instance being defined
+on its left-hand side, the type $\mathsf{List\,a}$ enforces the
+invariant that all of the data in a structure of this type have the
+same type $\mathsf{a}$. In a similar way, the tree type
 \[\mathsf{Tree\, a} = \mathsf{Leaf\,a}
 \,|\,\mathsf{Node\,(Tree\,a)\,a\,(Tree\,a)}\] of binary trees
 has as its underlying shape the type of binary trees of units, and the
@@ -439,7 +439,7 @@ ensure that the syntactic fixpoint actually denotes a semantic object
 computed as a real-live fixpoint, the semantic fixpoint calculation
 must converge. This means that the fixpoint being taken must be of
 {\em functors} on the category interpreting types~\cite{tfca}, rather
-than mere functions between the sets interpreting them. Said
+than of mere functions between the sets interpreting them. Said
 differently, functions between sets interpreting types must have
 corresponding {\em functorial actions} on functions between
 interpretations of types. Reflecting this requirement back into syntax
@@ -587,40 +587,126 @@ cut fusion for nested types, that require the full power of
 parametricity.
 \end{comment}
 
-\subsection{GADTs}\label{sec:gadts}
+\subsection{GADT Syntax}\label{sec:gadts}
 
-GADTs and their uses and ubiquity in modern computing. Note in
-particular that GADTs are purposely defined not to behave
-type-uniformly. We will explore the consequences of this in
-Section~\ref{sec:GADT-semantics}.
+{\color{blue} polynomial} GADTs relax the restriction on the type
+instances appearing in a data type definition. The special form of
+GADTs known as {\em nested types} allow the data constructors of a
+GADT to take as arguments data whose types involve type instances of
+the GADT other than the one being defined. For example, the 
+definition 
+\[\mathsf{PTree \, a = PLeaf \,a \,|\, PNode \,(PTree\,(a \times
+  a))}\] of the nested type $\mathsf{PTree\,a}$ of perfect trees
+introduces the data constructor(s $\mathsf{PLeaf :: a \to PTree\,a}$
+and) $\mathsf{PNode :: PTree \,(a\times a) \to PTree\,a}$. It enforces
+not only the invariant that all of the data in a structure of type
+$\mathsf{PTree\,a}$ is of the same type $\mathsf{a}$, but also the
+invariant that all perfect trees have lengths that are powers of
+2. More general GADTs allow their constructors both to take as
+arguments {\em and return as results} data whose types involve type
+instances of the GADT other than the one being defined. An example is
+the following GADT, given in Haskell syntax:
+\[\begin{array}{l}
+\mathsf{data\, Seq : * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Const :\, a \to Seq\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, :\, Seq \,a \to Seq\,b \to
+  Seq\,(a \times b)}\\ 
+\end{array}\]
+Since the return type of the data constructor $\mathsf{Pair}$ is not
+simply a variable, $\mathsf{Seq}$ is not a nested type.
 
-IMPORT ENRICO
+By contrast with the ADT $\mathsf{List\, a}$, where the type parameter
+$\mathsf{a}$ is integral to the type being defined, the type parameter
+$\mathsf{a}$ in $\mathsf{PTree\,a}$ and $\mathsf{Seq\,a}$ appears as a
+``dummy'' parameter used only to give the kind \verb|* -> *| of the
+type constructors $\mathsf{PTree}$ and $\mathsf{Seq}$. This is
+explicitly captured by the above GADT syntax. A GADT --- even a nested
+type --- thus does not define a {\em family of inductive types}, one
+for each type argument, like an ADT does, but instead defines an
+entire family of types that must be constructed simultaneously. That
+is, a GADT defines an {\em inductive family of types}.
+
+\subsubsection{Church Encodings of GADTs}
+
+The syntax of GADTs is consonant with programmers' frequent use of
+them in situations where type uniformity is specifically to be
+eschewed.  {\color{blue} Typical applications of GADTs include generic
+  programming, modeling programming languages via higher-order
+  abstract syntax, maintaining invariants in data structures, and
+  expressing constraints in embedded domain-specific languages. GADTs
+  have also been used to implement tagless
+  interpreters~\cite{pl04,pr06,pvww06} by trading the definition of a
+  universal value domain for a direct specification of the property of
+  being a value. Other applications are described in,
+  e.g.,~\cite{js15,rou06,MORE,UPDATED}. OTHER SITUATIONS NEEDING
+  TYPE-BASED DISPATCH.}
+
+GADTs are useful in such situations precisely because generalizing the
+type arguments in the instances of a GADT appearing as the return
+types of its data constructors entails a strong connection between a
+GADTs shape and the data it contains.  With ADTs, we first choose the
+shape of the container and then fill that container with data of
+whatever type we like. Critically, the choice of shape is independent
+of the data to be stored. With GADTs, however, the shape of the
+``container'' may actually {\em depend} on (the type of) the data to
+be contained. On other words, the shape and the data are not
+independent! As a result, it may not always be possible to modify a
+GADT's data while retaining its shape because changing (the type of)
+the data may actually change the shape.
+
+To determine the possible shapes of a GADT's container we have to
+pattern-match on the type of the data to be contained. For this, our
+GADT calculus must support an equality type $\mathsf{Eq}$ that is
+inhabited when its two type arguments are the same and is uninhabited
+otherwise, i.e., the syntactic reflection of semantic equality. Such a
+type can either be taken as primitive or
+%, in a higher-kinded calculus such as $F\omega$,
+can be represented by its own Church encoding
+\[\mathsf{Eq\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
+  f\,a\,a) \to f\,t_1\,t_2}\] 
+Using $\mathsf{Eq}$ the GADT $\mathsf{Seq}$, e.g., can be written as 
+{\color{red} START HERE}
+\[ {\color{blue} WHAT GOES HERE??} \]
 
 
-%Seeing even ADTs as fixpoints of higher-order functors opens the door
-%to GADTs... 
+
+Note that Seq has no syntactic map (because Pair doesn't), i.e., is
+not an instance of the Functor class, and is not required to in this
+representation.
 
 
-For ADTs, shape and data are independent. Choose the shape first and
-then fill it. GADTs are not like ADTs: the shape of the ``container''
-depends on the contained data, so that it's not possible to modify the
-data while retaining the shape because shape and data are not
-independent.  So if we try to add GADTs, then we have to account for
-the dependency between shape and data. The relationship between (how)
-the data (is constructed) and the shape is left out.  But the data in
-a GADT shouldn't disappear just because you map a function over it!
-This is odd! So in what sense to GADTs generalize ADTs? In what sense
-are they even data types?
+\subsubsection{GADTs as Primitive Data Types}
 
 
 
+Moreover, because its type argument varies in the instances of
+$\mathsf{Seq}$ appearing in the types of its data constructors,
+$\mathsf{Seq}$ cannot be characterized by any first-order fixpoint
+equation. It can, be viewed as a solution to the higher-order fixpoint
+equation
+\[\mathsf{H\,f\,a = a \,+\,Lan_{\lambda a\,b.\,a \times b}\,
+  \lambda a\,b.\,f\,a \times f\,b}\] where $\mathsf{Lan_k\, g}$ is the
+syntactic reflection of the {\em left Kan extension} $\Lan_K \,G$ of
+the functor $G$ interpreting $\mathsf{g}$ along the functor $K$
+interpreting $\mathsf{k}$~\cite{mac71}.
+
+
+Other GADTs
+are similarly characterizable by higher-order functors.  The
+difference between ADTs and GADTs can thus be seen as a difference in
+{\em orders} of their underlying functors. {\color{blue} The role of
+  higher-order functors here is essential.}
+
+
+
+
+{\color{blue} GADTs make essential use of higher-order functors.}
+
+
+Need syntax functors (Lan)
 The representation choices are similar for GADTs. The difference is
 that the two are not isomorphic.
 
-
-Once we see that we are interested in fixpoints of higher-order
-functors, we begin to relax the uniformity. This has naturally led to
-consideration of nested types such as... and GADTs such as...
 
 Having interpretations as fixpoints of higher-order functors, nested
 types also have corresponding $\mathsf{fmap}$ functions.
@@ -631,12 +717,18 @@ expect the same behaviors.
 Polynomial nested types are actually the GADTs that mimic polynomial
 ADT behavior.
 
-
-
 But pattern matching fails for the extension (functorial completion)
 of a GADT.
 
+
 \section{Semantics of GADTs}\label{sec:GADT-semantics}
+
+But the data in a GADT shouldn't disappear just because you map a
+function over it!  This is odd! So in what sense to GADTs generalize
+ADTs? In what sense are they even data types?
+
+The semantics of GADTs is not so clear.
+
 
 Functorial completion containerizes the GADT. Extension of a
 container. The extension of a container is an endofunctor generalizing
