@@ -454,8 +454,8 @@ whose action on morphisms (which models its corresponding
 $\mathsf{map}$ function) is given by $F_a\,f = 1 + \id_a \times
 f$. The type constructor $\mathsf{List}$ is then modelled by the
 higher-order functor $H$ whose action on objects is given by $H\,F\,X
-= 1 + X \times H\,F\,X$ and whose action on morphisms is givne by
-$H\,F\,f = \id_1 + f \times H\,F\,f$. (A {\em higher-order functor} in
+= 1 + X \times F\,X$ and whose action on morphisms is given by
+$H\,F\,f = \id_1 + f \times F\,f$. (A {\em higher-order functor} in
 this context is a functor not directly on the category interpreting
 types, but rather on the category of functors interpreting type
 constructors, i.e., on the category of functors on the category of
@@ -658,8 +658,8 @@ To determine the possible shapes of a GADT's container we have to
 pattern-match on the type of the data to be contained. For this, our
 GADT calculus must support an equality type $\mathsf{Eq}$ that is
 inhabited when its two type arguments are the same and is uninhabited
-otherwise, i.e., the syntactic reflection of semantic equality. Such a
-type can either be taken as primitive, as in
+otherwise, i.e., is the syntactic reflection of semantic equality
+$\Eq$. Such a type can either be taken as primitive, as in
 \[\begin{array}{l}
 \mathsf{data\, Eq :: * \to * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Refl ::\, Eq\,a\,a}\\
@@ -669,40 +669,70 @@ or
 %, in a higher-kinded calculus such as $F\omega$,
 represented by its own Church encoding
 \[\mathsf{Eq\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
-  f\,a\,a) \to f\,t_1\,t_2}\] 
-Using $\mathsf{Eq}$, the GADT $\mathsf{Seq}$, e.g., can be written as 
-{\color{red} START HERE}
-\[ {\color{blue} WHAT GOES HERE??} \]
+  f\,a\,a) \to f\,t_1\,t_2}\]
+Using $\mathsf{Eq}$, the GADT $\mathsf{Seq}$ can be written as
+%\[\mathsf{Seq\,a} = \mathsf{a + Eq\,a\,(b \times c) \times Seq\,b
+%  \times Seq\,c} \] 
+\[\begin{array}{l}
+\mathsf{data\, Seq :: * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Eq\,a\,(b \times c) \to
+  Seq \,b \to Seq\,c \to Seq\,a}\\ 
+\end{array}\]
 
-
-
-Note that neither Eq nor Seq has a syntactic map (because one for Eq
-leads to a contradition as in Daniel's exampe below, and because one
-for Seq can't exist because of Pair), i.e., is not an instance of the
-Functor class, and is not required to in this representation.
-
-
-
-
-data Equal a b where
-  Refl :: Equal a a
-
-eqElim :: Equal a b -> a -> b
-eqElim Refl x = x
-
-emptyFromMapEq :: (forall a b c. (a -> b) -> Equal a c -> Equal b c) -> Void
-emptyFromMapEq fmap = eqElim (fmap absurd Refl) ()
-
+This rewriting of $\mathsf{Seq}$'s definition shows that it can be
+seen as a fixpoint $\mu H$ of the higher-order function $H$ defined on
+objects by $H\,F\,a = a + Eq\,a\,(b \times c) \times F\,b \times
+F\,c$. We note, however, that $Eq\,a$ cannot be made a functor, or,
+equivalently, that $\mathsf{Eq\,a}$ cannot be an instance of Haskell's
+$\mathsf{Functor}$ class. Indeed, if $\mathsf{Eq\,a}$ supported a
+function $\mathsf{map_{Eq\,a} :: (b \to c) \to Eq\,a\,b \to Eq\,a\,c}$
+then defining
+\[\begin{array}{l}
+\mathsf{eqElim :: Eq\, a\, b \to b \to a}\,{\color{red} wasEq\,a\,b\to b\to a}\\
+\mathsf{eqElim\, Refl\, x = x} 
+\end{array}\]
+would allow us to construct the following element of the type
+$\mathsf{Void}$:
+\[\begin{array}{l}
+\mathsf{emptyFromMapEqa :: (\forall b\, c.\, (b \to c) \to Eq\, a\,
+  b \to Eq\, a \,c) \to Void}\\ 
+\mathsf{emptyFromMapEqa \,map_{Eq\,a} = eqElim\, (map_{\Eq\,a}\,
+  absurd\, Refl)\, ()}  
+\end{array}\]
+Of course this is impossible.  It follows immediately that
+$\mathsf{Seq}$ cannot support a map function either. This is already
+evident from the Haskell definition of $\mathsf{Seq}$, though. The
+clause of $\mathsf{map}$ for the $\mathsf{Pair}$ constructor should
+feed $\mathsf{map}$ a function $\mathsf{f :: (b \times c) \to e}$ and
+a term of the form $\mathsf{Pair \,t_1\,t_2}$ for $\mathsf{x :: b}$
+and $\mathsf{y :: c}$, and produce a term $\mathsf{Pair\,t_1'\,t_2'}$
+for some appropriately typed terms $\mathsf{t_1'}$ and
+$\mathsf{t_2'}$. But it is not clear how to achieve this since
+$\mathsf{e}$ need not necessarily be a product type. And even if
+$\mathsf{e}$ {\em were} known to be of the form $\mathsf{w \times z}$,
+then we still wouldn't necessarily have a way to produce data of type
+$\mathsf{w \times z}$ from only $\mathsf{f :: b \times c \to w \times
+  z}$ and $\mathsf{x}$ and $\mathsf{y}$ unless we knew, e.g., that
+$\mathsf{f}$ was a pair of functions.
 
 \subsubsection{GADTs as Primitive Data Types}
 
+The primitive representations of {\color{blue} polynomial} GADTs
+capture in syntax the fact that GADTs can be considered as fixpoints
+of higher-order functors. The use of {\em higher-order functions} is
+essential, since the type arguments to the GADT being defined are not
+uniform across all of its instances in the types of its data
+constructors; the use of higher-order funct{\em ors} is essential, as
+for ADTs, to the very existence of the fixpoints being
+computed~\cite{tfca}.
 
-
-Moreover, because its type argument varies in the instances of
-$\mathsf{Seq}$ appearing in the types of its data constructors,
-$\mathsf{Seq}$ cannot be characterized by any first-order fixpoint
-equation. It can, be viewed as a solution to the higher-order fixpoint
-equation
+Consider, for example, the GADT $\mathsf{Seq}$ from above.  Because
+its type argument varies in the instances of $\mathsf{Seq}$ appearing
+in the types of its data constructor $\mathsf{Pair}$, $\mathsf{Seq}$
+cannot be characterized by any first-order fixpoint equation. It can,
+however, be viewed as a solution to the higher-order fixpoint equation
+{\color{blue} syntax or semantics?}
 \[\mathsf{H\,f\,a = a \,+\,Lan_{\lambda a\,b.\,a \times b}\,
   \lambda a\,b.\,f\,a \times f\,b}\] where $\mathsf{Lan_k\, g}$ is the
 syntactic reflection of the {\em left Kan extension} $\Lan_K \,G$ of
@@ -710,25 +740,15 @@ the functor $G$ interpreting $\mathsf{g}$ along the functor $K$
 interpreting $\mathsf{k}$~\cite{mac71}.
 
 
-Other GADTs
-are similarly characterizable by higher-order functors.  The
-difference between ADTs and GADTs can thus be seen as a difference in
-{\em orders} of their underlying functors. {\color{blue} The role of
-  higher-order functors here is essential.}
-
-
-
-
-{\color{blue} GADTs make essential use of higher-order functors.}
+Other GADTs are similarly characterizable by higher-order functors.
+The difference between ADTs and GADTs can thus be seen as a difference
+in {\em orders} of their underlying functors. {\color{blue} GADTs
+  make essential use of higher-order functors.}
 
 
 Need syntax functors (Lan)
 The representation choices are similar for GADTs. The difference is
 that the two are not isomorphic.
-
-
-Having interpretations as fixpoints of higher-order functors, nested
-types also have corresponding $\mathsf{fmap}$ functions.
 
 Certain ``polynomial'' GADTs correspond to polynomial ADTs. So we
 expect the same behaviors.
@@ -748,6 +768,7 @@ ADTs? In what sense are they even data types?
 
 The semantics of GADTs is not so clear.
 
+Functorial comnpletion doesn't give nested types
 
 Functorial completion containerizes the GADT. Extension of a
 container. The extension of a container is an endofunctor generalizing
