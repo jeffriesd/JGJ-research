@@ -607,9 +607,9 @@ arguments {\em and return as results} data whose types involve type
 instances of the GADT other than the one being defined. An example is
 the following GADT, given in Haskell syntax:
 \[\begin{array}{l}
-\mathsf{data\, Seq : * \to *\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Const :\, a \to Seq\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, :\, Seq \,a \to Seq\,b \to
+\mathsf{data\, Seq :: * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Seq \,a \to Seq\,b \to
   Seq\,(a \times b)}\\ 
 \end{array}\]
 Since the return type of the data constructor $\mathsf{Pair}$ is not
@@ -659,20 +659,39 @@ pattern-match on the type of the data to be contained. For this, our
 GADT calculus must support an equality type $\mathsf{Eq}$ that is
 inhabited when its two type arguments are the same and is uninhabited
 otherwise, i.e., the syntactic reflection of semantic equality. Such a
-type can either be taken as primitive or
+type can either be taken as primitive, as in
+\[\begin{array}{l}
+\mathsf{data\, Eq :: * \to * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Eq\,a\,a}\\
+\end{array}\]
+\noindent
+or
 %, in a higher-kinded calculus such as $F\omega$,
-can be represented by its own Church encoding
+represented by its own Church encoding
 \[\mathsf{Eq\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
   f\,a\,a) \to f\,t_1\,t_2}\] 
-Using $\mathsf{Eq}$ the GADT $\mathsf{Seq}$, e.g., can be written as 
+Using $\mathsf{Eq}$, the GADT $\mathsf{Seq}$, e.g., can be written as 
 {\color{red} START HERE}
 \[ {\color{blue} WHAT GOES HERE??} \]
 
 
 
-Note that Seq has no syntactic map (because Pair doesn't), i.e., is
-not an instance of the Functor class, and is not required to in this
-representation.
+Note that neither Eq nor Seq has a syntactic map (because one for Eq
+leads to a contradition as in Daniel's exampe below, and because one
+for Seq can't exist because of Pair), i.e., is not an instance of the
+Functor class, and is not required to in this representation.
+
+
+
+
+data Equal a b where
+  Refl :: Equal a a
+
+eqElim :: Equal a b -> a -> b
+eqElim Refl x = x
+
+emptyFromMapEq :: (forall a b c. (a -> b) -> Equal a c -> Equal b c) -> Void
+emptyFromMapEq fmap = eqElim (fmap absurd Refl) ()
 
 
 \subsubsection{GADTs as Primitive Data Types}
