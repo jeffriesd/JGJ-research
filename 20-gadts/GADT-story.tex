@@ -658,11 +658,13 @@ shape because changing (the type of) the data may actually change the
 shape.
 
 To determine the possible shapes of a GADT's container we have to
-pattern-match on the type of the data to be contained. For this, our
+pattern-match on the type of the data to be contained. For this, a
 GADT calculus must support an equality type $\mathsf{Equal}$ that is
 inhabited when its two type arguments are the same and is uninhabited
 otherwise, i.e., is the syntactic reflection of semantic equality
-function $\mathit{Equal}$. Such a type can either be taken as primitive, as in
+function $\mathit{Equal}$. {\color{blue} This is the least commitment
+  thing Chirch encodings require.} Such a type can either be taken as
+primitive, as in
 \[\begin{array}{l}
 \mathsf{data\, Equal :: * \to * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,a\,a}\\
@@ -732,8 +734,8 @@ instances of $\mathsf{Seq}$ appearing in the types of its data
 constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be characterized by
 any first-order fixpoint equation. It can, however, be viewed as a
 solution to the higher-order fixpoint equation
-\[H\,f\,a = a \,+\,Lan_{\lambda a b.\,a \times b}\, \lambda
-a b.\,f a \times f b\] where $\Lan_K \,G$ is the left Kan extension of
+\[H\,f\,a = a \,+\,Lan_{\lambda a b. a \times b}\, \lambda
+a b. f a \times f b\] where $\Lan_K \,G$ is the left Kan extension of
 $G$ along $K$.  The left Kan extension $\Lan_K \,G : {\cal E} \to
 {\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along the functor
 $K : {\cal C} \to {\cal E}$ is the best functorial approximation to
@@ -751,7 +753,7 @@ functor $\mathit{Lan}_K\,G : {\cal E} \to {\cal D}$ together with a
 natural transformation $\eta : G \to (\mathit{Lan}_K\,G) \circ K$
 such that, for every functor $H : {\cal E} \to {\cal D}$ and natural
 transformation $\gamma : G \to H \circ K$, there exists a unique
-natural transformation $\mu : \mathit{Lan}_K\,G \to H$ such that $(\mu
+natural transformation $\delta : \mathit{Lan}_K\,G \to H$ such that $(\mu
 K) \circ \eta = \gamma$. This is depicted in the diagram
 \[\begin{tikzcd}[row sep = huge]
 {\cal C}
@@ -763,7 +765,7 @@ K) \circ \eta = \gamma$. This is depicted in the diagram
 \ar[ur, bend left, "{\mathit{Lan}_{K}\,G}"{name=Lan, description}]
 \ar[ur, bend right, "{H}"'{name=L, right}, ""'{name=Lr, right}]
 \ar[Rightarrow, bend left = 45, from=Fa, to=Lr, "{\gamma}" near start]
-\ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"']
+\ar[Rightarrow, dashed, from=Lan, to=L, "{\delta}"']
 \end{tikzcd}\]
 \end{definition}
 
@@ -774,44 +776,76 @@ functors on the cagegory interpretating types, as well as a primitive
 type constructor $\mathsf{Lan}$ such that $\mathsf{Lan_k\,g}$ is the
 syntactic reflection of the left Kan extension $\Lan_K \,G$ of the
 functor $G$ interpreting $\mathsf{g}$ along the functor $K$
-interpreting $\mathsf{k}$. {\color{blue} This was elided in ADT
-  case. Why? Tie together better.}  The type constructor
+interpreting $\mathsf{k}$. {\color{blue} This is the least commitment
+  thing primitive representations can require. Fixpoints were elided
+  in ADT case. Why? Tie together better.}  The type constructor
 $\mathsf{Lan}$ thus computes the smallest data type that is generated
 by a GADT's {\color{blue} GADT or constructor?} syntax and also
 supports a $\mathsf{map}$ function. That is, $\mathsf{Lan}$ computes
 the functorial completion of the data type determined by a GADT's
-syntax.
+syntax, filling it out with data elements that are derivable via
+repeated applications of $\mathsf{map}$ starting from those elements
+specified by its syntax. In the primitive view, GADTs are, in general,
+underspecified by their syntax.
 
-Note, however, that the functorial completion of a GADT need not be a
-nested type. As mentioned in the introduction, only those instances of
-the GADT reachable from the syntax of the GADT are in the functorial
-completion.
+Just as for ADTs, we can represent GADTs as either Church encodings or
+primitive data types. But whereas the two representations are always
+isomorphic for ADTs, they not, in general, for GADTs. We will see this
+in Section~\ref{??} below. {\color{blue} But we get
+  rearrange-transform property for primitive rep since this is a
+  consequence of functoriality.}
 
-The representation choices are the same for GADTs as for ADTs. The
-difference is that, although these two representations are isomorphic
-for ADTs, they are not isomorphic for GADTs.  We will see this in
-Section~\ref{??} below.
+{\color{blue}
+Forced to choose, a programmer would likely find the idea that a GADT
+contains data that are not specified by its syntax disturbing. What,
+they might ask, should a data type contain other than data that are
+constructed using its data constuctors? Why should a GADT contain
+``secret'' elements that are only attainable by mapping? On the other
+hand, a semanticist would likely find the primitive representation of
+GADTs more reasonable. After all, they would likely find the
+nonfunctorial nature of the Church encoding unnerving at best. After
+all, they would argue, the data in a GADT shouldn't disappear just
+because you map a function over it! The fact that this happens for
+Church encodings of GADTs --- i.e., for GADTs as specified by their
+syntax --- highlights how GADTs {\em do not} generalize the essential
+container-ish nature of ADTs at all. A semanticist might therefore
+conclude that GADTs are seriously misnamed. They might even go on to
+wonder: in what sense are GADTs data types at all?}
 
-\section{Semantics of GADTs}\label{sec:GADT-semantics}
+\section{Parametricity in the Presence of GADTs}
 
-{\color{blue} OMIT THIS SECTION?}
+{\em Relational parametricity} encodes a powerful notion of
+type-uniformity, or representation independence, for data types in
+functional languages. It formalizes the intuition that a polymorphic
+program must act uniformly on all of its possible type instantiations
+by requiring that every such program preserves all relations between
+pairs of types at which it is instantiated. Parametricity was
+originally put forth by Reynolds~\cite{rey83} for System F. It was
+later popularized as Wadler's ``theorems for free''~\cite{wad89}, so
+called because it can deduce properties of programs in such languages
+solely from their types, i.e., with no knowledge whatsoever of the
+text of the programs involved.  Most of Wadler's free theorems are
+consequences of naturality for polymorphic list-processing
+functions. However, parametricity can also derive results that go
+beyond just naturality, such as establishing {\color{blue} proving}
+the equivalence of the Church encodings and the primitive
+representations of ADTs and {\color{blue} hereditarily polynomial}
+nested types by validating the aforementioned short cut fusion
+transformation for them.
 
-But the data in a GADT shouldn't disappear just because you map a
-function over it!  This is odd! So in what sense to GADTs generalize
-ADTs? In what sense are they even data types?
 
-The semantics of GADTs is not so clear.
-
-Functorial completion doesn't give nested types
-
-Functorial completion containerizes the GADT. Extension of a
-container. The extension of a container is an endofunctor generalizing
-map.
+1. Parametricity requires a fibred semantics. This doesn't happen for
+primitive rep.
 
 
-Eq semantics minimal (least commitment, most natural) for CEs; Lan
-semantics minimal for primitives. Minimal way to add to any calculus
-supporting them.
+2. Non-uniformity renders build, therefore short cut, for GADTs
+impossible. Can't even formulate! It is possible there could be
+another way to prove equivalence, but we know the two representations
+are not equivalent because we have a counterexample.
+
+The fact that GADTs don't validate any such iso has important
+consequences for their parametricity properties. 
+
 
 
 Bob requires map functions for fixpoint but then doesn't use them.
@@ -839,13 +873,6 @@ to all GADTs.  Still, the equality is just a shorthand for a type made
 by higher-order forall and arrow types, and thus this considerations
 are not limited to a specific type, but are intrinsic of Bob's
 system.
-%We can thus expect that not all types in Bob's system will be
-%functorial and that, consequently, the consequences of parametricity
-%will not include functoriality but will provide information about,
-%e.g., inhabitatedness.  See
-%<https://www.cis.upenn.edu/~sweirich/talks/param-gadt.pdf> and
-%<https://www.seas.upenn.edu/~sweirich/papers/rtheorems.pdf> for more
-%about parametricity and GADTs.
 
 In contrast, $(Lan_1 1) B$, the type representing G in our system, is
 functorial (as are all types in our systems) and inhabited for every
@@ -855,59 +882,22 @@ term in $(Lan_1 1) T$ by use of the map of $(Lan_1 1) B$.  This shows
 that, as expected by now, the same GADT really does have different
 semantic interpretations in Bob's system and in ours.
 
-\section{Parametricity}
-
-{\em Relational parametricity} encodes a powerful notion of
-type-uniformity, or representation independence, for data types in
-functional languages. It formalizes the intuition that a polymorphic
-program must act uniformly on all of its possible type instantiations
-by requiring that every such program preserves all relations between
-pairs of types at which it is instantiated. Parametricity was
-originally put forth by Reynolds~\cite{rey83} for System F. It was
-later popularized as Wadler's ``theorems for free''~\cite{wad89}, so
-called because it can deduce properties of programs in such languages
-solely from their types, i.e., with no knowledge whatsoever of the
-text of the programs involved.  Most of Wadler's free theorems are
-consequences of naturality for polymorphic list-processing
-functions. However, parametricity can also derive results that go
-beyond just naturality, such as establishing {\color{blue} proving}
-the equivalence of the Church encodings and the primitive
-representations of ADTs and {\color{blue} hereditarily polynomial}
-nested types by validating the aforementioned short cut fusion
-transformation for them.
-
-
-One important consequence of representation choice is for parametric
-reasoning about GADTs. In particular, we can use parametricity to get
-our transform-rearrange property for ADTs. Do it for lists?
-
-
 
 We can thus expect that not all types in Bob's system will
 be functorial and that, consequently, the consequences of
 parametricity will not include functoriality but will provide
-information about, e.g., inhabitatedness.  See
-<https://www.cis.upenn.edu/~sweirich/talks/param-gadt.pdf> and
-<https://www.seas.upenn.edu/~sweirich/papers/rtheorems.pdf> for more
-about parametricity and GADTs.
+information about, e.g., inhabitatedness.
+%See
+%<https://www.cis.upenn.edu/~sweirich/talks/param-gadt.pdf> and
+%<https://www.seas.upenn.edu/~sweirich/papers/rtheorems.pdf> for more
+%about parametricity and GADTs.
 
 
-If we had a parametric model for GADTs, it could perhaps validate
-short cut and this show that the two reps for them are equivalent.
-(This is a sort of converse.)
-The fact that GADTs don't validate any such iso has important
-consequences for their parametricity properties. 
-  
-In this paper we show that there is not an iso between the two reps of
-even the simplest GADT {\color{blue} that isn't a hereditarily
-  polynomial nested type}, and investigate the consequences of this
-discovery for parametric reasoning about GADTs.
+ 
+{\color{blue} Our favorite GADT isn't a hereditarily
+  polynomial nested type.}
 
 
-Non-uniformity renders build, therefore short cut, for GADTs
-impossible. Can't even formulate! Maybe there's another way to prove
-equivalence, but I don't know what it would be. In any case, we have a
-counterexample, so this settles the question.
 
 
 
@@ -920,12 +910,6 @@ types?)
 We do minimal thing to fix functoriality, then investigate
 parametricity properties for both interpretations. We are forced to
 choose. 
-
-Parametric polymorphism as a way to capture Strachey's notion of
-uniform, type-independent behavior of functions. Parametric models as
-formalizations of this notion of uniformity, as first given in
-Reynolds' original paper.
-
 
 Bob's system gives a parametric model that models GADTs. But given the
 non-uniformity captured by GADTs by purposeful design, that should be
@@ -945,19 +929,11 @@ it would have illustrated the phenomenon we are describing, raised the
 question: What good is a par property for a GADT or another type using
 the Eq type?
 
-
-
-
 GADTs Force a Representation Choice. It has consequences for how one
 reasons about them.
 
-It depends on primitive vs. Church encodings. Primitive forces
-functoriality, as in LICS'19.
-
 FOR ADTs and Nesteds, it does not depend. We get the same par property
 whether they are seen as primitives or we use their CE.
-
-
 
 \section{Conclusion}
 
