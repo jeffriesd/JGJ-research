@@ -659,40 +659,41 @@ shape.
 
 To determine the possible shapes of a GADT's container we have to
 pattern-match on the type of the data to be contained. For this, our
-GADT calculus must support an equality type $\mathsf{Eq}$ that is
+GADT calculus must support an equality type $\mathsf{Equal}$ that is
 inhabited when its two type arguments are the same and is uninhabited
 otherwise, i.e., is the syntactic reflection of semantic equality
-function $Eq$. Such a type can either be taken as primitive, as in
+function $\mathit{Equal}$. Such a type can either be taken as primitive, as in
 \[\begin{array}{l}
-\mathsf{data\, Eq :: * \to * \to *\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Eq\,a\,a}\\
+\mathsf{data\, Equal :: * \to * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,a\,a}\\
 \end{array}\]
 \noindent
 or
 represented by its own Church encoding
-\[\mathsf{Eq\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
-  f\,a\,a) \to f\,t_1\,t_2}\] Using $\mathsf{Eq}$, the GADT
+\[\mathsf{Equal\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
+  f\,a\,a) \to f\,t_1\,t_2}\] Using $\mathsf{Equal}$, the GADT
 $\mathsf{Seq}$ can then be represented as its Church encoding
-         {\color{red}
 \[\mathsf{Seq\,a} = \mathsf{\forall f.\, (\forall a.\,a \to f\, a)
-  \to (\forall a\,b\,c.\,Eq\,a\,(b\times c) \to f\,b \to f\,c \to
-  f\,a) \to f\,a}\]}
+  \to (\forall a\,b\,c.\,Equal\,a\,(b\times c) \to f\,b \to f\,c \to
+  f\,a) \to f\,a}\]
 in a higher-kinded calculus such as $F_\omega$.
 
-Importantly, $Eq\,a$ cannot be made into a functor, or, equivalently,
-$\mathsf{Eq\,a}$ cannot be made an instance of Haskell's
-$\mathsf{Functor}$ class: if $\mathsf{Eq\,a}$ supported a function
-$\mathsf{map_{Eq\,a} :: (b \to c) \to Eq\,a\,b \to Eq\,a\,c}$ then
-defining
+Importantly, $\mathit{Equal}\,a$ cannot be made into a functor, or,
+equivalently, $\mathsf{Equal\,a}$ cannot be made an instance of
+Haskell's $\mathsf{Functor}$ class: if $\mathsf{Equal\,a}$ supported a
+function
+\[\mathsf{map_{Equal\,a} :: (b \to c) \to Equal\,a\,b \to
+  Equal\,a\,c}\]
+then defining
 \[\begin{array}{l}
-\mathsf{eqElim :: Eq\, a\, b \to b \to a}\,{\color{red} was Eq\,a\,b\to a\to b}\\
+\mathsf{eqElim :: Equal\, a\, b \to b \to a}\\
 \mathsf{eqElim\, Refl\, x = x} 
 \end{array}\]
 would allow us to construct the element 
 \[\begin{array}{l}
-\mathsf{emptyFromMapEqa :: (\forall b\, c.\, (b \to c) \to Eq\, a\,
-  b \to Eq\, a \,c) \to Void}\\ 
-\mathsf{emptyFromMapEqa \,map_{Eq\,a} = eqElim\, (map_{\Eq\,a}\,
+\mathsf{emptyFromMapEquala :: (\forall b\, c.\, (b \to c) \to Equal\, a\,
+  b \to Equal\, a \,c) \to Void}\\ 
+\mathsf{emptyFromMapEquala \,map_{Equal\,a} = eqElim\, (map_{Equal\,a}\,
   absurd\, Refl)\, ()}  
 \end{array}\]
 of type $\mathsf{Void}$, which is impossible. It follows immediately
@@ -722,8 +723,8 @@ being defined are not uniform across all of its instances in the types
 of its data constructors. Semantically, the use of higher-order
 funct{\em ors} is essential, as for ADTs, to the very existence of the
 fixpoints being computed~\cite{tfca}.
-%We will consider GADTs'
-%semantics in more detail in Section~\ref{sec:GADT-semantics}.
+%We will consider GADTs' semantics in more detail in
+%Section~\ref{sec:GADT-semantics}.
 
 Consider, again, the GADT $\mathsf{Seq}$ from the start of
 Section~\ref{sec:gadts}. Because its type argument varies in the
@@ -732,56 +733,64 @@ constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be characterized by
 any first-order fixpoint equation. It can, however, be viewed as a
 solution to the higher-order fixpoint equation
 \[H\,f\,a = a \,+\,Lan_{\lambda a b.\,a \times b}\, \lambda
-a b.\,f\,a \times f\,b\] 
-where $\Lan_K \,G$ is the 
-%$Lan_k\, g$ is the syntactic reflection of the
-{\em left Kan extension}~\cite{mac71}
-%$\Lan_K \,G$
-of the functor $G$
-%interpreting $\mathsf{g}$
-along the functor $K$.
-%interpreting $\mathsf{k}$~\cite{mac71}.
-The left Kan extension $\Lan_K \,G$ is the smallest functor
-approximating/extending $K$ and coinciding with $G$ {\color{blue}
-  better explanation}.
+a b.\,f a \times f b\] where $\Lan_K \,G$ is the left Kan extension of
+$G$ along $K$.  The left Kan extension $\Lan_K \,G : {\cal E} \to
+{\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along the functor
+$K : {\cal C} \to {\cal E}$ is the best functorial approximation to
+$G$ that factors through $K$. Here, ``best functorial approximation''
+means that $\Lan_K \,G$ is the smallest functor that both extends the
+image of $K$ to $\cal D$ and coincides with $G$ on $\cal C$, in the
+sense that, for any other such functor $H$, there is a morphism of
+functors (i.e., a natural transformation) from $\Lan_K \,G$ to
+$H$. This is captured formally by the following
+definition~\cite{mac71}:
+\begin{definition}\label{def:lke}
+If $G : {\cal C} \to {\cal D}$ and $K : {\cal C} \to {\cal E}$ are
+functors, then the {\em left Kan extension of $G$ along $K$} is a
+functor $\mathit{Lan}_K\,G : {\cal E} \to {\cal D}$ together with a
+natural transformation $\eta : G \to (\mathit{Lan}_K\,G) \circ K$
+such that, for every functor $H : {\cal E} \to {\cal D}$ and natural
+transformation $\gamma : G \to H \circ K$, there exists a unique
+natural transformation $\mu : \mathit{Lan}_K\,G \to H$ such that $(\mu
+K) \circ \eta = \gamma$. This is depicted in the diagram
+\[\begin{tikzcd}[row sep = huge]
+{\cal C}
+\ar[rr, "{G}"{name=Fa, above}, ""{name=F, below}]
+\ar[rd, "{K}"']
+&& {\cal D} \\
+& {\cal E}
+\ar[Rightarrow, bend right = 25, from=F, "{\eta}"']
+\ar[ur, bend left, "{\mathit{Lan}_{K}\,G}"{name=Lan, description}]
+\ar[ur, bend right, "{H}"'{name=L, right}, ""'{name=Lr, right}]
+\ar[Rightarrow, bend left = 45, from=Fa, to=Lr, "{\gamma}" near start]
+\ar[Rightarrow, dashed, from=Lan, to=L, "{\mu}"']
+\end{tikzcd}\]
+\end{definition}
 
+To represent GADTs as primitive data types a calculus must support a
+primitive fixpoint constructor $\mathsf{\mu}$ that is the syntactic
+reflection of the higher-order fixpoint operator on the category of
+functors on the cagegory interpretating types, as well as a primitive
+type constructor $\mathsf{Lan}$ such that $\mathsf{Lan_k\,g}$ is the
+syntactic reflection of the left Kan extension $\Lan_K \,G$ of the
+functor $G$ interpreting $\mathsf{g}$ along the functor $K$
+interpreting $\mathsf{k}$. {\color{blue} This was elided in ADT
+  case. Why? Tie together better.}  The type constructor
+$\mathsf{Lan}$ thus computes the smallest data type that is generated
+by a GADT's {\color{blue} GADT or constructor?} syntax and also
+supports a $\mathsf{map}$ function. That is, $\mathsf{Lan}$ computes
+the functorial completion of the data type determined by a GADT's
+syntax.
 
+Note, however, that the functorial completion of a GADT need not be a
+nested type. As mentioned in the introduction, only those instances of
+the GADT reachable from the syntax of the GADT are in the functorial
+completion.
 
-LKE gives the functorial completion of the GADT.
-
-%written as
-%%\[\mathsf{Seq\,a} = \mathsf{a + Eq\,a\,(b \times c) \times Seq\,b
-%%  \times Seq\,c} \] 
-%\[\begin{array}{l}
-%\mathsf{data\, Seq :: * \to *\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
-%\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Eq\,a\,(b \times c) \to
-%  Seq \,b \to Seq\,c \to Seq\,a}\\ 
-%\end{array}\]
-%
-%The above rewriting of $\mathsf{Seq}$'s definition shows that it can
-%be seen as a fixpoint $\mu H$ of the higher-order function $H$ defined
-%on objects by $H\,F\,a = a + Eq\,a\,(b \times c) \times F\,b \times
-%F\,c$. 
-
-{\color{blue} Need syntax that reflects semantic Lan.}
-
-
-%Other GADTs are similarly characterizable by higher-order functors.
-%{\color{blue} GADTs make essential use of higher-order functors.}
-
-
-Need syntax functors (Lan)
-The representation choices are similar for GADTs. The difference is
-that the two are not isomorphic.
-
-Certain polynomial GADTs correspond to polynomial ADTs. So we expect
-the same behaviors.  Polynomial nested types are actually the GADTs
-that mimic polynomial ADT behavior.
-
-But pattern matching fails for the extension (functorial completion)
-of a GADT.
-
+The representation choices are the same for GADTs as for ADTs. The
+difference is that, although these two representations are isomorphic
+for ADTs, they are not isomorphic for GADTs.  We will see this in
+Section~\ref{??} below.
 
 \section{Semantics of GADTs}\label{sec:GADT-semantics}
 
