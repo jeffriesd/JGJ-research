@@ -184,14 +184,15 @@ of~\cite{joh02,joh03}.
 This equivalence was recently extended to the class of what might be
 called ``hereditarily polynomial'' {\color{blue} to include truly
   nested such types} nested types via the categorical model
-of~\cite{jgj21}. But, as shown in Section~\ref{sec:?} below, for some
-{\color{blue} (even polynomial)} GADTs,
+of~\cite{jgj21}. But, as shown in Section~\ref{sec:par} below, for
+some {\color{blue} (even polynomial)} GADTs,
 %that are not hereditarily polynomial nested types,
 no such isomorphism holds.
 
-GADTs are traditionally represented via Church encodings. In this
-view, GADTs are completely determined by their syntax. For example,
-the GADT $\mathsf{G}$ defined by
+{\color{red} Maybe use a less degenerate example.}  GADTs are
+traditionally represented via Church encodings. In this view, GADTs
+are completely determined by their syntax. For example, the GADT
+$\mathsf{G}$ defined by
 \[\begin{array}{l}
 \mathsf{data\,G : * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;c : G\,1}
@@ -223,6 +224,8 @@ $\mathsf{G}$ above.
 
 But does it really matter which way we view GADTs?
 
+{\color{red} This will probably be more convincing if we use, e.g.,
+  an expression GADT from Stephanie above.}
 A GADT programmer is likely to use GADTs precisely because they
 exhibit different behaviors at different types, and thus to consider
 the GADT to be completely specified by its syntax. When used this way,
@@ -735,15 +738,15 @@ constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be characterized by
 any first-order fixpoint equation. It can, however, be viewed as a
 solution to the higher-order fixpoint equation
 \[H\,f\,a = a \,+\,Lan_{\lambda a b. a \times b}\, \lambda
-a b. f a \times f b\] where $\Lan_K \,G$ is the left Kan extension of
-$G$ along $K$.  The left Kan extension $\Lan_K \,G : {\cal E} \to
+a b. f a \times f b\] where $Lan_K \,G$ is the left Kan extension of
+$G$ along $K$.  The left Kan extension $Lan_K \,G : {\cal E} \to
 {\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along the functor
 $K : {\cal C} \to {\cal E}$ is the best functorial approximation to
 $G$ that factors through $K$. Here, ``best functorial approximation''
-means that $\Lan_K \,G$ is the smallest functor that both extends the
+means that $Lan_K \,G$ is the smallest functor that both extends the
 image of $K$ to $\cal D$ and coincides with $G$ on $\cal C$, in the
 sense that, for any other such functor $H$, there is a morphism of
-functors (i.e., a natural transformation) from $\Lan_K \,G$ to
+functors (i.e., a natural transformation) from $Lan_K \,G$ to
 $H$. This is captured formally by the following
 definition~\cite{mac71}:
 \begin{definition}\label{def:lke}
@@ -772,11 +775,17 @@ K) \circ \eta = \gamma$. This is depicted in the diagram
 To represent GADTs as primitive data types a calculus must support a
 primitive fixpoint constructor $\mathsf{\mu}$ that is the syntactic
 reflection of the higher-order fixpoint operator on the category of
-functors on the cagegory interpretating types, as well as a primitive
+functors on the category interpretating types, as well as a primitive
 type constructor $\mathsf{Lan}$ such that $\mathsf{Lan_k\,g}$ is the
 syntactic reflection of the left Kan extension $\Lan_K \,G$ of the
 functor $G$ interpreting $\mathsf{g}$ along the functor $K$
-interpreting $\mathsf{k}$. {\color{blue} This is the least commitment
+interpreting $\mathsf{k}$. Using the $\mu$ and $\Lan$ type
+constructors we can represent, e.g., the GADT $\mathsf{Seq}$ as
+\[\mathsf{Seq\,a} = \mathsf{\mu \phi.\, a + Lan_{\lambda c d. c \times d}
+  \lambda c d. \phi c \times \phi d}\]
+
+
+{\color{blue} This is the least commitment
   thing primitive representations can require. Fixpoints were elided
   in ADT case. Why? Tie together better.}  The type constructor
 $\mathsf{Lan}$ thus computes the smallest data type that is generated
@@ -790,35 +799,39 @@ underspecified by their syntax.
 
 Just as for ADTs, we can represent GADTs as either Church encodings or
 primitive data types. But whereas the two representations are always
-isomorphic for ADTs, they not, in general, for GADTs. We will see this
-in the next section. 
+isomorphic for ADTs, they are not, in general, for GADTs. We will see
+this in the next section.
 
 \section{Non-Equivalence of Church Encodings and Primitive
   Representations of GADTs}\label{sec:non-equiv}
 
 Intuitively it seems the two representations might be different. One
-is functorial, one is not. Non-uniform nature of GADTs renders build,
-therefore short cut, for GADTs impossible. Can't even formulate! Of
-course, there could be another way to prove equivalence.  But, in
-fact, CEs and primitive representations are not equivalent for
-arbitrary GADTs, as the following example shows.
+is functorial, one is not. It is possible they could always have the
+same data elements even if not the same morphisms. But as we see in
+Example~\ref{ex:g1}, this turns out not to be the case.
 
-\begin{example}
+Non-uniform nature of GADTs renders build, therefore short cut, for
+GADTs impossible. Can't even formulate! Of course, there could be
+another way to prove equivalence.  But, in fact, CEs and primitive
+representations are not equivalent for arbitrary GADTs, as the
+following example shows.
+
+\begin{example}\label{ex:g1}
 Use our favorite GADT to establish non-equivalence of the two reps
 \end{example}
 
 Forced to choose, a programmer would likely find the idea that a GADT
-contains data that are not specified by its syntax disturbing. What,
-they might ask, should a data type contain other than data that are
-constructed using its data constuctors? Why should a GADT contain
-``secret'' elements that are only attainable by mapping? On the other
-hand, a semanticist would likely find the primitive representation of
-GADTs more reasonable. After all, they would likely find the
-nonfunctorial nature of the Church encoding unnerving at best. After
-all, they would argue, the data in a GADT shouldn't disappear just
-because you map a function over it! The fact that this happens for
-Church encodings of GADTs --- i.e., for GADTs as specified by their
-syntax --- highlights how GADTs {\em do not} generalize the essential
+contains data that are not specified by its syntax more than a little
+disturbing. What, they might ask, should a data type contain other
+than data that are constructed using its data constuctors? Why should
+a GADT contain ``hidden'' elements that are only accessible by
+mapping? On the other hand, a semanticist would likely find the
+primitive representation of GADTs more reasonable. Indeed, they would
+likely find the nonfunctorial nature of the Church encoding unnerving
+at best. After all, they would likely argue, the data in a GADT
+shouldn't disappear just because you map a function over it! The fact
+that this happens when GADTs are represented by their Church encodings
+actually highlights how GADTs {\em do not} generalize the essential,
 container-ish nature of ADTs at all. A semanticist might therefore
 conclude that GADTs are seriously misnamed. They might even go on to
 wonder: in what sense are GADTs data types at all?
@@ -831,7 +844,7 @@ very different parametricity properties.  {\color{blue} For example,
   Encodings.} We explore the differences in parametricity results for
 the two representations in the next section.
 
-\section{Parametricity in the Presence of GADTs}
+\section{Parametricity in the Presence of GADTs}\label{sec:par}
 
 {\em Relational parametricity} encodes a powerful notion of
 type-uniformity, or representation independence, for data types in
@@ -886,10 +899,11 @@ just those that interpret terms.  Similar theorems are required for
 types and terms with any number of free variables.
 
 1. Parametricity requires a fibred semantics. This doesn't happen for
-primitive rep.
+primitive rep so can't have a par model with this rep. Can still get
+naturality properties, however.
 
-2. What are the parametricity properties for GADTs in each setting?
-(Naturality only with primitives, inhabitation etc. with CEs)
+2. For CEs can get par model and par properties. But what do these say
+for GADTs? Give examples?
 
 {\color{red} ENRICO: Just write a section that can go here about
   1. for our favorite GADT.}
@@ -958,10 +972,6 @@ primitive data types --- or as their Church encodings. This is not the
 case for GADTs that are not nested types. (What about truly nested
 types?)
 
-We do minimal thing to fix functoriality, then investigate
-parametricity properties for both interpretations. We are forced to
-choose. 
-
 Bob's system gives a parametric model that models GADTs. But given the
 non-uniformity captured by GADTs by purposeful design, that should be
 both completely unexpected and alarming! However, upon reflection it's
@@ -979,9 +989,6 @@ Tellingly, Bob gives no parametricity properties for GADTs. If he had,
 it would have illustrated the phenomenon we are describing, raised the
 question: What good is a par property for a GADT or another type using
 the Eq type?
-
-GADTs Force a Representation Choice. It has consequences for how one
-reasons about them.
 
 FOR ADTs and Nesteds, it does not depend. We get the same par property
 whether they are seen as primitives or we use their CE.
