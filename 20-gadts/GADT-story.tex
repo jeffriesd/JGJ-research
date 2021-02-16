@@ -812,6 +812,17 @@ container-ish nature of ADTs at all. A semanticist might therefore
 conclude that GADTs are seriously misnamed. They might even go on to
 wonder: in what sense are GADTs data types at all?}
 
+{\color{blue} THIS TRANSITION FROM EQUIVALENCE OF REPRESENTATION TO
+  PARAMETRICITY GOES SOMEWHERE:
+Non-uniformity renders build, therefore short cut, for GADTs
+impossible. Can't even formulate! It is possible there could be
+another way to prove equivalence, but we know the two representations
+are not equivalent because we have a counterexample.
+
+The fact that GADTs don't validate any such iso has important
+consequences for their parametricity properties.}
+
+
 \section{Parametricity in the Presence of GADTs}
 
 {\em Relational parametricity} encodes a powerful notion of
@@ -833,20 +844,49 @@ representations of ADTs and {\color{blue} hereditarily polynomial}
 nested types by validating the aforementioned short cut fusion
 transformation for them.
 
+{\color{blue} Say somewhere: A relation is a triple $(A,B,R)$, where
+  $R$ is a relation between sets $A$ and $B$.  A function from
+  $(A,B,R)$ to $(A',B',R')$ is a pair $(f : A \to A',g : B \to B')$ of
+  functions on sets such that $(f a,g\,b) \in R'$ if $(a,b) \in R$. We
+  may write $R : \rel(A,B)$ for $(A,B,R)$.  If $R : \rel(A,B)$ we
+  write $\pi_1 R$ and $\pi_2 R$ for the {\em domain} $A$ of $R$ and
+  the {\em codomain} $B$ of $R$, respectively, and assume $\pi_1$ and
+  $\pi_2$ are surjective. We write $\Eq_A = (A,A,\{(x,x)~|~ x \in
+  A\})$ for the {\em equality relation} on the set $A$.}
+
+The key idea underlying Reynolds' parametricity is to give each type
+$F(\alpha)$ with one free variable $\alpha$ a {\em set interpretation}
+$F_0$ taking sets to sets and a \emph{relational interpretation} $F_1$
+taking relations $R : \rel(A,B)$ to relations $F_1 (R) : \rel(F_0 (A),
+F_0 (B))$, and to interpret each term $t(\alpha,x) : F(\alpha)$ with
+one free term variable $x : G(\alpha)$ as a map $t_0$ associating to
+each set $A$ a function $t_0(A) : G_0(A) \to F_0(A)$. These
+interpretations are given inductively on the structures of $F$ and $t$
+in such a way that they imply two fundamental theorems. The first is
+an \emph{Identity Extension Lemma}, which states that $F_1(\Eq_A) =
+\Eq_{F_0(A)}$, and is the essential property that makes a model
+relationally parametric rather than just induced by a logical
+relation. The second is an \emph{Abstraction Theorem}, which states
+that, for any $R :\rel(A, B)$, $(t_0(A),t_0(B))$ is a morphism in
+$\rel$ from $(G_0(A),G_0(B),G_1(R))$ to $(F_0(A),F_0(B),F_1(R))$. The
+Identity Extension Lemma is similar to the Abstraction Theorem except
+that it holds for {\em all} elements of a type's interpretation, not
+just those that interpret terms.  Similar theorems are required for
+types and terms with any number of free variables.
 
 1. Parametricity requires a fibred semantics. This doesn't happen for
 primitive rep.
 
+2. What are the parametricity properties for GADTs in each setting?
+(Naturality only with primitives, inhabitation etc. with CEs)
 
-2. Non-uniformity renders build, therefore short cut, for GADTs
-impossible. Can't even formulate! It is possible there could be
-another way to prove equivalence, but we know the two representations
-are not equivalent because we have a counterexample.
+{\color{red} ENRICO: Just write a section that can go here about
+  1. for our favorite GADT.}
 
-The fact that GADTs don't validate any such iso has important
-consequences for their parametricity properties. 
+\vspace*{1in}
 
 
+NOTES/POINTS:
 
 Bob requires map functions for fixpoint but then doesn't use them.
 
