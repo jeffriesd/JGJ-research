@@ -791,11 +791,22 @@ underspecified by their syntax.
 Just as for ADTs, we can represent GADTs as either Church encodings or
 primitive data types. But whereas the two representations are always
 isomorphic for ADTs, they not, in general, for GADTs. We will see this
-in Section~\ref{??} below. {\color{blue} But we get
-  rearrange-transform property for primitive rep since this is a
-  consequence of functoriality.}
+in the next section. 
 
-{\color{blue}
+\section{Non-Equivalence of Church Encodings and Primitive
+  Representations of GADTs}\label{sec:non-equiv}
+
+Intuitively it seems the two representations might be different. One
+is functorial, one is not. Non-uniform nature of GADTs renders build,
+therefore short cut, for GADTs impossible. Can't even formulate! Of
+course, there could be another way to prove equivalence.  But, in
+fact, CEs and primitive representations are not equivalent for
+arbitrary GADTs, as the following example shows.
+
+\begin{example}
+Use our favorite GADT to establish non-equivalence of the two reps
+\end{example}
+
 Forced to choose, a programmer would likely find the idea that a GADT
 contains data that are not specified by its syntax disturbing. What,
 they might ask, should a data type contain other than data that are
@@ -810,18 +821,15 @@ Church encodings of GADTs --- i.e., for GADTs as specified by their
 syntax --- highlights how GADTs {\em do not} generalize the essential
 container-ish nature of ADTs at all. A semanticist might therefore
 conclude that GADTs are seriously misnamed. They might even go on to
-wonder: in what sense are GADTs data types at all?}
+wonder: in what sense are GADTs data types at all?
 
-{\color{blue} THIS TRANSITION FROM EQUIVALENCE OF REPRESENTATION TO
-  PARAMETRICITY GOES SOMEWHERE:
-Non-uniformity renders build, therefore short cut, for GADTs
-impossible. Can't even formulate! It is possible there could be
-another way to prove equivalence, but we know the two representations
-are not equivalent because we have a counterexample.
-
-The fact that GADTs don't validate any such iso has important
-consequences for their parametricity properties.}
-
+The disappointment that GADTs don't validate any such equivalence is
+further compounded by the fact that the the two representations have
+very different parametricity properties.  {\color{blue} For example,
+  we get rearrange-transform property for primitive rep since this is
+  a consequence of functoriality, but don't get it for Church
+  Encodings.} We explore the differences in parametricity results for
+the two representations in the next section.
 
 \section{Parametricity in the Presence of GADTs}
 
@@ -852,7 +860,8 @@ transformation for them.
   write $\pi_1 R$ and $\pi_2 R$ for the {\em domain} $A$ of $R$ and
   the {\em codomain} $B$ of $R$, respectively, and assume $\pi_1$ and
   $\pi_2$ are surjective. We write $\Eq_A = (A,A,\{(x,x)~|~ x \in
-  A\})$ for the {\em equality relation} on the set $A$.}
+  A\})$ for the {\em equality relation} on the set $A$. ALSO, WANT OUR
+RELATIONS TO BE ONTO.}
 
 {\color{red} This might not be relevant, since we only care about the
   fibredness.} 
