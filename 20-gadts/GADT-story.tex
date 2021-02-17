@@ -293,7 +293,7 @@ really does matter.
 
 \section{Representations of Data Types}
 
-\subsection{Algebraic Data Types}
+\subsection{Algebraic Data Types}\label{sec:adts}
 
 A (polynomial) {\em algebraic data type} (ADT) has the form
 \[\mathsf{T\,a} = \mathsf{c_1 t_{11}}...\mathsf{t_{1k_1}}\, |\, ...\, |\,
@@ -817,7 +817,81 @@ representations are not equivalent for arbitrary GADTs, as the
 following example shows.
 
 \begin{example}\label{ex:g1}
-Use our favorite GADT to establish non-equivalence of the two reps
+{\color{red} THIS EXAMPLE IS ENRICO'S TEXT}
+Consider the following GADT, defined in a Haskell-like syntax:
+\begin{equation}\label{eq:example-GADT}
+\begin{array}{l}
+\mathsf{data }\; G : \ast \to \ast\;\mathsf{where}\\
+\hspace*{0.4in}c\;:\;G\;1
+\end{array}
+\end{equation}
+This GADT has a unique constructor, providing a data of type $G\;1$.
+While we might say this is the simplest GADT possible, it still
+provides an interesting case-study, showing the differences between
+the primitive data type representation and the Church encoding
+representation.
+
+We now represent $G$ via its Church encoding.  Since $G$ has a single
+constructor, which provides a data of type $G\,1$ without requiring
+any input, its Church encoding is
+\[
+G\,\alpha = \mathsf{\forall f.\, (\forall a.\,
+  f\,a) \to f\,\onet}
+\]
+meaning that $G\,A = \mathsf{Equal}\,\onet\,A$.  Thus, $G$ tests its
+argument for equality against the unit type, $\onet$.
+
+Recall from the previous section {\color{blue} use reference} that the
+semantic interpretation of $\mathsf{Equal}\,\onet\,A$ is given by a
+characteristic function, in the sense that it is the singleton 1 when
+$A$ is 1, and the empty set otherwise.  Thus, as a data type
+represented by Church encoding, G will be the data type containing one
+(and only one) piece of data when instantiated on $\onet$, and
+uninhabited otherwise.  This perfectly mirrors the syntax of $G$,
+which indeed provides just one constructor when the type is
+instantiated on 1, and none otherwise.  Thus, given a set $A$, the set
+interpretation $G_0(A)$ is 1 if $A = 1$, and $\emptyset$ otherwise.
+
+We now want a primitive representation of $G$.  Recall that $G$ has a
+unique constructor $c : G\,\onet$, which can be equivalently expressed
+as $c: \onet \to G\,\onet$.  By using a $\Lan$ type, we can express
+$c$ as a constructor $(\Lan_{\onet} \onet)\alpha \to G \alpha$.  Thus,
+as a primitive data type, we represent $G$ as $\mu \phi. \lambda
+\alpha. (\Lan^{\emptyset}_{\onet} \onet)\alpha$.  {\color{blue}
+  (WHERE?) notice that the constructors of a GADT have to be functors,
+  because the GADT is the fixpoint of a higher order functor.}
+
+The semantic interpretation of $\mu \phi. \lambda
+\alpha. (\Lan^{\emptyset}_{\onet} \onet)\alpha$ is given by the
+fixpoint of the functor yielded by the semantic interpretation of
+$\Lan^{\emptyset}_{\onet} \onet$, the body of the $\mu$ type.  Notice,
+though, that the recursive variable $\phi$ does not appear in the body
+of the $\mu$ type.  Thus, the semantic interpretation is actually just
+the semantic interpretation of the body itself.  Therefore, the
+semantic interpretation is $\mathsf{\Lan}_1 1$, where $1$ is the
+constantly $1$-valued functor $\ast \to \set$ from the category with a
+single object $\ast$ to $\set$.
+
+It turns out that $\mathsf{\Lan}_1 1$ is, in fact, none other than the
+identity functor on $\set$.  Indeed, for any set $A$,
+$(\mathsf{\Lan}_1 1) A$ is the set of all functions $a : 1 \to A$
+modulo the smallest equivalence relation $\sim$ such that, for any $f
+: 1 \to 1$, we have $a \sim a \circ f$.  But this is isomorphic to
+$A$, because the only function $1 \to 1$ is the identity.
+{\color{blue} Reference Computing left Kan extensions - M.R.Bush
+  M.Leeming R.F.C.Walters}
+
+The Church encoding representation of $G$ and the primitive
+representation of $G$ are thus non-equivalent: while the former only
+holds one data element in the instance $G\,1$ and none in other
+instances, the latter is inhabited in all instances with the exception
+of $G\,\emptyset$.  This makes sense if one remembers that the left
+Kan extension, reflected into the syntactic type $\Lan$, is a functor,
+and thus it comes with a functorial map.  This means that, for every
+element $a \in A$, we can map the associated function $\bar{a} : 1 \to
+A$ along $G$ to get a function $\map_{G}\,\bar{a} : G\,1 \to G\,A$,
+and thus we have an element in $G\,A$ given by $\map_{G}\,\bar{a}\, c$
+where $c \in G\,1$ is the element provided by the constructor.
 \end{example}
 
 Forced to choose, a programmer would likely find the idea that a GADT
@@ -905,8 +979,112 @@ naturality properties, however.
 2. For CEs can get par model and par properties. But what do these say
 for GADTs? Give examples?
 
-{\color{red} ENRICO: Just write a section that can go here about
-  1. for our favorite GADT.}
+{\color{red} EVERYTHING BEFORE THE NOTES BELOW IS ENRICO'S TEXT:} To
+even consider the question of whether our semantics is parametric we
+first need to define a relational semantics for our types, i.e., a
+relational interpretation for every type $G : \ast \to \ast$ such
+that, for every relation $R : \rel(A, B)$, we have $G_1(R) :
+\rel(G_0(A), G_0(B))$.
+
+We shall show that this is not generally possible for the primitive
+representation of data types, by considering the previously defined
+type $G$ in Equation~\ref{eq:example-GADT}.  Recall that the semantic
+interpretation of $G$ is given by $\mathsf{\Lan}_1 1$ which, in fact,
+is none other than the identity functor on $\set$.
+
+Analogously to the set interpretation, the relational interpretation
+for $G$ is given by $\mathsf{\Lan}_{\Eq_1} \Eq_1$.  Notice that the
+interpretation still essentially relies on a left Kan extension, but
+this time it is an extension of $\rel$-valued functors.  We would need
+to prove that, for every relation $R : \rel(A, B)$, we have that
+$(\mathsf{\Lan}_{\Eq_1} \Eq_1) R$ is a relation on $(\mathsf{\Lan}_1
+1) A$ and $(\mathsf{\Lan}_1 1)B$, i.e., $A$ and $B$.  Instead, we will
+provide a counterexample showing that this is not true.
+
+Consider the relation $R = (1, \emptyset, \emptyset)$.  We would thus
+expect $(\mathsf{\Lan}_{\Eq_1} \Eq_1) R$ to be a relation with domain
+$1$.  Because the left Kan extension preserves
+projections~\cite{rie16} we can compute the domain as
+$(\mathsf{\Lan}_{\Eq_1} 1) R$ (notice that the left Kan extension of
+$1 : \ast \to \set$ along $\Eq_1 : \ast \to \rel$ is a functor $\rel
+\to \set$).
+
+Following {\color{blue} Reference Computing left Kan extensions -
+  M.R.Bush M.Leeming R.F.C.Walters} we know that
+$(\mathsf{\Lan}_{\Eq_1} 1) R$ is the set of all morphisms of relations
+$f : \Eq_1 \to R$ modulo an equivalence relation; but there can be no
+morphism of relations $\Eq_1 \to R$ because its second component would
+have to be a function $1 \to \emptyset$, and there can be no such
+function.  Thus, $(\mathsf{\Lan}_{\Eq_1} 1) R = \emptyset$, which is
+not the domain we would have expected.
+
+The above example shows that the set interpretation and the relational
+interpretation for the primitive representation of a data type are
+inconsistent with each other, and thus it is not even possible to
+consider the question of whether the semantics is parametric.
+
+One could regard the above example as artificial, as it employs an
+empty relation on a non-empty domain.  Though, it is possible to apply
+the same argument, with a slightly more complex calculation, even to a
+total relation such as $(1, 2, 1 \times 2)$.
+
+
+\vspace*{0.2in}
+
+
+%%% CE are non functorial but parametric
+As we have seen in the previous section {\color{blue} ref}, GADTs
+represented as Church encodings do not necessarily have a map or a
+functorial semantics.  In particular, this means that we cannot
+possibly derive naturality results for those types, event though their
+semantics is parametric.  Indeed, even though naturality is sometimes
+seen as a consequence of parametricity, that is only true in case we
+have a functorial semantics and types supporting a map.  Still, GADTs
+represented as Church encodings can still exhibit consequences of
+paramentricity other than naturality, as they do admit parametric
+semantics {\color{blue} cite Bob's paper?}.
+
+%%% Example with G
+{\color{blue} In this paragraph, $\mathsf{G}$ and $\mathsf{t}$
+  represent syntax, so should be sans-serif, but in the notes, the
+  paragraph about set/relational interpretation and
+  parametricity/IEL/AT uses serif font.}  For example, consider the
+Church encoding of the GADT $\mathsf{G}$ defined
+in~\ref{eq:example-GADT}.  If $\mathsf{t}$ is a term of type
+$\mathsf{G}$ and $R$ is a relation on the sets $A$ and $B$, then
+$t_0(A) \in G_0(A)$ and $t_0(B) \in G_0(B)$, and by the abstraction
+theorem we have that $t_0(A)$ and $t_0(B)$ are related in $G_1(R)$.
+We also know that $G_1(R)$ is the empty relation whenever $R$ is not
+$\mathit{Equal}\,1$.  We thus deduce that there can be no term of type
+$\mathsf{G\,a}$ unless $\mathsf{a}$ is semantically equivalent to
+$\mathsf{1}$.  This result is the syntactic counterpart of the
+inhabitation result for $\mathsf{G}$ {\color{blue} are inhabitation
+  results about semantics or syntax?}  showing that all of the
+instances of $\mathsf{G}$ are uninhabited, with the exception of the
+instance for $\mathsf{1}$.  Of course, we could not possibly have a
+term of an uninhabited type.
+
+%%% Primitive representation of GADT is non parametric, but functorial
+On the contrary, as we have shown previously {\color{blue} ref}, a
+GADT represented as a primitive data type does not necessarily admit a
+parametric semantics, but, as a fixpoint of a higher-order functor, it
+does admit a functorial semantics and, consequently, a functorial map.
+In particular, every type that has a functorial map also benefits from
+naturality properties.  In other words, there is a suitable
+rearrange-transform property as explained in Section~\ref{sec:adts}.
+
+%%% Example with G
+For example, $\mathsf{G}$ is associated to a functorial map,
+$\map_{\mathsf{G}}$, such that, for every function $\mathsf{f : a \to
+  b}$, we get a function $\map_{\mathsf{G}}\,\mathsf{f} : \mathsf{G\,a
+  \to G\,b}$.  Then we have a term $\map_{\mathsf{G}}\,\mathsf{f\,c} :
+\mathsf{G\,a}$ for every function $\mathsf{f : \mathsf{1} \to a}$,
+where $\mathsf{c : G\,\mathsf{1}}$ is the constructor provided by the
+definition of $\mathsf{G}$.
+
+
+
+
 
 \vspace*{1in}
 
