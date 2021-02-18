@@ -147,8 +147,8 @@
 \begin{document}
 
 \begin{abstract}
-FIX ME!!!! GADTs are misnamed. They don't really generalize ADTs. And
-they don't behave the way we expect data types to behave. In
+{\color{red} FIX ME!} GADTs are misnamed. They don't really generalize
+ADTs. And they don't behave the way we expect data types to behave. In
 particular, they force us to choose between the naturality properties
 we expect of their fmap functions and other parametricity results for
 them, causing us to question in what sense GADTs are data types, and
@@ -172,55 +172,63 @@ with primitives for constructing them directly as fixpoints.
 %  heretofore primarily been treated theoretically.}
 In models that validate the program optimization known as {\em short
   cut fusion}~\cite{glp93} the two representations are, in fact,
-equivalent, in the sense that they both have the same interpretation
-in the model. Models in which the Church encodings and primitive
+semantically equivalent, i.e., both have the same interpretation in
+the model. Models in which the Church encodings and primitive
 representations of all {\color{blue} (polynomial)} algebraic data
-types (ADTs) are equivalent include the operationally-based model
-of~\cite{pit98,pit00} and the categorical models
-of~\cite{joh02,joh03}.
+types (ADTs) are semantically equivalent include the
+operationally-based model of~\cite{pit98,pit00} and the categorical
+models of~\cite{joh02,joh03}.
 %\footnote{{\color{blue} Pitts proves the isomorphism only for
 %    polynomial ADTs, whereas Johann {\em et al.}  prove it for any
 %    data type that is the fixpoint of a first-order functor.}}
-This equivalence was recently extended to the class of what might be
-called ``hereditarily polynomial'' {\color{blue} to include truly
-  nested such types} nested types via the categorical model
-of~\cite{jgj21}. But, as shown in Section~\ref{sec:par} below, for
-some {\color{blue} (even polynomial)} GADTs,
+Correctness of short cut fusion, and thus semantic equivalence of
+Church encodings and primitive representations, was recently extended
+to the class of what might be called ``hereditarily polynomial''
+{\color{blue} to include truly nested such types} nested types via the
+categorical model of~\cite{jgj21}. But, as shown in
+Section~\ref{sec:par} below, for some {\color{blue} (even polynomial)}
+GADTs,
 %that are not hereditarily polynomial nested types,
 no such isomorphism holds.
 
-{\color{red} Maybe use a less degenerate example.}  GADTs are
-traditionally represented via Church encodings. In this view, GADTs
-are completely determined by their syntax. For example, the GADT
-$\mathsf{G}$ defined by
-\[\begin{array}{l}
-\mathsf{data\,G : * \to *\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
-\end{array}\]
-{\color{blue} Use $\top$ instead of $1$ throughout?}
-
+GADTs are traditionally represented via Church encodings. In this
+view, GADTs are completely determined by their syntax; for example,
+the GADT $\mathsf{G}$ defined in Haskell by
+\begin{equation}\label{eq:example-GADT}
+\begin{array}{l}
+\mathsf{data\, Expr\,a\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Expr\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Expr \,a \to Expr\,b \to
+  Expr\,(a \times b)}\\ 
+\end{array}
+\end{equation}
+%\[\begin{array}{l}
+%\mathsf{data\,G : * \to *\,where}\\
+%\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
+%\end{array}\]
+%{\color{blue} Use $\top$ instead of $1$ throughout?}
 \noindent
-{\color{blue} data type vs data structure --- which should have the
-functorial completion? The data type.}
-
-\noindent
-comprises exactly one element, namely $\mathsf{c}$. By contrast, the
-primitive representation sees a GADT as the {\em functorial
-  completion}~\cite{jp19} of its syntax. {\color{blue} Completing the
-  syntax is necessary to have a {\em functor} to take the least fixed
-  point of, so is essential to the view of data types as primitive.}
-Viewed as a primitive data type, $\mathsf{G}$ comprises not just
-$\mathsf{c}$, but also all data elements of the form
-$\mathsf{map\;f\;c}$ for all types $\mathsf{t}$ and all functions
-$\mathsf{f : 1 \to t}$ definable in the language, as well as all data
-elements of the form $\mathsf{map\;g\;x}$ for each appropriately typed
-function $\mathsf{g}$ and each element $\mathsf{x}$ already added to
-the data type, and so on.  Although functorial completion adds no new
-data elements to the syntax of a (polynomial) ADT or a (hereditarily
-polynomial) nested type, so that its primitive Church encoding
-representations coincide, these are rarely the same for GADTs.
-Indeed, they are quite different for even the very simple GADT
-$\mathsf{G}$ above.
+comprises expressions of any type $\mathsf{a}$ and expressions
+obtained by pairing other expressions. By contrast, the primitive
+representation sees a GADT as the {\em functorial
+  completion}~\cite{jp19} of its syntax. Completing a GADT's syntax to
+a {\em functor} is necessary in order to be able to take the least
+fixed point~\cite{tfca}, so it is inherent in the view of data types
+as their primitive representations.  Viewed as its primitive
+representation, $\mathsf{Expr}$ comprises not just those data elements
+representable in syntax, but also all data elements of the form
+$\mathsf{map\,f\,e}$ for all types $\mathsf{t_1}$ and $\mathsf{t_1}$,
+all functions $\mathsf{f : t_1 \to t_2}$ definable in the language,
+and all $\mathsf{e :: Expr\,t_1}$, as well as all data elements of the
+form $\mathsf{map\,g\,e'}$ for each appropriately typed function
+$\mathsf{g}$ and each element $\mathsf{e'}$ already added to the data
+type, and so on. Functorial completion adds no new data elements to
+the syntax of a GADT that is actually a (polynomial) ADT or a
+(hereditarily polynomial) nested type, so its Church encoding and
+primitive representation coincide. However, these representations are
+rarely the same for GADTs.
+%Indeed, they are quite different for even the very simple GADT
+%$\mathsf{G}$ above.
 
 But does it really matter which way we view GADTs?
 
@@ -244,28 +252,28 @@ data type.  When used this way, a GADT cannot be seen as the least
 fixpoint of a functor, and must instead be represented via its Church
 encoding.
 
-A semanticist, on the other hand, is likely to follow~\cite{bfss90}
-and expect GADTs to behave as their names suggests --- i.e., as
-generalizations of ADTs. The semanticist is thus likely to expect a
-GADT to be able to be used as a ADT is used --- i.e., as a shape
-filled with data that can be changed without also changing the
-shape. When used this way, it is more natural to view the GADT in
-terms of its primitive representation. In fact, the functorial
-completion of a GADT inherent in its primitive representation is
-exactly what is needed to ensure that the GADT supports a
-$\mathsf{map}$ function, i.e., is a functor both in the catgorical
-sense and in the sense of being an instance of Haskell's
-$\mathsf{Functor}$ class.  It is worth noting, however, that since the
-functorial completion of a GADT includes only those data elements that
-are derivable via repeated applications of $\mathsf{map}$ starting
-from those specified by its syntax, primitive GADTs need not, in
-general, be nested types. For example, the functorial completion of
-our GADT $\mathsf{G}$ includes elements at any instance
-$\mathsf{G\,t}$ because there is a function from $\mathsf{1}$ to any
-type $\mathsf{t}$, but it does not include any terms at instance
-$\mathsf{G\,0}$ because no calculus allows the definition of a
-function into $\mathsf{0}$. {\color{blue} Use $\bot$ instead of $0$
-  here?}
+A person interested in the semantics of functional languages, on the
+other hand, is likely to follow~\cite{bfss90} and expect GADTs to
+behave as their names suggests --- i.e., as generalizations of
+ADTs. The semanticist is thus likely to expect a GADT to be able to be
+used as a ADT is used --- i.e., as a shape filled with data that can
+be changed without also changing the shape. When used this way, it is
+more natural to view the GADT in terms of its primitive
+representation. In fact, the functorial completion of a GADT inherent
+in its primitive representation is exactly what is needed to ensure
+that the GADT supports a $\mathsf{map}$ function, i.e., is a functor
+both in the catgorical sense and in the sense of being an instance of
+Haskell's $\mathsf{Functor}$ class.  It is worth noting, however, that
+since the functorial completion of a GADT includes only those data
+elements that are derivable via repeated applications of
+$\mathsf{map}$ starting from those specified by its syntax, primitive
+GADTs need not, in general, be nested types. For example, the
+functorial completion of our GADT $\mathsf{G}$ includes elements at
+any instance $\mathsf{G\,t}$ because there is a function from
+$\mathsf{1}$ to any type $\mathsf{t}$, but it does not include any
+terms at instance $\mathsf{G\,0}$ because no calculus allows the
+definition of a function into $\mathsf{0}$. {\color{blue} Use $\bot$
+  instead of $0$ here?}
 
 The key observation of this paper is that, while the viewpoints of
 both the GADT programmer and the semanticist are both valid, the two
@@ -291,7 +299,7 @@ is, we show that how we view GADTs has significant consequences, and
 thus answer the question we posed above in the affirmative: Yes, it
 really does matter.
 
-\section{Representations of Data Types}
+\section{Representations of Data Types}\label{sec:reps}
 
 \subsection{Algebraic Data Types}\label{sec:adts}
 
@@ -360,6 +368,7 @@ $\mathsf{f : a \to b}$, $\mathsf{xs \,:\,List\,a}$, and $\mathsf{g :
   List\,a\to Tree\,a}$ arranges lists into trees in a type-independent
 way, then
 \[\mathsf{fmap_{Tree}\,f\,(g \, xs) \,=\, g\,(fmap_{List}\,f\,xs)}\]
+{\color{violet} mention naturality?}
 
 \subsubsection{Church Encodings of ADTs}
 
@@ -406,8 +415,10 @@ But the Church encoding of an ADT carries with it no expectation
 whatsoever that such a type-and-data-uniform, type-preserving,
 data-changing $\mathsf{map}$ function can be defined. Nevertheless,
 for polynomial ADTs this can always be done. But even when the Church
-encoding of an ADT supports a $\mathsf{map}$ function, there is no
-guarantee that the rearrange-transform property will hold for it.
+encoding of an ADT supports function with the same type as its actual
+$\mathsf{map}$, there is no guarantee that the rearrange-transform
+property will hold for it. For example, if {\color{violet} Are there
+  examples of such non-functorial maps?}
 
 \subsubsection{ADTs as Primitive Data Types}
 
@@ -629,7 +640,7 @@ for each type argument, like an ADT does, but instead defines an
 entire family of types that must be constructed simultaneously. That
 is, a GADT defines an {\em inductive family of types}.
 
-\subsubsection{Church Encodings of GADTs}
+\subsubsection{Church Encodings of GADTs}\label{sec:CEs}
 
 The syntax of GADTs is consonant with programmers' frequent use of
 them in situations where type uniformity is specifically to be
@@ -666,7 +677,7 @@ GADT calculus must support an equality type $\mathsf{Equal}$ that is
 inhabited when its two type arguments are the same and is uninhabited
 otherwise, i.e., is the syntactic reflection of semantic equality
 function $\mathit{Equal}$. {\color{blue} This is the least commitment
-  thing Chirch encodings require.} Such a type can either be taken as
+  thing Church encodings require.} Such a type can either be taken as
 primitive, as in
 \[\begin{array}{l}
 \mathsf{data\, Equal :: * \to * \to *\,where}\\
@@ -718,7 +729,7 @@ $\mathsf{w \times z}$ from only $\mathsf{f :: b \times c \to w \times
   z}$ and $\mathsf{x}$ and $\mathsf{y}$ unless we knew, e.g., that
 $\mathsf{f}$ was a pair of functions.
 
-\subsubsection{GADTs as Primitive Data Types}
+\subsubsection{GADTs as Primitive Data Types}\label{sec:prim-gadts}
 
 The primitive representations of {\color{blue} polynomial} GADTs
 capture in syntax the fact that GADTs can be considered as fixpoints
@@ -802,12 +813,15 @@ primitive data types. But whereas the two representations are always
 isomorphic for ADTs, they are not, in general, for GADTs. We will see
 this in the next section.
 
+{\color{blue} rearrange-transform property for GADTs?}
+
 \section{Non-Equivalence of Church Encodings and Primitive
   Representations of GADTs}\label{sec:non-equiv}
 
-Intuitively it seems the two representations might be different. One
-is functorial, one is not. It is possible they could always have the
-same data elements even if not the same morphisms. But as we see in
+{\color{red} Check all fonts!! Syntax vs. semantics!}  Intuitively it
+seems the two representations might be different. One is functorial,
+one is not. It is possible they could always have the same data
+elements even if not the same morphisms. But as we will see in
 Example~\ref{ex:g1}, this turns out not to be the case.
 
 Non-uniform nature of GADTs renders build, therefore short cut, for
@@ -815,71 +829,71 @@ GADTs impossible. Can't even formulate! Of course, there could be
 another way to prove equivalence.  But, in fact, CEs and primitive
 representations are not equivalent for arbitrary GADTs, as the
 following example shows.
+{\color{blue} Our favorite GADT isn't a hereditarily
+  polynomial nested type.}
 
 \begin{example}\label{ex:g1}
-{\color{red} THIS EXAMPLE IS ENRICO'S TEXT}
 Consider the following GADT, defined in a Haskell-like syntax:
 \begin{equation}\label{eq:example-GADT}
 \begin{array}{l}
-\mathsf{data }\; G : \ast \to \ast\;\mathsf{where}\\
-\hspace*{0.4in}c\;:\;G\;1
+\mathsf{data\,G : * \to *\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
 \end{array}
 \end{equation}
-This GADT has a unique constructor, providing a data of type $G\;1$.
-While we might say this is the simplest GADT possible, it still
-provides an interesting case-study, showing the differences between
-the primitive data type representation and the Church encoding
-representation.
+Syntactically, this GADT comprises a single data element, namely
+$\mathsf{c :: G \, 1}$. Despite the simplicity of this GADT, it serves
+as an informative case study highlighting the differences between the
+Church encoding of a GADT and that GADT's representation as a
+primitive data type.
 
-We now represent $G$ via its Church encoding.  Since $G$ has a single
-constructor, which provides a data of type $G\,1$ without requiring
-any input, its Church encoding is
-\[
-G\,\alpha = \mathsf{\forall f.\, (\forall a.\,
-  f\,a) \to f\,\onet}
-\]
-meaning that $G\,A = \mathsf{Equal}\,\onet\,A$.  Thus, $G$ tests its
-argument for equality against the unit type, $\onet$.
+The Church encoding of $\mathsf{G}$ is
+\[\mathsf{G\,a} = \mathsf{\forall f.\, (\forall b.\,
+  f\,b) \to f\,1} \] In other words, $\mathsf{G\,a =
+  \mathsf{Equal}\,1\,a}$, so $\mathsf{G}$'s effect is simply to test
+its argument for equality against the unit type $\mathsf{1}$.
 
-Recall from the previous section {\color{blue} use reference} that the
-semantic interpretation of $\mathsf{Equal}\,\onet\,A$ is given by a
-characteristic function, in the sense that it is the singleton 1 when
-$A$ is 1, and the empty set otherwise.  Thus, as a data type
-represented by Church encoding, G will be the data type containing one
-(and only one) piece of data when instantiated on $\onet$, and
-uninhabited otherwise.  This perfectly mirrors the syntax of $G$,
-which indeed provides just one constructor when the type is
-instantiated on 1, and none otherwise.  Thus, given a set $A$, the set
-interpretation $G_0(A)$ is 1 if $A = 1$, and $\emptyset$ otherwise.
+Recall from the Section~\ref{sec:CEs} that the semantic interpretation
+of $\mathsf{Equal\,1\,a}$ is given by a characteristic function, in
+the sense that it is the singleton $1$ when the interpretation of
+$\mathsf{a}$ is $1$, and is the empty set otherwise.  Thus, as a data
+type represented by Church encoding, $\mathsf{G}$ will be the data
+type containing one (and only one) piece of data when instantiated on
+$\mathsf{1}$, and uninhabited otherwise.  This perfectly mirrors the
+syntax of $\mathsf{G}$, which indeed provides just one constructor
+when the type is instantiated on $\mathsf{1}$, and none otherwise.
+Thus, given a set $A$ interpreting $\mathsf{a}$, the set
+interpretation $G_0(A)$ is $1$ if $A = 1$ and $\emptyset$ otherwise.
 
-We now want a primitive representation of $G$.  Recall that $G$ has a
-unique constructor $c : G\,\onet$, which can be equivalently expressed
-as $c: \onet \to G\,\onet$.  By using a $\Lan$ type, we can express
-$c$ as a constructor $(\Lan_{\onet} \onet)\alpha \to G \alpha$.  Thus,
-as a primitive data type, we represent $G$ as $\mu \phi. \lambda
-\alpha. (\Lan^{\emptyset}_{\onet} \onet)\alpha$.  {\color{blue}
-  (WHERE?) notice that the constructors of a GADT have to be functors,
-  because the GADT is the fixpoint of a higher order functor.}
+We now want a primitive representation of $\mathsf{G}$.  Recall that
+$\mathsf{G}$ has a unique constructor $\mathsf{c : G\,1}$, which can
+be equivalently expressed as $\mathsf{c: 1 \to G\,1}$.  By using a
+a$\Lan$ type, we can express $\mathsf{c}$ as a constructor
+$\mathsf{(Lan_1\, 1)\alpha \to G \alpha}$.  Thus, as a primitive data
+type, we represent $\mathsf{G}$ as $\mu \phi. \lambda
+\alpha. (\Lan^{\emptyset}_1 \,1)\alpha$.  {\color{blue} (WHERE?)
+  Notice that the constructors of a GADT have to be functors, because
+  the GADT is the fixpoint of a higher order functor. Also, we're not
+  using the superscript notation on $\Lan$.}
 
-The semantic interpretation of $\mu \phi. \lambda
-\alpha. (\Lan^{\emptyset}_{\onet} \onet)\alpha$ is given by the
-fixpoint of the functor yielded by the semantic interpretation of
-$\Lan^{\emptyset}_{\onet} \onet$, the body of the $\mu$ type.  Notice,
-though, that the recursive variable $\phi$ does not appear in the body
-of the $\mu$ type.  Thus, the semantic interpretation is actually just
-the semantic interpretation of the body itself.  Therefore, the
-semantic interpretation is $\mathsf{\Lan}_1 1$, where $1$ is the
-constantly $1$-valued functor $\ast \to \set$ from the category with a
-single object $\ast$ to $\set$.
+The semantic interpretation of $\mathsf{\mu \phi. \lambda
+  \alpha. (\Lan^{\emptyset}_1\, 1)\alpha}$ is given by the fixpoint of
+the functor yielded by the semantic interpretation of
+$\mathsf{Lan^{\emptyset}_1\, 1}$, the body of the $\mathsf{\mu}$-type.
+Notice, though, that the recursive variable $\mathsf{\phi}$ does not
+appear in the body of the $\mathsf{\mu}$-type.  Thus, the semantic
+interpretation is actually just the semantic interpretation of the
+body itself.  Therefore, the semantic interpretation is
+$\mathsf{Lan_1 1}$, where $1$ is the constantly $1$-valued functor
+$\ast \to \set$ from the category with a single object $\ast$ to
+$\set$.
 
+{\color{red} Syntax? Semantics? Which are we talking here?}
 It turns out that $\mathsf{\Lan}_1 1$ is, in fact, none other than the
 identity functor on $\set$.  Indeed, for any set $A$,
 $(\mathsf{\Lan}_1 1) A$ is the set of all functions $a : 1 \to A$
 modulo the smallest equivalence relation $\sim$ such that, for any $f
 : 1 \to 1$, we have $a \sim a \circ f$.  But this is isomorphic to
-$A$, because the only function $1 \to 1$ is the identity.
-{\color{blue} Reference Computing left Kan extensions - M.R.Bush
-  M.Leeming R.F.C.Walters}
+$A$, because the only function $1 \to 1$ is the identity~\cite{blw03}.
 
 The Church encoding representation of $G$ and the primitive
 representation of $G$ are thus non-equivalent: while the former only
@@ -972,14 +986,9 @@ that it holds for {\em all} elements of a type's interpretation, not
 just those that interpret terms.  Similar theorems are required for
 types and terms with any number of free variables.
 
-1. Parametricity requires a fibred semantics. This doesn't happen for
-primitive rep so can't have a par model with this rep. Can still get
-naturality properties, however.
-
-2. For CEs can get par model and par properties. But what do these say
-for GADTs? Give examples?
-
-{\color{red} EVERYTHING BEFORE THE NOTES BELOW IS ENRICO'S TEXT:} To
+\begin{example}
+{\color{red} PRIMITIVE REP DOESN'T HAVE FIBRED SEMANTICS, AS REQUIRED
+  FOR PAR} To
 even consider the question of whether our semantics is parametric we
 first need to define a relational semantics for our types, i.e., a
 relational interpretation for every type $G : \ast \to \ast$ such
@@ -1009,14 +1018,14 @@ $(\mathsf{\Lan}_{\Eq_1} 1) R$ (notice that the left Kan extension of
 $1 : \ast \to \set$ along $\Eq_1 : \ast \to \rel$ is a functor $\rel
 \to \set$).
 
-Following {\color{blue} Reference Computing left Kan extensions -
-  M.R.Bush M.Leeming R.F.C.Walters} we know that
-$(\mathsf{\Lan}_{\Eq_1} 1) R$ is the set of all morphisms of relations
-$f : \Eq_1 \to R$ modulo an equivalence relation; but there can be no
-morphism of relations $\Eq_1 \to R$ because its second component would
-have to be a function $1 \to \emptyset$, and there can be no such
-function.  Thus, $(\mathsf{\Lan}_{\Eq_1} 1) R = \emptyset$, which is
-not the domain we would have expected.
+Following~\cite{blw03} we know that $(\mathsf{\Lan}_{\Eq_1} 1) R$ is
+the set of all morphisms of relations $f : \Eq_1 \to R$ modulo an
+equivalence relation; but there can be no morphism of relations $\Eq_1
+\to R$ because its second component would have to be a function $1 \to
+\emptyset$, and there can be no such function.  Thus,
+$(\mathsf{\Lan}_{\Eq_1} 1) R = \emptyset$, which is not the domain we
+would have expected.
+\end{example}
 
 The above example shows that the set interpretation and the relational
 interpretation for the primitive representation of a data type are
@@ -1028,12 +1037,11 @@ empty relation on a non-empty domain.  Though, it is possible to apply
 the same argument, with a slightly more complex calculation, even to a
 total relation such as $(1, 2, 1 \times 2)$.
 
+We still get naturality properties, though.
 
 \vspace*{0.2in}
 
-
-%%% CE are non functorial but parametric
-As we have seen in the previous section {\color{blue} ref}, GADTs
+As we have seen in the previous Section~\ref{sec:reps}, GADTs
 represented as Church encodings do not necessarily have a map or a
 functorial semantics.  In particular, this means that we cannot
 possibly derive naturality results for those types, event though their
@@ -1042,36 +1050,38 @@ seen as a consequence of parametricity, that is only true in case we
 have a functorial semantics and types supporting a map.  Still, GADTs
 represented as Church encodings can still exhibit consequences of
 paramentricity other than naturality, as they do admit parametric
-semantics {\color{blue} cite Bob's paper?}.
+semantics~\cite{atk12}.
 
-%%% Example with G
+\begin{example}
 {\color{blue} In this paragraph, $\mathsf{G}$ and $\mathsf{t}$
   represent syntax, so should be sans-serif, but in the notes, the
   paragraph about set/relational interpretation and
-  parametricity/IEL/AT uses serif font.}  For example, consider the
-Church encoding of the GADT $\mathsf{G}$ defined
-in~\ref{eq:example-GADT}.  If $\mathsf{t}$ is a term of type
+  parametricity/IEL/AT uses serif font.} For example, consider the
+Church encoding of the GADT $\mathsf{G}$ defined in
+Equation~\ref{eq:example-GADT}.  If $\mathsf{t}$ is a term of type
 $\mathsf{G}$ and $R$ is a relation on the sets $A$ and $B$, then
 $t_0(A) \in G_0(A)$ and $t_0(B) \in G_0(B)$, and by the abstraction
 theorem we have that $t_0(A)$ and $t_0(B)$ are related in $G_1(R)$.
-We also know that $G_1(R)$ is the empty relation whenever $R$ is not
-$\mathit{Equal}\,1$.  We thus deduce that there can be no term of type
-$\mathsf{G\,a}$ unless $\mathsf{a}$ is semantically equivalent to
-$\mathsf{1}$.  This result is the syntactic counterpart of the
-inhabitation result for $\mathsf{G}$ {\color{blue} are inhabitation
-  results about semantics or syntax?}  showing that all of the
-instances of $\mathsf{G}$ are uninhabited, with the exception of the
-instance for $\mathsf{1}$.  Of course, we could not possibly have a
-term of an uninhabited type.
+{\color{blue} Here, $G = (G_0,G_1)$ is the interpretation of
+  $\mathsf{G}$.}  We also know that $G_1(R)$ is the empty relation
+whenever $R$ is not $\mathit{Equal}\,1$.  We thus deduce that there
+can be no term of type $\mathsf{G\,a}$ unless $\mathsf{a}$ is
+semantically equivalent to $\mathsf{1}$.  This result is the syntactic
+counterpart of the inhabitation result for $\mathsf{G}$ {\color{blue}
+  are inhabitation results about semantics or syntax?}  showing that
+all of the instances of $\mathsf{G}$ are uninhabited, with the
+exception of the instance for $\mathsf{1}$.  Of course, we could not
+possibly have a term of an uninhabited type.
+\end{example}
 
 %%% Primitive representation of GADT is non parametric, but functorial
-On the contrary, as we have shown previously {\color{blue} ref}, a
+On the contrary, as we have shown in Section~\ref{sec:gadts}, a
 GADT represented as a primitive data type does not necessarily admit a
 parametric semantics, but, as a fixpoint of a higher-order functor, it
 does admit a functorial semantics and, consequently, a functorial map.
 In particular, every type that has a functorial map also benefits from
 naturality properties.  In other words, there is a suitable
-rearrange-transform property as explained in Section~\ref{sec:adts}.
+rearrange-transform property as explained in Section~\ref{sec:gadts}.
 
 %%% Example with G
 For example, $\mathsf{G}$ is associated to a functorial map,
@@ -1083,16 +1093,20 @@ where $\mathsf{c : G\,\mathsf{1}}$ is the constructor provided by the
 definition of $\mathsf{G}$.
 
 
+We can read our counterexample as showing that parametricity results
+for calculi representing GADTs as their Church encodings cannot be
+extended to calculi that represent GADTs as primitive data types. And
+functoriality results for calucli representing GADTs as primitive
+cannot be extended to calculi that represent GADTs as their Church
+encodings.  So the user is forced to make a choice between naturality
+consequences of parametricity and other consequences of
+parametricity. If GADTs really did generalize ADTs, and really were
+data types in a normal sense, then these would coincide and the user
+would not have to choose.
 
 
-
-\vspace*{1in}
-
-
-NOTES/POINTS:
-
-Bob requires map functions for fixpoint but then doesn't use them.
-
+\begin{comment}
+{\color{violet} This is already in the paper, split in multiple places.}
 An analysis of the Eq A B type in Bob's systems shows that the set
 interpretation is empty whenever the A and B have different set
 interpretations.  Likewise, its relational interpretation is the empty
@@ -1109,81 +1123,41 @@ parametricity generalizes naturality only makes sense for functorial
 types.  We can specialize these considerations to the type Eq 1 B,
 representing G, our example GADT defined by a unique constructor c ::
 G 1.
+\end{comment}
 
-Since the types encoding GADTs in Bob's system make essential use
-of equality types, these considerations extend and possibly generalize
-to all GADTs.  Still, the equality is just a shorthand for a type made
-by higher-order forall and arrow types, and thus this considerations
-are not limited to a specific type, but are intrinsic of Bob's
-system.
+\vspace*{1in}
 
-In contrast, $(Lan_1 1) B$, the type representing G in our system, is
-functorial (as are all types in our systems) and inhabited for every
-instance of B other than 0.  Indeed, we have a term $c : (Lan_1 1) 1$
-given by the Lan introduction rule, and thus every term t : T yields a
-term in $(Lan_1 1) T$ by use of the map of $(Lan_1 1) B$.  This shows
-that, as expected by now, the same GADT really does have different
-semantic interpretations in Bob's system and in ours.
+NOTES:
 
-
-We can thus expect that not all types in Bob's system will
-be functorial and that, consequently, the consequences of
-parametricity will not include functoriality but will provide
-information about, e.g., inhabitatedness.
-%See
-%<https://www.cis.upenn.edu/~sweirich/talks/param-gadt.pdf> and
-%<https://www.seas.upenn.edu/~sweirich/papers/rtheorems.pdf> for more
-%about parametricity and GADTs.
-
-
- 
-{\color{blue} Our favorite GADT isn't a hereditarily
-  polynomial nested type.}
-
-
-
-
-
-Importantly, we get the same parametricity properties for ADTs whether
-we regard them as fixpoints of higher-order functors --- i.e., as
-primitive data types --- or as their Church encodings. This is not the
-case for GADTs that are not nested types. (What about truly nested
-types?)
-
-Bob's system gives a parametric model that models GADTs. But given the
-non-uniformity captured by GADTs by purposeful design, that should be
-both completely unexpected and alarming! However, upon reflection it's
-not really all that surprising once we realize what the parametricity
-properties of GADTs in Bob's system look like.
-
-%It turns out that such properties are essentially trivial (because of
-%its essential use of Eq, which itself has a trivial parametricity
-%property --- IS THIS TRUE??). So, in the end, parametricity is not
-%really something I can use to reason non-trivially about GADTs in
-%Bob's system. (MAY NEED TO REVISE AFTER INVESTIGATION INTO PAR
-%PROPERTY OF EQ.)
-
-Tellingly, Bob gives no parametricity properties for GADTs. If he had,
-it would have illustrated the phenomenon we are describing, raised the
-question: What good is a par property for a GADT or another type using
-the Eq type?
-
+{\color{violet} TRUE????}
 FOR ADTs and Nesteds, it does not depend. We get the same par property
 whether they are seen as primitives or we use their CE.
 
-\section{Conclusion}
 
-{\color{blue} Some of this probably belongs in previous section.}
+\subsection{Comparison with Bob's Parametric Model}
 
 Moreover, the consequences of parametricity that one has in Bob's
 system do not hold in our system, as we can construct terms of type
 $(Lan_1 1)$ B for instances of B other than 1.  Thus, either our
 system does not admit any parametric model, or, if it does, the
 consequences of parametricity are different.  That the consequences of
-parametricity depended on the model or the representation of GADTs
-would come as a surprise, though!  (IT DOES. CONSIDER INTERPRETING
-BASE TYPES AS ORDERED SETS. THIS GIVES DIFFERENT PARAMETRICITY
-PROPERTIES THAN INTERPRETING THEM AS DIAGONAL RELATIONS.)
+parametricity depended on the model or the representation of GADTs is
+to be expected, however. (IT IS. CONSIDER INTERPRETING BASE TYPES AS
+ORDERED SETS. THIS GIVES DIFFERENT PARAMETRICITY PROPERTIES THAN
+INTERPRETING THEM AS DIAGONAL RELATIONS.)
+
+It is possible to give a parametric model that models GADTs
+represented as Church encodings~\cite{atk12}.  But given the
+non-uniformity captured by GADTs by purposeful design, that should be
+both completely unexpected and alarming! However, upon reflection it's
+not really all that surprising once we realize what the parametricity
+properties of GADTs represented as Church encodings look like. Bob
+requires map functions for fixpoint but then doesn't use them.
+
+Tellingly, Bob gives no parametricity properties for GADTs. If he had,
+it would have illustrated the phenomenon we are describing, raised the
+question: What good is a par property for a GADT or another type using
+the Eq type?
 
 That parametricity properties for GADTs in Bob's system are as we
 described before is interesting because, for ADTs and nested types,
@@ -1199,13 +1173,6 @@ which the user can define a map function that behaves
 functorially. The problem is that there may not be many such GADTs (in
 fact it will not be possible for proper GADTs, i.e., GADTs that are
 not actually nested types).
-
-
-
-
-
-
-
 
 Perhaps expecting naturality as a special case of parametricity is
 wrongheaded, though, since, with its arbitrary forall-types and arrow
@@ -1245,6 +1212,10 @@ generalize ADTs? Perhaps what are now known as nested types should
 really be called GADTs since *they* are actually the (level-2)
 higher-kinded generalizations of ADTs.
 
+{\color{violet} We say "naturality consequences of parametricity"
+when in fact we have naturality without having any parametricity at all.
+Change the wording to indicate that naturality follows from
+functoriality of the interp.}
 In our system we can show that we can recover the expected naturality
 consequences of parametricity for (at least a large class of) GADTs
 (that can be characterized by a grammar for which every type is
@@ -1263,35 +1234,11 @@ even for the data types defined by our grammar.  So this isn't really
 what we wanted either.
 
 
-The upshot is that we can consider GADTs as data types (i.e., we can
-compute the semantics of GADTs) in two ways: just as determined by
-their syntax, as in Bob's system, or as the functorial completion of
-their syntax, obtained by supplying a suitable map primitive, as in
-ours. But, either way, GADTs fail to be well-behaved wrt
-parametricity. In the first case, GADTs don't have fmaps so their
-parametricity properties can't include naturality properties. In the
-second case, we still can't get non-naturality consequences of
-parametricity. That is, we can't get BOTH the naturality consequences
-of parametricity AND the non-naturality consequences of parametricity
-at the same time.
 
-One can read our counterexample as showing that Bob's parametricity
-results cannot be extended to one that gives a functorial semantics to
-GADTs. So the user is forced to make a choice between naturality
-consequences of parametricity and other consequences of
-parametricity. If GADTs really did generalize ADTs, and really were
-data types in a normal sense, then the user would not have to.
+\pagebreak
 
-
-
-
-
-
-
-\bibliography{gadt-story-references}
-
-\end{document}
-
+\begin{verbatim}
+  
 Daniel:
 
 I have tried reconstructing my example using our simpler GADT with a single
@@ -1363,3 +1310,25 @@ In particular, [[G 0]]^set = \emptyset.
 Still, it is NOT true that its relational interpretation is [[G \alpha]]^rel
 [\alpha := R] = R (and indeed the relational interpretation is not fibered
 over the set interpretation)!
+\end{verbatim}
+
+\section{Conclusion}
+
+The upshot is that we can consider GADTs as data types (i.e., we can
+compute the semantics of GADTs) in two ways: just as determined by
+their syntax, as when they are represented by their Church encodings,
+or as the functorial completion of their syntax, as obtained by
+supplying a suitable map construct, when they are represented as
+primitive data types. But, either way, GADTs fail to be well-behaved
+wrt parametricity. In the first case, GADTs don't have fmaps so their
+parametricity properties can't include naturality properties. In the
+second case, we still can't get non-naturality consequences of
+parametricity. That is, we can't get BOTH the naturality consequences
+of parametricity AND the non-naturality consequences of parametricity
+at the same time.
+
+
+
+\bibliography{gadt-story-references}
+
+\end{document}
