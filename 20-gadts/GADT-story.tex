@@ -196,10 +196,10 @@ view, GADTs are completely determined by their syntax; for example,
 the GADT $\mathsf{G}$ defined in Haskell by
 \begin{equation}\label{eq:example-GADT}
 \begin{array}{l}
-\mathsf{data\, Expr\,a\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Expr\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Expr \,a \to Expr\,b \to
-  Expr\,(a \times b)}\\ 
+\mathsf{data\, Seq\,a\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Seq \,a \to Seq\,b \to
+  Seq\,(a \times b)}\\ 
 \end{array}
 \end{equation}
 %\[\begin{array}{l}
@@ -208,49 +208,68 @@ the GADT $\mathsf{G}$ defined in Haskell by
 %\end{array}\]
 %{\color{blue} Use $\top$ instead of $1$ throughout?}
 \noindent
-comprises expressions of any type $\mathsf{a}$ and expressions
-obtained by pairing other expressions. By contrast, the primitive
-representation sees a GADT as the {\em functorial
+comprises sequences of any type $\mathsf{a}$ and sequences obtained by
+pairing the data in two already existing sequences. By contrast, the
+primitive representation sees a GADT as the {\em functorial
   completion}~\cite{jp19} of its syntax. Completing a GADT's syntax to
 a {\em functor} is necessary in order to be able to take the least
 fixed point~\cite{tfca}, so it is inherent in the view of data types
-as their primitive representations.  Viewed as its primitive
-representation, $\mathsf{Expr}$ comprises not just those data elements
+as their primitive representations. Viewed as its primitive
+representation, $\mathsf{Seq}$ comprises not just those data elements
 representable in syntax, but also all data elements of the form
-$\mathsf{map\,f\,e}$ for all types $\mathsf{t_1}$ and $\mathsf{t_1}$,
+$\mathsf{map\,f\,s}$ for all types $\mathsf{t_1}$ and $\mathsf{t_2}$,
 all functions $\mathsf{f : t_1 \to t_2}$ definable in the language,
-and all $\mathsf{e :: Expr\,t_1}$, as well as all data elements of the
-form $\mathsf{map\,g\,e'}$ for each appropriately typed function
-$\mathsf{g}$ and each element $\mathsf{e'}$ already added to the data
-type, and so on. Functorial completion adds no new data elements to
-the syntax of a GADT that is actually a (polynomial) ADT or a
-(hereditarily polynomial) nested type, so its Church encoding and
-primitive representation coincide. However, these representations are
-rarely the same for GADTs.
-%Indeed, they are quite different for even the very simple GADT
-%$\mathsf{G}$ above.
+and all $\mathsf{s :: Seq\,t_1}$, as well as all data elements of the
+form $\mathsf{map\,g\,s'}$ for each appropriately typed function
+$\mathsf{g}$ and each element $\mathsf{s'}$ already added to the data
+type, and so on. Functorial completion for $\mathsf{Seq}$ adds, in
+particular, data elements of the form
+$\mathsf{map\,g\,(Pair\,u_1\,u_2)}$ even though these may not
+themselves be of the form $\mathsf{Pair\,v_1\,v_2}$ for any terms
+$\mathsf{v_1}$ and $\mathsf{v_2}$. By contrast, functorial completion
+adds no new data elements to the syntax of a GADT that is actually a
+(polynomial) ADT or a (hereditarily polynomial) nested type, so its
+Church encoding and primitive representation coincide. However, these
+representations are rarely the same for GADTs.
 
 But does it really matter which way we view GADTs?
 
-{\color{red} This will probably be more convincing if we use, e.g.,
-  an expression GADT from Stephanie above.}
 A GADT programmer is likely to use GADTs precisely because they
-exhibit different behaviors at different types, and thus to consider
-the GADT to be completely specified by its syntax. When used this way,
-the shape of a GADTs is actually {\em determined} by the data it
-contains. As a result, it is not expected to support a $\mathsf{map}$
-function --- i.e., to be an instance of Haskell's $\mathsf{Functor}$
-class --- like other data types. For example, the definition for
-$\mathsf{G}$ above specifies data only at instance $\mathsf{G\,1}$.
-Since there is a function from $\mathsf{1}$ to any other type
-$\mathsf{t}$, and yet $\mathsf{G\,t}$ is uninhabited at any instance
-other than $\mathsf{1}$, $\mathsf{G}$ cannot support a $\mathsf{map}$
-function. When it is intended to capture this kind of non-uniform
-behavior, a GADT's behavior does not generalize that of ADTs as
-advertised, and in some sense doesn't even behave like a traditional
-data type.  When used this way, a GADT cannot be seen as the least
-fixpoint of a functor, and must instead be represented via its Church
-encoding.
+exhibit different behaviors at different types, and thus to consider a
+GADT to be completely specified by its syntax. When used this way, the
+shape of a particular element of a GADTs is actually {\em determined}
+by the data it contains. As a result, it is not expected to support a
+$\mathsf{map}$ function --- i.e., to be an instance of Haskell's
+$\mathsf{Functor}$ class --- like other data types. Indeed, the
+definition for $\mathsf{Seq}$ above specifies that an element of the
+form $\mathsf{Pair\,u_1\,u_2}$ must have the shape of a sequence of
+data of pair type rather than a sequence of data of arbitrary type
+$\mathsf{e}$.  The clause of $\mathsf{map}$ for the $\mathsf{Pair}$
+constructor should therefore feed $\mathsf{map}$ a function $\mathsf{f
+  :: (a \times b) \to e}$ and a term of the form $\mathsf{Pair
+  \,u_1\,u_2}$ for $\mathsf{u_1 :: Seq\,a}$ and $\mathsf{_2 ::
+  Seq\,b}$, and produce a term $\mathsf{Pair\,v_1\,v_2'}$ for some
+appropriately typed terms $\mathsf{v_1}$ and $\mathsf{v_2}$. However,
+it is not clear how to achieve this since $\mathsf{e}$ need not
+necessarily be a product type. {\color{blue} And even if $\mathsf{e}$
+  {\em were} known to be of the form $\mathsf{w \times z}$, then we
+  still wouldn't necessarily have a way to produce data of type
+  $\mathsf{w \times z}$ from only $\mathsf{f :: a \times b \to w
+    \times z}$ and $\mathsf{u_1}$ and $\mathsf{u_2}$ unless we knew,
+  e.g., that $\mathsf{f}$ was a pair of functions.}
+
+{\color{red} HERE!}
+
+data only at instance
+$\mathsf{G\,1}$.  Since there is a function from $\mathsf{1}$ to any
+other type $\mathsf{t}$, and yet $\mathsf{G\,t}$ is uninhabited at any
+instance other than $\mathsf{1}$, $\mathsf{G}$ cannot support a
+$\mathsf{map}$ function. When it is intended to capture this kind of
+non-uniform behavior, a GADT's behavior does not generalize that of
+ADTs as advertised, and in some sense doesn't even behave like a
+traditional data type.  When used this way, a GADT cannot be seen as
+the least fixpoint of a functor, and must instead be represented via
+its Church encoding.
 
 A person interested in the semantics of functional languages, on the
 other hand, is likely to follow~\cite{bfss90} and expect GADTs to
@@ -715,7 +734,7 @@ would allow us to construct the element
 of type $\mathsf{Void}$, which is impossible. It follows immediately
 from this contradiction that $\mathsf{Seq}$ cannot support a map
 function either. This is already intuitively evident from the Haskell
-definition of $\mathsf{Seq}$, though. Indeed, the clause of
+definition of $\mathsf{Seq}$, though. ALREADY USED??? Indeed, the clause of
 $\mathsf{map}$ for the $\mathsf{Pair}$ constructor should feed
 $\mathsf{map}$ a function $\mathsf{f :: (b \times c) \to e}$ and a
 term of the form $\mathsf{Pair \,t_1\,t_2}$ for $\mathsf{x :: b}$ and
