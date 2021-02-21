@@ -87,7 +87,6 @@
 
 \newcommand{\emptyfun}{{[]}}
 \newcommand{\cal}{\mathcal}
-%\newcommand{\fold}{\mathit{fold}}
 \newcommand{\F}{\mathcal{F}}
 \renewcommand{\G}{\mathcal{G}}
 \newcommand{\N}{\mathcal{N}}
@@ -159,6 +158,7 @@ their syntax really is.
 \maketitle
 
 \section{Introduction}
+{\color{blue} map vs. fmap throughout} 
 
 There are two standard ways to represent data types when studying
 modern functional languages: via their Church encodings in a (possibly
@@ -174,10 +174,9 @@ In models that validate the program optimization known as {\em short
   cut fusion}~\cite{glp93} the two representations are, in fact,
 semantically equivalent, i.e., both have the same interpretation in
 the model. Models in which the Church encodings and primitive
-representations of all {\color{blue} (polynomial)} algebraic data
-types (ADTs) are semantically equivalent include the
-operationally-based model of~\cite{pit98,pit00} and the categorical
-models of~\cite{joh02,joh03}.
+representations of all algebraic data types (ADTs) are semantically
+equivalent include the operationally-based model of~\cite{pit98,pit00}
+and the categorical models of~\cite{joh02,joh03}.
 %\footnote{{\color{blue} Pitts proves the isomorphism only for
 %    polynomial ADTs, whereas Johann {\em et al.}  prove it for any
 %    data type that is the fixpoint of a first-order functor.}}
@@ -186,15 +185,13 @@ Church encodings and primitive representations, was recently extended
 to the class of what might be called ``hereditarily polynomial''
 {\color{blue} to include truly nested such types} nested types via the
 categorical model of~\cite{jgj21}. But, as shown in
-Section~\ref{sec:par} below, for some {\color{blue} (even polynomial)}
-GADTs,
-%that are not hereditarily polynomial nested types,
-no such isomorphism holds.
+Section~\ref{sec:par} below, for some GADTs --- even polynomial ones
+--- no such isomorphism holds.
 
 GADTs are traditionally represented via Church encodings. In this
 view, GADTs are completely determined by their syntax; for example,
 the GADT $\mathsf{G}$ defined in Haskell by
-\begin{equation}\label{eq:example-GADT}
+\begin{equation}\label{eq:seq}
 \begin{array}{l}
 \mathsf{data\, Seq\,a\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
@@ -202,11 +199,6 @@ the GADT $\mathsf{G}$ defined in Haskell by
   Seq\,(a \times b)}\\ 
 \end{array}
 \end{equation}
-%\[\begin{array}{l}
-%\mathsf{data\,G : * \to *\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
-%\end{array}\]
-%{\color{blue} Use $\top$ instead of $1$ throughout?}
 \noindent
 comprises sequences of any type $\mathsf{a}$ and sequences obtained by
 pairing the data in two already existing sequences. By contrast, the
@@ -247,76 +239,77 @@ data of pair type rather than a sequence of data of arbitrary type
 $\mathsf{e}$.  The clause of $\mathsf{map}$ for the $\mathsf{Pair}$
 constructor should therefore feed $\mathsf{map}$ a function $\mathsf{f
   :: (a \times b) \to e}$ and a term of the form $\mathsf{Pair
-  \,u_1\,u_2}$ for $\mathsf{u_1 :: Seq\,a}$ and $\mathsf{_2 ::
-  Seq\,b}$, and produce a term $\mathsf{Pair\,v_1\,v_2'}$ for some
+  \,u_1\,u_2}$ for $\mathsf{u_1 :: Seq\,a}$ and $\mathsf{u_2 ::
+  Seq\,b}$, and produce a term $\mathsf{Pair\,v_1\,v_2}$ for some
 appropriately typed terms $\mathsf{v_1}$ and $\mathsf{v_2}$. However,
 it is not clear how to achieve this since $\mathsf{e}$ need not
-necessarily be a product type. {\color{blue} And even if $\mathsf{e}$
-  {\em were} known to be of the form $\mathsf{w \times z}$, then we
-  still wouldn't necessarily have a way to produce data of type
-  $\mathsf{w \times z}$ from only $\mathsf{f :: a \times b \to w
-    \times z}$ and $\mathsf{u_1}$ and $\mathsf{u_2}$ unless we knew,
-  e.g., that $\mathsf{f}$ was a pair of functions.}
+necessarily be a product type. And even if $\mathsf{e}$ {\em were}
+known to be of the form $\mathsf{w \times z}$, then we still wouldn't
+necessarily have a way to produce data of type $\mathsf{w \times z}$
+from only $\mathsf{f :: a \times b \to w \times z}$ and $\mathsf{u_1}$
+and $\mathsf{u_2}$ unless we knew, e.g., that $\mathsf{f}$ was a pair
+of functions $\mathsf{(f_1 :: a \to w, f_2 :: b \to z)}$. When it is
+intended to capture this kind of non-uniform behavior, a GADT's
+behavior does not generalize that of ADTs as advertised, and the GADT
+doesn't even really behave like a traditional data type. In this
+situation, the GADT cannot be seen as the least fixpoint of a functor,
+and must instead be represented via its Church encoding.
 
-{\color{red} HERE!}
-
-data only at instance
-$\mathsf{G\,1}$.  Since there is a function from $\mathsf{1}$ to any
-other type $\mathsf{t}$, and yet $\mathsf{G\,t}$ is uninhabited at any
-instance other than $\mathsf{1}$, $\mathsf{G}$ cannot support a
-$\mathsf{map}$ function. When it is intended to capture this kind of
-non-uniform behavior, a GADT's behavior does not generalize that of
-ADTs as advertised, and in some sense doesn't even behave like a
-traditional data type.  When used this way, a GADT cannot be seen as
-the least fixpoint of a functor, and must instead be represented via
-its Church encoding.
-
-A person interested in the semantics of functional languages, on the
-other hand, is likely to follow~\cite{bfss90} and expect GADTs to
-behave as their names suggests --- i.e., as generalizations of
-ADTs. The semanticist is thus likely to expect a GADT to be able to be
-used as a ADT is used --- i.e., as a shape filled with data that can
-be changed without also changing the shape. When used this way, it is
-more natural to view the GADT in terms of its primitive
-representation. In fact, the functorial completion of a GADT inherent
-in its primitive representation is exactly what is needed to ensure
-that the GADT supports a $\mathsf{map}$ function, i.e., is a functor
-both in the catgorical sense and in the sense of being an instance of
-Haskell's $\mathsf{Functor}$ class.  It is worth noting, however, that
-since the functorial completion of a GADT includes only those data
-elements that are derivable via repeated applications of
+A computer scientist interested in the semantics of functional
+languages, on the other hand, is likely to follow~\cite{bfss90} and
+expect GADTs to behave as their names suggests --- i.e., as
+generalizations of ADTs. The semanticist is thus likely to expect a
+GADT to be able to be used as a ADT is used --- i.e., as a shape
+filled with data that can be changed without also changing the
+shape. To be used in this way, a GADT must be viewed in terms of its
+primitive representation. In fact, the functorial completion of a GADT
+inherent in its primitive representation is exactly what is needed to
+ensure that the GADT supports a $\mathsf{map}$ function, i.e., is
+interpreted as a true categorical functor, and can therefore be made
+an instance of Haskell's $\mathsf{Functor}$ class. It is worth noting,
+however, that since the functorial completion of a GADT includes only
+those data elements that are derivable via repeated applications of
 $\mathsf{map}$ starting from those specified by its syntax, primitive
 GADTs need not, in general, be nested types. For example, the
-functorial completion of our GADT $\mathsf{G}$ includes elements at
-any instance $\mathsf{G\,t}$ because there is a function from
-$\mathsf{1}$ to any type $\mathsf{t}$, but it does not include any
-terms at instance $\mathsf{G\,0}$ because no calculus allows the
-definition of a function into $\mathsf{0}$. {\color{blue} Use $\bot$
+functorial completion of the GADT $\mathsf{G}$ defined by
+\begin{equation}\label{eq:G}
+\begin{array}{l}
+\mathsf{data\,G\,a\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
+\end{array}
+\end{equation}
+{\color{blue} Use $\top$ instead of $1$ throughout?} includes elements
+at any instance $\mathsf{G\,a}$ for any type $\mathsf{a} \not =
+\mathsf{0}$ since there is always a function from $\mathsf{1}$ to such
+an $\mathsf{a}$. But $\mathsf{G}$ does not include any terms at
+instance $\mathsf{G\,0}$ because $\mathsf{G\,0}$ is not inhabited via
+the syntactic specifiation of $\mathsf{G}$, and it is not inhabited
+via functorial completion because it is not possible to define a
+function from $\mathsf{1}$ into $\mathsf{0}$. {\color{blue} Use $\bot$
   instead of $0$ here?}
 
 The key observation of this paper is that, while the viewpoints of
 both the GADT programmer and the semanticist are both valid, the two
-are irreconcilable. Unsurprisingly, which point of view is adopted has
-deep consequences for the ways GADTs can be used and reasoned
-about. In this paper we show that the choice of GADT representation
-has deep implications for parametric reasoning about structures of
-those types. Indeed, a GADT programmer who views GADTs as their Church
-encodings cannot safely use program transformations or reasoning
-principles for them that involve map functions for them. This may
-surprise the GADT programmer by being contrary to expectation for
-something supposedly generalizing a data type. The GADT programmer
-may, however, be able to program with and reason about GADTs using
-non-naturality consequences of parametricity, such as type
-inhabitation results. On the other hand, a semanticist who views GADTs
-as primitive data types will have all naturality-based program
-transformations and reasoning principles for GADTs at their disposal,
-but non-naturality consequences of parametric reasoning may not be
-available to them.
+are irreconcilable. Importantly, which point of view is adopted in any
+particular setting has deep consequences for the ways GADTs can be
+used and reasoned about there. In this paper we show that the choice
+of GADT representation has deep implications for parametric reasoning
+about structures of those types. In particular, a GADT programmer who
+views GADTs as their Church encodings cannot safely use program
+transformations or reasoning principles for them that involve
+$\mathsf{map}$ functions for them, although they may be able to
+program with and reason about GADTs using other consequences of
+parametricity, such as type inhabitation results. On the other hand, a
+semanticist who views GADTs as primitive data types will have all
+naturality-based program transformations and reasoning principles for
+GADTs at their disposal, but, since no parametric model can be
+constructed for primitive GADTs, non-naturality consequences of
+parametric reasoning may not be available to them.
 
-In this paper we show how these observations can be made precise. That
-is, we show that how we view GADTs has significant consequences, and
-thus answer the question we posed above in the affirmative: Yes, it
-really does matter.
+The goal of this paper we show how these observations can be made
+precise, and therefore to show that how GADTs are viewed has
+significant consequences. This paper thus answers the question we
+posed above in the affirmative: Yes, it really does matter.
 
 \section{Representations of Data Types}\label{sec:reps}
 
@@ -340,104 +333,101 @@ computations.
 List types are the quintessential examples of ADTs. The shape of the
 container underlying the list type
 \[\mathsf{List\,a} = \mathsf{Nil} \,|\, \mathsf{Cons\,a\,(List\,a)}\]
-%of lists of elements of type $\mathsf{a}$
 is determined by the types of its two constructors $\mathsf{Nil\, ::\,
   List\, a}$ and $\mathsf{Cons \,::\,a \to \List\,a\to
   List\,a}$. These constructors specify that the data in a list of
 type $\mathsf{List\,a}$ are arranged linearly. The shape underlying
 the type $\mathsf{List\,a}$ is therefore given by the set $\nat$ of
-natural numbers, and the positions in a structure of this type are
-given by specific natural numbers. Since the type argument to every
-occurrence of the type constructor $\mathsf{List}$ in the right-hand
-side of above definition is the same the type instance being defined
-on its left-hand side, the type $\mathsf{List\,a}$ enforces the
-invariant that all of the data in a structure of this type have the
-same type $\mathsf{a}$. In a similar way, the tree type
+natural numbers, with each natural number representing a choice of
+length for a list structure, and the positions in a structure of shape
+$\mathsf{n}$ are given by natural numbers ranging from $\mathsf{0}$ to
+$\mathsf{n-1}$. Since the type argument to every occurrence of the
+type constructor $\mathsf{List}$ in the right-hand side of above
+definition is the same the type instance being defined on its
+left-hand side, the type $\mathsf{List\,a}$ enforces the invariant
+that all of the data in a structure of this type have the same type
+$\mathsf{a}$. In a similar way, the tree type
 \[\mathsf{Tree\, a} = \mathsf{Leaf\,a}
-\,|\,\mathsf{Node\,(Tree\,a)\,a\,(Tree\,a)}\] of binary trees
-has as its underlying shape the type of binary trees of units, and the
+\,|\,\mathsf{Node\,(Tree\,a)\,a\,(Tree\,a)}\] of binary trees has as
+its underlying shape the type of binary trees of units, and the
 positions in a structure of this type are given by sequences of L (for
-``left'') and R (for ``right'') navigating a path
-%to either a node or a leaf in
-through the structure. The type $\mathsf{Tree\, a}$ enforces the
-invariant that all of the data at the nodes and leaves in a structure
-of this type have the same type $\mathsf{a}$.
+``left'') and R (for ``right'') navigating a path through the
+structure. The type $\mathsf{Tree\, a}$ enforces the invariant that
+all of the data at the nodes and leaves in a structure of this type
+have the same type $\mathsf{a}$.
 
-{\color{blue} polynomial ADTs?} Since the shape of an ADT structure
---- i.e., a structure whose type is an instance of an ADT --- is
-independent of the type of data it contains, ADTs can be defined
-polymorphically. As a result, an ADT structure containing data of type
-$\mathsf{a}$ can be transformed into another ADT structure of the
-exact same shape containing data of another type $\mathsf{b}$ simply
-by applying a given function $\mathsf{f \,:\,a \to b}$ to each of its
-elements. Indeed, every ADT can be made an instance of Haskell's
-$\mathsf{Functor}$ class by defining a type-and-data-uniform
-type-preserving, data-changing $\mathsf{fmap}$ {\color{blue} map
-  vs. fmap} function for it.  Moreover, given a type-independent way
-of rearranging an ADT structure's shape $\mathsf{T\,a}$ into the shape
-for another ADT structure $\mathsf{T'\,a}$, we get the same structure
-of type $\mathsf{T'\,b}$ regardless of whether we first rearrange the
-original structure of type $\mathsf{T\,a}$ into one of type
-$\mathsf{T'\,a}$ and then use $\mathsf{fmap_{T'}}$ to convert that
-resulting structure to one of type $\mathsf{T'\,b}$, or we first use
-$\mathsf{fmap_T}$ to convert the original structure of type
-$\mathsf{T\,a}$ to one of type $\mathsf{T\,b}$ and then rearrange that
-resulting structure into one of type $\mathsf{T'\,b}$. For example, if
-$\mathsf{f : a \to b}$, $\mathsf{xs \,:\,List\,a}$, and $\mathsf{g :
-  List\,a\to Tree\,a}$ arranges lists into trees in a type-independent
-way, then
+Since the shape of an ADT structure --- i.e., a structure whose type
+is an instance of an ADT --- is independent of the type of data it
+contains, ADTs can be defined polymorphically. As a result, an ADT
+structure containing data of type $\mathsf{a}$ can be transformed into
+another ADT structure of the exact same shape containing data of
+another type $\mathsf{b}$ simply by applying a given function
+$\mathsf{f \,:\,a \to b}$ to each of its elements. Indeed, every ADT
+$\mathsf{T}$ can be made an instance of Haskell's $\mathsf{Functor}$
+class by defining a type-and-data-uniform, structure-preserving,
+data-changing $\mathsf{fmap_T}$ function for it.  Moreover, given a
+type-independent way of rearranging an ADT structure's shape
+$\mathsf{T\,a}$ into the shape for another ADT structure
+$\mathsf{T'\,a}$, we get the same structure of type $\mathsf{T'\,b}$
+regardless of whether we first rearrange the original structure of
+type $\mathsf{T\,a}$ into one of type $\mathsf{T'\,a}$ and then use
+$\mathsf{fmap_{T'}}$ to convert that resulting structure to one of
+type $\mathsf{T'\,b}$, or we first use $\mathsf{fmap_T}$ to convert
+the original structure of type $\mathsf{T\,a}$ to one of type
+$\mathsf{T\,b}$ and then rearrange that resulting structure into one
+of type $\mathsf{T'\,b}$. For example, if $\mathsf{f : a \to b}$,
+$\mathsf{xs \,:\,List\,a}$, and $\mathsf{g : List\,a\to Tree\,a}$
+arranges lists into trees in a type-independent way, then
 \[\mathsf{fmap_{Tree}\,f\,(g \, xs) \,=\, g\,(fmap_{List}\,f\,xs)}\]
-{\color{violet} mention naturality?}
 
 \subsubsection{Church Encodings of ADTs}
 
 One way to represent ADTs is via their Church encodings. A Church
-encoding is a representation of a data type as a pure function in a
-lambda calculus (System F in the case of functional languages). Church
-encodings can be used to represent data types in languages that do not
-support primitives for sum types, product types, or recursion.
-{\color{blue} Church encodings (and the related Parigot encodings)
-  have recently been popularized as {\em visitor patterns} in
-  object-oriented programming.} Represention of ADTs as their Church
-encodings is possible in any language that supports functions.
+encoding is a representation of a data type as a function in a pure
+lambda calculus, such as System F and its higher-kinded
+extensions. They, together with other related encodings, have recently
+been popularized as various {\em visitor patterns} in object-oriented
+programming~\cite{owg08,gon21}.
 
-The Church encodings of the ADTs $\mathsf{List\,a}$ and
+Church encodings of ADTs can be defined in any language that supports
+functions. They can therefore be used to represent ADTs in languages
+that do not support primitives for sum types, product types, or
+recursion. The Church encodings of the ADTs $\mathsf{List\,a}$ and
 $\mathsf{Tree\,a}$, for example, are
 \[\mathsf{List\,a} = \mathsf{\forall b.\,b \to (a \to b \to b) \to b}\]
 and 
 \[\mathsf{Tree\,a} = \mathsf{\forall b.\,(a \to b) \to (b \to a \to b
-  \to b) \to b}\] respectively. The argument types are abstractions
-of the types of ADTs' constructors. For instance, $\mathsf{b}$
-abstracts the type of the constructor $\mathsf{Nil}$, and $\mathsf{a
-  \to b \to b}$ abstracts the type of the constructor $\mathsf{Cons}$,
-for lists. Because these types are each uniform in their argument type
-$\mathsf{a}$, we can also encode the type constructors $\mathsf{List}$
-and $\mathsf{Tree}$ themselves as
+  \to b) \to b}\] respectively. The argument types are abstractions of
+the types of ADTs' constructors. For instance, $\mathsf{b}$ abstracts
+the type $\mathsf{List\,a}$ of the constructor $\mathsf{Nil}$ for
+lists, and $\mathsf{a \to b \to b}$ abstracts the type $\mathsf{a \to
+  List\,a \to List\,a}$ of the constructor $\mathsf{Cons}$.
+
+Because the types of the ``abstract constructors'' for an ADT are
+uniform in their argument types, it is always possible to Church
+encode the type constructors themselves as well. For example, the
+Church encodings of the type constructors $\mathsf{List}$ and
+$\mathsf{Tree}$ are
 \[\mathsf{List} = \mathsf{\forall a. \forall b.\,b \to (a \to b \to b)
   \to b}\] 
 and 
 \[\mathsf{Tree} = \mathsf{\forall a. \forall b.\,(a \to b) \to (b \to
-  a \to b \to b) \to b}\]
-respectively. 
-
-It is possible to make $\mathsf{List}$ and $\mathsf{Tree}$ instances
-of Haskell's $\mathsf{Functor}$ class. Indeed, the Prelude's
-$\mathsf{map}$ function does exactly that for $\mathsf{List}$. For
-$\mathsf{Tree}$ we can define
+  a \to b \to b) \to b}\] respectively. This is what allows an ADT's
+associated type constructor to be made an instance of Haskell's
+$\mathsf{Functor}$ class. For example, Haskell's built-in
+$\mathsf{map}$ function makes the type constructor $\mathsf{List}$ an
+instance of the $\mathsf{Functor}$ class, and for $\mathsf{Tree}$ we
+can define
 \[\begin{array}{lll}
 \mathsf{map_{Tree}} & \mathsf{::} & \mathsf{(a \to b) \to Tree\,a \to Tree \,b}\\
 \mathsf{map_{Tree}\, f\, (Leaf\,x)} & \mathsf{=} & \mathsf{Leaf\,(f\,x)}\\
 \mathsf{map_{Tree}\, f\, (Node\,t_1\,x\,t_2)} & \mathsf{=} &
 \mathsf{Node\,(map_{Tree}\, f \,t_1)\,x\,(map_{Tree}\,f\,t_2)}\\
 \end{array}\]
-But the Church encoding of an ADT carries with it no expectation
-whatsoever that such a type-and-data-uniform, type-preserving,
-data-changing $\mathsf{map}$ function can be defined. Nevertheless,
-for polynomial ADTs this can always be done. But even when the Church
-encoding of an ADT supports function with the same type as its actual
-$\mathsf{map}$, there is no guarantee that the rearrange-transform
-property will hold for it. For example, if {\color{violet} Are there
-  examples of such non-functorial maps?}
+Note, however, that the Church encoding of an ADT carries with it no
+expectation whatsoever that such a type-and-data-uniform,
+structure-preserving, data-changing $\mathsf{map}$ function can be
+defined.
 
 \subsubsection{ADTs as Primitive Data Types}
 
@@ -447,38 +437,64 @@ possible in any language that supports primitives for sum types,
 product types, and recursion. In such a language, the primitive
 representations of the ADTs $\mathsf{List\,a}$ and $\mathsf{Tree\,a}$
 are
-\[\mathsf{List\,a} = \mathsf{\mu b.\, 1 + (a \times b)}\] 
+\begin{equation}\label{eq:list}
+  \mathsf{List\,a} = \mathsf{\mu X.\, 1 + a \times X}
+\end{equation}
 and 
-\[\mathsf{Tree\,a} = \mathsf{\mu b.\, a + (b \times a \times b)}\]
-respectively. Here, $\mathsf{\mu}$ is the primitive fixpoint
-operator.
+\begin{equation}\label{eq:tree}
+  \mathsf{Tree\,a} = \mathsf{\mu X.\, a + X \times a \times X}
+\end{equation}
+respectively, where $\mathsf{\mu}$ is a primitive fixpoint operator.
 
 Primitive representations capture in syntax the fact that ADTs can be
 considered as fixpoints. For example $\mathsf{List\,a}$ does indeed
-satisfy the fixpoint equation indicated above, i.e., is indeed such
-that
-\[\mathsf{List\,a} = \mathsf{1 + (a \times List\,a)}\] 
+satisfy the fixpoint equation $\mathsf{F\,X} = \mathsf{1 + a \times
+  X}$ determined by~\eqref{eq:list}, i.e., is indeed such that
+\[\mathsf{List\,a} = \mathsf{1 + a \times List\,a}\] 
 since every element of $\mathsf{List\,a}$ is either empty or is
 obtained by $\mathsf{Cons}$ing an element of type $\mathsf{a}$ onto an
-already-existing structure of type $\mathsf{List\,a}$. (The fixpoint
-equation is just a rewriting of the Haskell data type declaration for
-$\mathsf{List\,a}$.) The ADT $\mathsf{Tree\,a}$ can similarly be seen
-to be a solution to the fixpoint equation
-\[\mathsf{Tree\,a} = \mathsf{a + Tree\,a \times a \times Tree\,a}\] 
-determined by its Haskell data type declaration.
+already-existing structure of type $\mathsf{List\,a}$. In fact, this
+fixpoint equation is just a rewriting of the Haskell data type
+declaration for $\mathsf{List\,a}$. Similarly, the ADT
+$\mathsf{Tree\,a}$ can be seen to be a solution to the fixpoint
+equation
+\[\mathsf{F\,X} = \mathsf{a + X \times a \times X}\] 
+determined by~\eqref{eq:tree}.
+%its Haskell data type declaration.
 
-These fixpoint equations are sensible at the level of types. But to
-ensure that the syntactic fixpoint actually denotes a semantic object
-computed as a real-live fixpoint, the semantic fixpoint calculation
-must converge. This means that the fixpoint being taken must be of
-{\em functors} on the category interpreting types~\cite{tfca}, rather
-than of mere functions between the sets interpreting them. Said
-differently, functions between sets interpreting types must have
-corresponding {\em functorial actions} on functions between
-interpretations of types. Reflecting this requirement back into syntax
-gives that the body of a primitive data type representation of an ADT
-must support a $\mathsf{map}$ function, i.e., must be an instance of
-Haskell's $\mathsf{Functor}$ class.
+These fixpoint equations are entirely sensible at the level of
+types. But to ensure that the syntactic fixpoint representing an ADT
+actually denotes a semantic object computed as a real-live fixpoint,
+the semantic fixpoint calculation must converge. This means that the
+fixpoint being taken must be of {\em functors} on the category
+interpreting types~\cite{tfca}, rather than of mere functions between
+the sets interpreting types. Said differently, the function $F$
+interpreting the type constructor $\mathsf{F}$ constructing the body
+of a syntactic fixpoint must actually be a {\em functor} on the
+category $\mathit{Set}$ of sets and functions. That is $F$ must not
+only have an action on sets interpreting different type arguments to
+$\mathsf{F}$, but must also have a {\em functorial action} on
+functions between such sets. Reflecting this requirement back into
+syntax gives that $\mathsf{F}$ must support a $\mathsf{map}$ function,
+i.e., must be an instance of Haskell's $\mathsf{Functor}$ class.
+
+Requiring $F$ to be a functor will ensure that the interpretation $\mu
+F$ of the ADT $\mathsf{T\,a} = \mathsf{\mu F}$ exists. But to ensure
+that $\mu F$ is itself a functor, so that the type constructor
+$\mathsf{T}$ associated with the ADT $\mathsf{T\,a}$ supports a
+$\mathsf{map}$ function, $F$ must itself be the fixpoint $\mu H$ of a
+functor $H$. But the functor $H$ must be a functor on the category of
+functors on the category $\mathit{Set}$ interpreting types. In other
+words, $H$ must be a {\em higher-order} functor on
+$\mathit{Set}$. Reflecting this requirement back into syntax gives
+that $\mathsf{T\,a} = \mathsf{(\mu F)\,a} = \mathsf{(\mu\,(\mu
+  H))\,a}$ for the ``type constructor constructor'' $\mathsf{H}$ whose
+interpretation is $H$.
+
+{\color{red} HERE!!!!}
+
+\vspace*{1in}
+
 
 A concrete example is given by the ADT $\mathsf{List\,a}$. This type
 is is modelled as the fixpoint $\mu F_a$ of the first-order functor
@@ -509,6 +525,10 @@ hold even when it can be stated for Church encodings, it is simply the
 reflection back into syntax of the naturality property of the
 functorial action of the interpretation of the type constructor
 associated with an ADT's representation as a primitive data type.
+
+{\color{violet} Mention naturality? Semantics? Uniformity because we
+  actually view ADTs as fixpoints of higher-order functors --- not
+  first-order ones --- to get maps.}
 
 
 %In the former case the ADT $\mathsf{List\,a}$ for each $\mathsf{a}$ is
@@ -619,6 +639,8 @@ parametricity that follow from naturality, from those, such as short
 cut fusion for nested types, that require the full power of
 parametricity.
 \end{comment}
+
+
 
 \subsection{GADT Syntax}\label{sec:gadts}
 
@@ -1016,7 +1038,7 @@ that, for every relation $R : \rel(A, B)$, we have $G_1(R) :
 
 We shall show that this is not generally possible for the primitive
 representation of data types, by considering the previously defined
-type $G$ in Equation~\ref{eq:example-GADT}.  Recall that the semantic
+type $G$ in Equation~\ref{eq:G}.  Recall that the semantic
 interpretation of $G$ is given by $\mathsf{\Lan}_1 1$ which, in fact,
 is none other than the identity functor on $\set$.
 
@@ -1077,7 +1099,7 @@ semantics~\cite{atk12}.
   paragraph about set/relational interpretation and
   parametricity/IEL/AT uses serif font.} For example, consider the
 Church encoding of the GADT $\mathsf{G}$ defined in
-Equation~\ref{eq:example-GADT}.  If $\mathsf{t}$ is a term of type
+Equation~\ref{eq:G}.  If $\mathsf{t}$ is a term of type
 $\mathsf{G}$ and $R$ is a relation on the sets $A$ and $B$, then
 $t_0(A) \in G_0(A)$ and $t_0(B) \in G_0(B)$, and by the abstraction
 theorem we have that $t_0(A)$ and $t_0(B)$ are related in $G_1(R)$.
