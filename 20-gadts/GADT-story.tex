@@ -191,7 +191,7 @@ Section~\ref{sec:par} below, for some GADTs --- even polynomial ones
 
 GADTs are traditionally represented via Church encodings. In this
 view, GADTs are completely determined by their syntax; for example,
-the GADT $\mathsf{G}$ defined in Haskell by
+the GADT $\mathsf{Seq}$ defined in Haskell by
 \begin{equation}\label{eq:seq}
 \begin{array}{l}
 \mathsf{data\, Seq\,a\,where}\\
@@ -494,8 +494,9 @@ fixpoint $\mu H$ of a functor $H$. In this case, however, $H$ must be
 a functor on the category $\mathit{Set}^\mathit{Set}$ of functors and
 natural transformations on $\mathit{Set}$. That is, $H$ must be a {\em
   higher-order} functor on $\mathit{Set}$. Reflecting this requirement
-back into syntax gives that $\mathsf{T\,a} = \mathsf{(\mu F)\,a} =
-\mathsf{(\mu\,(\mu H))\,a}$ for the ``type constructor constructor''
+back into syntax gives that
+$\mathsf{T\,a} = \mathsf{(\mu H)\,a}$
+for the ``type constructor constructor''
 $\mathsf{H}$ that supports suitable\footnote{The $\mathsf{map}$
   function for $\mathsf{H}$ should satisfy syntactic reflections of
   the functoriality properties in $\mathit{Set}^\mathit{Set}$ ---
@@ -524,12 +525,11 @@ action on a functor $F$ is given by the functor $H\,F$ whose actions
 on sets and functions between them are given by $H\,F\,X = 1 + X
 \times F\,X$ and $H\,F\,f = \id_1 + f \times F\,f$, respectively, and
 whose action on a natural transformation $\eta$ is the natural
-transformation given by $H\,\eta = \id + \eta \times
-F\,\eta$. Reflecting the functorial action of $\mu H$ back into syntax
-gives exactly Haskell's built-in $\mathsf{map}$ function as the
-type-and-data-uniform, structure-preserving, data-changing function
-associated with $\mathsf{List}$. {\color{blue} Double-check this
-  paragraph.} 
+transformation whose component at $X$ is given by $(H\,\eta)_X = \id_1
++ \id_X \times \eta_X$. Reflecting the functorial action of $\mu H$
+back into syntax gives exactly Haskell's built-in $\mathsf{map}$
+function as the type-and-data-uniform, structure-preserving,
+data-changing function associated with $\mathsf{List}$.
 
 In a parametric model, short cut fusion can be used to show that the
 Church encoding and the primitive representation of an ADT are
@@ -538,10 +538,10 @@ to {\em state} the rearrange-transform property for Church encodings
 of ADTs, this property is simply the reflection back into syntax of
 the instance of naturality for the type-independent function that
 rearranges structures of type $\mathsf{T\,a}$ into ones of type
-$\mathsf{T'\,a}$ and the functions $\mathsf{map_T\,f}$ and
-$\mathsf{map_{T'}\,f}$ for a function $\mathsf{f :: a \to b}$ and the
-type constructors $\mathsf{T}$ and $\mathsf{T'}$ associated with these
-ADTs, respectively. {\color{blue} Double-check this paragraph.}
+$\mathsf{T'\,a}$ and the content-transforming functions
+$\mathsf{map_T\,f}$ and $\mathsf{map_{T'}\,f}$ for a function
+$\mathsf{f :: a \to b}$, where $\mathsf{T}$ and $\mathsf{T'}$ are the
+type constructors associated with these ADTs, respectively.
 
 \section{Representations of GADTs}\label{sec:gadts}
 
