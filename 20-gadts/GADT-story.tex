@@ -157,8 +157,9 @@ their syntax really is.
 
 \maketitle
 
-\section{Introduction}
-{\color{blue} map vs. fmap throughout} 
+\section{Introduction}\label{sec:intro}
+{\color{blue} map vs. fmap throughout.} {\color{blue} Add polynomial
+  throughout?}
 
 There are two standard ways to represent data types when studying
 modern functional languages: via their Church encodings in a (possibly
@@ -569,8 +570,8 @@ $\mathsf{a}$ is integral to the type being defined, the type parameter
 $\mathsf{a}$ appears in both $\mathsf{PTree\,a}$ and $\mathsf{Seq\,a}$
 as a ``dummy'' parameter used only to give the kind \verb|* -> *| of
 the type constructors $\mathsf{PTree}$ and $\mathsf{Seq}$. This is
-explicitly captured in the alternative Haskell syntax {\color{blue}
-    Correct?}
+explicitly captured in the alternative ``kind signature'' Haskell
+syntax
 \[\begin{array}{l}
 \mathsf{data\, Seq :: * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
@@ -585,64 +586,57 @@ simultaneously. That is, a GADT defines an {\em inductive family of
 
 \subsection{Church Encodings of GADTs}\label{sec:CEs}
 
-{\color{red} HERE!}
+The syntax of GADTs is consistent with programmers' use of them in
+situations where different behaviors at different type instances is
+desired. This is achieved by allowing the progammer to give the type
+signatures of the different data constructors independently, and then
+using pattern matching to force the desired type refinement.  Typical
+applications of GADTs include generic programming, modeling
+programming languages via higher-order abstract syntax, maintaining
+invariants in data structures, and expressing constraints in embedded
+domain-specific languages. They have also been used, e.g., to
+implement tagless interpreters~\cite{pl04,pr06,pvww06}, to improve
+memory performance~\cite{min15}, and to design APIs~\cite{pen20}.
 
-The syntax of GADTs is consonant with programmers' frequent use of
-them in situations where type uniformity is specifically to be
-eschewed.  {\color{blue} Typical applications of GADTs include generic
-  programming, modeling programming languages via higher-order
-  abstract syntax, maintaining invariants in data structures, and
-  expressing constraints in embedded domain-specific languages. GADTs
-  have also been used to implement tagless
-  interpreters~\cite{pl04,pr06,pvww06} by trading the definition of a
-  universal value domain for a direct specification of the property of
-  being a value. Other applications are described in,
-  e.g.,~\cite{js15,rou06,MORE,UPDATED}. OTHER SITUATIONS NEEDING
-  TYPE-BASED DISPATCH.}
-
-GADTs are useful in such situations precisely because generalizing the
-type arguments in the instances of a GADT appearing as the return
-types of its data constructors entails a strong connection between a
-GADTs shape and the data it contains.  With ADTs, we first choose the
-shape of the container and then fill that container with data of
-whatever type we like. Critically, the choice of shape is independent
-of the data to be stored. With GADTs, however, the shape of the
-container may actually {\em depend} on (the type of) the data to be
-contained. On other words, the shape and the data are not independent!
-For example, while $\mathsf{Const}$ can create data of any shape
-$\mathsf{Seq\,a}$, $\mathsf{Pair}$ can produce data of shape
-$\mathsf{Seq\,a}$ where $\mathsf{a}$ is a pair type. As a result, it
-may not always be possible to modify a GADT's data while retaining its
-shape because changing (the type of) the data may actually change the
-shape.
+Allowing non-variable type arguments in the return types of a GADT's
+data constructors establishes a strong connection between a GADT's
+shape and the data it contains. With ADTs, we first choose the shape
+of the container and then fill that container with data of whatever
+type we like. Critically, the choice of shape is independent of the
+data to be stored. With GADTs, however, the shape of the container may
+actually {\em depend} on (the type of) the data to be contained. For
+example, $\mathsf{Const}$ can create data of any shape
+$\mathsf{Seq\,a}$, but $\mathsf{Pair}$ can produce data of shape
+$\mathsf{Seq\,a}$ only if $\mathsf{a}$ is a pair type. As a result,
+modifying the data in a GADT may actually change the shape of --- or
+may even destroy! --- the GADT.
 
 To determine the possible shapes of a GADT's container we have to
-pattern-match on the type of the data to be contained. For this, a
-GADT calculus must support an equality type $\mathsf{Equal}$ that is
-inhabited when its two type arguments are the same and is uninhabited
-otherwise, i.e., is the syntactic reflection of semantic equality
-function $\mathit{Equal}$. {\color{blue} This is the least commitment
-  thing Church encodings require.} Such a type can either be taken as
-primitive, as in
+pattern-match on the type of the data to be contained. For this, it is
+essential that a GADT calculus support an equality type
+$\mathsf{Equal}$ that is inhabited when its two type arguments are the
+same and is uninhabited otherwise. That is, the type $\mathsf{Equal}$
+must be the syntactic reflection of semantic equality function
+$\mathit{Equal}$. The type $\mathsf{Equal}$ can either be defined via
+GADT syntax, as in
 \[\begin{array}{l}
-\mathsf{data\, Equal :: * \to * \to *\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,a\,a}\\
+\mathsf{data\, Equal\,a\,b\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}\\
 \end{array}\]
 \noindent
-or
-represented by its own Church encoding
-\[\mathsf{Equal\,t_1\,t_2} = \mathsf{\forall f.\, (\forall a.\,
-  f\,a\,a) \to f\,t_1\,t_2}\] Using $\mathsf{Equal}$, the GADT
-$\mathsf{Seq}$ can then be represented as its Church encoding
+or, equivalently, represented by its own Church encoding
+\[\mathsf{Equal\,a\,b} = \mathsf{\forall f.\, (\forall c.\,
+  f\,c\,c) \to f\,a\,b}\]
+The GADT $\mathsf{Seq}$ can then be represented as its Church encoding
 \[\mathsf{Seq\,a} = \mathsf{\forall f.\, (\forall a.\,a \to f\, a)
   \to (\forall a\,b\,c.\,Equal\,a\,(b\times c) \to f\,b \to f\,c \to
   f\,a) \to f\,a}\]
 in a higher-kinded calculus such as $F_\omega$.
 
-Importantly, $\mathit{Equal}\,a$ cannot be made into a functor, or,
-equivalently, $\mathsf{Equal\,a}$ cannot be made an instance of
-Haskell's $\mathsf{Functor}$ class: if $\mathsf{Equal\,a}$ supported a
-function
+Importantly, the function $\mathit{Equal}\,a$ cannot be made into a
+functor. Equivalently, $\mathsf{Equal\,a}$ (in either representation)
+cannot be made an instance of Haskell's $\mathsf{Functor}$
+class. Indeed, if $\mathsf{Equal\,a}$ supported a function
 \[\mathsf{map_{Equal\,a} :: (b \to c) \to Equal\,a\,b \to
   Equal\,a\,c}\]
 then defining
@@ -650,60 +644,52 @@ then defining
 \mathsf{eqElim :: Equal\, a\, b \to b \to a}\\
 \mathsf{eqElim\, Refl\, x = x} 
 \end{array}\]
-would allow us to construct the element 
+would allow us to construct an element 
 \[\begin{array}{l}
 \mathsf{emptyFromMapEquala :: (\forall b\, c.\, (b \to c) \to Equal\, a\,
   b \to Equal\, a \,c) \to Void}\\ 
 \mathsf{emptyFromMapEquala \,map_{Equal\,a} = eqElim\, (map_{Equal\,a}\,
   absurd\, Refl)\, ()}  
 \end{array}\]
-of type $\mathsf{Void}$, which is impossible. It follows immediately
-from this contradiction that $\mathsf{Seq}$ cannot support a map
-function either. This is already intuitively evident from the Haskell
-definition of $\mathsf{Seq}$, though. ALREADY USED??? Indeed, the clause of
-$\mathsf{map}$ for the $\mathsf{Pair}$ constructor should feed
-$\mathsf{map}$ a function $\mathsf{f :: (b \times c) \to e}$ and a
-term of the form $\mathsf{Pair \,t_1\,t_2}$ for $\mathsf{x :: b}$ and
-$\mathsf{y :: c}$, and produce a term $\mathsf{Pair\,t_1'\,t_2'}$ for
-some appropriately typed terms $\mathsf{t_1'}$ and
-$\mathsf{t_2'}$. But it is not clear how to achieve this since
-$\mathsf{e}$ need not necessarily be a product type. And even if
-$\mathsf{e}$ {\em were} known to be of the form $\mathsf{w \times z}$,
-then we still wouldn't necessarily have a way to produce data of type
-$\mathsf{w \times z}$ from only $\mathsf{f :: b \times c \to w \times
-  z}$ and $\mathsf{x}$ and $\mathsf{y}$ unless we knew, e.g., that
-$\mathsf{f}$ was a pair of functions.
+of type $\mathsf{Void}$. {\color{blue} Use same type conventions as in
+  Intro.} But this should be impossible. It is immediate that no GADT
+that is not actually a nested type can support a $\mathsf{map}$
+function either. In the case of $\mathsf{Seq}$, this is already
+intuitively evident from its Haskell definition as discussed in
+Section~\ref{sec:intro}.
 
 \subsection{GADTs as Primitive Data Types}\label{sec:prim-gadts}
 
-The primitive representations of {\color{blue} polynomial} GADTs
-capture in syntax the fact that GADTs can be considered as fixpoints
-of higher-order functors. Syntactically, the use of higher-order
-funct{\em ions} is essential, since the type arguments to the GADT
-being defined are not uniform across all of its instances in the types
-of its data constructors. Semantically, the use of higher-order
-funct{\em ors} is essential, as for ADTs, to the very existence of the
-fixpoints being computed~\cite{tfca}.
+{\color{red} HERE!!!}
+
+Primitive representations of GADTs capture in syntax the fact that
+GADTs can, like ADTs, be considered as fixpoints of higher-order
+functors. Syntactically, the use of higher-order funct{\em ions} is
+essential, since the type arguments to the GADT being defined are not
+uniform across all of its instances in the types of its data
+constructors. Semantically, the use of higher-order funct{\em ors} is
+essential, as for ADTs, to the very existence of the fixpoints being
+computed~\cite{tfca}.
 %We will consider GADTs' semantics in more detail in
 %Section~\ref{sec:GADT-semantics}.
 
-Consider, again, the GADT $\mathsf{Seq}$ from the start of
-Section~\ref{sec:gadts}. Because its type argument varies in the
-instances of $\mathsf{Seq}$ appearing in the types of its data
-constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be characterized by
-any first-order fixpoint equation. It can, however, be viewed as a
+Consider, again, the GADT $\mathsf{Seq}$. Because its type argument
+varies in the instances of $\mathsf{Seq}$ appearing in the types of
+its data constructor $\mathsf{Pair}$, $\mathsf{Seq}$ simply cannot be
+characterized by any first-order fixpoint equation.  {\color{blue}
+  Compare with ADT situation.}  It can, however, be viewed as a
 solution to the higher-order fixpoint equation
 \[H\,f\,a = a \,+\,Lan_{\lambda a b. a \times b}\, \lambda
 a b. f a \times f b\] where $Lan_K \,G$ is the left Kan extension of
-$G$ along $K$.  The left Kan extension $Lan_K \,G : {\cal E} \to
-{\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along the functor
-$K : {\cal C} \to {\cal E}$ is the best functorial approximation to
-$G$ that factors through $K$. Here, ``best functorial approximation''
-means that $Lan_K \,G$ is the smallest functor that both extends the
-image of $K$ to $\cal D$ and coincides with $G$ on $\cal C$, in the
-sense that, for any other such functor $H$, there is a morphism of
-functors (i.e., a natural transformation) from $Lan_K \,G$ to
-$H$. This is captured formally by the following
+$G$ along $K$.  In general, the left Kan extension $Lan_K \,G : {\cal
+  E} \to {\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along
+the functor $K : {\cal C} \to {\cal E}$ is the best functorial
+approximation to $G$ that factors through $K$. Here, ``best functorial
+approximation'' means that $Lan_K \,G$ is the smallest functor that
+both extends the image of $K$ to $\cal D$ and coincides with $G$ on
+$\cal C$, in the sense that, for any other such functor $H$, there is
+a morphism of functors (i.e., a natural transformation) from $Lan_K
+\,G$ to $H$. This is captured formally by the following
 definition~\cite{mac71}:
 \begin{definition}\label{def:lke}
 If $G : {\cal C} \to {\cal D}$ and $K : {\cal C} \to {\cal E}$ are
@@ -1079,7 +1065,18 @@ FOR ADTs and Nesteds, it does not depend. We get the same par property
 whether they are seen as primitives or we use their CE.
 
 
+\subsection{Comparison with Stephanie and Dmitrios}
+
+
 \subsection{Comparison with Bob's Parametric Model}
+
+GADTs don't really fit into his scheme because the two reps of GADTs
+aren't the same. Bob's stuff only works for functorial data types of
+any kind -- so not GADTs. So last section is misleading.
+
+
+
+
 
 Moreover, the consequences of parametricity that one has in Bob's
 system do not hold in our system, as we can construct terms of type
