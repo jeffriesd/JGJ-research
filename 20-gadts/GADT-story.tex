@@ -478,33 +478,32 @@ fixpoint must not only have an action on sets, but must also have a
 {\em functorial action} on functions between sets. Reflecting this
 requirement back into syntax gives that $\mathsf{F}$ must support a
 suitable\footnote{The $\mathsf{map}$ function for $\mathsf{F}$ should
-  satisfy syntactic reflections of the functoriality properties ---
-  i.e., should preserve identities and compositions --- in
-  $\mathit{Set}$ even though there is no mechanism in Haskell for
-  enforcing this.} $\mathsf{map}$ function, i.e., must be an instance
-of Haskell's $\mathsf{Functor}$ class.
+  satisfy syntactic reflections of the functoriality properties in
+  $\mathit{Set}$ --- i.e., preservation of identity functions and
+  composition of functions --- even though there is no mechanism in
+  Haskell for enforcing this.} $\mathsf{map}$ function, i.e., must be
+an instance of Haskell's $\mathsf{Functor}$ class.
 
 Requiring $F$ to be a functor will ensure that the interpretation $\mu
 F$ of the ADT $\mathsf{T\,a} = \mathsf{\mu F}$ exists. But to ensure
 that $\mu F$ is itself a functor, so that the type constructor
 $\mathsf{T}$ associated with the ADT $\mathsf{T\,a}$ supports a
-$\mathsf{map}$ function as well, $F$ must again be the fixpoint $\mu
-H$ of a functor $H$. In this case, however, $H$ must be a functor on
-the category $\mathit{Func(Set)}$ of functors and natural
-transformations on $\mathit{Set}$, i.e., $H$ must be a {\em
+$\mathsf{map}$ function as well, we can require that $F$ also be the
+fixpoint $\mu H$ of a functor $H$. In this case, however, $H$ must be
+a functor on the category $\mathit{Set}^\mathit{Set}$ of functors and
+natural transformations on $\mathit{Set}$. That is, $H$ must be a {\em
   higher-order} functor on $\mathit{Set}$. Reflecting this requirement
 back into syntax gives that $\mathsf{T\,a} = \mathsf{(\mu F)\,a} =
 \mathsf{(\mu\,(\mu H))\,a}$ for the ``type constructor constructor''
-$\mathsf{H}$ that supports suitable\footnote{{\color{blue} The
-    $\mathsf{map}$ function for $\mathsf{H}$ should satisfy syntactic
-    reflections of the functoriality properties in
-    $\mathit{Func(Set)}$ --- i.e., should preserve identity natural
-    transformations and composition of natural transformations --- and
-    the $\mathsf{map}$ function for $\mathsf{H\,F}$ should satisfy
-    syntactic reflections of the functoriality properties in
-    $\mathit{Set}$ as in the previous footnote. Again, there is no
-    mechanism in Haskell for enforcing this.}} $\mathsf{map}$
-functions.  {\color{blue} Mention naturality?}
+$\mathsf{H}$ that supports suitable\footnote{The $\mathsf{map}$
+  function for $\mathsf{H}$ should satisfy syntactic reflections of
+  the functoriality properties in $\mathit{Set}^\mathit{Set}$ ---
+  i.e., preservation of identity natural transformations and
+  composition of natural transformations --- and the $\mathsf{map}$
+  function for $\mathsf{H\,F}$ should satisfy syntactic reflections of
+  the functoriality properties in $\mathit{Set}$ as in the previous
+  footnote. Again, there is no mechanism in Haskell for enforcing
+  this.} $\mathsf{map}$ functions. 
 
 %class HFunctor f where
 %  ffmap :: Functor g => (a -> b) -> f g a -> f g b
@@ -512,37 +511,38 @@ functions.  {\color{blue} Mention naturality?}
 %
 %  type (~>) f g = forall x. f x -> g x
        
-       
+      
 A concrete example is given by the ADT $\mathsf{List\,a}$. This type
-is is modelled as the fixpoint $\mu F_{\mathit{List\,a}}$ of the
+is modelled as the fixpoint $\mu F_{\mathit{List\,a}}$ of the
 first-order functor whose action on sets is given by
 $F_{\mathit{List}\,a}\,X = 1 + a \times X$ and whose action on
 functions is given by $F_{\mathit{List}\,a}\,f = 1 + \id_a \times
-f$. The type constructor $\mathsf{List}$ is modelled by the
-higher-order functor $H$ whose action on a functor $F$ is given by the
-functor $H\,F$ whose actions on sets and functions between them are
-given by $H\,F\,X = 1 + X \times F\,X$ and $H\,F\,f = \id_1 + f \times
-F\,f$, respectively, and whose action on a natural transformation
-$\eta$ is the natural transformation given by $H\,\eta = \id_1 + \eta
-\times F\,\eta$. The type constructor $\mathsf{List}$ is then
-modelled as the functor $\mu H$. Reflecting the functorial action of
-$\mu H$ back into syntax gives Haskell's built-in $\mathsf{map}$
-function as the type-and-data-uniform, structure-preserving,
-data-changing function associated with $\mathsf{List}$. {\color{blue}
-  HOW?}
+f$. The type constructor $\mathsf{List}$ is modelled by the functor
+that is the fixpoint $\mu H$ of the higher-order functor $H$ whose
+action on a functor $F$ is given by the functor $H\,F$ whose actions
+on sets and functions between them are given by $H\,F\,X = 1 + X
+\times F\,X$ and $H\,F\,f = \id_1 + f \times F\,f$, respectively, and
+whose action on a natural transformation $\eta$ is the natural
+transformation given by $H\,\eta = \id + \eta \times
+F\,\eta$. Reflecting the functorial action of $\mu H$ back into syntax
+gives exactly Haskell's built-in $\mathsf{map}$ function as the
+type-and-data-uniform, structure-preserving, data-changing function
+associated with $\mathsf{List}$. {\color{blue} Double-check this
+  paragraph.} 
 
 In a parametric model, short cut fusion can be used to show that the
 Church encoding and the primitive representation of an ADT are
 isomorphic as sets. Note, however, that whereas it is impossible even
 to {\em state} the rearrange-transform property for Church encodings
-of ADTs, it is simply the reflection back into syntax of the
-{\color{blue} naturality property - right?} of the functorial action
-of the interpretation of the type constructor associated with an ADT's
-primitive representation.
+of ADTs, this property is simply the reflection back into syntax of
+the instance of naturality for the type-independent function that
+rearranges structures of type $\mathsf{T\,a}$ into ones of type
+$\mathsf{T'\,a}$ and the functions $\mathsf{map_T\,f}$ and
+$\mathsf{map_{T'}\,f}$ for a function $\mathsf{f :: a \to b}$ and the
+type constructors $\mathsf{T}$ and $\mathsf{T'}$ associated with these
+ADTs, respectively. {\color{blue} Double-check this paragraph.}
 
 \section{Representations of GADTs}\label{sec:gadts}
-
-{\color{red} HERE!}
 
 GADTs relax the restriction on the type instances appearing in a data
 type definition. The special form of GADTs known as {\em nested types}
@@ -559,28 +559,33 @@ invariant that all perfect trees have lengths that are powers of
 2. More general GADTs allow their constructors both to take as
 arguments {\em and return as results} data whose types involve type
 instances of the GADT other than the one being defined. An example is
-the following GADT, given in Haskell syntax:
+the GADT $\mathsf{Seq}$ given in~\eqref{eq:seq}. Note that since the
+return type of the data constructor $\mathsf{Pair}$ is not of the form
+$\mathsf{Seq\,a}$ for any variable $\mathsf{a}$, $\mathsf{Seq}$ is a
+GADT that is not a nested type.
+
+By contrast with the ADT $\mathsf{List\, a}$, where the type parameter
+$\mathsf{a}$ is integral to the type being defined, the type parameter
+$\mathsf{a}$ appears in both $\mathsf{PTree\,a}$ and $\mathsf{Seq\,a}$
+as a ``dummy'' parameter used only to give the kind \verb|* -> *| of
+the type constructors $\mathsf{PTree}$ and $\mathsf{Seq}$. This is
+explicitly captured in the alternative Haskell syntax {\color{blue}
+    Correct?}
 \[\begin{array}{l}
 \mathsf{data\, Seq :: * \to *\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
 \mathsf{\;\;\;\;\;\;\;\;Pair\,\,\,\,\, ::\, Seq \,a \to Seq\,b \to
   Seq\,(a \times b)}\\ 
 \end{array}\]
-Since the return type of the data constructor $\mathsf{Pair}$ is not
-simply a variable, $\mathsf{Seq}$ is not a nested type.
-
-By contrast with the ADT $\mathsf{List\, a}$, where the type parameter
-$\mathsf{a}$ is integral to the type being defined, the type parameter
-$\mathsf{a}$ in $\mathsf{PTree\,a}$ and $\mathsf{Seq\,a}$ appears as a
-``dummy'' parameter used only to give the kind \verb|* -> *| of the
-type constructors $\mathsf{PTree}$ and $\mathsf{Seq}$. This is
-explicitly captured by the above GADT syntax. A GADT --- even a nested
-type --- thus does not define a {\em family of inductive types}, one
-for each type argument, like an ADT does, but instead defines an
-entire family of types that must be constructed simultaneously. That
-is, a GADT defines an {\em inductive family of types}.
+A GADT --- even a nested type --- thus does not define a {\em family
+  of inductive types}, one for each type argument, like an ADT does,
+but instead defines an entire family of types that must be constructed
+simultaneously. That is, a GADT defines an {\em inductive family of
+  types}.
 
 \subsection{Church Encodings of GADTs}\label{sec:CEs}
+
+{\color{red} HERE!}
 
 The syntax of GADTs is consonant with programmers' frequent use of
 them in situations where type uniformity is specifically to be
