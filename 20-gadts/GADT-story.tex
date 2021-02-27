@@ -227,7 +227,7 @@ representations are rarely the same for GADTs.
 
 But does it really matter which way we view GADTs?
 
-A GADT programmer is likely to use GADTs precisely because they
+A GADT programmer is likely to use GADTs precisely {\em because} they
 exhibit different behaviors at different types, and thus to consider a
 GADT to be completely specified by its syntax. When used this way, the
 shape of a particular element of a GADTs is actually {\em determined}
@@ -256,9 +256,8 @@ doesn't even really behave like a traditional data type. In this
 situation, the GADT cannot be seen as the least fixpoint of a functor,
 and must instead be represented via its Church encoding.
 
-A computer scientist interested in the semantics of functional
-languages, on the other hand, is likely to follow~\cite{bfss90} and
-expect GADTs to behave as their names suggests --- i.e., as
+A semanticist, on the other hand, is likely to follow~\cite{bfss90}
+and expect GADTs to behave as their names suggests --- i.e., as
 generalizations of ADTs. The semanticist is thus likely to expect a
 GADT to be able to be used as a ADT is used --- i.e., as a shape
 filled with data that can be changed without also changing the
@@ -282,12 +281,12 @@ functorial completion of the GADT $\mathsf{G}$ defined by
 {\color{blue} Use $\top$ instead of $1$ throughout?} includes elements
 at any instance $\mathsf{G\,a}$ for any type $\mathsf{a} \not =
 \mathsf{0}$ since there is always a function from $\mathsf{1}$ to such
-an $\mathsf{a}$. But $\mathsf{G}$ does not include any terms at
-instance $\mathsf{G\,0}$ because $\mathsf{G\,0}$ is not inhabited via
-the syntactic specifiation of $\mathsf{G}$, and it is not inhabited
-via functorial completion because it is not possible to define a
-function from $\mathsf{1}$ into $\mathsf{0}$. {\color{blue} Use $\bot$
-  instead of $0$ here?}
+an $\mathsf{a}$, but does not include any terms at instance
+$\mathsf{G\,0}$. Indeed, $\mathsf{G\,0}$ is not inhabited via the
+syntactic specifiation of $\mathsf{G}$, and is not inhabited via
+functorial completion because it is not possible to define a function
+from $\mathsf{1}$ into $\mathsf{0}$. {\color{blue} Use $\bot$ instead
+  of $0$ here?}
 
 The key observation of this paper is that, while the viewpoints of
 both the GADT programmer and the semanticist are both valid, the two
@@ -307,10 +306,9 @@ GADTs at their disposal, but, since no parametric model can be
 constructed for primitive GADTs, non-naturality consequences of
 parametric reasoning may not be available to them.
 
-The goal of this paper we show how these observations can be made
-precise, and therefore to show that how GADTs are viewed has
-significant consequences. This paper thus answers the question we
-posed above in the affirmative: Yes, it really does matter.
+Below we show how the above observations can be made precise, thereby
+answering the question we posed above in the affirmative: Yes, it
+really does matter which way we view GADTs.
 
 \section{Representations of Algebraic Data Types}\label{sec:adts}
 
@@ -376,7 +374,8 @@ the original structure of type $\mathsf{T\,a}$ to one of type
 $\mathsf{T\,b}$ and then rearrange that resulting structure into one
 of type $\mathsf{T'\,b}$. For example, if $\mathsf{f : a \to b}$,
 $\mathsf{xs \,:\,List\,a}$, and $\mathsf{g : List\,a\to Tree\,a}$
-arranges lists into trees in a type-independent way, then
+arranges lists into trees in a type-independent way, then we have the
+following rearrange-transform property:
 \[\mathsf{fmap_{Tree}\,f\,(g \, xs) \,=\, g\,(fmap_{List}\,f\,xs)}\]
 
 \subsection{Church Encodings of ADTs}
@@ -426,7 +425,8 @@ can define
 Note, however, that the Church encoding of an ADT carries with it no
 expectation whatsoever that such a type-and-data-uniform,
 structure-preserving, data-changing $\mathsf{map}$ function can be
-defined.
+defined. It therefore need not satisfy any rearrange-transform
+property either.
 
 \subsection{ADTs as Primitive Data Types}
 
@@ -469,15 +469,16 @@ $\mathsf{F_{Tree\,a}}$.
 These kinds of fixpoint equations are entirely sensible at the level
 of types. But to ensure that the syntactic fixpoint representing an
 ADT actually denotes a semantic object computed as a real-live
-fixpoint, the semantic fixpoint calculation must converge.  If we
-interpret our types as sets, then this means that the fixpoint being
-taken must be of a {\em functor} on the category $\mathit{Set}$ of
-sets and functions between them, rather than of a mere function
-between sets~\cite{tfca}.  That is, the function $F$ interpreting the
-type constructor $\mathsf{F}$ constructing the body of a syntactic
-fixpoint must not only have an action on sets, but must also have a
-{\em functorial action} on functions between sets. Reflecting this
-requirement back into syntax gives that $\mathsf{F}$ must support a
+fixpoint, the semantic fixpoint calculation must converge.  If
+{\color{blue} Since? Establish this earlier?} we interpret our types
+as sets, then this means that the fixpoint being taken must be of a
+{\em functor} on the category $\mathit{Set}$ of sets and functions
+between them, rather than of a mere function between sets~\cite{tfca}.
+That is, the function $F$ interpreting the type constructor
+$\mathsf{F}$ constructing the body of a syntactic fixpoint must not
+only have an action on sets, but must also have a {\em functorial
+  action} on functions between sets. Reflecting this requirement back
+into syntax gives that $\mathsf{F}$ must support a
 suitable\footnote{The $\mathsf{map}$ function for $\mathsf{F}$ should
   satisfy syntactic reflections of the functoriality properties in
   $\mathit{Set}$ --- i.e., preservation of identity functions and
@@ -535,8 +536,9 @@ In a parametric model, short cut fusion can be used to show that the
 Church encoding and the primitive representation of an ADT are
 isomorphic as sets. Note, however, that whereas it is impossible even
 to {\em state} the rearrange-transform property for Church encodings
-of ADTs, this property is simply the reflection back into syntax of
-the instance of naturality for the type-independent function that
+of ADTs {\color{blue} unless we first define $\mathsf{map}$ functions
+  for them}, this property is simply the reflection back into syntax
+of the instance of naturality for the type-independent function that
 rearranges structures of type $\mathsf{T\,a}$ into ones of type
 $\mathsf{T'\,a}$ and the content-transforming functions
 $\mathsf{map_T\,f}$ and $\mathsf{map_{T'}\,f}$ for a function
@@ -614,11 +616,11 @@ may even destroy! --- the GADT.
 To determine the possible shapes of a GADT's container we have to
 pattern-match on the type of the data to be contained. For this, it is
 essential that a GADT calculus support an equality type
-$\mathsf{Equal}$ that is inhabited when its two type arguments are the
-same and is uninhabited otherwise. That is, the type $\mathsf{Equal}$
-must be the syntactic reflection of semantic equality function
-$\mathit{Equal}$. The type $\mathsf{Equal}$ can either be defined via
-GADT syntax, as in
+$\mathsf{Equal}$ that is a singleton set when its two type arguments
+are the same and is the empty set otherwise. That is, the type
+$\mathsf{Equal}$ must be the syntactic reflection of semantic equality
+function $\mathit{Equal}$. The type $\mathsf{Equal}$ can either be
+defined via GADT syntax, as in
 \[\begin{array}{l}
 \mathsf{data\, Equal\,a\,b\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}\\
@@ -631,7 +633,7 @@ The GADT $\mathsf{Seq}$ can then be represented as its Church encoding
 \[\mathsf{Seq\,a} = \mathsf{\forall f.\, (\forall a.\,a \to f\, a)
   \to (\forall a\,b\,c.\,Equal\,a\,(b\times c) \to f\,b \to f\,c \to
   f\,a) \to f\,a}\]
-in a higher-kinded calculus such as $F_\omega$.
+in a higher-kinded calculus such as $F_\omega$~\cite{atk12}.
 
 Importantly, the function $\mathit{Equal}\,a$ cannot be made into a
 functor. Equivalently, $\mathsf{Equal\,a}$ (in either representation)
@@ -652,108 +654,191 @@ would allow us to construct an element
   absurd\, Refl)\, ()}  
 \end{array}\]
 of type $\mathsf{Void}$. {\color{blue} Use same type conventions as in
-  Intro.} But this should be impossible. It is immediate that no GADT
-that is not actually a nested type can support a $\mathsf{map}$
-function either. In the case of $\mathsf{Seq}$, this is already
-intuitively evident from its Haskell definition as discussed in
-Section~\ref{sec:intro}.
+  Intro.} But this should be impossible. It is immediate that a GADT
+that is not actually a nested type cannot support a $\mathsf{map}$
+function (or a rearrange-transform property) either. In the case of
+$\mathsf{Seq}$, this is already intuitively evident from its Haskell
+definition as discussed in Section~\ref{sec:intro}.
 
 \subsection{GADTs as Primitive Data Types}\label{sec:prim-gadts}
 
-{\color{red} HERE!!!}
-
-Primitive representations of GADTs capture in syntax the fact that
-GADTs can, like ADTs, be considered as fixpoints of higher-order
-functors. Syntactically, the use of higher-order funct{\em ions} is
-essential, since the type arguments to the GADT being defined are not
-uniform across all of its instances in the types of its data
-constructors. Semantically, the use of higher-order funct{\em ors} is
-essential, as for ADTs, to the very existence of the fixpoints being
-computed~\cite{tfca}.
-%We will consider GADTs' semantics in more detail in
-%Section~\ref{sec:GADT-semantics}.
+The Church encoding of a GADT corresponds to the data type comprising
+just those elements specified by the GADT's syntax. By contrast, the
+primitive representation of a GADT corresponds to the data type
+comprising all data elements in the functorial completion of the
+GADT's syntax. In this alternate reading, GADTs can, like ADTs, be
+modelled as fixpoints of higher-order functors. Syntactically, the use
+of higher-order funct{\em ions} is essential; since the type arguments
+to the GADT being defined are not necessarily uniform across all of
+its instances in the types of its data constructors, GADTs cannot be
+seen as fixpoints of first-order functors the way ADTs
+can. Semantically, the use of higher-order funct{\em ors} is
+essential, as in the case of ADTs, to guarantee the existence of the
+fixpoints being computed~\cite{tfca}.
 
 Consider, again, the GADT $\mathsf{Seq}$. Because its type argument
 varies in the instances of $\mathsf{Seq}$ appearing in the types of
-its data constructor $\mathsf{Pair}$, $\mathsf{Seq}$ simply cannot be
-characterized by any first-order fixpoint equation.  {\color{blue}
-  Compare with ADT situation.}  It can, however, be viewed as a
-solution to the higher-order fixpoint equation
-\[H\,f\,a = a \,+\,Lan_{\lambda a b. a \times b}\, \lambda
-a b. f a \times f b\] where $Lan_K \,G$ is the left Kan extension of
-$G$ along $K$.  In general, the left Kan extension $Lan_K \,G : {\cal
-  E} \to {\cal D}$ of the functor $G : {\cal C} \to {\cal D}$ along
-the functor $K : {\cal C} \to {\cal E}$ is the best functorial
-approximation to $G$ that factors through $K$. Here, ``best functorial
-approximation'' means that $Lan_K \,G$ is the smallest functor that
-both extends the image of $K$ to $\cal D$ and coincides with $G$ on
+its data constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be
+modelled as the fixpoint of any first-order functor. As shown
+in~\cite{jp19}, it can, however, be modelled as a solution to the
+higher-order fixpoint equation
+\[H\,f\,a = a \,+\,(Lan_{\lambda c d. c \times d}\, \lambda
+c d. f c \times f d)\,a\]
+{\color{red} Check this equation against next displayed one below.}
+where $Lan_K \,F$ is the left Kan extension of
+the functor $F$ along the functor $K$. In general, the left Kan
+extension $Lan_K \,F : {\cal E} \to {\cal D}$ of $F : {\cal C} \to
+{\cal D}$ along $K : {\cal C} \to {\cal E}$ is the best functorial
+approximation to $F$ that factors through $K$. Here, ``best functorial
+approximation'' means that $Lan_K \,F$ is the smallest functor that
+both extends the image of $K$ to $\cal D$ and coincides with $F$ on
 $\cal C$, in the sense that, for any other such functor $H$, there is
 a morphism of functors (i.e., a natural transformation) from $Lan_K
-\,G$ to $H$. This is captured formally by the following
+\,F$ to $H$. This is captured formally by the following
 definition~\cite{mac71}:
 \begin{definition}\label{def:lke}
-If $G : {\cal C} \to {\cal D}$ and $K : {\cal C} \to {\cal E}$ are
-functors, then the {\em left Kan extension of $G$ along $K$} is a
-functor $\mathit{Lan}_K\,G : {\cal E} \to {\cal D}$ together with a
-natural transformation $\eta : G \to (\mathit{Lan}_K\,G) \circ K$
-such that, for every functor $H : {\cal E} \to {\cal D}$ and natural
-transformation $\gamma : G \to H \circ K$, there exists a unique
-natural transformation $\delta : \mathit{Lan}_K\,G \to H$ such that $(\mu
-K) \circ \eta = \gamma$. This is depicted in the diagram
+If $F : {\cal C} \to {\cal D}$ and $K : {\cal C} \to {\cal E}$ are
+functors, then the {\em left Kan extension of $F$ along $K$} is a
+functor $\mathit{Lan}_K\,F : {\cal E} \to {\cal D}$ together with a
+natural transformation $\eta : F \to (\mathit{Lan}_K\,F) \circ K$ such
+that, for every functor $H : {\cal E} \to {\cal D}$ and natural
+transformation $\gamma : F \to H \circ K$, there exists a unique
+natural transformation $\delta : \mathit{Lan}_K\,F \to H$ such that
+$(\delta K) \circ \eta = \gamma$. This is depicted in the diagram
 \[\begin{tikzcd}[row sep = huge]
 {\cal C}
-\ar[rr, "{G}"{name=Fa, above}, ""{name=F, below}]
+\ar[rr, "{F}"{name=Fa, above}, ""{name=F, below}]
 \ar[rd, "{K}"']
 && {\cal D} \\
 & {\cal E}
 \ar[Rightarrow, bend right = 25, from=F, "{\eta}"']
-\ar[ur, bend left, "{\mathit{Lan}_{K}\,G}"{name=Lan, description}]
+\ar[ur, bend left, "{\mathit{Lan}_{K}\,F}"{name=Lan, description}]
 \ar[ur, bend right, "{H}"'{name=L, right}, ""'{name=Lr, right}]
 \ar[Rightarrow, bend left = 45, from=Fa, to=Lr, "{\gamma}" near start]
 \ar[Rightarrow, dashed, from=Lan, to=L, "{\delta}"']
 \end{tikzcd}\]
 \end{definition}
 
-To represent GADTs as primitive data types a calculus must support a
-primitive fixpoint constructor $\mathsf{\mu}$ that is the syntactic
-reflection of the higher-order fixpoint operator on the category of
-functors on the category interpretating types, as well as a primitive
-type constructor $\mathsf{Lan}$ such that $\mathsf{Lan_k\,g}$ is the
-syntactic reflection of the left Kan extension $\Lan_K \,G$ of the
-functor $G$ interpreting $\mathsf{g}$ along the functor $K$
-interpreting $\mathsf{k}$. Using the $\mu$ and $\Lan$ type
-constructors we can represent, e.g., the GADT $\mathsf{Seq}$ as
-\[\mathsf{Seq\,a} = \mathsf{\mu \phi.\, a + Lan_{\lambda c d. c \times d}
-  \lambda c d. \phi c \times \phi d}\]
+To represent GADTs as primitive data types in a setting in which types
+are interpreted as sets, a calculus must support a primitive construct
+$\mathsf{Lan}$ such that the type constructor $\mathsf{Lan_k\,f}$ is
+the syntactic reflection of the left Kan extension $\Lan_K \,F$ of the
+functor $F$ interpreting $\mathsf{f}$ along the functor $K$
+interpreting $\mathsf{k}$. In this setting, the categories
+$\mathcal{C}$, $\mathcal{D}$, and $\mathcal{E}$ must all be
+$\mathit{Set}$. Using $\mathsf{Lan}$ we can then rewrite the type of a
+constructor $\mathsf{c :: f a \to g(k\,a)}$ as $\mathsf{c ::
+  (Lan_k\,f)\,a \to g\,a}$ since morphisms (i.e., natural
+transformations) from $F$ to $G \circ K$ are in one-to-one
+corresondence with those from $\mathit{Lan}_K\,F$ to $G$ (see,
+e.g.,~\cite{rie16}). That is, writing $F \Rightarrow G$ for the set of
+natural transformations from a functor $F$ to a functor $G$, we have
+\begin{equation}\label{eq:nat-transfs}
+F \Rightarrow G \circ K\; \simeq \; Lan_K\,F \Rightarrow G
+\end{equation}
+The calculus must also support a primitive type
+constructor $\mathsf{\mu}$ that is the syntactic reflection of the
+(now higher-order) fixpoint operator on
+$\mathit{Set}^\mathit{Set}$. Using $\mu$ and $\Lan$ we can then
+represent a GADT as a higher-order higher-order fixpoint. For example,
+we can represent the GADT $\mathsf{Seq}$ as
+\[\mathsf{Seq\,a} = \mathsf{(\mu \phi.\lambda b.\, b + (Lan_{\lambda c
+    d. c \times d} \lambda c d. \phi c \times \phi d)\,b)\,a}\] The
+fact that $Lan_K\,G$ is the best functorial approximation to $G$
+factoring through $K$ means that the type constructor
+$\mathsf{Lan_k\,g}$ computes the smallest collection of data that is
+generated by the corresponding GADT data constructor's syntax and also
+supports a $\mathsf{map}$ function. The primitive representation of
+any GADT thus comprises the smallest data type that both includes the
+data specified by that GADT's syntax and also supports a
+$\mathsf{map}$ function (and thus a rearrange-transform property). In
+the primitive view, then, GADTs are generally underspecified by their
+syntax.
 
-
-{\color{blue} This is the least commitment
-  thing primitive representations can require. Fixpoints were elided
-  in ADT case. Why? Tie together better.}  The type constructor
-$\mathsf{Lan}$ thus computes the smallest data type that is generated
-by a GADT's {\color{blue} GADT or constructor?} syntax and also
-supports a $\mathsf{map}$ function. That is, $\mathsf{Lan}$ computes
-the functorial completion of the data type determined by a GADT's
-syntax, filling it out with data elements that are derivable via
-repeated applications of $\mathsf{map}$ starting from those elements
-specified by its syntax. In the primitive view, GADTs are, in general,
-underspecified by their syntax.
-
-Just as for ADTs, we can represent GADTs as either Church encodings or
-primitive data types. But whereas the two representations are always
-isomorphic for ADTs, they are not, in general, for GADTs. We will see
-this in the next section.
-
-{\color{blue} rearrange-transform property for GADTs?}
+In this section we have seen that GADTs can be represented either as
+Church encodings or as primitive data types. This exactly mirrors the
+situation for ADTs described in Section~\ref{sec:adts}. But whereas
+the two representations are always isomorphic for ADTs, they are not,
+in general, the same for GADTs. This will be proved in the next
+section.
 
 \section{Non-Equivalence of Church Encodings and Primitive
   Representations of GADTs}\label{sec:non-equiv}
 
-{\color{red} Check all fonts!! Syntax vs. semantics!}  Intuitively it
-seems the two representations might be different. One is functorial,
-one is not. It is possible they could always have the same data
-elements even if not the same morphisms. But as we will see in
-Example~\ref{ex:g1}, this turns out not to be the case.
+{\color{blue} Is G or G\,a the GADT?}
+
+To see that the Church encoding of a GADT and its primitive
+representation need not be the same, consider again the GADT
+$\mathsf{G\,a}$ defined in~\eqref{eq:G}. Despite its simplicity, this
+GADT serves as an informative case study highlighting the differences
+--- even if we only consider the data elements a GADT contains ---
+between a GADT's Church encoding its representation as a primitive
+data type.
+
+\begin{example}\label{ex:g1}
+Syntactically, the GADT $\mathsf{G\,a}$ defined in~\eqref{eq:G}
+comprises a single data element, namely $\mathsf{c :: G \, 1}$. This
+is captured by $\mathsf{G}$'s Church encoding
+\[\mathsf{G\,a} = \mathsf{Equal\,1\,a}\]
+from~\cite{atk12}, so $\mathsf{G}$'s effect is simply to test its
+argument for equality against the unit type
+$\mathsf{1}$. {\color{blue} Use same notation for unit type as in
+  intro.}
+%Recalling from Section~\ref{sec:CEs} that the
+The interpretation of $\mathsf{G\,a}$ represented as the Chirch
+encoding $\mathsf{Equal\,1\,a}$ is thus the function whose value is a
+singleton set when the interpretation of $\mathsf{a}$ is $1$ and the
+empty set otherwise. This perfectly mirrors $\mathsf{G}$'s syntax,
+which indeed delivers just one data element when $\mathsf{a}$ is
+$\mathsf{1}$ and no elements otherwise.
+
+We now want to compute the interpretation of $\mathsf{G}$'s primitive
+representation. The type of $\mathsf{G}$'s unique constructor
+$\mathsf{c :: G\,1}$ can be equivalently expressed as $\mathsf{c :: 1
+  \to G\,1}$ or, using~\eqref{eq:nat-transfs}, as $\mathsf{c ::
+  (Lan_{\lambda *. 1}\,\lambda *. 1)\,a \to G\, a}$, where
+$\mathsf{\lambda *. 1}$ is the syntactic reflection of the constantly
+$1$-valued functor from the category with a single object $*$ to
+$\mathit{Set}$. We can therefore represent $\mathsf{G}$ as
+\[\mathsf{G\,a} = (\mathsf{\mu \phi. \lambda b.
+ (Lan_{\lambda *. 1} \,\lambda *.  1)\,b)\,a}\] The interpretation of
+$\mathsf{G\, a}$ is therefore just the application to $\mathsf{a}$ of
+the fixpoint of the interpretation of the body $\mathsf{(Lan_{\lambda
+    *. 1} \,\lambda *. 1)\,b}$ of the syntactic fixpoint.  But since
+the recursion variable $\mathsf{\phi}$ does not appear in this body,
+the interpretation of the fixpoint is just the interpretation of the
+body itself.  The interpretation of $\mathsf{G\,a}$ is therefore
+$(\mathit{Lan}_{\lambda *. 1} \lambda *. 1)\, A$, where $A$ interprets
+$\mathsf{a}$.
+%and $1$ is the {\color{blue} constantly $1$-valued
+%  functor $\ast \to \set$ from the category with a single object
+%  $\ast$ to $\set$.}
+It turns out, however, that, for any set $A$, $(\mathit{Lan}_{\lambda
+  *. 1} \lambda *. 1)\,A$ is, in fact, exactly $A$. Indeed,
+Proposition~7.1 of~\cite{blw03} gives that $(\mathit{Lan}_{\lambda
+  *. 1} \lambda *. 1)\,A$ can be computed as the set of all functions
+$a : 1 \to A$ modulo the smallest equivalence relation $\sim$ such
+that, for any $f : 1 \to 1$, we have $a \sim a \circ f$.  But this set
+is isomorphic to $A$, because the only function $f : 1 \to 1$ is the
+identity function.
+
+
+Putting it all together, we see that the Church encoding of
+$\mathsf{G}$ and its primitive representation are not equivalent: the
+interpretation of the former has exactly one data element at instance
+$\mathsf{G\,1}$ and no elements at any other instances, whereas the
+interpretation of the latter has data elements at every instance other
+than $\mathsf{G\,0}$.
+%Indeed,
+These additional data elements can be obtained by reflecting back into
+syntax the elements $\mathit{map}_G\,f_a\,c : G\,A$ resulting from
+applying the functorial action $\mathit{map}_G$ of $\mathsf{G}$'s
+interpretation $G$ to the functions $f_a : 1 \to A$ determined by the
+elements $a$ of $A \not = \emptyset$ and the interpretation $c$ of
+$\mathsf{c}$.
+\end{example}
+
+{\color{red} STOPPED HERE}
 
 Non-uniform nature of GADTs renders build, therefore short cut, for
 GADTs impossible. Can't even formulate! Of course, there could be
@@ -763,81 +848,6 @@ following example shows.
 {\color{blue} Our favorite GADT isn't a hereditarily
   polynomial nested type.}
 
-\begin{example}\label{ex:g1}
-Consider the following GADT, defined in a Haskell-like syntax:
-\begin{equation}\label{eq:example-GADT}
-\begin{array}{l}
-\mathsf{data\,G : * \to *\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
-\end{array}
-\end{equation}
-Syntactically, this GADT comprises a single data element, namely
-$\mathsf{c :: G \, 1}$. Despite the simplicity of this GADT, it serves
-as an informative case study highlighting the differences between the
-Church encoding of a GADT and that GADT's representation as a
-primitive data type.
-
-The Church encoding of $\mathsf{G}$ is
-\[\mathsf{G\,a} = \mathsf{\forall f.\, (\forall b.\,
-  f\,b) \to f\,1} \] In other words, $\mathsf{G\,a =
-  \mathsf{Equal}\,1\,a}$, so $\mathsf{G}$'s effect is simply to test
-its argument for equality against the unit type $\mathsf{1}$.
-
-Recall from the Section~\ref{sec:CEs} that the semantic interpretation
-of $\mathsf{Equal\,1\,a}$ is given by a characteristic function, in
-the sense that it is the singleton $1$ when the interpretation of
-$\mathsf{a}$ is $1$, and is the empty set otherwise.  Thus, as a data
-type represented by Church encoding, $\mathsf{G}$ will be the data
-type containing one (and only one) piece of data when instantiated on
-$\mathsf{1}$, and uninhabited otherwise.  This perfectly mirrors the
-syntax of $\mathsf{G}$, which indeed provides just one constructor
-when the type is instantiated on $\mathsf{1}$, and none otherwise.
-Thus, given a set $A$ interpreting $\mathsf{a}$, the set
-interpretation $G_0(A)$ is $1$ if $A = 1$ and $\emptyset$ otherwise.
-
-We now want a primitive representation of $\mathsf{G}$.  Recall that
-$\mathsf{G}$ has a unique constructor $\mathsf{c : G\,1}$, which can
-be equivalently expressed as $\mathsf{c: 1 \to G\,1}$.  By using a
-a$\Lan$ type, we can express $\mathsf{c}$ as a constructor
-$\mathsf{(Lan_1\, 1)\alpha \to G \alpha}$.  Thus, as a primitive data
-type, we represent $\mathsf{G}$ as $\mu \phi. \lambda
-\alpha. (\Lan^{\emptyset}_1 \,1)\alpha$.  {\color{blue} (WHERE?)
-  Notice that the constructors of a GADT have to be functors, because
-  the GADT is the fixpoint of a higher order functor. Also, we're not
-  using the superscript notation on $\Lan$.}
-
-The semantic interpretation of $\mathsf{\mu \phi. \lambda
-  \alpha. (\Lan^{\emptyset}_1\, 1)\alpha}$ is given by the fixpoint of
-the functor yielded by the semantic interpretation of
-$\mathsf{Lan^{\emptyset}_1\, 1}$, the body of the $\mathsf{\mu}$-type.
-Notice, though, that the recursive variable $\mathsf{\phi}$ does not
-appear in the body of the $\mathsf{\mu}$-type.  Thus, the semantic
-interpretation is actually just the semantic interpretation of the
-body itself.  Therefore, the semantic interpretation is
-$\mathsf{Lan_1 1}$, where $1$ is the constantly $1$-valued functor
-$\ast \to \set$ from the category with a single object $\ast$ to
-$\set$.
-
-{\color{red} Syntax? Semantics? Which are we talking here?}
-It turns out that $\mathsf{\Lan}_1 1$ is, in fact, none other than the
-identity functor on $\set$.  Indeed, for any set $A$,
-$(\mathsf{\Lan}_1 1) A$ is the set of all functions $a : 1 \to A$
-modulo the smallest equivalence relation $\sim$ such that, for any $f
-: 1 \to 1$, we have $a \sim a \circ f$.  But this is isomorphic to
-$A$, because the only function $1 \to 1$ is the identity~\cite{blw03}.
-
-The Church encoding representation of $G$ and the primitive
-representation of $G$ are thus non-equivalent: while the former only
-holds one data element in the instance $G\,1$ and none in other
-instances, the latter is inhabited in all instances with the exception
-of $G\,\emptyset$.  This makes sense if one remembers that the left
-Kan extension, reflected into the syntactic type $\Lan$, is a functor,
-and thus it comes with a functorial map.  This means that, for every
-element $a \in A$, we can map the associated function $\bar{a} : 1 \to
-A$ along $G$ to get a function $\map_{G}\,\bar{a} : G\,1 \to G\,A$,
-and thus we have an element in $G\,A$ given by $\map_{G}\,\bar{a}\, c$
-where $c \in G\,1$ is the element provided by the constructor.
-\end{example}
 
 Forced to choose, a programmer would likely find the idea that a GADT
 contains data that are not specified by its syntax more than a little
@@ -857,11 +867,8 @@ wonder: in what sense are GADTs data types at all?
 
 The disappointment that GADTs don't validate any such equivalence is
 further compounded by the fact that the the two representations have
-very different parametricity properties.  {\color{blue} For example,
-  we get rearrange-transform property for primitive rep since this is
-  a consequence of functoriality, but don't get it for Church
-  Encodings.} We explore the differences in parametricity results for
-the two representations in the next section.
+very different parametricity properties. We explore the differences in
+parametricity results for the two representations in the next section.
 
 \section{Parametricity in the Presence of GADTs}\label{sec:par}
 
