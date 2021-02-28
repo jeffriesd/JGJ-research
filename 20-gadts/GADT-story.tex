@@ -769,47 +769,46 @@ section.
 
 To see that the Church encoding of a GADT and its primitive
 representation need not be the same, consider again the GADT
-$\mathsf{G\,a}$ defined in~\eqref{eq:G}. Despite its simplicity, this
+$\mathsf{G}$ defined in~\eqref{eq:G}. Despite its simplicity, this
 GADT serves as an informative case study highlighting the differences
---- even if we only consider the data elements a GADT contains ---
-between a GADT's Church encoding its representation as a primitive
-data type.
+between a GADT's Church encoding its primitive representation --- even
+if we consider only the data elements it contains, and ignore whether
+or not it supports a $\mathsf{map}$ function.
 
 \begin{example}\label{ex:g1}
-Syntactically, the GADT $\mathsf{G\,a}$ defined in~\eqref{eq:G}
-comprises a single data element, namely $\mathsf{c :: G \, 1}$. This
-is captured by $\mathsf{G}$'s Church encoding
+Syntactically, the GADT $\mathsf{G}$ defined in~\eqref{eq:G} comprises
+a single data element, namely $\mathsf{c :: G \, 1}$. This is captured
+by $\mathsf{G}$'s Church encoding
 \[\mathsf{G\,a} = \mathsf{Equal\,1\,a}\]
-from~\cite{atk12}, so $\mathsf{G}$'s effect is simply to test its
-argument for equality against the unit type
-$\mathsf{1}$. {\color{blue} Use same notation for unit type as in
-  intro.}
-%Recalling from Section~\ref{sec:CEs} that the
-The interpretation of $\mathsf{G\,a}$ represented as the Chirch
-encoding $\mathsf{Equal\,1\,a}$ is thus the function whose value is a
-singleton set when the interpretation of $\mathsf{a}$ is $1$ and the
-empty set otherwise. This perfectly mirrors $\mathsf{G}$'s syntax,
-which indeed delivers just one data element when $\mathsf{a}$ is
-$\mathsf{1}$ and no elements otherwise.
+from~\cite{atk12}. As its Church encoding makes clear, $\mathsf{G}$'s
+effect is simply to test its argument for equality against the unit
+type $\mathsf{1}$. {\color{blue} Use same notation for unit type as in
+  intro.} The interpretation of the Church encoding of $\mathsf{G}$
+is thus, in accordance with Section~\ref{sec:CEs}, the function whose
+value is a singleton set when the interpretation of $\mathsf{a}$ is
+$1$ and the empty set otherwise. This perfectly accords with
+$\mathsf{G}$'s syntax, which indeed delivers just one data element
+when $\mathsf{a}$ is $\mathsf{1}$ and no elements otherwise.
 
-We now want to compute the interpretation of $\mathsf{G}$'s primitive
-representation. The type of $\mathsf{G}$'s unique constructor
-$\mathsf{c :: G\,1}$ can be equivalently expressed as $\mathsf{c :: 1
-  \to G\,1}$ or, using~\eqref{eq:nat-transfs}, as $\mathsf{c ::
-  (Lan_{\lambda *. 1}\,\lambda *. 1)\,a \to G\, a}$, where
+To compute the interpretation of $\mathsf{G}$'s primitive
+representation we first note that the type of $\mathsf{G}$'s solitary
+constructor $\mathsf{c :: G\,1}$ can be equivalently expressed as
+$\mathsf{c :: 1 \to G\,1}$ or, using~\eqref{eq:nat-transfs}, as
+$\mathsf{c :: (Lan_{\lambda *. 1}\,\lambda *. 1)\,a \to G\, a}$, where
 $\mathsf{\lambda *. 1}$ is the syntactic reflection of the constantly
 $1$-valued functor from the category with a single object $*$ to
 $\mathit{Set}$. We can therefore represent $\mathsf{G}$ as
-\[\mathsf{G\,a} = (\mathsf{\mu \phi. \lambda b.
+\[\mathsf{G\,a} = \mathsf{(\mu \phi. \lambda b.
  (Lan_{\lambda *. 1} \,\lambda *.  1)\,b)\,a}\] The interpretation of
-$\mathsf{G\, a}$ is therefore just the application to $\mathsf{a}$ of
-the fixpoint of the interpretation of the body $\mathsf{(Lan_{\lambda
-    *. 1} \,\lambda *. 1)\,b}$ of the syntactic fixpoint.  But since
-the recursion variable $\mathsf{\phi}$ does not appear in this body,
-the interpretation of the fixpoint is just the interpretation of the
-body itself.  The interpretation of $\mathsf{G\,a}$ is therefore
-$(\mathit{Lan}_{\lambda *. 1} \lambda *. 1)\, A$, where $A$ interprets
-$\mathsf{a}$.
+$\mathsf{G}$ is therefore the application to $\mathsf{a}$ of the
+fixpoint of the interpretation of the body $\mathsf{\lambda
+  b. (Lan_{\lambda *. 1} \,\lambda *. 1)\,b}$ of the syntactic
+fixpoint $\mathsf{\mu \phi. \lambda b.  (Lan_{\lambda *. 1} \,\lambda
+  *.  1)\,b}$. But since the recursion variable $\mathsf{\phi}$ does
+not appear in this body, the interpretation of the fixpoint is just
+the interpretation of the body itself.  The interpretation of
+$\mathsf{G}$ is therefore $(\mathit{Lan}_{\lambda *. 1} \lambda
+*. 1)\, A$, where $A$ interprets $\mathsf{a}$.
 %and $1$ is the {\color{blue} constantly $1$-valued
 %  functor $\ast \to \set$ from the category with a single object
 %  $\ast$ to $\set$.}
@@ -838,37 +837,42 @@ elements $a$ of $A \not = \emptyset$ and the interpretation $c$ of
 $\mathsf{c}$.
 \end{example}
 
-{\color{red} STOPPED HERE}
-
-Non-uniform nature of GADTs renders build, therefore short cut, for
-GADTs impossible. Can't even formulate! Of course, there could be
-another way to prove equivalence.  But, in fact, CEs and primitive
-representations are not equivalent for arbitrary GADTs, as the
-following example shows.
-{\color{blue} Our favorite GADT isn't a hereditarily
-  polynomial nested type.}
-
-
 Forced to choose, a programmer would likely find the idea that a GADT
-contains data that are not specified by its syntax more than a little
+contains data not specified by its syntax more than a little
 disturbing. What, they might ask, should a data type contain other
 than data that are constructed using its data constuctors? Why should
-a GADT contain ``hidden'' elements that are only accessible by
-mapping? On the other hand, a semanticist would likely find the
-primitive representation of GADTs more reasonable. Indeed, they would
-likely find the nonfunctorial nature of the Church encoding unnerving
-at best. After all, they would likely argue, the data in a GADT
-shouldn't disappear just because you map a function over it! The fact
-that this happens when GADTs are represented by their Church encodings
-actually highlights how GADTs {\em do not} generalize the essential,
-container-ish nature of ADTs at all. A semanticist might therefore
-conclude that GADTs are seriously misnamed. They might even go on to
-wonder: in what sense are GADTs data types at all?
+a GADT contain ``hidden'' elements that are not specified by the
+GADT's syntax and are only accessible via applications of
+$\mathsf{map}$? A semanticist, on the other hand, would likely find
+the primitive representation of GADTs entirely reasonable. Indeed,
+they would likely find the nonfunctorial nature of a GADT's Church
+encoding unnerving at best. After all, they would likely argue, the
+data in a GADT shouldn't disappear just because you map a function
+over it! The fact that this happens when GADTs are represented by
+their Church encodings actually highlights how GADTs {\em do not}
+generalize the essential, container-ish nature of ADTs at all. A
+semanticist might therefore conclude that GADTs are seriously
+misnamed. They might even go on to wonder: in what sense do GADTs
+really deserve to be considered {\em data types} at all?
 
-The disappointment that GADTs don't validate any such equivalence is
-further compounded by the fact that the the two representations have
-very different parametricity properties. We explore the differences in
-parametricity results for the two representations in the next section.
+The reader familiar with short cut fusion will quickly see that the
+non-uniform nature of GADTs that are not nested types entails that
+short cut fusion cannot be validated for their Church encodings. In
+fact, it is not even possible to define a $\mathsf{build}$ function,
+which is a crucial ingredient in short cut fusion, for the Church
+encoding of a GADT that is not a nested type. But the fact that not
+all of the elements in the functorial completion of a GADT that is not
+a nested type are directly representable as applications of data
+constructors means that it is also impossible to define a
+$\mathsf{build}$ function for the primitive representation of such a
+GADT.  This is not asurorising, however: if short cut fusion were to
+hold for a GADT then its Church encoding and primitive representation
+would necessarily be the equivalent.
+
+In addition to not being equivalent, the two representations of GADTs
+have very different implications for parametricity for GADTs. We
+explore the differences in parametricity results for the two
+representations in the next section.
 
 \section{Parametricity in the Presence of GADTs}\label{sec:par}
 
