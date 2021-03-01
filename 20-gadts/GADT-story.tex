@@ -275,18 +275,18 @@ functorial completion of the GADT $\mathsf{G}$ defined by
 \begin{equation}\label{eq:G}
 \begin{array}{l}
 \mathsf{data\,G\,a\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;c : G\,1}
+\mathsf{\;\;\;\;\;\;\;\;c :: G\,1}
 \end{array}
 \end{equation}
-{\color{blue} Use $\top$ instead of $1$ throughout?} includes elements
-at any instance $\mathsf{G\,a}$ for any type $\mathsf{a} \not =
-\mathsf{0}$ since there is always a function from $\mathsf{1}$ to such
-an $\mathsf{a}$, but does not include any terms at instance
+Here, $\mathsf{1}$ is the unit type, whose single element is also
+denoted by $\mathsf{1}$, includes elements at any instance
+$\mathsf{G\,a}$ for any type $\mathsf{a}$ that is not the empty type
+$\mathsf{0}$ since there is always a function from $\mathsf{1}$ to
+such an $\mathsf{a}$, but does not include any terms at instance
 $\mathsf{G\,0}$. Indeed, $\mathsf{G\,0}$ is not inhabited via the
 syntactic specifiation of $\mathsf{G}$, and is not inhabited via
 functorial completion because it is not possible to define a function
-from $\mathsf{1}$ into $\mathsf{0}$. {\color{blue} Use $\bot$ instead
-  of $0$ here?}
+from $\mathsf{1}$ into $\mathsf{0}$.
 
 The key observation of this paper is that, while the viewpoints of
 both the GADT programmer and the semanticist are both valid, the two
@@ -646,19 +646,18 @@ then defining
 \mathsf{eqElim :: Equal\, a\, b \to b \to a}\\
 \mathsf{eqElim\, Refl\, x = x} 
 \end{array}\]
-would allow us to construct an element 
-\[\begin{array}{l}
-\mathsf{emptyFromMapEquala :: (\forall b\, c.\, (b \to c) \to Equal\, a\,
-  b \to Equal\, a \,c) \to Void}\\ 
-\mathsf{emptyFromMapEquala \,map_{Equal\,a} = eqElim\, (map_{Equal\,a}\,
-  absurd\, Refl)\, ()}  
-\end{array}\]
-of type $\mathsf{Void}$. {\color{blue} Use same type conventions as in
-  Intro.} But this should be impossible. It is immediate that a GADT
-that is not actually a nested type cannot support a $\mathsf{map}$
-function (or a rearrange-transform property) either. In the case of
-$\mathsf{Seq}$, this is already intuitively evident from its Haskell
-definition as discussed in Section~\ref{sec:intro}.
+would allow us to construct
+an element
+\[\mathsf{eqElim\, (map_{Equal\,Void}\, absurd\, Refl)\, 1}\]
+of type $\mathsf{Void}$, where $\mathsf{absurd :: 0 \to c}$ is the
+syntactic reflection of the empty function from the empty set into the
+interpretation of $\mathsf{c}$. {\color{blue} Is there a way to say
+  this without passing to semantics?} But this should be
+impossible. It is immediate that a GADT that is not actually a nested
+type cannot support a $\mathsf{map}$ function (or a
+rearrange-transform property) either. In the case of $\mathsf{Seq}$,
+this is already intuitively evident from its Haskell definition as
+discussed in Section~\ref{sec:intro}.
 
 \subsection{GADTs as Primitive Data Types}\label{sec:prim-gadts}
 
@@ -683,18 +682,17 @@ modelled as the fixpoint of any first-order functor. As shown
 in~\cite{jp19}, it can, however, be modelled as a solution to the
 higher-order fixpoint equation
 \[H\,f\,a = a \,+\,(Lan_{\lambda c d. c \times d}\, \lambda
-c d. f c \times f d)\,a\]
-{\color{red} Check this equation against next displayed one below.}
-where $Lan_K \,F$ is the left Kan extension of
-the functor $F$ along the functor $K$. In general, the left Kan
-extension $Lan_K \,F : {\cal E} \to {\cal D}$ of $F : {\cal C} \to
-{\cal D}$ along $K : {\cal C} \to {\cal E}$ is the best functorial
-approximation to $F$ that factors through $K$. Here, ``best functorial
-approximation'' means that $Lan_K \,F$ is the smallest functor that
-both extends the image of $K$ to $\cal D$ and coincides with $F$ on
-$\cal C$, in the sense that, for any other such functor $H$, there is
-a morphism of functors (i.e., a natural transformation) from $Lan_K
-\,F$ to $H$. This is captured formally by the following
+c d. f c \times f d)\,a\] {\color{red} Check this equation against
+  next displayed one below.}  where $Lan_K \,F$ is the left Kan
+extension of the functor $F$ along the functor $K$. In general, the
+left Kan extension $Lan_K \,F : {\cal E} \to {\cal D}$ of $F : {\cal
+  C} \to {\cal D}$ along $K : {\cal C} \to {\cal E}$ is the best
+functorial approximation to $F$ that factors through $K$. Here, ``best
+functorial approximation'' means that $Lan_K \,F$ is the smallest
+functor that both extends the image of $K$ to $\cal D$ and agrees with
+$F$ on $\cal C$, in the sense that, for any other such functor $H$,
+there is a morphism of functors (i.e., a natural transformation) from
+$Lan_K \,F$ to $H$. This is captured formally by the following
 definition~\cite{mac71}:
 \begin{definition}\label{def:lke}
 If $F : {\cal C} \to {\cal D}$ and $K : {\cal C} \to {\cal E}$ are
@@ -725,12 +723,11 @@ $\mathsf{Lan}$ such that the type constructor $\mathsf{Lan_k\,f}$ is
 the syntactic reflection of the left Kan extension $\Lan_K \,F$ of the
 functor $F$ interpreting $\mathsf{f}$ along the functor $K$
 interpreting $\mathsf{k}$. In this setting, the categories
-$\mathcal{C}$, $\mathcal{D}$, and $\mathcal{E}$ must all be
-$\mathit{Set}$. Using $\mathsf{Lan}$ we can then rewrite the type of a
-constructor $\mathsf{c :: f a \to g(k\,a)}$ as $\mathsf{c ::
-  (Lan_k\,f)\,a \to g\,a}$ since morphisms (i.e., natural
+$\mathcal{C}$, $\mathcal{D}$, and $\mathcal{E}$ must all be of theform $\mathit{Set}^n$ for some $n$. Using $\mathsf{Lan}$ we can then
+rewrite the type of a constructor $\mathsf{c :: f a \to g(k\,a)}$ as
+$\mathsf{c :: (Lan_k\,f)\,a \to g\,a}$ since morphisms (i.e., natural
 transformations) from $F$ to $G \circ K$ are in one-to-one
-corresondence with those from $\mathit{Lan}_K\,F$ to $G$ (see,
+corresondence with those from $\mathit{Lan}_K\,F$ to $G$ (see
 e.g.,~\cite{rie16}). That is, writing $F \Rightarrow G$ for the set of
 natural transformations from a functor $F$ to a functor $G$, we have
 \begin{equation}\label{eq:nat-transfs}
@@ -782,13 +779,13 @@ by $\mathsf{G}$'s Church encoding
 \[\mathsf{G\,a} = \mathsf{Equal\,1\,a}\]
 from~\cite{atk12}. As its Church encoding makes clear, $\mathsf{G}$'s
 effect is simply to test its argument for equality against the unit
-type $\mathsf{1}$. {\color{blue} Use same notation for unit type as in
-  intro.} The interpretation of the Church encoding of $\mathsf{G}$
-is thus, in accordance with Section~\ref{sec:CEs}, the function whose
-value is a singleton set when the interpretation of $\mathsf{a}$ is
-$1$ and the empty set otherwise. This perfectly accords with
-$\mathsf{G}$'s syntax, which indeed delivers just one data element
-when $\mathsf{a}$ is $\mathsf{1}$ and no elements otherwise.
+type $\mathsf{1}$. The interpretation of the Church encoding of
+$\mathsf{G}$ is thus, in accordance with Section~\ref{sec:CEs}, the
+function whose value is a singleton set when the interpretation of
+$\mathsf{a}$ is $1$ and the empty set otherwise. This perfectly
+accords with $\mathsf{G}$'s syntax, which indeed delivers just one
+data element when $\mathsf{a}$ is $\mathsf{1}$ and no elements
+otherwise.
 
 To compute the interpretation of $\mathsf{G}$'s primitive
 representation we first note that the type of $\mathsf{G}$'s solitary
@@ -973,7 +970,7 @@ For primitive representations of GADTs the story is completely
 different. First off, we have that {\color{blue} the interp of Lan
   must be full Lan}. Indeed,... {\color{blue} MORE!!}
 \begin{proposition}\label{prop:full-lans}
-Full Lan prop goes here. Explain cutting down.
+Full Lan prop goes here. Explain cutting down. Or just argue intuitively?
 \end{proposition}
 \noindent
 In particular, both the set interpretation and the relational
@@ -1013,29 +1010,22 @@ i.e., between the sets $A$ and $B$.  Instead, we will give a
 counterexample showing that this is not the case.
 
 Consider the relation $R = (1, 2, 1 \times 2)$. We expect
-$(\mathit{\Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
-*\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain {\color{blue}
-  $1$}. Since left Kan extensions preserve projections~\cite{rie16},
-we can compute the domain as
-\[\pi_1\,\big( (\mathit{\Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
-*\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathsf{\Lan}_{\lambda
-  *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, 1\]
+$(\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
+*\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain $1$. Since left
+Kan extensions preserve projections~\cite{rie16}, we can compute the
+domain as
+\[\pi_1\,\big( (\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
+*\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathit{Lan}_{\lambda
+  *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, 1\] (Note that the left Kan
+  extension of $\lambda *\!. \,1$ along $\lambda \!.\,\mathit{Eq}_1$ 
+ is a functor from $\mathit{Rel}$ to $\mathit{Set}$.)
+
+
+HERE!!!!!
 
 
 
-(notice that the left
-Kan extension of $1 : \ast \to \set$ along $\Eq_1 : \ast \to \rel$ is
-a functor $\rel \to \set$).
 
-
-
-Consider the relation $R = (1, \emptyset, \emptyset)$.  We would thus
-expect $(\mathsf{\Lan}_{\Eq_1} \Eq_1) R$ to be a relation with domain
-$1$.  Because the left Kan extension preserves
-projections~\cite{rie16} we can compute the domain as
-$(\mathsf{\Lan}_{\Eq_1} 1) R$ (notice that the left Kan extension of
-$1 : \ast \to \set$ along $\Eq_1 : \ast \to \rel$ is a functor $\rel
-\to \set$).
 
 Following~\cite{blw03} we know that $(\mathsf{\Lan}_{\Eq_1} 1) R$ is
 the set of all morphisms of relations $f : \Eq_1 \to R$ modulo an
