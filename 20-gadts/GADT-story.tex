@@ -807,7 +807,7 @@ fixpoint $\mathsf{\mu \phi. \lambda b.  (Lan_{\lambda *. 1} \,\lambda
   *.  1)\,b}$. But since the recursion variable $\mathsf{\phi}$ does
 not appear in this body, the interpretation of the fixpoint is just
 the interpretation of the body itself.  The interpretation of
-$\mathsf{G}$ is therefore $(\mathit{Lan}_{\lambda *. 1} \lambda
+$\mathsf{G\,a}$ is therefore $(\mathit{Lan}_{\lambda *. 1} \lambda
 *. 1)\, A$, where $A$ interprets $\mathsf{a}$.
 %and $1$ is the {\color{blue} constantly $1$-valued
 %  functor $\ast \to \set$ from the category with a single object
@@ -823,11 +823,11 @@ identity function.
 
 
 Putting it all together, we see that the Church encoding of
-$\mathsf{G}$ and its primitive representation are not equivalent: the
-interpretation of the former has exactly one data element at instance
-$\mathsf{G\,1}$ and no elements at any other instances, whereas the
-interpretation of the latter has data elements at every instance other
-than $\mathsf{G\,0}$.
+$\mathsf{G}$ and its primitive representation are not semantically
+equivalent: the interpretation of the former has exactly one data
+element at instance $\mathsf{G\,1}$ and no elements at any other
+instances, whereas the interpretation of the latter has data elements
+at every instance other than $\mathsf{G\,0}$.
 %Indeed,
 These additional data elements can be obtained by reflecting back into
 syntax the elements $\mathit{map}_G\,f_a\,c : G\,A$ resulting from
@@ -865,16 +865,16 @@ all of the elements in the functorial completion of a GADT that is not
 a nested type are directly representable as applications of data
 constructors means that it is also impossible to define a
 $\mathsf{build}$ function for the primitive representation of such a
-GADT.  This is not asurorising, however: if short cut fusion were to
+GADT.  This is not surprising, however: if short cut fusion were to
 hold for a GADT then its Church encoding and primitive representation
-would necessarily be the equivalent.
+would necessarily be semantically equivalent.
 
-In addition to not being equivalent, the two representations of GADTs
-have very different implications for parametricity for GADTs. We
-explore the differences in parametricity results for the two
-representations in the next section.
+In addition to not being semantically equivalent, the two
+representations of GADTs have very different implications for
+parametricity. We explore the differences in parametricity results for
+GADTs with respect to the two representations in the next section.
 
-\section{Parametricity in the Presence of GADTs}\label{sec:par}
+\section{Parametricity for GADTs}\label{sec:par}
 
 {\em Relational parametricity} encodes a powerful notion of
 type-uniformity, or representation independence, for data types in
@@ -889,68 +889,145 @@ solely from their types, i.e., with no knowledge whatsoever of the
 text of the programs involved.  Most of Wadler's free theorems are
 consequences of naturality for polymorphic list-processing
 functions. However, parametricity can also derive results that go
-beyond just naturality, such as establishing {\color{blue} proving}
-the equivalence of the Church encodings and the primitive
-representations of ADTs and {\color{blue} hereditarily polynomial}
-nested types by validating the aforementioned short cut fusion
-transformation for them.
+beyond just naturality, such as proving equivalence of Church
+encodings and primitive representations of ADTs and {\color{blue}
+  hereditarily polynomial} nested types by validating short cut fusion
+for them.
 
-{\color{blue} Say somewhere: A relation is a triple $(A,B,R)$, where
-  $R$ is a relation between sets $A$ and $B$.  A function from
-  $(A,B,R)$ to $(A',B',R')$ is a pair $(f : A \to A',g : B \to B')$ of
-  functions on sets such that $(f a,g\,b) \in R'$ if $(a,b) \in R$. We
-  may write $R : \rel(A,B)$ for $(A,B,R)$.  If $R : \rel(A,B)$ we
-  write $\pi_1 R$ and $\pi_2 R$ for the {\em domain} $A$ of $R$ and
-  the {\em codomain} $B$ of $R$, respectively, and assume $\pi_1$ and
-  $\pi_2$ are surjective. We write $\Eq_A = (A,A,\{(x,x)~|~ x \in
-  A\})$ for the {\em equality relation} on the set $A$. ALSO, WANT OUR
-RELATIONS TO BE ONTO.}
+To discuss relational parametricity will need to interpret data types
+not just in $\mathit{Set}$, but in a suitable category of relations as
+well. The following definition is standard:
+\begin{definition}
+  The category $\mathit{Rel}$ has:
+  \begin{itemize}
+\item objects: A relation is a triple $(A,B,R)$, where $R$ is a
+  relation between sets $A$ and $B$.
+\item morphisms: A morphism from $(A,B,R)$ to $(A',B',R')$ is a pair
+  $(f : A \to A',g : B \to B')$ of functions in $\mathit{Set}$ such
+  that $(f a,g\,b) \in R'$ if $(a,b) \in R$.
+\item identities: The identity morphism on $(A,B,R)$ is the pair
+  $(\mathit{id}_A : A \to A, \mathit{id}_B : B \to B)$.
+\item composition: Composition is the componentwise composition in
+  $\mathit{Set}$. 
+\end{itemize}
+\end{definition}
+\noindent
+We write $R : \mathit{Rel}\,(A,B)$ for $(A,B,R) \in \mathit{Rel}$.  If
+$R : \mathit{Rel}\,(A,B)$ then we write $\pi_1 R$ and $\pi_2 R$ for
+the {\em domain} $A$ of $R$ and the {\em codomain} $B$ of $R$,
+respectively. Below, we assume $\pi_1$ and $\pi_2$ are surjective.  We
+write $\mathit{Eq}_A = (A,A,\{(x,x)~|~ x \in A\})$ for the {\em
+  equality relation} on the set $A$.
 
-{\color{red} This might not be relevant, since we only care about the
-  fibredness.} 
-The key idea underlying Reynolds' parametricity is to give each type
-$F(\alpha)$ with one free variable $\alpha$ a {\em set interpretation}
-$F_0$ taking sets to sets and a \emph{relational interpretation} $F_1$
-taking relations $R : \rel(A,B)$ to relations $F_1 (R) : \rel(F_0 (A),
-F_0 (B))$, and to interpret each term $t(\alpha,x) : F(\alpha)$ with
-one free term variable $x : G(\alpha)$ as a map $t_0$ associating to
-each set $A$ a function $t_0(A) : G_0(A) \to F_0(A)$. These
-interpretations are given inductively on the structures of $F$ and $t$
-in such a way that they imply two fundamental theorems. The first is
-an \emph{Identity Extension Lemma}, which states that $F_1(\Eq_A) =
-\Eq_{F_0(A)}$, and is the essential property that makes a model
-relationally parametric rather than just induced by a logical
-relation. The second is an \emph{Abstraction Theorem}, which states
-that, for any $R :\rel(A, B)$, $(t_0(A),t_0(B))$ is a morphism in
-$\rel$ from $(G_0(A),G_0(B),G_1(R))$ to $(F_0(A),F_0(B),F_1(R))$. The
-Identity Extension Lemma is similar to the Abstraction Theorem except
-that it holds for {\em all} elements of a type's interpretation, not
-just those that interpret terms.  Similar theorems are required for
-types and terms with any number of free variables.
+The key idea underlying parametricity is to give each type
+$\mathsf{G[a]}$ with one free variable $\mathsf{a}$ a {\em set
+  interpretation} $G_0$ taking sets to sets and a \emph{relational
+  interpretation} $G_1$ taking relations $R : \mathit{Rel}\,(A,B)$ to
+relations $G_1 \,R : \mathit{Rel}\,(G_0 \,A, G_0 \,B)$, and to
+interpret each term $\mathsf{t\,(a,x) :: G[a]}$ with one free term
+variable $\mathsf{x :: F[a]}$ as a function $t$ associating to each
+set $A$ a morphism $t \,A : F_0\,A \to G_0\,A$ in $\mathit{Set}$.
+These interpretations are given inductively on the structures of
+$\mathsf{G}$ and $\mathsf{t}$ in such a way that they imply two
+fundamental theorems. The first is an \emph{Identity Extension Lemma},
+which states that $G_1\,\mathit{Eq}_A = \mathit{Eq}_{G_0 A}$, and is
+the essential property that makes a model relationally parametric
+rather than just induced by a logical relation.  The second is an
+\emph{Abstraction Theorem}, which states that, for any $R
+:\mathit{Rel}\,(A, B)$, $(t\, A, t\,B)$ is a morphism in
+$\mathit{Rel}$ from $(F_0\,A,F_0\,B,F_1\,R)$ to
+$(G_0\,A,G_0\,B,G_1\,R)$. The Identity Extension Lemma is similar to
+the Abstraction Theorem except that it holds for {\em all} elements of
+a type's interpretation, not just those that interpret terms.  Similar
+theorems are required for types and terms with any number of free
+variables.
+
+The existence of parametric models that interpret GADTs as the
+interpretations of their Church encodings follows from, e.g., the
+existence of the parametric model of $F_\omega$ constructed
+in~\cite{atk12}.  In that model, {\color{blue} ``parallel
+  interpretations'' of $Rel$ over $Set$...}.  The parametricity
+property for a GADT is therefore...  {\color{blue} SAY MORE!} In
+particular, the parametricity property for the GADT $\mathsf{G}$
+from~\eqref{eq:G} is exactly the syntactic counterpart of the
+inhabitation result for the interpretation of $\mathsf{G}$'s Church
+encoding, as the following example shows.
 
 \begin{example}
-{\color{red} PRIMITIVE REP DOESN'T HAVE FIBRED SEMANTICS, AS REQUIRED
-  FOR PAR} To
-even consider the question of whether our semantics is parametric we
-first need to define a relational semantics for our types, i.e., a
-relational interpretation for every type $G : \ast \to \ast$ such
-that, for every relation $R : \rel(A, B)$, we have $G_1(R) :
-\rel(G_0(A), G_0(B))$.
+Let $\mathsf{t}$ be a term of type $\mathsf{G}$ for the GADT
+$\mathsf{G}$ defined in~\eqref{eq:G}, let $G = (G_0,G_1)$ be the
+interpretation of the Church encoding of $\mathsf{G}$, let $t$ be the
+interpretation of $\mathsf{t}$, and let $R :
+\mathit{Rel}\,(A,B)$. Then $t\, A \in G_0\,A$ and $t\,B \in G_0\,B$
+and, by the Abstraction Theorem, $t\,A$ and $t\,B$ are related in
+$G_1\,R$. However, {\color{blue} using the semantic interpretations
+  in~\cite{atk12} --- EXPLAIN!}, we have that the relational
+interpretation $G_1\,R$ of $\mathsf{G}$ is the empty relation whenever
+$R$ differs from the relational interpretation $\mathit{Eq}\,1$ of
+$\mathsf{1}$.  {\color{blue} $Eq$ vs. $Equal$?}  We thus deduce that
+there can be no term of type $\mathsf{G\,a}$ unless $\mathsf{a}$ is
+semantically equivalent to $\mathsf{1}$.
+\end{example}
 
-We shall show that this is not generally possible for the primitive
-representation of data types, by considering the previously defined
-type $G$ in Equation~\ref{eq:G}.  Recall that the semantic
-interpretation of $G$ is given by $\mathsf{\Lan}_1 1$ which, in fact,
-is none other than the identity functor on $\set$.
+For primitive representations of GADTs the story is completely
+different. First off, we have that {\color{blue} the interp of Lan
+  must be full Lan}. Indeed,... {\color{blue} MORE!!}
+\begin{proposition}\label{prop:full-lans}
+Full Lan prop goes here. Explain cutting down.
+\end{proposition}
+\noindent
+In particular, both the set interpretation and the relational
+interpetation of a GADT must involve the entireties of any Lans in
+their fixpoint representations. We therefore have:
 
-Analogously to the set interpretation, the relational interpretation
-for $G$ is given by $\mathsf{\Lan}_{\Eq_1} \Eq_1$.  Notice that the
-interpretation still essentially relies on a left Kan extension, but
-this time it is an extension of $\rel$-valued functors.  We would need
-to prove that, for every relation $R : \rel(A, B)$, we have that
-$(\mathsf{\Lan}_{\Eq_1} \Eq_1) R$ is a relation on $(\mathsf{\Lan}_1
-1) A$ and $(\mathsf{\Lan}_1 1)B$, i.e., $A$ and $B$.  Instead, we will
-provide a counterexample showing that this is not true.
+\begin{example}
+In any parametric model we must give both a set interpretation and a
+relational interpretion for every type as described at the start of
+this section. That is, for every GADT $\mathsf{G}$ we must give an
+interpretation $G = (G_0,G_1)$ such that, for every relation $R :
+\mathit{Rel}\,(A, B)$, we have $G_1\,R : \mathit{Rel}\,(G_0\,A,
+G_0\,B)$. But, as we now show, this is not generally possible for in
+models that interpret GADTs as the interpretations of their primitive
+representations.
+
+Consider again the GADT $\mathsf{G}$ given by~\eqref{eq:G}.  Applying
+Proposition~\ref{prop:full-lans} first in $\mathit{Set}$ and then in
+$\mathit{Rel}$, we have that the set interpretation of $\mathsf{G}$ is
+$\mathit{Lan}_{\lambda *.1}\,\lambda *.1$, i.e., is exactly the
+identity functor on $\mathit{Set}$ {\color{blue} Tie back to previous
+  calculation}. By the exact same reasoning, this time in
+$\mathit{Rel}$ rather than in $\mathit{Set}$, the relational
+interpretation of $\mathsf{G}$ is $\mathit{Lan}_{\lambda
+  *.\mathit{Eq}_1} \,\lambda *\!.\,\mathit{Eq}_1$, where $\lambda
+*\!.\,\mathit{Eq}_1$ is the constantly $\mathit{Eq}_1$-valued functor
+from the category with a single object $*$ to $\mathit{Rel}$.  Indeed,
+the interpretation is still a left Kan extension, but now it is the
+left Kan extension determined by the functor interpreting the type
+$\mathsf{\lambda *. 1}$ in $\mathit{Rel}$. To prove that the Identity
+Extension Lemma holds we need to show that, for every relation $R :
+\mathit{Rel}\,(A, B)$, we have that $(\mathit{\Lan}_{\lambda
+  *\!.\,\mathit{Eq}_1} \,\lambda *\!.\,\mathit{Eq}_1)\, R$ is a
+relation between the sets $(\mathit{Lan}_{\lambda *. 1}\,\lambda
+*\!. 1)\, A$ and $(\mathit{Lan}_{\lambda *. 1}\,\lambda *\!. 1)\,B$,
+i.e., between the sets $A$ and $B$.  Instead, we will give a
+counterexample showing that this is not the case.
+
+Consider the relation $R = (1, 2, 1 \times 2)$. We expect
+$(\mathit{\Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
+*\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain {\color{blue}
+  $1$}. Since left Kan extensions preserve projections~\cite{rie16},
+we can compute the domain as
+\[\pi_1\,\big( (\mathit{\Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
+*\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathsf{\Lan}_{\lambda
+  *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, 1\]
+
+
+
+(notice that the left
+Kan extension of $1 : \ast \to \set$ along $\Eq_1 : \ast \to \rel$ is
+a functor $\rel \to \set$).
+
+
 
 Consider the relation $R = (1, \emptyset, \emptyset)$.  We would thus
 expect $(\mathsf{\Lan}_{\Eq_1} \Eq_1) R$ to be a relation with domain
@@ -979,72 +1056,47 @@ empty relation on a non-empty domain.  Though, it is possible to apply
 the same argument, with a slightly more complex calculation, even to a
 total relation such as $(1, 2, 1 \times 2)$.
 
-We still get naturality properties, though.
+
 
 \vspace*{0.2in}
 
-As we have seen in the previous Section~\ref{sec:adts}, GADTs
-represented as Church encodings do not necessarily have a map or a
-functorial semantics.  In particular, this means that we cannot
-possibly derive naturality results for those types, event though their
-semantics is parametric.  Indeed, even though naturality is sometimes
-seen as a consequence of parametricity, that is only true in case we
-have a functorial semantics and types supporting a map.  Still, GADTs
-represented as Church encodings can still exhibit consequences of
-paramentricity other than naturality, as they do admit parametric
-semantics~\cite{atk12}.
-
-\begin{example}
-{\color{blue} In this paragraph, $\mathsf{G}$ and $\mathsf{t}$
-  represent syntax, so should be sans-serif, but in the notes, the
-  paragraph about set/relational interpretation and
-  parametricity/IEL/AT uses serif font.} For example, consider the
-Church encoding of the GADT $\mathsf{G}$ defined in
-Equation~\ref{eq:G}.  If $\mathsf{t}$ is a term of type
-$\mathsf{G}$ and $R$ is a relation on the sets $A$ and $B$, then
-$t_0(A) \in G_0(A)$ and $t_0(B) \in G_0(B)$, and by the abstraction
-theorem we have that $t_0(A)$ and $t_0(B)$ are related in $G_1(R)$.
-{\color{blue} Here, $G = (G_0,G_1)$ is the interpretation of
-  $\mathsf{G}$.}  We also know that $G_1(R)$ is the empty relation
-whenever $R$ is not $\mathit{Equal}\,1$.  We thus deduce that there
-can be no term of type $\mathsf{G\,a}$ unless $\mathsf{a}$ is
-semantically equivalent to $\mathsf{1}$.  This result is the syntactic
-counterpart of the inhabitation result for $\mathsf{G}$ {\color{blue}
-  are inhabitation results about semantics or syntax?}  showing that
-all of the instances of $\mathsf{G}$ are uninhabited, with the
-exception of the instance for $\mathsf{1}$.  Of course, we could not
-possibly have a term of an uninhabited type.
-\end{example}
+Although there can exist no parametric models interpreting GADTs as
+their primitive representations, we still get naturality properties
+for prim reps. On the other hand, although a GADT represented as a
+Church encoding does not necessarily have a map or a functorial
+semantics, so that we cannot possibly derive naturality results for
+them, parametric models interpreting GADTs as their Church encodings
+do exist.  This shows that, even though naturality is generally
+regarded as a consequence of parametricity, this is only true when we
+have a functorial semantics and types supporting a map.
 
 %%% Primitive representation of GADT is non parametric, but functorial
-On the contrary, as we have shown in Section~\ref{sec:gadts}, a
-GADT represented as a primitive data type does not necessarily admit a
-parametric semantics, but, as a fixpoint of a higher-order functor, it
-does admit a functorial semantics and, consequently, a functorial map.
-In particular, every type that has a functorial map also benefits from
-naturality properties.  In other words, there is a suitable
-rearrange-transform property as explained in Section~\ref{sec:gadts}.
+%On the contrary, as we have shown in Section~\ref{sec:gadts}, a
+%GADT represented as a primitive data type does not necessarily admit a
+%parametric semantics, but, as a fixpoint of a higher-order functor, it
+%does admit a functorial semantics and, consequently, a functorial map.
+%In particular, every type that has a functorial map also benefits from
+%naturality properties.  In other words, there is a suitable
+%rearrange-transform property as explained in Section~\ref{sec:gadts}.
 
-%%% Example with G
-For example, $\mathsf{G}$ is associated to a functorial map,
-$\map_{\mathsf{G}}$, such that, for every function $\mathsf{f : a \to
-  b}$, we get a function $\map_{\mathsf{G}}\,\mathsf{f} : \mathsf{G\,a
-  \to G\,b}$.  Then we have a term $\map_{\mathsf{G}}\,\mathsf{f\,c} :
-\mathsf{G\,a}$ for every function $\mathsf{f : \mathsf{1} \to a}$,
-where $\mathsf{c : G\,\mathsf{1}}$ is the constructor provided by the
-definition of $\mathsf{G}$.
-
-
-We can read our counterexample as showing that parametricity results
-for calculi representing GADTs as their Church encodings cannot be
-extended to calculi that represent GADTs as primitive data types. And
-functoriality results for calucli representing GADTs as primitive
-cannot be extended to calculi that represent GADTs as their Church
-encodings.  So the user is forced to make a choice between naturality
-consequences of parametricity and other consequences of
+We can read the results of this section as showing that parametricity
+results for calculi representing GADTs as their Church encodings
+cannot be extended to calculi that represent GADTs as primitive data
+types. And functoriality results for calucli representing GADTs as
+primitive cannot be extended to calculi that represent GADTs as their
+Church encodings.  So the user is forced to make a choice between
+naturality consequences of parametricity and other consequences of
 parametricity. If GADTs really did generalize ADTs, and really were
 data types in a normal sense, then these would coincide and the user
 would not have to choose.
+
+\vspace*{0.2in}
+
+NOTES:
+
+{\color{violet} TRUE????}
+FOR ADTs and Nesteds, it does not depend. We get the same par property
+whether they are seen as primitives or we use their CE.
 
 
 \begin{comment}
@@ -1067,13 +1119,7 @@ representing G, our example GADT defined by a unique constructor c ::
 G 1.
 \end{comment}
 
-\vspace*{1in}
-
-NOTES:
-
-{\color{violet} TRUE????}
-FOR ADTs and Nesteds, it does not depend. We get the same par property
-whether they are seen as primitives or we use their CE.
+\pagebreak
 
 
 \subsection{Comparison with Stephanie and Dmitrios}
