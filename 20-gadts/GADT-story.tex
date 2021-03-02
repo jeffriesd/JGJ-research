@@ -267,11 +267,12 @@ inherent in its primitive representation is exactly what is needed to
 ensure that the GADT supports a $\mathsf{map}$ function, i.e., is
 interpreted as a true categorical functor, and can therefore be made
 an instance of Haskell's $\mathsf{Functor}$ class. It is worth noting,
-however, that since the functorial completion of a GADT includes only
-those data elements that are derivable via repeated applications of
-$\mathsf{map}$ starting from those specified by its syntax, primitive
-GADTs need not, in general, be nested types. For example, the
-functorial completion of the GADT $\mathsf{G}$ defined by
+however, that since the functorial completion of a GADT includes
+{\color{blue} only?} those data elements that are derivable via
+repeated applications of $\mathsf{map}$ starting from those specified
+by its syntax, primitive GADTs need not, in general, be nested
+types. For example, the functorial completion of the GADT $\mathsf{G}$
+defined by
 \begin{equation}\label{eq:G}
 \begin{array}{l}
 \mathsf{data\,G\,a\,where}\\
@@ -853,17 +854,18 @@ disturbing. What, they might ask, should a data type contain other
 than data that are constructed using its data constructors? Why should
 a GADT contain ``hidden'' elements that are not specified by the
 GADT's syntax and are only accessible via applications of
-$\mathsf{map}$? A semanticist, on the other hand, would likely find
-the primitive representation of GADTs entirely reasonable. Indeed,
-they would likely find the nonfunctorial nature of a GADT's Church
-encoding unnerving at best. After all, they would likely argue, the
-data in a GADT shouldn't disappear just because you map a function
-over it! The fact that this happens when GADTs are represented by
-their Church encodings actually highlights how GADTs {\em do not}
-generalize the essential, container-ish nature of ADTs at all. A
-semanticist might therefore conclude that GADTs are seriously
-misnamed. They might even go on to wonder: in what sense do GADTs
-really deserve to be considered {\em data types} at all?
+$\mathsf{map}$ {\color{blue} and other elements, too?}? A semanticist,
+on the other hand, would likely find the primitive representation of
+GADTs entirely reasonable. Indeed, they would likely find the
+nonfunctorial nature of a GADT's Church encoding unnerving at
+best. After all, they would likely argue, the data in a GADT shouldn't
+disappear just because you map a function over it! The fact that this
+happens when GADTs are represented by their Church encodings actually
+highlights how GADTs {\em do not} generalize the essential,
+container-ish nature of ADTs at all. A semanticist might therefore
+conclude that GADTs are seriously misnamed. They might even go on to
+wonder: in what sense do GADTs really deserve to be considered {\em
+  data types} at all?
 
 The reader familiar with short cut fusion will quickly see that the
 non-uniform nature of GADTs that are not nested types entails that
@@ -967,19 +969,13 @@ as intended, then the parametricity property for a GADT is an
 inhabitation result saying that the set interpreting any instance of
 that GADT contains exactly the interpretations of the data elements
 that can be formed using its data constructors and whose type is that
-instance.
-%Reflecting this property back into syntax gives that
-In terms of syntax the parametricity property for a GADT's Church
-encoding gives that the GADT is inhabited at any instance for which
-data elements can be formed using its data constructors. In
+instance. In terms of syntax the parametricity property for a GADT's
+Church encoding gives that the GADT is inhabited at any instance for
+which data elements can be formed using its data constructors. In
 particular, the parametricity property for the GADT $\mathsf{G}$
 from~\eqref{eq:G} gives that $\mathsf{G\,a}$ contains a single data
 element if $\mathsf{a}$ is semantically equivalent to $\mathsf{1}$ and
 none otherwise:
-%gives exactly the expected
-%%syntactic counterpart to the
-%inhabitation result for the interpretation of $\mathsf{G}$'s Church
-%encoding:
 
 \begin{example}\label{ex:CE-par}
 Let $\mathsf{t}$ be a term of type $\mathsf{G}$ for the GADT
@@ -994,13 +990,10 @@ given in~\cite{atk12}, {\color{blue} which includes the aforementioned
 $G_1\,R$ of $\mathsf{G}$ is {\color{blue} $\mathit{Eq}_1$ when $R$ is
   the relational interpretation $\mathit{Eq}_1$ of $\mathsf{1}$, and
   the empty relation whenever $R$ differs from
-  %the relational interpretation
-  $\mathit{Eq}_1$
-  %of $\mathsf{1}$
-  }. Reflecting back into syntax we
-deduce that there can be no term in the type that is the Church
-encoding of $\mathsf{G\,a}$ unless $\mathsf{a}$ is semantically
-equivalent to $\mathsf{1}$.
+  $\mathit{Eq}_1$}. Reflecting back into syntax we deduce that there
+can be no term in the type that is the Church encoding of
+$\mathsf{G\,a}$ unless $\mathsf{a}$ is semantically equivalent to
+$\mathsf{1}$.
 \end{example}
 
 For primitive representations of GADTs the story is completely
