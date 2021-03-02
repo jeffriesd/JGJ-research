@@ -134,9 +134,9 @@
 \newcommand{\Bcons}{\mathit{Bcons}}
 \newcommand{\Bnil}{\mathit{Bnil}}
 
-\title[Parametricity Consequences of GADTs
-  Representations]{Parametricity Consequences of GADTs
-  Representations}
+
+\title[Parametricity in the Presence of GADTs]{Parametricity in the
+  Presence of GADTs}
 
 \author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
 \affiliation{ \institution{Appalachian State University}}
@@ -146,13 +146,9 @@
 \begin{document}
 
 \begin{abstract}
-{\color{red} FIX ME!} GADTs are misnamed. They don't really generalize
-ADTs. And they don't behave the way we expect data types to behave. In
-particular, they force us to choose between the naturality properties
-we expect of their fmap functions and other parametricity results for
-them, causing us to question in what sense GADTs are data types, and
-what the value of the parametricity results for them as determined by
-their syntax really is.
+{\color{red} FIX ME!} There are two ways to represent/interpret
+GADTs. They are not the same, and how we view GADTs has profound
+consequences for how we program with, and reason about, them.
 \end{abstract}
 
 \maketitle
@@ -160,6 +156,10 @@ their syntax really is.
 \section{Introduction}\label{sec:intro}
 {\color{blue} map vs. fmap throughout.} {\color{blue} Add polynomial
   throughout?}
+{\color{blue} We say "naturality consequences of parametricity"
+when in fact we have naturality without having any parametricity at all.
+Change the wording to indicate that naturality follows from
+functoriality of the interp.}
 
 There are two standard ways to represent data types when studying
 modern functional languages: via their Church encodings in a (possibly
@@ -284,7 +284,7 @@ $\mathsf{G\,a}$ for any type $\mathsf{a}$ that is not the empty type
 $\mathsf{0}$ since there is always a function from $\mathsf{1}$ to
 such an $\mathsf{a}$, but does not include any terms at instance
 $\mathsf{G\,0}$. Indeed, $\mathsf{G\,0}$ is not inhabited via the
-syntactic specifiation of $\mathsf{G}$, and is not inhabited via
+syntactic specification of $\mathsf{G}$, and is not inhabited via
 functorial completion because it is not possible to define a function
 from $\mathsf{1}$ into $\mathsf{0}$.
 
@@ -456,35 +456,35 @@ obtained by $\mathsf{Cons}$ing an element of type $\mathsf{a}$ onto an
 already-existing structure of type $\mathsf{List\,a}$. In fact, this
 fixpoint equation is just a rewriting of the Haskell data type
 declaration for $\mathsf{List\,a}$. We therefore have that
-$\mathsf{List\, a} = \mathsf{\mu F_{List\,a}}$ is modelled by $\mu
+$\mathsf{List\, a} = \mathsf{\mu F_{List\,a}}$ is modeled by $\mu
 F_{\mathit{List}\,a}$, where the functor $F_{\mathit{List}\,a}$ models
 the type constructor $\mathsf{F_{List\,a}}$. Similarly, the ADT
 $\mathsf{Tree\,a}$ can be seen to be a fixpoint of
 $\mathsf{F_{Tree\,a}}$, where $\mathsf{F_{Tree\,a}\,X} = \mathsf{a + X
   \times a \times X}$ as determined by~\eqref{eq:tree}, so that
-$\mathsf{Tree\, a} = \mathsf{ \mu F_{Tree\,a}}$ is modelled by $\mu
+$\mathsf{Tree\, a} = \mathsf{ \mu F_{Tree\,a}}$ is modeled by $\mu
 F_{\mathit{Tree}\,a}$, where $F_{\mathit{Tree}\,a} $ models
 $\mathsf{F_{Tree\,a}}$.
  
 These kinds of fixpoint equations are entirely sensible at the level
 of types. But to ensure that the syntactic fixpoint representing an
 ADT actually denotes a semantic object computed as a real-live
-fixpoint, the semantic fixpoint calculation must converge.  If
-{\color{blue} Since? Establish this earlier?} we interpret our types
-as sets, then this means that the fixpoint being taken must be of a
-{\em functor} on the category $\mathit{Set}$ of sets and functions
-between them, rather than of a mere function between sets~\cite{tfca}.
-That is, the function $F$ interpreting the type constructor
-$\mathsf{F}$ constructing the body of a syntactic fixpoint must not
-only have an action on sets, but must also have a {\em functorial
-  action} on functions between sets. Reflecting this requirement back
-into syntax gives that $\mathsf{F}$ must support a
-suitable\footnote{The $\mathsf{map}$ function for $\mathsf{F}$ should
-  satisfy syntactic reflections of the functoriality properties in
-  $\mathit{Set}$ --- i.e., preservation of identity functions and
-  composition of functions --- even though there is no mechanism in
-  Haskell for enforcing this.} $\mathsf{map}$ function, i.e., must be
-an instance of Haskell's $\mathsf{Functor}$ class.
+fixpoint, the semantic fixpoint calculation must converge.  If, as is
+typical, we interpret our types as sets, then this means that the
+fixpoint being taken must be of a {\em functor} on the category
+$\mathit{Set}$ of sets and functions between them, rather than of a
+mere function between sets~\cite{tfca}.  That is, the function $F$
+interpreting the type constructor $\mathsf{F}$ constructing the body
+of a syntactic fixpoint must not only have an action on sets, but must
+also have a {\em functorial action} on functions between
+sets. Reflecting this requirement back into syntax gives that
+$\mathsf{F}$ must support a suitable\footnote{The $\mathsf{map}$
+  function for $\mathsf{F}$ should satisfy syntactic reflections of
+  the functoriality properties in $\mathit{Set}$ --- i.e.,
+  preservation of identity functions and composition of functions ---
+  even though there is no mechanism in Haskell for enforcing this.}
+$\mathsf{map}$ function, i.e., must be an instance of Haskell's
+$\mathsf{Functor}$ class.
 
 Requiring $F$ to be a functor will ensure that the interpretation $\mu
 F$ of the ADT $\mathsf{T\,a} = \mathsf{\mu F}$ exists. But to ensure
@@ -516,11 +516,11 @@ $\mathsf{H}$ that supports suitable\footnote{The $\mathsf{map}$
        
       
 A concrete example is given by the ADT $\mathsf{List\,a}$. This type
-is modelled as the fixpoint $\mu F_{\mathit{List\,a}}$ of the
+is modeled as the fixpoint $\mu F_{\mathit{List\,a}}$ of the
 first-order functor whose action on sets is given by
 $F_{\mathit{List}\,a}\,X = 1 + a \times X$ and whose action on
 functions is given by $F_{\mathit{List}\,a}\,f = 1 + \id_a \times
-f$. The type constructor $\mathsf{List}$ is modelled by the functor
+f$. The type constructor $\mathsf{List}$ is modeled by the functor
 that is the fixpoint $\mu H$ of the higher-order functor $H$ whose
 action on a functor $F$ is given by the functor $H\,F$ whose actions
 on sets and functions between them are given by $H\,F\,X = 1 + X
@@ -590,7 +590,7 @@ simultaneously. That is, a GADT defines an {\em inductive family of
 
 The syntax of GADTs is consistent with programmers' use of them in
 situations where different behaviors at different type instances is
-desired. This is achieved by allowing the progammer to give the type
+desired. This is achieved by allowing the programmer to give the type
 signatures of the different data constructors independently, and then
 using pattern matching to force the desired type refinement.  Typical
 applications of GADTs include generic programming, modeling
@@ -626,14 +626,20 @@ defined via GADT syntax, as in
 \mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}\\
 \end{array}\]
 \noindent
-or, equivalently, represented by its own Church encoding
+or, equivalently, represented by its Church encoding
 \[\mathsf{Equal\,a\,b} = \mathsf{\forall f.\, (\forall c.\,
-  f\,c\,c) \to f\,a\,b}\]
-The GADT $\mathsf{Seq}$ can then be represented as its Church encoding
-\[\mathsf{Seq\,a} = \mathsf{\forall f.\, (\forall a.\,a \to f\, a)
-  \to (\forall a\,b\,c.\,Equal\,a\,(b\times c) \to f\,b \to f\,c \to
-  f\,a) \to f\,a}\]
-in a higher-kinded calculus such as $F_\omega$~\cite{atk12}.
+  f\,c\,c) \to f\,a\,b}\] in a higher-kinded calculus such as
+$F_\omega$~\cite{atk12}. Following the technique in Section~4.5
+of~\cite{atk12}, we can represent the GADT $\mathsf{Seq}$ as its
+Church encoding
+\[\mathsf{Seq\,a} = \mathsf{\forall f.\,(\forall d. \,(f\,d + \exists b
+  c.\, f\, b \times f \,c \times \mathsf{Equal}\, d \,(b \times c))
+  \to f \,d) \to f\, a}\]
+This is logically equivalent to the more intuitive encoding
+\[\mathsf{Seq\,a} = \mathsf{\forall f.\, (\forall d.\,d \to f\, d)
+  \to (\forall b\,c\,d.\,Equal\,d\,(b\times c) \to f\,b \to f\,c \to
+  f\,d) \to f\,a}\]
+
 
 Importantly, the function $\mathit{Equal}\,a$ cannot be made into a
 functor. Equivalently, $\mathsf{Equal\,a}$ (in either representation)
@@ -648,13 +654,19 @@ then defining
 \end{array}\]
 would allow us to construct
 an element
-\[\mathsf{eqElim\, (map_{Equal\,Void}\, absurd\, Refl)\, 1}\]
-of type $\mathsf{Void}$, where $\mathsf{absurd :: 0 \to c}$ is the
-syntactic reflection of the empty function from the empty set into the
-interpretation of $\mathsf{c}$. {\color{blue} Is there a way to say
-  this without passing to semantics?} But this should be
-impossible. It is immediate that a GADT that is not actually a nested
-type cannot support a $\mathsf{map}$ function (or a
+\[\mathsf{eqElim\, (map_{Equal\,0}\, absurd\, Refl)\, 1}\]
+of the empty type $\mathsf{0}$, where $\mathsf{absurd :: 0 \to c}$ is
+the
+%syntactic reflection of the
+empty function from  $\mathsf{0}$
+%the empty type set
+into
+%the interpretation of
+$\mathsf{c}$.
+%{\color{blue} Is there a way to say this without passing to
+%semantics?}
+But this should be impossible. It is immediate that a GADT that is not
+actually a nested type cannot support a $\mathsf{map}$ function (or a
 rearrange-transform property) either. In the case of $\mathsf{Seq}$,
 this is already intuitively evident from its Haskell definition as
 discussed in Section~\ref{sec:intro}.
@@ -666,7 +678,7 @@ just those elements specified by the GADT's syntax. By contrast, the
 primitive representation of a GADT corresponds to the data type
 comprising all data elements in the functorial completion of the
 GADT's syntax. In this alternate reading, GADTs can, like ADTs, be
-modelled as fixpoints of higher-order functors. Syntactically, the use
+modeled as fixpoints of higher-order functors. Syntactically, the use
 of higher-order funct{\em ions} is essential; since the type arguments
 to the GADT being defined are not necessarily uniform across all of
 its instances in the types of its data constructors, GADTs cannot be
@@ -678,8 +690,8 @@ fixpoints being computed~\cite{tfca}.
 Consider, again, the GADT $\mathsf{Seq}$. Because its type argument
 varies in the instances of $\mathsf{Seq}$ appearing in the types of
 its data constructor $\mathsf{Pair}$, $\mathsf{Seq}$ cannot be
-modelled as the fixpoint of any first-order functor. As shown
-in~\cite{jp19}, it can, however, be modelled as a solution to the
+modeled as the fixpoint of any first-order functor. As shown
+in~\cite{jp19}, it can, however, be modeled as a solution to the
 higher-order fixpoint equation
 \[H\,f\,a = a \,+\,(Lan_{\lambda c d. c \times d}\, \lambda
 c d. f c \times f d)\,a\] {\color{red} Check this equation against
@@ -723,11 +735,11 @@ $\mathsf{Lan}$ such that the type constructor $\mathsf{Lan_k\,f}$ is
 the syntactic reflection of the left Kan extension $\Lan_K \,F$ of the
 functor $F$ interpreting $\mathsf{f}$ along the functor $K$
 interpreting $\mathsf{k}$. In this setting, the categories
-$\mathcal{C}$, $\mathcal{D}$, and $\mathcal{E}$ must all be of theform $\mathit{Set}^n$ for some $n$. Using $\mathsf{Lan}$ we can then
+$\mathcal{C}$, $\mathcal{D}$, and $\mathcal{E}$ must all be of the form $\mathit{Set}^n$ for some $n$. Using $\mathsf{Lan}$ we can then
 rewrite the type of a constructor $\mathsf{c :: f a \to g(k\,a)}$ as
 $\mathsf{c :: (Lan_k\,f)\,a \to g\,a}$ since morphisms (i.e., natural
 transformations) from $F$ to $G \circ K$ are in one-to-one
-corresondence with those from $\mathit{Lan}_K\,F$ to $G$ (see
+correspondence with those from $\mathit{Lan}_K\,F$ to $G$ (see
 e.g.,~\cite{rie16}). That is, writing $F \Rightarrow G$ for the set of
 natural transformations from a functor $F$ to a functor $G$, we have
 \begin{equation}\label{eq:nat-transfs}
@@ -787,6 +799,7 @@ accords with $\mathsf{G}$'s syntax, which indeed delivers just one
 data element when $\mathsf{a}$ is $\mathsf{1}$ and no elements
 otherwise.
 
+{\color{blue} Use $\mathsf{1}$ in place of $\mathsf{*}$ here?}
 To compute the interpretation of $\mathsf{G}$'s primitive
 representation we first note that the type of $\mathsf{G}$'s solitary
 constructor $\mathsf{c :: G\,1}$ can be equivalently expressed as
@@ -837,7 +850,7 @@ $\mathsf{c}$.
 Forced to choose, a programmer would likely find the idea that a GADT
 contains data not specified by its syntax more than a little
 disturbing. What, they might ask, should a data type contain other
-than data that are constructed using its data constuctors? Why should
+than data that are constructed using its data constructors? Why should
 a GADT contain ``hidden'' elements that are not specified by the
 GADT's syntax and are only accessible via applications of
 $\mathsf{map}$? A semanticist, on the other hand, would likely find
@@ -871,7 +884,7 @@ representations of GADTs have very different implications for
 parametricity. We explore the differences in parametricity results for
 GADTs with respect to the two representations in the next section.
 
-\section{Parametricity for GADTs}\label{sec:par}
+\section{Parametricity in the Presence of GADTs}\label{sec:par}
 
 {\em Relational parametricity} encodes a powerful notion of
 type-uniformity, or representation independence, for data types in
@@ -911,10 +924,11 @@ well. The following definition is standard:
 \noindent
 We write $R : \mathit{Rel}\,(A,B)$ for $(A,B,R) \in \mathit{Rel}$.  If
 $R : \mathit{Rel}\,(A,B)$ then we write $\pi_1 R$ and $\pi_2 R$ for
-the {\em domain} $A$ of $R$ and the {\em codomain} $B$ of $R$,
-respectively. Below, we assume $\pi_1$ and $\pi_2$ are surjective.  We
-write $\mathit{Eq}_A = (A,A,\{(x,x)~|~ x \in A\})$ for the {\em
-  equality relation} on the set $A$.
+the {\em domain} $A$ and {\em codomain} $B$ of $R$,
+respectively. Below, we assume $\pi_1$ and $\pi_2$ are surjective, so
+that the relations in $\mathit{Rel}$ are {\em onto}. {\color{blue} Say
+  why we care about onto?} We write $\mathit{Eq}_A = (A,A,\{(x,x)~|~ x
+\in A\})$ for the {\em equality relation} on the set $A$.
 
 The key idea underlying parametricity is to give each type
 $\mathsf{G[a]}$ with one free variable $\mathsf{a}$ a {\em set
@@ -942,211 +956,196 @@ variables.
 The existence of parametric models that interpret GADTs as the
 interpretations of their Church encodings follows from, e.g., the
 existence of the parametric model of $F_\omega$ constructed
-in~\cite{atk12}.  In that model, {\color{blue} ``parallel
-  interpretations'' of $Rel$ over $Set$...}.  The parametricity
-property for a GADT is therefore...  {\color{blue} SAY MORE!} In
+in~\cite{atk12}.  In that model, types are interpreted ``in parallel''
+in $\mathit{Set}$ and $\mathit{Rel}$ in the usual way, including the
+familiar ``cutting down'' of the interpretations of $\forall$-types to
+just those elements that are ``parametric''~\cite{rey83,wad89} to
+ensure that the Identity Extension Lemma holds. If {\color{blue} the
+  set interpretation of $\mathsf{Equal}$ is the function
+  $\mathit{Equal}$ and its relational interpretation is $\mathit{Eq}$}
+as intended, then the parametricity property for a GADT is an
+inhabitation result saying that the set interpreting any instance of
+that GADT contains exactly the interpretations of the data elements
+that can be formed using its data constructors and whose type is that
+instance.
+%Reflecting this property back into syntax gives that
+In terms of syntax the parametricity property for a GADT's Church
+encoding gives that the GADT is inhabited at any instance for which
+data elements can be formed using its data constructors. In
 particular, the parametricity property for the GADT $\mathsf{G}$
-from~\eqref{eq:G} is exactly the syntactic counterpart of the
-inhabitation result for the interpretation of $\mathsf{G}$'s Church
-encoding, as the following example shows.
+from~\eqref{eq:G} gives that $\mathsf{G\,a}$ contains a single data
+element if $\mathsf{a}$ is semantically equivalent to $\mathsf{1}$ and
+none otherwise:
+%gives exactly the expected
+%%syntactic counterpart to the
+%inhabitation result for the interpretation of $\mathsf{G}$'s Church
+%encoding:
 
-\begin{example}
+\begin{example}\label{ex:CE-par}
 Let $\mathsf{t}$ be a term of type $\mathsf{G}$ for the GADT
 $\mathsf{G}$ defined in~\eqref{eq:G}, let $G = (G_0,G_1)$ be the
 interpretation of the Church encoding of $\mathsf{G}$, let $t$ be the
 interpretation of $\mathsf{t}$, and let $R :
 \mathit{Rel}\,(A,B)$. Then $t\, A \in G_0\,A$ and $t\,B \in G_0\,B$
-and, by the Abstraction Theorem, $t\,A$ and $t\,B$ are related in
-$G_1\,R$. However, {\color{blue} using the semantic interpretations
-  in~\cite{atk12} --- EXPLAIN!}, we have that the relational
-interpretation $G_1\,R$ of $\mathsf{G}$ is the empty relation whenever
-$R$ differs from the relational interpretation $\mathit{Eq}\,1$ of
-$\mathsf{1}$.  {\color{blue} $Eq$ vs. $Equal$?}  We thus deduce that
-there can be no term of type $\mathsf{G\,a}$ unless $\mathsf{a}$ is
-semantically equivalent to $\mathsf{1}$.
+and, by the Abstraction Theorem (Theorem~3) in~\cite{atk12}, $t\,A$
+and $t\,B$ must be related in $G_1\,R$. However, under the semantics
+given in~\cite{atk12}, {\color{blue} which includes the aforementioned
+  interpretations of $\mathsf{Equal}$}, the relational interpretation
+$G_1\,R$ of $\mathsf{G}$ is {\color{blue} $\mathit{Eq}_1$ when $R$ is
+  the relational interpretation $\mathit{Eq}_1$ of $\mathsf{1}$, and
+  the empty relation whenever $R$ differs from
+  %the relational interpretation
+  $\mathit{Eq}_1$
+  %of $\mathsf{1}$
+  }. Reflecting back into syntax we
+deduce that there can be no term in the type that is the Church
+encoding of $\mathsf{G\,a}$ unless $\mathsf{a}$ is semantically
+equivalent to $\mathsf{1}$.
 \end{example}
 
 For primitive representations of GADTs the story is completely
-different. First off, we have that {\color{blue} the interp of Lan
-  must be full Lan}. Indeed,... {\color{blue} MORE!!}
-\begin{proposition}\label{prop:full-lans}
-Full Lan prop goes here. Explain cutting down. Or just argue intuitively?
-\end{proposition}
-\noindent
-In particular, both the set interpretation and the relational
-interpetation of a GADT must involve the entireties of any Lans in
-their fixpoint representations. We therefore have:
+different. If, as intended, the set interpretation of
+$\mathsf{Lan_k\,f}$ is $\mathit{Lan}_K\,F$, where $K$ is the set
+interpretation of $\mathsf{k}$ and $F$ is the set interpretation of
+$\mathsf{f}$, then the exact same reasoning give that the relational
+interpretation of $\mathsf{Lan_k\,f}$ is $\mathit{Lan}_K\,F$, where
+$K$ is the relational interpretation of $\mathsf{k}$ and $F$ is the
+relational interpretation of $\mathsf{f}$. But under these
+interpretations there can be no parametric model, as the following
+example shows.
 
-\begin{example}
+\begin{example}\label{ex:prim-par}
 In any parametric model we must give both a set interpretation and a
-relational interpretion for every type as described at the start of
-this section. That is, for every GADT $\mathsf{G}$ we must give an
-interpretation $G = (G_0,G_1)$ such that, for every relation $R :
+relational interpretation for every type as described at the start of
+this section. In particular, for every GADT $\mathsf{G}$ we must give
+an interpretation $G = (G_0,G_1)$ such that, for every relation $R :
 \mathit{Rel}\,(A, B)$, we have $G_1\,R : \mathit{Rel}\,(G_0\,A,
-G_0\,B)$. But, as we now show, this is not generally possible for in
-models that interpret GADTs as the interpretations of their primitive
+G_0\,B)$. But, as we now show, this is not generally possible when
+GADTs are interpreted as the interpretations of their primitive
 representations.
 
-Consider again the GADT $\mathsf{G}$ given by~\eqref{eq:G}.  Applying
-Proposition~\ref{prop:full-lans} first in $\mathit{Set}$ and then in
-$\mathit{Rel}$, we have that the set interpretation of $\mathsf{G}$ is
-$\mathit{Lan}_{\lambda *.1}\,\lambda *.1$, i.e., is exactly the
-identity functor on $\mathit{Set}$ {\color{blue} Tie back to previous
-  calculation}. By the exact same reasoning, this time in
-$\mathit{Rel}$ rather than in $\mathit{Set}$, the relational
+Consider again the GADT $\mathsf{G}$ given by~\eqref{eq:G}. The set
 interpretation of $\mathsf{G}$ is $\mathit{Lan}_{\lambda
-  *.\mathit{Eq}_1} \,\lambda *\!.\,\mathit{Eq}_1$, where $\lambda
-*\!.\,\mathit{Eq}_1$ is the constantly $\mathit{Eq}_1$-valued functor
-from the category with a single object $*$ to $\mathit{Rel}$.  Indeed,
-the interpretation is still a left Kan extension, but now it is the
-left Kan extension determined by the functor interpreting the type
-$\mathsf{\lambda *. 1}$ in $\mathit{Rel}$. To prove that the Identity
-Extension Lemma holds we need to show that, for every relation $R :
-\mathit{Rel}\,(A, B)$, we have that $(\mathit{\Lan}_{\lambda
-  *\!.\,\mathit{Eq}_1} \,\lambda *\!.\,\mathit{Eq}_1)\, R$ is a
-relation between the sets $(\mathit{Lan}_{\lambda *. 1}\,\lambda
-*\!. 1)\, A$ and $(\mathit{Lan}_{\lambda *. 1}\,\lambda *\!. 1)\,B$,
-i.e., between the sets $A$ and $B$.  Instead, we will give a
-counterexample showing that this is not the case.
+  *\!. 1}\,\lambda *\!. 1$, i.e., is, by the reasoning of
+Example~\ref{ex:g1}, the identity functor on $\mathit{Set}$. By the
+exact same reasoning, this time in $\mathit{Rel}$ rather than in
+$\mathit{Set}$, the relational interpretation of $\mathsf{G}$ is
+$\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \,\lambda
+*\!.\,\mathit{Eq}_1$, where $\lambda *\!.\,\mathit{Eq}_1$ is the
+constantly $\mathit{Eq}_1$-valued functor from the category with a
+single object $*$ to $\mathit{Rel}$.  Indeed, the interpretation is
+still a left Kan extension, but now it is the left Kan extension
+determined by the functor interpreting the type $\mathsf{\lambda
+  *\!. 1}$ in $\mathit{Rel}$. For the Identity Extension Lemma to hold
+we would need that, for every relation $R : \mathit{Rel}\,(A, B)$, we
+have that $(\mathit{\Lan}_{\lambda *\!.\,\mathit{Eq}_1} \,\lambda
+*\!.\,\mathit{Eq}_1)\, R$ is a relation between the sets
+$(\mathit{Lan}_{\lambda *. 1}\,\lambda *\!. 1)\, A$ and
+$(\mathit{Lan}_{\lambda *. 1}\,\lambda *\!. 1)\,B$, i.e., between the
+sets $A$ and $B$. However, we now give a counterexample showing that
+this need not be the case.
 
-Consider the relation $R = (1, 2, 1 \times 2)$. We expect
+Consider the relation $R = (1, 2, 1 \times 2)$, where $1 \times 2$ is
+the total relation on $1$ and $2$, and thus is onto. We expect
 $(\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
 *\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain $1$. Since left
 Kan extensions preserve projections~\cite{rie16}, we can compute the
 domain as
 \[\pi_1\,\big( (\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
 *\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathit{Lan}_{\lambda
-  *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, 1\] (Note that the left Kan
-  extension of $\lambda *\!. \,1$ along $\lambda \!.\,\mathit{Eq}_1$ 
- is a functor from $\mathit{Rel}$ to $\mathit{Set}$.)
-
-
-HERE!!!!!
-
-
-
-
-
-Following~\cite{blw03} we know that $(\mathsf{\Lan}_{\Eq_1} 1) R$ is
-the set of all morphisms of relations $f : \Eq_1 \to R$ modulo an
-equivalence relation; but there can be no morphism of relations $\Eq_1
-\to R$ because its second component would have to be a function $1 \to
-\emptyset$, and there can be no such function.  Thus,
-$(\mathsf{\Lan}_{\Eq_1} 1) R = \emptyset$, which is not the domain we
-would have expected.
+ *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, R\] (Note that the left Kan
+ extension of $\lambda *\!. \,1$ along $\lambda *\!.\,\mathit{Eq}_1$
+ is a functor from $\mathit{Rel}$ to $\mathit{Set}$.) By
+ Proposition~7.1 of~\cite{blw03} the left Kan extension on the
+ right-hand side can be computed as
+\[ \big( \bigcup_{m\, :\, \mathit{Eq}_1 \to R} 1 \big) \; /\; \approx\]
+where $\approx$ is the smallest equivalence relation such that $(\ast,
+m) \approx (\ast, m')$ for $m, m' : \mathit{Eq}_1 \to R$ if there
+exists $f : \mathit{Eq}_1 \to \mathit{Eq}_1$ such that $f (\ast, \ast)
+= (\ast, \ast)$ and the following diagram commutes:
+\[
+\begin{tikzcd}
+\mathit{Eq}_1 \ar[rr, "{f}"] \ar[dr, "m"']
+&&\mathit{Eq}_1 \ar[dl, "m'"] \\
+&R
+\end{tikzcd}
+\]
+The only morphism $f : \mathit{Eq}_1 \to \mathit{Eq}_1$ is $f = (!,
+!)$. Since this morphism does satisfy the condition $f (\ast, \ast) =
+(\ast, \ast)$, we have that $(\ast, m) \approx (\ast, m')$ if and only
+if $m = m'$. Thus
+\[ \big( \bigcup_{m\, :\,
+  \mathit{Eq}_1 \to R} 1 \big) \; /\; \approx \;\;\; = \;\; \{m :
+\mathit{Eq}_1 \to R\} \;=\; \{(!, k_0), (!, k_1)\}\] where $k_0, k_1 :
+1 \to 2$ are the constantly $0$-valued and $1$-valued functions in
+$\mathit{Set}$, respectively, and therefore $\pi_1\,\big(
+(\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
+*\!.\,\mathit{Eq}_1) \, R \big)$ is not $1$, as would be needed for
+the Identity Extension Lemma to hold.  Since the Identity Extension
+Lemma does not hold for models in which GADTs are interpreted by the
+interpretations of their primitive representations, such models cannot
+possibly be parametric.
 \end{example}
 
-The above example shows that the set interpretation and the relational
-interpretation for the primitive representation of a data type are
-inconsistent with each other, and thus it is not even possible to
-consider the question of whether the semantics is parametric.
+Taken together, Examples~\ref{ex:CE-par} and~\ref{ex:prim-par} show
+that the parametricity properties of GADTs differ greatly depending on
+whether they are represented as their Church encodings or represented
+as primitive data types. This contrasts sharply with the fact that
+both ADTs and nested types have the same parametricity properties
+regardless of whether they are represented by their Church encodings
+or their primitive representations. {\color{blue} Double-check that
+  this last part is true.}
 
-One could regard the above example as artificial, as it employs an
-empty relation on a non-empty domain.  Though, it is possible to apply
-the same argument, with a slightly more complex calculation, even to a
-total relation such as $(1, 2, 1 \times 2)$.
+\section{Conclusion}
 
+{\color{blue} Combine these two paragraphs.}
 
+We have shown that GADTs can be considered as data types in two
+contrasting ways: as completely determined by their syntax, in which
+case they are represented by their Church encodings, or as the
+functorial completion of their syntax, in which case they are
+represented as primitive data types.  But, regardless of which
+representation we choose, GADTs fail to be have the expected
+parametricity properties. Indeed, we can read the results of
+Section~\ref{sec:par} as showing that i) some standard parametricity
+results (e.g., inhabitation results) for calculi representing GADTs as
+their Church encodings cannot be extended to calculi that represent
+GADTs as primitive data types may not be possible, and ii) some
+naturality results (e.g., rearrange-transform properties) for calculi
+representing GADTs as primitive cannot be extended to calculi that
+represent GADTs as their Church encodings. So, with neither
+representation can we obtain {\em both} the naturality consequences of
+parametricity {\em and} the non-naturality consequences of
+parametricity. Intuitively speaking, this is because a GADT is not a
+data type in the usual sense of being a container, and completing it
+so that it becomes one destroys the relationally uniform behavior it
+must exhibit in a parametric model. Which representation of GADTs the
+user chooses can therefore have profound consequences for how they are
+able to program with, and reason about, them.
 
-\vspace*{0.2in}
+All is not lost, however. Despite there being no parametric models for
+calculi incorporating GADTs as primitive data types, we still get all
+possible rearrange-transform properties for these types. This means
+that analogues of most of Wadler's free theorems for ADTs hold for
+GADTs, since almost all of the specific consequences of parametricity
+given in~\cite{wad89} (see especially Figure~1) are actually of this
+form for list types. In fact, even though such naturality properties
+are generally regarded as consequences of {\em parametricity}, they
+are actually consequences of data types' {\em functorial semantics}.
+On the other hand, despite there being no models interpreting type
+constructors as functors for calculi incorporating GADTs as Church
+encodings, and thus there being no models validating all
+rearrange-transform properties for these types, parametric models for
+such calculi do exist, and these can be used, e.g., to determine which
+instances of a GADT are inhabited. {\color{blue} Is this all?}
 
-Although there can exist no parametric models interpreting GADTs as
-their primitive representations, we still get naturality properties
-for prim reps. On the other hand, although a GADT represented as a
-Church encoding does not necessarily have a map or a functorial
-semantics, so that we cannot possibly derive naturality results for
-them, parametric models interpreting GADTs as their Church encodings
-do exist.  This shows that, even though naturality is generally
-regarded as a consequence of parametricity, this is only true when we
-have a functorial semantics and types supporting a map.
+{\color{blue} Comparison with Stephanie and Dmitrios? Comparison with
+  Bob's Parametric Model? Other conclusions????} 
 
-%%% Primitive representation of GADT is non parametric, but functorial
-%On the contrary, as we have shown in Section~\ref{sec:gadts}, a
-%GADT represented as a primitive data type does not necessarily admit a
-%parametric semantics, but, as a fixpoint of a higher-order functor, it
-%does admit a functorial semantics and, consequently, a functorial map.
-%In particular, every type that has a functorial map also benefits from
-%naturality properties.  In other words, there is a suitable
-%rearrange-transform property as explained in Section~\ref{sec:gadts}.
+\bibliography{gadt-story-references}
 
-We can read the results of this section as showing that parametricity
-results for calculi representing GADTs as their Church encodings
-cannot be extended to calculi that represent GADTs as primitive data
-types. And functoriality results for calucli representing GADTs as
-primitive cannot be extended to calculi that represent GADTs as their
-Church encodings.  So the user is forced to make a choice between
-naturality consequences of parametricity and other consequences of
-parametricity. If GADTs really did generalize ADTs, and really were
-data types in a normal sense, then these would coincide and the user
-would not have to choose.
+\end{document}
 
-\vspace*{0.2in}
-
-NOTES:
-
-{\color{violet} TRUE????}
-FOR ADTs and Nesteds, it does not depend. We get the same par property
-whether they are seen as primitives or we use their CE.
-
-
-\begin{comment}
-{\color{violet} This is already in the paper, split in multiple places.}
-An analysis of the Eq A B type in Bob's systems shows that the set
-interpretation is empty whenever the A and B have different set
-interpretations.  Likewise, its relational interpretation is the empty
-relation whenever the A and B have different relational
-interpretations (even when the underlying set interpretations are the
-same).  The consequences of parametricity are thus immediate: there
-can be no term of type Eq A B if A and B are different types.
-Moreover, this behavior is fundamentally non-functorial, so that there
-is no hope of defining a map for Eq.  In particular, that means we
-cannot expect to retrieve non-trivial naturality properties for the Eq
-type, despite these are usually considered to be a special case of
-parametricity properties.  Indeed, the common understanding that
-parametricity generalizes naturality only makes sense for functorial
-types.  We can specialize these considerations to the type Eq 1 B,
-representing G, our example GADT defined by a unique constructor c ::
-G 1.
-\end{comment}
-
-\pagebreak
-
-
-\subsection{Comparison with Stephanie and Dmitrios}
-
-
-\subsection{Comparison with Bob's Parametric Model}
-
-GADTs don't really fit into his scheme because the two reps of GADTs
-aren't the same. Bob's stuff only works for functorial data types of
-any kind -- so not GADTs. So last section is misleading.
-
-
-
-
-
-Moreover, the consequences of parametricity that one has in Bob's
-system do not hold in our system, as we can construct terms of type
-$(Lan_1 1)$ B for instances of B other than 1.  Thus, either our
-system does not admit any parametric model, or, if it does, the
-consequences of parametricity are different.  That the consequences of
-parametricity depended on the model or the representation of GADTs is
-to be expected, however. (IT IS. CONSIDER INTERPRETING BASE TYPES AS
-ORDERED SETS. THIS GIVES DIFFERENT PARAMETRICITY PROPERTIES THAN
-INTERPRETING THEM AS DIAGONAL RELATIONS.)
-
-It is possible to give a parametric model that models GADTs
-represented as Church encodings~\cite{atk12}.  But given the
-non-uniformity captured by GADTs by purposeful design, that should be
-both completely unexpected and alarming! However, upon reflection it's
-not really all that surprising once we realize what the parametricity
-properties of GADTs represented as Church encodings look like. Bob
-requires map functions for fixpoint but then doesn't use them.
-
-Tellingly, Bob gives no parametricity properties for GADTs. If he had,
-it would have illustrated the phenomenon we are describing, raised the
-question: What good is a par property for a GADT or another type using
-the Eq type?
 
 That parametricity properties for GADTs in Bob's system are as we
 described before is interesting because, for ADTs and nested types,
@@ -1155,13 +1154,14 @@ case of parametricity. However, we don't actually get non-trivial
 naturality consequences of parametricity for GADTs in Bob's
 system. Why? Because this would require GADTs to be interpreted as
 functors, which, in Bob's system, requires the programmer to supply a
-map function on the intepretation of every GADT defined. Moreover,
-each such map function would have to behave functorially. Bob's system
-does indeed deliver non-trivial naturality results for every GADT for
-which the user can define a map function that behaves
-functorially. The problem is that there may not be many such GADTs (in
-fact it will not be possible for proper GADTs, i.e., GADTs that are
-not actually nested types).
+map function on the interpretation of every GADT defined.  (Bob
+requires map functions for fixpoint but then doesn't use them.)
+Moreover, each such map function would have to behave
+functorially. Bob's system does indeed deliver non-trivial naturality
+results for every GADT for which the user can define a map function
+that behaves functorially. The problem is that there may not be many
+such GADTs (in fact it will not be possible for proper GADTs, i.e.,
+GADTs that are not actually nested types).
 
 Perhaps expecting naturality as a special case of parametricity is
 wrongheaded, though, since, with its arbitrary forall-types and arrow
@@ -1173,14 +1173,9 @@ proving their properties) for any GADTs they want to work with. That
 the user must supply the map function for a GADT of interest makes
 sense: Church encodings cannot say anything about functorial nature of
 data types since they describe only the data (and not the action on
-morphisms since they are not required to support map functions).  Our
-approach is different. By contrast with Bob's system, we restrict to
-GADTs generated by a specific grammar, and this grammar is designed
-specifically to guarantee functoriality of all data types definable in
-it. We also treat GADTs as primitive data types --- i.e., as fixpoints
-of (higher-order) functors --- rather than via their Church encodings
-since this more closely aligns with how ADTs are treated in
-implemented programming languages.
+morphisms since they are not required to support map functions).
+But Bob doesn't use the map function, and his Church encodings don't
+produce data types that support map functions.
 
 Wrt Bob's system we can ask: what good is parametricity for GADTs in a
 system that derives only trivial naturality consequences of
@@ -1188,23 +1183,17 @@ parametricity for them? It may be possible to get non-naturality
 consequences of parametricity (such as short cut fusion or
 VYTINIOTIS'?) for GADTs in Bob's system (IS IT?), but since many of
 the most useful consequences of parametricity for ADTs and nested
-types are actually natuality results (IS THIS TRUE? MAYBE NOT FOR
+types are actually naturality results (IS THIS TRUE? MAYBE NOT FOR
 GADTs), we'd be missing out on a very large class of expected and
 useful free theorems. Indeed, many of Wadler's free theorems are
 precisely naturality results for functions over data types (mainly
 lists, there). If GADTs really do generalize ADTs (and nested types)
 then we would expect to be able to derive analogues for GADTs of the
 parametricity results --- including naturality results --- that we can
-derive for ADTs. Yet, by design we cannot. So are GADTs actually
-misnamed? In what sense are they data types, and in what sense do they
-generalize ADTs? Perhaps what are now known as nested types should
-really be called GADTs since *they* are actually the (level-2)
-higher-kinded generalizations of ADTs.
+derive for ADTs. Yet, by design we cannot. 
 
-{\color{violet} We say "naturality consequences of parametricity"
-when in fact we have naturality without having any parametricity at all.
-Change the wording to indicate that naturality follows from
-functoriality of the interp.}
+Tellingly, Bob gives no parametricity properties for GADTs.
+
 In our system we can show that we can recover the expected naturality
 consequences of parametricity for (at least a large class of) GADTs
 (that can be characterized by a grammar for which every type is
@@ -1218,106 +1207,7 @@ properties. And our free theorems really are free for GADTs that fit
 our syntax. But now the bump is elsewhere under the rug: First,
 semantically we don't really have the same GADT anymore (functoriality
 adds extra data to the data type), and second, our counterexample
-shows that we don't get non-naturality consequences of parmetricity
+shows that we don't get non-naturality consequences of parametricity
 even for the data types defined by our grammar.  So this isn't really
 what we wanted either.
 
-
-
-\pagebreak
-
-\begin{verbatim}
-  
-Daniel:
-
-I have tried reconstructing my example using our simpler GADT with a single
-constructor c :: G 1. I don't think it is possible to modify my example for a
-GADT with only a single constructor. In particular, I don't see a way to
-exploit the map function unless we have constructors for G X and G Y where X
-!= Y.
-If we assume a map function exists, then given f :: 1 -> A we can produce
-(map f c) :: G A. But I don't know what to do from there.
-
-I was able to simplify the types in the example slightly though. The example
-I gave before can be adapted to use either
-
-data G3 b where
-    G3unit :: G3 ()
-    G3id    :: b -> G3 (Either b ())
-
-or
-
-data G5 b where
-    G5unit   :: G5 ()
-    G5void   :: Void -> G5 Bool
-
-as the problematic GADT.
-
-Enrico:
-
-Just to make sure I understand it correctly: when we define the function
-
-unGbool :: G c Bool -> c
-unGbool (Gbool x) = x
-
-we are doing so in Haskell, right?
-In our system, it would not be possible to define unGbool (because we could
-not define it only on the constructor Gbool of G). For this reason, this
-example provides a contradiction in Haskell (+functoriality), but not in our
-system. Is that correct?
-
-Daniel:
-
-The example is Haskell and relies on Haskell's rules for
-pattern matching.
-
-
-
-
-
-
-
-
-Enrico:
-
-By the way, as a general remark not directly related to the introduction you
-wrote, I think that the set semantics of our type G is
-
-[[G \alpha]]^set [\alpha := A] = A
-
-Indeed, (Lan_1 1) A = A for every set A. Intuitively this makes sense,
-because for every a : A there is a fuction
-
-k_a : 1 —> A
-
-and thus an element
-
-map k_a \ast : G A
-
-In particular, [[G 0]]^set = \emptyset.
-
-Still, it is NOT true that its relational interpretation is [[G \alpha]]^rel
-[\alpha := R] = R (and indeed the relational interpretation is not fibered
-over the set interpretation)!
-\end{verbatim}
-
-\section{Conclusion}
-
-The upshot is that we can consider GADTs as data types (i.e., we can
-compute the semantics of GADTs) in two ways: just as determined by
-their syntax, as when they are represented by their Church encodings,
-or as the functorial completion of their syntax, as obtained by
-supplying a suitable map construct, when they are represented as
-primitive data types. But, either way, GADTs fail to be well-behaved
-wrt parametricity. In the first case, GADTs don't have fmaps so their
-parametricity properties can't include naturality properties. In the
-second case, we still can't get non-naturality consequences of
-parametricity. That is, we can't get BOTH the naturality consequences
-of parametricity AND the non-naturality consequences of parametricity
-at the same time.
-
-
-
-\bibliography{gadt-story-references}
-
-\end{document}
