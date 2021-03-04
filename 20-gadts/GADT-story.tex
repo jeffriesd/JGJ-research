@@ -363,21 +363,15 @@ $\mathsf{f \,:\,a \to b}$ to each of its elements. Indeed, every ADT
 $\mathsf{T}$ can be made an instance of Haskell's $\mathsf{Functor}$
 class by defining a type-and-data-uniform, structure-preserving,
 data-changing function $\mathsf{map_T}$ for it.\footnote{We write
-  $\mathsf{map_f}$, or simply $\mathsf{map}$ when $\mathsf{f}$ is
+  $\mathsf{map_T}$, or simply $\mathsf{map}$ when $\mathsf{T}$ is
   clear from context, for the function $\mathsf{fmap :: (a \to b) \to
-    (f\,a \to f\,b)}$ witnessing that a type constructor $\mathsf{f}$
+    (T\,a \to T\,b)}$ witnessing that a type constructor $\mathsf{T}$
   is an instance of Haskell's $\mathsf{Functor}$ class. This
   emphasizes that $\mathsf{fmap}$ functions in Haskell are intended to
-  {\color{blue} satisfy syntactic reflections of the functoriality
-    properties --- i.e., preservation of identity functions and
-    composition of functions --- even though}
-%    there is no mechanism in  Haskell for enforcing this}.}
-%
-%  be functorial --- i.e., to preserve identity functions and function
-%  composition --- even though satisfaction of these properties
-this is not
-  enforced by the compiler and is instead left to the good intentions
-  of the programmer.}
+  satisfy syntactic reflections of the functoriality properties ---
+  i.e., preservation of identity functions and composition of
+  functions --- even though this is not enforced by the compiler and
+  is instead left to the good intentions of the programmer.}
 Moreover, given a type-independent way of rearranging an ADT
 structure's shape $\mathsf{T\,a}$ into the shape for another ADT
 structure $\mathsf{T'\,a}$, we get the same structure of type
@@ -545,9 +539,9 @@ data-changing function associated with $\mathsf{List}$.
 In models that validate short cut fusion for ADTs and nested types,
 the Church encoding and the primitive representation of an ADT or
 nested type are isomorphic as sets. But whereas it is impossible even
-to {\em state} the rearrange-transform property for {\color{blue} raw
-  --- i.e., $\mathsf{map}$less ---} Church encodings of such data
-types, such a property is simply the reflection back into syntax of
+to {\em state} the rearrange-transform property for Church encodings
+of such data types unless $\mathsf{map}$ functions have been defined
+for them, such a property is simply the reflection back into syntax of
 the instance of naturality for the type-independent function that
 rearranges structures of type $\mathsf{T\,a}$ into ones of type
 $\mathsf{T'\,a}$ and the content-transforming functions
@@ -1040,12 +1034,12 @@ $(\mathit{Lan}_{\lambda *. 1}\,\lambda *\!. 1)\,B$, i.e., between the
 sets $A$ and $B$. However, we now give a counterexample showing that
 this need not be the case.
 
-Consider the relation $R = (1, 2, 1 \times 2)$, where $1 \times 2$ is
-the total relation on $1$ and $2$, and thus is onto. We expect
-$(\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
-*\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain $1$. Since left
-Kan extensions preserve projections~\cite{rie16}, we can compute the
-domain as
+Consider the relation $R = (1, 2, 1 \times 2)$, where $1 \times 2$
+relates the single element of $1$ to both elements of the two-element
+set $2$. We expect $(\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1}
+\lambda *\!.\,\mathit{Eq}_1)\, R$ to be a relation with domain
+$1$. Since left Kan extensions preserve projections~\cite{rie16}, we
+can compute the domain as
 \[\pi_1\,\big( (\mathit{Lan}_{\lambda *\!.\,\mathit{Eq}_1} \lambda
 *\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathit{Lan}_{\lambda
  *\!.\,\mathit{Eq}_1} \lambda *\!. \,1)\, R\] (Note that the left Kan
@@ -1087,8 +1081,8 @@ counterexample to the Identity Extension Lemma for primitive GADTs
 using the relation $R = (1,\emptyset, \emptyset)$. However, this
 relation is somewhat artificial, in the sense that its domain is
 larger than is strictly necessary to define an empty relation. We
-therefore give the above example using the {\color{blue} total}
-relation $(1,2,1 \times 2)$ instead.
+therefore give the above example using the relation $(1,2,1 \times 2)$
+instead.
 
 Taken together, Examples~\ref{ex:CE-par} and~\ref{ex:prim-par} show
 that Church encodings and primitive representations of GADTs behave
