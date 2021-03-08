@@ -135,8 +135,8 @@
 \newcommand{\Bnil}{\mathit{Bnil}}
 
 
-\title[Parametricity in the Presence of GADTs]{Parametricity in the
-  Presence of GADTs}
+\title[Functional Pearl: Parametricity in the Presence of
+  GADTs]{Functional Pearl: Parametricity in the Presence of GADTs}
 
 \author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
 \affiliation{ \institution{Appalachian State University}}
@@ -1076,6 +1076,8 @@ interpretations of their primitive representations, such models cannot
 possibly be parametric.
 \end{example}
 
+\vspace*{-0.05in}
+
 We note that is actually possible to construct a simpler
 counterexample to the Identity Extension Lemma for primitive GADTs
 using the relation $R = (1,\emptyset, \emptyset)$. However, this
@@ -1094,49 +1096,75 @@ representations.
 
 \section{Conclusion}
 
-{\color{blue} Combine these two paragraphs.}
-
 We have shown that GADTs can be considered as data types in two
 contrasting ways: as completely determined by their syntax, in which
 case they are represented by their Church encodings, or as the
 functorial completion of their syntax, in which case they are
-represented as primitive data types.  But, regardless of which
-representation we choose, GADTs fail to be have the expected
+represented as primitive data types.  Significantly, regardless of
+which representation we choose, GADTs fail to have {\em all} expected
 parametricity properties. Indeed, we can read the results of
-Section~\ref{sec:par} as showing that i) some standard parametricity
-results (e.g., inhabitation results) for calculi representing GADTs as
-their Church encodings cannot be extended to calculi that represent
-GADTs as primitive data types may not be possible, and ii) some
-naturality results (e.g., rearrange-transform properties) for calculi
-representing GADTs as primitive cannot be extended to calculi that
-represent GADTs as their Church encodings. So, with neither
-representation can we obtain {\em both} naturality properties {\em
-  and} non-naturality consequences of parametricity. Intuitively
-speaking, this is because a GADT is not a data type in the usual sense
-of being a container, and completing it so that it becomes one
-destroys the relationally uniform behavior it must exhibit in a
-parametric model. Which representation of GADTs the user chooses can
-therefore have profound consequences for how they are able to program
-with, and reason about, them.
+Section~\ref{sec:par} as showing that i)
+%some standard parametricity results (e.g.,
+inhabitation results for calculi representing GADTs as Church
+encodings cannot be extended to calculi representing them as primitive
+data types, and ii)
+%some
+naturality results
+%(e.g., rearrange-transform properties)
+for calculi representing GADTs as primitive data types cannot be
+extended to calculi representing them as Church encodings. So, with
+neither representation can we obtain {\em both} naturality
+consequences {\em and} non-naturality consequences of
+parametricity. Intuitively, this is because a GADT is not a data type
+in the usual ``container'' sense, and completing it so that it becomes
+one destroys its relationally uniform --- i.e., parametric ---
+behavior.
+%required in a parametric model for parametricity.
+Which representation of GADTs a user chooses can therefore have
+profound consequences for programming with, and reasoning about, them.
 
-All is not lost, however. Despite there being no parametric models for
-calculi incorporating GADTs as primitive data types, we still get all
-possible rearrange-transform properties for these types. This means
-that analogues of most of Wadler's free theorems for ADTs hold for
-GADTs, since almost all of the specific consequences of parametricity
-given in~\cite{wad89} (see especially Figure~1) are actually of this
-form for list types. In fact, even though such naturality properties
-are generally regarded as consequences of {\em parametricity}, they
-are actually consequences of data types' {\em functorial semantics}.
-On the other hand, despite there being no models interpreting type
-constructors as functors for calculi incorporating GADTs as Church
-encodings, and thus there being no models validating all
-rearrange-transform properties for these types, parametric models for
-such calculi do exist, and these can be used, e.g., to determine which
-instances of a GADT are inhabited.
+Although there are no parametric models for calculi representing GADTs
+as primitive data types, GADT analogues of most of Wadler's free
+theorems for ADTs still hold.
+%all possible rearrange-transform properties
+%in such calculi since
+%This means that analogues of most of Wadler's free theorems for ADTs
+%hold for GADTs,
+Indeed, most of the parametricity results in Figure~1 of~\cite{wad89}
+are actually naturality properties.
+%of this form for list types. In fact, even though such
+Naturality properties are often regarded as consequences of {\em
+  parametricity}, but are, in fact, derivable directly from data
+types' {\em functorial semantics}. Even for data types whose Church
+encodings and primitive representations coincide, the analysis in this
+paper clearly distinguishes those free theorems that are consequences
+of naturality from those that are consequences of parametricity {\em
+  per se}.
 
-{\color{blue} Comparison with Stephanie and Dmitrios? Comparison with
-  Bob's Parametric Model? Other conclusions????} 
+\begin{comment}
+On the other hand, despite there
+being no models interpreting type constructors as functors for calculi
+incorporating GADTs as Church encodings,
+%and thus there being no models validating all
+%rearrange-transform properties for these types,
+parametric models for such calculi do exist, and these can be used,
+e.g., to determine which instances of a GADT are inhabited.
+\end{comment}
+
+Atkey's parametric model for $F_\omega$ represents data types as
+Church encodings. It requires the user to supply a $\mathsf{map}$
+function for the type constructor whose fixpoint characterizes the
+data type. But, importantly, functoriality of an underlying type
+constructor does not imply functoriality of its fixpoint, so the data
+type itself still need not necessarily support a
+$\mathsf{map}$. Similarly,~\cite{vw10} presents a parametric model for
+an extension of $F_\omega$ that supports type equality, and can encode
+GADTs. Functoriality is not guaranteed here, either; in fact, the
+parametric properties of GADTs described in the preliminary
+work~\cite{vw06} are all inhabitation results, rather than naturality
+results. Finally,~\cite{ms09} encodes GADTs as Scott encodings rather
+than Church encodings but, again, cites only inhabitation results for
+them.
 
 \bibliography{gadt-story-references}
 
