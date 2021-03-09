@@ -389,10 +389,10 @@ to one of type $\mathsf{T'\,b}$, or we first use $\mathsf{map_T}$ to
 convert the original structure of type $\mathsf{T\,a}$ to one of type
 $\mathsf{T\,b}$ and then rearrange that resulting structure into one
 of type $\mathsf{T'\,b}$. For example, if $\mathsf{f : a \to b}$,
-$\mathsf{xs \,:\,List\,a}$, and $\mathsf{g : List\,a\to Tree\,a}$
+$\mathsf{t \,:\,Tree\,a}$, and $\mathsf{g : Tree\,a\to List\,a}$
 arranges lists into trees in a type-independent way, then we have the
 following rearrange-transform property:
-\[\mathsf{map_{Tree}\,f\,(g \, xs) \,=\, g\,(map_{List}\,f\,xs)}\]
+\[\mathsf{map_{List}\,f\,(g \, t) \,=\, g\,(map_{Tree}\,f\,t)}\]
 
 \subsection{Church Encodings of ADTs}
 
@@ -802,10 +802,10 @@ Syntactically, the GADT $\mathsf{G}$ defined in~\eqref{eq:G} comprises
 a single data element, namely $\mathsf{c :: G \, 1}$. This is captured
 by $\mathsf{G}$'s Church encoding $\mathsf{G\,a} = \mathsf{\forall\,f.
   \, (\forall\,c.\, Equal\,1\,c \to f\,c) \to f\,a}$ from
-~\cite{atk12}, which is equivalent in the model given there to
+~\cite{atk12}, which is equivalent in the parametric model given there
+to
 \[\mathsf{G\, a = Equal\,1\,a}\]
-since the definition of $\mathsf{G}$ is not recursive. As its Church
-encoding makes clear, 
+As this makes clear,
 %Syntactically, the GADT $\mathsf{G}$ defined in~\eqref{eq:G} comprises
 %a single data element, namely $\mathsf{c :: G \, 1}$. This is captured
 %by $\mathsf{G}$'s Church encoding
