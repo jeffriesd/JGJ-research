@@ -73,7 +73,7 @@
    \def\@urlcolor{blue}%
    \def\@linkcolor{blue}%
 \def\UrlFont{\rmfamily}
-\def\orcidID#1{\smash{\href{http://orcid.org/#1}{\protect\raisebox{-1.25pt}{\protect\includegraphics{orcid_color.eps}}}}}
+% \def\orcidID#1{\smash{\href{http://orcid.org/#1}{\protect\raisebox{-1.25pt}{\protect\includegraphics{orcid_color.eps}}}}}
 \makeatother
 
 \usepackage{verbatim}
@@ -1170,8 +1170,9 @@ every $k$, $K^\set_0$ is initial in $[\set^k,\set]$, and $K^\rel_0$ is
 initial in $[\rel^k,\rel]$, we have that, for each $k$, $K_0 =
 (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus, if $T =
 (T^1,T^2,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$ we can
-define the relation transformer $\mu T$ to be $\colim{n \in \nat}{T^n
-  K_0}$ $= (\mu T^1,\mu T^2, \colim{n \in \nat}{(T^nK_0)^*})$.  If $T
+define the relation transformer $\mu T$ to be 
+$\colim{n \in \nat}{T^n K_0}$ $= (\mu T^1,\mu T^2, \colim{n \in \nat}{(T^nK_0)^*})$.  
+If $T
 : [RT_k,RT_k]$ then $\mu T$ is a fixpoint for $T$, i.e., $\mu T \cong
 T(\mu T)$.  The isomorphism is given by $(\mathit{in}_1,
 \mathit{in}_2) : T(\mu T) \to \mu T$ and $(in_1^{-1}, in_2^{-1}) : \mu
@@ -1298,7 +1299,7 @@ that, for every $\Gamma; \ol{\alpha} \vdash F$, $\relsem{\Gamma;
 on morphisms between relation environments, and then argue that they
 are well-defined and have the required properties. To do this, we
 extend $T_H$ to a {\em functor} from $\relenv$ to
-$[[\rel^k,\rel],[\rel^k,\rel]]$. Its action on an object $\rho \in
+$[RT_k,RT_k]$. Its action on an object $\rho \in
 \relenv$ is given by the higher-order functor $T_{H,\rho}$ whose
 actions on objects and morphisms are given in
 Figure~\ref{fig:rel-sem}. Its action on a morphism $f : \rho \to
