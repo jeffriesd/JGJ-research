@@ -1,1 +1,1 @@
-# FTNT
+# JGJ-research
