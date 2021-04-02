@@ -259,6 +259,7 @@ Thus, the induction rule for $\mathsf{PTree}$ is
 
 %This kind of induction principles, which we will call \emph{structural induction},
 Structural induction principles cannot be extended to truly nested types, such as $\mathsf{Bush}$.
+{\color{red} THIS IS NOT TRUE!!!}
 %To induce over a truly nested type, we need to use a \emph{deep induction} principle~\cite{jp20}.
 Instead, for such data types it is necessary to use a \emph{deep induction} principle~\cite{jp20}.
 Such a principle, unlike structural induction, inducts over all of the structured data present,
@@ -441,6 +442,7 @@ truly nested types do not support a structural induction rule,
 which is the reason why it was necessary to introduce a deep induction rule supporting them.
 Consequently, GADTs do not support a structural induction rule either,
 as they generalize nested types.
+{\color{red} THIS IS NOT TRUE!!!}
 Still, there is hope for GADTs to support a deep induction rule,
 like nested types do.
 
@@ -838,7 +840,578 @@ and $\mathsf{p_b}$ and $\mathsf{p_c}$ are defined as follows:
 
 
 
-\subsection{Induction for GADTs with nesting}\label{sec:GADT-nested}
+\subsection{General case}
+
+%We restrict our scope to GADTs not featuring nesting,
+%in the sense that their constructors contain no nested calls of the recursive variable,
+%as truly nested types do.
+%This way we can avoid the issue described in Section~\ref{sec:GADT-nested}.
+%The reason for this restriction will be discussed in Section~\ref{sec:GADT-nested}.
+
+Finally, we generalize the approach taken in the previous examples
+and provide a general framework to derive induction rules for GADTs.
+%Since, as seen in Section~\ref{sec:GADT-nested},
+%GADTs featuring nesting do not admit an induction rule,
+%we restrict our scope to GADTs not featuring nesting.
+For that, we need to give a grammar for the types we will be considering.
+A generic GADT
+\begin{equation*}
+\begin{array}{l}
+\mathsf{data\, G\,(\ol{a : Set}) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;C_i\, :\, F_i\,G\,\ol{b} \to G (\ol{K_i\,\ol{b}})}
+\end{array}
+\end{equation*}
+is defined by a finite number of constructors $\mathsf{C_i}$.
+In the definition above, $\mathsf{F_i}$ is a type constructor with signature $\mathsf{(Set^{\alpha} \to Set) \to Set^{\beta} \to Set}$
+and each $\mathsf{K_i}$ is a type constructor with signature $\mathsf{Set^{\beta} \to Set}$
+(i.e. a type constructor of arity $\mathsf{\beta}$).
+The overline notation denotes a finite list:
+$\mathsf{\ol{a}}$ is a list of types of length $\mathsf{\alpha}$,
+so that it can be applied to the type constructor $\mathsf{G}$ of arity $\mathsf{\alpha}$.
+%and the vertical bars notation denotes the length of a list:
+%$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
+Each of the $\mathsf{\alpha}$-many $\mathsf{K_i}$ is a type constructor of arity $\mathsf{\beta}$
+so that it can be applied to the list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$.
+%depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
+Moreover, notice that the arity of $\mathsf{G}$ matches the number of type constructors $\mathsf{\ol{K_i}}$.
+We allow each $\mathsf{F_i}$ to be inductively built in the following ways (and with the following restrictions):
+\begin{itemize}
+\item $\mathsf{F_i = F_i' \times F_i''}$ where $\mathsf{F_i'}$ and $\mathsf{F_i''}$ have the same signature as $\mathsf{F_i}$ and are built recursively from the same induction rules.
+\item $\mathsf{F_i = F_i' + F_i''}$ where $\mathsf{F_i'}$ and $\mathsf{F_i''}$ have the same signature as $\mathsf{F_i}$ and are built recursively from the same induction rules.
+\item $\mathsf{F_i = F_i' \to F_i''}$
+where $\mathsf{F_i'}$ does not contain the recursive variable,
+i.e., $\mathsf{F_i' : Set^\beta \to Set}$,
+and $\mathsf{F_i''}$ has the same signature as $\mathsf{F_i}$ and is built recursively from the same induction rules.
+\item $\mathsf{F_i\,G\,\ol{b} = G(\ol{F_a\,\ol{b}})}$
+where none of the $\mathsf{F_a}$ contains the recursive variable,
+i.e., $\mathsf{F_a : Set^\beta \to Set}$
+for each $\mathsf{a}$.
+Such restriction is necessary to prevent nesting,
+as that would break the induction rule as discussed in Section~\ref{sec:GADT-nested}.
+\item $\mathsf{F_i\,G\,\ol{b} = H\,\ol{b}}$
+where $\mathsf{H}$ is a type constructor not containing the recursive variable,
+i.e., $\mathsf{H : Set^\beta \to Set}$.
+Notice that this covers the case in which $\mathsf{F_i}$ is a closed type,
+so, in particular, the unit and empty types, $\mathsf{1}$ and $\mathsf{0}$.
+%The only requirement on $\mathsf{H}$ is that it needs to have a predicate-lifting function
+%(and any type made of constant types, sums, products, arrow types and other GADTs satisfies this condition).
+\item $\mathsf{F_i\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+where $\mathsf{H}$ is a $\mathsf{\gamma}$-ary type constructor not containing the recursive variable,
+i.e., $\mathsf{H : Set^\gamma \to Set}$,
+and $\mathsf{F_c}$ has the same signature as $\mathsf{F_i}$  and is built recursively from the same induction rules, for every $\mathsf{c = 1 \dots \gamma}$.
+Moreover, we require that $\mathsf{H}$ is not a GADT itself (but we allow it to be an ADT or even a nested type).
+\end{itemize}
+We can summarize the above inductive definition with the following grammar
+(but beware that the above restrictions and requirements still apply):
+\[
+\mathsf{F_i\,G\,\ol{b} :=
+F_i'\,G\,\ol{b} \times F_i''\,G\,\ol{b}
+\ \vert\ F_i'\,G\,\ol{b} + F_i''\,G\,\ol{b}
+\ \vert\ F_i'\,\ol{b} \to F_i''\,G\,\ol{b}
+\ \vert\ G(\ol{F_a\,\ol{b}})
+\ \vert\ H\,\ol{b}
+\ \vert\ H (\ol{F_c\,G\,\ol{b}})
+}
+\]
+%The only requirement on the $\mathsf{K_i}$ is that they need to have a predicate-lifting function.
+
+Consider such a generic GADT
+\begin{equation}\label{eq:gadt}
+\begin{array}{l}
+\mathsf{data\, G\,(a : Set) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;C\, :\, F\,G\,\ol{b} \to G (\ol{K\,\ol{b}})}
+\end{array}
+\end{equation}
+which, for ease of notation,
+we assume to be a unary type constructor (i.e. it depends on a single type parameter $\mathsf{a}$)
+and to have only one constructor $\mathsf{C}$.
+Extending the argument to GADTs of arbitrary arity and with multiple constructors presents no difficulty.
+In the definition above, $\mathsf{F}$ has type $\mathsf{(Set \to Set) \to Set^{\beta} \to Set}$
+and each $\mathsf{K}$ has type $\mathsf{Set^{\beta} \to Set}$.
+%The overline notation denotes a finite list:
+%%and the vertical bars notation denotes the length of a list:
+%%$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
+%each of the $\mathsf{\alpha}$-many $\mathsf{K}$ depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
+%and notice that the length of the list of types $\mathsf{\ol{a}}$ matches that of the list of type constructors $\mathsf{\ol{K}}$.
+The constructor $\mathsf{C}$ can be rewritten as
+\[
+\mathsf{C : \exists (\ol{b : Set}) \to Equal\,a\,(K\,\ol{b}) \to F\,G\,\ol{b} \to G\,a}
+\]
+which is the form we shall use from now on.
+%Notice that, in the above constructor, we have a type
+%$\mathsf{Equal\,a\,(K\,\ol{b})}$ for each $\mathsf{a}$ and its corresponding type constructor $\mathsf{K}$.
+
+In order to state the induction rule for $\mathsf{G}$,
+we first need to define $\mathsf{G}$'s associated predicate-lifting function 
+\[
+\mathsf{G^{\wedge} : \forall (a : Set) \to (a \to Set) \to G\,a \to Set}
+\]
+as
+\[
+\mathsf{G^{\wedge}\,a\,Q_a\,(C\,\ol{b}\,e\,x)
+= \exists (\ol{Q_b : b \to Set})
+\to Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e
+\times F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}
+\]
+where $\mathsf{Q_a : a \to Set}$
+and $\mathsf{C\,\ol{b}\,e\,x : G\,a}$,
+i.e., $\mathsf{e : Equal\,a\,(K\,\ol{b})}$ and $\mathsf{x : F\,G\,\ol{b}}$.
+%Notice that we need a type $\mathsf{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}$
+%for each type $\mathsf{a}$ and its corresponding type constructor $\mathsf{K}$.
+We also assume to have liftings for $\mathsf{F}$,
+\begin{multline*}
+\mathsf{F^{\wedge} : \forall (G : Set^{\alpha} \to Set) (\ol{b : Set})
+\to (\forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
+\mathsf{\to (\ol{b \to Set})
+\to F\,G\,\ol{b} \to Set}
+\end{multline*}
+and for  $\mathsf{K}$,
+\[
+\mathsf{K^{\wedge} : \forall (\ol{b : Set}) \to (\ol{b \to Set}) \to K\,\ol{b} \to Set}
+\]
+as we could not possibly define an induction rule otherwise.
+A way to concretely define the predicate-lifting function for a type is to proceed by induction on the structure of the type,
+and we have seen in the previous sections examples of how to do so for products and type application.
+We do not give here the general definition of lifting,
+as that would require to first present a full type calculus,
+and that is beyond the scope of the paper.
+
+Finally, associate the type
+\begin{multline*}
+\mathsf{CC = \forall (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
+\mathsf{\to \forall (a : Set) (\ol{b : Set}) (Q_a : a \to Set) (\ol{Q_b : b \to Set}) (e : Equal\,a\,(K\,\ol{b})) (x : F\,G\,\ol{b})} \\
+\mathsf{\to Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e
+	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
+	\to P\,a\,Q_a\,(C\,\ol{b}\,e\,x)}
+\end{multline*}
+to the constructor $\mathsf{C}$.
+
+%We can now define the induction rule for $\mathsf{G}$
+The induction rule for $\mathsf{G}$ is
+\begin{multline*}
+\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set) \to CC\,P} \\
+%\mathsf{\to \Big(
+%\forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
+%\mathsf{\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
+%	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
+%	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
+%\Big)} \\
+\mathsf{\to \forall (a : Set)(Q_a : a \to Set)(y : G\,a) \to G^{\wedge}\,a\,Q_a\,y \to P\,a\,Q_a\,y}
+\end{multline*}
+As always, we now define a term $\mathsf{DIG}$ for the induction rule.
+Define
+\[
+\mathsf{DIG\,P\,cc\,a\,Q_a\,(C\,\ol{b}\,e\,x)\,(\ol{Q_b}, L_E, L_F)
+= cc\,a\,\ol{b}\,Q_a\,\ol{Q_b}\,e\,x\,L_E\,(p\,x\,L_F)}
+\]
+where
+\begin{itemize}
+\item $\mathsf{cc : CC\,P}$;
+\item $\mathsf{C\,\ol{b}\,e\,x : G\,a}$,
+i.e., $\mathsf{e : Equal\,a\,(K\,\ol{b})}$,
+and $\mathsf{x : F\,G\,\ol{b}}$;
+\item $\mathsf{(\ol{Q_b}, L_E, L_F) : G^{\wedge}\,a\,Q_a (C\,\ol{b}\,e\,x)}$,
+i.e.,
+$\mathsf{Q_b : b \to Set}$ for each $\mathsf{b}$,
+$\mathsf{L_E : Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e}$,
+and $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}$.
+\end{itemize}
+Finally, the morphism of predicates
+\[
+\mathsf{p : PredMap\,(F\,G\,\ol{b})\,(F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\]
+is defined by structural induction on $\mathsf{F}$ as follows:
+\begin{itemize}
+\item Case $\mathsf{F = F_1 \times F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same signature as $\mathsf{F}$.
+We have that
+\[
+\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}
+= Pair^{\wedge}(F_1\,G\,\ol{b})(F_2\,G\,\ol{b})(F_1^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\]
+By inductive hypothesis, there exist morphisms of predicates
+\begin{gather*}
+\mathsf{p_1 : PredMap\,(F_1\,G\,\ol{b})\,((F_1)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_1)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})} \\
+\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b})\,((F_2)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_2)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\end{gather*}
+Thus, we define $\mathsf{p (x_1, x_2) (L_1, L_2) = (p_1\,x_1\,L_1, p_2\,x_2\,L_2)}$ 
+for 
+$\mathsf{x_1 : F_1\,G\,\ol{b}}$,
+$\mathsf{x_2 : F_2\,G\,\ol{b}}$,
+$\mathsf{L_1 : F_1^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_1}$
+and $\mathsf{L_2 : F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_2}$.
+%%%
+\item Case $\mathsf{F = F_1 + F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same signature as $\mathsf{F}$.
+Analogous to case $\mathsf{F = F_1 \times F_2}$.
+%%%
+\item Case $\mathsf{F = F_1 \to F_2}$
+%where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
+where $\mathsf{F_1}$ does not contain the recursive variable,
+i.e., $\mathsf{F_1 : Set^\beta \to Set}$,
+and $\mathsf{F_2}$ has the same signature as $\mathsf{F}$.
+We have that
+\[
+\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,\ol{b}) \to F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,z)}
+\]
+%\begin{gather*}
+%\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,(x\,y)} \\
+%%F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x} \\
+%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,y)}
+%%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}
+%\end{gather*}
+where $\mathsf{x : F\,G\,\ol{b} = F_1\,\ol{b} \to F_2\,G\,\ol{b}}$.
+By inductive hypothesis, there exist a morphism of predicates
+\[
+\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b}) (F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\]
+Thus, we define $\mathsf{p\,x\,L_F : F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
+for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
+as $\mathsf{p\,x\,L_F\,z\,L_1 = p_2 (x\,z) (L_F\,z\,L_1)}$
+for $\mathsf{z : F_1\,\ol{b}}$
+and $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z}$.
+%{\color{blue} Revise this case!}
+%Thus, we define $\mathsf{p\,x\,L_F\,L_1 = p_2\,(L_F\,L_1)}$
+%for $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x}$.
+Notice that $\mathsf{F_1}$ not containing the recursive variable
+is a necessary restriction, as the proof relies on
+$\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
+and $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
+having the same domain.
+%%%
+\item Case $\mathsf{F\,G\,\ol{b} = G(F'\,\ol{b})}$
+where $\mathsf{F'}$ does not contain the recursive variable,
+i.e., $\mathsf{F' : Set^\beta \to Set}$.
+Thus, $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = P (F'\,\ol{b}) (F'^{\wedge}\,\ol{b}\,\ol{Q_b})}$.
+So, $\mathsf{p}$ is defined as
+\[
+\mathsf{p = DIG\,P\,cc\,(F'\,\ol{b})\,(F'^{\wedge}\,\ol{b}\,\ol{Q_b})}
+\]
+%for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$.
+%Note that the fact that the type constructor $\mathsf{F'}$ does not contain the recursive variable
+%means that $\mathsf{G}$ does not feature nesting.
+%As explained and exemplified in Section~\ref{sec:GADT-nested},
+%that assumption is required to make induction work.
+%%%
+\item Case $\mathsf{F\,G\,\ol{b} = H\,\ol{b}}$
+where $\mathsf{H}$ is a $\mathsf{\beta}$-ary type constructor not containing the recursive variable,
+i.e., $\mathsf{H : Set^\beta \to Set}$.
+In such case, $\mathsf{p : PredMap (H\,\ol{b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b})}$
+is just the identity morphism of predicates.
+%%%
+\item Case $\mathsf{F\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+where $\mathsf{H}$ is a $\mathsf{\gamma}$-ary type constructor not containing the recursive variable,
+i.e., $\mathsf{H : Set^\gamma \to Set}$,
+and $\mathsf{F_c}$ has the same signature as $\mathsf{F}$, for every $\mathsf{c = 1 \dots \gamma}$.
+Moreover, we assume that $\mathsf{H}$ has an associated predicate-lifting function,
+\[
+\mathsf{H^{\wedge} : \forall (\ol{c : Set}) \to (\ol{c \to Set}) \to H\,\ol{c} \to Set}
+\]
+and that this predicate-lifting function has a map function $\mathsf{HLMap}$ of type
+\[
+\mathsf{\forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set}) \to PredMap\,\ol{c}\,\ol{Q_c}\,\ol{Q_c'}
+\to PredMap\,(H\,\ol{c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c'})}
+\]
+That means that $\mathsf{H}$ cannot be a GADT,
+as GADTs do not have functorial semantics~\cite{HaskellPaper}
+and we would incur again in the same issue encountered in Section~\ref{sec:GADT-nested},
+but it can be an ADT or even a nested type~\cite{jp19,jgj21}.
+Thus,
+\[
+\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = H^{\wedge} (\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})}
+\]
+By induction hypothesis, there is a morphism of predicates
+\[
+\mathsf{p_c : PredMap\,(F_c\,G\,\ol{b}) (F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\]
+for every $\mathsf{c = 1 \dots \gamma}$.
+So, $\mathsf{p}$ is defined as
+\[
+\mathsf{p
+= HLMap\,(\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})\,\ol{p_c}}
+\]
+\end{itemize}
+Notice that, by proceeding by structural induction as above,
+we have implicitly defined a grammar for GADTs admitting an induction rule.
+In particular, we allow $\mathsf{F}$ to feature sums, products, arrow types and (limited) type application.
+
+
+
+
+%\subsection{General case (Daniel's revision)}
+%
+%%We restrict our scope to GADTs not featuring nesting,
+%%in the sense that their constructors contain no nested calls of the recursive variable,
+%%as truly nested types do.
+%%This way we can avoid the issue described in Section~\ref{sec:GADT-nested}.
+%%The reason for this restriction will be discussed in Section~\ref{sec:GADT-nested}.
+%
+%Finally, we generalize the approach taken in the previous examples
+%and provide a general framework to derive induction rules for GADTs.
+%%Since, as seen in Section~\ref{sec:GADT-nested},
+%%GADTs featuring nesting do not admit an induction rule,
+%%we restrict our scope to GADTs not featuring nesting.
+%For that, we need to give a grammar for the types we will be considering.
+%A generic GADT
+%\begin{equation}\label{eq:gadt}
+%\begin{array}{l}
+%\mathsf{data\, G\,(\ol{a : Set}) : Set\,where}\\
+%\mathsf{\;\;\;\;\;\;\;\;C_i\, :\, F_i\,G\,\ol{b} \to G (\ol{K_i\,\ol{b}})}
+%\end{array}
+%\end{equation}
+%is defined by a finite number of constructors $\mathsf{C_i}$.
+%In the definition above, $\mathsf{F_i}$ has type $\mathsf{(Set^{\alpha} \to Set) \to Set^{\beta} \to Set}$
+%and each $\mathsf{K_i}$ has type $\mathsf{Set^{\beta} \to Set}$.
+%The overline notation denotes a finite list:
+%%and the vertical bars notation denotes the length of a list:
+%$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
+%each of the $\mathsf{\alpha}$-many $\mathsf{K_i}$ depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
+%and notice that the length of the list of types $\mathsf{\ol{a}}$ matches that of the list of type constructors $\mathsf{\ol{K_i}}$.
+%We allow each $\mathsf{F_i}$ to be inductively built in the following ways (and with the following restrictions):
+%\begin{itemize}
+%\item $\mathsf{F_i = F_i' \times F_i''}$ where $\mathsf{F_i'}$ and $\mathsf{F_i''}$ have the same type as $\mathsf{F_i}$.
+%\item $\mathsf{F_i = F_i' + F_i''}$ where $\mathsf{F_i'}$ and $\mathsf{F_i''}$ have the same type as $\mathsf{F_i}$.
+%\item $\mathsf{F_i = F_i' \to F_i''}$
+%where $\mathsf{F_i'}$ does not contain the recursive variable,
+%i.e., $\mathsf{F_i' : Set^\beta \to Set}$,
+%and $\mathsf{F_i''}$ has the same type as $\mathsf{F_i}$.
+%\item $\mathsf{F_i\,G\,\ol{b} = G(\ol{F_a\,\ol{b}})}$
+%where none of the $\mathsf{F_a}$ contains the recursive variable,
+%i.e., $\mathsf{F_a : Set^\beta \to Set}$
+%for each $\mathsf{a}$.
+%Such restriction is necessary to prevent nesting,
+%as that would break the induction rule as discussed in Section~\ref{sec:GADT-nested}.
+%\item $\mathsf{F_i\,G\,\ol{b} = H\,\ol{b}}$
+%where $\mathsf{H}$ is a type constructor not containing the recursive variable,
+%i.e., $\mathsf{H : Set^\beta \to Set}$.
+%Notice that this covers the case in which $\mathsf{F_i}$ is a closed type,
+%so, in particular, the unit and empty types, $\mathsf{1}$ and $\mathsf{0}$.
+%The only requirement on $\mathsf{H}$ is that it needs to have a predicate-lifting function
+%(and any type made of constant types, sums, products, arrow types and other GADTs satisfies this condition).
+%\item $\mathsf{F_i\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+%where $\mathsf{H}$ is a type constructor not containing the recursive variable,
+%i.e., $\mathsf{H : Set^\gamma \to Set}$,
+%and $\mathsf{F_c}$ has the same type as $\mathsf{F_i}$, for every $\mathsf{c = 1 \dots \gamma}$.
+%Moreover, we assume that $\mathsf{H}$ is not a GADT itself (but we allow it to be an ADT or even a nested type).
+%\end{itemize}
+%The only requirement on the $\mathsf{K_i}$ is that they need to have a predicate-lifting function.
+%
+%Consider such a generic GADT
+%\begin{equation}\label{eq:gadt}
+%\begin{array}{l}
+%\mathsf{data\, G\,(\ol{a : Set}) : Set\,where}\\
+%\mathsf{\;\;\;\;\;\;\;\;C\, :\, F\,G\,\ol{b} \to G (\ol{K\,\ol{b}})}
+%\end{array}
+%\end{equation}
+%which, for ease of notation,
+%we assume to have only one constructor $\mathsf{C}$.
+%Extending the argument to GADTs with multiple constructors presents no difficulty.
+%In the definition above, $\mathsf{F}$ has type $\mathsf{(Set^{\alpha} \to Set) \to Set^{\beta} \to Set}$
+%and each $\mathsf{K}$ has type $\mathsf{Set^{\beta} \to Set}$.
+%The overline notation denotes a finite list:
+%%and the vertical bars notation denotes the length of a list:
+%$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
+%each of the $\mathsf{\alpha}$-many $\mathsf{K}$ depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
+%and notice that the length of the list of types $\mathsf{\ol{a}}$ matches that of the list of type constructors $\mathsf{\ol{K}}$.
+%With that in mind, the constructor $\mathsf{C}$ can be rewritten as
+%\[
+%\mathsf{C : \exists (\ol{b : Set}) \to \ol{Equal\,a\,(K\,\ol{b})} \to F\,G\,\ol{b} \to G\,\ol{a}}
+%\]
+%which is the form we shall use from now on.
+%Notice that, in the above constructor, we have a type
+%$\mathsf{Equal\,a\,(K\,\ol{b})}$ for each $\mathsf{a}$ and its corresponding type constructor $\mathsf{K}$.
+%
+%In order to state the induction rule for $\mathsf{G}$,
+%we first need to define $\mathsf{G}$'s associated predicate-lifting function 
+%\[
+%\mathsf{G^{\wedge} : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set}
+%\]
+%as
+%\[
+%\mathsf{G^{\wedge}\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
+%= \exists (\ol{Q_b : b \to Set})
+%\to F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}
+%\]
+%where $\mathsf{Q_a : a \to Set}$
+%and $\mathsf{C\,\ol{b}\,\ol{e_a}\,x : G\,\ol{a}}$,
+%i.e., $\mathsf{e_a : Equal\,a\,(K\,\ol{b})}$ and $\mathsf{x : F\,G\,\ol{b}}$.
+%We also assume to have liftings for $\mathsf{F}$,
+%\begin{multline*}
+%\mathsf{F^{\wedge} : \forall (G : Set^{\alpha} \to Set) (\ol{b : Set})
+%\to (\forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set)} \\
+%\mathsf{\to (\ol{b \to Set})
+%\to F\,G\,\ol{b} \to Set}
+%\end{multline*}
+%and for each  $\mathsf{K}$,
+%\[
+%\mathsf{K^{\wedge} : \forall (\ol{b : Set}) \to (\ol{b \to Set}) \to K\,\ol{b} \to Set}
+%\]
+%as we could not possibly define an induction rule otherwise.
+%A way to concretely define the predicate-lifting function for a type is to proceed by induction on the structure of the type,
+%and we have seen in the previous sections examples of how to do so for products and type application.
+%We do not give here the general definition of lifting,
+%as that would require to first present a full type calculus,
+%and that is beyond the scope of the paper.
+%
+%Finally, associate the type
+%\begin{multline*}
+%\mathsf{CC = \forall (P : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set)} \\
+%\mathsf{\to \forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
+%\mathsf{\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
+%	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)}
+%\end{multline*}
+%to the constructor $\mathsf{C}$.
+%
+%%We can now define the induction rule for $\mathsf{G}$
+%The induction rule for $\mathsf{G}$ is
+%\begin{multline*}
+%\mathsf{\forall (P : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set) \to CC\,P} \\
+%%\mathsf{\to \Big(
+%%\forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
+%%\mathsf{\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
+%%	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
+%%	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
+%%\Big)} \\
+%\mathsf{\to \forall (\ol{a : Set})(\ol{Q_a : a \to Set})(y : G\,\ol{a}) \to G^{\wedge}\,\ol{a}\,\ol{Q_a}\,y \to P\,\ol{a}\,\ol{Q_a}\,y}
+%\end{multline*}
+%As always, we now define a term $\mathsf{DIG}$ for the induction rule.
+%Define
+%\[
+%\mathsf{DIG\,P\,cc\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)\,(\ol{Q_b}, L_F)
+%= cc\,\ol{a}\,\ol{b}\,\ol{Q_a}\,\ol{Q_b}\,\ol{e_a}\,x\,(p\,x\,L_F)}
+%\]
+%where
+%\begin{itemize}
+%\item $\mathsf{cc : CC\,P}$;
+%\item $\mathsf{C\,\ol{b}\,\ol{e_a}\,x : G\,\ol{a}}$,
+%i.e., $\mathsf{e_a : Equal\,a\,(K\,\ol{b})}$ for each $\mathsf{a}$,
+%and $\mathsf{x : F\,G\,\ol{b}}$;
+%\item $\mathsf{(\ol{Q_b}, L_F) : G^{\wedge}\,\ol{a}\,\ol{Q_a} (C\,\ol{b}\,\ol{e_a}\,x)}$,
+%i.e.,
+%$\mathsf{Q_b : b \to Set}$ for each $\mathsf{b}$,
+%and $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}$.
+%\end{itemize}
+%Finally, the morphism of predicates
+%\[
+%\mathsf{p : PredMap\,(F\,G\,\ol{b})\,(F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+%\]
+%is defined by structural induction on $\mathsf{F}$ as follows:
+%\begin{itemize}
+%\item Case $\mathsf{F = F_1 \times F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
+%We have that
+%\[
+%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}
+%= Pair^{\wedge}(F_1\,G\,\ol{b})(F_2\,G\,\ol{b})(F_1^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+%\]
+%By inductive hypothesis, there exist morphisms of predicates
+%\begin{gather*}
+%\mathsf{p_1 : PredMap\,(F_1\,G\,\ol{b})\,((F_1)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_1)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})} \\
+%\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b})\,((F_2)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_2)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+%\end{gather*}
+%Thus, we define $\mathsf{p (x_1, x_2) (L_1, L_2) = (p_1\,x_1\,L_1, p_2\,x_2\,L_2)}$ 
+%for 
+%$\mathsf{x_1 : F_1\,G\,\ol{b}}$,
+%$\mathsf{x_2 : F_2\,G\,\ol{b}}$,
+%$\mathsf{L_1 : F_1^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_1}$
+%and $\mathsf{L_2 : F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_2}$.
+%%%%
+%\item Case $\mathsf{F = F_1 + F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
+%Analogous to case $\mathsf{F = F_1 \times F_2}$.
+%%%%
+%\item Case $\mathsf{F = F_1 \to F_2}$
+%%where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
+%where $\mathsf{F_1}$ does not contain the recursive variable,
+%i.e., $\mathsf{F_1 : Set^\beta \to Set}$,
+%and $\mathsf{F_2}$ has the same type as $\mathsf{F}$.
+%We have that
+%\[
+%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,\ol{b}) \to F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,z)}
+%\]
+%%\begin{gather*}
+%%\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,(x\,y)} \\
+%%%F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x} \\
+%%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,y)}
+%%%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}
+%%\end{gather*}
+%where $\mathsf{x : F\,G\,\ol{b} = F_1\,\ol{b} \to F_2\,G\,\ol{b}}$.
+%By inductive hypothesis, there exist a morphism of predicates
+%\[
+%\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b}) (F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+%\]
+%Thus, we define $\mathsf{p\,x\,L_F : F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
+%for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
+%as $\mathsf{p\,x\,L_F\,z\,L_1 = p_2 (x\,z) (L_F\,z\,L_1)}$
+%for $\mathsf{z : F_1\,\ol{b}}$
+%and $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z}$.
+%%{\color{blue} Revise this case!}
+%%Thus, we define $\mathsf{p\,x\,L_F\,L_1 = p_2\,(L_F\,L_1)}$
+%%for $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x}$.
+%Notice that $\mathsf{F_1}$ does not containing the recursive variable
+%is a necessary restriction, as the proof relies on
+%$\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
+%and $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
+%having the same domain.
+%%%%
+%\item Case $\mathsf{F\,G\,\ol{b} = G(\ol{F_a\,\ol{b}})}$
+%where none of the $\mathsf{F_a}$ contains the recursive variable,
+%i.e., $\mathsf{F_a : Set^\beta \to Set}$
+%for each $\mathsf{a}$.
+%Thus, $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = P (\ol{F_a\,\ol{b}}) (\ol{F_a^{\wedge}\,\ol{b}\,\ol{Q_b}})}$.
+%So, $\mathsf{p}$ is defined as
+%\[
+%\mathsf{p = DIG\,P\,cc\,(\ol{F_a\,\ol{b}})\,(\ol{F_a^{\wedge}\,\ol{b}\,\ol{Q_b}})}
+%\]
+%%for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$.
+%Note that the fact that the type constructors $\mathsf{F_a}$ do not contain the recursive variable
+%means that $\mathsf{G}$ does not feature nesting.
+%As explained and exemplified in Section~\ref{sec:GADT-nested},
+%that assumption is required to make induction work.
+%%%%
+%\item Case $\mathsf{F\,G\,\ol{b} = H\,\ol{b}}$
+%where $\mathsf{H}$ is a type constructor not containing the recursive variable,
+%i.e., $\mathsf{H : Set^\beta \to Set}$.
+%In such case, $\mathsf{p : PredMap (H\,\ol{b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b})}$
+%is just the identity morphism of predicates.
+%%%%
+%\item Case $\mathsf{F\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+%where $\mathsf{H}$ is a type constructor not containing the recursive variable,
+%i.e., $\mathsf{H : Set^\gamma \to Set}$,
+%and $\mathsf{F_c}$ has the same type as $\mathsf{F}$, for every $\mathsf{c = 1 \dots \gamma}$.
+%Moreover, we assume that $\mathsf{H}$ has an associated predicate-lifting function,
+%\[
+%\mathsf{H^{\wedge} : \forall (\ol{c : Set}) \to (\ol{c \to Set}) \to H\,\ol{c} \to Set}
+%\]
+%and that this predicate-lifting function has a map function $\mathsf{HLMap}$ of type
+%\[
+%\mathsf{\forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set}) \to PredMap\,\ol{c}\,\ol{Q_c}\,\ol{Q_c'}
+%\to PredMap\,(H\,\ol{c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c'})}
+%\]
+%That means that $\mathsf{H}$ cannot be a GADT,
+%as GADTs do not have functorial semantics~\cite{HaskellPaper}
+%and we would incur again in the same issue encountered in Section~\ref{sec:GADT-nested},
+%but it can be an ADT or even a nested type~\cite{jp19,jgj21}.
+%Thus,
+%\[
+%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = H^{\wedge} (\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})}
+%\]
+%By induction hypothesis, there is a morphism of predicates
+%\[
+%\mathsf{p_c : PredMap\,(F_c\,G\,\ol{b}) (F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+%\]
+%for every $\mathsf{c = 1 \dots \gamma}$.
+%So, $\mathsf{p}$ is defined as
+%\[
+%\mathsf{p
+%= HLMap\,(\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})\,\ol{p_c}}
+%\]
+%\end{itemize}
+%Notice that, by proceeding by structural induction as above,
+%we have implicitly defined a grammar for GADTs admitting an induction rule.
+%In particular, we allow $\mathsf{F}$ to feature sums, products, arrow types and (limited) type application.
+
+
+
+
+
+\section{Induction for GADTs with nesting}\label{sec:GADT-nested}
 
 In the previous sections,
 we derive induction rules for examples of GADTs that do not feature nesting,
@@ -992,233 +1565,6 @@ which is parametric but it is not functorial.
 Had we considered the functorial-completion semantics, instead,
 we would have forfeited parametricity~\cite{HaskellPaper}.
 In both cases, thus, we cannot derive an induction rule for generic GADTs when they feature nesting.
-
-
-
-\subsection{General case}
-
-%We restrict our scope to GADTs not featuring nesting,
-%in the sense that their constructors contain no nested calls of the recursive variable,
-%as truly nested types do.
-%This way we can avoid the issue described in Section~\ref{sec:GADT-nested}.
-%The reason for this restriction will be discussed in Section~\ref{sec:GADT-nested}.
-
-Finally, we generalize the approach taken in the previous examples
-and provide a general framework to derive induction rules for GADTs.
-Since, as seen in Section~\ref{sec:GADT-nested},
-GADTs featuring nesting do not admit an induction rule,
-we restrict our scope to GADTs not featuring nesting.
-Consider such a generic GADT
-\begin{equation}\label{eq:gadt}
-\begin{array}{l}
-\mathsf{data\, G\,(\ol{a : Set}) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;C\, :\, F\,G\,\ol{b} \to G (\ol{K\,\ol{b}})}
-\end{array}
-\end{equation}
-which, for ease of notation,
-we assume to have only one constructor $\mathsf{C}$.
-Extending the argument to GADTs with multiple constructors presents no difficulty.
-In the definition above, $\mathsf{F}$ has type $\mathsf{(Set^{\alpha} \to Set) \to Set^{\beta} \to Set}$
-and each $\mathsf{K}$ has type $\mathsf{Set^{\beta} \to Set}$.
-The overline notation denotes a finite list:
-%and the vertical bars notation denotes the length of a list:
-$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
-each of the $\mathsf{\alpha}$-many $\mathsf{K}$ depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
-and notice that the length of the list of types $\mathsf{\ol{a}}$ matches that of the list of type constructors $\mathsf{\ol{K}}$.
-With that in mind, the constructor $\mathsf{C}$ can be rewritten as
-\[
-\mathsf{C : \exists (\ol{b : Set}) \to \ol{Equal\,a\,(K\,\ol{b})} \to F\,G\,\ol{b} \to G\,\ol{a}}
-\]
-which is the form we shall use from now on.
-Notice that, in the above constructor, we have a type
-$\mathsf{Equal\,a\,(K\,\ol{b})}$ for each $\mathsf{a}$ and its corresponding type constructor $\mathsf{K}$.
-
-In order to state the induction rule for $\mathsf{G}$,
-we first need to define $\mathsf{G}$'s associated predicate-lifting function 
-\[
-\mathsf{G^{\wedge} : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set}
-\]
-as
-\[
-\mathsf{G^{\wedge}\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
-= \exists (\ol{Q_b : b \to Set})
-\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
-\times F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}
-\]
-where $\mathsf{Q_a : a \to Set}$
-and $\mathsf{C\,\ol{b}\,\ol{e_a}\,x : G\,\ol{a}}$,
-i.e., $\mathsf{e_a : Equal\,a\,(K\,\ol{b})}$ and $\mathsf{x : F\,G\,\ol{b}}$.
-Notice that we need a type $\mathsf{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}$
-for each type $\mathsf{a}$ and its corresponding type constructor $\mathsf{K}$.
-We also assume to have liftings for $\mathsf{F}$,
-\begin{multline*}
-\mathsf{F^{\wedge} : \forall (G : Set^{\alpha} \to Set) (\ol{b : Set})
-\to (\forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set)} \\
-\mathsf{\to (\ol{b \to Set})
-\to F\,G\,\ol{b} \to Set}
-\end{multline*}
-and for each  $\mathsf{K}$,
-\[
-\mathsf{K^{\wedge} : \forall (\ol{b : Set}) \to (\ol{b \to Set}) \to K\,\ol{b} \to Set}
-\]
-as we could not possibly define an induction rule otherwise.
-A way to concretely define the predicate-lifting function for a type is to proceed by induction on the structure of the type,
-and we have seen in the previous sections examples of how to do so for products and type application.
-We do not give here the general definition of lifting,
-as that would require to first present a full type calculus,
-and that is beyond the scope of the paper.
-
-Finally, associate the type
-\begin{multline*}
-\mathsf{CC = \forall (P : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set)} \\
-\mathsf{\to \forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
-\mathsf{\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
-	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
-	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)}
-\end{multline*}
-to the constructor $\mathsf{C}$.
-
-%We can now define the induction rule for $\mathsf{G}$
-The induction rule for $\mathsf{G}$ is
-\begin{multline*}
-\mathsf{\forall (P : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set) \to CC\,P} \\
-%\mathsf{\to \Big(
-%\forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
-%\mathsf{\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
-%	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
-%	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
-%\Big)} \\
-\mathsf{\to \forall (\ol{a : Set})(\ol{Q_a : a \to Set})(y : G\,\ol{a}) \to G^{\wedge}\,\ol{a}\,\ol{Q_a}\,y \to P\,\ol{a}\,\ol{Q_a}\,y}
-\end{multline*}
-As always, we now define a term $\mathsf{DIG}$ for the induction rule.
-Define
-\[
-\mathsf{DIG\,P\,cc\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)\,(\ol{Q_b}, \ol{E_a}, L_F)
-= cc\,\ol{a}\,\ol{b}\,\ol{Q_a}\,\ol{Q_b}\,\ol{e_a}\,x\,\ol{E_a}\,(p\,x\,L_F)}
-\]
-where
-\begin{itemize}
-\item $\mathsf{cc : CC\,P}$;
-\item $\mathsf{C\,\ol{b}\,\ol{e_a}\,x : G\,\ol{a}}$,
-i.e., $\mathsf{e_a : Equal\,a\,(K\,\ol{b})}$ for each $\mathsf{a}$,
-and $\mathsf{x : F\,G\,\ol{b}}$;
-\item $\mathsf{(\ol{Q_b}, \ol{E_a}, L_F) : G^{\wedge}\,\ol{a}\,\ol{Q_a} (C\,\ol{b}\,\ol{e_a}\,x)}$,
-i.e.,
-$\mathsf{Q_b : b \to Set}$ for each $\mathsf{b}$,
-$\mathsf{E_a : Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}$ for each $\mathsf{a}$,
-and $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}$.
-\end{itemize}
-Finally, the morphism of predicates
-\[
-\mathsf{p : PredMap\,(F\,G\,\ol{b})\,(F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
-\]
-is defined by structural induction on $\mathsf{F}$ as follows:
-\begin{itemize}
-\item Case $\mathsf{F = F_1 \times F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
-We have that
-\[
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}
-= Pair^{\wedge}(F_1\,G\,\ol{b})(F_2\,G\,\ol{b})(F_1^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
-\]
-By inductive hypothesis, there exist morphisms of predicates
-\begin{gather*}
-\mathsf{p_1 : PredMap\,(F_1\,G\,\ol{b})\,((F_1)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_1)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})} \\
-\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b})\,((F_2)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_2)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
-\end{gather*}
-Thus, we define $\mathsf{p (x_1, x_2) (L_1, L_2) = (p_1\,x_1\,L_1, p_2\,x_2\,L_2)}$ 
-for 
-$\mathsf{x_1 : F_1\,G\,\ol{b}}$,
-$\mathsf{x_2 : F_2\,G\,\ol{b}}$,
-$\mathsf{L_1 : F_1^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_1}$
-and $\mathsf{L_2 : F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_2}$.
-%%%
-\item Case $\mathsf{F = F_1 + F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
-Analogous to case $\mathsf{F = F_1 \times F_2}$.
-%%%
-\item Case $\mathsf{F = F_1 \to F_2}$
-where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same type as $\mathsf{F}$.
-%where $\mathsf{F_1}$ does not contain the recursive variable,
-%i.e., $\mathsf{F_a : Set^\beta \to Set}$,
-%and $\mathsf{F_2}$ has the same type as $\mathsf{F}$.
-We have that
-\begin{gather*}
-\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,(x\,y)} \\
-%F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x} \\
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,G\,\ol{b}) \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,y)}
-%\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}
-\end{gather*}
-where $\mathsf{x : F\,G\,\ol{b} = F_1\,G\,\ol{b} \to F_2\,G\,\ol{b}}$.
-By inductive hypothesis, there exist a morphism of predicates
-\[
-\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b}) (F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
-\]
-Thus, we define $\mathsf{p\,x\,L_F\,z = p_2 (x\,z) (L_F\,z)}$.
-%{\color{blue} Revise this case!}
-%Thus, we define $\mathsf{p\,x\,L_F\,L_1 = p_2\,(L_F\,L_1)}$
-%for $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,x}$.
-%Notice that $\mathsf{F_1}$ does not contain the recursive variable.
-%That is a necessary restriction, as the proof relies on
-%$\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
-%and $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
-%having the same domain.
-%%%
-\item Case $\mathsf{F\,G\,\ol{b} = G(\ol{F_a\,\ol{b}})}$
-where none of the $\mathsf{F_a}$ contains the recursive variable,
-i.e., $\mathsf{F_a : Set^\beta \to Set}$
-for each $\mathsf{a}$.
-Thus, $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = P (\ol{F_a\,\ol{b}}) (\ol{F_a^{\wedge}\,\ol{b}\,\ol{Q_b}})}$.
-So, $\mathsf{p}$ is defined as
-\[
-\mathsf{p = DIG\,P\,cc\,(\ol{F_a\,\ol{b}})\,(\ol{F_a^{\wedge}\,\ol{b}\,\ol{Q_b}})}
-\]
-%for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$.
-Note that the fact that the type constructors $\mathsf{F_a}$ do not contain the recursive variable
-means that $\mathsf{G}$ does not feature nesting.
-As explained and exemplified in Section~\ref{sec:GADT-nested},
-that assumption is required to make induction work.
-%%%
-\item Case $\mathsf{F\,G\,\ol{b} = H\,\ol{b}}$
-where $\mathsf{H}$ is a type constructor not containing the recursive variable,
-i.e., $\mathsf{H : Set^\beta \to Set}$.
-In such case, $\mathsf{p : PredMap (H\,\ol{b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b})}$
-is just the identity morphism of predicates.
-%%%
-\item Case $\mathsf{F\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
-where $\mathsf{H}$ is a type constructor not containing the recursive variable,
-i.e., $\mathsf{H : Set^\gamma \to Set}$,
-and $\mathsf{F_c}$ has the same type as $\mathsf{F}$, for every $\mathsf{c = 1 \dots \gamma}$.
-Moreover, we assume that $\mathsf{H}$ has an associated predicate-lifting function,
-\[
-\mathsf{H^{\wedge} : \forall (\ol{c : Set}) \to (\ol{c \to Set}) \to H\,\ol{c} \to Set}
-\]
-and that this predicate-lifting function has a map function $\mathsf{HLMap}$ of type
-\[
-\mathsf{\forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set}) \to PredMap\,\ol{c}\,\ol{Q_c}\,\ol{Q_c'}
-\to PredMap\,(H\,\ol{c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c'})}
-\]
-That means that $\mathsf{H}$ cannot be a GADT,
-as GADTs do not have functorial semantics~\cite{HaskellPaper}
-and we would incur again in the same issue encountered in Section~\ref{sec:GADT-nested},
-but it can be an ADT or even a nested type~\cite{jp19,jgj21}.
-Thus,
-\[
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = H^{\wedge} (\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})}
-\]
-By induction hypothesis, there is a morphism of predicates
-\[
-\mathsf{p_c : PredMap\,(F_c\,G\,\ol{b}) (F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
-\]
-for every $\mathsf{c = 1 \dots \gamma}$.
-So, $\mathsf{p}$ is defined as
-\[
-\mathsf{p
-= HLMap\,(\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})\,\ol{p_c}}
-\]
-
-\end{itemize}
-Notice that, by proceeding by structural induction as above,
-we have implicitly defined a grammar for GADTs admitting an induction rule.
-In particular, we allow $\mathsf{F}$ to feature sums, products, arrow types and (limited) type application.
 
 
 
