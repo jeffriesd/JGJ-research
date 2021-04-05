@@ -305,6 +305,11 @@ where $\mathsf{Pair^{\wedge} : \forall (a : Set) \to (a \to Set) \to a \times a 
 so that $\mathsf{Pair^{\wedge}\,a\,Q\,(x,y) = Q\,x \times Q\,y}$,
 and $\mathsf{PTree^{\wedge} : \forall (a : Set) \to (a \to Set) \to PTree\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{PTree\,a}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{a}$ contained in its argument perfect tree.
 
+{\color{blue} Moreover, for types admitting both deep induction and structural induction, the former generalizes the latter.
+Indeed, structural induction rules can be derived from deep induction rules by choosing the constantly true predicate as the custom predicate traversing each data element contained in the data type.
+This way, deep induction only inspects the structure of the data type and not its content, just like structural induction does.
+A concrete example of this technique will be demonstrated in Section~\ref{sec:ind-equal}.}
+
 
 
 \section{Introducing GADTs}
@@ -466,7 +471,7 @@ and then provide a general principle that works for GADTs not featuring nesting 
 
 
 
-\subsection{(Deep) induction for $\mathsf{Equal}$}
+\subsection{(Deep) induction for $\mathsf{Equal}$}\label{sec:ind-equal}
 
 %\begin{itemize}
 %\item Define $\mathsf{Equal}^{\wedge}$
@@ -522,7 +527,7 @@ The induction rule for $\mathsf{Equal}$ is the type
 \begin{multline*}
 \mathsf{\forall (P : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set)} \\
 %\mathsf{\to \big( \forall (c : Set) (Q : c \to Set) (Q' : c \to Set) \to Equal^{\wedge}\,c\,c\,Q\,Q'\,Refl \to P\,c\,c\,Q\,Q'\,Refl \big)} \\
-\mathsf{\to CRefl\,P \to \forall (a : Set) (b : Set) (Q_a : a \to Set) (Q_b : b \to Set) (e: Equal\,a\,b)} \\
+\mathsf{\to CRefl\,P \to \forall (a\,b : Set) (Q_a : a \to Set) (Q_b : b \to Set) (e: Equal\,a\,b)} \\
 	\mathsf{\to Equal^{\wedge}\,a\,b\,Q_a\,Q_b\,e \to P\,a\,b\,Q_a\,Q_b\,e}
 \end{multline*}
 We define a term $\mathsf{DIEqual}$ of such type as
@@ -537,6 +542,32 @@ and $\mathsf{L_E : Equal^{\wedge}\,a\,a\,Q_a\,Q_a'\,Refl}$.
 Having provided a well-defined term for it,
 we have shown that the induction rule for $\mathsf{Equal}$ holds.
 
+The type $\mathsf{Equal}$ also has a standard structural induction rule $\mathsf{SIEqual}$,
+\begin{multline*}
+\mathsf{\forall (Q : \forall (a\,b : Set) \to Equal\,a\,b \to Set)} \\
+\mathsf{\to \big( \forall (c : Set) \to P\,c\,c\,Refl \big)
+	\to \forall (a\,b : Set) (e: Equal\,a\,b) \to P\,a\,b\,e}
+\end{multline*}
+As is the case for ADTs and nested types,
+the structural induction rule for $\mathsf{Equal}$ is a consequence of the deep induction rule.
+Indeed, we can define $\mathsf{SIEqual}$ as
+\[
+\mathsf{SIEqual\,Q\,srefl\,a\,b\,e = DIEqual\,P\,srefl\,a\,b\,K_1\,K_1\,e\,L_E}
+\]
+where $\mathsf{srefl: \forall (c : Set) \to P\,c\,c\,Refl}$
+and $\mathsf{e : Equal\,a\,b}$, and
+\begin{itemize}
+\item $\mathsf{P : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set}$ is defined as
+$\mathsf{P\,a\,b\,Q_a\,Q_b\,e = Q\,a\,b\,e}$;
+\item the left-most $\mathsf{K_1}$ is the constantly $\mathsf{1}$-valued predicate on $\mathsf{a}$;
+\item the right-most $\mathsf{K_1}$ is the constantly $\mathsf{1}$-valued predicate on $\mathsf{b}$;
+\item $\mathsf{L_E : Equal^{\wedge}\,a\,b\,K_1\,K_1\,e}$ is defined by pattern matching,
+i.e., in case $\mathsf{a = b}$ and $\mathsf{e}$ is $\mathsf{Refl}$,
+it is defined as $\mathsf{L_E\,x = Refl : Equal\,a\,a}$.
+\end{itemize}
+
+That the structural induction rule is a consequence of the deep induction one is also true for all the examples below,
+even though we will not remark it every time.
 
 
 \subsection{(Deep) induction for $\mathsf{Seq}$}
@@ -561,9 +592,9 @@ and
 \end{multline*}
 where $\mathsf{e : Equal\,a\,(b \times c)}$,
 $\mathsf{s_b : Seq\,b}$ and $\mathsf{s_c : Seq\,c}$.
-We also need the lifting of predicates over the polymorphic type of pairs, $\mathsf{Pair = \forall (b : Set)(c : Set) \to b \times c}$, which is 
+We also need the lifting of predicates over the polymorphic type of pairs, $\mathsf{Pair = \forall (b\,c : Set) \to b \times c}$, which is 
 \[
-\mathsf{Pair^{\wedge} : \forall (b : Set)(c : Set) \to (b \to Set) \to (c \to Set) \to Pair\,b\,c \to Set}
+\mathsf{Pair^{\wedge} : \forall (b\,c : Set) \to (b \to Set) \to (c \to Set) \to Pair\,b\,c \to Set}
 \]
 and it is defined as
 \[
@@ -580,7 +611,7 @@ associated to the $\mathsf{Const}$ constructor,
 and let $\mathsf{CSPair}$ be the type
 \begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)} \\
-\mathsf{\to \forall (a : Set) (b : Set) (c : Set)
+\mathsf{\to \forall (a\,b\,c : Set)
 	(Q_a : a \to Set) (Q_b : b \to Set) (Q_c : c \to Set)} \\
 	\mathsf{(s_b : Seq\,b) (s_c : Seq\,c) (e : Equal\,a\,(b \times c))
 	\to Equal^{\wedge} a\, (b \times c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c)\, e} \\
