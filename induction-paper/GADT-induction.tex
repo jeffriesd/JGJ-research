@@ -207,7 +207,7 @@ A nested type thus defines not a family of inductive types, but rather an \emph{
 Nested types include simple nested types, like perfect trees,
 none of whose recursive occurrences occur below another type constructor,
 and \emph{truly} nested types, such as the nested type
-\begin{equation}\label{eq:ptree}
+\begin{equation}\label{eq:bush}
 \begin{array}{l}
 \mathsf{data\, Bush\,(a : Set) : Set\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;BNil\,\,\,\,\,\, :\, Bush\,a}\\
@@ -234,10 +234,10 @@ A proof-relevant predicate on a type $\mathsf{a}$ is a function $\mathsf{a \to S
 (where $\mathsf{Set}$ is the type of sets)
 mapping each $\mathsf{x : a}$ to the set of proofs that the predicate holds for $\mathsf{x}$.
 For example, the induction principle for $\mathsf{List}$ is
-\begin{multline}
+\begin{multline*}
 \mathsf{\forall (a : Set) (P : List\,a \to Set) \to P\,Nil \to \big( \forall (x : a) (xs: List\,a) \to P\,xs \to P\,(Cons\,x\,xs)\big)} \\
 \mathsf{\to \forall (xs : List\,a) \to P\, xs }
-\end{multline}
+\end{multline*}
 Note that the data inside a structure of type $\mathsf{List}$ is treated monolithically (i.e., ignored) by this induction rule.
 Indeed, the induction rule inducts over only the top-level structures of data types,
 leaving any data internal to the top-level structure untouched.
@@ -250,12 +250,12 @@ The only difference from the induction principle for ADTs is that,
 since a nested type is defined as a whole inductive family of types at once,
 its induction rule has to necessary involve a polymorphic predicate.
 Thus, the induction rule for $\mathsf{PTree}$ is
-\begin{multline}
+\begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to PTree\, a \to Set)
 \to \big( \forall (a : Set) (x : a) \to P\,a\,(PLeaf\, x) \big)} \\
 \mathsf{\to \big( \forall (a : Set) (x : PTree\,(a \times a)) \to P\,(a \times a)\,x \to P\,a\,(PNode\,x)\big)} \\
 \mathsf{\to \forall (a : Set) (x : PTree\,a) \to P\,a\,x }
-\end{multline}
+\end{multline*}
 
 %This kind of induction principles, which we will call \emph{structural induction},
 Structural induction principles cannot be extended to truly nested types, such as $\mathsf{Bush}$.
@@ -268,13 +268,13 @@ This additional predicate is lifted to predicates on any internal structure cont
 Satisfaction of a predicate by the data at one level of a structure is then conditioned upon satisfaction of the appropriate predicates by all of the data at the preceding level.
 
 For example, the deep induction rule for $\mathsf{Bush}$ is
-\begin{multline}
+\begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to Bush\, a \to Set)
 \to \big( \forall (a : Set) \to P\,a\,BNil \big)} \\
 \mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : a) (y : Bush\,(Bush\,a))} \\
 \mathsf{\to Q\,x \to P\,(Bush\,a)\,(Bush^{\wedge}\,a\,Q)\,y \to P\,a\,Q\,(BCons\,x\,y) \big)} \\
 \mathsf{\to \forall (a : Set) (Q : a \to Set) (x : Bush\,a) \to Bush^{\wedge}\,a\,Q\,x \to P\,a\,Q\,x }
-\end{multline}
+\end{multline*}
 where $\mathsf{Bush^{\wedge} : \forall (a : Set) \to (a \to Set) \to Bush\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{Bush\,a}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{a}$ contained in its argument bush.
 %where $\mathsf{Bush^{\wedge} : \forall (a : Set) \to ( a \to Set ) \to Bush\,a \to Set}$
 %is the polymorphic function that lifts predicates to $\mathsf{Bush}$,
@@ -287,19 +287,19 @@ It is defined as
 Despite deep induction being motivated by the need to produce an induction principle for truly nested types,
 it can equally be applied to all other ADTs and nested types.
 For example, the deep induction principle for $\mathsf{List}$ is
-\begin{multline}
+\begin{multline*}
 \mathsf{\forall (a : Set) (P : List\, a \to Set) (Q : a \to Set)} \\
 \mathsf{\to P\,Nil \to \big( \forall (x : a) (xs: List\,a) \to Q\,x \to P\,xs \to P\,(Cons\,x\,xs)\big)} \\
 \mathsf{\to \forall (xs : List\,a) \to List^{\wedge}\,a\,Q\,xs \to P\, xs }
-\end{multline}
+\end{multline*}
 where $\mathsf{List^{\wedge} : \forall (a : Set) \to (a \to Set) \to List\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{List\,a}$ asserting that $\mathsf{Q}$ holds for every element of its argument list.
 Finally, the deep induction rule for $\mathsf{PTree}$ is
-\begin{multline}
+\begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to PTree\, a \to Set)} \\
 \mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : a) \to Q\,x \to P\,a\,Q\,(PLeaf\, x) \big)} \\
 \mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : PTree\,(a \times a)) \to P\,(a \times a)\,(Pair^{\wedge}\,a\,Q)\,x \to P\,a\,Q\,(PNode\,x)\big)} \\
 \mathsf{\to \forall (a : Set) (Q : a \to Set) (x : PTree\,a) \to PTree^{\wedge}\,a\,Q\,x \to P\,a\,Q\,x }
-\end{multline}
+\end{multline*}
 where $\mathsf{Pair^{\wedge} : \forall (a : Set) \to (a \to Set) \to a \times a \to Set}$ lifts a predicate $\mathsf{Q}$ on $\mathsf{a}$ to a predicate on pairs of type $\mathsf{a \times a}$,
 so that $\mathsf{Pair^{\wedge}\,a\,Q\,(x,y) = Q\,x \times Q\,y}$,
 and $\mathsf{PTree^{\wedge} : \forall (a : Set) \to (a \to Set) \to PTree\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{PTree\,a}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{a}$ contained in its argument perfect tree.
@@ -728,7 +728,7 @@ where $\mathsf{H}$ is a $\mathsf{\gamma}$-ary type constructor not containing th
 i.e., $\mathsf{H : Set^\gamma \to Set}$,
 and $\mathsf{F_c}$ has the same signature as $\mathsf{F_i}$  and is built recursively from the same induction rules, for every $\mathsf{c = 1 \dots \gamma}$.
 Moreover, we require that $\mathsf{H}$ is not a GADT itself (but we allow it to be an ADT or even a nested type).
-This way $\mathsf{H}$ admits functorial semantics, and thus we have the map function of $\mathsf{H^{\wedge}}$,
+This way $\mathsf{H}$ admits functorial semantics~\cite{jp20}, and thus we have a map function for $\mathsf{H^{\wedge}}$,
 \[
 \mathsf{HLMap : \forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set})
 	\to \ol{PredMap\,c\,Q_c\,Q_c'}
@@ -740,6 +740,9 @@ is defined as
 \mathsf{PredMap\,c\,Q_c\,Q_c' = \forall (x : c) \to Q_c\,x \to Q_c'\,x}
 \]
 and represents the type of morphisms between predicates.
+A concrete way to define $\mathsf{HLMap}$ is to proceed by induction on the structure of the type $\mathsf{H}$,
+and give an inductive definition when $\mathsf{H}$ is an ADT or a nested type.
+Such details are not essential to the present discussion, and thus we omit them.
 \end{itemize}
 We can summarize the above inductive definition with the following grammar
 (but beware that the above restrictions and requirements still apply):
@@ -758,7 +761,7 @@ including the types $\mathsf{K_i}$,
 is that every type needs to have a predicate-lifting function.
 This is not an overly restrictive condition, though:
 all types made by sums, products, arrow types and type application do, and so do GADTs as defined above.
-A way to concretely define the predicate-lifting function for a type is to proceed by induction on the structure of the type,
+A concrete way to define the predicate-lifting function for a type is to proceed by induction on the structure of the type,
 and we have seen in the previous sections examples of how to do so for products and type application.
 We do not give here the general definition of lifting,
 as that would require to first present a full type calculus,
@@ -977,16 +980,18 @@ So, $\mathsf{p}$ is defined as
 In the previous sections,
 we derive induction rules for examples of GADTs that do not feature nesting,
 in the sense that their constructors contain no nested calls of the recursive variable,
-as truly nested types do.
-Since both nested types~\cite{jp20}
+as truly nested types (such as $\mathsf{Bush}$, Equation~\ref{eq:bush}) do.
+Since both nested types
 and GADTs without nesting admit induction rules,
+as seen in the previous sections,
 it is just natural to expect that GADTs with nesting would as well.
 Surprisingly, that is not the case:
-indeed, induction rules for nested types rely on functorial semantics,
+indeed, the induction principle generally relies on (unary) parametricity of the semantic interpretation,
+and in the case of nested types it also relies on functorial semantics~\cite{jp20},
 but GADTs cannot admit both functorial and parametric semantics at the same time~\cite{HaskellPaper}.
 In this section we show how induction for GADTs featuring nesting goes wrong
 by analyzing the following concrete example of such a type.
-\begin{equation}
+\begin{equation}\label{gadt-nested}
 \begin{array}{l}
 \mathsf{data\, G\,(a : Set) : Set\,where}\\
 \mathsf{\;\;\;\;\;\;C :\, G(G\,a) \to G(a \times a)}
@@ -999,7 +1004,7 @@ The constructor $\mathsf{C}$ can be rewritten as
 which is the form we shall use from now on.
 The predicate-lifting function of $\mathsf{G}$,
 \[
-\mathsf{G^{\wedge} : \forall (\ol{a : Set}) \to (\ol{a \to Set}) \to G\,\ol{a} \to Set}
+\mathsf{G^{\wedge} : \forall (a : Set) \to (a \to Set) \to G\,\ol{a} \to Set}
 \]
 is defined as
 \[
@@ -1009,10 +1014,9 @@ is defined as
 \times G^{\wedge}\,(G\,b)\,(G^{\wedge}\,b\,Q_b)\,x}
 \]
 where $\mathsf{Q_a : a \to Set}$, $\mathsf{e : Equal\,a\,(b \times b)}$ and $\mathsf{x : G(G\,b)}$.
-
-Finally, let $\mathsf{CC}$ be the type
+Finally, let $\mathsf{CC}$ be the function
 \begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
+\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
 \mathsf{\to \forall (a\;b : Set) (Q_a : a \to Set) (Q_b : b \to Set) (e : Equal\,a\,(b \times b)) (x : G\,(G\,b))} \\
 \mathsf{\to Equal^{\wedge}\,a\,(b \times b)\,Q_a\,(Pair^{\wedge}\,b\,b\,Q_b\,Q_b)\,e
 	\to P\,(G\,b)\,(P\,b\,Q_b)\,x
@@ -1023,51 +1027,34 @@ associated to the $\mathsf{C}$ constructor.
 The induction rule for $\mathsf{G}$ is
 \begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set) \to CC\,P} \\
-%\mathsf{\to \Big( \forall (a\;b : Set) (Q_a : a \to Set) (Q_b : b \to Set) (e : Equal\,a\,(b \times b)) (x : G\,(G\,b))} \\
-%\mathsf{\to Equal^{\wedge}\,a\,(b \times b)\,Q_a\,(Pair^{\wedge}\,b\,b\,Q_b\,Q_b)\,e
-%	\to P\,(G\,b)\,(P\,b\,Q_b)\,x
-%	\to P\,a\,Q_a\,(C\,b\,e\,x) \Big)}\\
 \mathsf{\to \forall (a : Set)(Q_a : a \to Set)(y : G\,a) \to G^{\wedge}\,a\,Q_a\,y \to P\,a\,Q_a\,y}
 \end{multline*}
 Consistently with the previous examples,
-we define a term validating the induction rule, $\mathsf{DIG}$, as
+to validate the induction rule
+we try to define a term of the above type, $\mathsf{DIG}$, as
 \[
 \mathsf{DIG\,P\,cc\,a\,Q_a\,(C\,b\,e\,x)\,(Q_b, L_E, L_G)
 = cc\,a\,b\,Q_a\,Q_b\,e\,x\,L_E\,p}
 \]
-where $\mathsf{cc : CC\,P}$,
-$\mathsf{C\,b\,e\,x : G\,a}$,
-%, the second to last term applied to $\mathsf{DIG}$,
-%has type $\mathsf{G\,a}$,
-i.e., $\mathsf{e : Equal\,a\,(b \times b)}$ and $\mathsf{x : G(G\,b)}$,
-and $\mathsf{(Q_b, L_E, L_G) : G^{\wedge}\,a\,Q_a\,(C\,b\,e\,x)}$,
-%, the last term applied to $\mathsf{DIG}$,
-%has type $\mathsf{G^{\wedge}\,a\,Q_a\,(C\,b\,e\,x)}$,
+where $\mathsf{cc : CC\,P}$ and
+\begin{itemize}
+\item $\mathsf{C\,b\,e\,x : G\,a}$,
+i.e., $\mathsf{e : Equal\,a\,(b \times b)}$ and $\mathsf{x : G(G\,b)}$;
+\item $\mathsf{(Q_b, L_E, L_G) : G^{\wedge}\,a\,Q_a\,(C\,b\,e\,x)}$,
 i.e., $\mathsf{Q_b : b \to Set}$, $\mathsf{L_E : Equal^{\wedge}\,a\,(b \times b)\,Q_a\,(Pair^{\wedge}\,b\,b\,Q_b\,Q_b)\,e}$,
 and $\mathsf{L_G : G^{\wedge}\,(G\,b)\,(G^{\wedge}\,b\,Q_b)\,x}$.
-%\begin{gather*}
-%\mathsf{Q_b : b \to Set} \\
-%\mathsf{L_E : Equal^{\wedge}\,a\,(b \times b)\,Q_a\,(Pair^{\wedge}\,b\,b\,Q_b\,Q_b)\,e} \\
-%\mathsf{L_G : G^{\wedge}\,(G\,b)\,(G^{\wedge}\,b\,Q_b)\,x}
-%%\mathsf{p = DIG\,P\,pc\,(G\,b)\,(P\,b\,Q_b)\,x\,q : P\,(G\,b)\,(P\,b\,Q_b)\,x}
-%\end{gather*}
+\end{itemize}
 We still need to define $\mathsf{p : P\,(G\,b)\,(P\,b\,Q_b)\,x}$.
 We do so by using the induction rule and letting
 \[
 \mathsf{p = DIG\,P\,cc\,(G\,b)\,(P\,b\,Q_b)\,x\,q}
 \]
 where we still need to provide $\mathsf{q : G^{\wedge}\,(G\,b)\,(P\,b\,Q_b)\,x}$.
-To produce such $\mathsf{q}$, we need the map function of $\mathsf{G^{\wedge}}$,
+If we had the map function of $\mathsf{G^{\wedge}}$,
 \[
 \mathsf{GLMap : \forall (a : Set) (Q_a\;Q_a' : a \to Set) \to PredMap\,a\,Q_a\,Q_a' \to PredMap\,(G\,a)\,(G^{\wedge}\,a\,Q_a)\,(G^{\wedge}\,a\,Q_a')}
 \]
-where $\mathsf{PredMap : \forall (a : Set) \to (a \to Set) \to (a \to Set) \to Set}$
-is defined as
-\[
-\mathsf{PredMap\,a\,Q_a\,Q_a' = \forall (x : a) \to Q_a\,x \to Q_a'\,x}
-\]
-and represents the type of morphisms between predicates.
-If we had $\mathsf{GLMap}$, then we would be able to define
+then we would be able to define
 \[
 \mathsf{q = GLMap\,(G\,b)\,(G^{\wedge}\,b\,Q_b)\,(P\,b\,Q_b)\,(DIG\,P\,cc\,b\,Q_b)\,x\,L_G}
 \]
@@ -1083,13 +1070,13 @@ $\mathsf{C\,b\,e\,x : G\,a}$, i.e.,
 \item $\mathsf{e : Equal\,a\,(b \times b)}$;
 \item $\mathsf{x : G\,(G\,b)}$;
 \end{itemize}
-$\mathsf{(Q_b, L_E, L_G)}$ has type $\mathsf{G^{\wedge}\,a\,Q_a\,(C\,b\,e\,x)}$, i.e.,
+$\mathsf{(Q_b, L_E, L_G) :G^{\wedge}\,a\,Q_a\,(C\,b\,e\,x)}$, i.e.,
 \begin{itemize}
 \item $\mathsf{Q_b : b \to Set}$;
 \item $\mathsf{L_E : Equal^{\wedge}\,a\,(b \times b)\,Q_a\,(Pair^{\wedge}\,b\,b\,Q_b\,Q_b)\,e}$;
 \item $\mathsf{L_G : G^{\wedge}\,(G\,b)\,(G^{\wedge}\,b\,Q_b)\,x}$;
 \end{itemize}
-and $\mathsf{(Q_b', L_E', L_G')}$ has type $\mathsf{G^{\wedge}\,a\,Q_a'\,(C\,b\,e\,x)}$, i.e.,
+and $\mathsf{(Q_b', L_E', L_G') : G^{\wedge}\,a\,Q_a'\,(C\,b\,e\,x)}$, i.e.,
 \begin{itemize}
 \item $\mathsf{Q_b' : b \to Set}$;
 \item $\mathsf{L_E' : Equal^{\wedge}\,a\,(b \times b)\,Q_a'\,(Pair^{\wedge}\,b\,b\,Q'_b\,Q'_b)\,e}$;
@@ -1121,11 +1108,12 @@ so that having morphisms $\mathsf{A \to A'}$ and $\mathsf{B \to B'}$
 and a proof that $\mathsf{A}$ is equal to $\mathsf{A'}$
 does not provide a proof that $\mathsf{B}$ is equal to $\mathsf{B'}$.
 This is because GADTs can either have a syntax-only semantics or a functorial-completion semantics.
-Since we are interested in induction rules, we considered GADTs with their syntax-only semantics,
-which is parametric but it is not functorial.
-Had we considered the functorial-completion semantics, instead,
-we would have forfeited parametricity~\cite{HaskellPaper}.
-In both cases, thus, we cannot derive an induction rule for generic GADTs when they feature nesting.
+Since we are interested in induction rules, we considered the syntax-only semantics,
+which is parametric but not functorial.
+Had we considered the functorial-completion semantics, which is functorial,
+we would have forfeited parametricity instead.
+In both cases, thus, we cannot derive an induction rule for GADTs featuring nesting.
+Unlike nestes types, indeed, GADTs do not admit a semantic interpretation that is both parametric and functorial~\cite{HaskellPaper}.
 
 
 
