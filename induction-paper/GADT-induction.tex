@@ -410,7 +410,6 @@ For example, we can rewrite the $\mathsf{Seq}$ type as
 where the requirement that the $\mathsf{SPair}$ constructor produce an instance of $\mathsf{Seq}$ at a product type has been replaced with the requirement that the instance of $\mathsf{Seq}$ returned by $\mathsf{SPair}$ is \emph{equal} to a product.
 This encoding is particularly convenient when representing GADTs as Church encodings~\cite{vw10,atk12}.
 
-Add third example here.
 
 %{\color{blue} Do we really need the existential quantifiers?}
 
@@ -430,7 +429,45 @@ Add third example here.
 %\end{array}\]
 
 
+{\color{red} STLC example}
 
+GADTs are expressive enough to represent, for example, the types and terms of the simply typed lambda calculus. 
+We will use a variant of the STLC including a base type of Bool, and type constructors for arrow types and list types: 
+
+\begin{equation}\label{eq:eq_ltype}
+\begin{array}{l}
+\mathsf{data\, LType\,(a : Set) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;TBool :\, \exists (b : Set). \,Equal\,a\,(KBool\, b) \to LType\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;TArr\,\,\, :\, \exists (b : Set) (c : Set).\,Equal\,a\,(b \to c) \to LType\,b \to LType\,c \to LType\,a}\\
+  \mathsf{\;\;\;\;\;\;\;\;TList\,\, :\, \exists (b : Set).\,Equal\,a\,(\List\,b) \to LType\,b \to LType\,a}
+\end{array}
+\end{equation}
+
+The term calculus for this type system includes variables, abstraction, application, 
+and also includes an introduction rule that takes a list of terms of type $\mathsf{b}$ and produces a term of type $\mathsf{List\,b}$.
+
+
+\begin{equation}\label{eq:eq_lterm}
+\begin{array}{l}
+\mathsf{data\, LTerm\,(a : Set) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;Var\,\,\,\,\,\,:\, String \to LType\,a \to LTerm\,a} \\
+\mathsf{\;\;\;\;\;\;\;\;Abs\,\,\,\,\,\, :\, \exists (b : Set) (c : Set).\,Equal\,a\,(b \to c) \to String 
+      \to LType\,b \to LTerm\,c \to LTerm\,a}\\
+  \mathsf{\;\;\;\;\;\;\;\;App\,\,\,\,\, :\, \exists (b : Set).\,LTerm (b \to a) \to LTerm\,b \to LTerm\,a}\\
+  \mathsf{\;\;\;\;\;\;\;\;ListC\,\, :\, \exists (b : Set).\,Equal\,a\,(\List\,b) \to List\,(LTerm\,b) \to LTerm\,a}
+\end{array}
+\end{equation}
+
+The type parameter for $\mathsf{LTerm}$ tracks the types of STLC terms. So the type $\mathsf{LTerm\,A}$ 
+contains lambda terms of type $\mathsf{A}$. The $\mathsf{LType}$ GADT is used to encode the 
+grammar of permissible types for this calculus. 
+
+Variables are represented as strings and are tagged with their type. 
+The $\mathsf{Abs}$ constructor takes a name (string) and a type for the bound variable,
+and a term of type $\mathsf{c}$ for the body of the abstraction.
+The $\mathsf{App}$ constructor applies a term of type $\mathsf{b \to a}$ to a term of type $\mathsf{b}$, producing
+a term of type $\mathsf{a}$. 
+The $\mathsf{ListC}$ constructor takes a list of terms of type $\mathsf{b}$ and produces a term of type $\mathsf{List\,b}$.
 
 
 \section{(Deep) induction for GADTs}
@@ -863,11 +900,274 @@ and $\mathsf{p_b}$ and $\mathsf{p_c}$ are defined as follows:
 
 
 
-\subsection{Third example introduced above}
+\subsection{(Deep) induction for $\mathsf{LTerm}$ }
 
 %Same structure as previous two.
 %Runs through the paper.
 %Still to decide?
+
+{\color{red} Use $\mathsf{Pair^{\wedge}}$ everywhere}
+
+{\color{blue} Some notational conventions: I am using uppercase letters for elements of LType and 
+lowercase letters for elements of LTerm. For example, $\mathsf{(T_b : LType \, b)}$ or $\mathsf{(t_c : LTerm \,c)}$.}
+
+Now we will define an induction rule for the $\mathsf{LTerm}$ type defined in 
+Equation~\ref{eq:eq_lterm}. To define this, we need liftings for both $\mathsf{LType}$ and
+$\mathsf{LTerm}$. We will also need a lifting of predicates for arrow types, since arrow types appear in 
+$\mathsf{LType}$ and $\mathsf{LTerm}$. The lifting for arrow types 
+\[
+  \mathsf{Arr^{\wedge} : \forall (a\, b : Set) \to (a \to Set) \to (b \to Set) \to (a \to b) \to Set}
+\]
+is defined as: 
+\[
+  \mathsf{Arr^{\wedge}\, a\, b\, Q_a\, Q_b\, f = \forall (x : a) \to Q_a\, x \to Q_b\, (f\, x)}
+\]
+
+\noindent
+Now we can define the lifting for $\mathsf{LType}$, which has type 
+\[
+\mathsf{LType^{\wedge} : \forall (a : Set) \to (a \to Set) \to LType\,a \to Set}
+\]
+and is defined by pattern-matching as
+\[
+  \mathsf{LType^{\wedge}\,a\,Q_a\,(TBool\,b\,e) = \exists (Q_b : b \to Set) 
+  \to Equal^{\wedge}\, a\, b\, Q_a\, (KBool^{\wedge} \,b \,Q_b) \,e}
+\]
+where $\mathsf{Q_a : a \to Set}$ and $\mathsf{e : Equal \,a \,(KBool\,b)}$,
+and
+\begin{multline*}
+  \mathsf{LType^{\wedge}\,a\,Q_a\,(TArr\, b\, c\, e\, T_b\, T_c)} \\
+\mathsf{=
+\exists (Q_b : b \to Set) (Q_c : c \to Set)
+  \to Equal^{\wedge}\,a\, (b \to c)\, Q_a\, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c) \, e} \\ 
+\mathsf{
+  \times \, LType^{\wedge}\,b\,Q_b\,T_b \times LType^{\wedge}\,c\,Q_c\,T_c
+}
+\end{multline*}
+
+where $\mathsf{Q_a : a \to Set}$, $\mathsf{e : Equal\, a\, (b \to c)}$, $\mathsf{T_b : LType \,b}$, and 
+$\mathsf{T_c : LType \,c}$,
+and 
+\begin{multline*}
+  \mathsf{LType^{\wedge}\,a\,Q_a\,(TList\, b\, e\, T_b)} \\
+\mathsf{=
+\exists (Q_b : b \to Set) 
+  \to Equal^{\wedge}\,a\, (List\, b)\, Q_a\, (List^{\wedge} \, b\, Q_b) \, e 
+  \times LType^{\wedge}\,b\,Q_b\,T_b 
+}
+\end{multline*}
+
+
+
+Given the lifting for $\mathsf{LType}$, we can define the lifting for $\mathsf{LTerm}$. Again, 
+the lifting 
+\[
+\mathsf{LTerm^{\wedge} : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set}
+\]
+is defined by pattern-matching as
+\[
+  \mathsf{LTerm^{\wedge}\,a\,Q_a\,(Var\,s\,T_a) = LType^{\wedge}\, a\, Q_a\, T_a}
+\]
+where $\mathsf{s : String}$ and $\mathsf{T_a : LType\, a}$,  and 
+\begin{multline*}
+  \mathsf{LTerm^{\wedge}\,a\,Q_a\,
+  (Abs \,b \,c \,e \,s \,T_b \,t_c)} \\ 
+\mathsf{
+  = \exists (Q_b : b \to Set) (Q_c : c \to Set) \to
+      Equal^{\wedge} \, a\, (b \to c)\, Q_a\, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c)\, e} \\ 
+\mathsf{
+      \times \, LType^{\wedge}\, b\, Q_b\, T_b
+      \times \, LTerm^{\wedge}\, c\, Q_c\, t_c }
+\end{multline*}
+where $\mathsf{e : Equal \, a \, (b \to c)}$, $\mathsf{s : String}$ , $\mathsf{T_b : LType\,b}$, and $\mathsf{t_c : LTerm \, c}$,
+
+and 
+\begin{multline*}
+  \mathsf{LTerm^{\wedge}\,a\,Q_a\, (App\, b\, t_{ba}\, t_b)} \\ 
+\mathsf{
+  = \exists (Q_b : b \to Set) \to 
+      LTerm^{\wedge}\, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a)\, t_{ba}
+      \times LTerm^{\wedge}\, b\, Q_b\, t_b }
+\end{multline*}
+
+where $\mathsf{t_{ba} : LTerm \, (B \to A)}$ and $\mathsf{t_b : LTerm \, B}$, and
+\begin{multline*}
+  \mathsf{LTerm^{\wedge}\,a\,Q_a\, (ListC\, b\, e\, ts)} \\ 
+\mathsf{
+  = \exists (Q_b : b \to Set) \to 
+      Equal^{\wedge} \, a\, (List\,b)\, Q_a\, (List^{\wedge} \, b\, Q_b) \, e
+      \times List^{\wedge}\, (LTerm\,b) \, (LTerm^{\wedge} \, b\, Q_b) \, ts
+    }
+\end{multline*}
+
+where $\mathsf{e : Equal\, a\, (List \,b)}$ and $\mathsf{ts : List\, (LTerm b)}$. 
+Notice we use the lifting for $\mathsf{List}$ in the case for the $\mathsf{ListC}$ constructor. 
+
+
+With these liftings, we can define the deep induction princple for $\mathsf{LTerm}$.
+
+
+% Var case 
+Let CVar be the type 
+\begin{multline*}
+\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+\mathsf{\to 
+  \forall (a : Set) (Q_a : a \to Set) (s : String) (T_a : LType\, a) 
+  \to LType^{\wedge} \, a\, Q_a\, T_a
+  \to P \, a\, Q_a\, (Var \, s\, T_a)
+  }
+\end{multline*}
+associated to the $\mathsf{Var}$ constructor. 
+
+
+% Abs case 
+Let CAbs be the type 
+\begin{align*}
+  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\to 
+  \forall (a \,b\, c: Set) (Q_a : a \to Set)  (Q_b : b \to Set) (Q_c : c \to Set)
+  (e : Equal\, a\, (b \to c)) (s : String) } \\ 
+  &\mathsf{ \to (T_b : LType\, b) \to (t_c : LTerm\, c)
+  \to Equal^{\wedge}\,a\,(b \to c)\, Q_a \, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c) \, e
+  } \\
+  &\mathsf{
+  \to LType^{\wedge}\, b\, Q_b\, T_b
+  \to P\, c\, Q_c\, t_c\, 
+  \to P \, a\, Q_a\, (Abs \,b \,c \, e \,s \,T_b \, t_c)
+  }
+\end{align*}
+associated to the $\mathsf{Abs}$ constructor. 
+
+
+% App case 
+Let CApp be the type 
+\begin{align*}
+  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\to 
+  \forall (a \,b : Set) (Q_a : a \to Set)  (Q_b : b \to Set) 
+   (t_{ba} : LTerm\, (b \to a)) (t_b : LTerm\, b)} \\
+  &\mathsf{
+  \to P\, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a) \, t_{ba} \, 
+  \to P\, b\, Q_b\, t_b\, 
+  \to P \, a\, Q_a\, (App \,b \,t_{ba} \, t_b) }
+\end{align*}
+associated to the $\mathsf{App}$ constructor. 
+
+% ListC case 
+Let CListC be the type 
+\begin{align*}
+  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\to 
+  \forall (a \,b : Set) (Q_a : a \to Set)  (Q_b : b \to Set) 
+    (e : Equal\, a\, (List\, b)) (ts : List\, (LTerm\, b))} \\ 
+  &\mathsf{
+    \to Equal^{\wedge}\, a\, (List\,b)\, Q_a\, (List^{\wedge}\, b\, Q_b)\, e 
+  \to List^{\wedge}\, (LTerm\,b) (P\, b\, Q_b)\, ts} \\
+&\mathsf{
+  \to P \, a\, Q_a\, (ListC \,b \,e \, ts) }
+\end{align*}
+associated to the $\mathsf{ListC}$ constructor. 
+
+Then the type of the deep induction principle for $\mathsf{LTerm}$ is,
+\begin{multline*}
+\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)}
+\mathsf{\to CVar\,P \to CAbs\,P \to CApp\,P \to CListC\,P} \\
+\mathsf{\to \forall (a : Set)(Q_a : a \to Set)(t_a : LTerm\,a) \to LTerm^{\wedge}\,a\,Q_a\,t_a \to P\,a\,Q_a\,t_a}
+\end{multline*}
+
+To prove the induction principle, we define a term $\mathsf{DILTerm}$ for it. We have to define 
+\[ 
+\mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\, t_a\, L_a : P\, a\, Q_a\, t_a}
+\]
+% where $\mathsf{P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set}$, 
+
+As before, we prove the induction principle by pattern matching on $\mathsf{t_a}$. 
+
+For the $\mathsf{Var}$ case, let $\mathsf{t_a = Var\, s\, T_a}$ and define
+\[
+  \mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\, (Var\,s\,T_a) \, L_a = cvar \, a\, Q_a\, s\, T_a\, L_a }
+\]
+% where $\mathsf{L_a : LTerm^{\wedge}\, a\, Q_a\, (Var\,s\,T_a)}$, i.e., $\mathsf{L_a : LType^{\wedge}\,a\,Q_a\,T_a}$ 
+Notice that $\mathsf{LTerm^{\wedge}\, a\, Q_a\, (Var\,s\,T_a) = LType^{\wedge}\,a\,Q_a\,T_a}$, so 
+$\mathsf{L_a : LType^{\wedge}\,a\,Q_a\,T_a}$.
+
+
+% Abs case 
+For the $\mathsf{Abs}$ case, let $\mathsf{t_a = (Abs \,b \,c \, e \,s \,T_b \, t_c)} $ and define
+\begin{multline*}
+  \mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\, (Abs \,b \,c \,e \,s \,T_b \, t_c) \, (Q_b , Q_c , L_e, L_{T_b}, L_{t_c})} \\
+  \mathsf{= cabs\,a\,b\,c\, Q_a\, Q_b\, Q_c\, e\, s\, T_b\, t_c\, L_e\, L_{T_b}\, p_c}
+\end{multline*}
+
+
+where $\mathsf{(Q_b , Q_c , L_e, L_{T_b}, L_{t_c}) : LTerm^{\wedge}\, a\, Q_a\, (Abs \,b \,c \, e \,s \,T_b \, t_c)}$
+\begin{itemize}
+  \item $\mathsf{Q_b : b \to Set}$
+  \item $\mathsf{Q_c : c \to Set}$
+  \item $\mathsf{L_e : Equal^{\wedge} \, a\, (b \to c)\, Q_a\, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c) \, e}$
+  \item $\mathsf{L_{T_b}: LType^{\wedge} \, b\, Q_b\, T_b}$
+  \item $\mathsf{L_{t_c}: LTerm^{\wedge} \, c\, Q_c\, T_c}$
+\end{itemize}
+
+and $\mathsf{pc}$ is defined as:
+\[
+  \mathsf{pc =  DILTerm\,P\,cvar\,cabs \,capp \,clistc\, c\, Q_c\, t_c\, L_{t_c}  : P \, c\, Q_c \, t_c }
+\]
+
+% App case - (App \,b \,t_{ba} \, t_b)
+For the $\mathsf{App}$ case, let $\mathsf{t_a = (App \,b \,\,t_{ba} \, t_b)} $ and define
+\begin{multline*}
+  \mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\,  (App \,b \,\,t_{ba} \, t_b)\, (Q_b , L_{t_{ba}}, L_{t_b})} \\
+  \mathsf{= capp\,a\,b\,Q_a\, Q_b\, t_{ba}\, t_b\, p_{ba} \, p_b}
+\end{multline*}
+
+
+where $\mathsf{(Q_b , L_{t_{ba}}, L_{t_b}) : LTerm^{\wedge}\, a\, Q_a\, (App \,b \,t_{ba} \, t_b)}$
+\begin{itemize}
+  \item $\mathsf{Q_b : b \to Set}$
+  \item $\mathsf{L_{t_{ba}}: LTerm^{\wedge} \, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a)\, t_{ba}}$
+  \item $\mathsf{L_{t_b}: LTerm^{\wedge} \, b\, Q_b\, t_b}$
+\end{itemize}
+
+and $\mathsf{p_{ba}}$
+and 
+$\mathsf{p_b}$
+and are defined as:
+\begin{align*}
+  \mathsf{p_{ba}} &=  \mathsf{DILTerm\,P\,cvar\,cabs \,capp \,clistc\, (b \to a)\,(Arr^{\wedge} \, b\, a\, Q_b \, Q_a) \, t_{ba}\, L_{t_{ba}}   : P \, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a) \, t_{ba} } \\
+  \mathsf{p_b   } &=  \mathsf{DILTerm\,P\,cvar\,cabs \,capp \,clistc\, b\, Q_b\, t_b\, L_{t_b}  : P \, b\, Q_b \, t_b } 
+\end{align*}
+
+% ListC case - (ListC \,b \,e \, ts)
+For the $\mathsf{ListC}$ case, let $\mathsf{t_a = (ListC \,b \,e \, ts)} $ and define
+\begin{multline*}
+  \mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\, (ListC \,b \,e \, ts) \, (Q_b , L_e, L_{List})
+  = clistc \,a\,b\,Q_a\, Q_b\, e\, ts\, L_e\, p_{List} }
+\end{multline*}
+
+
+where $\mathsf{(Q_b , L_e, L_{List}): LTerm^{\wedge}\, a\, Q_a\, (ListC \,b \,e \, ts)}$
+\begin{itemize}
+  \item $\mathsf{Q_b : b \to Set}$
+  \item $\mathsf{L_e : Equal^{\wedge}\, a\, (List\,b)\, Q_a\, (List^{\wedge}\, b\, Q_b)\, e}$
+  \item $\mathsf{L_{List}: List^{\wedge} \, (LTerm\, b) \, (LTerm^{\wedge}\, b\, Q_b) \, ts}$
+\end{itemize}
+
+and $\mathsf{p_{List}}$ is defined as:
+\begin{multline*}
+  \mathsf{p_{List} = List^{\wedge}map \, (LTerm\, b) \, (LTerm^{\wedge} \, b \, Q_b)\, 
+    (P\,b\,Q_b)\, \,p_{ts} \,\, ts\,\, L_{List}  : List^{\wedge}\, (LTerm\,b) \, (P\,b\,Q_b) \, ts}
+\end{multline*}
+
+where $\mathsf{p_{ts}}$ is defined as:
+
+{\color{red} PredMap not defined yet} 
+\begin{multline*}
+  \mathsf{
+  p_{ts} = DILTerm\, P\, cvar\, cabs\, capp\, clistc\, b\, Q_b :  PredMap \,(LTerm^{\wedge}\, b\, Q_b) \, (P\,b\,Q_b)
+  }
+\end{multline*}
+
 
 
 
@@ -1601,9 +1901,116 @@ In both cases, thus, we cannot derive an induction rule for generic GADTs when t
 
 \section{Applications}
 
-Lambda normal form example.
+{\color{red} Compare with structural induction? or at least state why structural induction fails } 
 
-%Still don't know which applications we might have
+In this section we use deep induction for the $\mathsf{LTerm}$ GADT to 
+extract the type from a lambda term. 
+We have a predicate 
+\begin{align*}
+  &\mathsf{getType : \forall \, (a : Set) \to (t : LTerm\,a) \to Set} \\
+  &\mathsf{getType \,a \,t = Maybe \, (LType \, a)}
+\end{align*}
+
+and we want to show this predicate is satisfied for every element of $\mathsf{LTerm\,a}$.
+Because of the $\mathsf{ListC}$ constructor, this cannot be achieved without 
+deep induction. In particular, deep induction is required to apply the induction to the 
+individual terms in a list of terms. 
+
+So, using deep induction, we want to prove: 
+\[
+  \mathsf{getTypeProof : \forall \, (a : Set) \to (t : LTerm\,a) \to getType \,a \,t} \\
+\]
+which we prove by 
+\[
+  \mathsf{getTypeProof \,a \,t = 
+    DILTerm\, (\lambda \, b\, Q_b\, t\, \to getType \,b\, t) \,
+    gtVar\,  gtABs\,  gtApp\,  gtListC\,  x\,\, K1\,\, t\, (LTerm^{\wedge}K1\, x\, t)
+    }
+\]
+where $\mathsf{K1 : x \to Set}$ and $\mathsf{LTerm^{\wedge}K1\, x\, t : LTerm^{\wedge}\, x\, K1\, t}$.
+Notice that there is no space in $\mathsf{LTerm^{\wedge}K1}$, because
+\[
+  \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
+\]
+is a function that we will define. In addition to defining $\mathsf{LTerm^{\wedge}K1}$,
+we also have to give a proof for each constructor $\mathsf{Var, Abs, App, ListC}$:
+
+\begin{multline*}
+  \mathsf{gtVar : \forall (a : Set) (Q_a : a \to Set) (s : String) (T_a : LType\, a) 
+      \to LType^{\wedge} \, a\, Q_a\, T_a\, \to Maybe\, (LType\, a)}
+\end{multline*}
+
+% abs 
+\begin{multline*}
+    \mathsf{gtAbs : \forall (a \, b\, c: Set) (Q_a : a \to Set) (Q_b : b \to Set) (Q_c : c \to Set) 
+      (e : Equal\, a\, (b \to c)) (s : String)} \\ 
+    %
+    \mathsf{ (T_b : LType\, b) (t_c : LTerm \, c)
+      \to Equal^{\wedge}\, a\, (b \to c)\, Q_a\, (Arr^{\wedge}\, b\, c\, Q_b\, Q_c)\, e
+      \to LType^{\wedge} \, b\, Q_b\, T_b} \\ 
+    %
+    \mathsf{
+      \to Maybe\, (LType\,c) \to Maybe\, (LType\, a)}
+\end{multline*}
+
+% app 
+\begin{multline*}
+    \mathsf{gtApp : \forall (a \, b : Set) (Q_a : a \to Set) (Q_b : b \to Set) 
+      (t_{ba} : LTerm\, (b \to a)) (t_b : LTerm\, b)} \\ 
+    \mathsf{
+      \to Maybe\, (LType\, (b \to a))
+      \to Maybe\, (LType\, b)
+      \to Maybe\, (LType\, a)
+    }
+\end{multline*}
+
+
+% list 
+\begin{multline*}
+    % abs
+    \mathsf{gtListC : \forall (a \, b : Set) (Q_a : a \to Set) (Q_b : b \to Set) 
+      (e : Equal\, a\, (List\, b)) (ts : List\, (LTerm\, b))} \\ 
+    \mathsf{
+      \to Equal^{\wedge}\, a\, (List\,b) \, Q_a\, (List^{\wedge}\, b\, Q_b)\, e
+      \to List^{\wedge}\, (LTerm\, b)\, (getType\, b)\, ts
+      \to Maybe\, (LType\, a)
+    }
+\end{multline*}
+
+
+For variables we simply return the type $\mathsf{T_a}$ given in $\mathsf{Var\, s\, T_a}$, 
+and the cases for abstraction and application are similar.
+The interesting case is $\mathsf{gtListC}$, in which we have to use 
+the results of ($\mathsf{List^{\wedge}\, (LTerm\, b)\, (getType\, b)\, ts}$)
+in order to extract the type of one of the terms in the list. 
+To define $\mathsf{gtListC}$ we pattern-match on the list of terms $\mathsf{ts}$.  
+
+If $\mathsf{ts}$ is the empty list (denoted by $\mathsf{[]}$), we cannot extract a type, 
+so we return $\mathsf{nothing}$. \\
+{\color{red} Maybe handle this case differently, by using non-empty lists, for example}
+\[
+  \mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, [] \, L_e L_{ts} = nothing}
+\]
+
+If $\mathsf{ts}$ is a non-empty list, we pattern match on $\mathsf{L_{ts}}$ and use the result
+to construct the type we need:
+\begin{align*}
+  &\mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, (t :: ts) \, L_e (nothing , L_{ts}) = nothing} \\
+  &\mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, (t :: ts) \, L_e (just\, T_b , L_{ts}) = just \, (TList\, b\, e\, T_b)}
+\end{align*}
+
+where $\mathsf{e : Equal\, a\, (List\,b)}$ and $\mathsf{T_b : LType\, b}$. 
+
+The last piece of infrastructure we need to define $\mathsf{getTypeProof}$ is a function 
+\[
+  \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
+\]
+that provides a 
+proof of $\mathsf{LTerm^{\wedge}\,a\,K1\,t}$ for any term $\mathsf{t : LTerm\, a}$. 
+Because $\mathsf{LTerm^{\wedge}}$ is defined in terms of $\mathsf{LType^{\wedge}}$, $\mathsf{Arr^{\wedge}}$, 
+and $\mathsf{List^{\wedge}}$, we will need analogous functions for these liftings as well. 
+
+{\color{red} Finish example by defining $\mathsf{LTerm^{\wedge}K1}$}
 
 
 \section{Primitive representation for GADTs}
