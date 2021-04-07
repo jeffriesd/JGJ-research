@@ -984,7 +984,7 @@ With these liftings, we can define the deep induction princple for $\mathsf{LTer
 % Var case 
 Let CVar be the type 
 \begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
 \mathsf{\to 
   \forall (a : Set) (Q_a : a \to Set) (s : String) (T_a : LType\, a) 
   \to LType^{\wedge} \, a\, Q_a\, T_a
@@ -995,7 +995,7 @@ associated to the $\mathsf{Var}$ constructor.
 % Abs case 
 Let CAbs be the type 
 \begin{align*}
-  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
   &\mathsf{\to 
   \forall (a \,b\, c: Set) (Q_a : a \to Set)  (Q_b : b \to Set) (Q_c : c \to Set)
   (e : Equal\, a\, (b \to c)) (s : String) } \\ 
@@ -1012,7 +1012,7 @@ associated to the $\mathsf{Abs}$ constructor.
 % App case 
 Let CApp be the type 
 \begin{align*}
-  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
   &\mathsf{\to 
   \forall (a \,b : Set) (Q_a : a \to Set)  (Q_b : b \to Set) 
    (t_{ba} : LTerm\, (b \to a)) (t_b : LTerm\, b)} \\
@@ -1025,7 +1025,7 @@ associated to the $\mathsf{App}$ constructor.
 % ListC case 
 Let CListC be the type 
 \begin{align*}
-  &\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
+  &\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)} \\
   &\mathsf{\to 
   \forall (a \,b : Set) (Q_a : a \to Set)  (Q_b : b \to Set) 
     (e : Equal\, a\, (List\, b)) (ts : List\, (LTerm\, b))} \\ 
