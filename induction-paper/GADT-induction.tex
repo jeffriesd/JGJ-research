@@ -443,7 +443,7 @@ We will use a variant of the STLC including a base type of Bool, and type constr
 \end{equation}
 
 The term calculus for this type system includes variables, abstraction, application, 
-and also includes an introduction rule that takes a list of terms of type $\mathsf{b}$ and produces a term of type $\mathsf{List\,b}$.
+and also includes an introduction rule that takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
 
 
 \begin{equation}\label{eq:eq_lterm}
@@ -463,10 +463,10 @@ grammar of permissible types for this calculus.
 
 Variables are represented as strings and are tagged with their type. 
 The $\mathsf{Abs}$ constructor takes a name (string) and a type for the bound variable,
-and a term of type $\mathsf{c}$ for the body of the abstraction.
-The $\mathsf{App}$ constructor applies a term of type $\mathsf{b \to a}$ to a term of type $\mathsf{b}$, producing
-a term of type $\mathsf{a}$. 
-The $\mathsf{ListC}$ constructor takes a list of terms of type $\mathsf{b}$ and produces a term of type $\mathsf{List\,b}$.
+and a lambda term of type $\mathsf{c}$ for the body of the abstraction.
+The $\mathsf{App}$ constructor applies a lambda term of type $\mathsf{b \to a}$ to a lambda term of type $\mathsf{b}$, producing
+a lambda term of type $\mathsf{a}$. 
+The $\mathsf{ListC}$ constructor takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
 
 
 \section{(Deep) induction for GADTs}
@@ -887,8 +887,6 @@ and $\mathsf{p_b}$ and $\mathsf{p_c}$ are defined as follows:
 %Runs through the paper.
 %Still to decide?
 
-{\color{red} Use $\mathsf{Pair^{\wedge}}$ everywhere}
-
 {\color{blue} Some notational conventions: I am using uppercase letters for elements of LType and 
 lowercase letters for elements of LTerm. For example, $\mathsf{(T_b : LType \, b)}$ or $\mathsf{(t_c : LTerm \,c)}$.}
 
@@ -937,7 +935,7 @@ and
   \times LType^{\wedge}\,b\,Q_b\,T_b 
 }
 \end{multline*}
-
+where $\mathsf{Q_a : a \to Set}$, $\mathsf{e : Equal\, a\, (List\, b)}$, and $\mathsf{T_b : LType \,b}$.
 
 
 Given the lifting for $\mathsf{LType}$, we can define the lifting for $\mathsf{LTerm}$. Again, 
@@ -961,7 +959,6 @@ where $\mathsf{s : String}$ and $\mathsf{T_a : LType\, a}$,  and
       \times \, LTerm^{\wedge}\, c\, Q_c\, t_c }
 \end{multline*}
 where $\mathsf{e : Equal \, a \, (b \to c)}$, $\mathsf{s : String}$ , $\mathsf{T_b : LType\,b}$, and $\mathsf{t_c : LTerm \, c}$,
-
 and 
 \begin{multline*}
   \mathsf{LTerm^{\wedge}\,a\,Q_a\, (App\, b\, t_{ba}\, t_b)} \\ 
@@ -970,7 +967,6 @@ and
       LTerm^{\wedge}\, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a)\, t_{ba}
       \times LTerm^{\wedge}\, b\, Q_b\, t_b }
 \end{multline*}
-
 where $\mathsf{t_{ba} : LTerm \, (B \to A)}$ and $\mathsf{t_b : LTerm \, B}$, and
 \begin{multline*}
   \mathsf{LTerm^{\wedge}\,a\,Q_a\, (ListC\, b\, e\, ts)} \\ 
@@ -980,14 +976,11 @@ where $\mathsf{t_{ba} : LTerm \, (B \to A)}$ and $\mathsf{t_b : LTerm \, B}$, an
       \times List^{\wedge}\, (LTerm\,b) \, (LTerm^{\wedge} \, b\, Q_b) \, ts
     }
 \end{multline*}
-
 where $\mathsf{e : Equal\, a\, (List \,b)}$ and $\mathsf{ts : List\, (LTerm b)}$. 
 Notice we use the lifting for $\mathsf{List}$ in the case for the $\mathsf{ListC}$ constructor. 
 
 
 With these liftings, we can define the deep induction princple for $\mathsf{LTerm}$.
-
-
 % Var case 
 Let CVar be the type 
 \begin{multline*}
@@ -999,8 +992,6 @@ Let CVar be the type
   }
 \end{multline*}
 associated to the $\mathsf{Var}$ constructor. 
-
-
 % Abs case 
 Let CAbs be the type 
 \begin{align*}
@@ -1018,8 +1009,6 @@ Let CAbs be the type
   }
 \end{align*}
 associated to the $\mathsf{Abs}$ constructor. 
-
-
 % App case 
 Let CApp be the type 
 \begin{align*}
@@ -1033,7 +1022,6 @@ Let CApp be the type
   \to P \, a\, Q_a\, (App \,b \,t_{ba} \, t_b) }
 \end{align*}
 associated to the $\mathsf{App}$ constructor. 
-
 % ListC case 
 Let CListC be the type 
 \begin{align*}
@@ -1048,7 +1036,6 @@ Let CListC be the type
   \to P \, a\, Q_a\, (ListC \,b \,e \, ts) }
 \end{align*}
 associated to the $\mathsf{ListC}$ constructor. 
-
 Then the type of the deep induction principle for $\mathsf{LTerm}$ is,
 \begin{multline*}
 \mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set)}
@@ -1062,17 +1049,16 @@ To prove the induction principle, we define a term $\mathsf{DILTerm}$ for it. We
 \]
 % where $\mathsf{P : \forall (a : Set) \to (a \to Set) \to LTerm\,a \to Set}$, 
 
+\noindent
 As before, we prove the induction principle by pattern matching on $\mathsf{t_a}$. 
-
-For the $\mathsf{Var}$ case, let $\mathsf{t_a = Var\, s\, T_a}$ and define
+For the $\mathsf{Var}$ case, let $\mathsf{t_a = (Var\, s\, T_a)}$ and define
 \[
   \mathsf{DILTerm \, P\, cvar \, cabs\, capp\, clistc \, a\, Q_a\, (Var\,s\,T_a) \, L_a = cvar \, a\, Q_a\, s\, T_a\, L_a }
 \]
 % where $\mathsf{L_a : LTerm^{\wedge}\, a\, Q_a\, (Var\,s\,T_a)}$, i.e., $\mathsf{L_a : LType^{\wedge}\,a\,Q_a\,T_a}$ 
 Notice that $\mathsf{LTerm^{\wedge}\, a\, Q_a\, (Var\,s\,T_a) = LType^{\wedge}\,a\,Q_a\,T_a}$, so 
 $\mathsf{L_a : LType^{\wedge}\,a\,Q_a\,T_a}$.
-
-
+%
 % Abs case 
 For the $\mathsf{Abs}$ case, let $\mathsf{t_a = (Abs \,b \,c \, e \,s \,T_b \, t_c)} $ and define
 \begin{multline*}
@@ -1095,6 +1081,7 @@ and $\mathsf{pc}$ is defined as:
   \mathsf{pc =  DILTerm\,P\,cvar\,cabs \,capp \,clistc\, c\, Q_c\, t_c\, L_{t_c}  : P \, c\, Q_c \, t_c }
 \]
 
+\noindent
 % App case - (App \,b \,t_{ba} \, t_b)
 For the $\mathsf{App}$ case, let $\mathsf{t_a = (App \,b \,\,t_{ba} \, t_b)} $ and define
 \begin{multline*}
@@ -1103,22 +1090,21 @@ For the $\mathsf{App}$ case, let $\mathsf{t_a = (App \,b \,\,t_{ba} \, t_b)} $ a
 \end{multline*}
 
 
+\noindent
 where $\mathsf{(Q_b , L_{t_{ba}}, L_{t_b}) : LTerm^{\wedge}\, a\, Q_a\, (App \,b \,t_{ba} \, t_b)}$
 \begin{itemize}
   \item $\mathsf{Q_b : b \to Set}$
   \item $\mathsf{L_{t_{ba}}: LTerm^{\wedge} \, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a)\, t_{ba}}$
   \item $\mathsf{L_{t_b}: LTerm^{\wedge} \, b\, Q_b\, t_b}$
 \end{itemize}
-
-and $\mathsf{p_{ba}}$
-and 
-$\mathsf{p_b}$
+and $\mathsf{p_{ba}}$ and $\mathsf{p_b}$
 and are defined as:
 \begin{align*}
   \mathsf{p_{ba}} &=  \mathsf{DILTerm\,P\,cvar\,cabs \,capp \,clistc\, (b \to a)\,(Arr^{\wedge} \, b\, a\, Q_b \, Q_a) \, t_{ba}\, L_{t_{ba}}   : P \, (b \to a)\, (Arr^{\wedge} \, b\, a\, Q_b \, Q_a) \, t_{ba} } \\
   \mathsf{p_b   } &=  \mathsf{DILTerm\,P\,cvar\,cabs \,capp \,clistc\, b\, Q_b\, t_b\, L_{t_b}  : P \, b\, Q_b \, t_b } 
 \end{align*}
 
+\noindent
 % ListC case - (ListC \,b \,e \, ts)
 For the $\mathsf{ListC}$ case, let $\mathsf{t_a = (ListC \,b \,e \, ts)} $ and define
 \begin{multline*}
@@ -1127,6 +1113,7 @@ For the $\mathsf{ListC}$ case, let $\mathsf{t_a = (ListC \,b \,e \, ts)} $ and d
 \end{multline*}
 
 
+\noindent
 where $\mathsf{(Q_b , L_e, L_{List}): LTerm^{\wedge}\, a\, Q_a\, (ListC \,b \,e \, ts)}$
 \begin{itemize}
   \item $\mathsf{Q_b : b \to Set}$
@@ -1134,20 +1121,27 @@ where $\mathsf{(Q_b , L_e, L_{List}): LTerm^{\wedge}\, a\, Q_a\, (ListC \,b \,e 
   \item $\mathsf{L_{List}: List^{\wedge} \, (LTerm\, b) \, (LTerm^{\wedge}\, b\, Q_b) \, ts}$
 \end{itemize}
 
+\noindent
 and $\mathsf{p_{List}}$ is defined as:
 \begin{multline*}
   \mathsf{p_{List} = List^{\wedge}map \, (LTerm\, b) \, (LTerm^{\wedge} \, b \, Q_b)\, 
     (P\,b\,Q_b)\, \,p_{ts} \,\, ts\,\, L_{List}  : List^{\wedge}\, (LTerm\,b) \, (P\,b\,Q_b) \, ts}
 \end{multline*}
-
-where $\mathsf{p_{ts}}$ is defined as:
-
-{\color{red} PredMap not defined yet} 
+and $\mathsf{p_{ts}}$ is defined as:
 \begin{multline*}
   \mathsf{
   p_{ts} = DILTerm\, P\, cvar\, cabs\, capp\, clistc\, b\, Q_b :  PredMap \,(LTerm^{\wedge}\, b\, Q_b) \, (P\,b\,Q_b)
   }
 \end{multline*}
+where 
+\[\mathsf{List^{\wedge}map : \forall\, (a : Set) \to (Q_a \, Q'_a : a \to Set) 
+  \to PredMap\,Q_a\,Q'_a \to PredMap \,(List^{\wedge}\, a\, Q_a)\, (List^{\wedge}\, a\, Q'_a)}\]
+takes a morphism of predicates and produces a morphism of lifted predicates. 
+$\mathsf{PredMap}$ gives the type of morphisms of predicates and is defined as: 
+\begin{align*}
+  &\mathsf{PredMap : \forall\, \{a : Set\} \to (Q_a \, Q'_a : a \to Set) \to Set } \\
+  &\mathsf{PredMap \, Q_a\,Q'_a\, = \forall\, (x : A) \to Q_a\,x \to Q'_a\,x}
+\end{align*}
 
 
 
@@ -1604,7 +1598,8 @@ Unlike nestes types, indeed, GADTs do not admit a semantic interpretation that i
 
 \section{Applications}
 
-{\color{red} Compare with structural induction? or at least state why structural induction fails } 
+{\color{red} Compare with structural induction? or at least state why structural induction fails.} \\
+{\color{red} Can get rid of Maybe using non-empty lists and postulates}
 
 In this section we use deep induction for the $\mathsf{LTerm}$ GADT to 
 extract the type from a lambda term. 
@@ -1613,8 +1608,9 @@ We have a predicate
   &\mathsf{getType : \forall \, (a : Set) \to (t : LTerm\,a) \to Set} \\
   &\mathsf{getType \,a \,t = Maybe \, (LType \, a)}
 \end{align*}
-
-and we want to show this predicate is satisfied for every element of $\mathsf{LTerm\,a}$.
+that takes a lambda term and produces its type (using $\mathsf{Maybe}$ to represent
+potential failure).
+We want to show this predicate is satisfied for every element of $\mathsf{LTerm\,a}$.
 Because of the $\mathsf{ListC}$ constructor, this cannot be achieved without 
 deep induction. In particular, deep induction is required to apply the induction to the 
 individual terms in a list of terms. 
@@ -1627,17 +1623,16 @@ which we prove by
 \[
   \mathsf{getTypeProof \,a \,t = 
     DILTerm\, (\lambda \, b\, Q_b\, t\, \to getType \,b\, t) \,
-    gtVar\,  gtABs\,  gtApp\,  gtListC\,  x\,\, K1\,\, t\, (LTerm^{\wedge}K1\, x\, t)
+    gtVar\,  gtABs\,  gtApp\,  gtListC\,  a\,\, K1\,\, t\, (LTerm^{\wedge}K1\, a\, t)
     }
 \]
-where $\mathsf{K1 : x \to Set}$ and $\mathsf{LTerm^{\wedge}K1\, x\, t : LTerm^{\wedge}\, x\, K1\, t}$.
+where $\mathsf{K1 : a \to Set}$ and $\mathsf{LTerm^{\wedge}K1\, a\, t : LTerm^{\wedge}\, a\, K1\, t}$.
 Notice that there is no space in $\mathsf{LTerm^{\wedge}K1}$, because
 \[
   \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
 \]
 is a function that we will define. In addition to defining $\mathsf{LTerm^{\wedge}K1}$,
 we also have to give a proof for each constructor $\mathsf{Var, Abs, App, ListC}$:
-
 \begin{multline*}
   \mathsf{gtVar : \forall (a : Set) (Q_a : a \to Set) (s : String) (T_a : LType\, a) 
       \to LType^{\wedge} \, a\, Q_a\, T_a\, \to Maybe\, (LType\, a)}
@@ -1694,27 +1689,181 @@ so we return $\mathsf{nothing}$. \\
 \[
   \mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, [] \, L_e L_{ts} = nothing}
 \]
-
 If $\mathsf{ts}$ is a non-empty list, we pattern match on $\mathsf{L_{ts}}$ and use the result
 to construct the type we need:
 \begin{align*}
   &\mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, (t :: ts) \, L_e (nothing , L_{ts}) = nothing} \\
   &\mathsf{gtListC\, a\, b\, Q_a\, Q_b\, e\, (t :: ts) \, L_e (just\, T_b , L_{ts}) = just \, (TList\, b\, e\, T_b)}
 \end{align*}
-
 where $\mathsf{e : Equal\, a\, (List\,b)}$ and $\mathsf{T_b : LType\, b}$. 
 
+\subsection{Defining $\mathsf{LTerm^{\wedge}K1}$}
 The last piece of infrastructure we need to define $\mathsf{getTypeProof}$ is a function 
 \[
-  \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
+  \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) \to (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
 \]
 that provides a 
 proof of $\mathsf{LTerm^{\wedge}\,a\,K1\,t}$ for any term $\mathsf{t : LTerm\, a}$. 
 Because $\mathsf{LTerm^{\wedge}}$ is defined in terms of $\mathsf{LType^{\wedge}}$, $\mathsf{Arr^{\wedge}}$, 
 and $\mathsf{List^{\wedge}}$, we will need analogous functions for these liftings as well. 
+We only give the definition of $\mathsf{LTerm^{\wedge}K1}$, but the definitions for 
+$\mathsf{LType^{\wedge}}$, $\mathsf{Arr^{\wedge}}$, and $\mathsf{List^{\wedge}}$ are analogous. 
 
-{\color{red} Finish example by defining $\mathsf{LTerm^{\wedge}K1}$}
+$\mathsf{LTerm^{\wedge}K1}$ is defined by pattern matching on the lambda term $\mathsf{t}$. 
+For the $\mathsf{Var}$ case, let $\mathsf{t = (Var\, s\, T_a)}$ and define
+\[
+  \mathsf{LTerm^{\wedge}K1\,a\,(Var\,s\,T_a) = LType^{\wedge}K1\,a\,T_a}
+\]
+For the $\mathsf{Abs}$ case, let $\mathsf{t = (Abs \,b \,c \, e \,s \,T_b \, t_c)} $ and recall the 
+definition of $\mathsf{LTerm^{\wedge}}$ for the $\mathsf{Abs}$ constructor, 
+instantiating the predicate $\mathsf{Q_a}$ to $\mathsf{K1}$: 
+% \,a\,Q_a\, (Abs \,b \,c \,e \,s \,T_b \,t_c)}$, :
+\begin{multline*}
+  \mathsf{LTerm^{\wedge}\,a\,K1\,
+  (Abs \,b \,c \,e \,s \,T_b \,t_c)} \\ 
+\mathsf{
+  = \exists (Q_b : b \to Set) (Q_c : c \to Set) \to
+      Equal^{\wedge} \, a\, (b \to c)\, K1\, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c)\, e} \\ 
+\mathsf{
+      \times \, LType^{\wedge}\, b\, Q_b\, T_b
+      \times \, LTerm^{\wedge}\, c\, Q_c\, t_c }
+\end{multline*}
+so to define the $\mathsf{Abs}$ case of $\mathsf{LTerm^{\wedge}K1}$, we need a proof of 
+\[
+  \mathsf{Equal^{\wedge} \, a\, (b \to c)\, K1\, (Arr^{\wedge} \, b\, c\, Q_b \, Q_c)\, e}
+\]
+i.e., that $\mathsf{K1}$ is (extensionally) equal to the lifting $\mathsf{(Arr^{\wedge} \, b\, c\, Q_b \, Q_c)}$
+for some predicates $\mathsf{Q_b, Q_c}$. The only reasonable choice for $\mathsf{Q_b}$ and $\mathsf{Q_c}$ 
+is to let both be $\mathsf{K1}$, which means we need a proof of:
+\[
+  \mathsf{Equal^{\wedge} \, a\, (b \to c)\, K1\, (Arr^{\wedge} \, b\, c\, K1 \, K1)\, e}
+\]
+Since we are working with proof-relevant predicates (i.e., functions into $\mathsf{Set}$ rather than 
+functions into $\mathsf{Bool}$), 
+the lifting $\mathsf{(Arr^{\wedge} \, b\, c\, K1 \, K1)}$ of $\mathsf{K1}$ to arrow types
+is not identical to $\mathsf{K1}$ on arrow types, but the predicates are (extensionally) isomorphic. 
+We discuss this issue in more detail at the end of the section. 
+For now, we assume a proof 
+\[
+  \mathsf{Equal^{\wedge}ArrK1 : Equal^{\wedge} \, a\, (b \to c)\, K1\, (Arr^{\wedge} \, b\, c\, K1 \, K1)\, e}
+\]
+and define the $\mathsf{Abs}$ case of $\mathsf{LTerm^{\wedge}K1}$ as 
+\[
+  \mathsf{LTerm^{\wedge}K1\,a\, (Abs \,b \,c \, e \,s \,T_b \, t_c) = 
+    (K1 , K1 , Equal^{\wedge}ArrK1 , LType^{\wedge}K1 \,b\,T_b\, , LTerm^{\wedge}K1\,c\,t_c)
+  }
+\]
+For the $\mathsf{App}$ case, let $\mathsf{t = (App \,b \,\,t_{ba} \, t_b)}$ and just as we did for the $\mathsf{Abs}$ case, 
+recall the definition of $\mathsf{LTerm^{\wedge}\,a\,(App \,b \,\,t_{ba} \, t_b)}$ with all of the predicates
+instantiated with $\mathsf{K1}$: 
+\[
+\mathsf{
+      LTerm^{\wedge}\, (b \to a)\, (Arr^{\wedge} \, b\, a\, K1 \, K1)\, t_{ba}
+      \times LTerm^{\wedge}\, b\, K1\, t_b }
+\]
+The second component can be given using $\mathsf{LTerm^{\wedge}K1}$, and we can 
+define the first component using a proof of
+\[
+\mathsf{LTerm^{\wedge}\, (b \to a)\, K1\,\, t_{ba}}
+\]
+and a map-like function 
+\begin{multline*}
+  \mathsf{LTerm^{\wedge}EqualMap : \forall\, \{a : Set\} \to (Q_a\,Q'_a : a \to Set) 
+    \to (Equal^{\wedge}\,a\,a\,Q_a\,Q'_a\,rfl)} \\
+    \mathsf{
+    \to PredMap\, (LTerm^{\wedge}\,a\,Q_a)\,(LTerm^{\wedge}\,a\,Q'_a)}
+\end{multline*}
+that takes two (extensionally) equal predicates with the same carrier 
+and produces a morphism of predicates between their liftings. The definition is 
+straightforward enough, so we omit the details. 
+But it is worth noting that while a true $\mathsf{HLMap}$ function, 
+which takes a \emph{morphism} of predicates instead of a proof of equality, cannot be defined 
+for GADTs in general, an analogue of $\mathsf{LTerm^{\wedge}EqualMap}$ should be definable 
+for every GADT. These analogues of $\mathsf{LTerm^{\wedge}EqualMap}$ will be required to define 
+$\mathsf{G^{\wedge}K1}$ whenever $\mathsf{G}$ has a constructor of the form
+  ($\mathsf{c : G \, (F\, b) \to G\,(K\,b)}$).
 
+Using $\mathsf{LTerm^{\wedge}EqualMap}$, we can define the $\mathsf{App}$ case of $\mathsf{LTerm^{\wedge}K1}$ as 
+\[
+  \mathsf{LTerm^{\wedge}K1\,a\, (App \,b \,\,t_{ba} \, t_b) = 
+    (K1 , L_{Arr^{\wedge}\,K1} , LTerm^{\wedge}K1\,b\,t_b)}
+\]
+where $\mathsf{ L_{Arr^{\wedge}\,K1} : LTerm^{\wedge}\, (b \to a)\, (Arr^{\wedge} \, b\, a\, K1 \, K1)\, t_{ba}}$ is defined as
+\[
+  \mathsf{L_{Arr^{\wedge}\,K1} =  LTerm^{\wedge}EqualMap\,K1\,(Arr^{\wedge}\,b\,a\,K1\,K1)\,\, Equal^{\wedge}ArrK1\, \,\,t_{ba}\, \,L_{K1}}
+\]
+where $\mathsf{L_{K1} = LTerm^{\wedge}K1\, (b \to a)\, t_{ba} : LTerm^{\wedge}\, (b \to a) \, K1\, t_{ba}}$.
+
+Finally, we define the $\mathsf{ListC}$ case for $\mathsf{LTerm^{\wedge}K1}$. 
+Let $\mathsf{t = (ListC\, b\, e\, ts)}$ and recall the definition of $\mathsf{LTerm^{\wedge}\,a\,(ListC\, b\, e\, ts)}$ with
+all of the predicates instantiated to $\mathsf{K1}$: 
+\[
+\mathsf{ Equal^{\wedge} \, a\, (List\,b)\, K1\, (List^{\wedge} \, b\, K1) \, e
+      \times List^{\wedge}\, (LTerm\,b) \, (LTerm^{\wedge} \, b\, K1) \, ts }
+\]
+We can give the first component by assuming a proof \,
+$\mathsf{Equal^{\wedge}ListK1 : Equal^{\wedge} \, a\, (List\,b)\, K1\, (List^{\wedge} \, b\, K1) \, e}$, 
+but for the second component we again have multiple liftings nested together. In this case, we can 
+get a proof of
+\[
+\mathsf{ List^{\wedge}\, (LTerm\,b) \, (LTerm^{\wedge} \, b\, K1) \, ts }
+\]
+using 
+\[\mathsf{List^{\wedge}map : \forall\, (a : Set) \to (Q_a \, Q'_a : a \to Set) 
+  \to PredMap\,Q_a\,Q'_a \to PredMap \,(List^{\wedge}\, a\, Q_a)\, (List^{\wedge}\, a\, Q'_a)}\]
+to map a morphism of predicates 
+\[
+  \mathsf{PredMap \, (K1)\, (LTerm^{\wedge}\,b\,K1)}
+\]
+to a morphism of lifted predicates
+\[
+  \mathsf{PredMap \,(List^{\wedge}\,(LTerm\,b)\,K1) \, (List^{\wedge}\,(LTerm\,b)\, (LTerm^{\wedge}\,b\,K1))}
+\]
+
+We define the $\mathsf{ListC}$ case of $\mathsf{LTerm^{\wedge}K1}$ as 
+\[
+  \mathsf{LTerm^{\wedge}K1\,a\, (ListC\, b\, e\, ts) =
+    (K1 , \, Equal^{\wedge}ListK1 , \,  L_{List^{\wedge}LTerm^{\wedge}K1} ) }
+\]
+where
+ $\mathsf{L_{List^{\wedge}LTerm^{\wedge}K1} : List^{\wedge}\, (LTerm\,b) \, (LTerm^{\wedge} \, b\, K1) \, ts}$
+\[
+  \mathsf{ 
+ L_{List^{\wedge}LTerm^{\wedge}K1} =
+  List^{\wedge}map \, (LTerm\,b) \, K1 \, (LTerm^{\wedge}\, b\, K1) \, m_{K1} \, ts \, (List^{\wedge}K1\, (LTerm\, b)\, ts)
+    }
+\]
+and 
+ $\mathsf{m_{K1} : PredMap \, (K1)\, (LTerm^{\wedge}\,b\,K1)}$
+\[
+  \mathsf{m_{K1} \, t\, \ast\, = LTerm^{\wedge}K1\, b\, t}
+\]
+where $\mathsf{\ast}$ is the single element of $\mathsf{(K1\, t)}$. 
+The use of $\mathsf{List^{\wedge}map}$ is required in the $\mathsf{ListC}$ case because 
+$\mathsf{ListC}$ takes an argument of type $\mathsf{List\, (LTerm\, b)}$. 
+The same technique can be used to define $\mathsf{G^{\wedge}K1}$ whenever $\mathsf{G}$ has 
+a constructor of the form ($\mathsf{c : F \, (G\, a) \to G\, (K\,b)}$). 
+We only allow constructors of this form when 
+$\mathsf{F}$ is a nested type or ADT, so we are guaranteed to have a $\mathsf{F^{\wedge}map}$ function. 
+
+
+\subsection{Liftings of $\mathsf{K1}$}
+To provide a proof of $\mathsf{G^{\wedge}\, a\, K1 \, t}$ for every term $\mathsf{t : G\, a}$, 
+we need to know that the lifting of $\mathsf{K1}$ by a type $\mathsf{H}$ is extensionally equal to $\mathsf{K1}$ on $\mathsf{H}$. 
+For example, we might need a proof that $\mathsf{Pair^{\wedge}\,a\,b\,K1\,K1}$ is equal to the predicate $\mathsf{K1}$ on pairs. 
+Given a pair $\mathsf{(x , y) : a \times b}$, we have 
+
+\begin{align*}
+  &\mathsf{Pair^{\wedge}\,a\,b\,K1\,K1 (x, y)}  \\
+  = \, \, &\mathsf{K1 \, x \times K1\, y} \\ 
+  = \, \, &\mathsf{\top \times \top}
+\end{align*}
+while 
+\begin{align*}
+ \mathsf{K1\, (x, y) = \top}
+\end{align*}
+and while these types are not equal they are clearly isomorphic. So for simplicity of presentation, we 
+assume ($\mathsf{F^{\wedge}\,a\,K1}$) is equal to $\mathsf{K1}$ for every nested type and ADT $\mathsf{F}$. 
 
 \section{Primitive representation for GADTs}
 
