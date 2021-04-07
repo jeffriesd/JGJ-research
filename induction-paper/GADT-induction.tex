@@ -1462,6 +1462,10 @@ So, $\mathsf{p}$ is defined as
 
 \section{Induction for GADTs with nesting}\label{sec:GADT-nested}
 
+%%% Change title: something about the inherent limitations of the method
+%%% we might want to extend previous result
+%%% but we cannot so we already have the best possible result
+
 In the previous sections,
 we derive induction rules for examples of GADTs that do not feature nesting,
 in the sense that their constructors contain no nested calls of the recursive variable,
@@ -1716,16 +1720,16 @@ and $\mathsf{List^{\wedge}}$, we will need analogous functions for these lifting
 {\color{red} Finish example by defining $\mathsf{LTerm^{\wedge}K1}$}
 
 
-\section{Primitive representation for GADTs}
-
-No induction with primitive representation (reference Haskell Symposium paper and~\cite{jp19} and paper Patricia Neil Clement 2010)
+%\section{Primitive representation for GADTs}
 
 
 
-\section{Conclusion}
+
+\section{Conclusion/Related work}
 
 Mention Patricia/Neil2008 paper
 
+No induction with primitive representation (reference Haskell Symposium paper and~\cite{jp19} and paper Patricia Neil Clement 2010)
 
 
 \section{TODO}
