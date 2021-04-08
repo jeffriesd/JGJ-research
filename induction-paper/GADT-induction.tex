@@ -431,7 +431,8 @@ This encoding is particularly convenient when representing GADTs as Church encod
 {\color{red} STLC example}
 
 GADTs are expressive enough to represent, for example, the types and terms of the simply typed lambda calculus. 
-We will use a variant of the STLC including a base type of Bool, and type constructors for arrow types and list types: 
+We will use a variant of the STLC including a base type of booleans, and type constructors for arrow types and list types. 
+We define a GADT $\mathsf{LType}$ to encode the set of permissible types for this calculus:
 
 \begin{equation}\label{eq:eq_ltype}
 \begin{array}{l}
@@ -442,10 +443,31 @@ We will use a variant of the STLC including a base type of Bool, and type constr
 \end{array}
 \end{equation}
 
+The $\mathsf{TBool}$ constructor represents the type of booleans in the calculus. It is 
+defined in terms of $\mathsf{KBool : \forall\, (a : Set) \to Set}$, which simply returns $\mathsf{Bool}$ on any input:
+\[
+  \mathsf{KBool \, a = Bool}
+\]
+The lifting $\mathsf{KBool^{\wedge} : \forall (a : Set) \to (a \to Set) \to (KBool \, a) \to Set}$ lifts every predicate to the constantly true predicate: 
+\[
+  \mathsf{KBool^{\wedge}\, a\, Q_a\, b = \top}
+\]
+
+% The $\mathsf{Bool}$ data type is defined as:
+% \begin{equation}\label{eq:bool}
+% \begin{array}{l}
+% \mathsf{data\, Bool\,: Set\,where}\\
+%   \mathsf{\;\;\;\;\;\;\;\;true :\, Bool} \\
+%   \mathsf{\;\;\;\;\;\;\;\;false:\, Bool} \\
+% \end{array}
+% \end{equation}
+The type system also includes an arrow type constructor, $\mathsf{TArr}$ , which takes two types $\mathsf{b}$ and $\mathsf{c}$
+and produces the arrow type $\mathsf{b \to c}$. Similarly, given a type $\mathsf{b}$, we can construct 
+the type $\mathsf{List\,b}$ using the $\mathsf{TList}$ constructor. 
+
+
 The term calculus for this type system includes variables, abstraction, application, 
 and also includes an introduction rule that takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
-
-
 \begin{equation}\label{eq:eq_lterm}
 \begin{array}{l}
 \mathsf{data\, LTerm\,(a : Set) : Set\,where}\\
@@ -458,15 +480,25 @@ and also includes an introduction rule that takes a list of lambda terms of type
 \end{equation}
 
 The type parameter for $\mathsf{LTerm}$ tracks the types of STLC terms. So the type $\mathsf{LTerm\,A}$ 
-contains lambda terms of type $\mathsf{A}$. The $\mathsf{LType}$ GADT is used to encode the 
-grammar of permissible types for this calculus. 
-
+contains lambda terms of type $\mathsf{A}$. 
 Variables are represented as strings and are tagged with their type. 
-The $\mathsf{Abs}$ constructor takes a name (string) and a type for the bound variable,
-and a lambda term of type $\mathsf{c}$ for the body of the abstraction.
+The $\mathsf{Var}$ constructor takes a variable name and a type for the variable and produces 
+a term of the given type. 
+The $\mathsf{Abs}$ constructor takes a variable name, a type $\mathsf{b}$ for the variable,
+and a lambda term of type $\mathsf{c}$ for the body of the abstraction, and 
+it produces a term of type $\mathsf{b \to c}$. 
 The $\mathsf{App}$ constructor applies a lambda term of type $\mathsf{b \to a}$ to a lambda term of type $\mathsf{b}$, producing
 a lambda term of type $\mathsf{a}$. 
 The $\mathsf{ListC}$ constructor takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
+
+
+Variables are tagged with their types in the $\mathsf{Var}$ (variable introduction) and 
+$\mathsf{Abs}$ (abstraction) constructors. The role of $\mathsf{LType}$ in the $\mathsf{Var}$ and $\mathsf{Abs}$ constructors
+is to enforce that variables can only be tagged with a legal type, e.g., $\mathsf{Bool}$, 
+$\mathsf{Bool \to Bool}$, $\mathsf{List\, (Bool \to Bool)}$, etc. 
+Therefore the presence of $\mathsf{LType}$ in these constructors ensures that all lambda terms produced by 
+$\mathsf{Var}$, $\mathsf{Abs}$, $\mathsf{App}$, and $\mathsf{ListC}$ are well-typed. 
+
 
 
 \section{(Deep) induction for GADTs}
@@ -1602,7 +1634,6 @@ Unlike nestes types, indeed, GADTs do not admit a semantic interpretation that i
 
 \section{Applications}
 
-{\color{red} Compare with structural induction? or at least state why structural induction fails.} \\
 {\color{red} Can get rid of Maybe using non-empty lists and postulates}
 
 In this section we use deep induction for the $\mathsf{LTerm}$ GADT to 
@@ -1630,7 +1661,11 @@ which we prove by
     gtVar\,  gtABs\,  gtApp\,  gtListC\,  a\,\, K1\,\, t\, (LTerm^{\wedge}K1\, a\, t)
     }
 \]
-where $\mathsf{K1 : a \to Set}$ and $\mathsf{LTerm^{\wedge}K1\, a\, t : LTerm^{\wedge}\, a\, K1\, t}$.
+where $\mathsf{K1 : a \to Set}$ is the constantly true predicate:
+\[
+  \mathsf{K1 \, x = \top}
+\]
+and $\mathsf{LTerm^{\wedge}K1\, a\, t : LTerm^{\wedge}\, a\, K1\, t}$.
 Notice that there is no space in $\mathsf{LTerm^{\wedge}K1}$, because
 \[
   \mathsf{LTerm^{\wedge}K1 : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K1\,t}
@@ -1885,6 +1920,8 @@ No induction with primitive representation (reference Haskell Symposium paper an
 
 \begin{itemize}
 \item reference (correctly) Haskell Symposium paper
+\item reference inspiration for STLC GADT : https://www.seas.upenn.edu/~cis194/spring15/lectures/11-stlc.html
+
 \end{itemize}
 
 %%% Added to bibliography:
