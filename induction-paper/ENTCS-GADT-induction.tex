@@ -1,156 +1,65 @@
-% For double-blind review submission, w/o CCS and ACM Reference (max
-% submission space)
-\documentclass[acmsmall,screen,review,anonymous]{acmart}
-\settopmatter{printfolios=true,printccs=false,printacmref=false}
-%% For double-blind review submission, w/ CCS and ACM Reference
-%\documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
-%% For single-blind review submission, w/o CCS and ACM Reference (max submission space)
-%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
-%% For single-blind review submission, w/ CCS and ACM Reference
-%\documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true}
-%% For final camera-ready submission, w/ required CCS and ACM Reference
-%\documentclass[acmsmall]{acmart}\settopmatter{}
+\documentclass[9pt]{entcs} \usepackage{entcsmacro}
+\usepackage{graphicx}
+\sloppy
+% The following is enclosed to allow easy detection of differences in
+% ascii coding.
+% Upper-case    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+% Lower-case    a b c d e f g h i j k l m n o p q r s t u v w x y z
+% Digits        0 1 2 3 4 5 6 7 8 9
+% Exclamation   !           Double quote "          Hash (number) #
+% Dollar        $           Percent      %          Ampersand     &
+% Acute accent  '           Left paren   (          Right paren   )
+% Asterisk      *           Plus         +          Comma         ,
+% Minus         -           Point        .          Solidus       /
+% Colon         :           Semicolon    ;          Less than     <
+% Equals        =3D           Greater than >          Question mark ?
+% At            @           Left bracket [          Backslash     \
+% Right bracket ]           Circumflex   ^          Underscore    _
+% Grave accent  `           Left brace   {          Vertical bar  |
+% Right brace   }           Tilde        ~
 
+\bibliographystyle{entcs}
 
-%% Journal information
-%% Supplied to authors by publisher for camera-ready submission;
-%% use defaults for review submission.
-\acmJournal{PACMPL}
-\acmVolume{1}
-\acmNumber{Haskell Symposium} % CONF = POPL or ICFP or OOPSLA
-\acmArticle{1}
-\acmYear{2021}
-\acmMonth{8}
-\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
-\startPage{1}
+% A couple of exemplary definitions:
 
-%% Copyright information
-%% Supplied to authors (based on authors' rights management selection;
-%% see authors.acm.org) by publisher for camera-ready submission;
-%% use 'none' for review submission.
-\setcopyright{none}
-%\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\copyrightyear{2018}           %% If different from \acmYear
-
-%% Bibliography style
-\bibliographystyle{ACM-Reference-Format}
-%% Citation style
-%% Note: author/year citations are required for papers published as an
-%% issue of PACMPL.
-\citestyle{acmauthoryear}   %% For author/year citations
-%\citestyle{acmnumeric}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Note: Authors migrating a paper from PACMPL format to traditional
-%% SIGPLAN proceedings format must update the '\documentclass' and
-%% topmatter commands above; see 'acmart-sigplanproc-template.tex'.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\usepackage[utf8]{inputenc}
-\usepackage{ccicons}
-\usepackage{verbatim}
+\newcommand{\Nat}{{\mathbb N}}
+\newcommand{\Real}{{\mathbb R}}
+\def\lastname{Johann, Ghiorzi and Jeffries}
 
 \usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amscd}
-%\usepackage{MnSymbol}
-\usepackage{xcolor}
-
-\usepackage{bbold}
-\usepackage{url}
-\usepackage{upgreek}
-%\usepackage{stmaryrd}
-
-\usepackage{lipsum}
-\usepackage{tikz-cd}
-\usetikzlibrary{cd}
-\usetikzlibrary{calc}
-\usetikzlibrary{arrows}
-
-\usepackage{bussproofs}
-\EnableBpAbbreviations
 
 \input{macros}
-\input{mytheorem}
-
-\theoremstyle{definition}
-\newtheorem{exmpl}{Example}
-
-\renewcommand{\greyout}[1]{}
-
-\newcommand{\new}[1]{{\color{blue} {#1}}}
 
 
-\newcommand{\emptyfun}{{[]}}
-\newcommand{\cal}{\mathcal}
-\newcommand{\F}{\mathcal{F}}
-\newcommand{\G}{\mathcal{G}}
-\newcommand{\N}{\mathcal{N}}
-\newcommand{\E}{\mathcal{E}}
-\newcommand{\B}{\mathcal{B}}
-\renewcommand{\P}{\mathcal{A}}
-\newcommand{\pred}{\mathsf{Fam}}
-\newcommand{\env}{\mathsf{Env}}
-\newcommand{\set}{\mathsf{Set}}
-\renewcommand{\S}{\mathcal S}
-\newcommand{\C}{\mathcal{C}}
-\newcommand{\D}{\mathcal{D}}
-\newcommand{\A}{\mathcal{A}}
-\renewcommand{\id}{\mathit{id}}
-\newcommand{\map}{\mathsf{map}}
-\newcommand{\pid}{\underline{\mathit{id}}}
-\newcommand{\pcirc}{\,\underline{\circ}\,}
-\newcommand{\pzero}{\underline{0}}
-\newcommand{\pone}{\underline{1}}
-\newcommand{\psum}{\,\underline{+}\,}
-\newcommand{\pinl}{\underline{\mathit{inL}}\,}
-\newcommand{\pinr}{\underline{\mathit{inR}}\,}
-\newcommand{\ptimes}{\,\underline{\times}\,}
-\newcommand{\ppi}{\underline{\pi_1}}
-\newcommand{\pppi}{\underline{\pi_2}}
-\newcommand{\pmu}{\underline{\mu}}
-\newcommand{\semmap}{\mathit{map}}
-\newcommand{\subst}{\mathit{subst}}
 
-\newcommand{\tb}[1]{~~ \mbox{#1} ~~}
-\newcommand{\listt}[1]{(\mu \phi. \lambda \beta . \onet + \beta \times
-  \phi \beta) #1} 
-\newcommand{\filtype}{\Nat^\emptyset 
- (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
-  (List \, \alpha) \, (List \, \alpha))} 
-\newcommand{\filtypeGRose}{\Nat^\emptyset 
- (\Nat^\emptyset \, \alpha \, \mathit{Bool})\, (\Nat^\emptyset 
-  (\mathit{GRose}\,\psi \, \alpha) \, (\mathit{GRose}\,\psi \, (\alpha
-  + \onet)))} 
-\newcommand{\maplist}{\mathit{map}_{\lambda A. \setsem{\emptyset; \alpha
-      \vdash \mathit{List} \, \alpha} \rho[\alpha := A]}} 
-\newcommand{\PLeaves}{\mathsf{PLeaves}}
-\newcommand{\swap}{\mathsf{swap}}
-\newcommand{\reverse}{\mathsf{reverse}}
-\newcommand{\Bcons}{\mathit{Bcons}}
-\newcommand{\Bnil}{\mathit{Bnil}}
-
-
-\title[(Deep) Induction for GADTs]{(Deep) Induction for GADTs}
-
-\author{Patricia Johann, Enrico Ghiorzi, and Daniel Jeffries}
-\affiliation{ \institution{Appalachian State University}}
-\email{johannp@appstate.edu, ghiorzie@appstate.edu,
-  jeffriesd@appstate.edu}
 
 \begin{document}
+\begin{frontmatter}
+  \title{Deep Induction for GADTs}
 
-\begin{abstract}
-Abstract
+  \author{Patricia Johann\thanksref{JohannEmail}}
+  \author{Enrico Ghiorzi\thanksref{GhiorziEmail}}
+  \author{Daniel Jeffries\thanksref{JeffriesEmail}}
+  \thanks[JohannEmail]{Email: \href{mailto:johannp@appstate.edu} {\texttt{\normalshape johannp@appstate.edu}}}
+  \thanks[GhiorziEmail]{Email: \href{mailto:ghiorzie@appstate.edu} {\texttt{\normalshape ghiorzie@appstate.edu}}}
+  \thanks[JeffriesEmail]{Email: \href{mailto:jeffriesd@appstate.edu} {\texttt{\normalshape jeffriesd@appstate.edu}}}
+  \address{Department of Computer Science\\ Appalachian State University}
+
+\begin{abstract} 
+  Abstract goes here.
 \end{abstract}
 
-\maketitle
+\begin{keyword}
+  Please list keywords from your paper here, separated by commas.
+\end{keyword}
+
+\end{frontmatter}
+
+
 
 \section{Introduction}\label{sec:intro}
+
+Introduction goes here.
 
 
 
@@ -174,16 +83,14 @@ and to ensure the type safety of programs specifying those computations.
 ADTs include unindexed types, such as the type of natural numbers,
 and types indexed over other types, such as the quintessential example of an ADT,
 the type of lists (here coded in Agda)
-{\color{blue}(Ask Daniel which flavor of syntax, paper as literate Agda, naming conventions?)}
 \begin{equation}\label{eq:list}
 \begin{array}{l}
-%\mathsf{data\, List : Set \to Set\,where}\\
-\mathsf{data\, List\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Nil\,\,\,\,\,\, :\, List\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;Cons\, :\, a \to List\,a \to List\,a} 
+\mathsf{data\ List : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;nil\,\,\,\,\,\, :\, List\,A}\\
+\mathsf{\;\;\;\;\;\;\;cons\, :\, A \to List\,A \to List\,A} 
 \end{array}
 \end{equation}
-Notice that all occurrences of $\mathsf{List}$ in the above encoding are instantiated at the same index $\mathsf{a}$.
+Notice that all occurrences of $\mathsf{List}$ in the above encoding are instantiated at the same index $\mathsf{A}$.
 Thus, the instances of $\mathsf{List}$ at various indices are defined independently from one another.
 That is a defining feature of ADTs:
 an ADT defines a \emph{family of inductive types}, one for each index type.
@@ -194,13 +101,13 @@ that can be used for program verification and other applications.
 A simple example of such a type is given by Bird and Meertens’~\cite{bm98} prototypical \emph{nested type}
 \begin{equation}\label{eq:ptree}
 \begin{array}{l}
-\mathsf{data\, PTree\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;PLeaf\,\,\, :\, a \to PTree\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;PNode\, :\, PTree\,(a \times a) \to PTree\,a} 
+\mathsf{data\ PTree : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;pLeaf\,\,\, :\, A \to PTree\,A}\\
+\mathsf{\;\;\;\;\;\;\;pNode\, :\, PTree\,(A \times A) \to PTree\,A} 
 \end{array}
 \end{equation}
 of perfect trees, which can be thought of as constraining lists to have lengths that are powers of 2.
-In the above code, the constructor $\mathsf{PNode}$ uses data of type $\mathsf{PNode\,(a \times a)}$ to construct data of type $\mathsf{PNode\,a}$.
+In the above code, the constructor $\mathsf{PNode}$ uses data of type $\mathsf{PNode\,(A \times A)}$ to construct data of type $\mathsf{PNode\,A}$.
 Thus, it is clear that the instantiations of $\mathsf{PNode}$ at various indices cannot be defined independently, so that the entire family of types must actually be defined at once.
 A nested type thus defines not a family of inductive types, but rather an \emph{inductive family of types}.
 
@@ -209,16 +116,16 @@ none of whose recursive occurrences occur below another type constructor,
 and \emph{truly} nested types, such as the nested type
 \begin{equation}\label{eq:bush}
 \begin{array}{l}
-\mathsf{data\, Bush\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;BNil\,\,\,\,\,\, :\, Bush\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;BCons\, :\, a \to Bush\,(Bush\,a) \to Bush\,a} 
+\mathsf{data\ Bush : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;bNil\,\,\,\,\,\, :\, Bush\,A}\\
+\mathsf{\;\;\;\;\;\;bCons\, :\, A \to Bush\,(Bush\,A) \to Bush\,A} 
 \end{array}
 \end{equation}
 of bushes, whose recursive occurrences appear below their own type constructors.
 Note that, while the constructors of a nested type can contain occurrences of the type instantiated at any index,
 the return types of its constructors still have to be the same type instance of the type being defined.
-In other words, all constructors of $\mathsf{PTree\,a}$ have to return an element of type $\mathsf{PTree\,a}$,
-and all constructors of $\mathsf{Bush\,a}$ have to return an element of type $\mathsf{Bush\,a}$.
+In other words, all constructors of $\mathsf{PTree\,A}$ have to return an element of type $\mathsf{PTree\,A}$,
+and all constructors of $\mathsf{Bush\,A}$ have to return an element of type $\mathsf{Bush\,A}$.
 %the return types of the constructors are still required to be instantiated at the same variable $\mathsf{a}$.}
 %As previously noted, the return types of the constructors of a nested
 %type have to be the same type instance of the type being defined.
@@ -226,18 +133,25 @@ and all constructors of $\mathsf{Bush\,a}$ have to return an element of type $\m
 
 \subsection{Induction principles for ADTs and nested types}\label{ssec:induction-nested}
 
-An induction principle for a data type allows proving
+An induction principle for a data type allows to prove
 that a predicate holds for every element of that data type,
 provided that it holds for every element inductively produced by the type's constructors.
 In this paper, we are interested in induction principles for proof-relevant predicates.
-A proof-relevant predicate on a type $\mathsf{a}$ is a function $\mathsf{a \to Set}$
-(where $\mathsf{Set}$ is the type of sets)
-mapping each $\mathsf{x : a}$ to the set of proofs that the predicate holds for $\mathsf{x}$.
+A proof-relevant predicate on a type $\mathsf{A : Set}$ is a function $\mathsf{A \to Set}$
+%(where $\mathsf{Set}$ is the type of sets)
+mapping each $\mathsf{x : A}$ to the set of proofs that the predicate holds for $\mathsf{x}$.
 For example, the induction principle for $\mathsf{List}$ is
-\begin{multline*}
-\mathsf{\forall (a : Set) (P : List\,a \to Set) \to P\,Nil \to \big( \forall (x : a) (xs: List\,a) \to P\,xs \to P\,(Cons\,x\,xs)\big)} \\
-\mathsf{\to \forall (xs : List\,a) \to P\, xs }
-\end{multline*}
+\begin{equation*}
+\mathsf{
+\forall (A : Set) (P : List\,A \to Set)
+\to P\,Nil
+\to \big( \forall (a : A) (ls: List\,A)
+\to P\,ls
+\to P\,(Cons\,a\,ls)\big)
+\to \forall (ls : List\,A)
+\to P\, ls
+}
+\end{equation*}
 Note that the data inside a structure of type $\mathsf{List}$ is treated monolithically (i.e., ignored) by this induction rule.
 Indeed, the induction rule inducts over only the top-level structures of data types,
 leaving any data internal to the top-level structure untouched.
@@ -250,12 +164,14 @@ The only difference from the induction principle for ADTs is that,
 since a nested type is defined as a whole inductive family of types at once,
 its induction rule has to necessary involve a polymorphic predicate.
 Thus, the induction rule for $\mathsf{PTree}$ is
-\begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to PTree\, a \to Set)
-\to \big( \forall (a : Set) (x : a) \to P\,a\,(PLeaf\, x) \big)} \\
-\mathsf{\to \big( \forall (a : Set) (x : PTree\,(a \times a)) \to P\,(a \times a)\,x \to P\,a\,(PNode\,x)\big)} \\
-\mathsf{\to \forall (a : Set) (x : PTree\,a) \to P\,a\,x }
-\end{multline*}
+\[
+\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to PTree\, A \to Set)
+\to \big( \forall (A : Set) (a : A) \to P\,A\,(PLeaf\, a) \big)} \\
+\quad\mathsf{\to \big( \forall (A : Set) (pt : PTree\,(A \times A)) \to P\,(A \times A)\,pt \to P\,a\,(PNode\,pt)\big)
+\to \forall (A : Set) (pt : PTree\,A) \to P\,A\,pt }
+\end{array}
+\]
 
 %This kind of induction principles, which we will call \emph{structural induction},
 Structural induction principles cannot be extended to truly nested types, such as $\mathsf{Bush}$.
@@ -268,46 +184,52 @@ This additional predicate is lifted to predicates on any internal structure cont
 Satisfaction of a predicate by the data at one level of a structure is then conditioned upon satisfaction of the appropriate predicates by all of the data at the preceding level.
 
 For example, the deep induction rule for $\mathsf{Bush}$ is
-\begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to Bush\, a \to Set)
-\to \big( \forall (a : Set) \to P\,a\,BNil \big)} \\
-\mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : a) (y : Bush\,(Bush\,a))} \\
-\mathsf{\to Q\,x \to P\,(Bush\,a)\,(Bush^{\wedge}\,a\,Q)\,y \to P\,a\,Q\,(BCons\,x\,y) \big)} \\
-\mathsf{\to \forall (a : Set) (Q : a \to Set) (x : Bush\,a) \to Bush^{\wedge}\,a\,Q\,x \to P\,a\,Q\,x }
-\end{multline*}
-where $\mathsf{Bush^{\wedge} : \forall (a : Set) \to (a \to Set) \to Bush\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{Bush\,a}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{a}$ contained in its argument bush.
-%where $\mathsf{Bush^{\wedge} : \forall (a : Set) \to ( a \to Set ) \to Bush\,a \to Set}$
-%is the polymorphic function that lifts predicates to $\mathsf{Bush}$,
+\[
+\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to Bush\, A \to Set)
+\to \big( \forall (A : Set) \to P\,A\,BNil \big)} \\
+\quad\mathsf{\to \big( \forall (A : Set) (Q : A \to Set) (a : A) (bb : Bush\,(Bush\,A))
+\to Q\,a \to P\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb \to P\,A\,Q\,(BCons\,a\,bb) \big)} \\
+\quad\mathsf{\to \forall (A : Set) (Q : A \to Set) (b : Bush\,A) \to Bush^{\wedge}\,A\,Q\,b \to P\,A\,Q\,b }
+\end{array}
+\]
+where $\mathsf{Bush^{\wedge} : \forall (A : Set) \to (A \to Set) \to Bush\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{Bush\,A}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{A}$ contained in its argument bush.
 It is defined as
 \begin{align*}
-\mathsf{Bush^{\wedge}\,a\,Q\,BNil} &= \mathsf{1} \\
-\mathsf{Bush^{\wedge}\,a\,Q\,(BCons\,x\,y)} &= \mathsf{Q\,x \times Bush^{\wedge}\,(Bush\,a)\,(Bush^{\wedge}\,a\,Q)\,y}
+\mathsf{Bush^{\wedge}\,A\,Q\,BNil} &= \mathsf{\top} \\
+\mathsf{Bush^{\wedge}\,A\,Q\,(BCons\,a\,bb)} &= \mathsf{Q\,a \times Bush^{\wedge}\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb}
 \end{align*}
+where $\mathsf{Q : A \to Set}$ and $\mathsf{bb : Bush\,(Bush\,A)}$.
 
 Despite deep induction being motivated by the need to produce an induction principle for truly nested types,
 it can equally be applied to all other ADTs and nested types.
 For example, the deep induction principle for $\mathsf{List}$ is
-\begin{multline*}
-\mathsf{\forall (a : Set) (P : List\, a \to Set) (Q : a \to Set)} \\
-\mathsf{\to P\,Nil \to \big( \forall (x : a) (xs: List\,a) \to Q\,x \to P\,xs \to P\,(Cons\,x\,xs)\big)} \\
-\mathsf{\to \forall (xs : List\,a) \to List^{\wedge}\,a\,Q\,xs \to P\, xs }
-\end{multline*}
-where $\mathsf{List^{\wedge} : \forall (a : Set) \to (a \to Set) \to List\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{List\,a}$ asserting that $\mathsf{Q}$ holds for every element of its argument list.
-Finally, the deep induction rule for $\mathsf{PTree}$ is
-\begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to PTree\, a \to Set)} \\
-\mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : a) \to Q\,x \to P\,a\,Q\,(PLeaf\, x) \big)} \\
-\mathsf{\to \big( \forall (a : Set) (Q : a \to Set) (x : PTree\,(a \times a)) \to P\,(a \times a)\,(Pair^{\wedge}\,a\,Q)\,x \to P\,a\,Q\,(PNode\,x)\big)} \\
-\mathsf{\to \forall (a : Set) (Q : a \to Set) (x : PTree\,a) \to PTree^{\wedge}\,a\,Q\,x \to P\,a\,Q\,x }
-\end{multline*}
-where $\mathsf{Pair^{\wedge} : \forall (a : Set) \to (a \to Set) \to a \times a \to Set}$ lifts a predicate $\mathsf{Q}$ on $\mathsf{a}$ to a predicate on pairs of type $\mathsf{a \times a}$,
-so that $\mathsf{Pair^{\wedge}\,a\,Q\,(x,y) = Q\,x \times Q\,y}$,
-and $\mathsf{PTree^{\wedge} : \forall (a : Set) \to (a \to Set) \to PTree\,a \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{a}$ to a predicate on data of type $\mathsf{PTree\,a}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{a}$ contained in its argument perfect tree.
+\[
+\begin{array}{l}
+\mathsf{\forall (A : Set) (P : List\, A \to Set) (Q : A \to Set)
+\to P\,Nil \to \big( \forall (a : A) (ls: List\,A) \to Q\,a \to P\,ls \to P\,(Cons\,a\,ls)\big)} \\
+\quad\mathsf{\to \forall (ls : List\,A) \to List^{\wedge}\,A\,Q\,ls \to P\,ls }
+\end{array}
+\]
+where $\mathsf{List^{\wedge} : \forall (A : Set) \to (A \to Set) \to List\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{List\,A}$ asserting that $\mathsf{Q}$ holds for every element of its argument list.
 
-{\color{blue} Moreover, for types admitting both deep induction and structural induction, the former generalizes the latter.
-Indeed, structural induction rules can be derived from deep induction rules by choosing the constantly true predicate as the custom predicate traversing each data element contained in the data type.
+As a further example, the deep induction rule for $\mathsf{PTree}$ is
+\[
+\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to PTree\,A \to Set)
+  \to \big( \forall (A : Set) (Q : A \to Set) (a : A) \to Q\,a \to P\,A\,Q\,(PLeaf\, a) \big)} \\
+\quad \mathsf{\to \big( \forall (A : Set) (Q : A \to Set) (a : PTree\,(A \times A)) \to P\,(A \times A)\,(Pair^{\wedge}\,A\,A\,Q\,Q)\,a \to P\,A\,Q\,(PNode\,a)\big)} \\
+\quad \mathsf{\to \forall (A : Set) (Q : A \to Set) (a : PTree\,a) \to PTree^{\wedge}\,A\,Q\,a \to P\,A\,Q\,a }
+\end{array}
+\]
+where $\mathsf{Pair^{\wedge} : \forall (A : Set) (B : Set) \to (A \to Set) \to (B \to Set) \to A \times B \to Set}$ lifts predicates $\mathsf{Q_A}$ on data of type $\mathsf{A}$ and $\mathsf{Q_B}$ on data of type $\mathsf{B}$ to a predicate on pairs of type $\mathsf{A \times B}$,
+so that $\mathsf{Pair^{\wedge}\,A\,B\,Q_A\,Q_B\,(a,b) = Q_A\,a \times Q_B\,b}$,
+and $\mathsf{PTree^{\wedge} : \forall (A : Set) \to (A \to Set) \to PTree\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{PTree\,A}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{A}$ contained in its argument perfect tree.
+
+Moreover, for types admitting both deep induction and structural induction, the former generalizes the latter.
+Indeed, structural induction rules can be derived from deep induction rules by always choosing the constantly true predicate as the custom predicate traversing each data element contained in the data type.
 That way, deep induction only inspects the structure of the data type and not its content, just like structural induction does.
-A concrete example of this technique will be demonstrated in Section~\ref{sec:ind-equal}.}
+A concrete example of such derivation is demonstrated in Section~\ref{sec:ind-equal}.
 
 
 
@@ -368,30 +290,30 @@ languages. GADTs have also been used, e.g., to implement tagless
 interpreters~\cite{pl04,pr06,pvww06}, to improve memory
 performance~\cite{min15}, and to design APIs~\cite{pen20}.
 
-
-
-%\subsection{Agda syntax (bad title, revise)}
-
+\begin{example}\label{example:equal}
 As a first and notable example of GADT, we consider the the $\mathsf{Equal}$ type.
 This GADT is parametrized by two type indices,
 but it is only possible to construct a data element if the two indices are instantiated at the same type.
 In Agda, we code it as
 \begin{equation}\label{eq:equal}
 \begin{array}{l}
-\mathsf{data\, Equal : Set \to Set \to Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Refl :\, Equal\,c\,c}
+\mathsf{data\ Equal : Set \to Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;\;\;\;\,refl :\, Equal\,A\,A}
 \end{array}
 \end{equation}
 $\mathsf{Equal}$ has thus a single data element when its two type arguments
 are the same and no data elements otherwise.
+The importance of the $\mathsf{Equal}$ type lies in the fact that we can understand other GADTs in terms of equality,
+as shown in the examples below.
+\end{example}
 
-A more complex example for a GADT is
+\begin{example}\label{example:seq}
+A more complex example of GADT is the type of sequences,
 \begin{equation}\label{eq:eq-seq}
 \begin{array}{l}
-\mathsf{data\, Seq : Set \to Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Const :\, a \to Seq\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;SPair\,\, :\, Seq \,a \to Seq\,b \to
-  Seq\,(a \times b)}
+\mathsf{data\ Seq : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\
+\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, Seq\,A \to Seq\,B \to Seq\,(A \times B)}
 \end{array}
 \end{equation}
 which comprises sequences of any type $\mathsf{a}$
@@ -400,18 +322,15 @@ Such GADTs can be understood in terms of the $\mathsf{Equal}$ data type~\cite{ch
 For example, we can rewrite the $\mathsf{Seq}$ type as
 \begin{equation}\label{eq:eq_seq}
 \begin{array}{l}
-\mathsf{data\, Seq\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Const :\, a \to Seq\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;SPair\,\, :\, \exists (b\,c : Set).\,Equal\,a\,(b \times c) \to Seq\,b \to Seq\,c \to
-  Seq\,a}\\ 
+\mathsf{data\ Seq : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\
+\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \times C)
+  \to Seq\,B \to Seq\,C \to Seq\,A}\\ 
 \end{array}
 \end{equation}
-where the requirement that the $\mathsf{SPair}$ constructor produces an instance of $\mathsf{Seq}$ at a product type has been replaced with the requirement that the instance of $\mathsf{Seq}$ returned by $\mathsf{SPair}$ is \emph{equal} to some product type.
+where the requirement that the $\mathsf{sPair}$ constructor produces an instance of $\mathsf{Seq}$ at a product type has been replaced with the requirement that the instance of $\mathsf{Seq}$ returned by $\mathsf{sPair}$ is \emph{equal} to some product type.
 This encoding is particularly convenient when representing GADTs as Church encodings~\cite{vw10,atk12}.
-
-
-%{\color{blue} Do we really need the existential quantifiers?}
-
+\end{example}
 
 %To determine the possible shapes of a GADT's container we must
 %pattern-match on the type of the data to be contained.
@@ -427,81 +346,81 @@ This encoding is particularly convenient when representing GADTs as Church encod
 %\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}
 %\end{array}\]
 
-
-{\color{red} STLC example}
-
+\begin{example}\label{example:lterm}
 GADTs are expressive enough to represent, for example, the types and terms of the simply typed lambda calculus. 
-We will use a variant of the STLC including a base type of booleans, and type constructors for arrow types and list types. 
+We will use a variant of the simply typed lambda calculus including a base type of booleans,
+and type constructors for arrow types and list types. 
 We define a GADT $\mathsf{LType}$ to encode the set of permissible types for this calculus:
-
 \begin{equation}\label{eq:eq_ltype}
 \begin{array}{l}
-\mathsf{data\, LType\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;TBool :\, \exists (b : Set). \,Equal\,a\,(KBool\, b) \to LType\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;TArr\,\,\, :\, \exists (b : Set) (c : Set).\,Equal\,a\,(b \to c) \to LType\,b \to LType\,c \to LType\,a}\\
-  \mathsf{\;\;\;\;\;\;\;\;TList\,\, :\, \exists (b : Set).\,Equal\,a\,(\List\,b) \to LType\,b \to LType\,a}
+\mathsf{data\ LType : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;tBool :\, \forall (B : Set) \to Equal\,A\,Bool \to LType\,A}\\
+\mathsf{\;\;\;\;\;\;\;\;tArr\,\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \to C) \to LType\,B \to LType\,C \to LType\,A}\\
+  \mathsf{\;\;\;\;\;\;\;\;tList\,\, :\, \forall (B : Set) \to Equal\,A\,(\List\,B) \to LType\,B \to LType\,A}
 \end{array}
 \end{equation}
+The type system includes a $\mathsf{tBool}$ constructor representing the type of booleans;
+an arrow type constructor, $\mathsf{tArr}$ , which takes two types $\mathsf{B}$ and $\mathsf{C}$
+and produces the arrow type $\mathsf{B \to C}$;
+and a $\mathsf{tList}$ constructor which takes a type $\mathsf{B}$ and constructs
+the type $\mathsf{List\,B}$.
 
-The $\mathsf{TBool}$ constructor represents the type of booleans in the calculus. It is 
-defined in terms of $\mathsf{KBool : \forall\, (a : Set) \to Set}$, which simply returns $\mathsf{Bool}$ on any input:
-\[
-  \mathsf{KBool \, a = Bool}
-\]
-The lifting $\mathsf{KBool^{\wedge} : \forall (a : Set) \to (a \to Set) \to (KBool \, a) \to Set}$ lifts every predicate to the constantly true predicate: 
-\[
-  \mathsf{KBool^{\wedge}\, a\, Q_a\, b = \top}
-\]
-
-% The $\mathsf{Bool}$ data type is defined as:
-% \begin{equation}\label{eq:bool}
-% \begin{array}{l}
-% \mathsf{data\, Bool\,: Set\,where}\\
-%   \mathsf{\;\;\;\;\;\;\;\;true :\, Bool} \\
-%   \mathsf{\;\;\;\;\;\;\;\;false:\, Bool} \\
-% \end{array}
-% \end{equation}
-The type system also includes an arrow type constructor, $\mathsf{TArr}$ , which takes two types $\mathsf{b}$ and $\mathsf{c}$
-and produces the arrow type $\mathsf{b \to c}$. Similarly, given a type $\mathsf{b}$, we can construct 
-the type $\mathsf{List\,b}$ using the $\mathsf{TList}$ constructor. 
-
+%The $\mathsf{tBool}$ constructor represents the type of booleans in the calculus.
+%%It is defined in terms of $\mathsf{KBool : Set \to Set}$,
+%%which simply returns $\mathsf{Bool}$ on any input: $\mathsf{KBool \, A = Bool}$.
+%%The lifting $\mathsf{KBool^{\wedge} : \forall (A : Set) \to (A \to Set) \to (KBool \, A) \to Set}$ lifts every predicate to the constantly true predicate: 
+%%\[
+%%  \mathsf{KBool^{\wedge}\, A\, Q\, b = \top}
+%%\]
+%% The $\mathsf{Bool}$ data type is defined as:
+%% \begin{equation}\label{eq:bool}
+%% \begin{array}{l}
+%% \mathsf{data\, Bool\,: Set\,where}\\
+%%   \mathsf{\;\;\;\;\;\;\;\;true :\, Bool} \\
+%%   \mathsf{\;\;\;\;\;\;\;\;false:\, Bool} \\
+%% \end{array}
+%% \end{equation}
+%The type system also includes an arrow type constructor, $\mathsf{tArr}$ , which takes two types $\mathsf{B}$ and $\mathsf{C}$
+%and produces the arrow type $\mathsf{B \to C}$.
+%Similarly, given a type $\mathsf{B}$, we can construct
+%the type $\mathsf{List\,B}$ using the $\mathsf{tList}$ constructor.
 
 The term calculus for this type system includes variables, abstraction, application, 
-and also includes an introduction rule that takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
+and also includes an introduction rule that takes a list of lambda terms of type $\mathsf{B}$ and produces a lambda term of type $\mathsf{List\,B}$.
 \begin{equation}\label{eq:eq_lterm}
 \begin{array}{l}
-\mathsf{data\, LTerm\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;Var\,\,\,\,\,\,:\, String \to LType\,a \to LTerm\,a} \\
-\mathsf{\;\;\;\;\;\;\;\;Abs\,\,\,\,\,\, :\, \exists (b : Set) (c : Set).\,Equal\,a\,(b \to c) \to String 
-      \to LType\,b \to LTerm\,c \to LTerm\,a}\\
-  \mathsf{\;\;\;\;\;\;\;\;App\,\,\,\,\, :\, \exists (b : Set).\,LTerm (b \to a) \to LTerm\,b \to LTerm\,a}\\
-  \mathsf{\;\;\;\;\;\;\;\;ListC\,\, :\, \exists (b : Set).\,Equal\,a\,(\List\,b) \to List\,(LTerm\,b) \to LTerm\,a}
+\mathsf{data\ LTerm : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;var\,\,\,\,\,\,\,:\, String \to LType\,A \to LTerm\,A} \\
+\mathsf{\;\;\;\;\;\;\;\;abs\,\,\,\,\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \to C) \to String 
+      \to LType\,B \to LTerm\,C \to LTerm\,A}\\
+  \mathsf{\;\;\;\;\;\;\;\;app\,\,\,\,\, :\, \forall (B : Set) \to LTerm (B \to A) \to LTerm\,B \to LTerm\,A} \\
+  \mathsf{\;\;\;\;\;\;\;\;listC\,\,\, :\, \forall (B : Set) \to Equal\,A\,(List\,B) \to List\,(LTerm\,B) \to LTerm\,A}
 \end{array}
 \end{equation}
+The type parameter for $\mathsf{LTerm}$ tracks the types of simply typed lambda calculus terms.
+So the type $\mathsf{LTerm\,A}$ contains lambda terms of type $\mathsf{A}$. 
+Variables are represented as strings and are tagged with their type.
+The $\mathsf{var}$ constructor takes a variable name and a type for the variable and produces
+a term of the given type.
+The $\mathsf{abs}$ constructor takes a variable name, a type $\mathsf{B}$ for the variable,
+and a lambda term of type $\mathsf{C}$ for the body of the abstraction,
+and it produces a term of type $\mathsf{B \to C}$.
+The $\mathsf{app}$ constructor applies a lambda term of type $\mathsf{B \to A}$ to a lambda term of type $\mathsf{B}$,
+producing a lambda term of type $\mathsf{A}$. 
+The $\mathsf{listC}$ constructor takes a list of lambda terms of type $\mathsf{B}$ and produces a lambda term of type $\mathsf{List\,B}$.
 
-The type parameter for $\mathsf{LTerm}$ tracks the types of STLC terms. So the type $\mathsf{LTerm\,A}$ 
-contains lambda terms of type $\mathsf{A}$. 
-Variables are represented as strings and are tagged with their type. 
-The $\mathsf{Var}$ constructor takes a variable name and a type for the variable and produces 
-a term of the given type. 
-The $\mathsf{Abs}$ constructor takes a variable name, a type $\mathsf{b}$ for the variable,
-and a lambda term of type $\mathsf{c}$ for the body of the abstraction, and 
-it produces a term of type $\mathsf{b \to c}$. 
-The $\mathsf{App}$ constructor applies a lambda term of type $\mathsf{b \to a}$ to a lambda term of type $\mathsf{b}$, producing
-a lambda term of type $\mathsf{a}$. 
-The $\mathsf{ListC}$ constructor takes a list of lambda terms of type $\mathsf{b}$ and produces a lambda term of type $\mathsf{List\,b}$.
-
-
-Variables are tagged with their types in the $\mathsf{Var}$ (variable introduction) and 
-$\mathsf{Abs}$ (abstraction) constructors. The role of $\mathsf{LType}$ in the $\mathsf{Var}$ and $\mathsf{Abs}$ constructors
+Variables are tagged with their types in the $\mathsf{var}$ (variable introduction) and 
+$\mathsf{abs}$ (abstraction) constructors.
+The role of $\mathsf{LType}$ in the $\mathsf{var}$ and $\mathsf{abs}$ constructors
 is to enforce that variables can only be tagged with a legal type, e.g., $\mathsf{Bool}$, 
 $\mathsf{Bool \to Bool}$, $\mathsf{List\, (Bool \to Bool)}$, etc. 
 Therefore the presence of $\mathsf{LType}$ in these constructors ensures that all lambda terms produced by 
-$\mathsf{Var}$, $\mathsf{Abs}$, $\mathsf{App}$, and $\mathsf{ListC}$ are well-typed. 
+$\mathsf{var}$, $\mathsf{abs}$, $\mathsf{app}$, and $\mathsf{listC}$ are well-typed. 
+\end{example}
 
 
 
-\section{(Deep) induction for GADTs}
+\section{Deep induction for GADTs}
 
 %\begin{itemize}
 %    \item Recall structural induction does not work for GADTs because it does not work for truly nested types.
@@ -510,13 +429,18 @@ $\mathsf{Var}$, $\mathsf{Abs}$, $\mathsf{App}$, and $\mathsf{ListC}$ are well-ty
 %    \item This paper nevertheless shows how to extend (deep) induction to GADTs.
 %\end{itemize}
 
-As we have seen in Section~\ref{ssec:induction-nested},
-truly nested types do not support a structural induction rule,
-which is the reason why it was necessary to introduce a deep induction rule supporting them.
-Consequently, GADTs do not support a structural induction rule either,
-as they generalize nested types.
-Still, there is hope for GADTs to support a deep induction rule,
-like nested types do.
+%As we have seen in Section~\ref{ssec:induction-nested},
+%truly nested types do not support a structural induction rule,
+%which is the reason why it was necessary to introduce a deep induction rule supporting them.
+%Consequently, GADTs do not support a structural induction rule either,
+%as they generalize nested types.
+%Still, there is hope for GADTs to support a deep induction rule,
+%like nested types do.
+
+Reasoning about GADTs can generally be quite difficult,
+even more so than for ADTs and nested types.
+To help with that,
+we want to extend the deep induction principle seen in Section~\ref{ssec:induction-nested} to GADTs.
 
 Induction rules, and specifically deep induction rules for nested types,
 are traditionally derived using the functorial semantics of data types
@@ -524,6 +448,7 @@ in the setting of a parametric model~\cite{jp19}.
 In particular, relational parametricity is used to validate the induction principle because induction is, itself,
 a form of unary parametricity, where binary relations have been replaced with predicates,
 which are essentially unary relations.
+{\color{blue} Is there a reference for this?}
 %in the sense that induction involves predicates, which are unary relations,
 %as opposed to the binary relations involved in relational parametricity.
 
@@ -533,12 +458,13 @@ as these types do not allow for a functorial interpretation,
 at least in a parametric model~\cite{Haskell-paper}.
 
 Nevertheless, this paper shows how to extend deep induction to some GADTs.
-We will first demonstrate how to derive the deep induction rule for some example GADTs,
-and then provide a general principle that works for GADTs not featuring nesting in their definition.
+We will first demonstrate how to derive the deep induction rule for some example cases,
+and then provide a general principle that works for generic GADTs,
+as long as these do not feature nesting in their definition.
 
 
 
-\subsection{(Deep) induction for $\mathsf{Equal}$}\label{sec:ind-equal}
+\subsection{Deep induction for $\mathsf{Equal}$}\label{sec:ind-equal}
 
 %\begin{itemize}
 %\item Define $\mathsf{Equal}^{\wedge}$
@@ -553,363 +479,197 @@ and then provide a general principle that works for GADTs not featuring nesting 
 %\item Prove deep induction for $\mathsf{Equal}$ (define term)
 %\end{itemize}
 
-As a first example, we derive the induction rule for the $\mathsf{Equal}$ type from Equation~\ref{eq:equal}.
+As a first example, we derive the induction rule for the $\mathsf{Equal}$ type from example~\ref{example:equal}.
 This will provide a simple case study that will inform the investigation of more complex GADTs.
 Moreover, since we define GADTs using the $\mathsf{Equal}$ type,
 as for example in Equation~\ref{eq:eq-seq},
 this example will be instrumental in stating and deriving the induction rule of other GADTs.
 
 To define an induction rule for a type $\mathsf{G}$ we first need a predicate-lifting operation
-which takes predicates on a type $\mathsf{a}$ and lifts them to predicates on $\mathsf{G\,a}$.
+which takes predicates on a type $\mathsf{A}$ and lifts them to predicates on $\mathsf{G\,A}$.
 the predicate-lifting function for $\mathsf{Equal}$ is the function
 \[
-\mathsf{Equal^{\wedge} : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set}
+\mathsf{Equal^{\wedge} : \forall (A\,B : Set) \to (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set}
 \]
 defined as
 \[
-\mathsf{Equal^{\wedge}\,a\,a\,Q\,Q'\,Refl = \forall (x : a) \to Equal\,(Q\,x)(Q'\,x)}
+\mathsf{Equal^{\wedge}\,A\,A\,Q\,Q'\,Refl = \forall (a : A) \to Equal\,(Q\,a)(Q'\,a)}
 \]
 i.e., the function that takes two predicates on the same type and tests them for extensional equality.
 
 Next, we need to associate each constructor of the GADT under consideration
 to the expression that a given predicate is preserved by such constructor.
-Let $\mathsf{CRefl}$ be the following function associated to the $\mathsf{Refl}$ constructor:
-\begin{multline*}
-\mathsf{\lambda (P : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set)} \\
-\mathsf{\to \forall (c : Set) (Q : c \to Set) (Q' : c \to Set) \to Equal^{\wedge}\,c\,c\,Q\,Q'\,Refl \to P\,c\,c\,Q\,Q'\,Refl}
-\end{multline*}
+Let $\mathsf{dIndRefl}$ be the following function associated to the $\mathsf{refl}$ constructor:
+\[
+\begin{array}{l}
+\mathsf{\lambda (P : \forall (A\,B : Set) \to (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set)} \\
+\quad\mathsf{\to \forall (C : Set) (Q\, Q' : C \to Set) \to Equal^{\wedge}\,C\,C\,Q\,Q'\,refl \to P\,C\,C\,Q\,Q'\,refl}
+\end{array}
+\]
 
 The induction rule states that,
 if a predicate is preserved by all of the constructors of the GADT under consideration,
 then the predicate is satisfied by any element of the GADT.
 The induction rule for $\mathsf{Equal}$ is thus the type
-\begin{multline*}
-\mathsf{\forall (P : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set)} \\
-%\mathsf{\to \big( \forall (c : Set) (Q : c \to Set) (Q' : c \to Set) \to Equal^{\wedge}\,c\,c\,Q\,Q'\,Refl \to P\,c\,c\,Q\,Q'\,Refl \big)} \\
-\mathsf{\to CRefl\,P \to \forall (a\,b : Set) (Q_a : a \to Set) (Q_b : b \to Set) (e: Equal\,a\,b)} \\
-	\mathsf{\to Equal^{\wedge}\,a\,b\,Q_a\,Q_b\,e \to P\,a\,b\,Q_a\,Q_b\,e}
-\end{multline*}
+\[
+\begin{array}{l}
+\mathsf{\forall (P : \forall (A\,B : Set) \to (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set)} \\
+\quad \mathsf{\to dIndRefl\,P \to \forall (A\,B : Set) (Q_A : A \to Set) (Q_B : B \to Set) (e: Equal\,A\,B)
+  \to Equal^{\wedge}\,A\,B\,Q_A\,Q_B\,e \to P\,A\,B\,Q_A\,Q_B\,e}
+\end{array}
+\]
 To validate the induction rule we need to provide it with a witness, i.e.,
 we need to show that the associated type is inhabited.
-We define a term $\mathsf{DIEqual}$ of the above type as
+We thus need to define a term $\mathsf{dIndEqual}$ of the above type,
+i.e., we need to define
 \[
-\mathsf{DIEqual\,P\,crefl\,a\,a\,Q_a\,Q_a'\,Refl\,L_E = crefl\,a\,Q_a\,Q_a'\,L_E}
+\mathsf{dIndEqual\,P\,crefl\,A\,B\,Q_A\,Q_B\,e\,liftE : P\,A\,B\,Q_A\,Q_B\,e}
 \]
-where
-$\mathsf{crefl : CRefl\,P}$,
-$\mathsf{Q_a : a \to Set}$, $\mathsf{Q_a' : a \to Set}$
-and $\mathsf{L_E : Equal^{\wedge}\,a\,a\,Q_a\,Q_a'\,Refl}$.
+for $\mathsf{crefl : dIndRefl\,P}$,
+$\mathsf{Q_A : A \to Set}$, $\mathsf{Q_B : B \to Set}$,
+$\mathsf{e : Equal\,A\,B}$
+and $\mathsf{liftE : Equal^{\wedge}\,A\,B\,Q_A\,Q_B\,e}$.
+By pattern-matching, we only need to consider the case where $\mathsf{A = B}$ and $\mathsf{e = refl}$,
+and define
+\[
+\mathsf{dIndEqual\,P\,crefl\,A\,A\,Q_A\,Q_A'\,refl\,liftE = crefl\,A\,Q_A\,Q_A'\,liftE}
+\]
+%where
+%$\mathsf{Q_A : A \to Set}$, $\mathsf{Q_A' : A \to Set}$
+%and $\mathsf{L_E : Equal^{\wedge}\,A\,A\,Q_A\,Q_A'\,Refl}$.
 Having provided a well-defined term for it,
 we have shown that the induction rule for $\mathsf{Equal}$ is sound.
 
-The type $\mathsf{Equal}$ also has a standard structural induction rule $\mathsf{SIEqual}$,
-\begin{multline*}
-\mathsf{\forall (Q : \forall (a\,b : Set) \to Equal\,a\,b \to Set)} \\
-\mathsf{\to \big( \forall (c : Set) \to P\,c\,c\,Refl \big)
-	\to \forall (a\,b : Set) (e: Equal\,a\,b) \to P\,a\,b\,e}
-\end{multline*}
+The type $\mathsf{Equal}$ also has a standard structural induction rule $\mathsf{indEqual}$,
+\[
+\mathsf{\forall (Q : \forall (A\,B : Set) \to Equal\,A\,B \to Set)
+  \to \big( \forall (C : Set) \to P\,C\,C\,refl \big)
+  \to \forall (A\,B : Set) (e: Equal\,A\,B) \to P\,A\,B\,e}
+\]
 As is the case for ADTs and nested types,
 the structural induction rule for $\mathsf{Equal}$ is a consequence of the deep induction rule.
-Indeed, we can define $\mathsf{SIEqual}$ as
+Indeed, we can define $\mathsf{indEqual}$ as
 \[
-\mathsf{SIEqual\,Q\,srefl\,a\,b\,e = DIEqual\,P\,srefl\,a\,b\,K^a_1\,K^b_1\,e\,L_E}
+\mathsf{indEqual\,Q\,srefl\,A\,B\,e = dIndEqual\,P\,srefl\,A\,B\,K^A_\top\,K^B_\top\,e\,liftE}
 \]
 where
-$\mathsf{Q : \forall (a\,b : Set) \to Equal\,a\,b \to Set}$,
-$\mathsf{srefl: \forall (c : Set) \to P\,c\,c\,Refl}$
-and $\mathsf{e : Equal\,a\,b}$, and
+$\mathsf{Q : \forall (A\,B : Set) \to Equal\,A\,B \to Set}$,
+$\mathsf{srefl: \forall (C : Set) \to P\,C\,C\,refl}$
+and $\mathsf{e : Equal\,A\,B}$, and
 \begin{itemize}
-\item $\mathsf{P : \forall (a\,b : Set) \to (a \to Set) \to (b \to Set) \to Equal\,a\,b \to Set}$ is defined as
-$\mathsf{P\,a\,b\,Q_a\,Q_b\,e = Q\,a\,b\,e}$;
-\item $\mathsf{K^a_1}$ and $\mathsf{K^b_1}$ are the constantly $\mathsf{1}$-valued predicates on, respectively, $\mathsf{a}$ and $\mathsf{b}$;
+\item $\mathsf{P : \forall (A\,B : Set) \to (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set}$ is defined as
+$\mathsf{P\,A\,B\,Q_A\,Q_B\,e = Q\,A\,B\,e}$;
+\item $\mathsf{K^A_\top}$ and $\mathsf{K^B_\top}$ are the constantly $\mathsf{\top}$-valued predicates on, respectively, $\mathsf{A}$ and $\mathsf{B}$;
 %\item $\mathsf{K^b_1}$ is the constantly $\mathsf{1}$-valued predicate on $\mathsf{b}$;
-\item $\mathsf{L_E : Equal^{\wedge}\,a\,b\,K^a_1\,K^b_1\,e}$ is defined by pattern matching,
-i.e., in case $\mathsf{a = b}$ and $\mathsf{e = Refl}$,
-it is defined as $\mathsf{L_E\,x = Refl : Equal\,a\,a}$.
+\item $\mathsf{liftE : Equal^{\wedge}\,A\,B\,K^A_\top\,K^B_\top\,e}$ is defined by pattern matching,
+i.e., in case $\mathsf{A = B}$ and $\mathsf{e = refl}$,
+it is defined as $\mathsf{liftE\,a = refl : Equal\,A\,A}$ for every $\mathsf{a : A}$.
 \end{itemize}
-
 That the structural induction rule is a consequence of the deep induction one is also true for all the examples below,
 even though we will not remark it every time.
 
 
 
-\subsection{(Deep) induction for $\mathsf{Seq}$}
+\subsection{Deep induction for $\mathsf{Seq}$}
 
-Next, we shall provide an induction rule for the $\mathsf{Seq}$ type defined in Equation~\ref{eq:eq_seq}.
+Next, we shall provide an induction rule for the $\mathsf{Seq}$ type defined in Example~\ref{example:seq}.
 Again, the first step in deriving the induction rule for $\mathsf{Seq}$ consists in defining the predicate-lifting function over it, 
 \[
-\mathsf{Seq^{\wedge} : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set}
+\mathsf{Seq^{\wedge} : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set}
 \]
 which is given by pattern-matching as
 \[
-\mathsf{Seq^{\wedge}\,a\,Q_a\,(Const\,x) = Q_a\,x}
+\mathsf{Seq^{\wedge}\,A\,Q_A\,(const\,a) = Q_A\,a}
 \]
-where $\mathsf{Q_a : a \to Set}$ and $\mathsf{x : a}$,
+where $\mathsf{Q_A : A \to Set}$ and $\mathsf{a : A}$,
 and
-\begin{multline*}
-\mathsf{Seq^{\wedge}\,a\,Q_a\,(SPair\,b\,c\,e\,s_b\,s_c)} \\
-\mathsf{=
-\exists (Q_b : b \to Set) (Q_c : c \to Set)
-\to Equal^{\wedge}\,a\, (b \times c)\, Q_a\, (Q_b \times Q_c) \, e \times Seq^{\wedge}\,b\,Q_b\,s_b \times Seq^{\wedge}\,c\,Q_c\,s_c
+\[
+\begin{array}{l}
+\mathsf{Seq^{\wedge}\,A\,Q_A\,(sPair\,B\,C\,e\,s_B\,s_C)} \\
+\quad\mathsf{=
+\sum [Q_B : B \to Set] [Q_C : C \to Set]\;
+Equal^{\wedge}\,A\, (B \times C)\, Q_A\, (Q_B \times Q_C) \, e \times Seq^{\wedge}\,B\,Q_B\,s_B \times Seq^{\wedge}\,C\,Q_C\,s_C
 }
-\end{multline*}
-where $\mathsf{e : Equal\,a\,(b \times c)}$,
-$\mathsf{s_b : Seq\,b}$ and $\mathsf{s_c : Seq\,c}$.
-We also need to define the lifting of predicates over the polymorphic type of pairs, $\mathsf{Pair = \forall (b\,c : Set) \to b \times c}$, which is 
-\[
-\mathsf{Pair^{\wedge} : \forall (b\,c : Set) \to (b \to Set) \to (c \to Set) \to Pair\,b\,c \to Set}
+\end{array}
 \]
-and it is defined as
-\[
-\mathsf{Pair^{\wedge}\,b\,c\,Q_b\,Q_c\,(y, z) = Q_b\,y \times Q_c\,z}
-\]
-where $\mathsf{Q_b : b \to Set}$, $\mathsf{Q_c : c \to Set}$, $\mathsf{y : b}$ and $\mathsf{z : c}$.
-
-Finally, let $\mathsf{CConst}$ be the function
-\begin{multline*}
-\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)} \\
-\mathsf{\to \forall (a : Set) (Q_a : a \to Set) (x : a) \to Q_a\,x \to P\,a\,Q_a\,(Const\,x)}
-\end{multline*}
-associated to the $\mathsf{Const}$ constructor,
-and let $\mathsf{CSPair}$ be the function
-\begin{multline*}
-\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)} \\
-\mathsf{\to \forall (a\,b\,c : Set)
-	(Q_a : a \to Set) (Q_b : b \to Set) (Q_c : c \to Set)} \\
-	\mathsf{(s_b : Seq\,b) (s_c : Seq\,c) (e : Equal\,a\,(b \times c))
-	\to Equal^{\wedge} a\, (b \times c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c)\, e} \\
-	\mathsf{\to P\,b\,Q_b\,s_b \to P\,c\,Q_c\,s_c
-	\to P a Q_a ( SPair\,b\,c\,e\,s_b\,s_c )}
-\end{multline*}
-associated to the $\mathsf{SPair}$ constructor,
-
-With these tools we can formulate an induction rule for $\mathsf{Seq}$,
-\begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)}
-\mathsf{\to CConst\,P \to CSPair\,P} \\
-\mathsf{\to \forall (a : Set)(Q_a : a \to Set)(s_a : Seq\,a) \to Seq^{\wedge}\,a\,Q_a\,s_a \to P\,a\,Q_a\,s_a}
-\end{multline*}
-To validate the induction rule, we define a term $\mathsf{DISeq}$ for the above type.
-We have to define
-\[
-\mathsf{DISeq\,P\,cconst\,cspair\,a\,Q_a\,s_a\,L_a : P\,a\,Q_a\,s_a}
-\]
-where
-$\mathsf{P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set}$,
-$\mathsf{cconst : CConst\,P}$,
-$\mathsf{cspair : CSPair\,P}$,
-$\mathsf{Q_a : a \to Set}$, $\mathsf{s_a : Seq\,a}$
-and $\mathsf{L_a : Seq^{\wedge}\,a\,Q\,s_a}$,
-and we proceed by pattern-matching on $\mathsf{s_a}$.
-Let $\mathsf{s_a = Const\,x}$ for $\mathsf{x : a}$, and define
-\[
-\mathsf{DISeq\,P\,cconst\,cspair\,a\,Q_a\,(Const\,x)\,L_a = cconst\,a\,Q_a\,x\,L_a}
-\]
-Notice that $\mathsf{Seq^{\wedge}\,a\,Q_a\,(Const\,x) = Q_a\,x}$, and thus $\mathsf{L_a : Q_a\,x}$,
-making the right-hand-side in the above expression type-check.
-Now, let $\mathsf{s_a = SPair\,b\,c\,e\,s_b\,s_c}$
-for $\mathsf{e : Equal\,a\,(b \times c)}$, $\mathsf{s_b : Seq\,b}$ and $\mathsf{s_c : Seq\,c}$,
-and define
-\[
-\mathsf{DISeq\,P\,cconst\,cspair\,a\,Q_a\,(SPair\,b\,c\,e\,s_b\,s_c)\,(Q_b, Q_c, L_e, L_b, L_c)
-	= cspair\,a\,b\,c\,Q_a\,Q_b\,Q_c\,s_b\,s_c\,e\,L_e\,p_b\,p_c}
-\]
-where $\mathsf{(Q_b, Q_c, L_e, L_b, L_c) : Seq^{\wedge}\,a\,Q\,(SPair\,b\,c\,e\,x\,y)}$, i.e.,
-\begin{itemize}
-\item $\mathsf{Q_b : b \to Set}$ and $\mathsf{Q_c : c \to Set}$;
-\item $\mathsf{L_e : Equal^{\wedge}\,a\, (b \times c)\, Q_a\, (Q_b \times Q_c) \, e}$;
-\item $\mathsf{L_b : Seq^{\wedge}\,b\,Q_b\,s_b}$ and $\mathsf{L_c : Seq^{\wedge}\,c\,Q_c\,s_c}$;
-\end{itemize}
-and $\mathsf{p_b}$ and $\mathsf{p_c}$ are defined as follows:
-\begin{align*}
-\mathsf{p_b} &=\mathsf{DISeq\,P\,cconst\,cspair\,b\,Q_b\,s_b\,L_b : P\,b\,Q_b\,s_b} \\
-\mathsf{p_c} &=\mathsf{DISeq\,P\,cconst\,cspair\,c\,Q_c\,s_c\,L_c : P\,c\,Q_c\,s_c}
-\end{align*}
-
-
-
-
-
-%\subsection{(Deep) induction for $\mathsf{Seq}$ (general style)}
-%
-%We need the lifting of the type $\mathsf{Pair = \forall (b : Set)(c : Set) \to b \times c}$, which is 
+where $\mathsf{e : Equal\,A\,(B \times C)}$,
+$\mathsf{s_B : Seq\,B}$ and $\mathsf{s_C : Seq\,C}$.
+%We also need to define the lifting of predicates over the polymorphic type of pairs,
+%$\mathsf{Pair = \forall (B\,C : Set) \to B \times C}$, which is 
 %\[
-%\mathsf{Pair^{\wedge} : \forall (b : Set)(c : Set) \to (b \to Set) \to (c \to Set) \to b \times c \to Set}
+%\mathsf{Pair^{\wedge} : \forall (b\,c : Set) \to (b \to Set) \to (c \to Set) \to Pair\,b\,c \to Set}
 %\]
-%defined as
+%and it is defined as
 %\[
 %\mathsf{Pair^{\wedge}\,b\,c\,Q_b\,Q_c\,(y, z) = Q_b\,y \times Q_c\,z}
 %\]
-%
-%%Let 
-%%$\mathsf{F, F_1, F_2 : (Set \to Set) \to Set \to Set \to Set}$
-%%be defined as
-%%$\mathsf{F_1\,G\,b\,c = G\,b}$,
-%%$\mathsf{F_2\,G\,b\,c = G\,c}$,
-%%$\mathsf{F\,G\,b\,c = F_1\,G\,b\,c \times F_2\,G\,b\,c}$,
-%%and $\mathsf{K = Pair}$.
-%
-%
-%Let 
-%$\mathsf{F : (Set \to Set) \to Set \to Set \to Set}$
-%be defined as
-%$\mathsf{F\,G\,b\,c = G\,b \times G\,c}$
-%and $\mathsf{K = Pair}$.
-%
-%%The type of $\mathsf{F_i^{\wedge}}$ is
-%%\begin{multline*}
-%%\mathsf{\forall (G : Set \to Set) (b : Set) (c : Set)
-%%\to (\forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
-%%\mathsf{\to (b \to Set) \to (c \to Set) \to (F_i\,G\,b\,c) \to Set}
-%%\end{multline*}
-%The type of $\mathsf{F^{\wedge}}$ is
-%\begin{multline*}
-%\mathsf{\forall (G : Set \to Set) (b : Set) (c : Set)
-%\to (\forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
-%\mathsf{\to (b \to Set) \to (c \to Set) \to (F_1\,G\,b\,c \times F_2\,G\,b\,c) \to Set}
-%\end{multline*}
-%%and $\mathsf{F^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,(s_b, s_c)
-%%= F_1^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,s_b \times F_2^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,s_c}$
-%
-%Next we shall consider the $\mathsf{Seq}$ type defined in Equation~\ref{eq:eq_seq}.
-%Again, the first step in deriving its induction rule consists in defining the lifting
-%\[
-%\mathsf{Seq^{\wedge} : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set}
-%\]
-%which is given by
-%\[
-%\mathsf{Seq^{\wedge}\,a\,Q\,(Const\,x) = Q\,x}
-%\]
-%and
-%\begin{multline*}
-%\mathsf{Seq^{\wedge}\,a\,Q_a\,(SPair\,b\,c\,e\,(s_b,s_c))
-%=
-%\exists (Q_b : b \to Set) (Q_c : c \to Set)} \\
-%\mathsf{
-%\to Equal^{\wedge}\,a\, (Pair\,b\,c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c) \, e
-%\times F^{\wedge}\,Seq\,b\,c\,Seq^{\wedge}\,Q_b\,Q_c\,(s_b, s_c)
-%}
-%\end{multline*}
-%%\begin{multline*}
-%%\mathsf{Seq^{\wedge}\,a\,Q_a\,(SPair\,b\,c\,e\,(s_b,s_c))
-%%=
-%%\exists (Q_b : b \to Set) (Q_c : c \to Set)} \\
-%%\mathsf{
-%%\to Equal^{\wedge}\,a\, (Pair\,b\,c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c) \, e
-%%\times F_1^{\wedge}\,Seq\,b\,c\,Seq^{\wedge}\,Q_b\,Q_c\,s_b
-%%\times F_2^{\wedge}\,Seq\,b\,c\,Seq^{\wedge}\,Q_b\,Q_c\,s_c
-%%}
-%%\end{multline*}
-%
-%Define
-%\[
-%\mathsf{PredMap : \forall (a : Set) \to (a \to Set) \to (a \to Set) \to Set}
-%\]
-%as $\mathsf{PredMap\,a\,Q_1\,Q_2 = \forall (x : a) \to Q_1\,x \to Q_2\,x}$
-%
-%%  -- Lifting also acts on morphisms between predicates with the same carrier
-%%  {-# TERMINATING #-}
-%%  Bush^-map : ∀ {l} {X : Set} {Q1 Q2 : X → Set l}
-%%              → Pred-map {l} Q1 Q2 → Pred-map (Bush^ Q1) (Bush^ Q2)
-%%  Bush^-map Q12 Bnil q = bigtt
-%%  Bush^-map Q12 (Bcons x b) (y , bby) =
-%%                Q12 x y , Bush^-map (Bush^-map Q12) b bby
-%Define
-%\[
-%\mathsf{SeqLMap : \forall (a : Set) (Q_1\,Q_2 : a \to Set) \to PredMap\,a\,Q_1\,Q_2 \to PredMap\,(G\,a)\,(Seq^{\wedge}\,a\,Q_1)\,(Seq^{\wedge}\,a\,Q_2)}
-%\]
-%as
-%\begin{gather*}
-%\mathsf{
-%SeqLMap\,a\,Q_1\,Q_2\,M\,(Const\,x)\,z = M\,x\,z
-%} \\
-%\mathsf{
-%SeqLMap\,a\,Q_1\,Q_2\,M\,(SPair\,b\,c\,e\,s_b\,s_c)\,(Q_b, Q_c, l_E, l_F) =
-%}
-%\end{gather*}
-%
-%
-%We have an induction rule for $\mathsf{Seq}$
-%\begin{multline}
-%\mathsf{DISeq : \forall (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)} \\
-%\mathsf{\to \big( \forall (a : Set) (Q_a : a \to Set) (x : a) \to Q_a\,x \to P\,a\,Q_a\,(Const\,x) \big)} \\
-%\mathsf{\to \big( \forall (a : Set) (b : Set) (c : Set)
-%	(Q_a : a \to Set) (Q_b : b \to Set) (Q_c : c \to Set)} \\
-%	\mathsf{( (s_b, s_c) : F\,Seq\,b\,c) (e : Equal\,a\,(Pair\,b\,c))
-%	\to Equal^{\wedge} a\, (Pair\,b\,c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c)\, e} \\
-%	\mathsf{\to F^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,(s_b,s_c)
-%	\to P a Q_a ( SPair\,b\,c\,e\,(s_b,s_c) ) \big)} \\
-%\mathsf{\to \forall (a : Set)(Q_a : a \to Set)(s_a : Seq\,a) \to Seq^{\wedge}\,a\,Q_a\,s_a \to P\,a\,Q_a\,s_a}
-%\end{multline}
-%We define $\mathsf{DISeq\,P\,PConst\,PSPair\,a\,Q_a\,s_a\,l_a}$,
-%where
-%$\mathsf{P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set}$,
-%$\mathsf{Q_a : a \to Set}$, $\mathsf{s_a : Seq\,a}$
-%and $\mathsf{l_a : Seq^{\wedge}\,a\,Q\,s_a}$,
-%by pattern-matching on $\mathsf{s_a}$.
-%Let $\mathsf{s_a = Const\,x}$ for $\mathsf{x : a}$, and define
-%\[
-%\mathsf{DISeq\,P\,PConst\,PSPair\,a\,Q_a\,(Const\,x)\,l_a = PConst\,a\,Q_a\,x\,l_a}
-%\]
-%Notice that $\mathsf{Seq^{\wedge}\,a\,Q_a\,(Const\,x) = Q_a\,x}$, and thus $\mathsf{l_a : Q_a\,x}$,
-%making the right-hand-side in the above expression type-check.
-%Now, let $\mathsf{s_a = SPair\,b\,c\,e\,(s_b,s_c)}$
-%for $\mathsf{e : Equal\,a\,(Pair\,b\,c)}$ and $\mathsf{(s_b, s_c) : F\,Seq\,b\,c}$,
-%and define
-%\[
-%\mathsf{DISeq\,P\,PConst\,PSPair\,a\,Q_a\,(SPair\,b\,c\,e\,(s_b,s_c))\,(Q_b, Q_c, l_e, l_{F_1}, l_{F_2})
-%	= PSPair\,a\,b\,c\,Q_a\,Q_b\,Q_c\,(s_b,s_c)\,e\,l_e\,p}
-%\]
-%where
-%$\mathsf{p : F^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,(s_b,s_c)}$,
-%$\mathsf{l_e : Equal^{\wedge}\,a\, (Pair\,b\,c)\, Q_a\, (Pair^{\wedge}\,Q_b\,Q_c) \, e}$,
-%$\mathsf{l_{F_1} : F_1^{\wedge}\,Seq\,b\,c\,Seq^{\wedge}\,Q_b\,Q_c\,s_b}$,
-%$\mathsf{l_{F_2} : F_2^{\wedge}\,Seq\,b\,c\,Seq^{\wedge}\,Q_b\,Q_c\,s_c}$
-%(notice that $\mathsf{(Q_b, Q_c, l_e, l_{F_1}, l_{F_2}) : Seq^{\wedge}\,a\,Q\,(SPair\,b\,c\,e\,x\,y)}$,
-%making the right-hand-side in the above expression type-check)
-%and $\mathsf{p}$ is defined as follows:
-%\[
-%\mathsf{p = (???, ???) 
-%: F_1^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,s_b \times F_2^{\wedge}\,G\,b\,c\,P\,Q_b\,Q_c\,s_c} \\
-%\]
+%where $\mathsf{Q_b : b \to Set}$, $\mathsf{Q_c : c \to Set}$, $\mathsf{y : b}$ and $\mathsf{z : c}$.
 
+Finally, let $\mathsf{dIndConst}$ be the function
+\[
+\mathsf{
+\lambda (P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set)
+\to \forall (A : Set) (Q_A : A \to Set) (a : A)
+\to Q_A\,x \to P\,A\,Q_A\,(Const\,a)
+}
+\]
+associated to the $\mathsf{const}$ constructor,
+and let $\mathsf{dIndSPair}$ be the function
+\[
+\begin{array}{l}
+\mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set)} \\
+\quad \mathsf{\to \forall (A\,B\,C : Set) (Q_A : A \to Set) (Q_B : B \to Set) (Q_C : C \to Set)(s_B : Seq\,B) (s_C : Seq\,C) (e : Equal\,A\,(B \times C))} \\
+\quad \mathsf{\to Equal^{\wedge} A\, (B \times C)\, Q_A\, (Pair^{\wedge}\,B\,C\,Q_B\,Q_C)\, e
+	\to P\,B\,Q_B\,s_B \to P\,C\,Q_C\,s_C
+	\to P A Q_A ( SPair\,B\,C\,e\,s_B\,s_C )}
+\end{array}
+\]
+associated to the $\mathsf{sPair}$ constructor.
 
-
-%\begin{align*}
-%\mathsf{DISeq\,P\,PConst\,PSPair\,a\,Q\,(Const\,x)\,l}
-%	&=\mathsf{PConst\,a\,Q\,x\,l} \\
-%\mathsf{DISeq\,P\,PConst\,PSPair\,a\,Q_a\,(SPair\,b\,c\,e\,x\,y)\,(Q_b\,Q_c\,e', l_b, l_c)}
-%	&=\mathsf{PSpair\,a\,b\,c\,Q_a\,Q_b\,Q_c\,x\,y\,e\,p_b\,p_c\,e'}
-%\end{align*}
-%where
-%$\mathsf{Q_a : a \to Set}$, $\mathsf{Q_b : b \to Set}$, $\mathsf{Q_c : c \to Set}$,
-%$\mathsf{x : Seq\,b}$, $\mathsf{y : Seq\,c}$,
-%$\mathsf{e : Equal\,a\,(b \times c)}$,
-%$\mathsf{p_b : P\,b\,Q_b\,x}$, $\mathsf{p_c : P\,c\,Q_c\,y}$,
-%$\mathsf{e' : Equal^{\wedge}\,a\, (b \times c)\, Q\, (Q_b \times Q_c) \, e}$,
-%$\mathsf{l_b : Seq^{\wedge}\,b\,Q_b\,x}$,
-%$\mathsf{l_c : Seq^{\wedge}\,c\,Q_c\,y}$
-%and
-%\begin{align*}
-%\mathsf{p_b} &=\mathsf{DISeq\,P\,PConst\,PSPair\,b\,Q_b\,x\,l_b : P\,b\,Q_b\,x} \\
-%\mathsf{p_c} &=\mathsf{DISeq\,P\,PConst\,PSPair\,c\,Q_c\,y\,l_c : P\,c\,Q_c\,y}
-%\end{align*}
-%
-%\begin{align*}
-%\mathsf{Q_a} &: \mathsf{a \to Set} \\
-%\mathsf{Q_b} &: \mathsf{b \to Set} \\
-%\mathsf{Q_c} &: \mathsf{c \to Set} \\
-%\mathsf{x} &: \mathsf{Seq\,b} \\
-%\mathsf{y} &: \mathsf{Seq\,c} \\
-%\mathsf{e} &: \mathsf{Equal\,a\,(b \times c)} \\
-%\mathsf{p_b} &: \mathsf{P\,b\,Q_b\,x} \\
-%\mathsf{p_c} &: \mathsf{P\,c\,Q_c\,y} \\
-%\mathsf{e'} &: \mathsf{Equal^{\wedge}\,a\, (b \times c)\, Q\, (Q_b \times Q_c) \, e} \\
-%\mathsf{l_b} &: \mathsf{Seq^{\wedge}\,b\,Q_b\,x} \\
-%\mathsf{l_c} &: \mathsf{Seq^{\wedge}\,c\,Q_c\,y} \\
-%\mathsf{p_b = DISeq\,P\,PConst\,PSPair\,b\,Q_b\,x\,l_b} &: \mathsf{P\,b\,Q_b\,x} \\
-%\mathsf{p_c = DISeq\,P\,PConst\,PSPair\,c\,Q_c\,y\,l_c} &: \mathsf{P\,c\,Q_c\,y}
-%\end{align*}
+With these tools we can formulate an induction rule for $\mathsf{Seq}$,
+\[
+\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set)}
+\mathsf{\to CConst\,P \to CSPair\,P} \\
+\quad \mathsf{\to \forall (A : Set)(Q_A : A \to Set)(s_A : Seq\,A) \to Seq^{\wedge}\,A\,Q_A\,s_A \to P\,A\,Q_A\,s_A}
+\end{array}
+\]
+To validate the induction rule, we define a term $\mathsf{dIndSeq}$ for the above type.
+We have to define
+\[
+\mathsf{dIndSeq\,P\,cconst\,cspair\,A\,Q_A\,s_A\,liftA : P\,A\,Q_A\,s_A}
+\]
+where
+$\mathsf{P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set}$,
+$\mathsf{cconst : cConst\,P}$,
+$\mathsf{cspair : cSPair\,P}$,
+$\mathsf{Q_A : A \to Set}$, $\mathsf{s_A : Seq\,A}$
+and $\mathsf{liftA : Seq^{\wedge}\,A\,Q\,s_A}$,
+and we proceed by pattern-matching on $\mathsf{s_A}$.
+Let $\mathsf{s_A = const\,a}$ for $\mathsf{a : A}$, and define
+\[
+\mathsf{dIndSeq\,P\,cconst\,cspair\,A\,Q_A\,(const\,a)\,liftA = cconst\,A\,Q_A\,a\,liftA}
+\]
+Notice that $\mathsf{Seq^{\wedge}\,A\,Q_A\,(const\,a) = Q_A\,a}$, and thus $\mathsf{liftA : Q_A\,a}$,
+making the right-hand-side in the above expression type-check.
+Now, let $\mathsf{s_A = sPair\,B\,C\,e\,s_B\,s_C}$
+for $\mathsf{e : Equal\,A\,(B \times C)}$, $\mathsf{s_B : Seq\,B}$ and $\mathsf{s_C : Seq\,C}$,
+and define
+\[
+\mathsf{dIndSeq\,P\,cconst\,cspair\,A\,Q_A\,(sPair\,B\,C\,e\,s_B\,s_C)\,(Q_B, Q_C, liftE, liftB, liftC)
+	= cspair\,A\,B\,C\,Q_A\,Q_B\,Q_C\,s_B\,s_C\,e\,liftE\,p_B\,p_C}
+\]
+where $\mathsf{(Q_B, Q_C, liftE, liftB, liftC) : Seq^{\wedge}\,A\,Q\,(sPair\,B\,C\,e\,s_B\,s_C)}$, i.e.,
+\begin{itemize}
+\item $\mathsf{Q_B : B \to Set}$ and $\mathsf{Q_C : C \to Set}$;
+\item $\mathsf{liftE : Equal^{\wedge}\,A\, (B \times C)\, Q_A\, (Q_B \times Q_C) \, e}$;
+\item $\mathsf{liftB : Seq^{\wedge}\,B\,Q_B\,s_B}$ and $\mathsf{liftC : Seq^{\wedge}\,C\,Q_C\,s_C}$;
+\end{itemize}
+and $\mathsf{p_B}$ and $\mathsf{p_C}$ are defined as follows:
+\begin{align*}
+\mathsf{p_B} &=\mathsf{DISeq\,P\,cconst\,cspair\,B\,Q_B\,s_B\,liftB : P\,B\,Q_B\,s_B} \\
+\mathsf{p_C} &=\mathsf{DISeq\,P\,cconst\,cspair\,C\,Q_C\,s_C\,liftC : P\,C\,Q_C\,s_C}
+\end{align*}
 
 
 
@@ -1919,9 +1679,9 @@ No induction with primitive representation (reference Haskell Symposium paper an
 \section{TODO}
 
 \begin{itemize}
+\item find correct entcsmacro file (current one is for 2018). Maybe ask Ana Sokolova (anas@cs.uni-salzburg.at).
 \item reference (correctly) Haskell Symposium paper
 \item reference inspiration for STLC GADT : https://www.seas.upenn.edu/~cis194/spring15/lectures/11-stlc.html
-
 \end{itemize}
 
 %%% Added to bibliography:
@@ -1952,5 +1712,6 @@ No induction with primitive representation (reference Haskell Symposium paper an
 
 
 \bibliography{gadt-story-references}
+
 
 \end{document}
