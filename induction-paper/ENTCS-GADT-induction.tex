@@ -1,4 +1,5 @@
-\documentclass[9pt]{entcs} \usepackage{entcsmacro}
+\documentclass[9pt]{entcs}
+\usepackage{entcsmacro}
 \usepackage{graphicx}
 \sloppy
 % The following is enclosed to allow easy detection of differences in
@@ -20,13 +21,36 @@
 
 \bibliographystyle{entcs}
 
-% A couple of exemplary definitions:
-
-\newcommand{\Nat}{{\mathbb N}}
-\newcommand{\Real}{{\mathbb R}}
 \def\lastname{Johann, Ghiorzi, and Jeffries}
 
 \usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{ccicons}
+\usepackage{verbatim}
+
+
+\usepackage{amscd}
+\usepackage{MnSymbol}
+\usepackage{xcolor}
+
+\usepackage{bbold}
+\usepackage{url}
+\usepackage{upgreek}
+\usepackage{stmaryrd}
+
+\usepackage{lipsum}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\newcommand{\new}[1]{{\color{blue} {#1}}}
+
+\newcommand{\set}{\mathtt{Set}}
+
 
 \input{macros}
 
@@ -37,13 +61,13 @@
 \begin{frontmatter}
   \title{(Deep) Induction for GADTs}
 
-  \author{Patricia Johann\thanksref{JohannEmail}}
-  \author{Enrico Ghiorzi\thanksref{GhiorziEmail}}
-  \author{Daniel Jeffries\thanksref{JeffriesEmail}}
-  \thanks[JohannEmail]{Email: \href{mailto:johannp@appstate.edu} {\texttt{\normalshape johannp@appstate.edu}}}
-  \thanks[GhiorziEmail]{Email: \href{mailto:ghiorzie@appstate.edu} {\texttt{\normalshape ghiorzie@appstate.edu}}}
-  \thanks[JeffriesEmail]{Email: \href{mailto:jeffriesd@appstate.edu} {\texttt{\normalshape jeffriesd@appstate.edu}}}
-  \address{Department of Computer Science\\ Appalachian State University}
+  \author{Patricia Johann~~~~}%\thanksref{JohannEmail}}
+  \author{Enrico Ghiorzi~~~~}%\thanksref{GhiorziEmail}}
+  \author{Daniel Jeffries}%\thanksref{JeffriesEmail}}
+%  \thanks[JohannEmail]{Email: \href{mailto:johannp@appstate.edu} {\texttt{\normalshape johannp@appstate.edu}}}
+%  \thanks[GhiorziEmail]{Email: \href{mailto:ghiorzie@appstate.edu} {\texttt{\normalshape ghiorzie@appstate.edu}}}
+%  \thanks[JeffriesEmail]{Email: \href{mailto:jeffriesd@appstate.edu} {\texttt{\normalshape jeffriesd@appstate.edu}}}
+  \address{$\mathtt{\{johannp,ghiorzie,jeffriesd\}@appstate.edu}$\\Department of Computer Science, Appalachian State University}
 
 \begin{abstract} 
   Abstract goes here.
@@ -55,24 +79,260 @@
 
 \end{frontmatter}
 
-
-
+\begin{itemize}
+\item Weird to code in Agda if we're talking about induction rules for
+  Coq? 
+\item Agda style conventions
+\end{itemize}
+  
 \section{Introduction}\label{sec:intro}
 
-Introduction goes here.
+Induction is one of the most important techniques available for
+working with advanced data types, so it is both inevitable and
+unsurprising that it plays an essential role in modern proof
+assistants. In the proof assistant Coq~\cite{coq20}, for example,
+functions and predicates over advanced types are defined inductively,
+and almost all non-trivial proofs of their properties are either
+proved by induction outright or rely on lemmas that are. Every time a
+new inductive data type is declared in Coq, an induction rule is
+automatically generated for it.
 
+The data types handled by Coq are (possibly mutually inductive)
+polynomial ADTs, and the induction rules automatically generated for
+them are the expected ones for standard structural induction. It has
+long been understood, however, that these rules are too weak to be
+genuinely useful for so-called {\em deep ADTs}~\cite{jp20}, i.e., ADTs
+that are (possibly mutually inductively) defined in terms of (other)
+such ADTs.\footnote{Such data types are called nested inductive types
+  by Chlipala~\cite{chl}, reflecting the fact that ``inductive type''
+  means ``ADT''~in~Coq.} Consider, for example, the following type of
+rose trees, here coded in Agda and defined in terms of the standard
+type of lists:
+\[\begin{array}{l}
+\mathsf{data\, Rose\, : Set \to Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;rEmpty\, :\, Rose\,A}\\
+\mathsf{\;\;\;\;\;\;\;\;rNode\,\,\,\, :\, A \to List\,(Rose\,A) \to Rose\,A} 
+\end{array}\]
+\noindent
+The induction rule Coq automatically generates for rose trees is
+\[\begin{array}{l}
+\mathsf{\forall\, (a : \set)\,(P : Rose\,a \to \set) \to P\,REmpty \to}\\
+\mathsf{\hspace*{0.15in}
+ (\forall\, (x : a)\,(ts :
+  List\,(Rose\,a)) \to P\,(RNode\,x\,ts)) \to 
+  \forall \,(x : Rose\,a) \to P\,x}
+\end{array}\]
+\noindent
+Unfortunately, this is neither the induction rule we intuitively
+expect, nor is it expressive enough to prove even basic properties of
+rose trees that ought to be amenable to inductive proof. What is
+needed here is an enhanced notion of induction that, when specialized
+to rose trees, will propagate the predicate $\mathsf{P}$ through the
+outer list structure and to the rose trees sitting inside
+$\mathsf{RNode}$'s list argument. More generally, this enhanced notion
+of induction should traverse {\em all} of the structure present in a
+data type, propagating suitable predicates to {\em all} of the data
+contained in the structure. With data types becoming ever more
+advanced, and with deeply structured such types becoming ever more
+%increasingly
+ubiquitous in formalizations, it is critically important that proof
+assistants
+%like Coq, Agda, and Lean 
+be able to automatically generate genuinely useful induction
+principles for data types that go well beyond traditional ADTs. Such
+data types include (truly) nested types~\cite{bm98}\footnote{A truly
+  nested type is a nested type that is defined over itself.},
+generalized algebraic data types
+(GADTs)~\cite{ch03,pvww06,sp04,xcc03}, more richly indexed
+families~\cite{ch88}, and deep variants of all of these.
 
+{\em Deep induction}~\cite{jp20} is a generalization of structural
+induction that fits this bill exactly. Whereas structural induction
+rules induct over only the top-level structure of data, leaving any
+data internal to the top-level structure untouched, deep induction
+rules induct over {\em all} of the structured data present. The key
+idea is to parameterize induction rules not just over a predicate over
+the top-level data type being considered, but also over additional
+custom predicates on the types of primitive data they contain. These
+custom predicates are then lifted to predicates on any internal
+structures containing these data, and the resulting predicates on
+these internal structures are lifted to predicates on any internal
+structures containing structures at the previous level, and so on,
+until the internal structures at all levels of the data type
+definition, including the top level, have been so
+processed. Satisfaction of a predicate by the data at one level of a
+structure is then conditioned upon satisfaction of the appropriate
+predicates by {\em all} of the data at the preceding level.
 
-\section{Deep induction for ADTs and nested types}
+Deep induction was shown in~\cite{jp20} to be the form of induction
+most appropriate to nested types (including ADTs) that are defined
+over, or mutually recursively with, other such types (including,
+possibly, themselves). Deep induction delivers the following genuinely
+useful induction rule for rose trees:
 
-%\begin{itemize}
-%\item Say what ADTs and nested types are (look~\cite{jp20,jgj21})
-%\item Examples: $\mathsf{List}$ and $\mathsf{PTree}$ and $\mathsf{Bush}$
-%\item Explain induction for $\mathsf{List}$ and $\mathsf{PTree}$ (refer paper Patricia Neil Clement 2010) notice it does not extend to truly nested types like $\mathsf{Bush}$
-%\item To get induction rule for truly nested types such as $\mathsf{Bush}$ requires deep induction (refer to~\cite{jp20}) (explain various pieces of deep induction, including lifting, informally)
-%\item Deep induction makes sense for other structures as well (not just truly nested types)
-%\end{itemize}
+\[\begin{array}{l}
+\mathsf{\forall \,(a : \set)\,(P : Rose\,a \to \set)\,(Q : a \to \set)
+  \to P\,REmpty \to}\\ 
+\mathsf{\hspace*{0.15in}(\forall \,(x : a)\, (ts :
+  List\,(Rose\,a))\to Q\,x \to List^\land\,P\,ts \to P\,(RNode\,x\,ts)) \to}\\
+\mathsf{\hspace*{0.15in}\forall \,(x :
+  Rose\,a) \to Rose^\land\,Q\, x \to P\,x} 
+\end{array}\]
 
+\noindent
+%Here, $\mathsf{List^\land}$ lifts its predicate argument $\mathsf{P}$
+%on data of type $\mathsf{Rose\,a}$ to a predicate on data of type
+%$\mathsf{List\,(Rose\,a)}$ asserting that $\mathsf{P}$ holds for every
+%element of its argument list, and similarly for the lifting
+%$\mathsf{Rose^\land}$ and the predicate $\mathsf{Q}$.
+Here, $\mathsf{List^\land}$ (resp., $\mathsf{Rose^\land}$) lifts its
+predicate argument $\mathsf{P}$ (resp., $\mathsf{Q}$) on data of type
+$\mathsf{Rose\,a}$ (resp., $\mathsf{a}$) to a predicate on data of
+type $\mathsf{List\,(Rose\,a)}$ (resp., $\mathsf{Rose\,a}$) asserting
+that $\mathsf{P}$ (resp., $\mathsf{Q}$) holds for every element of its
+list (resp., rose tree) argument.\footnote{Predicate liftings such as
+  $\mathsf{List^\land}$ and $\mathsf{Rose^\land}$ can either be
+  supplied as primitives or generated automatically from their
+  associated data type definitions as described in
+  Section~\ref{sec:ADTs-and-nesteds} below. The predicate lifting for
+  a container type like $\mathsf{List\,t}$ or $\mathsf{Rose\,t}$
+  simply traverses containers of that type and applies its predicate
+  argument pointwise to the constituent data of type $\mathsf{t}$.}
+Deep induction was also shown in~\cite{jp20} to
+% be the missing piece making it possible to
+%be the theretofore missing component needed to
+% be the essential ingredient making it possible to
+deliver the first-ever induction rules --- structural or otherwise ---
+for the $\mathsf{Bush}$ data type~\cite{bm98} and other truly nested
+types. Deep induction for ADTs and nested types is reviewed in
+Section~\ref{sec:ADTs-and-nesteds} below.
+
+This paper shows how to extend deep induction to proper GADTs, i.e.,
+to GADTs that are not simply nested types (and thus are not ADTs).  A
+constructor for such a GADT $\mathsf{G}$ may, like a constructor for a
+nested type, take as arguments data whose types involve instances of
+$\mathsf{G}$ other than the one being defined --- including instances
+that involve $\mathsf{G}$ itself. But if $\mathsf{G}$ is a proper GADT
+then at least one of its constructors will also have such a structured
+instance of $\mathsf{G}$ --- albeit one not involving $\mathsf{G}$
+itself --- as its codomain.
+%But while the types of the arguments to a GADT's constructor can
+%include instances of $\mathsf{G}$ that themselves involve
+%$\mathsf{G}$, its return type cannot.
+For example, the constructor $\mathsf{SPair}$ for the GADT
+{\color{red} Perhaps Lam data type illustrates better? Perhaps also
+  shows non-inbabitation?}
+\begin{equation}\label{eq:eq-seq}
+\begin{array}{l}
+\mathsf{data\, Seq\,(a : Set) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;SConst :\, a \to Seq\,a}\\
+\mathsf{\;\;\;\;\;\;\;\;SPair\,\, :\, Seq \,a \to Seq\,b \to
+  Seq\,(a \times b)}
+\end{array}
+\end{equation}
+\noindent
+of sequences only constructs sequences of pairs, rather than sequences
+of arbitrary type, as does $\mathsf{SConst}$. If all of the
+constructors for a GADT $\mathsf{G}$ return structured instances of
+$\mathsf{G}$, then some of $\mathsf{G}$'s instances might not be
+inhabited. GADTs therefore have two distinct, but equally natural,
+semantics: a functorial semantics interpreting them as left Kan
+extensions~\cite{mac71}, and a parametric semantics interpreting them
+as their Church encodings~\cite{}. As explained in~\cite{jgj21}, a key
+difference in the two semantics is that the former views GADTs as
+their {\em functorial completions}~\cite{jp19}, and thus as containing
+more data than just those expressible in syntax. By contrast, the
+latter views them as what might be called {\em syntax-only}
+GADTs. Happily, these two views of GADTs coincide for those that are
+ADTs or other nested types. However, both they and their attendant
+properties differ greatly for proper GADTs. In fact, the views
+deriving from the functorial semantics and that parametric semantics
+for proper GADTs are sufficiently distinct that, by contrast with the
+situation for ADTs and other nested
+types~\cite{bfss90,gjfor15,jgj21f}, it is not actually possible
+to define a functorial parametric semantics for them~\cite{jgj21}.
+
+This observation seems, at first, to be a death knell for the prospect
+of extending deep induction to GADTs. Indeed, since induction can be
+seen as unary parametricity, we quickly realize that GADTs viewed as
+their functorial completions cannot possibly support induction rules.
+This makes sense intuitively: induction is a syntactic proof
+technique, so of course it cannot be used to prove properties of those
+elements of a GADT's functorial completion that are not expressible in
+syntax. All is not lost, however. As we show below, the Church
+encoding interpretation's syntax-only view does support induction
+rules --- including deep induction rules --- for GADTs. Perhaps
+surprisingly, ours are the first-ever induction rules --- deep or
+otherwise --- for a general class of proper GADTs. But this paper
+actually delivers more: it gives a general framework for deriving deep
+induction rules for a general class of GADTs directly from their
+syntax. This framework can serve as a basis for extending modern proof
+assistants' automatic generation of structural induction rules for
+ADTs to automatic generation of deep induction rules for GADTs. As
+for ADTs and other nested types, the structural induction rule for any
+GADT can be recovered from its deep induction rule simply by taking
+the custom predicates in its deep induction rule to be constantly
+$\mathsf{True}$-valued predicates.
+
+Deep induction rules for GADTs cannot, however, be derived by somehow
+extending the techniques of~\cite{jp20} to syntax-only GADTs. Indeed,
+the derivation of induction rules given there makes crucial use of the
+functoriality of data types' interpretations from~\cite{jp19}, and
+that is precisely what the interpretation of GADTs as their Church
+encodings fails to deliver. Instead, we first give the (deep)
+induction rule and a predicate lifting styled after those
+of~\cite{jp20} for the simplest and most important GADT, namely the
+$\mathsf{Equality}$ GADT. We then treat any other GADT by writing it
+as its so-called {\em Henry Ford
+  encoding}~~\cite{ch03,hin03,mcb99,sjsv09,sp04} and using the
+predicate liftings for $\mathsf{Equality}$ and any other constituent
+data types to appropriately thread the custom predicates through the
+structures of the GADT. {\color{red} Significantly, since we are
+  treating GADTs as syntax-only, rather than functorial, we cannot
+  handle truly nested GADTs like we handled truly nested types, but
+  this is not much of a restriction, since I've never seen GADTs
+  defined over themselves in applications.} This process yields, in
+particular, the following deep induction rule for $\mathsf{Seq}$:
+{\color{red} Order of arguments?}
+\begin{multline*}
+\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to
+  Set)} \mathsf{\to CConst\,P \to CSPair\,P} \\ \mathsf{\to \forall (a
+  : Set)(Q_a : a \to Set)(s_a : Seq\,a) \to Seq^{\wedge}\,a\,Q_a\,s_a
+  \to P\,a\,Q_a\,s_a}
+\end{multline*}
+where $\mathsf{CConst}$ is the function {\color{red} Why $\lambda$?}
+\[\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)} 
+\mathsf{\to \forall (a : Set) (Q_a : a \to Set) (x : a) \to Q_a\,x \to
+  P\,a\,Q_a\,(Const\,x)}
+\]
+associated with the $\mathsf{Const}$ constructor and $\mathsf{CSPair}$
+is the function
+\begin{multline*}
+\mathsf{\lambda (P : \forall (a : Set) \to (a \to Set) \to Seq\,a \to Set)}
+\mathsf{\to \forall (a\,b\,c : Set)
+	(Q_a : a \to Set) (Q_b : b \to Set) (Q_c : c \to Set)} \\
+	\mathsf{(s_b : Seq\,b) (s_c : Seq\,c) (e : Equal\,a\,(b \times c))
+	\to Equal^{\wedge} a\, (b \times c)\, Q_a\, (Pair^{\wedge}\,b\,c\,Q_b\,Q_c)\, e} \\
+	\mathsf{\to P\,b\,Q_b\,s_b \to P\,c\,Q_c\,s_c
+	\to P a Q_a ( SPair\,b\,c\,e\,s_b\,s_c )}
+\end{multline*}
+associated with the $\mathsf{SPair}$ constructor,
+
+All of the deep induction rules appearing in this paper have been
+derived using our general framework. Our Agda code implementing them
+is available at~\cite{web-page}.
+
+\subsection{Related Work}
+
+Ullrich's plugin?
+
+Tassi's Elpi
+
+Peter Selinger and  Fu Peng
+
+\section{Deep induction for ADTs and nested types}\label{sec:ADTs-and-nesteds}
+
+\begin{comment}
 \subsection{Syntax of ADTs and nested types}\label{ssec:syntax-adts}
 
 \emph{(Polynomial) algebraic data types} (ADTs), both built-in and user-defined,
@@ -90,15 +350,17 @@ the type of lists (here coded in Agda)
 \mathsf{\;\;\;\;\;\;\;cons\, :\, A \to List\,A \to List\,A} 
 \end{array}
 \end{equation}
-Notice that all occurrences of $\mathsf{List}$ in the above encoding are instantiated at the same index $\mathsf{A}$.
-Thus, the instances of $\mathsf{List}$ at various indices are defined independently from one another.
-That is a defining feature of ADTs:
-an ADT defines a \emph{family of inductive types}, one for each index type.
+Notice that all occurrences of $\mathsf{List}$ in the above encoding
+are instantiated at the same index $\mathsf{A}$.  Thus, the instances
+of $\mathsf{List}$ at various indices are defined independently from
+one another.  That is a defining feature of ADTs: an ADT defines a
+\emph{family of inductive types}, one for each index type.
 
-Over time, there has been a notable trend toward data types
-whose non-regular indexing can capture invariants and other sophisticated properties
-that can be used for program verification and other applications.
-A simple example of such a type is given by Bird and Meertens’~\cite{bm98} prototypical \emph{nested type}
+Over time, there has been a notable trend toward data types whose
+non-regular indexing can capture invariants and other sophisticated
+properties that can be used for program verification and other
+applications.  A simple example of such a type is given by Bird and
+Meertens’~\cite{bm98} prototypical \emph{nested type}
 \begin{equation}\label{eq:ptree}
 \begin{array}{l}
 \mathsf{data\ PTree : Set \to Set\ where}\\
@@ -106,10 +368,14 @@ A simple example of such a type is given by Bird and Meertens’~\cite{bm98} pro
 \mathsf{\;\;\;\;\;\;\;pNode\, :\, PTree\,(A \times A) \to PTree\,A} 
 \end{array}
 \end{equation}
-of perfect trees, which can be thought of as constraining lists to have lengths that are powers of 2.
-In the above code, the constructor $\mathsf{PNode}$ uses data of type $\mathsf{PNode\,(A \times A)}$ to construct data of type $\mathsf{PNode\,A}$.
-Thus, it is clear that the instantiations of $\mathsf{PNode}$ at various indices cannot be defined independently, so that the entire family of types must actually be defined at once.
-A nested type thus defines not a family of inductive types, but rather an \emph{inductive family of types}.
+of perfect trees, which can be thought of as constraining lists to
+have lengths that are powers of 2.  In the above code, the constructor
+$\mathsf{PNode}$ uses data of type $\mathsf{PNode\,(A \times A)}$ to
+construct data of type $\mathsf{PNode\,A}$.  Thus, it is clear that
+the instantiations of $\mathsf{PNode}$ at various indices cannot be
+defined independently, so that the entire family of types must
+actually be defined at once.  A nested type thus defines not a family
+of inductive types, but rather an \emph{inductive family of types}.
 
 Nested types include simple nested types, like perfect trees,
 none of whose recursive occurrences occur below another type constructor,
@@ -129,296 +395,320 @@ and all constructors of $\mathsf{Bush\,A}$ have to return an element of type $\m
 %the return types of the constructors are still required to be instantiated at the same variable $\mathsf{a}$.}
 %As previously noted, the return types of the constructors of a nested
 %type have to be the same type instance of the type being defined.
+\end{comment}
 
+\subsection{Induction principles for ADTs and nested
+  types}\label{ssec:induction-nested} 
 
-\subsection{Induction principles for ADTs and nested types}\label{ssec:induction-nested}
-
-An induction principle for a data type allows to prove
-that a predicate holds for every element of that data type,
-provided that it holds for every element inductively produced by the type's constructors.
-In this paper, we are interested in induction principles for proof-relevant predicates.
-A proof-relevant predicate on a type $\mathsf{A : Set}$ is a function $\mathsf{A \to Set}$
-%(where $\mathsf{Set}$ is the type of sets)
-mapping each $\mathsf{x : A}$ to the set of proofs that the predicate holds for $\mathsf{x}$.
-For example, the induction principle for $\mathsf{List}$ is
+A structural induction principle for a data type allows us to prove
+that if a predicate holds for every element inductively produced by
+the data type's constructors then it holds for every element of the
+data type.  In this paper, we are interested in induction principles
+for proof-relevant predicates.  A proof-relevant predicate on a type
+$\mathsf{A : Set}$ is a function $\mathsf{P\,:\,A \to Set}$ mapping
+each $\mathsf{x : A}$ to the set of proofs that $\mathsf{P\,x}$ holds.
+For example, the induction principle for the standard data type
+\begin{equation*}\label{eq:list}
+\begin{array}{l}
+\mathsf{data\ List : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;nil\,\,\,\,\,\, :\, List\,A}\\
+\mathsf{\;\;\;\;\;\;\;cons\, :\, A \to List\,A \to List\,A} 
+\end{array}
+\end{equation*}
+of lists is
 \begin{equation*}
 \mathsf{
 \forall (A : Set) (P : List\,A \to Set)
-\to P\,Nil
-\to \big( \forall (a : A) (ls: List\,A)
-\to P\,ls
-\to P\,(Cons\,a\,ls)\big)
-\to \forall (ls : List\,A)
-\to P\, ls
+\to P\,nil
+\to \big( \forall (a : A) (as: List\,A)
+\to P\,as
+\to P\,(cons\,a\,as)\big)
+\to \forall (as : List\,A)
+\to P\, as
 }
 \end{equation*}
-Note that the data inside a structure of type $\mathsf{List}$ is treated monolithically (i.e., ignored) by this induction rule.
-Indeed, the induction rule inducts over only the top-level structures of data types,
-leaving any data internal to the top-level structure untouched.
-Since this kind of induction principle is only concerned with the structure of the type,
-and unconcerned with the contained data,
-we will then refer to it as \emph{structural induction}.
-
-We can extend such a structural induction principle to some nested types, such as $\mathsf{PTree}$.
-The only difference from the induction principle for ADTs is that,
-since a nested type is defined as a whole inductive family of types at once,
-its induction rule has to necessary involve a polymorphic predicate.
-Thus, the induction rule for $\mathsf{PTree}$ is
-\[
-\begin{array}{l}
-\mathsf{\forall (P : \forall (A : Set) \to PTree\, A \to Set)
-\to \big( \forall (A : Set) (a : A) \to P\,A\,(PLeaf\, a) \big)} \\
-\quad\mathsf{\to \big( \forall (A : Set) (pt : PTree\,(A \times A)) \to P\,(A \times A)\,pt \to P\,a\,(PNode\,pt)\big)
-\to \forall (A : Set) (pt : PTree\,A) \to P\,A\,pt }
-\end{array}
-\]
-
-%This kind of induction principles, which we will call \emph{structural induction},
-Structural induction principles cannot be extended to truly nested types, such as $\mathsf{Bush}$.
-%To induce over a truly nested type, we need to use a \emph{deep induction} principle~\cite{jp20}.
-Instead, for such data types it is necessary to use a \emph{deep induction} principle~\cite{jp20}.
-Such a principle, unlike structural induction, inducts over all of the structured data present,
-by traversing not just the outer structure with a predicate $\mathsf{P}$,
-but also each data element contained in the data type with a custom predicate $\mathsf{Q}$.
-This additional predicate is lifted to predicates on any internal structure containing these data, and the resulting predicates on these internal structures are lifted to predicates on any internal structures containing structures at the previous level, and so on, until the internal structures at all levels of the data type definition, including the top level, have been so processed.
-Satisfaction of a predicate by the data at one level of a structure is then conditioned upon satisfaction of the appropriate predicates by all of the data at the preceding level.
-
-For example, the deep induction rule for $\mathsf{Bush}$ is
-\[
-\begin{array}{l}
-\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to Bush\, A \to Set)
-\to \big( \forall (A : Set) \to P\,A\,BNil \big)} \\
-\quad\mathsf{\to \big( \forall (A : Set) (Q : A \to Set) (a : A) (bb : Bush\,(Bush\,A))
-\to Q\,a \to P\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb \to P\,A\,Q\,(BCons\,a\,bb) \big)} \\
-\quad\mathsf{\to \forall (A : Set) (Q : A \to Set) (b : Bush\,A) \to Bush^{\wedge}\,A\,Q\,b \to P\,A\,Q\,b }
-\end{array}
-\]
-where $\mathsf{Bush^{\wedge} : \forall (A : Set) \to (A \to Set) \to Bush\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{Bush\,A}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{A}$ contained in its argument bush.
-It is defined as
-\begin{align*}
-\mathsf{Bush^{\wedge}\,A\,Q\,BNil} &= \mathsf{\top} \\
-\mathsf{Bush^{\wedge}\,A\,Q\,(BCons\,a\,bb)} &= \mathsf{Q\,a \times Bush^{\wedge}\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb}
-\end{align*}
-where $\mathsf{Q : A \to Set}$ and $\mathsf{bb : Bush\,(Bush\,A)}$.
-
-Despite deep induction being motivated by the need to produce an induction principle for truly nested types,
-it can equally be applied to all other ADTs and nested types.
-For example, the deep induction principle for $\mathsf{List}$ is
+As mentioned above, the data inside a structure of type
+$\mathsf{List}$ is treated monolithically (i.e., ignored) by this
+structural induction rule.
+%Indeed, the structural induction rule for a data type inducts
+%over only the top-level structures of data types, leaving any data
+%internal to the top-level structure untouched.  Since this kind of
+%induction principle is only concerned with the structure of the type,
+%and unconcerned with the contained data, we will then refer to it as
+%\emph{structural induction}.
+By contrast, the deep induction rule for lists is parameterized over a
+custom predicate $\mathsf{Q}$ on $\mathsf{A}$ as described in the
+introduction. For $\mathsf{List^\wedge}$ as described in the
+introduction, it is
 \[
 \begin{array}{l}
 \mathsf{\forall (A : Set) (P : List\, A \to Set) (Q : A \to Set)
-\to P\,Nil \to \big( \forall (a : A) (ls: List\,A) \to Q\,a \to P\,ls \to P\,(Cons\,a\,ls)\big)} \\
-\quad\mathsf{\to \forall (ls : List\,A) \to List^{\wedge}\,A\,Q\,ls \to P\,ls }
+\to P\,Nil \to \big( \forall (a : A) (as: List\,A) \to Q\,a \to P\,as
+\to P\,(Cons\,a\,as)\big)} \\ 
+\quad\mathsf{\to \forall (as : List\,A) \to List^{\wedge}\,A\,Q\,as
+  \to P\,as } 
 \end{array}
 \]
-where $\mathsf{List^{\wedge} : \forall (A : Set) \to (A \to Set) \to List\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{List\,A}$ asserting that $\mathsf{Q}$ holds for every element of its argument list.
 
-As a further example, the deep induction rule for $\mathsf{PTree}$ is
-\[
+Structural induction can also be extended to nested types, such as the
+following type of perfect trees~\cite{bm98}:
+\begin{equation*}\label{eq:ptree}
 \begin{array}{l}
-\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to PTree\,A \to Set)
-  \to \big( \forall (A : Set) (Q : A \to Set) (a : A) \to Q\,a \to P\,A\,Q\,(PLeaf\, a) \big)} \\
-\quad \mathsf{\to \big( \forall (A : Set) (Q : A \to Set) (a : PTree\,(A \times A)) \to P\,(A \times A)\,(Pair^{\wedge}\,A\,A\,Q\,Q)\,a \to P\,A\,Q\,(PNode\,a)\big)} \\
-\quad \mathsf{\to \forall (A : Set) (Q : A \to Set) (a : PTree\,a) \to PTree^{\wedge}\,A\,Q\,a \to P\,A\,Q\,a }
+\mathsf{data\ PTree : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;pLeaf\,\,\, :\, A \to PTree\,A}\\
+\mathsf{\;\;\;\;\;\;\;pNode\, :\, PTree\,(A \times A) \to PTree\,A} 
 \end{array}
-\]
-where $\mathsf{Pair^{\wedge} : \forall (A : Set) (B : Set) \to (A \to Set) \to (B \to Set) \to A \times B \to Set}$ lifts predicates $\mathsf{Q_A}$ on data of type $\mathsf{A}$ and $\mathsf{Q_B}$ on data of type $\mathsf{B}$ to a predicate on pairs of type $\mathsf{A \times B}$,
-so that $\mathsf{Pair^{\wedge}\,A\,B\,Q_A\,Q_B\,(a,b) = Q_A\,a \times Q_B\,b}$,
-and $\mathsf{PTree^{\wedge} : \forall (A : Set) \to (A \to Set) \to PTree\,A \to Set}$ lifts a predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of type $\mathsf{PTree\,A}$ asserting that $\mathsf{Q}$ holds for every element of type $\mathsf{A}$ contained in its argument perfect tree.
+\end{equation*}
+Perfect trees can be thought of as lists constrained to have lengths
+that are powers of 2. In the above code, the constructor
+$\mathsf{pNode}$ uses data of type $\mathsf{PTree\,(A \times A)}$ to
+construct data of type $\mathsf{PTree\,A}$. Thus, it is clear that the
+instances of $\mathsf{PTree}$ at various indices cannot be defined
+independently, and that the entire inductive family of types must
+therefore be defined at once. This intertwinedness of the instances
+of nested types is reflected in their structural induction rules,
+which must necessarily involve polymorphic predicates, rather than the
+monomorphic predicates appearing in structural induction rules for
+ADTs. The structural induction rule for perfect trees, for example, is
+\[\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to PTree\, A \to Set)
+\to \big( \forall (A : Set) (a : A) \to P\,A\,(pLeaf\, a) \big)} \\
+\quad\mathsf{\to \big( \forall (A : Set) (tt : PTree\,(A \times A))
+  \to P\,(A \times A)\,t \to P\,a\,(pNode\,tt)\big) \to \forall (A :
+  Set) (t : PTree\,A) \to P\,A\,t } 
+\end{array}\]
+The deep induction rule for perfect trees similarly uses polymorphic
+predicates but otherwise follows the now-familiar pattern:
+\[\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to PTree\,A
+  \to Set) \to \big( \forall (A : Set) (Q : A \to Set) (a : A) \to
+  Q\,a \to P\,A\,Q\,(PLeaf\, a) \big)} \\ \quad \mathsf{\to \big(
+  \forall (A : Set) (Q : A \to Set) (tt : PTree\,(A \times A)) \to
+  P\,(A \times A)\,(Pair^{\wedge}\,A\,A\,Q\,Q)\,tt \to
+  P\,A\,Q\,(PNode\,tt)\big)} \\ \quad \mathsf{\to \forall (A : Set) (Q
+  : A \to Set) (t : PTree\,A) \to PTree^{\wedge}\,A\,Q\,t \to
+  P\,A\,Q\,t }
+\end{array}\]
+Here, $\mathsf{Pair^{\wedge} : \forall (A\; B: Set) \to (A \to Set)
+  \to (B \to Set) \to A \times B \to Set}$ lifts predicates
+$\mathsf{Q_A}$ on data of type $\mathsf{A}$ and $\mathsf{Q_B}$ on data
+of type $\mathsf{B}$ to a predicate on pairs of type $\mathsf{A \times
+  B}$ in such a way that $\mathsf{Pair^{\wedge}\,A\,B\,Q_A\,Q_B\,(a,b)
+  = Q_A\,a \times Q_B\,b}$. Similarly, $\mathsf{PTree^{\wedge} :
+  \forall (A : Set) \to (A \to Set) \to PTree\,A \to Set}$ lifts a
+predicate $\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on
+data of type $\mathsf{PTree\,A}$ asserting that $\mathsf{Q}$ holds for
+every element of type $\mathsf{A}$ contained in its perfect tree
+argument.
 
-Moreover, for types admitting both deep induction and structural induction, the former generalizes the latter.
-Indeed, structural induction rules can be derived from deep induction rules by always choosing the constantly true predicate as the custom predicate traversing each data element contained in the data type.
-That way, deep induction only inspects the structure of the data type and not its content, just like structural induction does.
-A concrete example of such derivation is demonstrated in Section~\ref{sec:ind-equal}.
+It is not possible to extend structural induction to {\em truly}
+nested types, i.e., to nested types whose recursive occurrences appear
+below their own type constructors. Indeed, defining any induction rule
+for such a type requires that we can lift the predicate argument to
+that rule over the type itself. The observation that any induction
+rule for a truly nested type would thus necessarily have to be a deep
+induction rule was, in fact, the original motivation for the
+introduction of deep induction in~\cite{jp20}.
+
+The quintessential example of a truly nested type is that of
+bushes~\cite{bm98}:
+\begin{equation*}\label{eq:bush}
+\begin{array}{l}
+\mathsf{data\ Bush : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;bNil\,\,\,\,\,\, :\, Bush\,A}\\
+\mathsf{\;\;\;\;\;\;bCons\, :\, A \to Bush\,(Bush\,A) \to Bush\,A} 
+\end{array}
+\end{equation*}
+Its (deep) induction rule is
+\[\begin{array}{l}
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to Bush\, A \to Set)
+\to \big( \forall (A : Set) \to P\,A\,bNil \big)} \\
+\quad\mathsf{\to \big( \forall (A : Set) (Q : A \to Set) (a : A) (bb :
+  Bush\,(Bush\,A)) \to Q\,a \to
+  P\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb \to P\,A\,Q\,(bCons\,a\,bb)
+  \big)} \\ 
+\quad\mathsf{\to \forall (A : Set) (Q : A \to Set) (b : Bush\,A) \to
+  Bush^{\wedge}\,A\,Q\,b \to P\,A\,Q\,b } 
+\end{array}\]
+where $\mathsf{Bush^{\wedge} : \forall (A : Set) \to (A \to Set) \to
+  Bush\,A \to Set}$ is the folllowing lifting of a predicate
+$\mathsf{Q}$ on data of type $\mathsf{A}$ to a predicate on data of
+type $\mathsf{Bush\,A}$ asserting that $\mathsf{Q}$ holds for every
+element of type $\mathsf{A}$ contained in its argument bush:
+\begin{align*}
+\mathsf{Bush^{\wedge}\,A\,Q\,Bnil} &= \mathsf{\top} \\
+\mathsf{Bush^{\wedge}\,A\,Q\,(Bcons\,a\,bb)} &= \mathsf{Q\,a \times
+  Bush^{\wedge}\,(Bush\,A)\,(Bush^{\wedge}\,A\,Q)\,bb}
+\end{align*}
 
 
 
-\section{Introducing GADTs}
 
-%\begin{itemize}
-%\item Say what GADTs are
-%\item Example: $\mathsf{Equal}$
-%\[\begin{array}{l}
-%\mathsf{data\, Equal\,a\,b\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}
-%\end{array}\]
-%\item GADTs' encoding using $\mathsf{Equal}$
-%\item Example (in Haskell syntax):
-%%Haskell definition of $\mathsf{Seq}$ %(this encoding might have been introduced after the other one, see phantom types)
-%\begin{equation}\label{eq:seq}
-%\begin{array}{l}
-%\mathsf{data\, Seq\,a\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
-%\mathsf{\;\;\;\;\;\;\;\;SPair\,\, ::\, Seq \,a \to Seq\,b \to
-%  Seq\,(a \times b)}
-%\end{array}
-%\end{equation}
-%\item Traditionally GADTs are understood in terms of $\mathsf{Equal}$ data type (see Cheney Hinze or Tim Sheard)
-%For example
-%\begin{equation}\label{eq:eq_seq}
-%\begin{array}{l}
-%\mathsf{data\, Seq\,a\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;Const ::\, a \to Seq\,a}\\
-%\mathsf{\;\;\;\;\;\;\;\;SPair\,\, ::\, \exists (b : Set) (c : Set).\,Equal\,a\,(b \times c) \to Seq\,b \to Seq\,c \to
-%  Seq\,a}\\ 
-%\end{array}
-%\end{equation}
-%(This gives the kind of Church encoding that is in Bob's paper) (might omit)
-%\item Add example for GADT with deep structure (Ask Daniel which one)
-%\end{itemize}
-%%Equality version of $\mathsf{Seq}$ (see Cheney Hinze or Tim Sheard)
 
-As noted in Subsection~\ref{ssec:syntax-adts},
-the return types of the constructors of a nested
-type have to be the same type instance of the type being defined.
-As a further generalization of ADTs and nested types,
-\emph{generalized algebraic data types} (GADTs)~\cite{ch03,xcc03,sp04}
-relax the restriction on the type instances appearing in a data
-type definition by allowing their constructors both to take as
-arguments \emph{and return as results} data whose types involve type
-instances of the GADT other than the one being defined.
+It is worth noting that for those nested types admitting both deep
+induction and structural induction, the former generalizes the latter.
+Indeed, the structural induction rule for a nested type is recoverable
+from its deep induction rule by taking the custom predicates on their
+data of primitive types to be constantly $\mathsf{True}$-valued
+predicates. Such an instantiation ensures that a deep induction rule
+only inspects the top-level structure of its argument data, rather
+than the contents of that structur. {\color{red} A concrete example of
+  such a derivation is given in Section~\ref{sec:ind-equal}.}
+
+\section{GADTs and Their Encodings}
+
+While a constructor of a nested type can take {\em as arguments} data
+whose types involve occurrences of the type instantiated at indices
+other than the one being defined, its {\em return type} still has to
+be at the same instance as the one being defined. For example, all
+constructors of $\mathsf{PTree\,A}$ have to return an element of type
+$\mathsf{PTree\,A}$. By contrast, \emph{generalized algebraic data
+  types} (GADTs)~\cite{ch03,sp04,xcc03} relax this restriction by
+allowing their constructors both to take as arguments \emph{and return
+  as results} data whose types involve type instances of the GADT
+other than the one being defined.
+%Applications of GADTs include generic programming, modeling
+%programming languages via higher-order abstract syntax, maintaining
+%invariants in data structures, and expressing constraints in embedded
+%domain-specific languages. GADTs have also been used, e.g., to
+%implement tagless interpreters~\cite{pl04,pr06,pvww06}, to improve
+%memory performance~\cite{min15}, and to design APIs~\cite{pen20}.
 
 GADTs are used in precisely those situations in which different
 behaviors at different instances of a data type are desired. This is
 achieved by allowing the programmer to give the type signatures of the
 GADT's data constructors independently, and then using pattern
-matching to force the desired type refinement. Applications of GADTs
-include generic programming, modeling programming languages via
-higher-order abstract syntax, maintaining invariants in data
-structures, and expressing constraints in embedded domain-specific
-languages. GADTs have also been used, e.g., to implement tagless
-interpreters~\cite{pl04,pr06,pvww06}, to improve memory
-performance~\cite{min15}, and to design APIs~\cite{pen20}.
-
-\begin{example}\label{example:equal}
-As a first and notable example of GADT, we consider the the $\mathsf{Equal}$ type.
-This GADT is parametrized by two type indices,
-but it is only possible to construct a data element if the two indices are instantiated at the same type.
-In Agda, we code it as
+matching to force the desired type refinement. For example, the
+equality GADT
 \begin{equation}\label{eq:equal}
 \begin{array}{l}
 \mathsf{data\ Equal : Set \to Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;\;\;\;\,refl :\, Equal\,A\,A}
+\mathsf{\;\;\;\;\;\;\;\;\;\;\;\,eRefl :\, Equal\,A\,A}
 \end{array}
 \end{equation}
-$\mathsf{Equal}$ has thus a single data element when its two type arguments
-are the same and no data elements otherwise.
-The importance of the $\mathsf{Equal}$ type lies in the fact that we can understand other GADTs in terms of equality,
-as shown in the examples below.
-\end{example}
+is parametrized by two type indices, but it is only possible to
+construct data elements of type $\mathsf{Equal\,a\,b}$ if $\mathsf{a}$
+and $\mathsf{b}$ are instantiated at the same type. In this case
+$\mathsf{Equal\,a\,b}$ contains a single data element; it contains no
+data elements otherwise.
 
-\begin{example}\label{example:seq}
-A more complex example of GADT is the type of sequences,
-\begin{equation}\label{eq:eq-seq}
-\begin{array}{l}
-\mathsf{data\ Seq : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\
-\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, Seq\,A \to Seq\,B \to Seq\,(A \times B)}
-\end{array}
-\end{equation}
-which comprises sequences of any type $\mathsf{a}$
-and sequences obtained by pairing the data in two already existing sequences.
-Such GADTs can be understood in terms of the $\mathsf{Equal}$ data type~\cite{ch03,sp04}.
-For example, we can rewrite the $\mathsf{Seq}$ type as
+The importance of the equality GADT lies in the fact that we can
+understand other GADTs in terms of it. For example, the GADT of
+sequences from the introduction
+%following GADT of sequences
+%\begin{equation}\label{eq:eq-seq}
+%\begin{array}{l}
+%\mathsf{data\ Seq : Set \to Set\ where}\\
+%\mathsf{\;\;\;\;\;\;\;\;sConst :\, A \to Seq\,A}\\
+%\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, Seq\,A \to Seq\,B \to Seq\,(A \times B)}
+%\end{array}
+%\end{equation}
+comprises constant sequences of data of any type $\mathsf{A}$ and
+sequences obtained by pairing the data in two already existing
+sequences. This GADT can be understood in terms of the equality GADT
+by rewriting it as its Henry Ford
+encoding~\cite{ch03,hin03,mcb99,sjsv09,sp04} as follows:
 \begin{equation}\label{eq:eq_seq}
 \begin{array}{l}
 \mathsf{data\ Seq : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\
-\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \times C)
-  \to Seq\,B \to Seq\,C \to Seq\,A}\\ 
+\mathsf{\;\;\;\;\;\;\;\;sConst :\, A \to Seq\,A}\\ 
+\mathsf{\;\;\;\;\;\;\;\;sPair\,\, :\, \forall (B\,C : Set) \to
+  Equal\,A\,(B \times C) \to Seq\,B \to Seq\,C \to Seq\,A}\\ 
 \end{array}
 \end{equation}
-where the requirement that the $\mathsf{sPair}$ constructor produces an instance of $\mathsf{Seq}$ at a product type has been replaced with the requirement that the instance of $\mathsf{Seq}$ returned by $\mathsf{sPair}$ is \emph{equal} to some product type.
-This encoding is particularly convenient when representing GADTs as Church encodings~\cite{vw10,atk12}.
-\end{example}
+Here, the requirement that the $\mathsf{sPair}$ constructor produces
+an instance of $\mathsf{Seq}$ at a product type has been replaced with
+the requirement that the instance of $\mathsf{Seq}$ returned by
+$\mathsf{sPair}$ is \emph{equal} to some product type. This encoding
+is particularly convenient when viewing GADTs as their Church
+encodings~\cite{atk12,vw10}.
 
-%To determine the possible shapes of a GADT's container we must
-%pattern-match on the type of the data to be contained.
-%For this, it is essential that a GADT calculus support an equality type
-%$\mathsf{Equal}$ that is a singleton set when its two type arguments
-%are the same and is the empty set otherwise.
-%That is, the type $\mathsf{Equal}$ must be the syntactic reflection
-%of semantic equality function $\mathit{Equal}$.
-%The type $\mathsf{Equal}$ can either be
-%defined via GADT syntax, as in
-%\[\begin{array}{l}
-%\mathsf{data\, Equal\,a\,b\,where}\\
-%\mathsf{\;\;\;\;\;\;\;\;Refl ::\, Equal\,c\,c}
-%\end{array}\]
+\vspace*{0.1in}
 
-\begin{example}\label{example:lterm}
-GADTs are expressive enough to represent, for example, the types and terms of the simply typed lambda calculus. 
-We will use a variant of the simply typed lambda calculus including a base type of booleans,
-and type constructors for arrow types and list types. 
-We define a GADT $\mathsf{LType}$ to encode the set of permissible types for this calculus:
+An example of a {\color{red} deep GADT} is given by an encoding of
+simply typed lambda terms. More robust variations on the simply typed
+lambda calculus are, of course, possible. But since the particular
+calculus we have chosen is rich enough to illustrate all of the
+essential aspects of deep induction for GADTs, we keep the types and
+terms to a minimum here for the purposes of exposition.
+
+Types are either booleans, arrow types, or list types. We represent
+types via the following GADT: {\color{red} Wrong naming conventions
+  throughout this example!}
 \begin{equation}\label{eq:eq_ltype}
 \begin{array}{l}
 \mathsf{data\ LType : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;tBool :\, \forall (B : Set) \to Equal\,A\,Bool \to LType\,A}\\
-\mathsf{\;\;\;\;\;\;\;\;tArr\,\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \to C) \to LType\,B \to LType\,C \to LType\,A}\\
-  \mathsf{\;\;\;\;\;\;\;\;tList\,\, :\, \forall (B : Set) \to Equal\,A\,(\List\,B) \to LType\,B \to LType\,A}
+\mathsf{\;\;\;\;\;\;\;\;tBool :\, \forall (B : Set) \to LType\,Bool}\\
+\mathsf{\;\;\;\;\;\;\;\;tArr\,\,\, :\, \forall (B\,C : Set) \to
+  LType\,B \to LType\,C \to LType\,(B \to C)}\\
+\mathsf{\;\;\;\;\;\;\;\;tList\,\, :\, \forall (B : Set)
+  \to LType\,B \to LType\,(List\,B)}
 \end{array}
 \end{equation}
-The type system includes a $\mathsf{tBool}$ constructor representing the type of booleans;
-an arrow type constructor, $\mathsf{tArr}$ , which takes two types $\mathsf{B}$ and $\mathsf{C}$
-and produces the arrow type $\mathsf{B \to C}$;
-and a $\mathsf{tList}$ constructor which takes a type $\mathsf{B}$ and constructs
-the type $\mathsf{List\,B}$.
-
-%The $\mathsf{tBool}$ constructor represents the type of booleans in the calculus.
-%%It is defined in terms of $\mathsf{KBool : Set \to Set}$,
-%%which simply returns $\mathsf{Bool}$ on any input: $\mathsf{KBool \, A = Bool}$.
-%%The lifting $\mathsf{KBool^{\wedge} : \forall (A : Set) \to (A \to Set) \to (KBool \, A) \to Set}$ lifts every predicate to the constantly true predicate: 
-%%\[
-%%  \mathsf{KBool^{\wedge}\, A\, Q\, b = \top}
-%%\]
-%% The $\mathsf{Bool}$ data type is defined as:
-%% \begin{equation}\label{eq:bool}
-%% \begin{array}{l}
-%% \mathsf{data\, Bool\,: Set\,where}\\
-%%   \mathsf{\;\;\;\;\;\;\;\;true :\, Bool} \\
-%%   \mathsf{\;\;\;\;\;\;\;\;false:\, Bool} \\
-%% \end{array}
-%% \end{equation}
-%The type system also includes an arrow type constructor, $\mathsf{tArr}$ , which takes two types $\mathsf{B}$ and $\mathsf{C}$
-%and produces the arrow type $\mathsf{B \to C}$.
-%Similarly, given a type $\mathsf{B}$, we can construct
-%the type $\mathsf{List\,B}$ using the $\mathsf{tList}$ constructor.
-
-The term calculus for this type system includes variables, abstraction, application, 
-and also includes an introduction rule that takes a list of lambda terms of type $\mathsf{B}$ and produces a lambda term of type $\mathsf{List\,B}$.
+Terms are either variables, abstractions, applications, or lists of
+such terms. We represent terms via 
 \begin{equation}\label{eq:eq_lterm}
 \begin{array}{l}
 \mathsf{data\ LTerm : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;var\,\,\,\,\,\,\,:\, String \to LType\,A \to LTerm\,A} \\
-\mathsf{\;\;\;\;\;\;\;\;abs\,\,\,\,\,\, :\, \forall (B\,C : Set) \to Equal\,A\,(B \to C) \to String 
-      \to LType\,B \to LTerm\,C \to LTerm\,A}\\
-  \mathsf{\;\;\;\;\;\;\;\;app\,\,\,\,\, :\, \forall (B : Set) \to LTerm (B \to A) \to LTerm\,B \to LTerm\,A} \\
-  \mathsf{\;\;\;\;\;\;\;\;listC\,\,\, :\, \forall (B : Set) \to Equal\,A\,(List\,B) \to List\,(LTerm\,B) \to LTerm\,A}
+\mathsf{\;\;\;\;\;\;\;\;var\,\,\,\,\,\,\,:\, String \to LType\,A \to
+  LTerm\,A} \\  
+\mathsf{\;\;\;\;\;\;\;\;abs\,\,\,\,\,\, :\, \forall (B\,C : Set) \to
+  String \to LType\,B \to LTerm\,C \to
+  LTerm\,(B \to C)}\\ 
+  \mathsf{\;\;\;\;\;\;\;\;app\,\,\,\,\, :\, \forall (B : Set) \to
+    LTerm (B \to A) \to LTerm\,B \to LTerm\,A} \\ 
+  \mathsf{\;\;\;\;\;\;\;\;listC\,\,\, :\, \forall (B : Set) \to
+    List\,(LTerm\,B) \to LTerm\,(List \,B)} 
 \end{array}
 \end{equation}
-The type parameter for $\mathsf{LTerm}$ tracks the types of simply typed lambda calculus terms.
-So the type $\mathsf{LTerm\,A}$ contains lambda terms of type $\mathsf{A}$. 
-Variables are represented as strings and are tagged with their type.
-The $\mathsf{var}$ constructor takes a variable name and a type for the variable and produces
-a term of the given type.
-The $\mathsf{abs}$ constructor takes a variable name, a type $\mathsf{B}$ for the variable,
-and a lambda term of type $\mathsf{C}$ for the body of the abstraction,
-and it produces a term of type $\mathsf{B \to C}$.
-The $\mathsf{app}$ constructor applies a lambda term of type $\mathsf{B \to A}$ to a lambda term of type $\mathsf{B}$,
-producing a lambda term of type $\mathsf{A}$. 
-The $\mathsf{listC}$ constructor takes a list of lambda terms of type $\mathsf{B}$ and produces a lambda term of type $\mathsf{List\,B}$.
+The type parameter for $\mathsf{LTerm}$ tracks the types of simply
+typed lambda calculus terms.  For example, the type
+$\mathsf{LTerm\,A}$ contains lambda terms of type $\mathsf{A}$.
+Variables are tagged with their types by the constructors
+$\mathsf{var}$ and $\mathsf{abs}$. There, $\mathsf{LType}$ ensures
+that variables can only be tagged with legal types, e.g.,
+$\mathsf{Bool}$, $\mathsf{Bool \to Bool}$, $\mathsf{List\, (Bool \to
+  Bool)}$, etc. The presence of $\mathsf{LType}$ in these constructors
+thus guarantees that all lambda terms produced by $\mathsf{var}$,
+$\mathsf{abs}$, $\mathsf{app}$, and $\mathsf{listC}$ are well-typed.
 
-Variables are tagged with their types in the $\mathsf{var}$ (variable introduction) and 
-$\mathsf{abs}$ (abstraction) constructors.
-The role of $\mathsf{LType}$ in the $\mathsf{var}$ and $\mathsf{abs}$ constructors
-is to enforce that variables can only be tagged with a legal type, e.g., $\mathsf{Bool}$, 
-$\mathsf{Bool \to Bool}$, $\mathsf{List\, (Bool \to Bool)}$, etc. 
-Therefore the presence of $\mathsf{LType}$ in these constructors ensures that all lambda terms produced by 
-$\mathsf{var}$, $\mathsf{abs}$, $\mathsf{app}$, and $\mathsf{listC}$ are well-typed. 
-\end{example}
+The Henry Ford encodings representing these GADTs in terms of the
+equality GADT are:
+\begin{equation}\label{eq:eq_ltype}
+\begin{array}{l}
+\mathsf{data\ LType : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;tBool :\, \forall (B : Set) \to Equal\,A\,Bool
+  \to LType\,A}\\ 
+\mathsf{\;\;\;\;\;\;\;\;tArr\,\,\, :\, \forall (B\,C : Set) \to
+  Equal\,A\,(B \to C) \to LType\,B \to LType\,C \to LType\,A}\\ 
+  \mathsf{\;\;\;\;\;\;\;\;tList\,\, :\, \forall (B : Set) \to
+    Equal\,A\,(\List\,B) \to LType\,B \to LType\,A} 
+\end{array}
+\end{equation}
+and
+\begin{equation}\label{eq:eq_lterm}
+\begin{array}{l}
+\mathsf{data\ LTerm : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;var\,\,\,\,\,\,\,:\, String \to LType\,A \to
+  LTerm\,A} \\  
+\mathsf{\;\;\;\;\;\;\;\;abs\,\,\,\,\,\, :\, \forall (B\,C : Set) \to
+  Equal\,A\,(B \to C) \to String \to LType\,B \to LTerm\,C \to
+  LTerm\,A}\\ 
+  \mathsf{\;\;\;\;\;\;\;\;app\,\,\,\,\, :\, \forall (B : Set) \to
+    LTerm (B \to A) \to LTerm\,B \to LTerm\,A} \\ 
+  \mathsf{\;\;\;\;\;\;\;\;listC\,\,\, :\, \forall (B : Set) \to
+    Equal\,A\,(List\,B) \to List\,(LTerm\,B) \to LTerm\,A} 
+\end{array}
+\end{equation}
 
+\vspace*{0.05in}
 
+We will revisit these GADTs in {\color{red} Sections~\ref{}
+  and~\ref{}}.
+
+\vfill
+
+\pagebreak
 
 \section{(Deep) induction for GADTs}
 
@@ -455,7 +745,7 @@ which are essentially unary relations.
 Unfortunately, this approach cannot possibly be employed
 to prove a deep induction rule for GADTs,
 as these types do not allow for a functorial interpretation,
-at least in a parametric model~\cite{Haskell-paper}.
+at least in a parametric model~\cite{jgj21}.
 
 Nevertheless, this paper shows how to extend deep induction to some GADTs.
 We will first demonstrate how to derive the deep induction rule for some example cases,
@@ -1215,7 +1505,7 @@ and that this predicate-lifting function has a map function $\mathsf{HLMap}$ of 
 \to PredMap\,(H\,\ol{C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C'})}
 \]
 That means that $\mathsf{H}$ cannot be a GADT,
-as GADTs have no functorial semantics~\cite{HaskellPaper}
+as GADTs have no functorial semantics~\cite{jgj21}.
 and incur in the issue exposed in Section~\ref{sec:GADT-nested},
 but it can be an ADT or even a nested type as those types have functorial semantics~\cite{jp19,jgj21}.
 Thus,
@@ -1256,7 +1546,7 @@ it is just natural to expect that GADTs with nesting would as well.
 Surprisingly, that is not the case:
 indeed, the induction principle generally relies on (unary) parametricity of the semantic interpretation,
 and in the case of nested types it also relies on functorial semantics~\cite{jp20},
-but GADTs cannot admit both functorial and parametric semantics at the same time~\cite{HaskellPaper}.
+but GADTs cannot admit both functorial and parametric semantics at the same time~\cite{jgj21}.
 In this section we show how induction for GADTs featuring nesting goes wrong
 by analyzing the following concrete example of such a type.
 \begin{equation}\label{gadt-nested}
@@ -1381,7 +1671,7 @@ which is parametric but not functorial.
 Had we considered the functorial-completion semantics, which is functorial,
 we would have forfeited parametricity instead.
 In both cases, thus, we cannot derive an induction rule for GADTs featuring nesting.
-Unlike nestes types, indeed, GADTs do not admit a semantic interpretation that is both parametric and functorial~\cite{HaskellPaper}.
+Unlike nestes types, indeed, GADTs do not admit a semantic interpretation that is both parametric and functorial~\cite{jgj21}.
 
 
 
@@ -1682,34 +1972,102 @@ No induction with primitive representation (reference Haskell Symposium paper an
 \item reference inspiration for STLC GADT : https://www.seas.upenn.edu/~cis194/spring15/lectures/11-stlc.html
 \end{itemize}
 
-%%% Added to bibliography:
+\begin{thebibliography}{10}\label{bibliography}
 
-%@inproceedings{jp20,
-%  author = {P. Johann and A. Polonsky},
-%  title = {Deep Induction: Induction Rules for (Truly) Nested Types},
-%  year = {2020},
-%  booktitle = {Foundations of Software Science and Computation Structures},
-%  pages = {339-358}
-%}
-%
-%@inproceedings{jgj21,
-%  author = {P. Johann and E. Ghiorzi and D. Jeffries},
-%  title = {Parametricity for Primitive Nested Types},
-%  year = {2021},
-%  booktitle = {Foundations of Software Science and Computation Structures},
-%  pages = {324-343}
-%}
-%
-%@inproceedings{bm98,
-% title={Nested datatypes},
-% author={R. Bird, and L. Meertens},
-% booktitle={Mathematics of Program Construction},
-% year={1998}
-% pages = {52–67}
-%}
+\bibitem{atk12} Atkey, R.  {\em Relational parametricity for higher
+  kinds}.  Computer Science Logic, pp.~46-61, 2012.
 
+\bibitem{bfss90} Bainbridge, E. S., Freyd, P. Scedrov, A., and Scott,
+  P. J. {\em Functorial polymorphism}. Theoretical Computer Science
+  70(1), pp. 35-64, 1990.
 
-\bibliography{gadt-story-references}
+\bibitem{bm98} Bird, R. and Meertens, L. {\em Nested
+  datatypes}. Proceedings, Mathematics of Program Construction,
+  pp. 52–67, 1998.
 
+\bibitem{ch03} Cheney, J. and Hinze, R. {\em First-class phantom
+ types}. CUCIS TR2003-1901, Cornell University, 2003.
+
+\bibitem{ch88} Coquand, T. and Huet, G. {\em The calculus of
+  constructions}. Information and Computation 76(2/3), 1988.
+
+\bibitem{chl} Chlipala, A. {\em Library Inductive
+  Types}. $\mathtt{http://adam.chlipala.net/cpdt/html/InductiveTypes.html}$
+
+\bibitem{coq20} The Coq Development Team. {\em The Coq Proof
+  Assistant}, version 8.11.0, January 2020.
+  $\mathtt{https://doi.org/10.5281/zenodo.3744225}$
+
+\bibitem{gjfor15} Ghani, N., Johann, P., Nordvall Forsberg, F.,
+  Orsanigo, F., and Revell, T. {\em Bifibrational functorial semantics
+    for parametric polymorphism}. Proceedings, Mathematical
+  Foundations of Program Semantics, pp. 165-181, 2015.
+
+\bibitem{hin03} Hinze, R. {\em Fun with phantom types}. Proceedings,
+ The Fun of Programming, pp. 245–262, 2003.
+
+\bibitem{jgj21f} Johann, P., Ghiorzi, E., and Jeffries, D. {\em
+  Parametricity for primitive nested types}. Proceedings, Foundations
+  of Software Science and Computation Structures, pp. 324-343, 2021.
+
+\bibitem{jgj21} Johann, P., Ghiorzi, E., and Jeffries, D. {\em
+  Parametricity in the presence of GADTs}. Submitted, 2021.
+
+\bibitem{jp19} Johann, P. and Polonsky, A. {\em Higher-kinded data
+  types: Syntax and semantics} Proceedings, Logic in Computer Science
+  2019. {\color{red} PAGES?}
+
+\bibitem{jp20} Johann, P. and Polonsky, A. {\em Deep induction:
+  Induction rules for (truly) nested types}.  Proceedings, Foundations
+  of Software Science and Computation Structures, pp. 339-358, 2020.
+
+\bibitem{mac71} MacLane, S. {\em Catgories for the Working
+  Mathematician}. Springer, 1971.
+
+\bibitem{mcb99} McBride, C. {\em Dependently Typed Programs and their
+  Proofs}. PhD thesis, University of Edinburgh, 1999.
+
+\bibitem{min15} Minsky, Y.  {\em Why {GADT}s matter for performance}.
+  $\mathtt{https://blog.janestreet.com/why-gadts-matter-for-performance/}$,
+  2015.
+
+\bibitem{pl04} Pasalic, E., and Linger, N.  {\em Meta-programming with
+  typed object-language representations}.  Generic Programming and
+  Component Engineering, pp.~136-167, 2004.
+
+\bibitem{pen20} Penner, C.  {\em Simpler and safer {API} design using
+  {GADT}s}.  $\mathtt{https://chrispenner.ca/posts/gadt-design}$,
+  2020.
+
+\bibitem{pvww06} Peyton Jones, S., Vytiniotis, D., Weirich, S., and
+  Washburn, G. {\em Simple unification-based type inference for
+    GADTs}. Proceedings, International Conference on Functional
+  Programming, 2006. {\color{red} PAGES?}
+
+\bibitem{pr06} Pottier, F., and R{\'e}gis-Gianas, Y.  {\em Stratified
+  type inference for generalized algebraic data types}.  Principles of
+  Programming Languages, pp.~232-244, 2006.
+
+\bibitem{sjsv09} Schrijvers, T, Peyton Jones, S. L., Sulzmann, M., and
+  Vytiniotis, D. {\em Complete and decidable type inference for
+    GADTs}. Proceedings, International Conference on Functional
+  Programming, pp. 341– 352, 2009.
+
+\bibitem{sp04} Sheard, T., and Pasalic, E. {\em Meta-programming with
+  built-in type equality}. Proceedings, Workshop on Logical Frameworks
+  and Meta-languaegs, 2004. {\color{red} PAGES?}
+
+\bibitem{xcc03} Xi, H., Chen, C. and Chen, G. {\em Guarded recursive
+  datatype constructors}. Proceedings, Principles of Programming
+  Languages, pp. 224–235, 2003.
+
+\bibitem{vw10} Vytiniotis, D., and Weirich, S.  {\em Parametricity,
+  type equality, and higher-order polymorphism}.  Journal of
+  Functional Programming 20(2), pp.~175--210, 2010.
+
+\end{thebibliography}
 
 \end{document}
+
+
+
