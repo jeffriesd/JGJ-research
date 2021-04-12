@@ -703,9 +703,8 @@ and is defined by pattern-matching as
   = \sum [Q_B : B \to Set]\, Equal^{\wedge}\, A\, B\, Q_A\, K^{Bool}_{\top} \,e}
 \]
 where $\mathsf{Q_A : A \to Set}$,
-$\mathsf{K^{Bool}_{\top}}$ is the constantly $\mathsf{\top}$-valued predicate on $\mathsf{Bool}$,
-$\mathsf{e : Equal\,A\,Bool}$,
-and
+$\mathsf{K^{Bool}_{\top}}$ is the constantly $\mathsf{\top}$-valued predicate on $\mathsf{Bool}$
+and $\mathsf{e : Equal\,A\,Bool}$;
 \[
 \begin{array}{l}
 \mathsf{LType^{\wedge}\,A\,Q_A\,(tArr\, B\, C\, e\, T_B\, T_C)} \\
@@ -716,8 +715,8 @@ and
 }
 \end{array}
 \]
-where $\mathsf{Q_A : A \to Set}$, $\mathsf{e : Equal\, A\, (B \to C)}$, $\mathsf{T_B : LType \,B}$, and 
-$\mathsf{T_C : LType \,C}$,
+where $\mathsf{Q_A : A \to Set}$, $\mathsf{e : Equal\, A\, (B \to C)}$, $\mathsf{T_B : LType \,B}$ and 
+$\mathsf{T_C : LType \,C}$;
 and 
 \[
 \mathsf{LType^{\wedge}\,A\,Q_A\,(tList\, B\, e\, T_B)
@@ -728,9 +727,8 @@ and
 }
 \]
 where $\mathsf{Q_A : A \to Set}$, $\mathsf{e : Equal\, A\, (List\, B)}$, and $\mathsf{T_B : LType \,B}$.
-
-
-Given the lifting for $\mathsf{LType}$, we can define the lifting for $\mathsf{LTerm}$. Again, 
+%Given the lifting for $\mathsf{LType}$, 
+We can define the lifting for $\mathsf{LTerm}$. Again, 
 the lifting 
 \[
 \mathsf{LTerm^{\wedge} : \forall (A : Set) \to (A \to Set) \to LTerm\,A \to Set}
@@ -739,7 +737,7 @@ is defined by pattern-matching as
 \[
   \mathsf{LTerm^{\wedge}\,A\,Q_A\,(var\,s\,T_A) = LType^{\wedge}\, A\, Q_A\, T_A}
 \]
-where $\mathsf{s : String}$ and $\mathsf{T_A : LType\, A}$, and
+where $\mathsf{s : String}$ and $\mathsf{T_A : LType\, A}$;
 \[
 \begin{array}{l}
 \mathsf{LTerm^{\wedge}\,A\,Q_A\, (abs \,B \,C \,e \,s \,T_B \,t_C)} \\ 
@@ -753,8 +751,7 @@ where $\mathsf{s : String}$ and $\mathsf{T_A : LType\, A}$, and
 where $\mathsf{e : Equal \, A \, (B \to C)}$,
 $\mathsf{s : String}$,
 $\mathsf{T_B : LType\,B}$,
-and $\mathsf{t_C : LTerm \, C}$,
-and
+and $\mathsf{t_C : LTerm \, C}$;
 \[
 \mathsf{LTerm^{\wedge}\,A\,Q_A\, (app\, B\, t_{BA}\, t_B)
 =
@@ -762,7 +759,7 @@ and
   LTerm^{\wedge}\, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}
   \times LTerm^{\wedge}\, B\, Q_B\, t_B}
 \]
-where $\mathsf{t_{BA} : LTerm \, (B \to A)}$ and $\mathsf{t_B : LTerm \, B}$, and
+where $\mathsf{t_{BA} : LTerm \, (B \to A)}$ and $\mathsf{t_B : LTerm \, B}$; and
 \[
 \mathsf{LTerm^{\wedge}\,A\,Q_A\, (listC\, B\, e\, ts)
 =
@@ -771,7 +768,7 @@ where $\mathsf{t_{BA} : LTerm \, (B \to A)}$ and $\mathsf{t_B : LTerm \, B}$, an
  \times List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \, B\, Q_B) \, ts}
 \]
 where $\mathsf{e : Equal\, A\, (List \,B)}$ and $\mathsf{ts : List\, (LTerm B)}$. 
-Notice we use the lifting for $\mathsf{List}$ in the case for the $\mathsf{listC}$ constructor. 
+Notice that we use the lifting for $\mathsf{List}$ in the case for the $\mathsf{listC}$ constructor. 
 
 With these liftings, we can define the deep induction principle for $\mathsf{LTerm}$.
 % Var case 
@@ -816,7 +813,7 @@ Let $\mathsf{dIndApp}$ be the function
 \end{align*}
 associated to the $\mathsf{app}$ constructor. 
 % ListC case 
-Let $\mathsf{dIndListC}$ be the type 
+Let $\mathsf{dIndListC}$ be the function 
 \begin{align*}
   &\mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A \to Set)} \\
   &\quad \mathsf{\to 
@@ -856,7 +853,7 @@ Notice that $\mathsf{LTerm^{\wedge}\, A\, Q_A\, (var\,s\,T_A) = LType^{\wedge}\,
 $\mathsf{liftA : LType^{\wedge}\,A\,Q_A\,T_A}$.
 %
 % Abs case 
-For the $\mathsf{abs}$ case, let $\mathsf{t_A = abs \,B \,C \, e \,s \,T_B \, t_C)} $ and define
+For the $\mathsf{abs}$ case, let $\mathsf{t_A = abs \,B \,C \, e \,s \,T_B \, t_C} $ and define
 \[
 \begin{array}{l}
 \mathsf{dIndLTerm \, P\, cvar \, cabs\, capp\, clistc \, A\, Q_A\, (abs \,B \,C \,e \,s \,T_B \, t_C) \, (Q_B , Q_C , liftE, lift_{T_B}, lift_{t_C})} \\
@@ -881,7 +878,7 @@ For the $\mathsf{app}$ case, let $\mathsf{t_A = app \,B \,\,t_{BA} \, t_B} $ and
   \mathsf{dIndLTerm \, P\, cvar \, cabs\, capp\, clistc \, A\, Q_A\,  (app \,B \,\,t_{BA} \, t_B)\, (Q_B , list_{t_{BA}}, list_{t_B})} \\
   \mathsf{= capp\,A\,B\,Q_A\, Q_B\, t_{BA}\, t_B\, p_{BA} \, p_B}
 \]
-where $\mathsf{(Q_B , lift_{t_{BA}}, list_{t_B}) : LTerm^{\wedge}\, A\, Q_A\, (app \,B \,t_{BA} \, t_B)}$
+where $\mathsf{(Q_B , lift_{t_{BA}}, list_{t_B}) : LTerm^{\wedge}\, A\, Q_A\, (app \,B \,t_{BA} \, t_B)}$, i.e.,
 \begin{itemize}
   \item $\mathsf{Q_B : B \to Set}$;
   \item $\mathsf{lift_{t_{BA}}: LTerm^{\wedge} \, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}}$;
@@ -914,19 +911,19 @@ and $\mathsf{p_{List}}$ is defined as:
 and $\mathsf{p_{ts}}$ is defined as:
 \[
 \mathsf{
-  p_{ts} = dIndLTerm\, P\, cvar\, cabs\, capp\, clistc\, B\, Q_B :  PredMap \,(LTerm^{\wedge}\, B\, Q_B) \, (P\,B\,Q_B)
+  p_{ts} = dIndLTerm\, P\, cvar\, cabs\, capp\, clistc\, B\, Q_B :  PredMap\,(LTerm\,B) \,(LTerm^{\wedge}\, B\, Q_B) \, (P\,B\,Q_B)
   }
 \]
 where 
 \[
 \mathsf{liftListMap : \forall\, (A : Set) \to (Q_A \, Q'_A : A \to Set) 
-  \to PredMap\,Q_A\,Q'_A \to PredMap \,(List^{\wedge}\, A\, Q_A)\, (List^{\wedge}\, A\, Q'_A)}
+  \to PredMap\,A\,Q_A\,Q'_A \to PredMap\,(List\,A) \,(List^{\wedge}\, A\, Q_A)\, (List^{\wedge}\, A\, Q'_A)}
 \]
 takes a morphism of predicates and produces a morphism of lifted predicates. 
-$\mathsf{PredMap}$ gives the type of morphisms of predicates and is defined as: 
+$\mathsf{PredMap}$ is the type constructor that produces the type of morphisms between predicates, and it is defined as follows: 
 \begin{align*}
-  &\mathsf{PredMap : \forall\, \{A : Set\} \to (A \to Set) \to (A \to Set) \to Set } \\
-  &\mathsf{PredMap \, Q_A\,Q'_A\, = \forall\, (a : A) \to Q_A\,a \to Q'_A\,a}
+  &\mathsf{PredMap : \forall\, (A : Set) \to (A \to Set) \to (A \to Set) \to Set } \\
+  &\mathsf{PredMap \,A\, Q_A\,Q'_A\, = \forall\, (a : A) \to Q_A\,a \to Q'_A\,a}
 \end{align*}
 
 
@@ -948,23 +945,23 @@ For that, we need to give a grammar for the types we will be considering.
 A generic GADT
 \begin{equation*}
 \begin{array}{l}
-\mathsf{data\, G\,(\ol{a : Set}) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;C_i\, :\, F_i\,G\,\ol{b} \to G (\ol{K_i\,\ol{b}})}
+\mathsf{data\ G : Set^\alpha \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;c_i\, :\, F_i\,G\,\ol{B} \to G (\ol{K_i\,\ol{B}})}
 \end{array}
 \end{equation*}
-is defined by a finite number of constructors $\mathsf{C_i}$.
+is defined by a finite number of constructors $\mathsf{c_i}$.
 In the definition above, $\mathsf{F_i}$ is a type constructor with signature $\mathsf{(Set^{\alpha} \to Set) \to Set^{\beta} \to Set}$
 and each $\mathsf{K_i}$ is a type constructor with signature $\mathsf{Set^{\beta} \to Set}$
 (i.e. a type constructor of arity $\mathsf{\beta}$).
 The overline notation denotes a finite list:
-$\mathsf{\ol{a}}$ is a list of types of length $\mathsf{\alpha}$,
-so that it can be applied to the type constructor $\mathsf{G}$ of arity $\mathsf{\alpha}$.
+%$\mathsf{\ol{a}}$ is a list of types of length $\mathsf{\alpha}$,
+%so that it can be applied to the type constructor $\mathsf{G}$ of arity $\mathsf{\alpha}$.
 %and the vertical bars notation denotes the length of a list:
 %$\mathsf{G}$ depends on a finite list of types $\mathsf{\ol{a}}$ of length $\mathsf{\alpha}$,
-Each of the $\mathsf{\alpha}$-many $\mathsf{K_i}$ is a type constructor of arity $\mathsf{\beta}$
-so that it can be applied to the list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$.
+each of the $\mathsf{\alpha}$-many $\mathsf{K_i}$ is a type constructor of arity $\mathsf{\beta}$
+so that it can be applied to the list of types $\mathsf{\ol{B}}$ of length $\mathsf{\beta}$.
 %depends on a finite list of types $\mathsf{\ol{b}}$ of length $\mathsf{\beta}$,
-Moreover, notice that the arity of $\mathsf{G}$ matches the number of type constructors $\mathsf{\ol{K_i}}$.
+Moreover, notice that the arity of $\mathsf{G}$ matches the number of type constructors $\mathsf{K_i}$.
 We allow each $\mathsf{F_i}$ to be inductively built in the following ways (and with the following restrictions):
 \begin{itemize}
 \item $\mathsf{F_i = F_i' \times F_i''}$ where $\mathsf{F_i'}$ and $\mathsf{F_i''}$ have the same signature as $\mathsf{F_i}$ and are built recursively from the same induction rules.
@@ -973,37 +970,38 @@ We allow each $\mathsf{F_i}$ to be inductively built in the following ways (and 
 where $\mathsf{F_i'}$ does not contain the recursive variable,
 i.e., $\mathsf{F_i' : Set^\beta \to Set}$ is a type constructor of arity $\mathsf{\beta}$,
 and $\mathsf{F_i''}$ has the same signature as $\mathsf{F_i}$ and is built recursively from the same induction rules.
-\item $\mathsf{F_i\,G\,\ol{b} = G(\ol{F_a\,\ol{b}})}$
-where none of the $\mathsf{F_a}$ contains the recursive variable,
-i.e., $\mathsf{F_a : Set^\beta \to Set}$
+\item $\mathsf{F_i\,G\,\ol{B} = G(\ol{F_j\,\ol{B}})}$
+where none of the $\mathsf{\alpha}$-many $\mathsf{F_j}$ contains the recursive variable,
+i.e., $\mathsf{F_j : Set^\beta \to Set}$
 is a type constructor of arity $\mathsf{\beta}$
-for each $\mathsf{a}$.
+for each $\mathsf{j = 1, \dots, \alpha}$.
 Such restriction is necessary to prevent nesting,
 as that would break the induction rule as discussed in Section~\ref{sec:GADT-nested}.
-\item $\mathsf{F_i\,G\,\ol{b} = H\,\ol{b}}$
+\item $\mathsf{F_i\,G\,\ol{B} = H\,\ol{B}}$
 where $\mathsf{H}$ is a type constructor of arity $\mathsf{\beta}$ not containing the recursive variable,
 i.e., $\mathsf{H : Set^\beta \to Set}$.
 Notice that this covers the case in which $\mathsf{F_i}$ is a closed type,
-so, in particular, the unit and empty types, $\mathsf{1}$ and $\mathsf{0}$.
+so, in particular, the unit and empty types, $\mathsf{1}$ and $\mathsf{0}$,
+and the case in which $\mathsf{F_i}$ is a variable.
 %The only requirement on $\mathsf{H}$ is that it needs to have a predicate-lifting function
 %(and any type made of constant types, sums, products, arrow types and other GADTs satisfies this condition).
-\item $\mathsf{F_i\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+\item $\mathsf{F_i\,G\,\ol{B} = H (\ol{F_k\,G\,\ol{B}})}$
 where $\mathsf{H}$ is a $\mathsf{\gamma}$-ary type constructor not containing the recursive variable,
 i.e., $\mathsf{H : Set^\gamma \to Set}$,
-and $\mathsf{F_c}$ has the same signature as $\mathsf{F_i}$  and is built recursively from the same induction rules, for every $\mathsf{c = 1 \dots \gamma}$.
+and $\mathsf{F_k}$ has the same signature as $\mathsf{F_i}$  and is built recursively from the same induction rules, for every $\mathsf{k = 1 \dots \gamma}$.
 Moreover, we require that $\mathsf{H}$ is not a GADT itself (but we allow it to be an ADT or even a nested type).
-This way $\mathsf{H}$ admits functorial semantics~\cite{jp20}, and thus we have a map function for $\mathsf{H^{\wedge}}$,
+This way we know that $\mathsf{H}$ admits functorial semantics~\cite{jp20}, and thus there is a map function for $\mathsf{H^{\wedge}}$,
 \[
-\mathsf{HLMap : \forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set})
-	\to \ol{PredMap\,c\,Q_c\,Q_c'}
-	\to PredMap\,(H\,\ol{c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c'})}
+\mathsf{HLMap : \forall (\ol{C : Set}) (\ol{Q_C\;Q_C' : C \to Set})
+	\to \ol{PredMap\,C\,Q_C\,Q_C'}
+	\to PredMap\,(H\,\ol{C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C'})}
 \]
-where $\mathsf{PredMap : \forall (c : Set) \to (c \to Set) \to (c \to Set) \to Set}$
-is defined as
-\[
-\mathsf{PredMap\,c\,Q_c\,Q_c' = \forall (x : c) \to Q_c\,x \to Q_c'\,x}
-\]
-and represents the type of morphisms between predicates.
+%where $\mathsf{PredMap : \forall (C : Set) \to (C \to Set) \to (C \to Set) \to Set}$
+%is defined as
+%\[
+%\mathsf{PredMap\,C\,Q_c\,Q_c' = \forall (x : c) \to Q_c\,x \to Q_c'\,x}
+%\]
+%and represents the type of morphisms between predicates.
 A concrete way to define $\mathsf{HLMap}$ is to proceed by induction on the structure of the type $\mathsf{H}$,
 and give an inductive definition when $\mathsf{H}$ is an ADT or a nested type.
 Such details are not essential to the present discussion, and thus we omit them.
@@ -1011,13 +1009,13 @@ Such details are not essential to the present discussion, and thus we omit them.
 We can summarize the above inductive definition with the following grammar
 (but beware that the above restrictions and requirements still apply):
 \[
-\mathsf{F_i\,G\,\ol{b} :=
-F_i'\,G\,\ol{b} \times F_i''\,G\,\ol{b}
-\ \vert\ F_i'\,G\,\ol{b} + F_i''\,G\,\ol{b}
-\ \vert\ F_i'\,\ol{b} \to F_i''\,G\,\ol{b}
-\ \vert\ G(\ol{F_a\,\ol{b}})
-\ \vert\ H\,\ol{b}
-\ \vert\ H (\ol{F_c\,G\,\ol{b}})
+\mathsf{F_i\,G\,\ol{B} :=
+F_i'\,G\,\ol{B} \times F_i''\,G\,\ol{B}
+\ \vert\ F_i'\,G\,\ol{B} + F_i''\,G\,\ol{B}
+\ \vert\ F_i'\,\ol{B} \to F_i''\,G\,\ol{B}
+\ \vert\ G(\ol{F_j\,\ol{B}})
+\ \vert\ H\,\ol{B}
+\ \vert\ H (\ol{F_k\,G\,\ol{B}})
 }
 \]
 A further requirement that applies to all of the types appearing above,
@@ -1047,112 +1045,114 @@ and that is beyond the scope of the paper.
 Consider a generic GADT as defined above,
 \begin{equation}\label{eq:gadt}
 \begin{array}{l}
-\mathsf{data\, G\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;C\, :\, F\,G\,\ol{b} \to G (K\,\ol{b})}
+\mathsf{data\ G : Set \to Set\ where}\\
+\mathsf{\;\;\;\;\;\;\;\;c\, :\, F\,G\,\ol{B} \to G (K\,\ol{B})}
 \end{array}
 \end{equation}
 which, for ease of notation,
-we assume to be a unary type constructor (i.e. it depends on a single type parameter $\mathsf{a}$)
-and to have only one constructor $\mathsf{C}$.
+we assume to be a unary type constructor (i.e. it depends on a single type parameter $\mathsf{A}$)
+and to have only one constructor $\mathsf{c}$.
 Extending the argument to GADTs of arbitrary arity and with multiple constructors presents no difficulty
 other than heavier notation.
 In the definition above, $\mathsf{F}$ has signature $\mathsf{(Set \to Set) \to Set^{\beta} \to Set}$
 and each $\mathsf{K}$ has signature $\mathsf{Set^{\beta} \to Set}$.
-The constructor $\mathsf{C}$ can be rewritten using the $\mathsf{Equal}$ type as
+The constructor $\mathsf{c}$ can be rewritten using the $\mathsf{Equal}$ type as
 \[
-\mathsf{C : \exists (\ol{b : Set}) \to Equal\,a\,(K\,\ol{b}) \to F\,G\,\ol{b} \to G\,a}
+\mathsf{c : \forall (\ol{B : Set}) \to Equal\,A\,(K\,\ol{B}) \to F\,G\,\ol{B} \to G\,A}
 \]
 which is the form we shall use from now on.
 
 In order to state the induction rule for $\mathsf{G}$,
 we first need to define $\mathsf{G}$'s associated predicate-lifting function 
 \[
-\mathsf{G^{\wedge} : \forall (a : Set) \to (a \to Set) \to G\,a \to Set}
+\mathsf{G^{\wedge} : \forall (A : Set) \to (A \to Set) \to G\,A \to Set}
 \]
 as
 \[
-\mathsf{G^{\wedge}\,a\,Q_a\,(C\,\ol{b}\,e\,x)
-= \exists (\ol{Q_b : b \to Set})
-\to Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e
-\times F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}
+\mathsf{G^{\wedge}\,A\,Q_A\,(c\,\ol{B}\,e\,x)
+= \sum [\ol{Q_B : B \to Set}]\,
+Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e
+\times F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,{\ol{Q_B}}\,x}
 \]
-where $\mathsf{Q_a : a \to Set}$
-and $\mathsf{C\,\ol{b}\,e\,x : G\,a}$,
-i.e., $\mathsf{e : Equal\,a\,(K\,\ol{b})}$ and $\mathsf{x : F\,G\,\ol{b}}$.
+where $\mathsf{Q_A : A \to Set}$
+and $\mathsf{c\,\ol{B}\,e\,x : G\,A}$,
+i.e., $\mathsf{e : Equal\,A\,(K\,\ol{B})}$ and $\mathsf{x : F\,G\,\ol{B}}$.
 As already mentioned before, we also assume to have liftings for $\mathsf{F}$,
-\begin{multline*}
-\mathsf{F^{\wedge} : \forall (G : Set^{\alpha} \to Set) (\ol{b : Set})
-\to (\forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
-\mathsf{\to (\ol{b \to Set})
-\to F\,G\,\ol{b} \to Set}
-\end{multline*}
+\[
+\mathsf{F^{\wedge} : \forall (G : Set^{\alpha} \to Set) (\ol{B : Set})
+\to (\forall (A : Set) \to (A \to Set) \to G\,A \to Set)
+\to (\ol{B \to Set})
+\to F\,G\,\ol{B} \to Set}
+\]
 and for  $\mathsf{K}$,
 \[
-\mathsf{K^{\wedge} : \forall (\ol{b : Set}) \to (\ol{b \to Set}) \to K\,\ol{b} \to Set}
+\mathsf{K^{\wedge} : \forall (\ol{B : Set}) \to (\ol{B \to Set}) \to K\,\ol{B} \to Set}
 \]
 Finally, associate the function
-\begin{multline*}
-\mathsf{CC = \lambda (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set)} \\
-\mathsf{\to \forall (a : Set) (\ol{b : Set}) (Q_a : a \to Set) (\ol{Q_b : b \to Set}) (e : Equal\,a\,(K\,\ol{b})) (x : F\,G\,\ol{b})} \\
-\mathsf{\to Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e
-	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
-	\to P\,a\,Q_a\,(C\,\ol{b}\,e\,x)}
-\end{multline*}
-to the constructor $\mathsf{C}$.
+\[
+\begin{array}{l}
+\mathsf{dIndC = \lambda (P : \forall (A : Set) \to (A \to Set) \to G\,A \to Set)} \\
+\quad \mathsf{\to \forall (A : Set) (\ol{B : Set}) (Q_A : A \to Set) (\ol{Q_B : B \to Set}) (e : Equal\,A\,(K\,\ol{B})) (x : F\,G\,\ol{B})} \\
+\quad \mathsf{\to Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e
+	\to F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x
+	\to P\,A\,Q_A\,(c\,\ol{B}\,e\,x)}
+\end{array}
+\]
+to the constructor $\mathsf{c}$.
 
 %We can now define the induction rule for $\mathsf{G}$
 The induction rule for $\mathsf{G}$ is
-\begin{multline*}
-\mathsf{\forall (P : \forall (a : Set) \to (a \to Set) \to G\,a \to Set) \to CC\,P} \\
+\[
+\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to G\,A \to Set) \to dIndC\,P
 %\mathsf{\to \Big(
 %\forall (\ol{a : Set}) (\ol{b : Set}) (\ol{Q_a : a \to Set}) (\ol{Q_b : b \to Set}) (\ol{e_a : Equal\,a\,(K\,\ol{b})}) (x : F\,G\,\ol{b})} \\
 %\mathsf{\to \ol{Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e_a}
 %	\to F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x
 %	\to P\,\ol{a}\,\ol{Q_a}\,(C\,\ol{b}\,\ol{e_a}\,x)
 %\Big)} \\
-\mathsf{\to \forall (a : Set)(Q_a : a \to Set)(y : G\,a) \to G^{\wedge}\,a\,Q_a\,y \to P\,a\,Q_a\,y}
-\end{multline*}
+\to \forall (A : Set)(Q_A : A \to Set)(y : G\,A) \to G^{\wedge}\,A\,Q_A\,y \to P\,A\,Q_A\,y}
+\]
 As we already did in the previous examples,
-we validate the induction rule by providing a term $\mathsf{DIG}$ for the type above.
+we validate the induction rule by providing a term $\mathsf{dIndG}$ for the type above.
 Define
 \[
-\mathsf{DIG\,P\,cc\,a\,Q_a\,(C\,\ol{b}\,e\,x)\,(\ol{Q_b}, L_E, L_F)
-= cc\,a\,\ol{b}\,Q_a\,\ol{Q_b}\,e\,x\,L_E\,(p\,x\,L_F)}
+\mathsf{dIndG\,P\,cc\,A\,Q_A\,(c\,\ol{B}\,e\,x)\,(\ol{Q_B}, liftE, liftF)
+= cc\,A\,\ol{B}\,Q_A\,\ol{Q_B}\,e\,x\,liftE\,(p\,x\,liftF)}
 \]
-where $\mathsf{cc : CC\,P}$ and
+where $\mathsf{cc : dIndC\,P}$ and
 \begin{itemize}
-\item $\mathsf{C\,\ol{b}\,e\,x : G\,a}$,
-i.e., $\mathsf{e : Equal\,a\,(K\,\ol{b})}$,
-and $\mathsf{x : F\,G\,\ol{b}}$;
-\item $\mathsf{(\ol{Q_b}, L_E, L_F) : G^{\wedge}\,a\,Q_a (C\,\ol{b}\,e\,x)}$,
+\item $\mathsf{c\,\ol{B}\,e\,x : G\,A}$,
+i.e., $\mathsf{e : Equal\,A\,(K\,\ol{B})}$,
+and $\mathsf{x : F\,G\,\ol{B}}$;
+\item $\mathsf{(\ol{Q_B}, liftE, liftF) : G^{\wedge}\,A\,Q_A (c\,\ol{B}\,e\,x)}$,
 i.e.,
-$\mathsf{Q_b : b \to Set}$ for each $\mathsf{b}$,
-$\mathsf{L_E : Equal^{\wedge}\,a\,(K\,\ol{b})\,Q_a\,(K^{\wedge}\,\ol{b}\,\ol{Q_b})\,e}$,
-and $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,{\ol{Q_b}}\,x}$.
+$\mathsf{Q_B : B \to Set}$ for each $\mathsf{B}$,
+$\mathsf{liftE : Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e}$,
+and $\mathsf{liftF : F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,{\ol{Q_B}}\,x}$.
 \end{itemize}
 Finally, the morphism of predicates
 \[
-\mathsf{p : PredMap\,(F\,G\,\ol{b})\,(F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\mathsf{p : PredMap\,(F\,G\,\ol{B})\,(F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}) (F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}
 \]
 is defined by structural induction on $\mathsf{F}$ as follows:
 \begin{itemize}
 \item Case $\mathsf{F = F_1 \times F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same signature as $\mathsf{F}$.
 We have that
 \[
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}
-= Pair^{\wedge}(F_1\,G\,\ol{b})(F_2\,G\,\ol{b})(F_1^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}
+= Pair^{\wedge}(F_1\,G\,\ol{B})(F_2\,G\,\ol{B})(F_1^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}) (F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}
 \]
 By inductive hypothesis, there exist morphisms of predicates
 \begin{gather*}
-\mathsf{p_1 : PredMap\,(F_1\,G\,\ol{b})\,((F_1)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_1)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})} \\
-\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b})\,((F_2)^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) ((F_2)^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\mathsf{p_1 : PredMap\,(F_1\,G\,\ol{B})\,((F_1)^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}) ((F_1)^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})} \\
+\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{B})\,((F_2)^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}) ((F_2)^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}
 \end{gather*}
-Thus, we define $\mathsf{p (x_1, x_2) (L_1, L_2) = (p_1\,x_1\,L_1, p_2\,x_2\,L_2)}$ 
+Thus, we define $\mathsf{p (x_1, x_2) (liftF_1, liftF_2) = (p_1\,x_1\,liftF_1, p_2\,x_2\,liftF_2)}$ 
 for 
-$\mathsf{x_1 : F_1\,G\,\ol{b}}$,
-$\mathsf{L_1 : F_1^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_1}$,
-$\mathsf{x_2 : F_2\,G\,\ol{b}}$
-and $\mathsf{L_2 : F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x_2}$.
+$\mathsf{x_1 : F_1\,G\,\ol{B}}$,
+$\mathsf{liftF_1 : F_1^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x_1}$,
+$\mathsf{x_2 : F_2\,G\,\ol{B}}$
+and $\mathsf{liftF_2 : F_2^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x_2}$.
 %%%
 \item Case $\mathsf{F = F_1 + F_2}$ where $\mathsf{F_1}$ and $\mathsf{F_2}$ have the same signature as $\mathsf{F}$.
 Analogous to case $\mathsf{F = F_1 \times F_2}$.
@@ -1163,31 +1163,31 @@ i.e., $\mathsf{F_1 : Set^\beta \to Set}$,
 and $\mathsf{F_2}$ has the same signature as $\mathsf{F}$.
 We have that
 \[
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x = \forall (z : F_1\,\ol{b}) \to F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z \to F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,(x\,z)}
+\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x = \forall (z : F_1\,\ol{B}) \to F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z \to F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,(x\,z)}
 \]
-where $\mathsf{x : F\,G\,\ol{b} = F_1\,\ol{b} \to F_2\,G\,\ol{b}}$.
+where $\mathsf{x : F\,G\,\ol{B} = F_1\,\ol{B} \to F_2\,G\,\ol{B}}$.
 By inductive hypothesis, there exist a morphism of predicates
 \[
-\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{b}) (F_2^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_2^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{B}) (F_2^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}) (F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}
 \]
-Thus, we define $\mathsf{p\,x\,L_F : F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
-for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
-as $\mathsf{p\,x\,L_F\,z\,L_1 = p_2 (x\,z) (L_F\,z\,L_1)}$
-for $\mathsf{z : F_1\,\ol{b}}$
-and $\mathsf{L_1 : F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z}$.
+Thus, we define $\mathsf{p\,x\,liftF : F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$
+for $\mathsf{liftF : F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$
+as $\mathsf{p\,x\,liftF\,z\,liftF_1 = p_2 (x\,z) (liftF\,z\,liftF_1)}$
+for $\mathsf{z : F_1\,\ol{B}}$
+and $\mathsf{liftF_1 : F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$.
 Notice that $\mathsf{F_1}$ not containing the recursive variable
 is a necessary restriction, as the proof relies on
-$\mathsf{F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$
-and $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}\,x}$
-having the same domain $\mathsf{F_1^{\wedge}\,\ol{b}\,\ol{Q_b}\,z}$.
+$\mathsf{F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$
+and $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$
+having the same domain $\mathsf{F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$.
 %%%
-\item Case $\mathsf{F\,G\,\ol{b} = G(F'\,\ol{b})}$
+\item Case $\mathsf{F\,G\,\ol{B} = G(F'\,\ol{B})}$
 where $\mathsf{F'}$ does not contain the recursive variable,
 i.e., $\mathsf{F' : Set^\beta \to Set}$.
-Thus, $\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = P (F'\,\ol{b}) (F'^{\wedge}\,\ol{b}\,\ol{Q_b})}$.
+Thus, $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = P (F'\,\ol{B}) (F'^{\wedge}\,\ol{B}\,\ol{Q_B})}$.
 So, $\mathsf{p}$ is defined as
 \[
-\mathsf{p = DIG\,P\,cc\,(F'\,\ol{b})\,(F'^{\wedge}\,\ol{b}\,\ol{Q_b})}
+\mathsf{p = dIndG\,P\,cc\,(F'\,\ol{B})\,(F'^{\wedge}\,\ol{B}\,\ol{Q_B})}
 \]
 %for $\mathsf{L_F : F^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}\,x}$.
 %Note that the fact that the type constructor $\mathsf{F'}$ does not contain the recursive variable
@@ -1195,24 +1195,24 @@ So, $\mathsf{p}$ is defined as
 %As explained and exemplified in Section~\ref{sec:GADT-nested},
 %that assumption is required to make induction work.
 %%%
-\item Case $\mathsf{F\,G\,\ol{b} = H\,\ol{b}}$
+\item Case $\mathsf{F\,G\,\ol{B} = H\,\ol{B}}$
 where $\mathsf{H}$ is a $\mathsf{\beta}$-ary type constructor not containing the recursive variable,
 i.e., $\mathsf{H : Set^\beta \to Set}$.
-In such case, $\mathsf{p : PredMap (H\,\ol{b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b}) (H^{\wedge}\,\ol{b}\,\ol{Q_b})}$
+In such case, $\mathsf{p : PredMap (H\,\ol{B}) (H^{\wedge}\,\ol{B}\,\ol{Q_B}) (H^{\wedge}\,\ol{B}\,\ol{Q_B})}$
 is just the identity morphism of predicates.
 %%%
-\item Case $\mathsf{F\,G\,\ol{b} = H (\ol{F_c\,G\,\ol{b}})}$
+\item Case $\mathsf{F\,G\,\ol{B} = H (\ol{F_k\,G\,\ol{B}})}$
 where $\mathsf{H}$ is a $\mathsf{\gamma}$-ary type constructor not containing the recursive variable,
 i.e., $\mathsf{H : Set^\gamma \to Set}$,
-and $\mathsf{F_c}$ has the same signature as $\mathsf{F}$, for every $\mathsf{c = 1 \dots \gamma}$.
+and $\mathsf{F_k}$ has the same signature as $\mathsf{F}$, for every $\mathsf{k = 1 \dots \gamma}$.
 Moreover, we assume that $\mathsf{H}$ has an associated predicate-lifting function,
 \[
-\mathsf{H^{\wedge} : \forall (\ol{c : Set}) \to (\ol{c \to Set}) \to H\,\ol{c} \to Set}
+\mathsf{H^{\wedge} : \forall (\ol{C : Set}) \to (\ol{C \to Set}) \to H\,\ol{C} \to Set}
 \]
 and that this predicate-lifting function has a map function $\mathsf{HLMap}$ of type
 \[
-\mathsf{\forall (\ol{c : Set}) (\ol{Q_c\;Q_c' : c \to Set}) \to PredMap\,\ol{c}\,\ol{Q_c}\,\ol{Q_c'}
-\to PredMap\,(H\,\ol{c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c})\,(H^{\wedge}\,\ol{c}\,\ol{Q_c'})}
+\mathsf{\forall (\ol{C : Set}) (\ol{Q_C\;Q_C' : C \to Set}) \to PredMap\,\ol{C}\,\ol{Q_C}\,\ol{Q_C'}
+\to PredMap\,(H\,\ol{C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C'})}
 \]
 That means that $\mathsf{H}$ cannot be a GADT,
 as GADTs have no functorial semantics~\cite{HaskellPaper}
@@ -1220,17 +1220,17 @@ and incur in the issue exposed in Section~\ref{sec:GADT-nested},
 but it can be an ADT or even a nested type as those types have functorial semantics~\cite{jp19,jgj21}.
 Thus,
 \[
-\mathsf{F^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b} = H^{\wedge} (\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})}
+\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = H^{\wedge} (\ol{F_k\,G\,\ol{B}}) (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})}
 \]
 By induction hypothesis, there is a morphism of predicates
 \[
-\mathsf{p_c : PredMap\,(F_c\,G\,\ol{b}) (F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}) (F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b})}
+\mathsf{p_k : PredMap\,(F_k\,G\,\ol{B}) (F_k^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}) (F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}
 \]
-for every $\mathsf{c = 1 \dots \gamma}$.
+for every $\mathsf{k = 1 \dots \gamma}$.
 So, $\mathsf{p}$ is defined as
 \[
 \mathsf{p
-= HLMap\,(\ol{F_c\,G\,\ol{b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,G^{\wedge}\,\ol{Q_b}}) (\ol{F_c^{\wedge}\,G\,\ol{b}\,P\,\ol{Q_b}})\,\ol{p_c}}
+= HLMap\,(\ol{F_k\,G\,\ol{B}}) (\ol{F_k^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}}) (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})\,\ol{p_k}}
 \]
 \end{itemize}
 %Notice that, by proceeding by structural induction as above,
