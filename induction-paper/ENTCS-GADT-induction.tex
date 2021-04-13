@@ -1062,11 +1062,17 @@ producing the type of morphisms between predicates defined by
 \[\mathsf{PredMap \,A\, Q\,Q'\, = \forall\, (a : A) \to Q\,a \to
   Q'\,a}\] and $\mathsf{liftListMap : \forall\, (A : Set) \to (Q \, Q'
   : A \to Set) \to PredMap\,A\,Q\,Q' \to PredMap\,(List\,A)
-  \,(List^{\wedge}\, A\, Q)\, (List^{\wedge}\, A\, Q')}$ {\color{red}
-  defined by ?????} takes a morphism $\mathsf{f}$ of predicates and
-produces a morphism of lifted predicates {\color{red} by mapping
-  $\mathsf{f}$ over the input list to which $\mathsf{Q}$ is lifted ---
-  or other simple description?}
+  \,(List^{\wedge}\, A\, Q)\, (List^{\wedge}\, A\, Q')}$, which takes
+a morphism $\mathsf{f}$ of predicates and produces a morphism of
+lifted predicates, is defined by $\mathsf{liftListMap\, A\, Q\, Q'\,
+  m\, nil\, tt = tt}$ (since $\mathsf{x : List^{\wedge}\, A\, Q\, nil
+  = \top}$ must necessarily be $\mathsf{tt}$), and by
+$\mathsf{liftListMap\, A\, Q\, Q'\, m\, (cons\, a\, l')\, (y, x') =
+  (m\,a\,y, liftListMap\, A\, Q\, Q'\, m\, l'\, x')}$ since $\mathsf{x
+  : List^{\wedge}\, A\, Q\, (cons\, a\, l') = \top}$ must be of the
+form $\mathsf{x = (y, x')}$ where $\mathsf{y : Q\,a}$ and $\mathsf{x'
+  : List^{\wedge}\, A\, Q\, l'}$. {\color{red} Double-check the
+  previous paragraph.}
 \end{itemize}
 
 
