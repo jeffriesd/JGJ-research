@@ -318,11 +318,10 @@ lack of functoriality means that it is not possible to extend
 induction --- deep or otherwise --- to truly nested GADTs. This does
 not appear to be much of a restriction, however, since GADTs defined
 over themselves do not, to our knowledge, appear in applications or
-the literature.
-
-All of the deep induction rules appearing in this paper have been
-derived using our general framework. Our Agda code implementing them
-is available at~\cite{web-page}.
+the literature. Section~\ref{sec:app} details a case study in using
+deep induction. All of the deep induction rules appearing in this
+paper have been derived using our general framework. Our Agda code
+implementing them is available at~\cite{web-page}.
 
 %\subsection{Related Work}
 
@@ -980,6 +979,9 @@ $\mathsf{t_B : LTerm\,B}$, $\mathsf{t_C : LTerm\,C}$, $\mathsf{t_{BA}
   (List^{\wedge}\, B\, Q_B)\, e}$, and $\mathsf{lift_{List}:
   List^{\wedge} \, (LTerm\, B) \, (LTerm^{\wedge}\, B\, Q_B) \, ts}$.
 Moreover,
+
+\vspace*{-0.2in}
+
 \[\begin{array}{lll}
 \mathsf{p_C} & = & \mathsf{dIndLTerm\,P\,cvar\,cabs \,capp \,clist\,
   C\, Q_C\, t_C\, lift_{t_C} : P \, C\, Q_C \, t_C }\\
@@ -996,6 +998,10 @@ Moreover,
   clist\, B\, Q_B : PredMap\,(LTerm\,B) \,(LTerm^{\wedge}\, B\, Q_B)
   \, (P\,B\,Q_B)}
 \end{array}\]
+
+\vspace*{-0.2in}
+
+\noindent
 where, in the final clause, $\mathsf{PredMap : \forall\, (A : Set) \to
   (A \to Set) \to (A \to Set) \to Set }$ is the type constructor
 producing the type of morphisms between predicates defined by
@@ -1046,30 +1052,31 @@ list whose length is exactly the arity of the type constructor being
 applied to it. The number of type constructors $\mathsf{K}$ must
 therefore be $\alpha$. The type constructor $\mathsf{F}$ must be
 constructed inductively according to the following grammar:
-
-\vspace*{-0.05in}
-
 \[\mathsf{F\,G\,\ol{B}\; :=\;
 F_1\,G\,\ol{B} \times F_2\,G\,\ol{B} \ \vert\ F_1\,G\,\ol{B} +
 F_2\,G\,\ol{B} \ \vert\ F_1\,\ol{B} \to F_2\,G\,\ol{B}
 \ \vert\ G\,(\ol{F_1\,\ol{B}}) \ \vert\ H\,\ol{B} \ \vert\ H\,
 (\ol{F_1\,G\,\ol{B}}) }\]
-This grammar is subject to the following
-restrictions. In the third clause the type constructor $\mathsf{F_1}$
-does not contain $\mathsf{G}$. In the fourth clause, none of the
-$\mathsf{\alpha}$-many type constructors in $\mathsf{\ol{F_1}}$
-contains $\mathsf{G}$.  This prevents nesting, which would make it
-impossible to give an induction rule; see
-Section~\ref{sec:GADT-nested} below. In the fifth clause, $\mathsf{H}$
-does not contain $\mathsf{G}$. This clause therefore subsumes the
-cases in which $\mathsf{F\,G\,\ol{B}}$ is a closed type or one of the
-$\mathsf{B_i}$. In the sixth clause, $\mathsf{H : Set^\gamma \to Set}$
-does not contain $\mathsf{G}$ (although $\ol{\mathsf{F_1\,G\,\ol{B}}}$
-can). Moreover, although $\mathsf{H}$ can construct any (truly)
-nested type, it cannot construct a GADT. This ensures that
-$\mathsf{H}$ admits functorial semantics~\cite{jp20}, and thus has an
-associated $\mathsf{map}$ function. From this we can also construct a
-$\mathsf{map}$ function {\color{red} Say what PredMap is.}
+
+
+\pagebreak
+
+\noindent
+This grammar is subject to the following restrictions. In the third
+clause the type constructor $\mathsf{F_1}$ does not contain
+$\mathsf{G}$. In the fourth clause, none of the $\mathsf{\alpha}$-many
+type constructors in $\mathsf{\ol{F_1}}$ contains $\mathsf{G}$.  This
+prevents nesting, which would make it impossible to give an induction
+rule; see Section~\ref{sec:GADT-nested} below. In the fifth clause,
+$\mathsf{H}$ does not contain $\mathsf{G}$. This clause therefore
+subsumes the cases in which $\mathsf{F\,G\,\ol{B}}$ is a closed type
+or one of the $\mathsf{B_i}$. In the sixth clause, $\mathsf{H :
+  Set^\gamma \to Set}$ does not contain $\mathsf{G}$ (although
+$\ol{\mathsf{F_1\,G\,\ol{B}}}$ can). Moreover, although $\mathsf{H}$
+can construct any (truly) nested type, it cannot construct a
+GADT. This ensures that $\mathsf{H}$ admits functorial
+semantics~\cite{jp20}, and thus has an associated map function. From
+this we can also construct a map function 
 
 \vspace*{-0.05in}
 
@@ -1077,22 +1084,25 @@ $\mathsf{map}$ function {\color{red} Say what PredMap is.}
 \to \ol{PredMap\,A\,Q\,Q'} \to
 PredMap\,(H\,\ol{A})\,(H^{\wedge}\,\ol{A}\,\ol{Q})\, 
 (H^{\wedge}\,\ol{A}\,\ol{Q'})}\]
-for $\mathsf{H^{\wedge}}$.  A
-concrete way to define $\mathsf{H^\wedge Map}$ is by induction on the
-structure of the type $\mathsf{H}$, but we omit such details since
-they are not essential to the present discussion. A further
-requirement that applies to all of the types appearing above,
-including the $\mathsf{K}$s in~\eqref{eq:gadts}, is that they must all
-admit predicate liftings. This is not an overly restrictive condition,
-though: all types constructed from sums, products, arrow types and
-type application admit predicate liftings, and so do GADTs constructed
-from the above grammar; in fact, we have seen such liftings for
-products and type application in Section~\ref{sec:deep-ind-GADTs}.  A
-concrete way to define predicate liftings more generally is, again, by
-induction on the the structure of the types. We do not give a general
-definition of predicate liftings here, though, since that would
-require us to first design a full type calculus, which is beyond the
-scope of the present paper.
+
+\vspace*{0.05in}
+
+\noindent
+for $\mathsf{H^{\wedge}}$.  A concrete way to define $\mathsf{H^\wedge
+  Map}$ is by induction on the structure of the type $\mathsf{H}$, but
+we omit such details since they are not essential to the present
+discussion. A further requirement that applies to all of the types
+appearing above, including the $\mathsf{K}$s in~\eqref{eq:gadts}, is
+that they must all admit predicate liftings. This is not an overly
+restrictive condition, though: all types constructed from sums,
+products, arrow types and type application admit predicate liftings,
+and so do GADTs constructed from the above grammar; in fact, we have
+seen such liftings for products and type application in
+Section~\ref{sec:deep-ind-GADTs}.  A concrete way to define predicate
+liftings more generally is, again, by induction on the the structure
+of the types. We do not give a general definition of predicate
+liftings here, though, since that would require us to first design a
+full type calculus, which is beyond the scope of the present paper.
 
 We assume in the development below that $\mathsf{G}$ is a unary type
 constructor, i.e., that $\alpha = 1$ in~\eqref{eq:gadts}. Extending
@@ -1103,22 +1113,29 @@ $\mathsf{c}$ for $\mathsf{G}$ can be rewritten as $\mathsf{c : \forall
   G\,A}$. The predicate lifting $\mathsf{G^{\wedge} : \forall (A :
   Set) \to (A \to Set) \to G\,A \to Set}$ for $\mathsf{G}$ is
 therefore
-\[
-\mathsf{G^{\wedge}\,A\,Q_A\,(c\,\ol{B}\,e\,x)
+
+\vspace*{-0.05in}
+
+\[\mathsf{G^{\wedge}\,A\,Q_A\,(c\,\ol{B}\,e\,x)
 = \exists [\ol{Q_B}]\,
 Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e
-\times F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,{\ol{Q_B}}\,x}
-\]
+\times F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,{\ol{Q_B}}\,x}\]
+
+\noindent
 where $\mathsf{Q_A : A \to Set}$, $\ol{\mathsf{Q_B : B \to Set}}$,
 $\mathsf{e : Equal\,A\,(K\,\ol{B})}$, and $\mathsf{x : F\,G\,\ol{B}}$.
-Assuming predicate liftings 
-\[\begin{array}{lll}
-\mathsf{F^{\wedge}} & : & \mathsf{\forall (G : Set^{\alpha} \to Set) (\ol{B : Set})
-\to (\forall (A : Set) \to (A \to Set) \to G\,A \to Set)
-\to (\ol{B \to Set}) \to F\,G\,\ol{B} \to Set}\\ 
-\mathsf{K^{\wedge}} & : & \mathsf{\forall (\ol{B : Set}) \to (\ol{B \to Set}) \to
-  K\,\ol{B} \to Set}
-\end{array}\]
+If we have predicate liftings $\mathsf{F^{\wedge}} : \mathsf{\forall (G
+  : Set^{\alpha} \to Set) (\ol{B : Set}) \to (\forall (A : Set) \to (A
+  \to Set) \to G\,A \to Set) \to (\ol{B \to Set}) \to F\,G\,\ol{B} \to
+  Set}$ and $\mathsf{K^{\wedge}} : \mathsf{\forall (\ol{B : Set}) \to
+  (\ol{B \to Set}) \to K\,\ol{B} \to Set}$
+%\[\begin{array}{lll}
+%\mathsf{F^{\wedge}} & : & \mathsf{\forall (G : Set^{\alpha} \to Set) (\ol{B : Set})
+%\to (\forall (A : Set) \to (A \to Set) \to G\,A \to Set)
+%\to (\ol{B \to Set}) \to F\,G\,\ol{B} \to Set}\\ 
+%\mathsf{K^{\wedge}} & : & \mathsf{\forall (\ol{B : Set}) \to (\ol{B \to Set}) \to
+%  K\,\ol{B} \to Set}
+%\end{array}\]
 for $\mathsf{F}$ and for $\mathsf{K}$, respectively, the induction
 hypothesis for $\mathsf{c}$ is
 \[\begin{array}{l}
@@ -1206,8 +1223,8 @@ define $\mathsf{p\, (x_1, x_2)\, (liftF_1, liftF_2) =
   $\mathsf{H}$ does not contain $\mathsf{G}$, if $\mathsf{H}$ has a
   predicate lifting $\mathsf{H^{\wedge} : \forall (\ol{C : Set}) \to
     (\ol{C \to Set})}$ $\mathsf{\to H\,\ol{C} \to Set}$, and if
-  $\mathsf{H^\wedge}$ has a $\mathsf{map}$ function $\mathsf{H^\wedge
-    Map = \forall (\ol{C : Set}) (\ol{Q_C\;Q_C' : C \to Set}) \to
+  $\mathsf{H^\wedge}$ has a map function $\mathsf{H^\wedge Map =
+    \forall (\ol{C : Set}) (\ol{Q_C\;Q_C' : C \to Set}) \to
     PredMap\,\ol{C}\,\ol{Q_C}\,\ol{Q_C'} \to}$
   $\mathsf{PredMap\,(H\,\ol{C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C})\,
     (H^{\wedge}\,\ol{C}\,\ol{Q_C'})}$, then since $\mathsf{H}$ cannot
@@ -1223,28 +1240,26 @@ define $\mathsf{p\, (x_1, x_2)\, (liftF_1, liftF_2) =
     (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})\,\ol{p_k}}$.
 \end{itemize}
 
-\section{Truly Nested GADTs Do Not Admit Induction
+\section{Truly Nested GADTs Do Not Admit Deep Induction
     Rules}\label{sec:GADT-nested}
 
-{\color{red} HERE!!}
-
-
 In Sections~\ref{sec:deep-ind-GADTs} and~\ref{sec:framework} we
-derived induction rules for GADTs that are not truly nesteed. Since
-both nested types and GADTs without true nesting admit induction
-rules, we might expect that truly nested GADTs would as
-well. Surprisingly, however, they do not. {\color{red} That is, our
-  results from the previous section are the strongest possible.}
-%
-{\color{red} In fact, the induction rule for a data type generally
-  relies on (unary) parametricity of its semantic interpretation, and
-  in the case of nested types and GADTs it also relies on the data
-  types having a functorial semantics. But whereas nested types can
-  admit a functorial parametric semantics GADTs cannot admit both
-  functorial and parametric semantics at the same
-  time~\cite{jgj21}. In this section we show how induction for truly
-  nested GADTs nesting goes wrong by analyzing the following simple
-  concrete example of such a type.}
+derived deep induction rules for GADTs that are not truly
+nested. Since both nested types and GADTs without true nesting admit
+deep induction rules, we might expect that truly nested GADTs would as
+well. Surprisingly, however, they do not. That is, our results from
+the previous section are the strongest possible. Indeed, the induction
+rule for a data type generally relies on (unary) parametricity of the
+model interpreting it, and deel induction for a truly nested type or a
+ruly nested GADT also relies on this interpretation being functorial.
+But, whereas nested types can admit a functorial parametric semantics,
+GADTs cannot admit both functorial and parametric semantics at the
+same time~\cite{jgj21}. In this section we show how deep induction for
+truly nested GADTs nesting goes wrong by analyzing the following
+concrete example of such a type.\looseness=-1
+
+\vspace*{-0.05in}
+
 \begin{equation*}\label{gadt-nested}
 \begin{array}{l}
 \mathsf{data\ G : Set \to Set\ where}\\
@@ -1273,37 +1288,33 @@ The induction hypothesis $\mathsf{dIndC}$ for $\mathsf{c}$ is
   B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e \to P\,(G\,B)\,(P\,B\,Q')\,x 
 	\to P\,A\,Q\,(c\,B\,e\,x)}
 \end{array}\]
-so the induction rule for $\mathsf{G}$ is
+so the deep induction rule for $\mathsf{G}$ is
 \[\mathsf{\forall\, (P : \forall\, (A : Set) \to (A \to Set) \to G\,A \to Set)
 \to dIndC\,P \to \forall\, (A : Set)\, (Q : A \to Set)\, (y : G\,a)
 \to G^{\wedge}\,A\,Q\,y \to P\,A\,Q\,y}\] But if we now try to show
-that this induction rule is sound by constructing a witness
-$\mathsf{dIndG}$ inhabiting this type we run into problems. We can try
-to define $\mathsf{dIndG\,P\,cc\,A\,Q\,(c\,B\,e\,x)\,(Q', liftE,
-  liftG) = cc\,A\,B\,Q\,Q'\,e\,x\,liftE\,p}$, where $\mathsf{cc :
-  dIndC\,P}$, $\mathsf{Q : A \to Set}$, $\mathsf{e : Equal\,A\,(B
-  \times B)}$, $\mathsf{x : G\,(G\,B)}$, $\mathsf{liftG :
-  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q')\,x}$, and $\mathsf{Q' : B
-  \to Set}$, $\mathsf{liftE : Equal^{\wedge}\,A\,(B \times
-  B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e}$.  However, we still need
-to define $\mathsf{p : P\,(G\,B)\,(P\,B\,Q')\,x}$.  If we try to do so
-by using the induction rule and letting $\mathsf{p =
-  dIndG\,P\,cc\,(G\,B)\,(P\,B\,Q')\,x\,q}$, then we'd still need to
-provide $\mathsf{q : G^{\wedge}\,(G\,B)\,(P\,B\,Q')\,x}$.  If we had
-the $\mathsf{map}$ function $\mathsf{G^\wedge Map : \forall\, (A :
-  Set)\, (Q\;Q'' : A \to Set) \to PredMap\,A\,Q\,Q'' \to
+that this rule is sound by constructing a witness $\mathsf{dIndG}$
+inhabiting this type we run into problems. We can define
+$\mathsf{dIndG\,P\,cc\,A\,Q\,(c\,B\,e\,x)\,(Q', liftE, liftG) =
+  cc\,A\,B\,Q\,Q'\,e\,x\,liftE\,p}$, where $\mathsf{cc : dIndC\,P}$,
+$\mathsf{Q : A \to Set}$, $\mathsf{e : Equal\,A\,(B \times B)}$,
+$\mathsf{x : G\,(G\,B)}$, $\mathsf{liftG :
+  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q')\,x}$, $\mathsf{Q' : B \to
+  Set}$, and $\mathsf{liftE : Equal^{\wedge}\,A\,(B \times
+  B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e}$, but we still need to
+define $\mathsf{p : P\,(G\,B)\,(P\,B\,Q')\,x}$.  For this we can use
+the induction rule and let $\mathsf{p =
+  dIndG\,P\,cc\,(G\,B)\,(P\,B\,Q')\,x\,q}$, but we still need to
+define $\mathsf{q : G^{\wedge}\,(G\,B)\,(P\,B\,Q')\,x}$.  If we had
+the map function $\mathsf{G^\wedge Map : \forall\, (A : Set)\, (Q\;Q''
+  : A \to Set) \to PredMap\,A\,Q\,Q'' \to
   PredMap\,(G\,A)\,(G^{\wedge}\,A\,Q)\,(G^{\wedge}\,A\,Q'')}$ for
-$\mathsf{G^{\wedge}}$, then we would be able to define $\mathsf{q =
+$\mathsf{G^{\wedge}}$, then we could define $\mathsf{q =
   GLMap\,(G\,B)\,(G^{\wedge}\,B\,Q')\,(P\,B\,Q')\,
-  (dIndG\,P\,cc\,B\,Q')\,x\,liftG}$.
-Unfortunately, however, we cannot define such a $\mathsf{G^\wedge Map}$.
-Indeed, its definition would have to be
-\[
-\mathsf{G^\wedge Map\,A\,Q\,Q_2\,m\,(c\,B\,e\,x)\,(Q_1, liftE, liftG) =
-  (Q_3, liftE', liftG')}
-\]
-for some $\mathsf{Q_3 : B \to Set}$, $\mathsf{liftE' :
-  Equal^{\wedge}\,A\,(B \times
+  (dIndG\,P\,cc\,B\,Q')\,x\,liftG}$.  Unfortunately, however, we
+cannot define $\mathsf{G^\wedge Map}$.  Indeed, its definition would
+have to be $ \mathsf{G^\wedge Map\,A\,Q\,Q_2\,m\,(c\,B\,e\,x)\,(Q_1,
+  liftE, liftG) = (Q_3, liftE', liftG')}$ for some $\mathsf{Q_3 : B
+  \to Set}$, $\mathsf{liftE' : Equal^{\wedge}\,A\,(B \times
   B)\,Q_2\,(Pair^{\wedge}\,B\,B\,Q_3\,Q_3)\,e}$, and $\mathsf{liftG' :
   G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_3)\,x}$, where $\mathsf{Q : A
   \to Set}$, $\mathsf{Q_2 : A \to Set}$, $\mathsf{m :
@@ -1312,46 +1323,51 @@ $\mathsf{x : G\,(G\,B)}$, $\mathsf{Q_1 : B \to Set}$, $\mathsf{liftE :
   Equal^{\wedge}\,A\,(B \times
   B)\,Q\,(Pair^{\wedge}\,B\,B\,Q_1\,Q_1)\,e}$, and $\mathsf{liftG :
   G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_1)\,x}$. In other words, we
-have a proof $\mathsf{liftE}$ of the (extensional) equality of the
-predicates $\mathsf{Q}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$
-and a morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
-$\mathsf{Q_2}$, and we need to use those data to deduce a proof of the
-(extensional) equality of the predicates $\mathsf{Q_2}$ and
-$\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$, for some predicate
-$\mathsf{Q_3}$ on $\mathsf{B}$.  But that is not generally possible:
-the facts that $\mathsf{Q}$ is equal to
-$\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$ and that there is a morphism
-of predicates $\mathsf{m}$ from $\mathsf{Q}$ to $\mathsf{Q_2}$ do not
-guarantee that there exists a predicate $\mathsf{Q_3}$ such that
-$\mathsf{Q_2}$ is equal to $\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$.
+would need to produce a proof of the (extensional) equality of the
+predicates $\mathsf{Q_2}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$
+from just a proof
+%$\mathsf{liftE}$
+of the (extensional) equality of the predicates $\mathsf{Q}$ and
+$\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$ and a morphism of predicates
+$\mathsf{m}$ from $\mathsf{Q}$ to $\mathsf{Q_2}$.
+%a proof $\mathsf{liftE}$ of the (extensional) equality of the
+%predicates $\mathsf{Q}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$
+%and a morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
+%$\mathsf{Q_2}$, and we need to use those data to deduce a proof of the
+%(extensional) equality of the predicates $\mathsf{Q_2}$ and
+%$\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$, for some predicate
+%$\mathsf{Q_3}$ on $\mathsf{B}$.
+But this will not be possible in general: the facts that $\mathsf{Q}$
+is equal to $\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$ and that there is
+a morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
+$\mathsf{Q_2}$ do not guarantee that there exists a predicate
+$\mathsf{Q_3}$ such that $\mathsf{Q_2}$ is equal to
+$\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$.
 
 At a deeper level, the fundamental issue is that the $\mathsf{Equal}$
 type does not have functorial semantics~\cite{jgj21}, so that having
 morphisms $\mathsf{A \to A'}$ and $\mathsf{B \to B'}$ (for any type
 $\mathsf{A, A', B}$ and $\mathsf{B'}$) and a proof that $\mathsf{A}$
 is equal to $\mathsf{A'}$ does not provide a proof that $\mathsf{B}$
-is equal to $\mathsf{B'}$. {\color{red} This is because GADTs can
-  either have a syntax-only semantics or a functorial semantics.
-  Since we are interested in induction rules, we consider the
-  syntax-only semantics, which is parametric but not functorial.  Had
-  we considered the functorial-completion semantics, which is
-  functorial, we would have forfeited parametricity instead.  In both
-  cases, thus, we cannot derive an induction rule for GADTs featuring
-  nesting.  Unlike nested types, indeed, GADTs do not admit a semantic
-  interpretation that is both parametric and functorial~\cite{jgj21}.}
+is equal to $\mathsf{B'}$. This difficulty propagates to any truly
+nested GADT because it is not possible to define a map function
+$\mathsf{Equal^\wedge Map}$ for $\mathsf{Eq^\wedge}$ when one of the
+type arguments to $\mathsf{Equal^\wedge}$ is structured (i.e., not a
+variable). This is, of course, a critical component in any approach to
+deep induction for such GADTs.\looseness=-1
 
-\section{Applications}\label{sec:app}
+\section{Case Study: Extracting Types of Lambda Terms}\label{sec:app}
 
 In this section we use deep induction for the $\mathsf{LTerm}$ GADT
-from~\eqref{eq:eq_lterm} to extract the type from a lambda term.
-Consider the predicate
+from~\eqref{eq:eq_lterm} to extract the type from a lambda term.  For
+this we use the following predicate, which takes a lambda term and
+produces the type of its possible types:
 \begin{align*}
   &\mathsf{GetType : \forall \, (A : Set) \to LTerm\,A \to Set} \\
   &\mathsf{GetType \,A \,t = Maybe \, (LType \, A)}
 \end{align*}
-that takes a lambda term and produces the type of its possible types.
-This predicate uses $\mathsf{Maybe}$ to represent
-potential failure, where $\mathsf{Maybe}$ is the type defined as follows:
+This predicate uses $\mathsf{Maybe}$ to represent potential failure,
+where $\mathsf{Maybe}$ is defined as follows:
 \begin{equation}\label{eq:maybe}
 \begin{array}{l}
 \mathsf{data\ Maybe : Set \to Set\ where}\\
@@ -1359,94 +1375,65 @@ potential failure, where $\mathsf{Maybe}$ is the type defined as follows:
 \mathsf{\;\;\;\;\;\;\;\;\;\;\;\;just :\, A \to Maybe\,A}
 \end{array}
 \end{equation}
-We want to show this predicate is satisfied for every element of $\mathsf{LTerm\,A}$,
-i.e., we want to prove: 
-\[
-  \mathsf{getTypeProof : \forall \, (A : Set)\, (t : LTerm\,A) \to GetType \,A \,t} \\
-\]
-Because of the $\mathsf{listC}$ constructor of $\mathsf{LTerm}$, this cannot be achieved without 
-deep induction. In particular, deep induction is required to apply the induction to the 
-individual terms in a list of terms. 
-So, using the deep induction rule for $\mathsf{LTerm}$ from Section~\ref{sec:dind-lterm} {\color{red} (add back-reference)},
-we define $\mathsf{getTypeProof}$ as
-\[
-  \mathsf{getTypeProof \,A \,t = 
-    dIndLTerm\, P \,
-    cvar\,  cabs\,  capp\,  clistc\,  A\, K_\top\, t\, (LTermLKT\, A\, t)
-    }
-\]
-where $\mathsf{t : LTerm\,A}$,
-$\mathsf{P}$ is the polymorphic predicate $\mathsf{\lambda \, (A: Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \, A)}$
-%where $\mathsf{K : a \to Set}$ is the constantly true predicate:
-%\[
-%  \mathsf{K_\top \, x = \top}
-%\]
-and $\mathsf{LTermLKT : \forall\, (A : Set)\, (t : LTerm A) \to LTerm^{\wedge}\, A\, K_\top\,t}$
-is a function that we will define later.
-%Notice that there is no space in $\mathsf{LTermLKT}$, because
-%\[
-%  \mathsf{LTermLKT : \forall (a : Set) (t : LTerm A) \to LTerm^{\wedge}\, a\, K_\top\,t}
-%\]
-%is a function that we will define.
-In addition to defining $\mathsf{LTermLKT}$,
-we also have to give a term for each constructor of $\mathsf{LTerm}$,
-as already discussed in Section~\ref{sec:dind-lterm} {\color{red} (add back-reference)}:
-\begin{itemize}
-% var
-\item a term $\mathsf{cvar : dIndVar\,P}$ associated to the constructor $\mathsf{var}$, i.e.,
-\[
-  \mathsf{cvar : \forall\, (A : Set)\, (Q : A \to Set)\, (s : String)\, (T : LType\, A) 
-      \to LType^{\wedge} \, A\, Q\, T\, \to Maybe\, (LType\, A)}
-\]
-% abs 
-\item a term $\mathsf{cabs : dIndAbs\,P}$ associated to the constructor $\mathsf{abs}$, i.e.,
-\[
-\begin{array}{l}
-    \mathsf{cabs : \forall\, (A \, B\, C: Set)\, (Q : A \to Set)\, (Q' : B \to Set)\, (Q'' : C \to Set)} \\
-    \quad\mathsf{(e : Equal\, A\, (B \to C))\, (s : String)\, (T : LType\, B)\, (t : LTerm \, C)} \\ 
-    \quad\mathsf{ 
-      \to Equal^{\wedge}\, A\, (B \to C)\, Q\, (Arr^{\wedge}\, B\, C\, Q'\, Q'')\, e
-      \to LType^{\wedge} \, B\, Q'\, T
-      \to Maybe\, (LType\,C) \to Maybe\, (LType\, A)}
-\end{array}
-\]
-% app
-\item a term $\mathsf{capp : dIndApp\,P}$ associated to the constructor $\mathsf{app}$, i.e.,
-\[
-\begin{array}{l}
-    \mathsf{capp : \forall\, (A \, B : Set)\, (Q : A \to Set)\, (Q' : B \to Set)\, 
-      (t : LTerm\, (B \to A))\, (t' : LTerm\, B)} \\ 
-    \quad\mathsf{
-      \to Maybe\, (LType\, (B \to A))
-      \to Maybe\, (LType\, B)
-      \to Maybe\, (LType\, A)
-    }
-\end{array}
-\]
-% list 
-\item a term $\mathsf{clistc : dIndListC\,P}$ associated to the constructor $\mathsf{listC}$, i.e.,
-\[
-\begin{array}{l}
-    \mathsf{clistc : \forall\, (A \, B : Set)\, (Q : A \to Set)\, (Q' : B \to Set)\,
-      (e : Equal\, A\, (List\, B))\, (ts : List\, (LTerm\, B))} \\ 
-    \quad\mathsf{
-      \to Equal^{\wedge}\, A\, (List\,B) \, Q\, (List^{\wedge}\, B\, Q')\, e
-      \to List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts
-      \to Maybe\, (LType\, A)
-    }
-\end{array}
-\]
-\end{itemize}
+We want to show that $\mathsf{GetType}$ is satisfied by every element
+of $\mathsf{LTerm\,A}$, i.e., we want to prove:
+\[ \mathsf{getTypeProof : \forall \, (A : Set)\, (t : LTerm\,A) \to
+   GetType \,A \,t}\] This cannot be achieved without deep induction,
+which is required to to apply the induction hyppothesis to the
+individual terms in the list of terms that is an argument to the data
+constructor $\mathsf{list}$ for $\mathsf{LTerm}$.
+
+Using the deep induction rule for $\mathsf{LTerm}$ from
+Section~\ref{sec:ind-lam} we define $\mathsf{getTypeProof}$ by
+\[ \mathsf{getTypeProof \,A \,t = 
+    dIndLTerm\, P \, cvar\, cabs\, capp\, clistc\, A\, K_\top\, t\,
+    (LTerm\wedge KT\, A\, t) }\] where $\mathsf{t : LTerm\,A}$,
+$\mathsf{P}$ is the polymorphic predicate $\mathsf{\lambda \, (A:
+  Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \,
+  A)}$ and $\mathsf{LTerm^\wedge KT : \forall\, (A : Set)\, (t : LTerm
+  A) \to LTerm^{\wedge}\, A\, K_\top\,t}$ is a function that we will
+define later.  We also need the applications to $\mathsf{P}$ of the
+induction hypotheses from Section~\ref{sec:ind-lam} for
+$\mathsf{LTerm}$'s data constructors. These are:
+\[\begin{array}{lll}
+\mathsf{cvar} & : & \mathsf{\forall\, (A : Set)\, (Q_A : A \to Set)\,
+  (s : String)\, (T_A : LType\, A) \to LType^{\wedge} \, A\, Q_A\,
+  T_A\, \to Maybe\, (LType\, A)}\\
+ \mathsf{cabs} & : & \mathsf{\forall\, (A \, B\, C: Set)\, (Q_A : A
+   \to Set)\, (Q_B : B \to Set)\, (Q_C : C \to Set)} \\ 
+& &    \quad\mathsf{(e : Equal\, A\, (B \to C))\, (s : String)\, (T_B
+   : LType\, B)\, (t_C : LTerm \, C)} \\  
+& & \quad\quad\mathsf{\to Equal^{\wedge}\, A\, (B \to C)\, Q_A\,
+   (Arr^{\wedge}\, B\, C\, Q_B\, Q_C)\, e  \to LType^{\wedge} \, B\,
+   Q_B\, T_B  \to Maybe\, (LType\,C) \to Maybe\, (LType\, A)}\\
+\mathsf{capp} & : & \mathsf{\forall\, (A \, B : Set)\, (Q_A : A \to
+  Set)\, (Q_B : B \to Set)\,  (t_{BA}: LTerm\, (B \to A))\, (t_B :
+  LTerm\, B)} \\  
+& & \quad\mathsf{\to Maybe\, (LType\, (B \to A))\to Maybe\, (LType\,
+      B) \to Maybe\, (LType\, A)}\\
+\mathsf{clist} & : & \mathsf{\forall\, (A \, B : Set)\, (Q_A : A \to
+  Set)\, (Q_B : B \to Set)\, (e : Equal\, A\, (List\, B))\, (ts : 
+  List\, (LTerm\, B))}\\  
+& & \quad\mathsf{\to Equal^{\wedge}\, A\, (List\,B) \, Q_A\,
+  (List^{\wedge}\, B\, Q_B)\, e \to List^{\wedge}\, (LTerm\, B)\,
+  (GetType\, B)\, ts \to Maybe\, (LType\, A)}
+\end{array}\]
+
+
+
+{\color{red} HERE!!}
+
+
 For variables we simply return the type $\mathsf{T : LType\, A}$ (wrapped in $\mathsf{just}$), 
 and the cases for abstraction and application are similar.
-The interesting case is $\mathsf{clistc}$, in which we have to use 
+The interesting case is $\mathsf{clist}$, in which we have to use 
 the results of $\mathsf{List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$
 in order to extract the type of one of the terms in the list. 
-To define $\mathsf{clistc}$ we pattern-match on the list of terms $\mathsf{ts}$.
+To define $\mathsf{clist}$ we pattern-match on the list of terms $\mathsf{ts}$.
 If $\mathsf{ts}$ is the empty list $\mathsf{nil}$, we cannot extract a type, 
 so we return $\mathsf{nothing}$:
 \[
-  \mathsf{clistc\, A\, B\, Q\, Q'\, e\, nil \, liftE\, lift_{ts} = nothing}
+  \mathsf{clist\, A\, B\, Q\, Q'\, e\, nil \, liftE\, lift_{ts} = nothing}
 \]
 where $\mathsf{liftE : Equal^{\wedge}\, A\, (List\,B) \, Q\, (List^{\wedge}\, B\, Q')\, e}$
 and $\mathsf{lift_{ts} : List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$.
@@ -1460,8 +1447,8 @@ The type of $\mathsf{list_{ts}}$ is
 \end{align*}
 Thus, we define
 \begin{align*}
-  &\mathsf{clistc\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (nothing , lift_{ts'}) = nothing} \\
-  &\mathsf{clistc\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (just\, T' , lift_{ts'}) = just \, (TList\, B\, e\, T')}
+  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (nothing , lift_{ts'}) = nothing} \\
+  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (just\, T' , lift_{ts'}) = just \, (TList\, B\, e\, T')}
 \end{align*}
 where $\mathsf{e : Equal\, A\, (List\,B)}$, $\mathsf{T' : LType\, B}$
 and $\mathsf{lift_{ts'} : List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'}$. 
@@ -1529,8 +1516,7 @@ For now, we assume a proof
   \mathsf{EqualLArrKT : Equal^{\wedge} \, A\, (B \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, K_\top \, K_\top)\, e}
 \]
 and define the $\mathsf{abs}$ case of $\mathsf{LTermLKT}$ as 
-\[
-  \mathsf{LTermLKT\,A\, (abs\, B \,C \, e \,s \,T \, t') = 
+\[ \mathsf{LTermLKT\,A\, (abs\, B \,C \, e \,s \,T \, t') = 
     (K_\top , K_\top , EqualLArrKT , LTypeLKT\, B\, T , LTermLKT\, C\, t')
   }
 \]
