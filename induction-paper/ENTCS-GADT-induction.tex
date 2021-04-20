@@ -346,7 +346,7 @@ system. Tassi~\cite{tas19} has done exactly that, deriving induction
 rules for data type definitions in Coq using unary
 parametricity. Tassi's technique seems to be essentially equivalent to
 that of~\cite{jp19} for nested types, although he does not permit true
-nesting. More recently, Ulrich~\cite{ull20} has implemented a plugin
+nesting. More recently, Ullrich~\cite{ull20} has implemented a plugin
 in MetaCoq to generate induction rules for nested types. This plugin
 is also based on unary parametricity and, again, true nesting is not
 permitted.  As far as we know, no attempt has yet been made to extend
@@ -536,7 +536,7 @@ predicates on its data of primitive types to be constantly
 $\mathsf{True}$-valued predicates. This instantiation ensures that the
 resulting induction rule only inspects the top-level structure of its
 argument, rather than the contents of that structure, which exactly
-coindices with what structural induction should do.
+coincides with what structural induction should do.
 %A concrete example of such a derivation is given in
 %Section~\ref{sec:ind-equal}.
 
@@ -659,8 +659,8 @@ deriving deep induction rules for the three specific GADTs introduced
 in Section~\ref{sec:GADTs}. Then, in Section~\ref{sec:framework}, we
 abstract these to a general framework that can be applied to any deep
 GADT that is not truly nested. As hinted above, the predicate lifting
-for the equality GADT plays a central role in deriving both s
-tructural and deep induction rules for more general GADTs.
+for the equality GADT plays a central role in deriving both structural
+and deep induction rules for more general GADTs.
  
 \subsection{(Deep) induction for $\mathsf{Equal}$}\label{sec:ind-equal}
 
@@ -797,7 +797,7 @@ follows:
     (Q_B,Q_C, liftE, liftB, liftC)}  & = &
 \mathsf{cpair\,A\,B\,C\,Q_A\,Q_B\,Q_C\,s_B\,s_C\,e\,liftE\,p_B\,p_C}
 \end{array}\]
-In the first clause ahove, $\mathsf{a : A}$, $\mathsf{Q_A : A \to
+In the first clause above, $\mathsf{a : A}$, $\mathsf{Q_A : A \to
   Set}$, $\mathsf{liftA : Seq^{\wedge}\,A\,Q_A\,(const\,a) =
   Q_A\,a}$. In the second, $\mathsf{Q_B : B \to Set}$, $\mathsf{Q_C :
   C \to Set}$, $\mathsf{e : Equal\,A\,(B \times C)}$, $\mathsf{s_B :
@@ -1036,8 +1036,6 @@ form
 \end{array}
 \end{equation}
 
-\vspace*{-0.05in}
-
 \noindent
 For brevity and clarity we indicate only one constructor $\mathsf{c}$
 in~\eqref{eq:gadts}, even though a GADT can, in general, have any
@@ -1250,8 +1248,8 @@ deep induction rules, we might expect that truly nested GADTs would as
 well. Surprisingly, however, they do not. That is, our results from
 the previous section are the strongest possible. Indeed, the induction
 rule for a data type generally relies on (unary) parametricity of the
-model interpreting it, and deel induction for a truly nested type or a
-ruly nested GADT also relies on this interpretation being functorial.
+model interpreting it, and deep induction for a truly nested type or a
+truly nested GADT also relies on this interpretation being functorial.
 But, whereas nested types can admit a functorial parametric semantics,
 GADTs cannot admit both functorial and parametric semantics at the
 same time~\cite{jgj21}. In this section we show how deep induction for
@@ -1366,8 +1364,11 @@ produces the type of its possible types:
   &\mathsf{GetType : \forall \, (A : Set) \to LTerm\,A \to Set} \\
   &\mathsf{GetType \,A \,t = Maybe \, (LType \, A)}
 \end{align*}
-This predicate uses $\mathsf{Maybe}$ to represent potential failure,
-where $\mathsf{Maybe}$ is defined as follows:
+The predicate $\mathsf{GetType}$ uses the standard $\mathsf{Maybe}$
+data type to represent potential failure. It is defined by:
+
+\vspace*{-0.1in}
+
 \begin{equation}\label{eq:maybe}
 \begin{array}{l}
 \mathsf{data\ Maybe : Set \to Set\ where}\\
@@ -1375,26 +1376,28 @@ where $\mathsf{Maybe}$ is defined as follows:
 \mathsf{\;\;\;\;\;\;\;\;\;\;\;\;just :\, A \to Maybe\,A}
 \end{array}
 \end{equation}
+
 We want to show that $\mathsf{GetType}$ is satisfied by every element
 of $\mathsf{LTerm\,A}$, i.e., we want to prove:
 \[ \mathsf{getTypeProof : \forall \, (A : Set)\, (t : LTerm\,A) \to
    GetType \,A \,t}\] This cannot be achieved without deep induction,
-which is required to to apply the induction hyppothesis to the
-individual terms in the list of terms that is an argument to the data
-constructor $\mathsf{list}$ for $\mathsf{LTerm}$.
-
-Using the deep induction rule for $\mathsf{LTerm}$ from
-Section~\ref{sec:ind-lam} we define $\mathsf{getTypeProof}$ by
+which is needed to apply the induction hypothesis to the individual
+terms in the list of terms that the data constructor $\mathsf{list}$
+takes as an argument. Using the deep induction rule
+$\mathsf{dIndLTerm}$ from Section~\ref{sec:ind-lam} we define
+$\mathsf{getTypeProof}$ by
 \[ \mathsf{getTypeProof \,A \,t = 
     dIndLTerm\, P \, cvar\, cabs\, capp\, clistc\, A\, K_\top\, t\,
-    (LTerm\wedge KT\, A\, t) }\] where $\mathsf{t : LTerm\,A}$,
+    (LTerm^\wedge KT\, A\, t) }\] where $\mathsf{t : LTerm\,A}$,
 $\mathsf{P}$ is the polymorphic predicate $\mathsf{\lambda \, (A:
   Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \,
-  A)}$ and $\mathsf{LTerm^\wedge KT : \forall\, (A : Set)\, (t : LTerm
-  A) \to LTerm^{\wedge}\, A\, K_\top\,t}$ is a function that we will
-define later.  We also need the applications to $\mathsf{P}$ of the
-induction hypotheses from Section~\ref{sec:ind-lam} for
-$\mathsf{LTerm}$'s data constructors. These are:
+  A)}$, $\mathsf{K_\top}$ is the constantly {\color{red}
+  $\mathsf{\top}$}-valued predicate, and $\mathsf{LTerm^\wedge KT :
+  \forall\, (A : Set)\, (t : LTerm A) \to LTerm^{\wedge}\, A\,
+  K_\top\,t}$ is a term, to be defined below, witnessing that
+$\mathsf{K_\top}$ can be lifted to all terms. We also need the
+applications to $\mathsf{P}$ of each of the induction hypotheses from
+Section~\ref{sec:ind-lam}. These are:
 \[\begin{array}{lll}
 \mathsf{cvar} & : & \mathsf{\forall\, (A : Set)\, (Q_A : A \to Set)\,
   (s : String)\, (T_A : LType\, A) \to LType^{\wedge} \, A\, Q_A\,
@@ -1418,215 +1421,223 @@ $\mathsf{LTerm}$'s data constructors. These are:
   (List^{\wedge}\, B\, Q_B)\, e \to List^{\wedge}\, (LTerm\, B)\,
   (GetType\, B)\, ts \to Maybe\, (LType\, A)}
 \end{array}\]
-
-
-
-{\color{red} HERE!!}
-
-
-For variables we simply return the type $\mathsf{T : LType\, A}$ (wrapped in $\mathsf{just}$), 
-and the cases for abstraction and application are similar.
-The interesting case is $\mathsf{clist}$, in which we have to use 
-the results of $\mathsf{List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$
-in order to extract the type of one of the terms in the list. 
-To define $\mathsf{clist}$ we pattern-match on the list of terms $\mathsf{ts}$.
-If $\mathsf{ts}$ is the empty list $\mathsf{nil}$, we cannot extract a type, 
-so we return $\mathsf{nothing}$:
-\[
-  \mathsf{clist\, A\, B\, Q\, Q'\, e\, nil \, liftE\, lift_{ts} = nothing}
-\]
-where $\mathsf{liftE : Equal^{\wedge}\, A\, (List\,B) \, Q\, (List^{\wedge}\, B\, Q')\, e}$
-and $\mathsf{lift_{ts} : List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$.
-If $\mathsf{ts}$ is a non-empty list $\mathsf{cons\,t\,ts'}$,
-we pattern match on $\mathsf{list_{ts}}$ and use the result to construct the type we need.
-The type of $\mathsf{list_{ts}}$ is
+In the first clause, $\mathsf{cvar}$ returns $\mathsf{just\,T_A}$.  In
+the second clause, $\mathsf{cabs}$ returns $\mathsf{nothing}$ if its
+final argument is $\mathsf{nothing}$ and $\mathsf{cabs\, A \,B \,C
+  \,Q_A\, Q_B \,Q_C\, e \,s \,T_B\, t_C\, Eq^\wedge\,
+%  LLTy^\wedge B\,
+L\, (just \,T_C) = just \, (arr\, B\, C\, e\, T_B \,T_C)}$ otherwise.
+In the third clause, $\mathsf{capp\, A \,B \, Q_A \, Q_B \, t_{BA}\,
+  t_A \, (just \, (arr\, .B \,.A\, rfl\, T_B\, T_A))\, mb = just\,
+  T_A}$ and $\mathsf{capp}$ returns $\mathsf{nothing}$ otherwise.  In
+the fourth clause, we must use $\mathsf{List^{\wedge}\, (LTerm\, B)\,
+  (GetType\, B)\, ts}$ to extract the type of the head of
+$\mathsf{ts}$ (from which we can deduce the type of the list). When
+$\mathsf{ts} = \mathsf{nil}$ we define $\mathsf{clist\, A\, B\, Q\,
+  Q'\, e\, nil \, liftE\, lift_{ts} = nothing}$, where $\mathsf{liftE
+  : Equal^{\wedge}\, A\, (List\,B) \, Q\, (List^{\wedge}\, B\, Q')\,
+  e}$, and $\mathsf{lift_{ts} : List^{\wedge}\, (LTerm\, B)\,
+  (GetType\, B)\, ts}$.  When $\mathsf{ts} = \mathsf{cons\,t\,ts'}$
+% The interesting case is
+%  $\mathsf{clist}$, in which we have to use the results of
+%  $\mathsf{List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$ in order
+%  to extract the type of one of the terms in the list.  To define
+%  $\mathsf{clist}$ we pattern-match on the list of terms
+%  $\mathsf{ts}$.  If $\mathsf{ts}$ is the empty list $\mathsf{nil}$,
+%  we cannot extract a type, so we return $\mathsf{nothing}$:
+%\[
+%  \mathsf{clist\, A\, B\, Q\, Q'\, e\, nil \, liftE\, lift_{ts} = nothing}
+%\]
+%where $\mathsf{liftE : Equal^{\wedge}\, A\, (List\,B) \, Q\,
+%  (List^{\wedge}\, B\, Q')\, e}$ and $\mathsf{lift_{ts} :
+%  List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts}$.
+%If $\mathsf{ts}$ is a non-empty list $\mathsf{cons\,t\,ts'}$, we
+%pattern match on
+%$\mathsf{list_{ts}}$ and use the result to construct
+%the type we need.  The type of $\mathsf{list_{ts}}$ is
+the type of $\mathsf{list_{ts}}$ becomes $\mathsf{List^{\wedge}\,
+  (LTerm\, B)\, (GetType\, B)\, (cons\, t\, ts')} = \mathsf{GetType\,
+  B\, t \times List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'} =
+\mathsf{Maybe\, (LType\, B) \times List^{\wedge}\, (LTerm\, B)\,
+  (GetType\, B)\, ts'}$. We pattern match on the first component
+of the pair to define\looseness=-1
+%\[\begin{array}{lll}
+%\mathsf{list_{ts}} & : &  
+%  \mathsf{List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, (cons\, t\, ts')}\\
+%& = & \mathsf{GetType\, B\, t \times List^{\wedge}\, (LTerm\, B)\,
+%    (GetType\, B)\, ts'}\\ 
+%&= & \mathsf{Maybe\, (LType\, B) \times List^{\wedge}\, (LTerm\, B)\,
+%    (GetType\, B)\, ts'} 
+%\end{array}\]
 \begin{align*}
-\mathsf{List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, (cons\, t\, ts')}
-&= \mathsf{GetType\, B\, t \times List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'} \\
-&= \mathsf{Maybe\, (LType\, B) \times List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'}
+  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\,
+    (nothing , lift_{ts'}) = nothing} \\ 
+  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\,
+    (just\, T' , lift_{ts'}) = just \, (TList\, B\, e\, T')} 
 \end{align*}
-Thus, we define
-\begin{align*}
-  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (nothing , lift_{ts'}) = nothing} \\
-  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\, (just\, T' , lift_{ts'}) = just \, (TList\, B\, e\, T')}
-\end{align*}
-where $\mathsf{e : Equal\, A\, (List\,B)}$, $\mathsf{T' : LType\, B}$
-and $\mathsf{lift_{ts'} : List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'}$. 
+Here $\mathsf{e : Equal\, A\, (List\,B)}$, $\mathsf{T' : LType\, B}$,
+and $\mathsf{lift_{ts'} : List^{\wedge}\, (LTerm\, B)\, (GetType\,
+  B)\, ts'}$.
 
+\pagebreak
 
+To finish defining $\mathsf{getTypeProof}$ we still need a proof
 
-\subsection{Defining $\mathsf{LTermLKT}$}
+\vspace*{-0.1in}
 
-{\color{red} Maybe this section can be deleted by assuming $\mathsf{LTerm^{\wedge}\, A\, K_\top\,t = K_\top}$.
-Maybe we can say this derives from parametricity.
-Currently we say that $\mathsf{K_\top \times K_\top = K_\top}$ based on the fact that products are a built-in type and so this seems to be obviously true.}
+\[ \mathsf{LTerm^\wedge KT : \forall\, (A : Set)\, (t : LTerm\, A) \to
+  LTerm^{\wedge}\, A\, K_\top\,t} \]
 
-The last piece of infrastructure we need in order to define $\mathsf{getTypeProof}$ is a function 
-\[
-  \mathsf{LTermLKT : \forall\, (A : Set)\, (t : LTerm\, A) \to LTerm^{\wedge}\, A\, K_\top\,t}
-\]
-that provides a 
-proof of $\mathsf{LTerm^{\wedge}\,A\,K_\top\,t}$ for any term $\mathsf{t : LTerm\, A}$. 
-Because $\mathsf{LTerm^{\wedge}}$ is defined in terms of $\mathsf{LType^{\wedge}}$, $\mathsf{Arr^{\wedge}}$, 
-and $\mathsf{List^{\wedge}}$, we need an analogous function for each of these liftings as well
-(respectively, $\mathsf{LTypeLKT}$, $\mathsf{ArrLKT}$ and $\mathsf{ListLKT}$). 
-We only give the definition of $\mathsf{LTermLKT}$, but the definitions for 
-$\mathsf{LTypeLKT}$, $\mathsf{ArrLKT}$ and $\mathsf{ListLKT}$ are analogous. 
-We define $\mathsf{LTermLKT}$ by pattern matching on the lambda term $\mathsf{t}$:
+\vspace*{-0.05in}
+
+\noindent
+Since $\mathsf{LTerm^\wedge}$ is
+defined in terms of $\mathsf{LType^\wedge}$ and $\mathsf{Arr^\wedge}$,
+and since $\mathsf{LType^\wedge}$ is also defined in terms of
+$\mathsf{List^\wedge}$, we need analogous functions
+$\mathsf{LType^\wedge KT}$, $\mathsf{Arr^\wedge KT}$ and
+$\mathsf{List^\wedge KT}$, respectively, for each of these liftings as
+well.  We only give the definition of $\mathsf{LTerm^\wedge KT}$ here
+since $\mathsf{LType^\wedge KT}$, $\mathsf{Arr^\wedge KT}$, and
+$\mathsf{List^\wedge KT}$ are defined analogously. We have:
 \begin{itemize}
-\item For the $\mathsf{var}$ case, let $\mathsf{t = var\, s\, T}$ for $\mathsf{s : String}$ and $\mathsf{T : LType\,A}$,
-and define
-\[
-  \mathsf{LTermLKT\,A\,(var\,s\,T) = LTypeLKT\,A\,T}
-\]
-\item For the $\mathsf{abs}$ case, let $\mathsf{t = abs \,B \,C \, e \,s \,T \, t'} $
-for $\mathsf{e : Equal\,A\,(B \to C)}$, $\mathsf{s : String}$, $\mathsf{T : LType\,B}$ and $\mathsf{t' : LTerm\,C}$,
-and recall the definition of $\mathsf{LTerm^{\wedge}}$ for the $\mathsf{abs}$ constructor, 
-instantiating the predicate $\mathsf{Q : A \to Set}$ to $\mathsf{K_\top}$: 
-% \,a\,Q_a\, (Abs \,b \,c \,e \,s \,T_b \,t_c)}$, :
-\[
-\begin{array}{l}
-\mathsf{LTerm^{\wedge}\,A\,K_\top\,
-  (abs \,B \,C \,e \,s \,T \,t')} \\ 
-\quad\mathsf{
-  = \sum\, [Q' : B \to Set]\, [Q'' : C \to Set]\,
-      Equal^{\wedge} \, A\, (B \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, Q' \, Q'')\, e
-      \times \, LType^{\wedge}\, B\, Q'\, T
-      \times \, LTerm^{\wedge}\, C\, Q''\, t' }
-\end{array}
-\]
-So, to define the $\mathsf{abs}$ case of $\mathsf{LTermLKT}$, we need a proof of 
-\[
-  \mathsf{Equal^{\wedge} \, A\, (B \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, Q' \, Q'')\, e}
-\]
-i.e., that $\mathsf{K_\top}$ is (extensionally) equal to the lifting $\mathsf{Arr^{\wedge} \, B\, C\, Q' \, Q''}$
-for some predicates $\mathsf{Q' : B \to Set}$ and $\mathsf{Q'' : C \to Set}$.
-The only reasonable choice for $\mathsf{Q'}$ and $\mathsf{Q''}$ 
-is to let both be $\mathsf{K_\top}$, which means we need a proof of
-\[
-  \mathsf{Equal^{\wedge} \, A\, (B \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, K_\top \, K_\top)\, e}
-\]
-Since we are working with proof-relevant predicates
-(i.e., functions into $\mathsf{Set}$ rather than functions into $\mathsf{Bool}$), 
-the lifting $\mathsf{Arr^{\wedge} \, B\, C\, K_\top \, K_\top}$ of $\mathsf{K_\top}$ to arrow types
-is not identical to $\mathsf{K_\top}$ on arrow types, but the predicates are (extensionally) isomorphic. 
-We discuss this issue in more detail at the end of the section. 
-For now, we assume a proof 
-\[
-  \mathsf{EqualLArrKT : Equal^{\wedge} \, A\, (B \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, K_\top \, K_\top)\, e}
-\]
-and define the $\mathsf{abs}$ case of $\mathsf{LTermLKT}$ as 
-\[ \mathsf{LTermLKT\,A\, (abs\, B \,C \, e \,s \,T \, t') = 
-    (K_\top , K_\top , EqualLArrKT , LTypeLKT\, B\, T , LTermLKT\, C\, t')
-  }
-\]
-\item For the $\mathsf{app}$ case, let $\mathsf{t = app\, B\, t' \, t''}$
-for $\mathsf{t' : LTerm\,(B \to A)}$ and $\mathsf{t'' : LTerm\,B}$,
-and, just as we did for the $\mathsf{abs}$ case, 
-recall the definition of $\mathsf{LTerm^{\wedge}\, A\, K_\top\, (app\, B\, t'\, t'')}$
-with all of the predicates instantiated with $\mathsf{K_\top}$: 
-\[
-\mathsf{
-      LTerm^{\wedge}\, (B \to A)\, (Arr^{\wedge} \, B\, A\, K_\top \, K_\top)\, t'
-      \times LTerm^{\wedge}\, B\, K_\top\, t''}
-\]
-The second component can be given using $\mathsf{LTermLKT}$, and we can 
-define the first component using a proof of
-\[
-\mathsf{LTerm^{\wedge}\, (B \to A)\, K_\top\, t'}
-\]
-and a map-like function 
-\[
-  \mathsf{LTermLEqualMap : \forall\, (A : Set)\, (Q\,Q' : A \to Set) 
-    \to Equal^{\wedge}\,A\,A\,Q\,Q'\,refl
-    \to PredMap\,(LTerm\,A)\, (LTerm^{\wedge}\,A\,Q)\,(LTerm^{\wedge}\,A\,Q')}
-\]
-that takes two (extensionally) equal predicates with the same carrier 
-and produces a morphism of predicates between their liftings. The definition is 
-straightforward enough, so we omit the details. 
-Using $\mathsf{LTermLEqualMap}$, we can define the $\mathsf{app}$ case of $\mathsf{LTermLKT}$ as 
-\[
-  \mathsf{LTermLKT\,A\, (app\, B\, t'\, t'') = 
-    (K_\top , LTermLArr , LTermLKT\,B\,t'')}
-\]
-where $\mathsf{ LTermLArr : LTerm^{\wedge}\, (B \to A)\, (Arr^{\wedge} \, B\, A\, K_\top \, K_\top)\, t'}$ is defined as
-\[
-  \mathsf{LTermLArr =  LTermLEqualMap\,K_\top\,(Arr^{\wedge}\,B\,A\,K_\top\,K_\top)\,\, EqualLArrKT\, t'\, L_{K_\top}}
-\]
-where $\mathsf{L_{K_\top} = LTermLKT\, (B \to A)\, t' : LTerm^{\wedge}\, (B \to A) \, K_\top\, t'}$.
-\item For the $\mathsf{listC}$ case, let $\mathsf{t = listC\, B\, e\, ts}$
-for $\mathsf{e : Equal\,A\,(List\,B)}$ and $\mathsf{ts : List\,(LTerm\, B)}$,
-and recall the definition of $\mathsf{LTerm^{\wedge}\,A\,(listC\, B\, e\, ts)}$
-with all of the predicates instantiated to $\mathsf{K_\top}$: 
-\[
-\mathsf{ Equal^{\wedge} \, A\, (List\,B)\, K_\top\, (List^{\wedge} \, B\, K_\top) \, e
-      \times List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \, B\, K_\top) \, ts }
-\]
-We can give the first component by assuming a proof \,
-$\mathsf{EqualLListKT : Equal^{\wedge} \, A\, (List\,B)\, K_\top\, (List^{\wedge} \, B\, K_\top) \, e}$, 
-but for the second component we again have multiple liftings nested together.
-In this case, we can get a proof of
-\[
-\mathsf{ List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \, B\, K_\top) \, ts }
-\]
-using $\mathsf{liftListMap}$, as seen in Section~\ref{sec:dind-lterm} {(\color{red} add back-reference)},
-to map a morphism of predicates 
-\[
-  \mathsf{PredMap\, (LTerm\,B)\, (K_\top)\, (LTerm^{\wedge}\,B\,K_\top)}
-\]
-to a morphism of lifted predicates
-\[
-  \mathsf{PredMap\,(List\,(LTerm\,B)) \,(List^{\wedge}\,(LTerm\,B)\,K_\top) \, (List^{\wedge}\,(LTerm\,B)\, (LTerm^{\wedge}\,B\,K_\top))}
-\]
-We then define the $\mathsf{listC}$ case of $\mathsf{LTermLKT}$ as 
-\[
-  \mathsf{LTermLKT\,A\, (listC\, B\, e\, ts) =
-    (K_\top , \, EqualLListKT , \,  L_{ListLLTermLKT} ) }
-\]
-where
-$\mathsf{L_{ListLLTermLKT} : List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \, B\, K_\top) \, ts}$
-is defined as
-\[
-\mathsf{ 
-  L_{ListLLTermLKT} =
-  liftListMap \, (LTerm\,B) \, K_\top \, (LTerm^{\wedge}\, B\, K_\top) \, m_{K_\top} \, ts \, (ListLKT\, (LTerm\, B)\, ts)
-}
-\]
-and $\mathsf{m_{K_\top} : PredMap\, (LTerm\,B) \, (K_\top)\, (LTerm^{\wedge}\,B\,K_\top)}$
-is defined as
-\[
-  \mathsf{m_{K_\top} \, t'\, tt\, = LTermLKT\, B\, t'}
-\]
-where $\mathsf{t' : LTerm\,B}$ and $\mathsf{tt}$ is the single element of $\mathsf{K_\top\, t'}$. 
-The use of $\mathsf{liftListMap}$ is required in the $\mathsf{listC}$ case because 
-$\mathsf{listC}$ takes an argument of type $\mathsf{List\, (LTerm\, B)}$.
+\item If $\mathsf{s : String}$ and $\mathsf{T : LType\,A}$ we define
+  $\mathsf{LTerm^\wedge KT\,A\,(var\,s\,T)} = \mathsf{LType^\wedge
+  KT\,A\,T}$.
+\item If $\mathsf{e : Equal\,A\,(B \to C)}$, $\mathsf{s : String}$,
+  $\mathsf{T : LType\,B}$, and $\mathsf{t' : LTerm\,C}$ we need to
+  define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
+    t')}$ of type
+
+\vspace*{-0.15in}
+
+  \[\begin{array}{l}
+  \mathsf{LTerm^{\wedge}\,A\,K_\top\, (abs \,B \,C \,e \,s \,T
+  \,t')}\\
+\quad \mathsf{ = \exists [Q_B]\, [Q_C]\, Equal^{\wedge} \, A\, (B \to
+    C)\, K_\top\, (Arr^{\wedge} \, B\, C\, Q_B \, Q_C)\, e \times \,
+    LType^{\wedge}\, B\, Q_B\, T \times \, LTerm^{\wedge}\, C\, Q_C\,
+    t' }
+\end{array}\]
+where $\mathsf{K_\top : A \to Set}$, $\mathsf{Q_B : B \to Set}$, and
+$\mathsf{Q_C : C \to Set}$.  The only reasonable choice is to let both
+$\mathsf{Q_B}$ and $\mathsf{Q_C}$ be $\mathsf{K_\top}$, which means we
+need proofs of $\mathsf{Equal^{\wedge} \, A\, (B \to C)\, K_\top\,
+  (Arr^{\wedge} \, B\, C\, K_\top \, K_\top)\, e}$,
+$\mathsf{LType^{\wedge}\, B\, K_\top\, T}$ and
+$\mathsf{LTerm^{\wedge}\, C\, K_\top\, t'}$.  We take
+$\mathsf{LType^\wedge KT\, B\, T}$ and $\mathsf{LTerm^\wedge KT\, C\,
+  t')}$ for the latter two proofs. For the former we note that, since
+we are working with proof-relevant predicates, the lifting
+$\mathsf{Arr^{\wedge} \, B\, C\, K_\top \, K_\top}$ of
+$\mathsf{K_\top}$ to arrow types is not identical to $\mathsf{K_\top}$
+on arrow types but rather (extensionally) isomorphic.  We discuss this
+issue in more detail at the end of the section, but for now we simply
+assume a proof $\mathsf{Equal^\wedge ArrKT : Equal^{\wedge} \, A\, (B
+  \to C)\, K_\top\, (Arr^{\wedge} \, B\, C\, K_\top \, K_\top)\, e}$
+and define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
+  t') = (K_\top , K_\top , Equal^\wedge ArrKT , LType^\wedge KT\, B\,
+  T , LTerm^\wedge KT\, C\, t') }$.
+\item If $\mathsf{t_1 : LTerm\,(B \to A)}$ and $\mathsf{t_2 :
+  LTerm\,B}$ then, by the same reasoning as in the previous case, we
+  need to define $\mathsf{LTerm^\wedge KT\,A\, (app\, B \, t_1\,t_2)}
+  : \mathsf{LTerm^{\wedge}\, (B \to A)\, (Arr^{\wedge} \, B\, A\,
+    K_\top \, K_\top)\, t_1 \times LTerm^{\wedge}\, B\, K_\top\,
+    t_2}$.  We define the second component of the pair to be
+  $\mathsf{LTerm^\wedge KT\,B\,t_2}$. We can define the first
+  component from a proof of $\mathsf{LTerm^{\wedge}\, (B \to A)\,
+    K_\top\, t_1}$ and the function $\mathsf{LTerm^\wedge EqualMap :
+    \forall\, (A : Set)\, (Q\,Q' : A \to Set) \to
+    Equal^\wedge\,A\,A\,Q\,Q'\,refl \to}$
+  $\mathsf{PredMap\,(LTerm\,A)\,
+    (LTerm^{\wedge}\,A\,Q)\,(LTerm^{\wedge}\,A\,Q')}$ that takes two
+  (extensionally) equal predicates with the same carrier and produces
+  a morphism of predicates between their liftings. The definition of
+  $\mathsf{LTerm^\wedge EqualMap}$ is straightforwardly given by
+  pattern matching on the first two arguments to $\mathsf{PredMap}$ in
+  its return type, using transitivity and symmetry of the type
+  constructor $\mathsf{Equal}$, together with the analogously defined
+  functions $\mathsf{LType^\wedge EqualMap}$ and $\mathsf{Arr^\wedge
+    EqualMap}$ in the cases when the first argument to
+  $\mathsf{PredMap}$ is constructed using $\mathsf{var}$ or
+  $\mathsf{app}$, respectively. Taking $\mathsf{L_{K_\top} :
+    LTerm^{\wedge}\, (B \to A) \, K_\top\, t_1}$ to be the proof
+  $\mathsf{L_{K_\top} = LTerm^\wedge KT\, (B \to A)\, t_1}$ and taking
+  $\mathsf{ LTerm^\wedge Arr : LTerm^{\wedge}\, (B \to A)\,
+    (Arr^{\wedge} \, B\, A\, K_\top \, K_\top)\, t_1}$ to be the proof
+  $\mathsf{LTerm^\wedge Arr =}$ $\mathsf{LTerm^\wedge
+    EqualMap\,K_\top\,(Arr^{\wedge}\,B\,A\,K_\top\,K_\top)\,\,
+    Equal^\wedge ArrKT\, t_1\, L_{K_\top}}$, we define
+  $\mathsf{LTerm^\wedge KT\,A\, (app\, B\, t_1\, t_2) = (K_\top ,
+    LTerm^\wedge Arr , LTerm^\wedge KT\,B\,t_2)}$.
+\item If $\mathsf{e : Equal\,A\,(List\,B)}$ and $\mathsf{ts :
+  List\,(LTerm\, B)}$ then, as above, we need to define
+  $\mathsf{LTerm^\wedge KT\,A\, (list\, B \,e\, ts)}$ $\mathsf{:
+  Equal^{\wedge} \, A\, (List\,B)\, K_\top\, (List^{\wedge} \, B\,
+  K_\top) \, e \times List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \,
+  B\, K_\top) \, ts }$.  As in that case we assume a proof
+  $\mathsf{EqualLListKT : Equal^{\wedge} \, A\, (List\,B)\, K_\top\,
+  (List^{\wedge} \, B\, K_\top) \, e}$ for the first component.  We
+  can define the second component using $\mathsf{liftListMap}$ from
+  Section~\ref{sec:ind-lam} to map a morphism $\mathsf{PredMap\,
+    (LTerm\,B)\, (K_\top)\, (LTerm^{\wedge}\,B\,K_\top)}$ of
+  predicates to a morphism $\mathsf{PredMap\,(List\,(LTerm\,B))}$
+  $\mathsf{(List^{\wedge}\,(LTerm\,B)\,K_\top) \,
+    (List^{\wedge}\,(LTerm\,B)\, (LTerm^{\wedge}\,B\,K_\top))}$ of
+  lifted predicates.  Taking $\mathsf{m_{K_\top} : PredMap\,
+    (LTerm\,B) \, (K_\top)\, (LTerm^{\wedge}\,B\,K_\top)}$ to be the
+  proof $\mathsf{m_{K_\top} \, t'\, tt\, = LTerm^\wedge KT\, B\, t'}$,
+  where $\mathsf{t' : LTerm\,B}$ and $\mathsf{tt}$ is the single
+  element of $\mathsf{K_\top\, t'}$, and taking
+  $\mathsf{L_{List^\wedge LTerm^\wedge KT} : List^{\wedge}\,
+    (LTerm\,B) \, (LTerm^{\wedge} \, B\, K_\top) \, ts}$ to be the
+  proof $\mathsf{ L_{List^\wedge LTerm^\wedge KT} =}$
+  $\mathsf{liftListMap \, (LTerm\,B) \, K_\top \, (LTerm^{\wedge}\,
+    B\, K_\top) \, m_{K_\top} \, ts \, (List^\wedge KT\, (LTerm\, B)\,
+    ts) }$, we define $\mathsf{LTerm^\wedge KT\,A\, (listC\, B\, e\,
+    ts) = (K_\top , \, Equal^\wedge ListKT , \, L_{ListL^\wedge
+      Term^\wedge KT} ) }$.
 \end{itemize}
 
-{\color{red} These are general considerations, and are not required to conclude the above argument.}
-The above techniques can be used
-to define a function $\mathsf{GLKT : \forall\, (A : Set)\, (x : G\,A) \to G^{\wedge}\, A\, K_\top\, x}$
-for an arbitrary GADT $\mathsf{G}$,
-as defined in Section~\ref{sec:dind-generic} {\color{red} (add back-reference)}.
-To provide a proof of $\mathsf{G^{\wedge}\, A\, K_\top \, x}$ for every term $\mathsf{x : G\, A}$, 
-we need to know that the lifting of $\mathsf{K_\top}$ by any type constructor $\mathsf{F}$
-is extensionally equal to $\mathsf{K_\top}$ on $\mathsf{F}$. 
-For example, we might need a proof that $\mathsf{Pair^{\wedge}\,A\,B\,K_\top\,K_\top}$
-is equal to the predicate $\mathsf{K_\top}$ on $\mathsf{A \times B}$. 
-Given a pair $\mathsf{(a , b) : A \times B}$, we have
-$\mathsf{Pair^{\wedge}\,A\,B\,K_\top\,K_\top (a, b) = K_\top \, a \times K_\top\, b = \top \times \top}$,
-whereas $\mathsf{K_\top\, (a, b) = \top}$.
-While these types are not equal, they are clearly isomorphic.
-So, for simplicity of presentation, we assume $\mathsf{F^{\wedge}\,A\,K_\top}$
-is equal to $\mathsf{K_\top}$ for every nested type and ADT $\mathsf{F}$. 
-Moreover, remember that, whenever $\mathsf{G}$ has a constructor of the form $\mathsf{c : F \, (G\, A) \to G\, (K\,B)}$, 
-$\mathsf{F}$ is only allowed to be a nested type or an ADT,
-and we are guaranteed to have a $\mathsf{liftFMap}$ function. 
-
-
+The above techniques can be used to define a function
+$\mathsf{G^\wedge KT : \forall\, (A : Set)\, (x : G\,A) \to
+  G^{\wedge}\, A\, K_\top\, x}$ for an arbitrary GADT $\mathsf{G}$, as
+defined in Section~\ref{sec:framework}.  To provide a proof of
+$\mathsf{G^{\wedge}\, A\, K_\top \, x}$ for every term $\mathsf{x :
+  G\, A}$, we need to know that if $\mathsf{G}$ has a constructor
+$\mathsf{c : H \, (\ol{F\,G\, \ol{B}}) \to G\, (\ol{K\,\ol{B}})}$,
+then $\mathsf{H}$ cannot construct GADTs so the generalization
+$\mathsf{H^\wedge Map}$ of $\mathsf{listLiftMap}$ in the final bullet
+point above is guaranteed to exist. We also need to know that the
+lifting of $\mathsf{K_\top}$ to types constructed by any nested type
+constructor $\mathsf{F}$ is extensionally equal to $\mathsf{K_\top}$
+on the types it constructs. For example, we might need a proof that
+$\mathsf{Pair^{\wedge}\,A\,B\,K_\top\,K_\top}$ is equal to
+$\mathsf{K_\top}$ on $\mathsf{A \times B}$.  Given a pair $\mathsf{(a
+  , b) : A \times B}$, we have that
+$\mathsf{Pair^{\wedge}\,A\,B\,K_\top\,K_\top (a, b) = K_\top \, a
+  \times K_\top\, b = \top \times \top}$, whereas $\mathsf{K_\top\,
+  (a, b) = \top}$. While these types are not equal, they are clearly
+isomorphic. Similar isomorphisms between
+$\mathsf{F^{\wedge}\,A\,K_\top}$ and $\mathsf{K_\top}$ hold for all
+other nested type constructors $\mathsf{F}$ as well. These
+isomorphisms can either be proved on an as-needed basis or, since
+$\mathsf{F^\wedge\,A\,K_\top = K_\top}$ is the unary analogue of the
+Identity Extension Lemma, be obtained at the meta-level as a
+consequence of unary parametricity. At the object level, our Agda code
+simply postulates each such isomorphism needed since an Agda
+implementation of full parametricity for some relevant calculus is
+beyond the scope of the present paper.
 
 \section{Conclusion}\label{sec:conclusion}
 
+This paper extends deep induction to a robust class of GADTs that are
+not truly nested. It also shows that truly nested GADTs do not admit
+deep induction rules. Our development is implemented in Agda, as is a
+case study showing how deep induction can prove properties of GADTs
+that are not provable by structural induction.\looseness=-1
 
+\begin{comment}
 \section{TODO}
 
 \begin{itemize}
@@ -1640,6 +1651,9 @@ and we are guaranteed to have a $\mathsf{liftFMap}$ function.
 \item spacing in data type declarations
 \item Mention Agda flags that need to be toggled to handle true nesting
 \end{itemize}
+\end{comment}
+
+\pagebreak
 
 \begin{thebibliography}{10}\label{bibliography}
 
@@ -1680,7 +1694,7 @@ and we are guaranteed to have a $\mathsf{liftFMap}$ function.
 
 \bibitem{web-page} Johann, P., Ghiorzi, E., and Jeffries,
   D. Accompanying Agda code for this paper.
-    $\mathtt{https://cs.appstate.edu/~johannp/FoSSaCS21Code.html}$
+    $\mathtt{https://cs.appstate.edu/\tilde~johannp/FoSSaCS21Code.html}$
  
 \bibitem{jgj21f} Johann, P., Ghiorzi, E., and Jeffries, D. {\em
   Parametricity for primitive nested types}. Proceedings, Foundations
@@ -1703,28 +1717,28 @@ and we are guaranteed to have a $\mathsf{liftFMap}$ function.
 \bibitem{mcb99} McBride, C. {\em Dependently Typed Programs and their
   Proofs}. PhD thesis, University of Edinburgh, 1999.
 
-\bibitem{min15} Minsky, Y.  {\em Why {GADT}s matter for performance}.
-  $\mathtt{https://blog.janestreet.com/why-gadts-matter-for-performance/}$,
-  2015.
+%\bibitem{min15} Minsky, Y.  {\em Why {GADT}s matter for performance}.
+%  $\mathtt{https://blog.janestreet.com/why-gadts-matter-for-performance/}$,
+%  2015.
 
-\bibitem{pl04} Pasalic, E., and Linger, N.  {\em Meta-programming with
-  typed object-language representations}.  Generic Programming and
-  Component Engineering, pp.~136-167, 2004.
+%\bibitem{pl04} Pasalic, E., and Linger, N.  {\em Meta-programming with
+%  typed object-language representations}.  Generic Programming and
+%  Component Engineering, pp.~136-167, 2004.
 
-\bibitem{pen20} Penner, C.  {\em Simpler and safer {API} design using
-  {GADT}s}.  $\mathtt{https://chrispenner.ca/posts/gadt-design}$,
-  2020.
+%\bibitem{pen20} Penner, C.  {\em Simpler and safer {API} design using
+%  {GADT}s}.  $\mathtt{https://chrispenner.ca/posts/gadt-design}$,
+%  2020.
 
 \bibitem{pvww06} Peyton Jones, S., Vytiniotis, D., Weirich, S., and
   Washburn, G. {\em Simple unification-based type inference for
     GADTs}. Proceedings, International Conference on Functional
   Programming, 2006. {\color{red} PAGES?}
 
-\bibitem{pr06} Pottier, F., and R{\'e}gis-Gianas, Y.  {\em Stratified
-  type inference for generalized algebraic data types}.  Principles of
-  Programming Languages, pp.~232-244, 2006.
+%\bibitem{pr06} Pottier, F., and R{\'e}gis-Gianas, Y.  {\em Stratified
+%  type inference for generalized algebraic data types}.  Principles of
+%  Programming Languages, pp.~232-244, 2006.
 
-\bibitem{sjsv09} Schrijvers, T, Peyton Jones, S. L., Sulzmann, M., and
+\bibitem{sjsv09} Schrijvers, T., Peyton Jones, S. L., Sulzmann, M., and
   Vytiniotis, D. {\em Complete and decidable type inference for
     GADTs}. Proceedings, International Conference on Functional
   Programming, pp. 341– 352, 2009.
