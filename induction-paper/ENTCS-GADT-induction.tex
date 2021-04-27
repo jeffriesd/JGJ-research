@@ -48,7 +48,7 @@
 \begin{document}
 \begin{frontmatter}
   \vspace*{-0.1in}
-  \title{(Deep) Induction for GADTs\vspace*{-0.1in}}
+  \title{(Deep) Induction Rules for GADTs\vspace*{-0.1in}}
   \author{Patricia Johann~~~~}%\thanksref{JohannEmail}}
   \author{Enrico Ghiorzi~~~~}%\thanksref{GhiorziEmail}}
   \author{Daniel Jeffries}%\thanksref{JeffriesEmail}}
@@ -60,17 +60,18 @@
 
 \vspace*{-0.1in}
 
-  \begin{abstract} 
-Deep data types are data types that are defined in terms of other such
-data types, including, in the case of truly nested types, themselves.
-Deep induction is an extension of structural induction that traverses
-{\em all} of the structure present in a structure of such a type,
-propagating suitable predicates to {\em all} of the data contained in
-that structure. Deep induction has been shown to be the form of
-induction most suitable for applications involving deep nested
-types. In this paper we show how to extend deep induction to a robust
-class of deep GADTs that are not truly nested. We also show that it
-cannot be extended to truly nested GADTs.
+\begin{abstract} 
+  Deep data types those that are defined in terms of other data types,
+  including, possibly, themselves.  In that case, they are said to be
+  truly nested.  Deep induction is an extension of structural
+  induction that traverses {\em all} of the structure in a deep data
+  type, propagating predicates on its primitive data throughout the
+  entire structure.  Deep induction was recently shown to prove
+  properties of nested types, including truly nested types, that
+  cannot be proved via structural induction.  In this paper we show
+  how to extend deep induction to deep GADTs that are not truly
+  nested. We also show that deep induction cannot be extended to truly
+  nested GADTs.\looseness=-1
 \end{abstract}
 
 %\begin{keyword}
@@ -91,28 +92,32 @@ unsurprising that it plays an essential role in modern proof
 assistants. In the proof assistant Coq~\cite{coq20}, for example,
 functions and predicates over advanced types are defined inductively,
 and almost all non-trivial proofs of their properties are either
-proved by induction outright or rely on lemmas that are. Every time a
-new inductive data type is declared in Coq, an induction rule is
-automatically generated for it.
+proved by induction outright or rely on lemmas that are.  {\color{red}
+  Every time a new algebraic data type (ADT) is declared in
+  Coq}\footnote{{\color{red} Algebraic data types are called inductive
+    types in Coq.}}, an induction rule is automatically generated for
+it.\looseness=-1
 
 The data types handled by Coq are (possibly mutually inductive)
-polynomial ADTs, and the induction rules automatically generated for
-them are the expected ones for standard structural induction. It has
-long been understood, however, that these rules are too weak to be
-genuinely useful for so-called {\em deep ADTs}~\cite{jp20}, i.e., ADTs
-that are (possibly mutually inductively) defined in terms of (other)
-such ADTs.\footnote{Such data types are called nested inductive types
-  by Chlipala~\cite{chl}, reflecting the fact that ``inductive type''
-  means ``ADT''~in~Coq.} Consider, for example, the following type of
-rose trees, here coded in Agda and defined in terms of the standard
-type of lists:
+polynomial ADTs, and the induction rules
+Coq generates for them are the expected ones for standard structural
+induction. It has long been understood, however, that these rules are
+too weak to be genuinely useful for so-called {\em deep
+  ADTs}~\cite{jp20}, i.e., ADTs that are (possibly mutually
+inductively) defined in terms of (other) such ADTs.
+%\footnote{Such data
+%  types are called nested inductive types by Chlipala~\cite{chl},
+%  reflecting the fact that ``inductive type'' means ``ADT''~in~Coq.}
+Consider, for example, the following type of rose trees, here coded in
+{\color{red} Agda} and defined in terms of the standard type
+$\mathsf{List}$ of lists (see Section~\ref{sec:ADTs-and-nesteds}):
 
 \vspace*{-0.075in}
 
 \[\begin{array}{l}
 \mathsf{data\, Rose\, : Set \to Set\,where}\\
 \mathsf{\;\;\;\;\;\;\;\;empty\, :\, Rose\,A}\\
-\mathsf{\;\;\;\;\;\;\;\;node\,\,\,\, :\, A \to List\,(Rose\,A) \to Rose\,A} 
+\mathsf{\;\;\;\;\;\;\;\;\,node\,\,\,\, :\, A \to List\,(Rose\,A) \to Rose\,A} 
 \end{array}\]
 \noindent
 The induction rule Coq automatically generates for rose trees is
@@ -120,11 +125,11 @@ The induction rule Coq automatically generates for rose trees is
 \vspace*{-0.075in}
 
 \[\begin{array}{l}
-\mathsf{\forall\, (a : Set)\,(P : Rose\,a \to Set) \to P\,empty \to}\\
+\mathsf{\forall\, (A : Set)\,(P : Rose\,A \to Set) \to P\,empty \to}\\
 \mathsf{\hspace*{0.15in}
- (\forall\, (x : a)\,(ts :
-  List\,(Rose\,a)) \to P\,(node\,x\,ts)) \to 
-  \forall \,(x : Rose\,a) \to P\,x}
+ (\forall\, (a : A)\,(ts :
+  List\,(Rose\,A)) \to P\,(node\,a\,ts)) \to 
+  \forall \,(x : Rose\,A) \to P\,x}
 \end{array}\]
 \noindent
 Unfortunately, this is neither the induction rule we intuitively
@@ -134,18 +139,18 @@ needed here is an enhanced notion of induction that, when specialized
 to rose trees, will propagate the predicate $\mathsf{P}$ through the
 outer list structure and to the rose trees sitting inside
 $\mathsf{node}$'s list argument. More generally, this enhanced notion
-of induction should traverse {\em all} of the structure present in a
-data element, propagating suitable predicates to {\em all} of the data
-contained in the structure. With data types becoming ever more
-advanced, and with deeply structured such types becoming ever more
-%increasingly
-ubiquitous in formalizations, it is critically important that proof
-assistants
-%like Coq, Agda, and Lean 
-be able to automatically generate genuinely useful induction
-rules for data types that go well beyond traditional ADTs. Such
-data types include (truly) nested types~\cite{bm98}\footnote{A truly
-  nested type is a nested type that is defined over itself.},
+of induction should traverse {\em all} of the layers present in a data
+structure, propagating suitable predicates to {\em all} of the data it
+contains. With data types becoming ever more advanced, and with deeply
+structured such types becoming increasingly ubiquitous in
+formalizations, it is critically important that proof assistants
+%{\color{red} (e.g., Coq, Agda, Lean)}
+are able to automatically generate genuinely useful induction rules
+for data types that go well beyond traditional ADTs. Such data types
+include nested types~\cite{bm98}, such as $\mathsf{Rose}$ above, as
+well as truly nested types\footnote{A truly nested type is a nested
+  type that is defined over itself. The data type $\mathsf{Bush}$ in
+  Section~\ref{sec:ADTs-and-nesteds} provides a concrete example.},
 generalized algebraic data types
 (GADTs)~\cite{ch03,pvww06,sp04,xcc03}, more richly indexed
 families~\cite{ch88}, and deep variants of all of these.
@@ -180,12 +185,12 @@ useful induction rule for rose trees:
 
 \begin{equation}\label{eq:rose}
 \begin{array}{l}
-\mathsf{\forall \,(a : Set)\,(P : Rose\,a \to Set)\,(Q : a \to Set)
+\mathsf{\forall \,(A : Set)\,(P : Rose\,A \to Set)\,(Q : A \to Set)
   \to P\,empty \to}\\ 
-\mathsf{\hspace*{0.15in}(\forall \,(x : a)\, (ts :
-  List\,(Rose\,a))\to Q\,x \to List^\land\,P\,ts \to P\,(node\,x\,ts)) \to}\\
+\mathsf{\hspace*{0.15in}(\forall \,(a : A)\, (ts :
+  List\,(Rose\,A))\to Q\,a \to List^\land\,P\,ts \to P\,(node\,a\,ts)) \to}\\
 \mathsf{\hspace*{0.15in}\forall \,(x :
-  Rose\,a) \to Rose^\land\,Q\, x \to P\,x} 
+  Rose\,A) \to Rose^\land\,Q\, x \to P\,x} 
 \end{array}
 \end{equation}
 
@@ -197,8 +202,8 @@ useful induction rule for rose trees:
 %$\mathsf{Rose^\land}$ and the predicate $\mathsf{Q}$.
 Here, $\mathsf{List^\land}$ (resp., $\mathsf{Rose^\land}$) lifts its
 predicate argument $\mathsf{P}$ (resp., $\mathsf{Q}$) on data of type
-$\mathsf{Rose\,a}$ (resp., $\mathsf{a}$) to a predicate on data of
-type $\mathsf{List\,(Rose\,a)}$ (resp., $\mathsf{Rose\,a}$) asserting
+$\mathsf{Rose\,A}$ (resp., $\mathsf{A}$) to a predicate on data of
+type $\mathsf{List\,(Rose\,A)}$ (resp., $\mathsf{Rose\,A}$) asserting
 that $\mathsf{P}$ (resp., $\mathsf{Q}$) holds for every element of its
 list (resp., rose tree) argument.\footnote{Predicate liftings such as
   $\mathsf{List^\land}$ and $\mathsf{Rose^\land}$ can either be
@@ -218,28 +223,27 @@ types. Deep induction for ADTs and nested types is reviewed in
 Section~\ref{sec:ADTs-and-nesteds} below.
 
 This paper shows how to extend deep induction to proper GADTs, i.e.,
-to GADTs that are not simply nested types (and thus are not ADTs).  A
-constructor for such a GADT $\mathsf{G}$ may, like a constructor for a
-nested type, take as arguments data whose types involve instances of
-$\mathsf{G}$ other than the one being defined --- including instances
-that involve $\mathsf{G}$ itself. But if $\mathsf{G}$ is a proper GADT
-then at least one of its constructors will also have such a structured
-instance of $\mathsf{G}$ --- albeit one not involving $\mathsf{G}$
-itself --- as its codomain.
+to GADTs that are not simply (truly) nested types (and thus are not
+ADTs).  A constructor for such a GADT $\mathsf{G}$ may, like a
+constructor for a nested type, take as arguments data whose types
+involve instances of $\mathsf{G}$ other than the one being defined ---
+including instances that involve $\mathsf{G}$ itself. But if
+$\mathsf{G}$ is a proper GADT then at least one of its constructors
+will also have such a structured instance of $\mathsf{G}$ --- albeit
+one not involving $\mathsf{G}$ itself --- as its codomain.
 %But while the types of the arguments to a GADT's constructor can
 %include instances of $\mathsf{G}$ that themselves involve
 %$\mathsf{G}$, its return type cannot.
-For example, the constructor $\mathsf{pair}$ for the GADT {\color{red}
-  Perhaps also show non-inhabitation?}
+For example, the constructor $\mathsf{pair}$ for the GADT 
 
 \vspace*{-0.1in}
 
 \begin{equation}\label{eq:seq}
 \begin{array}{l}
-\mathsf{data\, Seq\,(a : Set) : Set\,where}\\
-\mathsf{\;\;\;\;\;\;\;\;const :\, a \to Seq\,a}\\
-\mathsf{\;\;\;\;\;\;\;\;\;\;\,pair :\, Seq \,a \to Seq\,b \to
-  Seq\,(a \times b)}
+\mathsf{data\, Seq\,(A : Set) : Set\,where}\\
+\mathsf{\;\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\
+\mathsf{\;\;\;\;\;\;\;\;pair\;\;\, :\, Seq \,A \to Seq\,B \to
+  Seq\,(A \times B)}
 \end{array}
 \end{equation}
 \noindent
@@ -250,7 +254,7 @@ $\mathsf{G}$, then some of $\mathsf{G}$'s instances might not be
 inhabited. GADTs therefore have two distinct, but equally natural,
 semantics: a functorial semantics interpreting them as left Kan
 extensions~\cite{mac71}, and a parametric semantics interpreting them
-as their Church encodings~\cite{atk12,vw10}. As explained
+as their Church encodings~\cite{atk12,vw10}. As detailed
 in~\cite{jgj21}, a key difference in the two semantics is that the
 former views GADTs as their {\em functorial completions}~\cite{jp19},
 and thus as containing more data than just those expressible in
@@ -265,51 +269,51 @@ types~\cite{bfss90,gjfor15,jgj21f}, it is not actually possible to
 define a functorial parametric semantics for them~\cite{jgj21}.
 
 This observation seems, at first, to be a death knell for the prospect
-of extending deep induction to GADTs. Indeed, since induction can be
-seen as unary parametricity, we quickly realize that GADTs viewed as
-their functorial completions cannot possibly support induction rules.
-This makes sense intuitively: induction is a syntactic proof
-technique, so of course it cannot be used to prove properties of those
-elements of a GADT's functorial completion that are not expressible in
-syntax. All is not lost, however. As we show below, the Church
-encoding interpretation's syntax-only view does support induction
+of extending deep induction to GADTs. Indeed, induction can be seen as
+unary parametricity, so we quickly realize that GADTs viewed as their
+functorial completions cannot possibly support induction rules.  This
+makes sense intuitively: induction is a syntactic proof technique, so
+of course it cannot be used to prove properties of those elements of a
+GADT's functorial completion that are not expressible in syntax. All
+is not lost, however. As we show below, the syntax-only view of GADTs
+determined by their Church encodings {\em does} support induction
 rules --- including deep induction rules --- for GADTs. Perhaps
-surprisingly, ours are the first-ever induction rules --- deep or
-otherwise --- for a general class of proper GADTs. But this paper
-actually delivers more: it gives a general framework for deriving deep
-induction rules for a general class of deep GADTs directly from their
-syntax. This framework can serve as a basis for extending modern proof
-assistants' automatic generation of structural induction rules for
-ADTs to automatic generation of deep induction rules for GADTs. As for
-ADTs and other nested types, the structural induction rule for any
-GADT can be recovered from its deep induction rule simply by taking
-the custom predicates in its deep induction rule to be constantly
-$\mathsf{True}$-valued predicates.
+surprisingly, this paper gives the first-ever induction rules --- deep
+or otherwise --- for proper GADTs. But it actually delivers far more:
+it gives a general framework for deriving deep induction rules for
+deep GADTs directly from their syntax. This framework can serve as a
+basis for extending modern proof assistants' automatic generation of
+structural induction rules for ADTs to automatic generation of deep
+induction rules for GADTs. As for ADTs and other nested types, the
+structural induction rule for any GADT can be recovered from its deep
+induction rule simply by taking the custom predicates in its deep
+induction rule to be constantly $\mathsf{True}$-valued (i.e.,
+constantly $\mathsf{\top}$-valued) predicates.
 
-Deep induction rules for GADTs cannot, however, be derived by somehow
-extending the techniques of~\cite{jp20} to syntax-only GADTs. Indeed,
-the derivation of induction rules given there makes crucial use of the
+Significantly, deep induction rules for GADTs cannot be derived by
+somehow extending the approach of~\cite{jp20} to syntax-only
+GADTs. Indeed, the approach taken there makes crucial use of the
 functoriality of data types' interpretations from~\cite{jp19}, and
-that is precisely what the interpretation of GADTs as their Church
-encodings fails to deliver. Instead, we first give a predicate lifting
-styled after those of~\cite{jp20}, together with a (deep) induction
-rule, and for the simplest --- and arguably most important --- GADT,
-namely the equality GADT. (See Section~\ref{sec:ind-equal}.) We can
-then derive the deep induction rule for any other GADT $\mathsf{G}$ by
-{\em i}) using the equality GADT to represent $\mathsf{G}$ as its
-so-called {\em Henry Ford
-  encoding}~\cite{ch03,hin03,mcb99,sjsv09,sp04}, and {\em ii}) using
-the predicate liftings for the equality GADT and any other GADTs
-appearing in the definition of $\mathsf{G}$ to appropriately thread
+functoriality is precisely what interpreting GADTs as their Church
+encodings fails to deliver. Our approach is to instead first give a
+predicate lifting styled after those of~\cite{jp20}, together with a
+(deep) induction rule, and for the simplest --- and arguably most
+important --- GADT, namely the equality GADT. (See
+Section~\ref{sec:ind-equal}.)  We then derive the deep induction rule
+a more complex GADT $\mathsf{G}$ by {\em i}) using the equality GADT
+to represent $\mathsf{G}$ as its so-called {\color{red} {\em Henry Ford
+  encoding}}~\cite{ch03,hin03,mcb99,sjsv09,sp04}, and {\em ii}) using
+the predicate liftings for the equality GADT, and any other GADTs
+appearing in the definition of $\mathsf{G}$, to appropriately thread
 the custom predicates for the primitive types appearing in
-$\mathsf{G}$ through its structure. This two-step process delivers
-deep induction rules for a broad class of deep GADTs. In
-Section~\ref{sec:GADTs} we introduce a series of increasingly complex
-GADTs as running examples, and in Section~\ref{sec:deep-ind-GADTs} we
-derive a deep induction rule for each of them. In particular, we
-derive the deep induction rule for $\mathsf{Seq}$ in
-Section~\ref{sec:ind-seq}. We present our general framework for
-deriving (deep) induction rules for (deep) GADTs in
+$\mathsf{G}$ throughout $\mathsf{G}$'s structure. This two-step
+process delivers deep induction rules for a very general class of deep
+GADTs. In Section~\ref{sec:GADTs} we introduce a series of
+increasingly complex GADTs as running examples, and in
+Section~\ref{sec:deep-ind-GADTs} we derive a deep induction rule for
+each of them. In particular, we derive the deep induction rule for
+$\mathsf{Seq}$ in Section~\ref{sec:ind-seq}. We present our general
+framework for deriving (deep) induction rules for (deep) GADTs in
 Section~\ref{sec:framework}, and observe that the derivations in
 Section~\ref{sec:deep-ind-GADTs} are all instances of it.  In
 Section~\ref{sec:GADT-nested} we show that, by contrast with truly
@@ -318,10 +322,10 @@ lack of functoriality means that it is not possible to extend
 induction --- deep or otherwise --- to truly nested GADTs. This does
 not appear to be much of a restriction, however, since GADTs defined
 over themselves do not, to our knowledge, appear in applications or
-the literature. Section~\ref{sec:app} details a case study in using
+the literature. Section~\ref{sec:app} comprises a case study in using
 deep induction. All of the deep induction rules appearing in this
-paper have been derived using our general framework. Our Agda code
-implementing them is available at~\cite{web-page}.
+paper have been derived by instantiating our general framework. Our
+Agda code implementing them is available at~\cite{web-page}.
 
 %\subsection{Related Work}
 
@@ -332,27 +336,27 @@ for data types that go beyond ADTs have been studied. For example, Fu
 and Selinger~\cite{fs18} show, via examples, how to derive induction
 rules for arbitrary nested types. Unfortunately, however, their
 technique is rather {\em ad hoc}, so is unclear how to generalize it
-to nested types other than the specific ones in the
-examples. Moreover, it actually derives induction rules for data types
-{\em related} to the original nested types rather than for the
-original nested types themselves, and it is unclear whether or not the
-derived rules are sufficiently expressive to prove all results about
-the original nested types that we would expect to be provable by
+to nested types other than the specific ones in their
+examples. Moreover,~\cite{fs18} actually derives induction rules for
+data types {\em related} to the original nested types rather than for
+the original nested types themselves, and it is unclear whether or not
+the derived rules are sufficiently expressive to prove all results
+about the original nested types that we would expect to be provable by
 induction. This latter point echoes the issue with Coq-derived
 induction rule for rose trees raised in Section~\ref{sec:intro}, which
 has the unfortunate effect of forcing users to manually write
 induction (and other) rules for such types for use in that
-system. Tassi~\cite{tas19} has done exactly that, deriving induction
-rules for data type definitions in Coq using unary
-parametricity. Tassi's technique seems to be essentially equivalent to
-that of~\cite{jp19} for nested types, although he does not permit true
-nesting. More recently, Ullrich~\cite{ull20} has implemented a plugin
-in MetaCoq to generate induction rules for nested types. This plugin
-is also based on unary parametricity and, again, true nesting is not
-permitted.  As far as we know, no attempt has yet been made to extend
-either implementation to GADTs. In fact, we know of no work other than
-that reported here that specifically addresses induction rules for
-(deep) GADTs.
+system. Tassi~\cite{tas19} derives induction rules for data type
+definitions in Coq using unary parametricity. His technique seems to
+be essentially equivalent to that of~\cite{jp19} for nested types,
+although he does not permit true nesting. More recently,
+Ullrich~\cite{ull20} has implemented a plugin in MetaCoq to generate
+induction rules for nested types. This plugin is also based on unary
+parametricity and true nesting still is not permitted.  As far as we
+know, no attempt has yet been made to extend either implementation
+truly nested types or to proper GADTs. In fact, we know of no work
+other than that reported here that specifically addresses induction
+rules for (deep) GADTs.
 
 \section{Deep induction for ADTs and nested types}\label{sec:ADTs-and-nesteds}
 
@@ -363,14 +367,14 @@ In this paper, we are interested in induction rules for proof-relevant
 predicates.  A proof-relevant predicate on a type $\mathsf{A : Set}$
 is a function $\mathsf{P\,:\,A \to Set}$ mapping each $\mathsf{a : A}$
 to the set of proofs that $\mathsf{P\,a}$ holds.  For example, the
-induction rule for the standard list type
+structural induction rule for the list type
 
 \vspace*{-0.1in}
 
 \begin{equation*}\label{eq:list}
 \begin{array}{l}
 \mathsf{data\ List : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;nil\,\,\,\,\,\, :\, List\,A}\\
+\mathsf{\;\;\;\;\;\;\;nil\,\,\,\,\,\; :\, List\,A}\\
 \mathsf{\;\;\;\;\;\;\;cons\, :\, A \to List\,A \to List\,A} 
 \end{array}
 \end{equation*}
@@ -397,20 +401,19 @@ is
 \vspace*{-0.1in}
 
 \noindent
-As in Coq's induction rule for rose trees, the data inside a
-structure of type $\mathsf{List}$ is treated monolithically (i.e.,
-ignored) by this structural induction rule.
-By contrast, the deep induction rule for lists is parameterized over a
-custom predicate $\mathsf{Q}$ on $\mathsf{A}$ as described in the
-introduction. For $\mathsf{List^\wedge}$ as described in the
-introduction it is
+As in Coq's induction rule for rose trees, the data inside a structure
+of type $\mathsf{List}$ is treated monolithically (i.e., is ignored)
+by this structural induction rule.  By contrast, the deep induction
+rule for lists is parameterized over a custom predicate $\mathsf{Q}$
+on $\mathsf{A}$. For $\mathsf{List^\wedge}$ as described in the
+introduction the deep induction rule for lists is
 
 \vspace*{-0.2in}
 
 \[\begin{array}{l}
 \mathsf{\forall (A : Set) (P : List\, A \to Set) (Q : A \to Set)
-\to P\,Nil \to \big( \forall (a : A) (as: List\,A) \to Q\,a \to P\,as
-\to P\,(Cons\,a\,as)\big)} \\ 
+\to P\,nil \to \big( \forall (a : A) (as: List\,A) \to Q\,a \to P\,as
+\to P\,(cons\,a\,as)\big)} \\ 
 \quad\mathsf{\to \forall (as : List\,A) \to List^{\wedge}\,A\,Q\,as
   \to P\,as } 
 \end{array}\]
@@ -425,7 +428,7 @@ following type of perfect trees~\cite{bm98}:
 \begin{equation*}\label{eq:ptree}
 \begin{array}{l}
 \mathsf{data\ PTree : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;pleaf\,\,\, :\, A \to PTree\,A}\\
+\mathsf{\;\;\;\;\;\;\;pleaf\,\,\; :\, A \to PTree\,A}\\
 \mathsf{\;\;\;\;\;\;\;pnode\, :\, PTree\,(A \times A) \to PTree\,A} 
 \end{array}
 \end{equation*}
@@ -447,9 +450,9 @@ perfect trees, for example, is
 \[\begin{array}{l}
 \mathsf{\forall (P : \forall (A : Set) \to PTree\, A \to Set)
 \to \big( \forall (A : Set) (a : A) \to P\,A\,(pleaf\, a) \big)} \\
-\quad\mathsf{\to \big( \forall (A : Set) (tt : PTree\,(A \times A))
-  \to P\,(A \times A)\,tt \to P\,a\,(pnode\,tt)\big) \to \forall (A :
-  Set) (t : PTree\,A) \to P\,A\,t } 
+\quad\mathsf{\to \big( \forall (A : Set) (pp : PTree\,(A \times A))
+  \to P\,(A \times A)\,pp \to P\,a\,(pnode\,pp)\big) \to \forall (A :
+  Set) (p : PTree\,A) \to P\,A\,p } 
 \end{array}\]
 
 \vspace*{-0.1in}
@@ -464,11 +467,11 @@ predicates but otherwise follows the now-familiar pattern:
 \mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to PTree\,A
   \to Set) \to \big( \forall (A : Set) (Q : A \to Set) (a : A) \to
   Q\,a \to P\,A\,Q\,(Pleaf\, a) \big)} \\ \quad \mathsf{\to \big(
-  \forall (A : Set) (Q : A \to Set) (tt : PTree\,(A \times A)) \to
-  P\,(A \times A)\,(Pair^{\wedge}\,A\,A\,Q\,Q)\,tt \to
-  P\,A\,Q\,(Pnode\,tt)\big)} \\ \quad \mathsf{\to \forall (A : Set) (Q
-  : A \to Set) (t : PTree\,A) \to PTree^{\wedge}\,A\,Q\,t \to
-  P\,A\,Q\,t }
+  \forall (A : Set) (Q : A \to Set) (pp : PTree\,(A \times A)) \to
+  P\,(A \times A)\,(Pair^{\wedge}\,A\,A\,Q\,Q)\,pp \to
+  P\,A\,Q\,(Pnode\,pp)\big)} \\ \quad \mathsf{\to \forall (A : Set) (Q
+  : A \to Set) (p : PTree\,A) \to PTree^{\wedge}\,A\,Q\,p \to
+  P\,A\,Q\,p }
 \end{array}\]
 
 \vspace*{-0.1in}
@@ -493,12 +496,13 @@ bushes~\cite{bm98}:
 \begin{equation*}\label{eq:bush}
 \begin{array}{l}
 \mathsf{data\ Bush : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;bnil\,\,\,\,\,\, :\, Bush\,A}\\
+\mathsf{\;\;\;\;\;\;bnil\,\,\,\,\,\; :\, Bush\,A}\\
 \mathsf{\;\;\;\;\;\;bcons\, :\, A \to Bush\,(Bush\,A) \to Bush\,A} 
 \end{array}
 \end{equation*}
 
 \noindent
+{\color{red} Flags to overcome positivity restrictions?}
 Even defining a structural induction rule for bushes requires that we
 be able to lift the rule's polymorphic predicate argument to
 $\mathsf{Bush}$ itself. The more general observation that an induction
@@ -529,11 +533,11 @@ element of type $\mathsf{A}$ contained in its argument bush:
 
 Although a truly nested type admits only a single induction rule, it
 is worth noting that for those nested types that do admit distinct
-structural induction and deep induction rules, the latter generalizes
-the former. Indeed, the structural induction rule for such a nested
-type is recoverable from its deep induction rule by taking the custom
-predicates on its data of primitive types to be constantly
-$\mathsf{True}$-valued predicates. This instantiation ensures that the
+structural induction and deep induction rules, the latter always
+generalize the former. Indeed, the structural induction rule for each
+such nested type is recoverable from its deep induction rule by taking
+the custom predicates on its data of primitive types to be constantly
+$\mathsf{\top}$-valued predicates. This instantiation ensures that the
 resulting induction rule only inspects the top-level structure of its
 argument, rather than the contents of that structure, which exactly
 coincides with what structural induction should do.
@@ -546,13 +550,16 @@ While a data constructor for a nested type can take {\em as arguments}
 data whose types involve instances of that type at indices other than
 the one being defined, its return type must still be at the (variable)
 type instance being defined. For example, every data constructor for
-$\mathsf{PTree\,A}$ must return an element of type
+$\mathsf{PTree\,A}$ returns an element of type
 $\mathsf{PTree\,A}$, regardless of the instances of $\mathsf{PTree}$
 appearing in the types of its arguments. GADTs relax this restriction,
 allowing their data constructors both to take as arguments \emph{and
-  return as results} data whose types involve instances of them other
-than the one being defined. And as with the return type of
-$\mathsf{pair}$ in~\eqref{eq:seq}, these instances can be structured.
+  return as results} data whose types involve instances other
+than the one being defined. That is, GADTs' constructors' return type
+instances can, like that of $\mathsf{pair}$ in~\eqref{eq:seq}, be
+structured.\looseness=-1
+%these instances can be structured.
+%
 %Applications of GADTs include generic programming, modeling
 %programming languages via higher-order abstract syntax, maintaining
 %invariants in data structures, and expressing constraints in embedded
@@ -572,7 +579,7 @@ the {\em equality} GADT
 \mathsf{\;\;\;\;\;\;\;\;\;\;\;\,refl :\, Equal\,A\,A}
 \end{array}
 \end{equation}
-is parametrized by two type indices, but it is only possible to
+is parameterized by two type indices, but it is only possible to
 construct data elements of type $\mathsf{Equal\,a\,b}$ if $\mathsf{a}$
 and $\mathsf{b}$ are instantiated at the same type. If the types
 $\mathsf{a}$ and $\mathsf{b}$ are syntactically identical then the
@@ -590,7 +597,7 @@ GADT, as follows:
 \begin{array}{l}
 \mathsf{data\ Seq : Set \to Set\ where}\\
 \mathsf{\;\;\;\;\;\;\;const :\, A \to Seq\,A}\\ 
-\mathsf{\;\;\;\;\;\;\;\;pair\,\, :\, \forall (B\,C : Set) \to
+\mathsf{\;\;\;\;\;\;\;pair\,\;\; :\, \forall (B\,C : Set) \to
   Equal\,A\,(B \times C) \to Seq\,B \to Seq\,C \to Seq\,A}\\ 
 \end{array}
 \end{equation}
@@ -598,17 +605,17 @@ Here, the requirement that $\mathsf{pair}$ produce data at an instance
 of $\mathsf{Seq}$ that is a product type is replaced with the
 requirement that $\mathsf{pair}$ produce data at an instance of
 $\mathsf{Seq}$ that is \emph{equal} to a product type. As we will see
-in Section~\ref{sec:deep-ind-GADTs}, the presence of the equality GADT is
-key to deriving deep induction rules for GADTs.
+in Section~\ref{sec:deep-ind-GADTs}, this encoding in terms of the
+equality GADT is key to deriving deep induction rules for GADTs.
 
 Neither $\mathsf{Equal}$ nor $\mathsf{Seq}$ is a deep GADT, but the
-following GADT $\mathsf{LTerm}$, which encodes terms of a simply typed
-lambda calculus, is. More robust variations on $\mathsf{LTerm}$ are,
-of course, possible. But since this variation is rich enough to
-illustrate all essential aspects of deep GADTs --- and later, in
-Section~\ref{sec:ind-lam}, their deep induction rules --- while still
-being small enough to ensure clarity of exposition, we keep it to a
-minimum.
+following GADT $\mathsf{LTerm}$, inspired by~\cite{cis194}, is.  It
+encodes terms of a simply typed lambda calculus. More robust
+variations on $\mathsf{LTerm}$ are, of course, possible. But since
+this variation is rich enough to illustrate all essential aspects of
+deep GADTs --- and later, in Section~\ref{sec:ind-lam}, their deep
+induction rules --- while still being small enough to ensure clarity
+of exposition, we keep it to a minimum.
 
 Types are either booleans, arrow types, or list types. They are
 represented by the Henry Ford GADT
@@ -617,9 +624,9 @@ represented by the Henry Ford GADT
 \mathsf{data\ LType : Set \to Set\ where}\\
 \mathsf{\;\;\;\;\;\;\;\;bool :\, \forall (B : Set) \to Equal\,A\,Bool
   \to LType\,A}\\ 
-\mathsf{\;\;\;\;\;\;\;\;arr\,\,\, :\, \forall (B\,C : Set) \to
+\mathsf{\;\;\;\;\;\;\;\;arr\;\;\; :\, \forall (B\,C : Set) \to
   Equal\,A\,(B \to C) \to LType\,B \to LType\,C \to LType\,A}\\ 
-  \mathsf{\;\;\;\;\;\;\;\;list\,\, :\, \forall (B : Set) \to
+  \mathsf{\;\;\;\;\;\;\;\;list\,\;\; :\, \forall (B : Set) \to
     Equal\,A\,(\List\,B) \to LType\,B \to LType\,A} 
 \end{array}
 \end{equation}
@@ -628,14 +635,14 @@ terms. They are represented by
 \begin{equation}\label{eq:eq_lterm}
 \begin{array}{l}
 \mathsf{data\ LTerm : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;var\,\,\,\,\,\,\,:\, String \to LType\,A \to
+\mathsf{\;\;\;\;\;\;\;\;var\,\,\,:\, String \to LType\,A \to
   LTerm\,A} \\  
-\mathsf{\;\;\;\;\;\;\;\;abs\,\,\,\,\,\, :\, \forall (B\,C : Set) \to
+\mathsf{\;\;\;\;\;\;\;\;abs\,\, :\, \forall (B\,C : Set) \to
   Equal\,A\,(B \to C) \to String \to LType\,B \to LTerm\,C \to
   LTerm\,A}\\ 
-  \mathsf{\;\;\;\;\;\;\;\;app\,\,\,\,\, :\, \forall (B : Set) \to
+  \mathsf{\;\;\;\;\;\;\;\;app\; :\, \forall (B : Set) \to
     LTerm (B \to A) \to LTerm\,B \to LTerm\,A} \\ 
-  \mathsf{\;\;\;\;\;\;\;\;list\,\,\, :\, \forall (B : Set) \to
+  \mathsf{\;\;\;\;\;\;\;\;list\;\,\, :\, \forall (B : Set) \to
     Equal\,A\,(List\,B) \to List\,(LTerm\,B) \to LTerm\,A} 
 \end{array}
 \end{equation}
@@ -666,13 +673,12 @@ and deep induction rules for more general GADTs.
 
 To define the (deep) induction rule for any (deep) GADT $\mathsf{G}$
 we first need to define a predicate lifting that maps a predicate on a
-type $\mathsf{A}$ and to a predicate on $\mathsf{G\,A}$. Such a
-predicate lifting $\mathsf{Equal^{\wedge} : \forall (A\,B : Set) \to
-  (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set}$ for
-$\mathsf{Equal}$ is defined by
-$\mathsf{Equal^{\wedge}\,A\,A\,Q\,Q'\,refl = \forall (a : A) \to
-  Equal\,(Q\,a)(Q'\,a)}$.  It takes two predicates on the same type as
-input and tests them for extensional equality.
+type $\mathsf{A}$ to a predicate on $\mathsf{G\,A}$. Such a predicate
+lifting $\mathsf{Equal^{\wedge} : \forall (A\,B : Set) \to (A \to Set)
+  \to (B \to Set) \to Equal\,A\,B \to Set}$ for $\mathsf{Equal}$ is
+defined by $\mathsf{Equal^{\wedge}\,A\,A\,Q\,Q'\,refl = \forall (a :
+  A) \to Equal\,(Q\,a)(Q'\,a)}$.  It takes two predicates on the same
+type as input and tests them for extensional equality.
 %
 Next, we need to associate with each data constructor $\mathsf{c}$ of
 $\mathsf{G}$ an {\em induction hypothesis} asserting that, if the
@@ -706,13 +712,14 @@ thus
   P\,A\,B\,Q_A\,Q_B\,e}
 \end{array}
 \end{equation}
+
 To prove that this rule is sound we must provide a witness
 $\mathsf{dIndEqual}$ inhabiting the type in~\eqref{eq:ind-equal}.  By
 pattern matching, we need only consider the case where $\mathsf{A} =
 \mathsf{B}$ and $\mathsf{e} = \mathsf{refl}$, so we can define
 $\mathsf{dIndEqual}$ by
 $\mathsf{dIndEqual\;P\;crefl\;A\;A\;Q_A\;Q_A'\;refl\;liftE =
-  crefl\;A\;Q_A\;Q_A'\,liftE}$. We can recover the structural
+  crefl\;A\;Q_A\;Q_A'\,liftE}$. To recover $\mathsf{Equal}$'s structural
 induction rule
 \begin{equation}\label{eq:sind-equal}
 \mathsf{\forall (Q : \forall (A\,B : Set)
@@ -720,24 +727,24 @@ induction rule
   P\,C\,C\,refl \big) \to \forall (A\,B : Set) (e: Equal\,A\,B) \to
   P\,A\,B\,e}
 \end{equation}
-for $\mathsf{Equal}$ by defining a term $\mathsf{indEqual}$ of the
-type in~\eqref{eq:sind-equal} by $\mathsf{indEqual\;Q\;srefl\;A\;B\;e
-  = dIndEqual\;P\;srefl\;A\;B\;K^A_\top\;K^B_\top\;e\,liftE}$. Here,
-$\mathsf{e : Equal\,A\,B}$, $\mathsf{P : \forall (A\,B : Set) \to (A
-  \to Set) \to (B \to Set) \to Equal\,A\,B \to Set}$ is defined by
-$\mathsf{P\;A\;B\;Q_A\;Q_B\;e =}$ $\mathsf{Q\;A\;B\;e}$,
+we define a term $\mathsf{indEqual}$ of the type
+in~\eqref{eq:sind-equal} by $\mathsf{indEqual\;Q\;srefl\;A\;B\;refl =
+  dIndEqual\;P\;srefl'\;A\;B\;
+  K^A_\top\;K^B_\top\;refl\,sliftE}$. Here, $\mathsf{P : \forall (A\,B
+  : Set) \to (A \to Set) \to (B \to Set) \to Equal\,A\,B \to Set}$ is
+defined by $\mathsf{P\;A\;B\;Q_A\;Q_B\;e =}$ $\mathsf{Q\;A\;B\;e}$,
 $\mathsf{K^A_\top}$ and $\mathsf{K^B_\top}$ are the constantly
-{\color{red} $\mathsf{\top}$}-valued predicates on $\mathsf{A}$ and
-$\mathsf{B}$, respectively, and $\mathsf{liftE :}$
-$\mathsf{Equal^{\wedge}\;A\;B\;K^A_\top\;K^B_\top\;e}$ is
-%fully
-defined
-%(by pattern matching)
-by $\mathsf{liftE\,a = refl : Equal\,A\,A}$ for every $\mathsf{a :
-  A}$.  The structural induction rule for any GADT $\mathsf{G}$ that
-is not truly nested can similarly be recovered from its deep induction
-rule by instantiating every custom predicate by the appropriate
-constantly {\color{red}$\mathsf{\top}$}-valued predicate.
+$\mathsf{\top}$-valued predicates on $\mathsf{A}$ and $\mathsf{B}$,
+respectively, $\mathsf{sliftE :}$ $\mathsf{Equal^{\wedge}\;A\;B\;
+  K^A_\top\;K^B_\top\;refl}$ is defined by $\mathsf{sliftE\,a = refl :
+  Equal\, \top\,\top}$ for every $\mathsf{a : A}$, and $\mathsf{srefl'
+  : \forall (C\,: Set) (Q_c\,Q'_c\, : C \to Set) \to
+  Equal^{\wedge}\,C\,C\,Q_c\,Q'_c\,refl \to \,Q\,C\,C\,refl}$ is
+defined by $\mathsf{srefl'\,C\,Q_c\,Q'_c\,liftE'\,=srefl\, C}$.  The
+structural induction rule for any GADT $\mathsf{G}$ that is not truly
+nested can similarly be recovered from its deep induction rule by
+instantiating every custom predicate by the appropriate constantly
+$\mathsf{\top}$-valued predicate.
 
 \subsection{(Deep) induction for $\mathsf{Seq}$}\label{sec:ind-seq}
 
@@ -762,7 +769,7 @@ $\mathsf{F : A \to Set}$.
 Next, let $\mathsf{dIndConst}$ be the induction hypothesis
 \[\mathsf{
 \lambda (P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to Set) \to
-\forall (A : Set) (Q_A : A \to Set) (a : A) \to Q_A\,x \to
+\forall (A : Set) (Q_A : A \to Set) (a : A) \to Q_A\,a \to
 P\,A\,Q_A\,(const\,a)}\] associated with the constructor
 $\mathsf{const}$, and let $\mathsf{dIndPair}$ be the induction
 hypothesis
@@ -797,13 +804,13 @@ follows:
     (Q_B,Q_C, liftE, liftB, liftC)}  & = &
 \mathsf{cpair\,A\,B\,C\,Q_A\,Q_B\,Q_C\,s_B\,s_C\,e\,liftE\,p_B\,p_C}
 \end{array}\]
-In the first clause above, $\mathsf{a : A}$, $\mathsf{Q_A : A \to
-  Set}$, $\mathsf{liftA : Seq^{\wedge}\,A\,Q_A\,(const\,a) =
-  Q_A\,a}$. In the second, $\mathsf{Q_B : B \to Set}$, $\mathsf{Q_C :
-  C \to Set}$, $\mathsf{e : Equal\,A\,(B \times C)}$, $\mathsf{s_B :
-  Seq\,B}$, $\mathsf{s_C : Seq\,C}$, $\mathsf{liftE :
-  Equal^{\wedge}\,A\, (B \times C)\, Q_A\, (Q_B \times Q_C) \, e}$,
-$\mathsf{liftB : Seq^{\wedge}\,B\,Q_B\,s_B}$, and $\mathsf{liftC :}$
+In the first clause, $\mathsf{a : A}$, $\mathsf{Q_A : A \to Set}$, and
+$\mathsf{liftA : Seq^{\wedge}\,A\,Q_A\,(const\,a) = Q_A\,a}$. In the
+second, also $\mathsf{Q_B : B \to Set}$, $\mathsf{Q_C : C \to Set}$,
+$\mathsf{e : Equal\,A\,(B \times C)}$, $\mathsf{s_B : Seq\,B}$,
+$\mathsf{s_C : Seq\,C}$, $\mathsf{liftE : Equal^{\wedge}\,A\, (B
+  \times C)\, Q_A\, (Q_B \times Q_C) \, e}$, $\mathsf{liftB :
+  Seq^{\wedge}\,B\,Q_B\,s_B}$, and $\mathsf{liftC :}$
 $\mathsf{Seq^{\wedge}\,C\,Q_C\,s_C}$ --- which together ensure that
 $\mathsf{(Q_B, Q_C, liftE, liftB, liftC) :
   Seq^{\wedge}\,A\,Q\,(sPair\,B\,C\,e\,s_B\,s_C)}$ --- and
@@ -855,10 +862,10 @@ $\mathsf{p_B} =\mathsf{dIndSeq\,P\,cconst\,cpair\,B\,Q_B\,s_B\,liftB :
 
 To derive the deep induction rule for the GADT $\mathsf{LTerm}$ we use
 its Henry Ford encoding from~\eqref{eq:eq_ltype}
-and~\eqref{eq:eq_lterm}. We first define predicate lifting
+and~\eqref{eq:eq_lterm}. We first define the predicate lifting
 $\mathsf{Arr^{\wedge} : \forall (A\, B : Set) \to (A \to Set) \to (B
   \to Set) \to (A \to B) \to Set}$ for arrow types, since arrow types
-appear in $\mathsf{LType}$ and $\mathsf{LTerm}$. It is given by
+appear in $\mathsf{LType}$ and $\mathsf{LTerm}$.  It is given by
 $\mathsf{Arr^{\wedge}\, A\, B\, Q_A\, Q_B\, f = \forall (a : A) \to
   Q_A\,a \to Q_B\, (f\,a)}$. The predicate liftings
 $\mathsf{LType^{\wedge} : \forall (A : Set) \to (A \to Set) \to
@@ -867,17 +874,16 @@ $\mathsf{LType^{\wedge} : \forall (A : Set) \to (A \to Set) \to
   Set}$ for $\mathsf{LTerm}$ are defined in Figure~\ref{fig:liftings}.
 There, $\mathsf{s : String}$, $\mathsf{Q_A : A \to Set}$, $\mathsf{Q_B
   : B \to Set}$, $\mathsf{Q_C : C \to Set}$,
-$\mathsf{K^{Bool}_{\top}}$ is the constantly {\color{red}
-  $\mathsf{\top}$}-valued predicate on $\mathsf{Bool}$, $\mathsf{T_A :
-  LType\, A}$, $\mathsf{T_B : LType \,B}$, $\mathsf{T_C : LType \,C}$,
-$\mathsf{t_B : LTerm \, B}$, $\mathsf{t_C : LTerm \, C}$, and
-$\mathsf{t_{BA} : LTerm \, (B \to A)}$.  Moreover, $\mathsf{e :
-  Equal\,A\,Bool}$ in the first clause, $\mathsf{e : Equal\, A\, (B
-  \to C)}$ in the second, $\mathsf{e : Equal\, A\, (List\, B)}$ in the
-third, $\mathsf{e : Equal \, A \, (B \to C)}$ in the fifth, and
-$\mathsf{e : Equal\, A\, (List \,B)}$, $\mathsf{ts : List\, (LTerm
-  B)}$, and $\mathsf{List^\wedge}$ is the predicate lifting for lists
-from~\eqref{eq:rose} in the seventh.
+$\mathsf{K^{Bool}_{\top}}$ is the constantly $\mathsf{\top}$-valued
+predicate on $\mathsf{Bool}$, $\mathsf{T_A : LType\, A}$, $\mathsf{T_B
+  : LType \,B}$, $\mathsf{T_C : LType \,C}$, $\mathsf{t_B : LTerm \,
+  B}$, $\mathsf{t_C : LTerm \, C}$, and $\mathsf{t_{BA} : LTerm \, (B
+  \to A)}$.  Moreover, $\mathsf{e : Equal\,A\,Bool}$ in the first
+clause, $\mathsf{e : Equal\, A\, (B \to C)}$ in the second, $\mathsf{e
+  : Equal\, A\, (List\, B)}$ in the third, $\mathsf{e : Equal \, A \,
+  (B \to C)}$ in the fifth, and $\mathsf{e : Equal\, A\, (List \,B)}$,
+$\mathsf{ts : List\, (LTerm B)}$, and $\mathsf{List^\wedge}$ is the
+predicate lifting for lists from~\eqref{eq:rose} in the seventh.
 
 With these liftings in hand we can define the induction hypotheses
 $\mathsf{dIndVar}$, $\mathsf{dIndAbs}$, $\mathsf{dIndApp}$, and
@@ -923,7 +929,12 @@ constructors. These are, respectively,
   \to List^{\wedge}\, (LTerm\,B) (P\, B\, Q_B)\, ts
   \to P \, A\, Q_A\, (list \,B \,e \, ts) }
 \end{array}\]
+
+\noindent
 The deep induction rule for $\mathsf{LTerm}$ is thus
+
+\vspace*{-0.225in}
+
 \begin{equation}\label{eq:ind-lam}
 \begin{array}{l}
 \mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A
@@ -961,26 +972,28 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
 \end{adjustbox}
 \end{figure*}
 
-To prove that this rule is sound we define a witness
+\vspace*{-0.125in}
+
+To prove this rule is sound we define a witness
 $\mathsf{dIndLTerm}$ inhabiting the type in~\eqref{eq:ind-lam} as in
 Figure~\ref{fig:dindlterm}. There, $\mathsf{s : String}$, $\mathsf{Q_A
   : A \to Set}$, $\mathsf{Q_B : B \to Set}$, $\mathsf{Q_C : C \to
   Set}$, $\mathsf{T_A : LType\,A}$, $\mathsf{T_B : LType\,B}$,
 $\mathsf{t_B : LTerm\,B}$, $\mathsf{t_C : LTerm\,C}$, $\mathsf{t_{BA}
-  : LTerm\,{\color{red}??}}$, $\mathsf{liftA : LTerm^{\wedge}\, A\,
+  : LTerm\,(B \to A)}$, $\mathsf{liftA : LTerm^{\wedge}\, A\,
   Q_A\, (var\;s\,T_A) = LType^{\wedge}\,A\,Q_A\,T_A}$, $\mathsf{liftE
   : Equal^{\wedge} \, A\, (B \to C)\, Q_A\, (Arr^{\wedge} \, B\, C\,
   Q_B \, Q_C) \, e}$, $\mathsf{lift_{T_B}: LType^{\wedge} \, B\, Q_B\,
-  T_B}$,~$\mathsf{lift_{t_C}: LTerm^{\wedge} \, C\, Q_C\,
-  T_C}$,~$\mathsf{lift_{t_{BA}}: LTerm^{\wedge} \, (B \to A)\,
+  T_B}$, $\mathsf{lift_{t_C}: LTerm^{\wedge} \, C\, Q_C\,
+  T_C}$, $\mathsf{lift_{t_{BA}}: LTerm^{\wedge} \, (B \to A)\,
   (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\,
-  t_{BA}}$,~$\mathsf{lift_{t_B}: LTerm^{\wedge} \, B\, Q_B\,
-  t_B}$,\\ $\mathsf{liftE' : Equal^{\wedge}\, A\, (List\,B)\, Q_A\,
+  t_{BA}}$, $\mathsf{lift_{t_B}: LTerm^{\wedge} \, B\, Q_B\,
+  t_B}$, $\mathsf{liftE' : Equal^{\wedge}\, A\, (List\,B)\, Q_A\,
   (List^{\wedge}\, B\, Q_B)\, e}$, and $\mathsf{lift_{List}:
   List^{\wedge} \, (LTerm\, B) \, (LTerm^{\wedge}\, B\, Q_B) \, ts}$.
 Moreover,
 
-\vspace*{-0.2in}
+\vspace*{-0.225in}
 
 \[\begin{array}{lll}
 \mathsf{p_C} & = & \mathsf{dIndLTerm\,P\,cvar\,cabs \,capp \,clist\,
@@ -999,7 +1012,7 @@ Moreover,
   \, (P\,B\,Q_B)}
 \end{array}\]
 
-\vspace*{-0.2in}
+\vspace*{-0.1in}
 
 \noindent
 where, in the final clause, $\mathsf{PredMap : \forall\, (A : Set) \to
@@ -1011,13 +1024,15 @@ $\mathsf{PredMap \,A\, Q\,Q'\, = \forall\, (a : A) \to Q\,a \to
   \,(List^{\wedge}\, A\, Q)\, (List^{\wedge}\, A\, Q')}$, which takes
 a morphism $\mathsf{f}$ of predicates and produces a morphism of
 lifted predicates, is defined by $\mathsf{liftListMap\, A\, Q\, Q'\,
-  m\, nil\, tt = tt}$ (since $\mathsf{x : List^{\wedge}\, A\, Q\, nil
-  = \top}$ must necessarily be $\mathsf{tt}$), and by
-$\mathsf{liftListMap\, A\, Q\, Q'\, m\, (cons\, a\, l')\, (y, x') =
-  (m\,a\,y, liftListMap\, A\, Q\, Q'\, m\, l'\, x')}$ (since $\mathsf{x
-  : List^{\wedge}\, A\, Q\, (cons\, a\, l') = \top}$ must be of the
-form $\mathsf{x = (y, x')}$ where $\mathsf{y : Q\,a}$ and $\mathsf{x'
-  : List^{\wedge}\, A\, Q\, l'}$). {\color{red} Double-check!!}
+  m\, nil\, tt = tt}$ (since $\mathsf{x : List^{\wedge}\, A\, Q\,
+  nil}$ must necessarily be the sole inhabitant $\mathsf{tt}$ of
+$\mathsf{\top}$), and by $\mathsf{liftListMap\, A\, Q\, Q'\, m\,
+  (cons\, a\, l')\, (y, x') = (m\,a\,y, liftListMap\, A\, Q\, Q'\, m\,
+  l'\, x')}$ (since $\mathsf{x : List^{\wedge}\, A\, Q\, (cons\, a\,
+  l')}$ must be of the form $\mathsf{x = (y, x')}$ where
+$\mathsf{y : Q\,a}$ and $\mathsf{x' : List^{\wedge}\, A\, Q\, l'}$).
+
+\vspace*{-0.05in}
 
 \section{The general framework}\label{sec:framework}
 
@@ -1043,19 +1058,19 @@ finite number of them, each with a type the same form as
 $\mathsf{c}$'s. In~\eqref{eq:gadts}, $\mathsf{F}$ and $\mathsf{K}$ are
 type constructors with signatures $\mathsf{(Set^{\alpha} \to Set) \to
   Set^{\beta} \to Set}$ and $\mathsf{Set^{\beta} \to Set}$,
-respectively. If $\mathsf{T}$ has type signature $\mathsf{Set^{\gamma}
-  \to Set}$ then we say that $\mathsf{T}$ is a {\em type constructor
-  of arity $\mathsf{\gamma}$}.  The overline notation denotes a finite
-list whose length is exactly the arity of the type constructor being
-applied to it. The number of type constructors $\mathsf{K}$ must
-therefore be $\alpha$. The type constructor $\mathsf{F}$ must be
-constructed inductively according to the following grammar:
+respectively. If $\mathsf{T}$ is a type constructor with signature
+$\mathsf{Set^{\gamma} \to Set}$ then we say that $\mathsf{T}$ has
+arity $\mathsf{\gamma}$.  The overline notation denotes a finite list
+whose length is exactly the arity of the type constructor being
+applied to it. The number of type constructors in $\ol{\mathsf{K}}$
+must therefore be $\alpha$. In addition, the type constructor
+$\mathsf{F}$ must be constructed inductively according to the
+following grammar:
 \[\mathsf{F\,G\,\ol{B}\; :=\;
 F_1\,G\,\ol{B} \times F_2\,G\,\ol{B} \ \vert\ F_1\,G\,\ol{B} +
 F_2\,G\,\ol{B} \ \vert\ F_1\,\ol{B} \to F_2\,G\,\ol{B}
 \ \vert\ G\,(\ol{F_1\,\ol{B}}) \ \vert\ H\,\ol{B} \ \vert\ H\,
 (\ol{F_1\,G\,\ol{B}}) }\]
-
 
 \pagebreak
 
@@ -1065,48 +1080,51 @@ clause the type constructor $\mathsf{F_1}$ does not contain
 $\mathsf{G}$. In the fourth clause, none of the $\mathsf{\alpha}$-many
 type constructors in $\mathsf{\ol{F_1}}$ contains $\mathsf{G}$.  This
 prevents nesting, which would make it impossible to give an induction
-rule; see Section~\ref{sec:GADT-nested} below. In the fifth clause,
-$\mathsf{H}$ does not contain $\mathsf{G}$. This clause therefore
-subsumes the cases in which $\mathsf{F\,G\,\ol{B}}$ is a closed type
-or one of the $\mathsf{B_i}$. In the sixth clause, $\mathsf{H :
-  Set^\gamma \to Set}$ does not contain $\mathsf{G}$ (although
-$\ol{\mathsf{F_1\,G\,\ol{B}}}$ can). Moreover, although $\mathsf{H}$
-can construct any (truly) nested type, it cannot construct a
-GADT. This ensures that $\mathsf{H}$ admits functorial
+rule for $\mathsf{G}$; see Section~\ref{sec:GADT-nested} below. In the
+fifth clause, $\mathsf{H}$ does not contain $\mathsf{G}$. This clause
+therefore subsumes the cases in which $\mathsf{F\,G\,\ol{B}}$ is a
+closed type or one of the $\mathsf{B_i}$. In the sixth clause,
+$\mathsf{H : Set^\gamma \to Set}$ does not contain $\mathsf{G}$
+(although $\ol{\mathsf{F_1\,G\,\ol{B}}}$ can). Moreover, although
+$\mathsf{H}$ can construct any (truly) nested type, it must not
+construct a GADT. This ensures that $\mathsf{H}$ admits functorial
 semantics~\cite{jp20}, and thus has an associated map function. From
-this we can also construct a map function 
+the map function for $\mathsf{H}$ we can also construct a map function
 
 \vspace*{-0.05in}
 
-\[\mathsf{H^\wedge Map : \forall (\ol{A : Set}) (\ol{Q\;Q' : A \to Set}) 
+\begin{equation}\label{eq:hliftmap}
+\mathsf{H^\wedge Map : \forall (\ol{A : Set}) (\ol{Q\;Q' : A \to Set}) 
 \to \ol{PredMap\,A\,Q\,Q'} \to
 PredMap\,(H\,\ol{A})\,(H^{\wedge}\,\ol{A}\,\ol{Q})\, 
-(H^{\wedge}\,\ol{A}\,\ol{Q'})}\]
+(H^{\wedge}\,\ol{A}\,\ol{Q'})}
+\end{equation}
 
 \vspace*{0.05in}
 
 \noindent
-for $\mathsf{H^{\wedge}}$.  A concrete way to define $\mathsf{H^\wedge
+for $\mathsf{H^{\wedge}}$. A concrete way to define $\mathsf{H^\wedge
   Map}$ is by induction on the structure of the type $\mathsf{H}$, but
 we omit such details since they are not essential to the present
-discussion. A further requirement that applies to all of the types
-appearing above, including the $\mathsf{K}$s in~\eqref{eq:gadts}, is
-that they must all admit predicate liftings. This is not an overly
-restrictive condition, though: all types constructed from sums,
-products, arrow types and type application admit predicate liftings,
-and so do GADTs constructed from the above grammar; in fact, we have
-seen such liftings for products and type application in
-Section~\ref{sec:deep-ind-GADTs}.  A concrete way to define predicate
-liftings more generally is, again, by induction on the the structure
-of the types. We do not give a general definition of predicate
-liftings here, though, since that would require us to first design a
-full type calculus, which is beyond the scope of the present paper.
+discussion. A further requirement that applies to all of the type
+constructors appearing in the right-hand sides of~\eqref{eq:gadts},
+including those in $\ol{\mathsf{K}}$, is that they must all admit
+predicate liftings. This is not an overly restrictive condition,
+though: all types constructed from sums, products, arrow types and
+type application admit predicate liftings, and so do GADTs constructed
+from the above grammar; in fact, we have seen such liftings for
+products and type application in Section~\ref{sec:deep-ind-GADTs}. A
+concrete way to define more general predicate liftings is, again, by
+induction on the structure of the types. We do not give a general
+definition of predicate liftings here, though, since that would
+require us to first design a full type calculus, which is beyond the
+scope of the present paper. {\color{red} Awkward paragraph? Rephrase?}
 
 We assume in the development below that $\mathsf{G}$ is a unary type
 constructor, i.e., that $\alpha = 1$ in~\eqref{eq:gadts}. Extending
 the argument to GADTs of arbitrary arity presents no difficulty other
-than heavier notation. The type of the single data constructor
-$\mathsf{c}$ for $\mathsf{G}$ can be rewritten as $\mathsf{c : \forall
+than heavier notation. In this case the type of $\mathsf{G}$'s single
+data constructor $\mathsf{c}$ can be rewritten as $\mathsf{c : \forall
   (\ol{B : Set}) \to Equal\,A\,(K\,\ol{B}) \to F\,G\,\ol{B} \to
   G\,A}$. The predicate lifting $\mathsf{G^{\wedge} : \forall (A :
   Set) \to (A \to Set) \to G\,A \to Set}$ for $\mathsf{G}$ is
@@ -1122,11 +1140,12 @@ Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e
 \noindent
 where $\mathsf{Q_A : A \to Set}$, $\ol{\mathsf{Q_B : B \to Set}}$,
 $\mathsf{e : Equal\,A\,(K\,\ol{B})}$, and $\mathsf{x : F\,G\,\ol{B}}$.
-If we have predicate liftings $\mathsf{F^{\wedge}} : \mathsf{\forall (G
-  : Set^{\alpha} \to Set) (\ol{B : Set}) \to (\forall (A : Set) \to (A
-  \to Set) \to G\,A \to Set) \to (\ol{B \to Set}) \to F\,G\,\ol{B} \to
-  Set}$ and $\mathsf{K^{\wedge}} : \mathsf{\forall (\ol{B : Set}) \to
-  (\ol{B \to Set}) \to K\,\ol{B} \to Set}$
+If we have predicate liftings $\mathsf{F^{\wedge}} : \mathsf{\forall
+  (G : Set^{\alpha} \to Set) (\ol{B : Set}) \to (\forall (A : Set) \to
+  (A \to Set) \to G\,A \to Set) \to (\ol{B \to Set}) \to F\,G\,\ol{B}
+  \to Set}$ for $\mathsf{F}$ and $\mathsf{K^{\wedge}} :
+\mathsf{\forall (\ol{B : Set}) \to (\ol{B \to Set}) \to K\,\ol{B} \to
+  Set}$
 %\[\begin{array}{lll}
 %\mathsf{F^{\wedge}} & : & \mathsf{\forall (G : Set^{\alpha} \to Set) (\ol{B : Set})
 %\to (\forall (A : Set) \to (A \to Set) \to G\,A \to Set)
@@ -1134,13 +1153,13 @@ If we have predicate liftings $\mathsf{F^{\wedge}} : \mathsf{\forall (G
 %\mathsf{K^{\wedge}} & : & \mathsf{\forall (\ol{B : Set}) \to (\ol{B \to Set}) \to
 %  K\,\ol{B} \to Set}
 %\end{array}\]
-for $\mathsf{F}$ and for $\mathsf{K}$, respectively, the induction
-hypothesis for $\mathsf{c}$ is
+for $\mathsf{K}$, then the induction hypothesis associated with
+$\mathsf{c}$ is
 \[\begin{array}{l}
 \mathsf{dIndC = \lambda (P : \forall (A : Set) \to (A \to Set) \to
   G\,A \to Set)}\\
-\quad \mathsf{\to \forall (A : Set) (\ol{B : Set}) (Q_A : A \to Set)
-  (\ol{Q_B : B \to Set}) (e : Equal\,A\,(K\,\ol{B})) (x :
+\quad \mathsf{\to \forall (A : Set)\, (\ol{B : Set})\, (Q_A : A \to Set)\,
+  (\ol{Q_B : B \to Set})\, (e : Equal\,A\,(K\,\ol{B}))\, (x :
   F\,G\,\ol{B})} \\ 
 \quad \mathsf{\to
   Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,(K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e
@@ -1153,22 +1172,23 @@ and the induction rule for $\mathsf{G}$ is
   Set) \to dIndC\,P \to \forall (A : Set)(Q_A : A \to Set)(y : G\,A)
 \to G^{\wedge}\,A\,Q_A\,y \to P\,A\,Q_A\,y} \]
 
-To prove that this rule is sound we define the witness
+To prove that this rule is sound we define a witness
 $\mathsf{dIndG}$ inhabiting this type by
 \[\mathsf{dIndG\,P\,cc\,A\,Q_A\,(c\,\ol{B}\,e\,x)\,(\ol{Q_B}, liftE, liftF)
 = cc\,A\,\ol{B}\,Q_A\,\ol{Q_B}\,e\,x\,liftE\,(p\,x\,liftF)}\] Here,
 $\mathsf{cc : dIndC\,P}$, $\mathsf{e : Equal\,A\,(K\,\ol{B})}$,
-$\mathsf{x : F\,G\,\ol{B}}$, $\ol{\mathsf{Q_B : B \to Set}}$,
-$\mathsf{liftE : Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,
+$\mathsf{x : F\,G\,\ol{B}}$, $\mathsf{Q_A : A \to Set}$,
+$\ol{\mathsf{Q_B : B \to Set}}$, $\mathsf{liftE :
+  Equal^{\wedge}\,A\,(K\,\ol{B})\,Q_A\,
   (K^{\wedge}\,\ol{B}\,\ol{Q_B})\,e}$, and $\mathsf{liftF :
   F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,{\ol{Q_B}}\,x}$. As a result,
-$\mathsf{(\ol{Q_B}, liftE, liftF) : G^{\wedge}\,A\,Q_A
-  (c\,\ol{B}\,e\,x)}$ as expected. 
-Finally, the morphism of predicates
-$\mathsf{p :
+$\mathsf{(\ol{Q_B}, liftE, liftF) : G^{\wedge}\,A\,Q_A (c\,\ol{B}\,
+  e\,x)}$ as expected.  Finally, the morphism of predicates $\mathsf{p
+  :
   PredMap\,(F\,G\,\ol{B})\,(F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B})
-  (F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$ 
-is defined by structural induction on $\mathsf{F}$ as follows:
+  (F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$ is defined by structural
+induction on $\mathsf{F}$ as follows:
+
 \begin{itemize}
 \item 
 If $\mathsf{F\,G\,\ol{B} = F_1\,G\,\ol{B} \times F_2\,G\,\ol{B}}$ then
@@ -1176,7 +1196,10 @@ $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} =
   Pair^{\wedge}\,(F_1\,G\,\ol{B})\, (F_2\,G\,\ol{B})\,
   (F_1^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})\,
   (F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$. The induction hypothesis
-ensures morphisms of predicates $\mathsf{p_1 :
+  ensures
+%{\color{red} liftings $\mathsf{F_1}$ and $\mathsf{F_2}$ (with
+%  types) and}
+morphisms of predicates $\mathsf{p_1 :
   PredMap\,(F_1\,G\,\ol{B})\,(F_1^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_BQ})
   (F_1^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$ and $\mathsf{p_2 :
   PredMap\,(F_2\,G\,\ol{B})\,(F_2^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B})
@@ -1193,42 +1216,44 @@ define $\mathsf{p\, (x_1, x_2)\, (liftF_1, liftF_2) =
   $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x = \forall (z :
   F_1\,\ol{B}) \to F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z \to
   F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,(x\,z)}$, where $\mathsf{x :
-  F\,G\,\ol{B}}$. The induction hypothesis ensures a morphism of
-  predicates $\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{B})\,
-    (F_2^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B})\,
-    (F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$.  We define
-  $\mathsf{p\,x\,liftF : F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$,
-  where $\mathsf{liftF :
-    F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$ is defined by
-  $\mathsf{p\,x\,liftF\,z\,liftF_1 = p_2 (x\,z) (liftF\,z\,liftF_1)}$
-  for $\mathsf{z : F_1\,\ol{B}}$ and $\mathsf{liftF_1 :
-    F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$. Note that $\mathsf{F_1}$ not
-  containing the recursive variable is a necessary restriction, since
-  the proof relies on
-  $\mathsf{F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$ and
-  $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$ having the same
-  domain $\mathsf{F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$.
+  F\,G\,\ol{B}}$. The induction hypothesis ensures
+%  {\color{red}
+% liftings $\mathsf{F_1}$ and $\mathsf{F_2}$ (with types) and}
+a morphism of predicates $\mathsf{p_2 : PredMap\,(F_2\,G\,\ol{B})\,
+  (F_2^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B})\,
+  (F_2^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B})}$.  We define
+$\mathsf{p\;x\;liftF : F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$, where
+$\mathsf{liftF : F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$, to
+be $\mathsf{p\;x\;liftF\;z\;liftF_1 = p_2\, (x\,z)\,
+  (liftF\,z\,liftF_1)}$ for $\mathsf{z : F_1\,\ol{B}}$ and
+$\mathsf{liftF_1 : F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$. Note that
+$\mathsf{F_1}$ not containing $\mathsf{G}$ is a necessary restriction,
+since the proof relies on
+$\mathsf{F^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B}\,x}$ and
+$\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}\,x}$ having the same
+domain $\mathsf{F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$.
 \item If $\mathsf{F\,G\,\ol{B} = G\,(F_1\,\ol{B})}$ and $\mathsf{F_1}$
   does not contain $\mathsf{G}$, then
-  $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = P (F_1\,\ol{B})
-    (F_1^{\wedge}\,\ol{B}\,\ol{Q_B})}$. We therefore define $\mathsf{p
-    = dIndG\,P\, cc\,(F_1\,\ol{B})\,(F_1^{\wedge}\,\ol{B}\,\ol{Q_B})}$.
+  $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = P \,(F_1\,\ol{B})\,
+    (F_1^{\wedge}\,\ol{B}\,\ol{Q_B})}$ for all $\mathsf{P : \forall (A
+    : Set)\to(A \to Set) \to G\,A \to Set}$.  We therefore define
+  $\mathsf{p = dIndG\,P\,
+    cc\,(F_1\,\ol{B})\,(F_1^{\wedge}\,\ol{B}\,\ol{Q_B})}$.
 \item If $\mathsf{F\,G\,\ol{B} = H\,\ol{B}}$ and $\mathsf{H}$ does not
-  contain $\mathsf{G}$, then $\mathsf{p : PredMap\, (H\,\ol{B})\,
+  contain $\mathsf{G}$, then
+  $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = H^\wedge\,\ol{Q_B}}$
+  for all $\mathsf{P : \forall (A : Set)\to(A \to Set) \to G\,A \to
+    Set}$.  We therefore define $\mathsf{p : PredMap\, (H\,\ol{B})\,
     (H^{\wedge}\,\ol{B}\,\ol{Q_B})\, (H^{\wedge}\,\ol{B}\,\ol{Q_B})}$
-  is defined to be the identity morphism on predicates.
-\item If $\mathsf{F\,G\,\ol{B} = H\, (\ol{F_k\,G\,\ol{B}})}$, if
-  $\mathsf{H}$ does not contain $\mathsf{G}$, if $\mathsf{H}$ has a
-  predicate lifting $\mathsf{H^{\wedge} : \forall (\ol{C : Set}) \to
-    (\ol{C \to Set})}$ $\mathsf{\to H\,\ol{C} \to Set}$, and if
-  $\mathsf{H^\wedge}$ has a map function $\mathsf{H^\wedge Map =
-    \forall (\ol{C : Set}) (\ol{Q_C\;Q_C' : C \to Set}) \to
-    PredMap\,\ol{C}\,\ol{Q_C}\,\ol{Q_C'} \to}$
-  $\mathsf{PredMap\,(H\,\ol{C})\,(H^{\wedge}\,\ol{C}\,\ol{Q_C})\,
-    (H^{\wedge}\,\ol{C}\,\ol{Q_C'})}$, then since $\mathsf{H}$ cannot
-  be a GADT, $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} =
-    H^{\wedge}\, (\ol{F_k\,G\,\ol{B}})\,
-    (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})}$.  The induction
+  to be the identity morphism on predicates.
+\item If $\mathsf{F\,G\,\ol{B} = H\, (\ol{F_k\,G\,\ol{B}})}$ and
+  $\mathsf{H}$ does not contain $\mathsf{G}$, then
+  $\mathsf{F^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B} = H^{\wedge}\,
+  (\ol{F_k\,G\,\ol{B}})\,
+  (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})}$ for all $\mathsf{P :
+  \forall (A : Set)\to(A \to Set) \to G\,A \to Set}$.  Since
+  $\mathsf{H}$ is not a GADT, $\mathsf{H^\wedge}$ has a map function
+  $\mathsf{H^\wedge Map}$ as in~\eqref{eq:hliftmap}.  The induction
   hypothesis ensures morphisms of predicates $\ol{\mathsf{p_k :
       PredMap\,(F_k\,G\,\ol{B})
       (F_k^{\wedge}\,G\,\ol{B}\,G^{\wedge}\,\ol{Q_B})
@@ -1244,19 +1269,19 @@ define $\mathsf{p\, (x_1, x_2)\, (liftF_1, liftF_2) =
 In Sections~\ref{sec:deep-ind-GADTs} and~\ref{sec:framework} we
 derived deep induction rules for GADTs that are not truly
 nested. Since both nested types and GADTs without true nesting admit
-deep induction rules, we might expect that truly nested GADTs would as
-well. Surprisingly, however, they do not. That is, our results from
+deep induction rules, we might expect truly nested GADTs to admit them
+as well. Surprisingly, however, they do not. That is, our results from
 the previous section are the strongest possible. Indeed, the induction
 rule for a data type generally relies on (unary) parametricity of the
 model interpreting it, and deep induction for a truly nested type or a
 truly nested GADT also relies on this interpretation being functorial.
-But, whereas nested types can admit a functorial parametric semantics,
-GADTs cannot admit both functorial and parametric semantics at the
-same time~\cite{jgj21}. In this section we show how deep induction for
-truly nested GADTs nesting goes wrong by analyzing the following
-concrete example of such a type.\looseness=-1
+But, whereas ADTs and nested types both admit functorial parametric
+semantics, proper GADTs cannot admit both functorial and parametric
+semantics at the same time~\cite{jgj21}. In this section we show how
+deep induction for truly nested GADTs nesting goes wrong by analyzing
+the following very simple nested proper GADT:\looseness=-1
 
-\vspace*{-0.05in}
+\vspace*{-0.1in}
 
 \begin{equation*}\label{gadt-nested}
 \begin{array}{l}
@@ -1270,21 +1295,21 @@ The constructor $\mathsf{c}$ can be rewritten as $\mathsf{c :
   : Set) \to (A \to Set) \to G\,A \to Set}$ for $\mathsf{G}$ is
 \[
 \mathsf{G^{\wedge}\,A\,Q\,(c\,B\,e\,x)
-= \exists\, [Q']\,
-Equal^{\wedge}\,A\,(B \times B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e
-\times G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q')\,x}
+= \exists\, [Q_A]\,
+Equal^{\wedge}\,A\,(B \times B)\,Q_A\,(Pair^{\wedge}\,B\,B\,Q_B\,Q_B)\,e
+\times G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_B)\,x}
 \]
-where $\mathsf{Q : A \to Set}$, $\mathsf{Q' : B \to Set}$, $\mathsf{e
+where $\mathsf{Q_A : A \to Set}$, $\mathsf{Q_B : B \to Set}$, $\mathsf{e
   : Equal\,A\,(B \times B)}$, and $\mathsf{x : G\,(G\,B)}$.
 The induction hypothesis $\mathsf{dIndC}$ for $\mathsf{c}$ is
 \[\begin{array}{l}
 \mathsf{\lambda\, (P : \forall\, (A : Set) \to (A \to Set) \to G\,A
   \to Set)} \\ 
-\quad\mathsf{\to \forall\, (A\;B : Set)\, (Q : A \to Set)\, (Q' : B
+\quad\mathsf{\to \forall\, (A\;B : Set)\, (Q_A : A \to Set)\, (Q_B : B
   \to Set)\, (e : Equal\,A\,(B \times B))\, (x : G\,(G\,B))} \\ 
 \quad\mathsf{\to Equal^{\wedge}\,A\,(B \times
-  B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e \to P\,(G\,B)\,(P\,B\,Q')\,x 
-	\to P\,A\,Q\,(c\,B\,e\,x)}
+  B)\,Q_A\,(Pair^{\wedge}\,B\,B\,Q_B\,Q_B)\,e \to P\,(G\,B)\,(P\,B\,Q_B)\,x 
+	\to P\,A\,Q_A\,(c\,B\, e\,x)} 
 \end{array}\]
 so the deep induction rule for $\mathsf{G}$ is
 \[\mathsf{\forall\, (P : \forall\, (A : Set) \to (A \to Set) \to G\,A \to Set)
@@ -1294,40 +1319,40 @@ that this rule is sound by constructing a witness $\mathsf{dIndG}$
 inhabiting this type we run into problems. We can define
 $\mathsf{dIndG\,P\,cc\,A\,Q\,(c\,B\,e\,x)\,(Q', liftE, liftG) =
   cc\,A\,B\,Q\,Q'\,e\,x\,liftE\,p}$, where $\mathsf{cc : dIndC\,P}$,
-$\mathsf{Q : A \to Set}$, $\mathsf{e : Equal\,A\,(B \times B)}$,
-$\mathsf{x : G\,(G\,B)}$, $\mathsf{liftG :
-  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q')\,x}$, $\mathsf{Q' : B \to
-  Set}$, and $\mathsf{liftE : Equal^{\wedge}\,A\,(B \times
+$\mathsf{Q : A \to Set}$, $\mathsf{Q' : B \to Set}$, $\mathsf{e :
+  Equal\,A\,(B \times B)}$, $\mathsf{x : G\,(G\,B)}$, $\mathsf{liftG :
+  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q')\,x}$, and $\mathsf{liftE :
+  Equal^{\wedge}\,A\,(B \times
   B)\,Q\,(Pair^{\wedge}\,B\,B\,Q'\,Q')\,e}$, but we still need to
 define $\mathsf{p : P\,(G\,B)\,(P\,B\,Q')\,x}$.  For this we can use
 the induction rule and let $\mathsf{p =
   dIndG\,P\,cc\,(G\,B)\,(P\,B\,Q')\,x\,q}$, but we still need to
 define $\mathsf{q : G^{\wedge}\,(G\,B)\,(P\,B\,Q')\,x}$.  If we had
-the map function $\mathsf{G^\wedge Map : \forall\, (A : Set)\, (Q\;Q''
-  : A \to Set) \to PredMap\,A\,Q\,Q'' \to
-  PredMap\,(G\,A)\,(G^{\wedge}\,A\,Q)\,(G^{\wedge}\,A\,Q'')}$ for
-$\mathsf{G^{\wedge}}$, then we could define $\mathsf{q =
-  GLMap\,(G\,B)\,(G^{\wedge}\,B\,Q')\,(P\,B\,Q')\,
+the map function $\mathsf{G^\wedge Map : \forall\, (A : Set)\, (Q\;Q'
+  : A \to Set) \to PredMap\,A\,Q\,Q' \to
+  PredMap\,(G\,A)\,(G^{\wedge}\,A\,Q)\,(G^{\wedge}\,A\,Q')}$ for
+$\mathsf{G^{\wedge}}$, then we could define $\mathsf{q = G^\wedge
+  Map\,(G\,B)\,(G^{\wedge}\,B\,Q')\,(P\,B\,Q')\,
   (dIndG\,P\,cc\,B\,Q')\,x\,liftG}$.  Unfortunately, however, we
-cannot define $\mathsf{G^\wedge Map}$.  Indeed, its definition would
-have to be $ \mathsf{G^\wedge Map\,A\,Q\,Q_2\,m\,(c\,B\,e\,x)\,(Q_1,
-  liftE, liftG) = (Q_3, liftE', liftG')}$ for some $\mathsf{Q_3 : B
+cannot define $\mathsf{G^\wedge Map}$. Indeed, its definition would
+have to be $ \mathsf{G^\wedge Map\,A\,Q\,Q'\,m\,(c\,B\,e\,x)\,(Q_B,
+  liftE, liftG) = (Q'_B, liftE', liftG')}$ for some $\mathsf{Q'_B : B
   \to Set}$, $\mathsf{liftE' : Equal^{\wedge}\,A\,(B \times
-  B)\,Q_2\,(Pair^{\wedge}\,B\,B\,Q_3\,Q_3)\,e}$, and $\mathsf{liftG' :
-  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_3)\,x}$, where $\mathsf{Q : A
-  \to Set}$, $\mathsf{Q_2 : A \to Set}$, $\mathsf{m :
-  PredMap\,A\,Q\,Q_2}$, $\mathsf{e : Equal\,A\,(B \times B)}$,
-$\mathsf{x : G\,(G\,B)}$, $\mathsf{Q_1 : B \to Set}$, $\mathsf{liftE :
+  B)\,Q'\,(Pair^{\wedge}\,B\,B\,Q'_B\,Q'_B)\,e}$, and $\mathsf{liftG'
+  : G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q'_B)\,x}$, where $\mathsf{Q :
+  A \to Set}$, $\mathsf{Q' : A \to Set}$, $\mathsf{Q_B : B \to Set}$,
+$\mathsf{m : PredMap\,A\,Q\,Q'}$, $\mathsf{e : Equal\,A\,(B \times
+  B)}$, $\mathsf{x : G\,(G\,B)}$, $\mathsf{liftE :
   Equal^{\wedge}\,A\,(B \times
-  B)\,Q\,(Pair^{\wedge}\,B\,B\,Q_1\,Q_1)\,e}$, and $\mathsf{liftG :
-  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_1)\,x}$. In other words, we
-would need to produce a proof of the (extensional) equality of the
-predicates $\mathsf{Q_2}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$
-from just a proof
-%$\mathsf{liftE}$
-of the (extensional) equality of the predicates $\mathsf{Q}$ and
-$\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$ and a morphism of predicates
-$\mathsf{m}$ from $\mathsf{Q}$ to $\mathsf{Q_2}$.
+  B)\,Q\,(Pair^{\wedge}\,B\,B\,Q_B\,Q_B)\,e}$, and $\mathsf{liftG :
+  G^{\wedge}\,(G\,B)\,(G^{\wedge}\,B\,Q_B)\,x}$. In other words, we
+would need to produce a proof $\mathsf{liftE'}$ of the (extensional)
+equality of the predicates $\mathsf{Q'}$ and
+$\mathsf{Pair^{\wedge}\,B\,B\,Q'_B\,Q'_B}$ from just a proof
+$\mathsf{liftE}$ of the (extensional) equality of the predicates
+$\mathsf{Q}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_B\,Q_B}$ and a
+morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
+$\mathsf{Q_2'}$.
 %a proof $\mathsf{liftE}$ of the (extensional) equality of the
 %predicates $\mathsf{Q}$ and $\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$
 %and a morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
@@ -1336,11 +1361,11 @@ $\mathsf{m}$ from $\mathsf{Q}$ to $\mathsf{Q_2}$.
 %$\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$, for some predicate
 %$\mathsf{Q_3}$ on $\mathsf{B}$.
 But this will not be possible in general: the facts that $\mathsf{Q}$
-is equal to $\mathsf{Pair^{\wedge}\,B\,B\,Q_1\,Q_1}$ and that there is
+is equal to $\mathsf{Pair^{\wedge}\,B\,B\,Q_B\,Q_B}$ and that there is
 a morphism of predicates $\mathsf{m}$ from $\mathsf{Q}$ to
-$\mathsf{Q_2}$ do not guarantee that there exists a predicate
-$\mathsf{Q_3}$ such that $\mathsf{Q_2}$ is equal to
-$\mathsf{Pair^{\wedge}\,B\,B\,Q_3\,Q_3}$.
+$\mathsf{Q'}$ do not guarantee that there exists a predicate
+$\mathsf{Q'_B}$ such that $\mathsf{Q'}$ is equal to
+$\mathsf{Pair^{\wedge}\,B\,B\,Q'_B\,Q'_B}$.
 
 At a deeper level, the fundamental issue is that the $\mathsf{Equal}$
 type does not have functorial semantics~\cite{jgj21}, so that having
@@ -1351,21 +1376,24 @@ is equal to $\mathsf{B'}$. This difficulty propagates to any truly
 nested GADT because it is not possible to define a map function
 $\mathsf{Equal^\wedge Map}$ for $\mathsf{Eq^\wedge}$ when one of the
 type arguments to $\mathsf{Equal^\wedge}$ is structured (i.e., not a
-variable). This is, of course, a critical component in any approach to
-deep induction for such GADTs.\looseness=-1
+variable). And this is, of course, a key component in any approach to
+deep induction for truly nested GADTs.\looseness=-1
 
 \section{Case Study: Extracting Types of Lambda Terms}\label{sec:app}
 
 In this section we use deep induction for the $\mathsf{LTerm}$ GADT
-from~\eqref{eq:eq_lterm} to extract the type from a lambda term.  For
-this we use the following predicate, which takes a lambda term and
-produces the type of its possible types:
+from~\eqref{eq:eq_lterm} to extract the type from a lambda term.  The
+following predicate takes a lambda term as input and either returns
+its type if it is well-typed or indicates that it is not:
+
+\vspace*{-0.3in}
+
 \begin{align*}
   &\mathsf{GetType : \forall \, (A : Set) \to LTerm\,A \to Set} \\
   &\mathsf{GetType \,A \,t = Maybe \, (LType \, A)}
 \end{align*}
 The predicate $\mathsf{GetType}$ uses the standard $\mathsf{Maybe}$
-data type to represent potential failure. It is defined by:
+data type to represent potential ill-typedness. It is defined by:
 
 \vspace*{-0.1in}
 
@@ -1373,31 +1401,32 @@ data type to represent potential failure. It is defined by:
 \begin{array}{l}
 \mathsf{data\ Maybe : Set \to Set\ where}\\
 \mathsf{\;\;\;\;\;\;nothing :\, Maybe\,A}\\
-\mathsf{\;\;\;\;\;\;\;\;\;\;\;\;just :\, A \to Maybe\,A}
+\mathsf{\;\;\;\;\;\;just\;\;\;\;\;\;\; :\, A \to Maybe\,A}
 \end{array}
 \end{equation}
 
-We want to show that $\mathsf{GetType}$ is satisfied by every element
-of $\mathsf{LTerm\,A}$, i.e., we want to prove:
+\noindent
+We want to show that $\mathsf{GetType\,A\,t}$ is satisfied by every
+element $\mathsf{t}$ in $\mathsf{LTerm\,A}$, i.e., we want to prove:
 \[ \mathsf{getTypeProof : \forall \, (A : Set)\, (t : LTerm\,A) \to
-   GetType \,A \,t}\] This cannot be achieved without deep induction,
-which is needed to apply the induction hypothesis to the individual
-terms in the list of terms that the data constructor $\mathsf{list}$
-takes as an argument. Using the deep induction rule
-$\mathsf{dIndLTerm}$ from Section~\ref{sec:ind-lam} we define
+   GetType \,A \,t}\] This property cannot be proved without deep
+induction, which is needed to apply the induction hypothesis to the
+individual terms in the list of terms that the data constructor
+$\mathsf{list}$ takes as an argument. But using the deep induction
+rule $\mathsf{dIndLTerm}$ from Section~\ref{sec:ind-lam} we can define
 $\mathsf{getTypeProof}$ by
 \[ \mathsf{getTypeProof \,A \,t = 
     dIndLTerm\, P \, cvar\, cabs\, capp\, clistc\, A\, K_\top\, t\,
     (LTerm^\wedge KT\, A\, t) }\] where $\mathsf{t : LTerm\,A}$,
-$\mathsf{P}$ is the polymorphic predicate $\mathsf{\lambda \, (A:
+$\mathsf{P}$ is the polymorphic predicate $\mathsf{ \lambda \, (A:
   Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \,
-  A)}$, $\mathsf{K_\top}$ is the constantly {\color{red}
-  $\mathsf{\top}$}-valued predicate, and $\mathsf{LTerm^\wedge KT :
-  \forall\, (A : Set)\, (t : LTerm A) \to LTerm^{\wedge}\, A\,
-  K_\top\,t}$ is a term, to be defined below, witnessing that
-$\mathsf{K_\top}$ can be lifted to all terms. We also need the
-applications to $\mathsf{P}$ of each of the induction hypotheses from
-Section~\ref{sec:ind-lam}. These are:
+  A)}$, $\mathsf{K_\top}$ is the constantly $\mathsf{\top}$-valued
+predicate on $\mathsf{A}$, and $\mathsf{LTerm^\wedge KT : \forall\, (A
+  : Set)\, (t : LTerm A) \to LTerm^{\wedge}\, A\, K_\top\,t}$ is a
+term, to be defined below, witnessing that $\mathsf{K_\top}$ can be
+lifted to all terms. We also need the applications to $\mathsf{P}$ of
+each of the induction hypotheses from Section~\ref{sec:ind-lam}. These
+are:
 \[\begin{array}{lll}
 \mathsf{cvar} & : & \mathsf{\forall\, (A : Set)\, (Q_A : A \to Set)\,
   (s : String)\, (T_A : LType\, A) \to LType^{\wedge} \, A\, Q_A\,
@@ -1428,7 +1457,7 @@ final argument is $\mathsf{nothing}$ and $\mathsf{cabs\, A \,B \,C
 %  LLTy^\wedge B\,
 L\, (just \,T_C) = just \, (arr\, B\, C\, e\, T_B \,T_C)}$ otherwise.
 In the third clause, $\mathsf{capp\, A \,B \, Q_A \, Q_B \, t_{BA}\,
-  t_A \, (just \, (arr\, .B \,.A\, rfl\, T_B\, T_A))\, mb = just\,
+  t_A \, (just \, (arr\, B \,A\, refl\, T_B\, T_A))\, mb = just\,
   T_A}$ and $\mathsf{capp}$ returns $\mathsf{nothing}$ otherwise.  In
 the fourth clause, we must use $\mathsf{List^{\wedge}\, (LTerm\, B)\,
   (GetType\, B)\, ts}$ to extract the type of the head of
@@ -1559,7 +1588,7 @@ and define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
   constructor $\mathsf{Equal}$, together with the analogously defined
   functions $\mathsf{LType^\wedge EqualMap}$ and $\mathsf{Arr^\wedge
     EqualMap}$ in the cases when the first argument to
-  $\mathsf{PredMap}$ is constructed using $\mathsf{var}$ or
+  $\mathsf{PredMap}$ is constructed using $\mathsf{var}$ and
   $\mathsf{app}$, respectively. Taking $\mathsf{L_{K_\top} :
     LTerm^{\wedge}\, (B \to A) \, K_\top\, t_1}$ to be the proof
   $\mathsf{L_{K_\top} = LTerm^\wedge KT\, (B \to A)\, t_1}$ and taking
@@ -1601,12 +1630,12 @@ and define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
 
 The above techniques can be used to define a function
 $\mathsf{G^\wedge KT : \forall\, (A : Set)\, (x : G\,A) \to
-  G^{\wedge}\, A\, K_\top\, x}$ for an arbitrary GADT $\mathsf{G}$, as
+  G^{\wedge}\, A\, K_\top\, x}$ for an arbitrary GADT $\mathsf{G}$ as
 defined in Section~\ref{sec:framework}.  To provide a proof of
 $\mathsf{G^{\wedge}\, A\, K_\top \, x}$ for every term $\mathsf{x :
   G\, A}$, we need to know that if $\mathsf{G}$ has a constructor
 $\mathsf{c : H \, (\ol{F\,G\, \ol{B}}) \to G\, (\ol{K\,\ol{B}})}$,
-then $\mathsf{H}$ cannot construct GADTs so the generalization
+then $\mathsf{H}$ cannot construct a GADT so the generalization
 $\mathsf{H^\wedge Map}$ of $\mathsf{listLiftMap}$ in the final bullet
 point above is guaranteed to exist. We also need to know that the
 lifting of $\mathsf{K_\top}$ to types constructed by any nested type
@@ -1624,34 +1653,18 @@ other nested type constructors $\mathsf{F}$ as well. These
 isomorphisms can either be proved on an as-needed basis or, since
 $\mathsf{F^\wedge\,A\,K_\top = K_\top}$ is the unary analogue of the
 Identity Extension Lemma, be obtained at the meta-level as a
-consequence of unary parametricity. At the object level, our Agda code
-simply postulates each such isomorphism needed since an Agda
-implementation of full parametricity for some relevant calculus is
-beyond the scope of the present paper.
+consequence of unary parametricity. At the object level, our Agda
+code~\cite{web-page} simply postulates each isomorphism needed since
+an Agda implementation of full parametricity for some relevant
+calculus is beyond the scope of the present paper.
 
 \section{Conclusion}\label{sec:conclusion}
 
-This paper extends deep induction to a robust class of GADTs that are
-not truly nested. It also shows that truly nested GADTs do not admit
-deep induction rules. Our development is implemented in Agda, as is a
-case study showing how deep induction can prove properties of GADTs
-that are not provable just by structural induction.\looseness=-1
-
-\begin{comment}
-\section{TODO}
-
-\begin{itemize}
-\item find correct entcsmacro file (current one is for 2018). Maybe ask Ana Sokolova (anas@cs.uni-salzburg.at).
-\item reference (correctly) Haskell Symposium paper
-\item reference inspiration for STLC GADT : https://www.seas.upenn.edu/~cis194/spring15/lectures/11-stlc.html
-\item Data type vs. data structure
-\item Weird to code in Agda if we're talking about induction rules for
-  Coq? 
-\item Agda style conventions
-\item spacing in data type declarations
-\item Mention Agda flags that need to be toggled to handle true nesting
-\end{itemize}
-\end{comment}
+This paper extends deep induction to deep GADTs that are not truly
+nested. It also shows that truly nested GADTs, deep or not, do not
+admit (deep) induction rules. Our development is implemented in Agda,
+as is a case study showing how deep induction can prove properties of
+GADTs that are not provable by structural induction.\looseness=-1
 
 \pagebreak
 
@@ -1674,8 +1687,12 @@ that are not provable just by structural induction.\looseness=-1
 \bibitem{ch88} Coquand, T. and Huet, G. {\em The calculus of
   constructions}. Information and Computation 76(2/3), 1988.
 
-\bibitem{chl} Chlipala, A. {\em Library Inductive
-  Types}. $\mathtt{http://adam.chlipala.net/cpdt/html/InductiveTypes.html}$
+\bibitem{cis194}
+Zilberstein, N. CIS194 homepage.
+$\mathtt{https://www.seas.upenn.edu/\tilde~cis194/spring15/lectures/11\!\!-\!\!stlc.html}$
+  
+%\bibitem{chl} Chlipala, A. {\em Library Inductive
+%  Types}. $\mathtt{http://adam.chlipala.net/cpdt/html/InductiveTypes.html}$
 
 \bibitem{coq20} The Coq Development Team. {\em The Coq Proof
   Assistant}, version 8.11.0, January 2020.
@@ -1701,17 +1718,17 @@ that are not provable just by structural induction.\looseness=-1
   of Software Science and Computation Structures, pp. 324-343, 2021.
 
 \bibitem{jgj21} Johann, P., Ghiorzi, E., and Jeffries, D. {\em
-  Parametricity in the presence of GADTs}. Submitted, 2021.
+  Functorial GADTs are not Parametric}. Submitted, 2021.
 
 \bibitem{jp19} Johann, P. and Polonsky, A. {\em Higher-kinded data
-  types: Syntax and semantics} Proceedings, Logic in Computer Science
-  2019. {\color{red} PAGES?}
+  types: Syntax and semantics} Proceedings, Logic in Computer Science,
+  pp. 1-13, 2019.
 
 \bibitem{jp20} Johann, P. and Polonsky, A. {\em Deep induction:
   Induction rules for (truly) nested types}.  Proceedings, Foundations
   of Software Science and Computation Structures, pp. 339-358, 2020.
 
-\bibitem{mac71} MacLane, S. {\em Catgories for the Working
+\bibitem{mac71} MacLane, S. {\em Categories for the Working
   Mathematician}. Springer, 1971.
 
 \bibitem{mcb99} McBride, C. {\em Dependently Typed Programs and their
@@ -1732,7 +1749,7 @@ that are not provable just by structural induction.\looseness=-1
 \bibitem{pvww06} Peyton Jones, S., Vytiniotis, D., Weirich, S., and
   Washburn, G. {\em Simple unification-based type inference for
     GADTs}. Proceedings, International Conference on Functional
-  Programming, 2006. {\color{red} PAGES?}
+  Programming, pp. 50-61, 2006. 
 
 %\bibitem{pr06} Pottier, F., and R{\'e}gis-Gianas, Y.  {\em Stratified
 %  type inference for generalized algebraic data types}.  Principles of
@@ -1745,7 +1762,7 @@ that are not provable just by structural induction.\looseness=-1
 
 \bibitem{sp04} Sheard, T., and Pasalic, E. {\em Meta-programming with
   built-in type equality}. Proceedings, Workshop on Logical Frameworks
-  and Meta-languaegs, 2004. {\color{red} PAGES?}
+  and Meta-languages, pp. 106-124, 2004. 
 
 \bibitem{tas19} Tassi, E.: Deriving proved equality tests in Coq-elpi:
   Stronger induction principles for containers in Coq. Proceedings,
