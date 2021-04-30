@@ -94,9 +94,14 @@ functions and predicates over advanced types are defined inductively,
 and almost all non-trivial proofs of their properties are either
 proved by induction outright or rely on lemmas that are.  {\color{red}
   Every time a new algebraic data type (ADT) is declared in
-  Coq}\footnote{{\color{red} Algebraic data types are called inductive
-    types in Coq.}}, an induction rule is automatically generated for
+  Coq}\footnote{{\color{red} Algebraic data types are 
+  defined using the $\mathsf{Inductive}$ keyword in Coq.}}
+  % called inductive
+  %   types in Coq.}}
+    , an induction rule is automatically generated for
 it.\looseness=-1
+
+
 
 The data types handled by Coq are (possibly mutually inductive)
 polynomial ADTs, and the induction rules
@@ -120,7 +125,7 @@ $\mathsf{List}$ of lists (see Section~\ref{sec:ADTs-and-nesteds}):
 \mathsf{\;\;\;\;\;\;\;\;\,node\,\,\,\, :\, A \to List\,(Rose\,A) \to Rose\,A} 
 \end{array}\]
 \noindent
-The induction rule Coq automatically generates for rose trees is
+The induction rule Coq automatically generates for the analogous Coq definition of rose trees is
 
 \vspace*{-0.075in}
 
@@ -492,7 +497,11 @@ argument.
 It is not possible to extend structural induction to {\em truly}
 nested types, i.e., to nested types whose recursive occurrences appear
 below themselves. The quintessential example of such a type is that of
-bushes~\cite{bm98}:
+bushes
+% \footnote{To define $\mathsf{Bush}$ and other truly nested types in Agda, 
+% we must use the $\mathsf{NO\_POSITIVITY\_CHECK}$
+% pragma . Similar flags are required in Coq.}
+~\cite{bm98}:
 \begin{equation*}\label{eq:bush}
 \begin{array}{l}
 \mathsf{data\ Bush : Set \to Set\ where}\\
@@ -502,7 +511,8 @@ bushes~\cite{bm98}:
 \end{equation*}
 
 \noindent
-{\color{red} Flags to overcome positivity restrictions?}
+% {\color{red} Flags to overcome positivity restrictions?}
+
 Even defining a structural induction rule for bushes requires that we
 be able to lift the rule's polymorphic predicate argument to
 $\mathsf{Bush}$ itself. The more general observation that an induction
@@ -622,11 +632,11 @@ represented by the Henry Ford GADT
 \begin{equation}\label{eq:eq_ltype}
 \begin{array}{l}
 \mathsf{data\ LType : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;\;\;bool :\, \forall (B : Set) \to Equal\,A\,Bool
+\mathsf{\;\;\;\;\;\;\;\;tbool :\, \forall (B : Set) \to Equal\,A\,Bool
   \to LType\,A}\\ 
-\mathsf{\;\;\;\;\;\;\;\;arr\;\;\; :\, \forall (B\,C : Set) \to
+\mathsf{\;\;\;\;\;\;\;\;tarr\;\;\; :\, \forall (B\,C : Set) \to
   Equal\,A\,(B \to C) \to LType\,B \to LType\,C \to LType\,A}\\ 
-  \mathsf{\;\;\;\;\;\;\;\;list\,\;\; :\, \forall (B : Set) \to
+  \mathsf{\;\;\;\;\;\;\;\;tlist\,\;\; :\, \forall (B : Set) \to
     Equal\,A\,(\List\,B) \to LType\,B \to LType\,A} 
 \end{array}
 \end{equation}
@@ -827,13 +837,13 @@ $\mathsf{p_B} =\mathsf{dIndSeq\,P\,cconst\,cpair\,B\,Q_B\,s_B\,liftB :
       -0.2in 0in, fbox, center} 
 {\small
 \[\begin{array}{lll}
-\mathsf{LType^{\wedge}\,A\,Q_A\,(bool\,B\,e)} & = &\mathsf{\exists
+\mathsf{LType^{\wedge}\,A\,Q_A\,(tbool\,B\,e)} & = &\mathsf{\exists
   [Q_B]\, Equal^{\wedge}\, A\, B\, Q_A\, K^{Bool}_{\top} \,e}\\
-\mathsf{LType^{\wedge}\,A\,Q_A\,(arr\, B\, C\, e\, T_B\, T_C)}
+\mathsf{LType^{\wedge}\,A\,Q_A\,(tarr\, B\, C\, e\, T_B\, T_C)}
 &=&\mathsf{\exists [Q_B] \,\exists [Q_c]\, Equal^{\wedge}\,A\,
   (B \to C)\, Q_A\, (Arr^{\wedge} \, B\, C\, Q_B \, Q_C) \, e \times
   \, LType^{\wedge}\,B\,Q_B\,T_B \times LType^{\wedge}\,C\,Q_C\,T_C}\\
-\mathsf{LType^{\wedge}\,A\,Q_A\,(list\, B\, e\, T_B)} & = &
+\mathsf{LType^{\wedge}\,A\,Q_A\,(tlist\, B\, e\, T_B)} & = &
 \mathsf{\exists [Q_B]\, Equal^{\wedge}\,A\, (List\, B)\, Q_A\,
   (List^{\wedge} \, B\, Q_B) \, e \times LType^{\wedge}\,B\,Q_B\,T_B}\\[1ex]
 \mathsf{LTerm^{\wedge}\,A\,Q_A\,(var\,s\,T_A)} & = &
@@ -959,11 +969,11 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
   lift_{T_B}, lift_{t_C})} & = & \mathsf{cabs\,A\,B\,C\, Q_A\,
   Q_B\, Q_C\, e\, s\, T_B\, t_C\, liftE\, lift_{T_B}\, p_C}\\
 \mathsf{dIndLTerm \, P\, cvar \, cabs\, capp\, clist \, A\, Q_A\,
-    (app \,B \,\,t_{BA} \, t_B)\, (Q_B , list_{t_{BA}}, list_{t_B})} &
+    (app \,B \,\,t_{BA} \, t_B)\, (Q_B , lift_{t_{BA}}, lift_{t_B})} &
 = & \mathsf{capp\,A\,B\,Q_A\, Q_B\, t_{BA}\, t_B\, p_{BA} \, p_B}\\
-  \mathsf{dIndLTerm \, P\, cvar \, cabs\, capp\, clistc \, A\, Q_A\,
+  \mathsf{dIndLTerm \, P\, cvar \, cabs\, capp\, listc \, A\, Q_A\,
     (list \,B \,e \, ts) \, (Q_B , liftE', lift_{List})} & = & 
-  \mathsf{clistc \,A\,B\,Q_A\, Q_B\, e\, ts\, liftE'\, p_{List} }
+  \mathsf{listc \,A\,B\,Q_A\, Q_B\, e\, ts\, liftE'\, p_{List} }
 \end{array}\]}
 
 \vspace*{-0.1in}
@@ -1416,7 +1426,7 @@ $\mathsf{list}$ takes as an argument. But using the deep induction
 rule $\mathsf{dIndLTerm}$ from Section~\ref{sec:ind-lam} we can define
 $\mathsf{getTypeProof}$ by
 \[ \mathsf{getTypeProof \,A \,t = 
-    dIndLTerm\, P \, cvar\, cabs\, capp\, clistc\, A\, K_\top\, t\,
+    dIndLTerm\, P \, cvar\, cabs\, capp\, listc\, A\, K_\top\, t\,
     (LTerm^\wedge KT\, A\, t) }\] where $\mathsf{t : LTerm\,A}$,
 $\mathsf{P}$ is the polymorphic predicate $\mathsf{ \lambda \, (A:
   Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \,
@@ -1453,11 +1463,11 @@ are:
 In the first clause, $\mathsf{cvar}$ returns $\mathsf{just\,T_A}$.  In
 the second clause, $\mathsf{cabs}$ returns $\mathsf{nothing}$ if its
 final argument is $\mathsf{nothing}$ and $\mathsf{cabs\, A \,B \,C
-  \,Q_A\, Q_B \,Q_C\, e \,s \,T_B\, t_C\, Eq^\wedge\,
+  \,Q_A\, Q_B \,Q_C\, e \,s \,T_B\, t_C\, liftE\,
 %  LLTy^\wedge B\,
-L\, (just \,T_C) = just \, (arr\, B\, C\, e\, T_B \,T_C)}$ otherwise.
+L\, (just \,T_C) = just \, (tarr\, B\, C\, e\, T_B \,T_C)}$ otherwise.
 In the third clause, $\mathsf{capp\, A \,B \, Q_A \, Q_B \, t_{BA}\,
-  t_A \, (just \, (arr\, B \,A\, refl\, T_B\, T_A))\, mb = just\,
+  t_A \, (just \, (tarr\, B \,A\, refl\, T_B\, T_A))\, mb = just\,
   T_A}$ and $\mathsf{capp}$ returns $\mathsf{nothing}$ otherwise.  In
 the fourth clause, we must use $\mathsf{List^{\wedge}\, (LTerm\, B)\,
   (GetType\, B)\, ts}$ to extract the type of the head of
@@ -1484,7 +1494,7 @@ $\mathsf{ts} = \mathsf{nil}$ we define $\mathsf{clist\, A\, B\, Q\,
 %pattern match on
 %$\mathsf{list_{ts}}$ and use the result to construct
 %the type we need.  The type of $\mathsf{list_{ts}}$ is
-the type of $\mathsf{list_{ts}}$ becomes $\mathsf{List^{\wedge}\,
+the type of $\mathsf{lift_{ts}}$ becomes $\mathsf{List^{\wedge}\,
   (LTerm\, B)\, (GetType\, B)\, (cons\, t\, ts')} = \mathsf{GetType\,
   B\, t \times List^{\wedge}\, (LTerm\, B)\, (GetType\, B)\, ts'} =
 \mathsf{Maybe\, (LType\, B) \times List^{\wedge}\, (LTerm\, B)\,
@@ -1605,7 +1615,7 @@ and define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
   Equal^{\wedge} \, A\, (List\,B)\, K_\top\, (List^{\wedge} \, B\,
   K_\top) \, e \times List^{\wedge}\, (LTerm\,B) \, (LTerm^{\wedge} \,
   B\, K_\top) \, ts }$.  As in that case we assume a proof
-  $\mathsf{EqualLListKT : Equal^{\wedge} \, A\, (List\,B)\, K_\top\,
+  $\mathsf{Equal^{\wedge}ListKT : Equal^{\wedge} \, A\, (List\,B)\, K_\top\,
   (List^{\wedge} \, B\, K_\top) \, e}$ for the first component.  We
   can define the second component using $\mathsf{liftListMap}$ from
   Section~\ref{sec:ind-lam} to map a morphism $\mathsf{PredMap\,
@@ -1623,7 +1633,7 @@ and define $\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
   proof $\mathsf{ L_{List^\wedge LTerm^\wedge KT} =}$
   $\mathsf{liftListMap \, (LTerm\,B) \, K_\top \, (LTerm^{\wedge}\,
     B\, K_\top) \, m_{K_\top} \, ts \, (List^\wedge KT\, (LTerm\, B)\,
-    ts) }$, we define $\mathsf{LTerm^\wedge KT\,A\, (listC\, B\, e\,
+    ts) }$, we define $\mathsf{LTerm^\wedge KT\,A\, (list\, B\, e\,
     ts) = (K_\top , \, Equal^\wedge ListKT , \, L_{ListL^\wedge
       Term^\wedge KT} ) }$.
 \end{itemize}
