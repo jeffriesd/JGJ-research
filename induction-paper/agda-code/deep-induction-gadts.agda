@@ -26,8 +26,9 @@ List^ A Qa (cons x xs) = Qa x × (List^ A Qa xs)
 Pred : ∀ {l} {a} → (A : Set a) → Set _
 Pred {l} A = A → Set l
 
+-- PredMap A Q Q' is the type of morphisms from Q to Q' 
 PredMap : ∀ {l1 l2} {a} (A : Set a) → Pred {l1} A → Pred {l2} A → Set _
-PredMap A Q1 Q2 = ∀ (x : A) → Q1 x → Q2 x
+PredMap A Q Q' = ∀ (x : A) → Q x → Q' x
 
 -- take a morphism of predicates from Q to Q' and return a morphism of predicates from (List^ A Q) to (List^ A Q') 
 liftListMap : ∀ {a} {l1 l2} (A : Set a) → (Q : A → Set l1) → (Q' : A → Set l2) → PredMap A Q Q' → PredMap (List A) (List^ A Q) (List^ A Q')
@@ -206,6 +207,7 @@ Seq^ A Qa (pair B C e sb sc) =
 
 -- 4.2 - (Deep) induction for Seq
 
+-- equation 9 
 dIndSeq : ∀ (P : ∀ (A : Set) → (A → Set) → Seq A → Set)
             → (∀ (A : Set) (Qa : A → Set) (a : A) → Qa a → P A Qa (const a))
             → (∀ (A B C : Set) (Qa : A → Set) (Qb : B → Set) (Qc : C → Set)
@@ -260,6 +262,7 @@ LTerm^ A Qa (list B e ts) =
 -- end Figure 1
 
 
+-- equation 10 
 {-# TERMINATING #-}
 dIndLTerm : ∀ {l} (P : ∀ (A : Set) → (A → Set) → LTerm A → Set l)
                 -- var
