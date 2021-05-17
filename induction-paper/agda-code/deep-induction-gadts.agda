@@ -316,7 +316,7 @@ postulate
   Equal^ListK⊤ : ∀ {A B : Set} → (e : Equal A (List B)) → Equal^ A (List B) K⊤ (List^ B K⊤) e
 
 
--- We also postulate function extensionality for predicates (i.e., functions whose codomains are sorts), which is needed to define Arr^EqualMap. 
+-- We also postulate function extensionality for predicates, which is needed to define Arr^EqualMap. 
 Extensionality : (a b : Level) → Set _
 Extensionality a b =
   {A : Set a} {f g : A → Set b} → (∀ x → Equal (f x) (g x)) → Equal (∀ z → f z) (∀ z → g z)
@@ -342,7 +342,7 @@ sym refl = refl
 trans : ∀ {l} {A B C : Set l} → Equal A B → Equal B C → Equal A C
 trans refl p = p
 
--- gives extensional proof of equality between Arr^ Qa Qb f and Arr^ Qa' Qb' f
+-- Arr^EqualMap' gives extensional proof of equality between Arr^ Qa Qb f and Arr^ Qa' Qb' f
 Arr^EqualMap' : ∀ {A B : Set} → (Qa Qa' : A → Set) → (Qb Qb' : B → Set)
           → (extA : ∀ x → Equal (Qa x) (Qa' x))
           → (extB : ∀ x → Equal (Qb x) (Qb' x))
@@ -350,7 +350,8 @@ Arr^EqualMap' : ∀ {A B : Set} → (Qa Qa' : A → Set) → (Qb Qb' : B → Set
           → ∀ (z : A) → Equal (Qa z → Qb (f z)) (Qa' z → Qb' (f z))
 Arr^EqualMap' {A} {B} Qa Qa' Qb Qb' extA extB f z = cong₂ (λ (X Y : Set) → X → Y) (extA z) (extB (f z))
 
--- use extensionality postulate to turn Arr^EqualMap' into intensional proof of equality between Arr^ Qa Qb f and Arr^ Qa' Qb' f
+-- Arr^EqualMap uses extensionality postulate to turn Arr^EqualMap' into
+-- intensional proof of equality between Arr^ Qa Qb f and Arr^ Qa' Qb' f
 Arr^EqualMap : ∀ {A B : Set} → (Qa Qa' : A → Set) → (Qb Qb' : B → Set)
           → (extA : ∀ x → Equal (Qa x) (Qa' x))
           → (extB : ∀ x → Equal (Qb x) (Qb' x))
