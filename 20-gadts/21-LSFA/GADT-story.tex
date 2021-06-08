@@ -383,7 +383,7 @@ convert the original structure of type $\mathsf{T\,a}$ to one of type
 $\mathsf{T\,b}$ and then rearrange that resulting structure into one
 of type $\mathsf{T'\,b}$. For example, if $\mathsf{f :: a \to b}$,
 $\mathsf{t \,::\,Tree\,a}$, and $\mathsf{g :: Tree\,a\to List\,a}$
-arranges lists into trees in a type-independent way, then we have the
+arranges trees into lists in a type-independent way, then we have the
 following rearrange-transform property:
 \[\mathsf{map_{List}\,f\,(g \, t) \,=\, g\,(map_{Tree}\,f\,t)}\]
 
@@ -513,13 +513,13 @@ Requiring $F$ to be a functor ensures that the interpretation $\mu F$
 of the ADT $\mathsf{T\,a} = \mathsf{\mu F}$ exists. But to ensure that
 $\mu F$ is itself a functor, so that the type constructor $\mathsf{T}$
 associated with $\mathsf{T\,a}$ also supports its own $\mathsf{map}$
-function, we can require that $F$ also be the fixpoint $\mu H$ of a
-functor $H$. In this case, however, $H$ must be a functor on the
-category $\mathit{Set}^\mathit{Set}$ of functors and natural
-transformations on $\mathit{Set}$. That is, $H$ must be a {\em
-  higher-order} functor on $\mathit{Set}$. Reflecting this requirement
-back into syntax gives that $\mathsf{T\,a} = \mathsf{(\mu H)\,a}$ for
-the ``type constructor constructor'' $\mathsf{H}$ that supports
+function, we can require that $F$ be a functor on the category
+$\mathit{Set}^\mathit{Set}$ of functors and natural transformations on
+$\mathit{Set}$. That is, $F$ must be a {\em higher-order} functor on
+$\mathit{Set}$. Writing $H$ in place of $F$ to emphasize that it is
+higher-order, and reflecting this requirement back into syntax, we
+have that $\mathsf{T\,a} = \mathsf{(\mu H)\,a}$ for the ``type
+constructor constructor'' $\mathsf{H}$ that supports
 suitable\footnote{The $\mathsf{map}$ function for $\mathsf{H}$ is
   intended to satisfy syntactic reflections of the functor laws in
   $\mathit{Set}^\mathit{Set}$ --- i.e., preservation of identity
@@ -882,12 +882,37 @@ interpretation of $\mathsf{G\,a}$ is therefore $(\mathit{Lan}_{\lambda
 It turns out, however, that, for any set $A$, $(\mathit{Lan}_{\lambda
   u. 1} \lambda u. 1)\,A$ is, in fact, exactly $A$. Indeed,
 Proposition~7.1 of~\cite{blw03} gives that $(\mathit{Lan}_{\lambda
-  u. 1} \lambda u. 1)\,A$ can be computed as the set of all functions
-$a : 1 \to A$ modulo the smallest equivalence relation $\sim$ such
-that, for any $f : 1 \to 1$, we have $a \sim a \circ f$.  But this set
-is isomorphic to $A$, because the only function $f : 1 \to 1$ is the
-identity function. This is different from the interpretation of
-$\mathsf{G}$'s Church encoding from the previous paragraph.
+  u. 1} \lambda u. 1)\,A$ can be computed as
+\[\big( \bigcup_{U : \mathit{Set}^0,\,f: (\lambda u.\,1)\,U \to A} (\lambda
+u. 1)\,U \;\big) \,/\,\sim
+\;\;\;\;=\;\;\;\;
+\big( \bigcup_{U :
+  \mathit{Set}^0,\,f: 1 \to A} 1 \big)\,/\,\sim\]
+%\;\;\;\;=\;\;\;\;
+%\big( \bigcup_{f: (\lambda u.1)\,U \to A} 1 \big)\,/\,\sim\]
+where $U$ is the unique object of $\mathit{Set}^0$, $*$ is the unique
+element of the singleton set $1$, and $\sim$ is the smallest
+equivalence relation such that $(U,f, *)$ and $(U,f',*)$ are related
+if
+\[
+\begin{tikzcd}
+(\lambda u.1)\,U \ar[rr, "{\mathit{(\lambda u. 1)\,id_U}}"] \ar[dr, "f"']
+&& (\lambda u.1)\,U \ar[dl, "f'"] \\
+&A
+\end{tikzcd} \;\;\; =\;\;\;
+\begin{tikzcd}
+1 \ar[rr, "{\mathit{id_1}}"] \ar[dr, "f"']
+&&1 \ar[dl, "f'"] \\
+&A
+\end{tikzcd}
+\]
+commutes, i.e., if $f = f'$. Since the relation generating $\sim$ is
+already an equivalence relation, we have that $(U,f,*) \sim (U,f', *)$
+iff $f = f'$. Thus, up to isomorphism, $(\mathit{Lan}_{\lambda u. 1}
+\lambda u. 1)\,A = \{ f : 1 \to A\}$, i.e., $(\mathit{Lan}_{\lambda
+  u. 1} \lambda u. 1)\,A = A$. This is different from the
+interpretation of $\mathsf{G}$'s Church encoding from the previous
+paragraph.
 
 Putting it all together, we see that the Church encoding of
 $\mathsf{G}$ and its fixpoint representation are not semantically
@@ -897,7 +922,7 @@ instances, whereas the interpretation of the latter has data elements
 at every instance other than $\mathsf{G\,0}$.
 %Indeed,
 These additional data elements can be obtained by reflecting back into
-syntax the elements $\mathit{map}_G\,f_a\,c : G\,A$ resulting from
+syntax the elements $\mathit{map}_G\,f_a\,c \in G\,A$ resulting from
 applying the functorial action $\mathit{map}_G$ of $\mathsf{G}$'s
 interpretation $G$ to the functions $f_a : 1 \to A$ determined by the
 elements $a$ of $A \not = \emptyset$ and the interpretation $c$ of
@@ -911,7 +936,7 @@ than data that are constructed using its data constructors? Why should
 a GADT contain ``hidden'' elements that are not specified by the
 GADT's syntax and are only accessible via applications of
 $\mathsf{map}$? From a semanticist's point of view, however, the
-prinitive representation of GADTs is entirely reasonable. Indeed, they
+primitive representation of GADTs is entirely reasonable. Indeed, they
 would likely find the nonfunctorial nature of a GADT's Church encoding
 unnerving at best. After all, they would likely argue, the data in a
 GADT shouldn't change or become ill-typed just because a function is
@@ -946,7 +971,6 @@ explore the differences in parametricity results for the two
 representations of GADTs in the next section.
 
 \section{Parametricity in the Presence of GADTs}\label{sec:par}
-
 {\em Relational parametricity} encodes a powerful notion of type
 uniformity, or representation independence, for data types in
 functional languages. It formalizes the intuition that a polymorphic
@@ -969,7 +993,7 @@ equivalences for them.
 To discuss relational parametricity we will need to interpret data
 types not just in $\mathit{Set}$, but in a suitable category of
 relations as well. The following definition is standard:
-\begin{definition}
+\begin{definition}\label{def:rel}
   The category $\mathit{Rel}$ has:
   \begin{itemize}
 \item objects: A relation is a triple $(A,B,R)$, where $R$ is a
@@ -1002,7 +1026,8 @@ $\mathsf{G[a]}$\footnote{The notation $\mathsf{G[a]}$ indicates that
 relations $G_1 \,R : \mathit{Rel}\,(G_0 \,A, G_0 \,B)$, and to
 interpret each term $\mathsf{t\,(a,x) :: G[a]}$ with one free term
 variable $\mathsf{x :: F[a]}$ as a function $t$ associating to each
-set $A$ a morphism $t \,A : F_0\,A \to G_0\,A$ in $\mathit{Set}$.
+set $A$ a morphism $t \,A : F_0\,A \to G_0\,A$ in
+$\mathit{Set}$. Here, $F_0$ is the set interpretation of $\mathsf{F}$.
 These interpretations are given inductively on the structures of
 $\mathsf{G}$ and $\mathsf{t}$ in such a way that they imply two
 fundamental theorems. The first is an \emph{Identity Extension Lemma},
@@ -1016,7 +1041,8 @@ $(G_0\,A,G_0\,B,G_1\,R)$. The Identity Extension Lemma is similar to
 the Abstraction Theorem except that it holds for {\em all} elements of
 a type's interpretation, not just those that interpret terms.  Similar
 theorems are required for types and terms with any number of free
-variables.
+variables. In particular, if $\mathsf{t}$ is closed (i.e., has no free
+term variables) then $t\,A \in G_0\,A$.
 
 The existence of parametric models that interpret GADTs as the
 interpretations of their Church encodings follows from, e.g., the
@@ -1033,16 +1059,17 @@ $\mathit{Eq_A}$ as intended, then the parametricity property for a
 GADT is an inhabitation result saying that the set interpreting any
 instance of that GADT contains exactly the interpretations of the data
 elements that can be formed using its data constructors and whose type
-is that instance. In terms of syntax the parametricity property for a
-GADT's Church encoding gives that the GADT is inhabited at any
-instance for which data elements can be formed using its data
-constructors. In particular, the parametricity property for the GADT
-$\mathsf{G}$ from~\eqref{eq:G} gives that $\mathsf{G\,a}$ contains a
-single data element if $\mathsf{a}$ is semantically equivalent to
-$\mathsf{1}$ and none otherwise:
+is that instance. The parametricity property for the Church encoding
+of a GADT $\mathsf{G}$ gives that $\mathsf{G\,a}$ is inhabited iff data
+elements of the instance of $\mathsf{G}$ at $\mathsf{a}$ can be formed
+using $\mathsf{G}$'s data constructors.  In particular, the
+parametricity property for the GADT $\mathsf{G}$ from~\eqref{eq:G}
+gives that $\mathsf{G\,a}$ contains a single data element if
+$\mathsf{a}$ is semantically equivalent to $\mathsf{1}$ and none
+otherwise:
 
 \begin{example}\label{ex:CE-par}
-Let $\mathsf{t}$ be a term of type $\mathsf{G\,a}$ for the GADT
+Let $\mathsf{t}$ be a closed term of type $\mathsf{G\,a}$ for the GADT
 $\mathsf{G}$ defined in~\eqref{eq:G}, let $G = (G_0,G_1)$ be the
 interpretation of the Church encoding of $\mathsf{G}$, let $t$ be the
 interpretation of $\mathsf{t}$, and let $R :
@@ -1080,11 +1107,12 @@ an interpretation $G = (G_0,G_1)$ such that, for every relation $R :
 G_0\,B)$.
 
 Intuitively, when $\mathsf{G}$ is viewed as a fixpoint, its data
-elements include those given by functorial completion. Thus, given any
-relation $S : \mathit{Rel}\,(C, D)$ and any morphism $m : S \to R$,
-$G_1\, R$ must contain all elements of the form $G_1\,m\,x$ for $x \in
-G_1\,S$.  But the two components $m_1 : C \to A$ and $m_2 : D \to B$
-of $m$ cannot be given independently of one another, since
+elements include those given by functorial completion. Since $G_1$ is
+a functor, given any relation $S : \mathit{Rel}\,(C, D)$ and any
+morphism $m : S \to R$, $G_1\, R$ must contain all elements of the
+form $G_1\,m\,x$ for $x \in G_1\,S$.  But the two components $m_1 : C
+\to A$ and $m_2 : D \to B$ of $m$ cannot be given independently of one
+another, since Definition~\ref{def:rel} entails that
 %$m$ has to send elements related by $S$ to elements
 %related by $R$ in order to be a well-defined morphism of relations.
 $(m_1\,c, m_2\,d)$ must be in $R$ whenever $(c,d)$ is in $S$ for
@@ -1131,35 +1159,39 @@ $1$. Since left Kan extensions preserve projections~\cite{rie16}, we
 can compute the domain as
 \[\pi_1\,\big( (\mathit{Lan}_{\lambda u\!.\,\mathit{Eq}_1} \lambda
 u\!.\,\mathit{Eq}_1) \, R \big)\;=\; (\mathit{Lan}_{\lambda
-u\!.\,\mathit{Eq}_1} \lambda u\!. \,1)\, R\] (Note that the left Kan
- extension of $\lambda u\!. \,1$ along $\lambda u\!.\,\mathit{Eq}_1$
- is a functor from $\mathit{Rel}$ to $\mathit{Set}$.) By
- Proposition~7.1 of~\cite{blw03} the left Kan extension on the
- right-hand side can be computed as
-\[ \big( \bigcup_{m\, :\, \mathit{Eq}_1 \to R} 1 \big) \; /\; \approx\]
-Here, $*$ is the unique element of the singleton set $1$, and $\approx$
-is the smallest equivalence relation such that $(m,\ast) \approx
-(m',\ast)$ for $m, m' : \mathit{Eq}_1 \to R$ if there exists $f :
-\mathit{Eq}_1 \to \mathit{Eq}_1$ such that $f (\ast, \ast) = (\ast,
-\ast)$ and the following diagram commutes:
+  u\!.\,\mathit{Eq}_1} \lambda u\!. \,1)\, R\] (Note that the left Kan
+extension of $\lambda u\!. \,1$ along $\lambda u\!.\,\mathit{Eq}_1$ is
+a functor from $\mathit{Rel}$ to $\mathit{Set}$.)  By the same
+reasoning as in Example~\ref{ex:g1}, Proposition~7.1 of~\cite{blw03}
+gives that $(\mathit{Lan}_{\lambda u. \mathit{Eq}_1} \lambda u. 1)\,R$
+can be computed as
+\[\big( \bigcup_{U : \mathit{Rel}^0,\,m: (\lambda u.\,\mathit{Eq}_1)\,U \to R} (\lambda
+u. 1)\,U \;\big) \,/\,\approx \;\;\;\;=\;\;\;\; \big( \bigcup_{U :
+  \mathit{Rel}^0,\,m: \mathit{Eq}_1 \to R} 1 \big)\,/\,\approx\] where
+$U$ is the unique object of $\mathit{Rel}^0$, $*$ is the unique
+element of the singleton set $1$, and $\approx$ is the smallest
+equivalence relation such that $(U,m,*)$ and $(U,m',*)$ are related if
 \[
 \begin{tikzcd}
-\mathit{Eq}_1 \ar[rr, "{f}"] \ar[dr, "m"']
+(\lambda u.\mathit{Eq}_1)\,U \ar[rr, "{\mathit{(\lambda
+        u.\mathit{Eq}_1)\,id_U}}"] \ar[dr, "m"'] 
+&& (\lambda u. \mathit{Eq}_1)\,U \ar[dl, "m'"] \\
+&R
+\end{tikzcd} \;\;\; =\;\;\;
+\begin{tikzcd}
+\mathit{Eq}_1 \ar[rr, "{\mathit{id_{\mathit{Eq}_1}}}"] \ar[dr, "m"']
 &&\mathit{Eq}_1 \ar[dl, "m'"] \\
 &R
 \end{tikzcd}
 \]
-The only morphism $f : \mathit{Eq}_1 \to \mathit{Eq}_1$ is $f = (!,
-!)$, where $!$ is the unique function from $1$ to $1$.  Since this
-morphism does satisfy the condition $f (\ast, \ast) = (\ast, \ast)$,
-we have that $(m,\ast) \approx (m',\ast)$ if and only if $m =
-m'$. Thus
-\[ \big( \bigcup_{m\, :\,
-  \mathit{Eq}_1 \to R} 1 \big) \; /\; \approx \;\;\; = \;\; \{m :
-\mathit{Eq}_1 \to R\} \;=\; \{(!, k_0), (!, k_1)\}\] where $k_0, k_1 :
-1 \to 2$ are the constantly $0$-valued and $1$-valued functions in
-$\mathit{Set}$, respectively, and therefore $\pi_1\,\big(
-(\mathit{Lan}_{\lambda u\!.\,\mathit{Eq}_1} \lambda
+commutes, i.e., if $m = m'$. Since the relation generating $\approx$
+is already an equivalence relation, we have that $(U,m,*) \approx
+(U,m', *)$ iff $m = m'$. Thus, up to isomorphism,
+$(\mathit{Lan}_{\lambda u\!.\,\mathit{Eq}_1} \lambda u\!. \,1)\, R =
+\{ m : \mathit{Eq}_1 \to R\}$.  But this set is $\{(!, k_0), (!,
+k_1)\}$, where $k_0, k_1 : 1 \to 2$ are the constantly $0$-valued and
+$1$-valued functions in $\mathit{Set}$, respectively, and therefore
+$\pi_1\,\big( (\mathit{Lan}_{\lambda u\!.\,\mathit{Eq}_1} \lambda
 u\!.\,\mathit{Eq}_1) \, R \big)$ is not $1$, as would be needed for
 the Identity Extension Lemma to hold.  Since the Identity Extension
 Lemma does not hold for models in which GADTs are interpreted by the
