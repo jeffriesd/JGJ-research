@@ -531,19 +531,29 @@ are
 \end{defi}
 We write $\vdash F$ for $\emptyset;\emptyset \vdash F$.
 Definition~\ref{def:wftypes} ensures that the expected weakening rules
-for well-formed types hold, although weakening does not change the
-contexts in which types can be formed. If $\Gamma;\emptyset \vdash F$
-and $\Gamma;\emptyset \vdash G$, then our rules allow formation of the
-types $\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$ and $\Gamma;
-\emptyset \vdash \Nat^{\ol\alpha} \,\onet \,F$, which represent the
-System F types $\Gamma \vdash F \to G$ and $\forall$-type $\Gamma;
-\emptyset \vdash \forall \ol\alpha . F$, respectively. However, some
-System F types, such as $\forall \alpha. (\alpha \to \alpha) \to
-\alpha$, are not representable in our calculus. Note that, in the
-rule for $\mu$-types, no variables in $\Phi$ are applied to types
-involving variables from $\ol\alpha$ in the body $F$ of $\mu
-\phi. \lambda \ol\alpha.F$. This will be critical to proving the
-Identity Extension Lemma for our calculus.
+for well-formed types hold, i.e., if $\Gamma; \Phi \vdash F$ is
+well-formed, then both $\Gamma, \ol{\psi}; \Phi \vdash F$ and $\Gamma;
+\Phi, \ol{\phi} \vdash F$ are also well-formed. Note, however, that
+weakening does not change the contexts in which types can be formed.
+For example, the functorial context in which a type $\Nat^\emptyset F
+\,G$ is formed must be empty, although it can be weakened by a
+functorial variable $\beta$ {\em after} the type is formed; by
+contrast, we cannot {\em first} weaken the functorial contexts of $F$
+and $G$ to $\Gamma; \beta \vdash F$ and $\Gamma; \beta \vdash G$, and
+{\em then} form $\Nat^\emptyset F \,G$ in the weakened context
+$\Gamma; \beta$.  If $\Gamma;\emptyset \vdash F$ and $\Gamma;\emptyset
+\vdash G$, then our rules allow formation of the type
+$\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$, which represents the
+System F type $\Gamma \vdash F \to G$. Similarly, if
+$\Gamma;\ol{\alpha} \vdash F$, then our rules allow formation of the
+type $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,F$, which
+represents the System F type $\Gamma; \emptyset \vdash \forall
+\ol\alpha . F$. However, some System F types, such as $\forall
+\alpha. (\alpha \to \alpha) \to \alpha$, are not representable in our
+calculus. Note that, in the rule for $\mu$-types, no variables in
+$\Phi$ are applied to types involving variables from $\ol\alpha$ in
+the body $F$ of $\mu \phi. \lambda \ol\alpha.F$. This will be critical
+to proving the Identity Extension Lemma for our calculus.
 
 Definition~\ref{def:wftypes} allows the formation of all of the types
 from Section~\ref{sec:intro}:
@@ -559,7 +569,7 @@ from Section~\ref{sec:intro}:
 \times \phi\,(\phi\beta))\,\alpha 
 \end{array}\]
            
-Note that since the body F of a type $(\mu \phi. \lambda
+Note that since the body $F$ of a type $(\mu \phi. \lambda
 \ol\alpha. F)\ol{G}$ can only be functorial in $\phi$ and the
 variables in $\ol{\alpha}$, the representation of
 $\mathit{List}\,\alpha$ as the ADT $\mu \beta. \,\onet + \alpha \times
@@ -640,10 +650,11 @@ G[\phi :=_{\ol{\alpha}} F] \times K[\phi
 The idea is that the arguments to $\phi$ get substituted for the
 variables in $\ol\alpha$ in each $F$ replacing an occurrence of
 $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
-  :=_{\ol{\alpha}} F]$. In addition, if \,$\Gamma, \phi^k; \Phi \vdash
-H$,\, $\Gamma; \ol\psi,\ol{\alpha} \vdash F$, $|\ol\alpha| = k$, and
-$\Phi \cap \ol\psi = \emptyset$, then $\Gamma,\ol\psi';\Phi \vdash
-H[\phi :=_{\ol{\alpha}} F[\ol{\psi :== \psi'}]]$.
+  :=_{\ol{\alpha}} F]$. {\color{red} REMOVE? In addition, if
+  \,$\Gamma, \phi^k; \Phi \vdash H$,\, $\Gamma; \ol\psi,\ol{\alpha}
+  \vdash F$, $|\ol\alpha| = k$, and $\Phi \cap \ol\psi = \emptyset$,
+  then $\Gamma,\ol\psi';\Phi \vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi
+        :== \psi'}]]$.}
 
 \subsection{Terms}\label{sec:terms}
 
@@ -787,7 +798,7 @@ to map the polymorphic function $\mathit{flatten} : \Nat^\beta
 (\mathit{PTree}\,\beta)\,(\mathit{List}\,\beta)$ over a list.  Even in
 the absence of extra variables the instance of $\map$ required to map
 each non-functorial monomorphic instantiation of $\mathit{flatten}$
-over a list of perfect trees is well-typed:
+over a list of perfect trees is well-formed:
 \[\begin{array}{l}
 \hspace*{-0.1in}\AXC{$\Gamma;\alpha \vdash \mathit{List} \, \alpha$}
 \AXC{$\Gamma;\emptyset \vdash \mathit{PTree}\,F$}
@@ -888,7 +899,8 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 \end{array}\]
 respectively. Our calculus can similarly define a
 $\mathtt{reverseBush}$ function that reverses the data in a bush. This
-function maps, e.g., the bush
+function maps, e.g., the bush {\color{red} Change one 2 to 4? Find a
+  better name for this operation than reverse.}
 \[\begin{array}{l}
 \mathit{bcons}\,0 \,(\mathit{bcons}\, (\mathit{bcons}\, 1\,
 (\mathit{bcons}\, (\mathit{bcons}\, 2\,\mathit{bnil}) \,
@@ -961,10 +973,10 @@ variables $\ol\alpha$ from $\mu$-types to other functors $F$. The
 restrictions on $\Nat$-types entail that $F$ cannot itself be a
 $\Nat$-type containing $\ol{\alpha}$, so, e.g., $\Nat^\alpha
 (\mathit{PTree}\,\alpha) \,(\Nat^\emptyset (\mathit{PTree}\,\alpha)\,
-(\mathit{PTree}\,(\alpha \times \alpha)))$ is not well-typed.
+(\mathit{PTree}\,(\alpha \times \alpha)))$ is not well-formed.
 Uncurrying gives $\Nat^\alpha (\mathit{PTree}\,\alpha \times
 \mathit{PTree}\,\alpha)\, (\mathit{PTree}\,(\alpha \times \alpha))$,
-which is well-typed, but $\mathsf{fold}$ cannot produce a term of this
+which is well-formed, but $\mathsf{fold}$ cannot produce a term of this
 type because $\mathit{PTree}\,\alpha \times \mathit{PTree}\,\alpha$ is
 not a $\mu$-type. Our calculus can, however, express types of
 recursive functions that take multiple nested types as arguments,
@@ -1079,15 +1091,19 @@ of arity $0$ to a set.  If $\ol{\alpha} = \{\alpha_1,...,\alpha_k\}$
 and $\ol{A} = \{A_1,...,A_k\}$, then we write $\rho[\ol{\alpha := A}]$
 for the set environment $\rho'$ such that $\rho' \alpha_i = A_i$ for
 $i = 1,...,k$ and $\rho' \alpha = \rho \alpha$ if $\alpha \not \in
-\{\alpha_1,...,\alpha_k\}$.  If $\rho$ is a set environment we write
-$\Eq_\rho$ for the relation environment (see
-Definition~\ref{def:reln-env}) such that $\Eq_\rho v = \Eq_{\rho v}$
-for every type variable $v$.
+\{\alpha_1,...,\alpha_k\}$. 
 
-We can now define our set interpretations.  The relational
-interpretations appearing in the second clause of
-Definition~\ref{def:set-sem} are given in
-Definition~\ref{def:rel-sem}.
+We can now define our set interpretations.  If $\rho$ is a set
+environment we write $\Eq_\rho$ for the equality relation environment
+such that $\Eq_\rho \phi = \Eq_{\rho \phi}$ for every type variable
+$\phi$; see Definitions~\ref{def:rel-transf} and~\ref{def:reln-env}
+for the definitions of a relation transformer and a relation
+environment, and Equation~\ref{def:eq-transf} for the definition of
+the relation transformer $\Eq_F$ on a functor $F$.  Equality relation
+environments appear in the third clause of
+Definition~\ref{def:set-sem}.  The relational interpretations also
+appearing in the third clause of Definition~\ref{def:set-sem} are
+given in Definition~\ref{def:rel-sem}.
 
 \begin{defi}\label{def:set-sem}
 The {\em set interpretation} $\setsem{\cdot} : \F \to [\setenv, \set]$
@@ -2120,8 +2136,10 @@ F\overline{A}$.  Then $\iota_{\alpha^\wedge \graph{\overline{f}}}
 
 To prove the IEL, we also need to know that the equality relation
 transformer preserves equality relations.  The {\em equality relation
-  transformer} on $F : [\set^k,\set]$ is defined to be $\Eq_F =
-\graph{\id_{F}} = (F, F, \graph{\id_{F}}^*)$.
+  transformer} on $F : [\set^k,\set]$ is defined to be
+\begin{equation}\label{def:eq-transf}
+  \Eq_F = \graph{\id_{F}} = (F, F, \graph{\id_{F}}^*)
+\end{equation}  
 Lemma~\ref{lem:eq-reln-equalities} then gives that, for all $\ol{A :
 \set}$,
 \begin{equation}\label{eq:eq-pres-eq}
