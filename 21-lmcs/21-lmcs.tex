@@ -1091,7 +1091,8 @@ of arity $0$ to a set.  If $\ol{\alpha} = \{\alpha_1,...,\alpha_k\}$
 and $\ol{A} = \{A_1,...,A_k\}$, then we write $\rho[\ol{\alpha := A}]$
 for the set environment $\rho'$ such that $\rho' \alpha_i = A_i$ for
 $i = 1,...,k$ and $\rho' \alpha = \rho \alpha$ if $\alpha \not \in
-\{\alpha_1,...,\alpha_k\}$. 
+\{\alpha_1,...,\alpha_k\}$. We note that $\lambda \ol{A}.\,
+\rho[\ol{\alpha  := A}]$ is a functor in $\ol{A}$.
 
 We can now define our set interpretations.  If $\rho$ is a set
 environment we write $\Eq_\rho$ for the equality relation environment
@@ -1149,25 +1150,23 @@ instead of $\setsem{\vdash F}\rho$ since the environment is
 immaterial. The third clause of Definition~\ref{def:set-sem} does
 indeed define a set: local finite presentability of $\set$ and
 $\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$
-ensure that $\{\eta : \setsem{\Gamma;\ol{\alpha} \vdash F}\rho
-\Rightarrow \setsem{\Gamma;\ol{\alpha} \vdash G}\rho\}$ (which
-contains $\setsem{\Gamma;\emptyset \vdash
-  \Nat^{\ol{\alpha}}\,F\,G}\rho$) is a subset of
-$\big\{({\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha :=
-      S}]})^{(\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[\ol{\alpha :=
-      S}])}~\big|~ \ol{S} = (S_1,...,S_{|\ol{\alpha}|}), \mbox{ and }$
-$S_i \mbox{ is a finite set for } i =
-1,...,|\ol{\alpha}|\big\}$. There are countably many choices of tuples
-$\ol{S}$, each of which gives rise to a morphism from
-${\setsem{\Gamma;\ol{\alpha} \vdash F}\rho[ \ol{\alpha := S}]}$ to
-${\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := S}]}$, but
-only $\set$-many choices of morphisms between any two objects since
-$\set$ is locally small. Also, $\setsem{\Gamma; \emptyset \vdash
-  \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous since it is
-constant on $\omega$-directed sets. Interpretations of $\Nat$-types
-ensure that $\setsem{\Gamma \vdash F \to G}$ and $\setsem{\Gamma
-  \vdash \forall \ol\alpha. F}$ are as expected in any parametric
-model.
+ensure that $\{\eta : \lambda \ol{A}.\,\setsem{\Gamma;\ol{\alpha}
+  \vdash F}\rho[\ol{\alpha := A}] \Rightarrow \lambda
+\ol{A}.\,\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := A}]\}$
+(containing $\setsem{\Gamma;\emptyset \vdash
+  \Nat^{\ol{\alpha}}\,F\,G}\rho$) can be embedded in the set
+\[ \prod_{\substack{\ol{S} =
+    (S_1,...,S_{|\ol{\alpha}|})\\ S_1,...,S_{|\ol{\alpha}|} \mbox{ are
+      finite cardinals}}} \hspace*{-0.4in}(\setsem{\Gamma;\ol{\alpha}
+  \vdash G}\rho[\ol{\alpha := S}])^{(\setsem{\Gamma;\ol{\alpha} \vdash
+    F}\rho[\ol{\alpha := S}])}\] Also, $\setsem{\Gamma; \emptyset
+  \vdash \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous since it is
+constant on $\omega$-directed sets; indeed, it is constant on
+$\omega$-directed sets because Definition~\ref{def:set-env} ensures
+that restrictions to $\mathbb{T}^k$ of morphisms between set
+environments are identities.  Interpretations of $\Nat$-types ensure
+that $\setsem{\Gamma \vdash F \to G}$ and $\setsem{\Gamma \vdash
+  \forall \ol\alpha. F}$ are as expected in any parametric model.
 
 To make sense of the last clause in Definition~\ref{def:set-sem}, we
 need to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is
@@ -1193,6 +1192,11 @@ $F : [\set^k,\set]$ is the natural transformation $T^\set_{H,f}\, F :
 T^\set_{H,\rho}\,F \to T^\set_{H,\rho'}\,F$ whose component at
 $\ol{A}$ is $(T^\set_{H,f}\, F)_{\ol{A}} = \setsem{\Gamma;
   \phi,\ol{\alpha} \vdash H}f[\phi := \id_F][\ol{\alpha := \id_A}]$.
+Note that this action of $T_{H,\rho}^\set$ on morphisms appears in the
+final clause of Definition~\ref{def:set-sem-funcs} below. It will
+indeed be well-defined there because the functorial action of
+$\setsem{\Gamma; \phi,\ol{\alpha} \vdash H}$ will already be available
+from the induction hypothesis on $H$.
 
 Using $T^\set_H$, we can define the functorial action of set
 interpretation.
@@ -1316,11 +1320,11 @@ The category $RT_k$ of $k$-ary relation transformers is given by the
 following data:
 \begin{itemize}
 \item An object of $RT_k$ is a relation transformer
-\item A morphism $\delta : (G^1,G^2,G^*) \to (H^1,H^2,H^*)$ in $RT_k$
+\item A morphism $\delta : (F^1,F^2,F^*) \to (G^1,G^2,G^*)$ in $RT_k$
   is a pair of natural transformations $(\delta^1, \delta^2)$, where
-  $\delta^1 : G^1 \to H^1$ and $\delta^2 : G^2 \to H^2$, such that,
-  for all $\ol{R : \rel(A, B)}$, if $(x, y) \in G^*\ol{R}$ then
-  $(\delta^1_{\ol{A}}x, \delta^2_{\ol{B}}y) \in H^*\ol{R}$
+  $\delta^1 : F^1 \to G^1$ and $\delta^2 : F^2 \to G^2$, such that,
+  for all $\ol{R : \rel(A, B)}$, if $(x, y) \in F^*\ol{R}$ then
+  $(\delta^1_{\ol{A}}x, \delta^2_{\ol{B}}y) \in G^*\ol{R}$
 \item Identity morphisms and composition are inherited from the
   category of functors on $\set$
 \end{itemize}
@@ -1354,8 +1358,8 @@ three conditions hold:
 \item $H^*(F^1,F^2,F^*)\, \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha},
   H^2F^2 \ol{\beta})$ whenever $(\alpha_1, \beta_1) \in
   \Homrel(R_1,S_1),..., (\alpha_k, \beta_k)$ $\in \Homrel(R_k,S_k)$
-\item If $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ and
-  $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
+\item If $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ in
+  $RT_k$ and $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
   $((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
   H^*(G^1,G^2,G^*)\ol{R}$ whenever $(x, y) \in H^*(F^1,F^2,F^*)\ol{R}$
 \end{itemize}
@@ -1522,11 +1526,11 @@ the set environments mapping each type variable $\phi$ to the functors
 $(\rho\phi)^1$ and $(\rho\phi)^2$, respectively.
 
 \begin{defi}\label{def:relenv-functor}
-For each $k$, an $\omega$-cocontinuous functor $H : [\relenv, RT_k]$
+For each $k$, an $\omega$-cocontinuous functor $H \in [\relenv, RT_k]$
 is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are objects in $[\setenv,[\set^k,\set]]$
-\item $H^*$ is a an object in $[\relenv,[\rel^k,\rel]]$
+\item $H^*$ is an object in $[\relenv,[\rel^k,\rel]]$
 \item For all $\overline{R : \rel(A,B)}$ and morphisms $f$ in
   $\relenv$, $\pi_1(H^*f \,{\overline{R}}) = H^1 (\pi_1
   f)\,{\overline{A}}$ and $\pi_2(H^*f \,{\overline{R}}) = H^2 (\pi_2
@@ -1556,14 +1560,14 @@ As before, the last condition is automatically satisfied because it is
 implied by the third bullet point of
 Definition~\ref{def:relenv-functor}.
 
-Considering $\relenv$ as a product $\Pi_{\phi^k \in \tvars \cup
-  \fvars} RT_k$, computation of $\omega$-directed colimits in $RT_k$
-extends componentwise to $\relenv$. Similarly, $\omega$-cocontinuity
-for endofunctors on $RT_k$ extends componentwise to functors from
-$\relenv$ to $RT_k$.  Recalling from the start of this subsection that
-Definition~\ref{def:rel-sem} is given mutually inductively with
-Definition~\ref{def:set-sem} we can now define our relational
-interpretations.
+Considering $\relenv$ as a subcategory of the product $\Pi_{\phi^k \in
+  \tvars \cup \fvars} RT_k$, computation of $\omega$-directed colimits
+in $RT_k$ extends componentwise to $\relenv$. Similarly,
+$\omega$-cocontinuity for endofunctors on $RT_k$ extends componentwise
+to functors from $\relenv$ to $RT_k$.  Recalling from the start of
+this subsection that Definition~\ref{def:rel-sem} is given mutually
+inductively with Definition~\ref{def:set-sem} we can now define our
+relational interpretations.
 
 \begin{defi}\label{def:rel-sem}
 The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
@@ -1621,34 +1625,36 @@ and~\ref{def:rel-sem-funcs} below respect weakening, and also ensure
 that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma \vdash
   \forall \ol \alpha. F}$ are as expected in any parametric model.  As
 for set interpretations, $\relsem{\Gamma; \emptyset \vdash
-  \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous because it is
-constant on $\omega$-directed sets. If $\rho \in \relenv$ and $\vdash
-F$, then we write $\relsem{\vdash F}$ instead of $\relsem{\vdash
-  F}\rho$.  For the last clause in Definition~\ref{def:rel-sem} to be
-well-defined we need $T_{H,\rho}$ to be an $\omega$-cocontinuous
-endofunctor on $RT$ so that, by Lemma~\ref{lem:fp}, it admits a
-fixpoint. Since $T_{H,\rho}$ is defined in terms of
-$\relsem{\Gamma;\phi, \ol{\alpha} \vdash H}$, this means
-that relational interpretations of types must be $\omega$-cocontinuous
-functors from $\relenv$ to $RT_0$, which in turn entails that the
-actions of relational interpretations of types on objects and on
-morphisms in $\relenv$ are intertwined. As for set interpretations, we
-know from~\cite{jp19} that, for every $\Gamma; \ol{\alpha} \vdash F$,
-$\relsem{\Gamma; \ol{\alpha} \vdash F}$ is actually in $[\rel^k,\rel]$
-where $k = |\ol \alpha|$. We first define the actions of each of these
-functors on morphisms between environments, and then argue that they
-are well-defined and have the required properties. To do this, we
-extend $T_H$ to a {\em functor} from $\relenv$ to
-$[[\rel^k,\rel],[\rel^k,\rel]]$. Its action on an object $\rho \in
-\relenv$ is given by the higher-order functor $T_{H,\rho}$ whose
-actions on objects and morphisms are given in
+  \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous; indeed, it is
+constant on $\omega$-directed sets because
+Definition~\ref{def:reln-env} ensures that restrictions to
+$\mathbb{T}^k$ of morphisms between relational environments are
+identities. If $\rho \in \relenv$ and $\vdash F$, then we write
+$\relsem{\vdash F}$ instead of $\relsem{\vdash F}\rho$.  For the last
+clause in Definition~\ref{def:rel-sem} to be well-defined we need
+$T_{H,\rho}$ to be an $\omega$-cocontinuous endofunctor on $RT$ so
+that, by Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_{H,\rho}$
+is defined in terms of $\relsem{\Gamma;\phi, \ol{\alpha} \vdash H}$,
+this means that relational interpretations of types must be
+$\omega$-cocontinuous functors from $\relenv$ to $RT_0$, which in turn
+entails that the actions of relational interpretations of types on
+objects and on morphisms in $\relenv$ are intertwined. As for set
+interpretations, we know from~\cite{jp19} that, for every $\Gamma;
+\ol{\alpha} \vdash F$, $\relsem{\Gamma; \ol{\alpha} \vdash F}$ is
+actually in $[\rel^k,\rel]$ where $k = |\ol \alpha|$. We first define
+the actions of each of these functors on morphisms between
+environments, and then argue that they are well-defined and have the
+required properties. To do this, we extend $T_H$ to a {\em functor}
+from $\relenv$ to $[[\rel^k,\rel],[\rel^k,\rel]]$. Its action on an
+object $\rho \in \relenv$ is given by the higher-order functor
+$T_{H,\rho}$ whose actions on objects and morphisms are given in
 Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
 \to \rho'$ is the higher-order natural transformation $T_{H,f} :
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
 the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash
-  H}f[\phi := \id_F][\ol{\alpha := \id_R}]$.
+F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash H}f[\phi :=
+  \id_F][\ol{\alpha := \id_R}]$.
 
 Using $T_H$, we can define the functorial action of relational
 interpretation.
@@ -2191,20 +2197,14 @@ application, and fixpoint cases are non-routine.
   \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ;
     \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in
   $\rel$ for all ${R_1 : \rel(A_1,B_1)},...,{R_k : \rel(A_k,B_k)}$ if
-  and only if $t = t'$ and $(t_{\overline{A}}, t_{\overline{B}})$ is a
+  and only if $t = t'$.  We first show that if $(t_{\overline{A}},
+  t'_{\overline{B}})$ is a morphism from $\relsem{\Gamma;
+    \overline\alpha \vdash F} \Eq_{\rho}\overline{[\alpha := R]}$ to
+  $\relsem{\Gamma ; \overline\alpha \vdash G}
+  \Eq_{\rho}\overline{[\alpha := R]}$ for all ${R_1 : \rel(A_1,B_1),}$
+  $...,{R_k : \rel(A_k,B_k)}$ then $t = t'$.  By hypothesis, for all
+  $A_1\,...\,A_k : \set$, $(t_{\overline{A}}, t'_{\overline{A}})$ is a
   morphism from $\relsem{\Gamma; \overline\alpha \vdash F}
-  \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ; \overline
-    \alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ in $\rel$ for
-  all ${R_1 : \rel(A_1,B_1)}, ...,$ ${R_k : \rel(A_k,B_k)}$. The only
-  interesting part of this equivalence is to show that if
-  $(t_{\overline{A}}, t'_{\overline{B}})$ is a morphism from
-  $\relsem{\Gamma; \overline\alpha \vdash F}
-  \Eq_{\rho}\overline{[\alpha := R]}$ to $\relsem{\Gamma ;
-    \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha := R]}$ for
-  all ${R_1 : \rel(A_1,B_1),}$ $...,{R_k : \rel(A_k,B_k)}$ then $t =
-  t'$.  By hypothesis, for all $A_1\,...\,A_k : \set$,
-  $(t_{\overline{A}}, t'_{\overline{A}})$ is a morphism from
-  $\relsem{\Gamma; \overline\alpha \vdash F}
   \Eq_{\rho}\overline{[\alpha := \Eq_{A}]}$ to $\relsem{\Gamma ;
     \overline\alpha \vdash G} \Eq_{\rho}\overline{[\alpha :=
       \Eq_{A}]}$. By the induction hypothesis, it is therefore a
@@ -2214,7 +2214,11 @@ application, and fixpoint cases are non-routine.
   $\rel$. This means that, for all $x : \Eq_{\setsem{\Gamma;
       \overline\alpha \vdash F} \rho\overline{[\alpha := A]}}$,
   $t_{\overline{A}}x = t'_{\overline{A}}x$, so $t = t'$ by
-  extensionality.
+  extensionality. For the converse, we observe that if $t = t'$ then
+  the desired conclusion is simply the extra condition in the
+  definition of $\setsem{\Gamma;\emptyset \vdash
+    \Nat^{\overline\alpha} \,F\,G} \rho$.
+ 
 \item The application case is proved by the following sequence of
   equalities, where the second equality is by the induction hypothesis
   and the definition of the relation environment $\Eq_\rho$, the third
@@ -2256,13 +2260,12 @@ application, and fixpoint cases are non-routine.
 Here, the third equality is by induction hypothesis, the fifth is by
 Equation~\ref{eq:eq-pres-eq}, and the fourth equality is because, for
 every $n \in \nat$, the following two statements can be proved by
-simultaneous induction: and for any $H$, $\rho$, $A$, and subformula
-$J$ of $H$,
+simultaneous induction: for any $H$, $\rho$, and $A$, 
 \begin{equation}\label{eq:iel-fix-point-intermediate1}
 T^n_{H, \Eq_{\rho}} K_0\, \ol{\Eq_A} = (\Eq_{(T^\set_{H, \rho})^n K_0})^*
 \ol{\Eq_A}
 \end{equation}
-and 
+and for any subformula $J$ of $H$,
 \begin{equation}\label{eq:iel-fix-point-intermediate2}
 \begin{split}
 & \relsem{\Gamma; \phi, \ol{\alpha} \vdash J} \Eq_{\rho} [\phi
@@ -2422,9 +2425,14 @@ and the inductive case is proved by: \\
 \end{align*}
 Here, the second equality holds by the induction hypothesis for
 Equation~\ref{eq:helper} on $m$. The fourth equality holds because
-$\phi$ and the variables in $\ol\alpha$ do not appear in
-$G$. 
+$\phi$ and the variables in $\ol\alpha$ do not appear in $G$. (We note
+that this case of the IEL would fail to hold if the functorial context
+in which the body $F$ of a $\mu$-type $\mu \phi. \lambda
+\ol{\alpha}. F$ were formed in Definition~\ref{def:wftypes} were
+extended to contain variables other than $\phi$ and the $\alpha$s.
+This justifies our design of the $\mu$-type formation rule there.)
 \end{itemize}
+This concludes the fixpoint case.
 \item $\relsem{\Gamma; \Phi \vdash F + G} \Eq_{\rho} =
   \relsem{\Gamma; \Phi \vdash F} \Eq_{\rho} + \relsem{\Gamma;
     \Phi \vdash G} \Eq_{\rho} = \Eq_{\setsem{\Gamma; \Phi \vdash
@@ -2729,12 +2737,18 @@ Direct calculation further reveals that term interpretations also
 satisfy
 \[\dsem{\Gamma; \Phi~|~\Delta \vdash
   (L_{\ol{\alpha}}x.t)_{\ol{K}}s} = \dsem{\Gamma; \Phi~|~\Delta \vdash
-  t [\ol{\alpha := K}][x := s]}\] Term extensionality for both types
-and terms --- i.e., \[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha
-  \top : F} = \dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\] and
-\[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha x : F} =
-\dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\] --- then follow (assuming
-both sides of these equations are defined).
+  t [\ol{\alpha := K}][x := s]}\]
+       {\color{red} Add if true:
+$\dsem{\Gamma; \emptyset~|~\Delta \vdash L_{\ol{\alpha}} x.t_{\ol{\alpha}} x :
+   \Nat^{\ol{\alpha}}\, F\, G} =  \dsem{\Gamma; \emptyset~|~\Delta \vdash
+   t : \Nat^{\ol{\alpha}}\, F\, G}$}
+
+%Term extensionality for both types
+%and terms --- i.e., \[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha
+%  \top : F} = \dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\] and
+%\[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha x : F} =
+%\dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\] --- then follow (assuming
+%both sides of these equations are defined).
 
 \section{Naturality and the Abstraction Theorem}\label{sec:abs-and-nat}
 
@@ -2807,7 +2821,7 @@ every $\map_H$ is a functor, i.e., if $\Gamma; \ol\alpha, \ol\gamma
 \end{align*}
 In fact, we have that if $\Gamma; \ol{\alpha} \vdash H$, $\ol{\Gamma;
   \emptyset \vdash F}$, and $\ol{\Gamma; \emptyset \vdash G}$, then,
-for all $\ol{f : \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset
+for all $\ol{f \in \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset
     F\,G}\rho}$,
 \[\begin{array}{rl}
 &\setsem{ \Gamma;\emptyset\,|\,\ol{x : \Nat^\emptyset F \, G}
@@ -2820,7 +2834,7 @@ for all $\ol{f : \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset
 Here, we obtain the first equality from the appropriate instance of
 Definition~\ref{def:set-interp}, and the second one by noting that
 $\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho
-[\ol{\alpha := A}]$ is a functor in $\alpha$ and using
+[\ol{\alpha := A}]$ is a functor in $\ol{\alpha}$ and using
 $\mathit{map}_G\,\ol f$ to denote the action of the semantic functor
 $G$ on morphisms $\ol f$. We also have, e.g., that:
 
@@ -2847,7 +2861,7 @@ $\bullet$\; $\map$ is a higher-order functor, i.e., if $\Gamma;
 \vspace*{0.1in}
 
 \noindent
-$\bullet$\; $\fold$ satisfies its universal property, i.e., if $\xi =
+$\bullet$\; $\fold$ behaves as expected, i.e., if $\xi =
 \Nat^{\overline{\beta}}\, H[\phi :=
   (\mu \phi. \lambda
   \overline{\alpha}. H)\overline{\beta}][\overline{\alpha := \beta}]\;
