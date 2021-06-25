@@ -151,12 +151,11 @@ ML, Agda, Epigram, and Idris. ADTs, such as that of natural numbers,
 can be unindexed. But they can also be indexed over other types. For
 example, the ADT of lists (here coded in Agda)
 
-{\small
 \[\begin{array}{l}
 \mathtt{data\; List \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{nil\;:\; List\;A}\\
 \hspace*{0.4in}\mathtt{cons\;:\;A \rightarrow List\;A \rightarrow List\;A}
-\end{array}\]}
+\end{array}\]
 
 \noindent
 is indexed over its element type $\mathtt{A}$.  The instance of
@@ -168,8 +167,7 @@ That is, $\mathtt{List}$, like all other ADTs, defines a {\em family
 Over time, there has been a notable trend toward data types whose
 non-regular indexing can capture invariants and other sophisticated
 properties that can be used for program verification and other
-applications.  A simple example of such a type is given by Bird and
-Meertens'~\cite{bm98} prototypical nested type
+applications.  A simple example of such a type is given by the type 
 \[\begin{array}{l}
 \mathtt{data\; PTree\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{pleaf\;:\;A \rightarrow PTree\;A}\\
@@ -177,22 +175,24 @@ Meertens'~\cite{bm98} prototypical nested type
 \end{array}\]
 \noindent
 of perfect trees, which can be thought of as constraining lists to
-have lengths that are powers of 2.  The above code makes clear that
-perfect trees at index type $\mathtt{A}$ are defined in terms of
-perfect trees at index type $\mathtt{A \times A}$. This is typical of
-nested types, one type instance of which can depend on others, so that
-the entire family of types must actually be defined at once. A nested
-type thus defines not a family of inductive types, but rather an {\em
-  inductive family of types}.  Nested types include simple nested
-types, like perfect trees, none of whose recursive occurrences occur
-below another type constructor; ``deep'' nested types~\cite{jp20},
-such as the nested type {\small
+have lengths that are powers of 2.  A similar data type
+$\mathtt{Nest}$ is given in the canonical paper~\cite{bm98} on nested
+types. The above code makes clear that perfect trees at index type
+$\mathtt{A}$ are defined in terms of perfect trees at index type
+$\mathtt{A \times A}$. This is typical of nested types, one type
+instance of which can depend on others, so that the entire family of
+types must actually be defined at once. A nested type thus defines not
+a family of inductive types, but rather an {\em inductive family of
+  types}.  Nested types include simple nested types, like perfect
+trees, none of whose recursive occurrences occur below another type
+constructor; ``deep'' nested types~\cite{jp20}, such as the nested
+type
 \[\begin{array}{l}
 \mathtt{data\; PForest\;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{fempty\;:\;PForest\;A}\\
 \hspace*{0.4in}\mathtt{fnode\;:\; A \rightarrow PTree\;(PForest\;A) \to
 PForest\;A}
-\end{array}\]}
+\end{array}\]
 \hspace{-0.04in}of perfect forests, whose recursive occurrences appear
 below type constructors for other nested types; and truly nested
 types, such as the nested type {\small
@@ -201,7 +201,7 @@ types, such as the nested type {\small
 \hspace*{0.4in}\mathtt{bnil\;:\; Bush\;A}\\
 \hspace*{0.4in}\mathtt{bcons\;:\;A \rightarrow Bush\;(Bush \; A)
   \rightarrow Bush\;A} 
-\end{array}\]}
+\end{array}\]
 \hspace{-0.04in}of bushes, whose recursive occurrences appear below
 their own type constructors.
 
@@ -375,10 +375,11 @@ models of parametricity for System F; see,
 e.g.,~\cite{bfss90,bm05,dr04,gjfor15,has94,jac99,mr92,rr94}.  To our
 knowledge, all such models treat ADTs via their Church encodings,
 verifying in the just-constructed parametric model that each Church
-encoding is isomorphic to the data type it encodes.  The present paper
-draws on this rich tradition of categorical models of parametricity
-for System F, but modifies them to treat nested types (and therefore
-ADTs) as primitive data types.
+encoding is a solution for the fixpoint equation associated with its
+corresponding data type. The present paper draws on this rich
+tradition of categorical models of parametricity for System F, but
+modifies them to treat nested types (and therefore ADTs) as primitive
+data types.
 
 The only other extensions we know of System F with primitive data
 types are those in~\cite{mat11,mg01,pit98,pit00,wad89}.
@@ -463,11 +464,10 @@ $\fvars^0$ disjoint from $\Phi$, and $\phi^k \in \fvars^k \setminus
 Definition~\ref{def:wftypes}. The notation there entails that an
 application $F F_1...F_k$ is allowed only when $F$ is a type variable
 of arity $k$, or $F$ is a subexpression of the form $\mu
-\phi^{k}.\lambda \alpha_1...\alpha_k.F'$. Moreover, if $F$ has arity
-$k$ then $F$ must be applied to exactly $k$ arguments.  Accordingly,
-an overbar indicates a sequence of types whose length matches the
-arity of the type applied to it.  Requiring that types are always in
-such \emph{$\eta$-long normal form} avoids having to consider
+\phi^{k}.\lambda \alpha_1...\alpha_k.F'$. Accordingly, an overbar
+indicates a sequence of types whose length matches the arity of the
+type applied to it.  Requiring that types are always in such
+\emph{$\eta$-long normal form} avoids having to consider
 $\beta$-conversion at the level of types. In a type
 $\Nat^{\ol{\alpha}}F\,G$, the $\Nat$ operator binds all occurrences of
 the variables in $\ol{\alpha}$ in $F$ and $G$; intuitively,
@@ -551,15 +551,15 @@ represents the System F type $\Gamma; \emptyset \vdash \forall
 \ol\alpha . F$. However, some System F types, such as $\forall
 \alpha. (\alpha \to \alpha) \to \alpha$, are not representable in our
 calculus. Note that, in the rule for $\mu$-types, no variables in
-$\Phi$ are applied to types involving variables from $\ol\alpha$ in
-the body $F$ of $\mu \phi. \lambda \ol\alpha.F$. This will be critical
-to proving the Identity Extension Lemma for our calculus.
+$\Phi$ appear in the body $F$ of $\mu \phi. \lambda \ol\alpha.F$. This
+will be critical to proving the Identity Extension Lemma for our
+calculus.
 
 Definition~\ref{def:wftypes} allows the formation of all of the types
 from Section~\ref{sec:intro}:
 \[\begin{array}{lll}
 \mathit{List}\, \alpha & = & \mu \beta. \,\onet + \alpha \times
-\beta\; = \; (\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
+\beta\; \mbox{ or } \; (\mu \phi. \lambda \beta.\,\onet + \beta \times \phi
 \beta)\,\alpha\\ 
 \mathit{PTree}\,\alpha & = & (\mu \phi. \lambda \beta.\,\beta +
 \phi\,(\beta \times \beta))\,\alpha\\
@@ -610,10 +610,10 @@ only type variables of arity $0$, and if $k=0$ for every occurrence of
 $\phi^k$ bound by $\mu$ in $F$, then we say that $F$ is {\em
   first-order}; otherwise we say that $F$ is {\em
   second-order}. Substitution for first-order types is the usual
-capture-avoiding textual substitution. We write $F[\alpha := \sigma]$
-for the result of substituting $\sigma$ for $\alpha$ in $F$, and
-$F[\alpha_1 := F_1,...,\alpha_k := F_k]$, or $F[\ol{\alpha := F}]$
-when convenient, for $F[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k
+capture-avoiding textual substitution. We write $H[\alpha := F]$
+for the result of substituting $F$ for $\alpha$ in $H$, and
+$H[\alpha_1 := F_1,...,\alpha_k := F_k]$, or $H[\ol{\alpha := F}]$
+when convenient, for $H[\alpha_1 := F_1][\alpha_2 := F_2,...,\alpha_k
   := F_k]$. The operation of {\em second-order type substitution along
   $\ol\alpha$} is given in Definition~\ref{def:second-order-subst},
 where we adopt a similar notational convention for vectors of types.
@@ -654,7 +654,7 @@ $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
   \,$\Gamma, \phi^k; \Phi \vdash H$,\, $\Gamma; \ol\psi,\ol{\alpha}
   \vdash F$, $|\ol\alpha| = k$, and $\Phi \cap \ol\psi = \emptyset$,
   then $\Gamma,\ol\psi';\Phi \vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi
-        :== \psi'}]]$.}
+        :== \psi'}]]$. Ask Daniel.}
 
 \subsection{Terms}\label{sec:terms}
 
@@ -854,13 +854,12 @@ $\mathit{reversePTree :
   \Nat^\alpha\,(\mathit{PTree}\,\alpha)\,(\mathit{PTree}\,\alpha)}$
 that reverses the order of the leaves in a perfect tree. This function
 maps, e.g., the perfect tree
-\[\mathit{pnode}\,(\mathit{pnode}\,
-(\mathit{pleaf}\,1,\mathit{pleaf}\,2))\,(\mathit{pnode}\,
-(\mathit{pleaf}\,3,\mathit{pleaf}\,4) )\]
+\[\mathit{pnode}\,(\mathit{pnode}\,(\mathit{pleaf}\,
+((1, 2), (3, 4))))\]
 to the perfect tree
-\[\mathit{pnode}\,(\mathit{pnode}\,
-(\mathit{pleaf}\,4,\mathit{pleaf}\,3))\,(\mathit{pnode}\,
-(\mathit{pleaf}\,2,\mathit{pleaf}\,1) )\] i.e., maps $((1,2),(3,4))$
+\[\mathit{pnode}\,(\mathit{pnode}\,(\mathit{pleaf}\,
+((4, 3), (2, 1))))\]
+i.e., maps $((1,2),(3,4))$
 to $((4,3),(2,1))$.  It can be defined as
 \[\vdash (\fold_{\beta + \phi(\beta \times \beta)}^{\mathit{PTree}\,
   \alpha})_\emptyset \, s : \Nat^{\alpha}
@@ -900,7 +899,7 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 respectively. Our calculus can similarly define a
 $\mathtt{reverseBush}$ function that reverses the data in a bush. This
 function maps, e.g., the bush {\color{red} Change one 2 to 4? Find a
-  better name for this operation than reverse.}
+  better name for this operation than reverse. Ask Daniel.}
 \[\begin{array}{l}
 \mathit{bcons}\,0 \,(\mathit{bcons}\, (\mathit{bcons}\, 1\,
 (\mathit{bcons}\, (\mathit{bcons}\, 2\,\mathit{bnil}) \,
@@ -3576,8 +3575,8 @@ particular, for every $S : \set$, $G^\set_S : 1 \to S$. Note, however,
 that if $S = \emptyset$, then there can be no such morphism, so no
 such natural transformation, and thus no term $\vdash g : \Nat^\alpha
 \onet \,\alpha$, can exist.  That is, our calculus admits no
-non-terminating terms, i.e., terms with the closed type $\Nat^\alpha
-\onet \,\alpha$ of the polymorphic bottom.
+(non-terminating) terms with the closed type $\Nat^\alpha \onet
+\,\alpha$ of the polymorphic bottom.
 
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
@@ -3593,9 +3592,7 @@ instantiations of $a$ and $b$ gives that $(G^\set, G^\set) \; = \;
   \Nat^\alpha \,\alpha\,\alpha}\rho$ $ = \{\eta : \id \Rightarrow
 \id\}$ $ = \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
 \id)\}$ That is, $G^\set$ is a natural transformation from the
-identity functor on $\set$ to itself. Now let $S$ be any set.  If $S =
-\emptyset$, then there is exactly one morphism $\id_S: S \to S$, so
-$G^\set_S : S \to S$ must be $\id_S$. If $S \not = \emptyset$, if $a$
+identity functor on $\set$ to itself. Now let $S$ be any set.  If $a$
 is any element of $S$, and if $K_a :S \to S$ is the constantly
 $a$-valued morphism on $S$, then instantiating the naturality square
 implied by the above equality gives that $G^\set_S \circ K_a = K_a
@@ -3825,7 +3822,7 @@ G\,\setsem{\emptyset;\alpha\vdash K}\,B$. \qed
 
 As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
 \vdash C$ generalizes Theorem~\ref{thm:short-cut-nested} to deliver a
-more general a free theorem whose conclusion is $\mathit{fold}_{H}\, B
+more general free theorem whose conclusion is $\mathit{fold}_{H}\, B
 \; \circ \; G\; \mu H \; \mathit{in}_{H} = G
 \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
@@ -3853,7 +3850,7 @@ Generalized algebraic datatypes (GADTs) --- also known as guarded
 recursive data types or first-class phantom types --- generalize
 nested types by relaxing the above restriction to allow the return
 types of data constructors to be different instances of the datatype
-than the one being defined. For example, the GADT {\small
+than the one being defined. For example, the GADT 
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
@@ -3861,7 +3858,7 @@ than the one being defined. For example, the GADT {\small
   Seq\;(A\times B)}\\
 \hspace*{0.4in}\mathtt{sseq\;:\;(Nat \rightarrow Seq\;A) \rightarrow
   Seq\;(Nat \to A)}
-\end{array}\]}
+\end{array}\]
 \noindent
 \!\!has data constructors $\mathtt{spair}$ and $\mathtt{sseq}$ with
 return types $\mathtt{Seq\; (A \times B)}$ and $\mathtt{Seq\;(Nat \to
@@ -3951,7 +3948,6 @@ $\eta$ is the unit. If Agda were to support a primitive
 $\mathsf{Lan}$ for left Kan extensions, we could use this adjunction
 to rewrite the type of each data constructor for the GADT
 $\mathtt{Seq}$ to arrive at the following equivalent representation:
-{\small
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
@@ -3960,7 +3956,7 @@ $\mathtt{Seq}$ to arrive at the following equivalent representation:
 \hspace*{0.4in}\mathtt{sseq\;:\;(\mathsf{Lan}_{\lambda C.\,Nat \to C}
   (\lambda C.\,Nat \rightarrow Seq\;C))\;A \rightarrow
   Seq\;A}
-\end{array}\]}
+\end{array}\]
 \noindent
 \!\!Our calculus will represent $\mathtt{Seq}$ and other GADTs in
 precisely this way.
@@ -4096,6 +4092,13 @@ Definition~\ref{def:wftypes} with
 
 \vspace*{0.05in}
 
+\noindent
+Of course, we could have performed this replacement from the outset of
+the present paper. But since using the above rule instead of the one
+currently in Definition~\ref{def:wftypes} only makes the notation of
+our calculus heavier without increasing its expressivity, we have
+chosen not to.
+
 Finally, adding $\Lan$-types to the types of our calculus also
 requires the extension of Definition~\ref{def:second-order-subst} with
 the following new clause:
@@ -4160,7 +4163,15 @@ and
 
 \noindent
 respectively. Note that both of these rules make essential use of our
-generalized $\Nat$-types.
+generalized $\Nat$-types. If $\Phi$ were required to be empty then we
+would not be able to express, e.g., the types
+\[\Nat^{\phi, \gamma,  \delta} (\phi \gamma \times
+\phi \delta) \; (\phi (\gamma \times \phi))\] and
+\[\Nat^{\phi, \beta}\,(\Lan^{\gamma,\delta}_{\gamma \times
+  \delta} \,(\phi \gamma \times \phi \delta))\beta \; (\phi \beta)\]
+associated with $\mathtt{Seq}$'s data constructor $\mathtt{spair}$.
+
+
 
 \subsection{Extending the Type Semantics}
 
@@ -4486,8 +4497,8 @@ analogue for $\rel$ of) Equation~\ref{eq:colim-form}, we have
     \rho}}{ \relsem{ \Gamma; \Phi, \ol\alpha \vdash F }
   \rho[\ol{\alpha := R}] }
 \]
-where $\iota$ is the morphism mapping the cocone into the colimit.
-Since each projection $\pi_i$ is cocontinuous, we therefore have that 
+with $\iota$ mapping the cocone into this colimit.  Since each
+projection $\pi_i$ is cocontinuous, we therefore have that
 \[
 \pi_i\, ( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
   F)\ol{A} } \rho ) = \colim{\ol{R : \rel_0}, \ol{m : \relsem{
@@ -4495,7 +4506,7 @@ Since each projection $\pi_i$ is cocontinuous, we therefore have that
     \relsem{ \Gamma; \Phi \vdash A } \rho}}{ \relsem{ \Gamma; \Phi,
     \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := \pi_i R}]}
 \]
-with $\pi_i \iota$ mapping this cocone into this colimit.  On the
+with $\pi_i \iota$ mapping the cocone into this colimit.  On the
 other hand, Equation~\ref{eq:colim-form} also gives
 \[
 \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }
@@ -4504,7 +4515,7 @@ other hand, Equation~\ref{eq:colim-form} also gives
       \Gamma; \Phi \vdash A } (\pi_i \rho)}}{ \setsem{ \Gamma; \Phi,
     \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := S}]}
 \]
-where $j$ is the morphism mapping the cocone into the colimit.
+with $j$ mapping the cocone into this colimit.
 
 When $i = 1$ we prove that
 \[
@@ -4951,22 +4962,22 @@ in~\cite{jp19} to have appropriately cocontinuous functorial semantics
 in terms of left Kan extensions, our model construction does not
 extend to give a parametric model for them. It may be possible to
 modify the categories of relations and relation transformers so that
-these are always surjective on their domans and codomains; this would
-prohibit situations like that in Example~\ref{ex:no-rel-transf}, and
-might therefore allow us to recover our IEL and, ultimately, an
-Abstraction Theorem appropriate to GADTs.  If this turns out to be
-possible, then generalizing the resulting model construction to
-locally $\lambda$-presentable categories for $\lambda > \omega$ would
-make it possible to handle broader classes of GADTs. (As shown
-in~\cite{jp19}, $\lambda > \omega_1$ is required to interpret even
-common GADTs.) We could even attempt to carry out our construction in
-locally $\lambda$-presentable cartesian closed categories (lpcccs)
-$\cal C$ whose categories of (abstract) relations, obtained by
-pullback as in~\cite{jac99}, are also lpcccs and are appropriately
-fibred over $\cal C$. This would give a framework for constructing
-parametric models for calculi with primitive GADTs that is based on
-locally $\lambda$-presentable fibrations, for some appropriate
-definition thereof.
+if $(A,B,R)$ is a relation then $\pi_1 : R \to A$ and $\pi_2 : R \to
+B$ are always surjective; this would prohibit situations like that in
+Example~\ref{ex:no-rel-transf}, and might therefore allow us to
+recover our IEL and, ultimately, an Abstraction Theorem appropriate to
+GADTs.  If this turns out to be possible, then generalizing the
+resulting model construction to locally $\lambda$-presentable
+categories for $\lambda > \omega$ would make it possible to handle
+broader classes of GADTs. (As shown in~\cite{jp19}, $\lambda >
+\omega_1$ is required to interpret even common GADTs.) We could even
+attempt to carry out our construction in locally $\lambda$-presentable
+cartesian closed categories (lpcccs) $\cal C$ whose categories of
+(abstract) relations, obtained by pullback as in~\cite{jac99}, are
+also lpcccs and are appropriately fibred over $\cal C$. This would
+give a framework for constructing parametric models for calculi with
+primitive GADTs that is based on locally $\lambda$-presentable
+fibrations, for some appropriate definition thereof.
 
 The expressivity of folds for nested types has long been a vexing
 issue (see, e.g.,~\cite{bm98}), and this is naturally inherited by the
