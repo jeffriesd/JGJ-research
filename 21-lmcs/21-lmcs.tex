@@ -274,10 +274,17 @@ Since the type systems of F$_\omega$ and dependent type theories are
 designed to extend System F with far more than non-ADT data types, it
 seems like serious overkill to pass to their parametric models to
 reason about nested types in System F. Indeed, such calculi support
-fundamentally new features that add complexity to their models that is
-entirely unnecessary for reasoning about nested types. This paper
-therefore pursues the second option above.  We first design a
-Hindley-Milner-style calculus supporting primitive nested types,
+fundamentally new features --- e.g., the full hierarchy of
+higher-kinds or term-indexed types --- adding complexity to their
+models that is entirely unnecessary for reasoning about nested types.
+In addition, to our knowledge no such models represent data types as
+primitive fixpoints. (See the past paragraph of this section for a
+more detailed discussion in the case of F$_\omega$.) Whether or not
+the results of this paper even hold for such calculi is an open
+question.
+
+This paper therefore pursues the second option above.  We first design
+a Hindley-Milner-style calculus supporting primitive nested types,
 together with primitive types of natural transformations representing
 morphisms between them. Our calculus can express all nested types
 appearing in the literature, including truly nested types.  At the
@@ -1093,16 +1100,18 @@ $i = 1,...,k$ and $\rho' \alpha = \rho \alpha$ if $\alpha \not \in
 \{\alpha_1,...,\alpha_k\}$. We note that $\lambda \ol{A}.\,
 \rho[\ol{\alpha  := A}]$ is a functor in $\ol{A}$.
 
-We can now define our set interpretations.  If $\rho$ is a set
-environment we write $\Eq_\rho$ for the equality relation environment
-such that $\Eq_\rho \phi = \Eq_{\rho \phi}$ for every type variable
-$\phi$; see Definitions~\ref{def:rel-transf} and~\ref{def:reln-env}
-for the definitions of a relation transformer and a relation
-environment, and Equation~\ref{def:eq-transf} for the definition of
-the relation transformer $\Eq_F$ on a functor $F$.  Equality relation
-environments appear in the third clause of
-Definition~\ref{def:set-sem}.  The relational interpretations also
-appearing in the third clause of Definition~\ref{def:set-sem} are
+We can now define our set interpretation. Its action on objects of
+$\setenv$ is given in Definition~\ref{def:set-sem}, and its action on
+morphisms of $\setenv$ is given in Definition~\ref{def:set-sem-funcs}.
+If $\rho$ is a set environment we write $\Eq_\rho$ for the equality
+relation environment such that $\Eq_\rho \phi = \Eq_{\rho \phi}$ for
+every type variable $\phi$; see Definitions~\ref{def:rel-transf}
+and~\ref{def:reln-env} for the definitions of a relation transformer
+and a relation environment, and Equation~\ref{def:eq-transf} for the
+definition of the relation transformer $\Eq_F$ on a functor $F$.
+Equality relation environments appear in the third clause of
+Definition~\ref{def:set-sem}.  The relational interpretation also
+appearing in the third clause of Definition~\ref{def:set-sem} is
 given in Definition~\ref{def:rel-sem}.
 
 \begin{defi}\label{def:set-sem}
@@ -1148,7 +1157,7 @@ If $\rho \in \setenv$ and $\vdash F$ then we write $\setsem{\vdash F}$
 instead of $\setsem{\vdash F}\rho$ since the environment is
 immaterial. The third clause of Definition~\ref{def:set-sem} does
 indeed define a set: local finite presentability of $\set$ and
-$\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}\rho$
+$\omega$-cocontinuity of $\setsem{\Gamma;\ol{\alpha} \vdash F}$
 ensure that $\{\eta : \lambda \ol{A}.\,\setsem{\Gamma;\ol{\alpha}
   \vdash F}\rho[\ol{\alpha := A}] \Rightarrow \lambda
 \ol{A}.\,\setsem{\Gamma;\ol{\alpha} \vdash G}\rho[\ol{\alpha := A}]\}$
@@ -1263,10 +1272,11 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
   \end{array}\]
   is
   defined by
-  \[\begin{array}{ll} & (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi \vdash
-      G}\rho'} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi \vdash G}f}\\ = & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi
-      \vdash G}f} \circ (\mu T^\set_{H,f})\ol{\setsem{\Gamma;\Phi
-      \vdash G}\rho}\end{array}\]  The latter equality holds because $\mu
+  \[\begin{array}{ll} & (\mu T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi \vdash
+      G}\rho'}} \circ (\mu T^\set_{H,\rho})\ol{\setsem{\Gamma;\Phi
+      \vdash G}f}\\ = & (\mu T^\set_{H,\rho'})\ol{\setsem{\Gamma;\Phi  
+      \vdash G}f} \circ (\mu T^\set_{H,f})_{\ol{\setsem{\Gamma;\Phi
+      \vdash G}\rho}}\end{array}\]  The latter equality holds because $\mu
   T^\set_{H,\rho}$ and $\mu T^\set_{H,\rho'}$ are functors and $\mu
   T_{H,f}^\set : \mu T_{H,\rho}^\set \to \mu T_{H,\rho'}^\set$ is a
   natural transformation, so the following naturality square commutes:
@@ -1566,7 +1576,7 @@ $\omega$-cocontinuity for endofunctors on $RT_k$ extends componentwise
 to functors from $\relenv$ to $RT_k$.  Recalling from the start of
 this subsection that Definition~\ref{def:rel-sem} is given mutually
 inductively with Definition~\ref{def:set-sem} we can now define our
-relational interpretations.
+relational interpretation.
 
 \begin{defi}\label{def:rel-sem}
 The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
@@ -1716,12 +1726,13 @@ $H$, $T_{H,\rho}\,F$ is a relation transformer for any relation
 transformer $F$, and that $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ is a morphism of relation transformers for every
 relation transformer $F$ and every morphism $f : \rho \to \rho'$ in
-$\relenv$. This is an immediate consequence of
+$\relenv$. If we define $\sem{\Gamma;\Phi \vdash F}$ to be
+$(\setsem{\Gamma;\Phi \vdash F}, \setsem{\Gamma;\Phi \vdash
+  F},\relsem{\Gamma;\Phi \vdash F})$, then this is an immediate
+consequence of
 \begin{lem}\label{lem:rel-transf-morph}
-For every $\Gamma;\Phi \vdash F$,
-\[\sem{\Gamma;\Phi \vdash F} = (\setsem{\Gamma;\Phi \vdash F},
-\setsem{\Gamma;\Phi \vdash F},\relsem{\Gamma;\Phi \vdash F})
-\in[\relenv,RT_0]\] 
+For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F}
+\in[\relenv,RT_0]$.
 \end{lem}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
@@ -2117,8 +2128,6 @@ $h_{\graph{\overline{f}}} = \langle \id_{F \ol{A}}, \alpha_{\ol{B}}
       \]}
 \end{minipage}
 \end{figure*}
-
-\vspace*{-0.1in}
 
 \noindent
 Moreover, $\langle \id_{F \ol{A}}, \alpha_{\ol{B}} \circ F\ol{f}
@@ -2611,9 +2620,10 @@ $\setsem{\Gamma;\Phi \vdash \Delta, x : F} \to
 relational interpretations.
 
 \begin{figure*}
-\hspace*{-3.1in}
-\resizebox{0.46\linewidth}{!}{
-\begin{minipage}[t]{0.5\textwidth}
+\begin{adjustbox}{varwidth=7.2in, max width=5.8in, fbox, center}
+%  \hspace*{-3.1in}
+%\resizebox{0.46\linewidth}{!}{
+%\begin{minipage}[t]{0.5\textwidth}
 \[\begin{array}{lll}
 \dsem{\Gamma;\Phi \,|\, \Delta,x :F \vdash x : F} \rho& = &
 \pi_{|\Delta|+1}\\
@@ -2641,8 +2651,8 @@ relational interpretations.
 & & \hspace*{0.1in} \mbox{ is the unique morphism from }
 \dsem{\Gamma;\Phi\vdash \Delta}\rho \mbox{ to } 1\\ 
 \dsem{\Gamma;\Phi \,|\, \Delta \vdash (s,t) : F \times G} \rho& = &
-\dsem{\Gamma;\Phi \,|\, \Delta \vdash s: F} \rho\times
-\dsem{\Gamma;\Phi \,|\, \Delta \vdash t : G} \rho\\
+\langle \dsem{\Gamma;\Phi \,|\, \Delta \vdash s: F} \rho,\,
+\dsem{\Gamma;\Phi \,|\, \Delta \vdash t : G} \rho\rangle\\
 \dsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_1 t : F} \rho& = &
 \pi_1 \circ \dsem{\Gamma;\Phi \,|\, \Delta \vdash t : F \times G}\rho\\
 \dsem{\Gamma;\Phi \,|\, \Delta \vdash \pi_2 t : G}\rho & = &
@@ -2686,7 +2696,8 @@ d.\,\mathit{in}_{{T}^X_{H,\rho}} \;\;\mbox{ where } X \mbox{ is } \set \mbox{ wh
 }\vspace*{-0.1in} 
 \end{array}\]
 \caption{Term semantics}\label{fig:term-sem} 
-\end{minipage}}\vspace*{-0.05in}
+%\end{minipage}}
+\end{adjustbox}\vspace*{-0.05in}
 \end{figure*}
 
 The return type for the semantic fold is
@@ -2960,8 +2971,8 @@ or $\rho \in \relenv$ as appropriate,
 \end{array}\]
 has as its component at $\rho : \setenv$ a morphism
 \[\begin{array}{lll}
-\dsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \dsem{\Gamma;
-  \Phi \vdash \Delta}\rho \to \dsem{\Gamma; \Phi \vdash F}\rho
+\setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \setsem{\Gamma;
+  \Phi \vdash \Delta}\rho \to \setsem{\Gamma; \Phi \vdash F}\rho
 \end{array}\]
 Moreover, for all $\rho : \relenv$, 
 \begin{equation}\label{eq:projs}
@@ -3537,7 +3548,7 @@ If \,$\Gamma; \Phi \,|\, \Delta \vdash t : F$ and \,$\rho \in \relenv$,
   then \\
   $(\setsem{\Gamma; \Phi \,|\, \Delta \vdash t : F} (\pi_1 \rho) \,a \, ,
       \setsem{\Gamma; \Phi \,|\, \Delta \vdash t : F } (\pi_2 \rho) \,b) \in 
-    \relsem{\Gamma; \Phi \vdash F} \rho$
+    \relsem{\Gamma; \Phi \vdash F} \rho$.
 \end{thm}
 \noindent
 Finally, the Abstraction Theorem is the instantiation of
@@ -3592,11 +3603,11 @@ instantiations of $a$ and $b$ gives that $(G^\set, G^\set) \; = \;
   \Nat^\alpha \,\alpha\,\alpha}\rho$ $ = \{\eta : \id \Rightarrow
 \id\}$ $ = \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
 \id)\}$ That is, $G^\set$ is a natural transformation from the
-identity functor on $\set$ to itself. Now let $S$ be any set.  If $a$
-is any element of $S$, and if $K_a :S \to S$ is the constantly
-$a$-valued morphism on $S$, then instantiating the naturality square
-implied by the above equality gives that $G^\set_S \circ K_a = K_a
-\circ G^\set_S$, i.e., $G^\set_S \, a = a$, i.e., $G^\set_S = \id_S$.
+identity functor on $\set$ to itself. Now let $S$ be any set.  For any
+element $a$ of $S$, if $K_a :S \to S$ is the constantly $a$-valued
+morphism on $S$ then instantiating the naturality square implied by
+the above equality gives that $G^\set_S \circ K_a = K_a \circ
+G^\set_S$, i.e., $G^\set_S \, a = a$, i.e., $G^\set_S = \id_S$.
 Putting these two cases together we have that for every $S : \set$,
 $G^\set_S = \id_S$, i.e., $G^\set$ is the identity natural
 transformation for the identity functor on $\set$. So every closed
@@ -3941,11 +3952,11 @@ functors $F$ and $\ol K$ over $\rel$.
 \end{defi}
 
 An alternative presentation characterizes the left Kan extension
-$(\mathit{Lan}_{\ol K} F, \eta)$ in terms of the adjunction between
+$(\mathit{Lan}_{\ol K} F, \eta)$ in terms of the bijection between
 natural transformations from $F$ to $G \circ \ol{K}$ and natural
 transformations from $\mathit{Lan}_{\ol K} F$ to $G$, for which
 $\eta$ is the unit. If Agda were to support a primitive
-$\mathsf{Lan}$ for left Kan extensions, we could use this adjunction
+$\mathsf{Lan}$ for left Kan extensions, we could use this bijection
 to rewrite the type of each data constructor for the GADT
 $\mathtt{Seq}$ to arrive at the following equivalent representation:
 \[\begin{array}{l}
@@ -4073,7 +4084,7 @@ of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
 above makes it possible to represent GADTs with two or more type
 arguments that depend on one another. Such GADTs cannot be represented
 using just unary $\Lan$-types, i.e, $\Lan$-types of the form
-$(\Lan^{\ol{\alpha^0}}_K F)\ol A$.
+$(\Lan^{\ol{\alpha^0}}_K F) A$.
 
 As we will see below, in order to define the term-formation rules for
 terms of $\Lan$-types we also need to generalize $\Nat$-types to bind
@@ -4335,11 +4346,11 @@ is the natural transformation associated with the left Kan extension
 and, for all $\ol{N : RT_k}$ and $d : \setsem{\Gamma;\emptyset \vdash
   \Delta}$,
 \[\begin{array}{l}
-\mu_{\ol{N}\, d} : \lambda \ol{A}.\,
+\mu_{\ol{N}\, d} : 
 \mathit{Lan}_{\ol{\lambda \ol A.\,\setsem{\Gamma; \ol\alpha \vdash K}\rho 
   {[\ol{\alpha := A} ]}}} \lambda \ol A.\,\setsem{\Gamma; \Phi,
   \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha := \ol N, \ol A ]}\\[2ex]
-\hspace*{0.8in}\to \lambda \ol B.\, \setsem{\Gamma; 
+\hspace*{0.8in} \to \lambda \ol B.\, \setsem{\Gamma; 
   \Phi, \ol\beta \vdash G} \rho[\Phi, \ol \beta := \ol N, \ol B]
 \end{array}\]
 is the unique natural transformation such that
@@ -4503,7 +4514,7 @@ projection $\pi_i$ is cocontinuous, we therefore have that
 \pi_i\, ( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
   F)\ol{A} } \rho ) = \colim{\ol{R : \rel_0}, \ol{m : \relsem{
       \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to
-    \relsem{ \Gamma; \Phi \vdash A } \rho}}{ \relsem{ \Gamma; \Phi,
+    \relsem{ \Gamma; \Phi \vdash A } \rho}}{ \setsem{ \Gamma; \Phi,
     \ol\alpha \vdash F } (\pi_i \rho) [\ol{\alpha := \pi_i R}]}
 \]
 with $\pi_i \iota$ mapping the cocone into this colimit.  On the
@@ -4533,9 +4544,10 @@ h : \pi_1\, ( \relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}}
 \]
 to be the unique function given by the universal property of the
 colimit representation of $h$'s domain. That is, we take $h$ to be the
-unique morphism such that, for any $\ol{R : \rel_0}$ and $\ol{m :
+unique morphism such that, for any $\ol{R : \rel_0}$ and
+\[\ol{m :
   \relsem{ \emptyset; \ol\alpha \vdash K } \rho[\ol{\alpha := R}] \to
-  \relsem{ \Gamma; \Phi \vdash A } \rho}$, we have
+  \relsem{ \Gamma; \Phi \vdash A } \rho}\] we have
 \begin{equation}\label{eq:cocone-proj}
 h \circ (\pi_1 \iota_{\ol{R},\, \ol{m}}) = j_{\ol{\pi_1 R},
   \,\ol{\pi_1 m}}
