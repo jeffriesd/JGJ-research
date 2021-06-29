@@ -595,13 +595,14 @@ $\alpha$ must both be non-functorial variables.  It is in fact
 possible to allow ``extra'' $0$-ary functorial variables in the body
 of $\mu$-types (functorial variables of higher arity are the real
 problem), which would allow the first-order representations of ADTs to
-be functorial. However, doing this requires some changes to the
+be functorial. However, since doing this requires some changes to the
 formation rule for $\mu$-types, as well as the delicate threading of
-some additional conditions throughout our model construction.  But
-since we can always use an ADT's (semantically equivalent)
-second-order representation when functoriality is needed, disallowing
-such ``extra'' variables does not negatively impact the expressivity
-of our calculus. We therefore pursue the simpler syntax here.
+some additional conditions throughout our model construction, we do
+not pursue this line of investigation here.
+%But since we can always use an ADT's (semantically equivalent)
+%second-order representation when functoriality is needed, disallowing
+%such ``extra'' variables does not negatively impact the expressivity
+%of our calculus. We therefore pursue the simpler syntax here.
 
 Definition~\ref{def:wftypes} allows well-formed types to be functorial
 in no variables. Functorial variables can also be demoted to
@@ -1507,8 +1508,7 @@ endofunctor on $RT_k$ need not be a functor on all of
 $[\rel^k,\rel]$. In particular, although we can define $T_{H,\rho}\,
 F$ for a relation transformer $F$ in Definition~\ref{def:rel-sem}
 below, it is not clear how we could define it for an arbitrary $F :
-[\rel^k,\rel]$. This observation will be especially critical in
-Section~\ref{sec:GADTs}.
+[\rel^k,\rel]$. 
 
 \begin{defi}\label{def:reln-env}
 A {\em relation environment} maps each type variable in $\tvars^k \cup
@@ -4076,7 +4076,7 @@ represent the GADT $\mathtt{Seq}$ in our calculus as
 \end{align*}
 \noindent
 where $\mathtt{Nat} = \mu \alpha. 1 + \alpha$ and $\mathtt{Nat}
-\to C$ abbreviates $(\Lan^\alpha_{\mathtt{Nat}} 1)\,C$.  This
+\to C$ abbreviates $(\Lan^\emptyset_{\mathtt{Nat}} 1)\,C$.  This
 representation of $\mathit{Seq}$ corresponds exactly to the rewriting
 in Section~\ref{sec:lke}.  As explained in Section~IV.\,D
 of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
