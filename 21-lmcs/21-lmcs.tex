@@ -4075,16 +4075,17 @@ represent the GADT $\mathtt{Seq}$ in our calculus as
 \gamma) \right) \beta \right) \alpha
 \end{align*}
 \noindent
-where $\mathtt{Nat} = \mu \alpha. 1 + \alpha$ and $\mathtt{Nat}
-\to C$ abbreviates $(\Lan^\emptyset_{\mathtt{Nat}} 1)\,C$.  This
-representation of $\mathit{Seq}$ corresponds exactly to the rewriting
-in Section~\ref{sec:lke}.  As explained in Section~IV.\,D
-of~\cite{jp19}, the more general construct $\Lan^{\ol{\alpha^0}}_{\ol
-  K} F$ allowing extensions along vectors of functors as depicted
-above makes it possible to represent GADTs with two or more type
-arguments that depend on one another. Such GADTs cannot be represented
-using just unary $\Lan$-types, i.e, $\Lan$-types of the form
-$(\Lan^{\ol{\alpha^0}}_K F) A$.
+where $\mathtt{Nat} = \mu \alpha. 1 + \alpha$ and $\mathtt{Nat} \to C$
+abbreviates $(\Lan^\emptyset_{\mathtt{Nat}} 1)\,C$, which equals
+$\colim{f : \mathtt{Nat} \to C}{1}$ by Equation~\ref{eq:colim-form}
+(here, $k = 0$). This representation of $\mathit{Seq}$ corresponds
+exactly to the rewriting in Section~\ref{sec:lke}.  As explained in
+Section~IV.\,D of~\cite{jp19}, the more general construct
+$\Lan^{\ol{\alpha^0}}_{\ol K} F$ allowing extensions along vectors of
+functors as depicted above makes it possible to represent GADTs with
+two or more type arguments that depend on one another. Such GADTs
+cannot be represented using just unary $\Lan$-types, i.e, $\Lan$-types
+of the form $(\Lan^{\ol{\alpha^0}}_K F) A$.
 
 As we will see below, in order to define the term-formation rules for
 terms of $\Lan$-types we also need to generalize $\Nat$-types to bind
