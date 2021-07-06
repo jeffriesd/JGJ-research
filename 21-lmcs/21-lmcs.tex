@@ -27,6 +27,7 @@
 
 \usepackage{bussproofs}
 \EnableBpAbbreviations
+\def\ruleScoreFiller{\hrule height 0.8pt}
 
 \usepackage{hyperref}
 
@@ -414,17 +415,18 @@ it and its extensions are often constructed in a syntactic metatheory
 such as the impredicative Calculus of Inductive Constructions (iCIC).
 By adding primitive nested types to a Hindley-Milner-style calculus
 and working in a categorical setting we side-step such metatheoretic
-distractions. It is important to note that different consequences of
-parametricity are available in syntactic and semantic
-metatheories. Consequences of parametricity are possible for both
-closed and open System F terms in a syntactic metatheory --- although
-not all that can be formulated can be always proved; see, e.g., the
-end of Section~7 of~\cite{bm98}. By contrast, in a categorical
-metatheory consequences of parametricity are expressible only for {\em
-  closed} terms. For this reason, validating the standard consequences
-of parametricity for closed terms is --- going all the way back to
-Reynolds~\cite{rey83} --- all that is required for a model of
-parametricity to be considered good.
+distractions.
+%It is important to note that different consequences of
+%parametricity are available in syntactic and semantic
+%metatheories. Consequences of parametricity are possible for both
+%closed and open System F terms in a syntactic metatheory --- although
+%not all that can be formulated can be always proved; see, e.g., the
+%end of Section~7 of~\cite{bm98}. By contrast, in a semantic
+%metatheory consequences of parametricity are expressible only for {\em
+%  closed} terms. For this reason, validating the standard consequences
+%of parametricity for closed terms is --- going all the way back to
+%Reynolds~\cite{rey83} --- all that is required for a model of
+%parametricity to be considered good.
 
 Atkey~\cite{atk12} treats parametricity for arbitrary higher kinds,
 constructing a parametric model for System F$_\omega$ within iCIC,
@@ -497,8 +499,6 @@ $\Gamma$.
 The formation rules for the set $\F$ of\, {\em (well-formed) types}
 are
 
-\vspace*{-0.2in}
-
 \[\begin{array}{cc}
 \AXC{\phantom{$\Gamma,\Phi$}}
 \UIC{$\Gamma;\Phi \vdash \zerot$}
@@ -507,33 +507,33 @@ are
 \AXC{\phantom{$\Gamma,\Phi$}}
 \UIC{$\Gamma;\Phi \vdash \onet$}
 \DisplayProof
-\end{array}\]
+\end{array}\]\\[3ex]
 \[\begin{array}{c}
 \AXC{$\Gamma;\ol{\alpha^0} \vdash F$}
 \AXC{$\Gamma;\ol{\alpha^0}  \vdash G$}
 \BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha^0}}F \,G$}
 \DisplayProof
-\\[3ex]
+\\[5ex]
 \AXC{$\phi^k \in \Gamma \cup \Phi$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash F}$}
 \BIC{$\Gamma;\Phi \vdash \phi^k \ol{F}$}
 \DisplayProof
-\\[3ex]
+\\[5ex]
 \AXC{$\Gamma;\ol{\alpha^0},\phi^k \vdash F$}
 \AXC{$\quad\quad\ol{\Gamma;\Phi \vdash G}$}
 \BIC{$\Gamma;\Phi \vdash (\mu \phi^k.\lambda
   \ol{\alpha^0}. \,F)\,\ol{G}$}  
 \DisplayProof
-\\[4ex]
+\\[6ex]
 \AXC{$\Gamma;\Phi \vdash F$}
 \AXC{$\Gamma;\Phi \vdash G$}
 \BIC{$\Gamma; \Phi \vdash F + G$}
 \DisplayProof
-\\[3ex]
+\\[5ex]
 \AXC{$\Gamma;\Phi \vdash F$}
 \AXC{$\Gamma;\Phi \vdash G$}
 \BIC{$\Gamma; \Phi \vdash F \times G$}
-\DisplayProof
+\DisplayProof\\[2ex]
 \end{array}\]
 \end{defi}
 We write $\vdash F$ for $\emptyset;\emptyset \vdash F$.
@@ -1170,12 +1170,12 @@ ensure that $\{\eta : \lambda \ol{A}.\,\setsem{\Gamma;\ol{\alpha}
   \vdash G}\rho[\ol{\alpha := S}])^{(\setsem{\Gamma;\ol{\alpha} \vdash
     F}\rho[\ol{\alpha := S}])}\] Also, $\setsem{\Gamma; \emptyset
   \vdash \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous since it is
-constant on $\omega$-directed sets; indeed, it is constant on
-$\omega$-directed sets because Definition~\ref{def:set-env} ensures
-that restrictions to $\mathbb{T}^k$ of morphisms between set
-environments are identities.  Interpretations of $\Nat$-types ensure
-that $\setsem{\Gamma \vdash F \to G}$ and $\setsem{\Gamma \vdash
-  \forall \ol\alpha. F}$ are as expected in any parametric model.
+constant (in particular, on $\omega$-directed sets). This is because
+Definition~\ref{def:set-env} ensures that restrictions to
+$\mathbb{T}^k$ of morphisms between set environments are identities.
+Interpretations of $\Nat$-types ensure that $\setsem{\Gamma \vdash F
+  \to G}$ and $\setsem{\Gamma \vdash \forall \ol\alpha. F}$ are as
+expected in any parametric model.
 
 To make sense of the last clause in Definition~\ref{def:set-sem}, we
 need to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is
@@ -1635,7 +1635,7 @@ that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma \vdash
   \forall \ol \alpha. F}$ are as expected in any parametric model.  As
 for set interpretations, $\relsem{\Gamma; \emptyset \vdash
   \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous; indeed, it is
-constant on $\omega$-directed sets because
+constant (on $\omega$-directed sets) because
 Definition~\ref{def:reln-env} ensures that restrictions to
 $\mathbb{T}^k$ of morphisms between relational environments are
 identities. If $\rho \in \relenv$ and $\vdash F$, then we write
@@ -1867,9 +1867,9 @@ Moreover, since both $h_{\overline{C \times D}} \circ
 F(\overline{\beta \times \beta'})$ and $(F\overline{\beta} \times
 G\overline{\beta'}) \circ h_{\overline{A \times B}}$ make the diagram
 on the right commute, they must be equal.
-%\begin{figure*}[ht]
+\begin{figure*}[ht]
 %\vspace*{-0.1in}
-%  \hspace*{-0.85in}
+  \hspace*{-1in}
   \begin{minipage}[b]{0.25\linewidth}
  {\small    \[
     \begin{tikzcd}
@@ -1883,7 +1883,7 @@ on the right commute, they must be equal.
         & F\overline{C} \times G\overline{D}
     \end{tikzcd}
     \]}
-\end{minipage}
+\end{minipage}\hspace*{0.2in}
 \begin{minipage}[b]{0.25\linewidth}
 {\small    \[
     \begin{tikzcd}
@@ -1897,24 +1897,24 @@ on the right commute, they must be equal.
         &C_i \times D_i
     \end{tikzcd}
     \]}
-\end{minipage}
+\end{minipage}\hspace*{0.2in}
 \begin{minipage}[b]{0.25\linewidth}
 {\footnotesize \[
       \begin{tikzcd}[row sep = large]
           F\overline{C}
-          &F\overline{C} \times F\overline{D}
+          &F\overline{C} \times G\overline{D}
           \ar[l, "{\pi_1}"'] \ar[r, "{\pi_2}"]
-          &F\overline{D}
-          \ar[r, "{\alpha_{\ol{D}}}"]
           &G\overline{D}\\
+%          \ar[r, "{\alpha_{\ol{D}}}"]
+%          &G\overline{D}\\
           &F(\overline{A \times B})
           \ar[u, dashed, "{\exists !}"]
           \ar[ul, "{F\ol{\pi_1} \circ F(\overline{\beta \times \beta'})}"]
-          \ar[urr, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
+          \ar[ur, "{\alpha_{\ol{D}} \circ F\ol{\pi_2} \circ F(\overline{\beta \times \beta'})}"']
       \end{tikzcd}
       \]}
 \end{minipage}
-%\end{figure*}
+\end{figure*}
 
 %\vspace*{-0.1in}
 
@@ -1939,7 +1939,7 @@ on the right below commutes as desired.
           \ar[d, "{F(\overline{\beta \times \beta'})}"]
           \ar[r, "{h_{\overline{A \times B}}}"]
           &F\overline{A} \times G\overline{B}
-          \ar[d, "{F\overline{\beta} \times F\overline{\beta'}}"] \\
+          \ar[d, "{F\overline{\beta} \times G\overline{\beta'}}"] \\
           F\overline{S}
           \ar[r, hookrightarrow, "{F\overline{\iota_S}}"']
           \ar[rr, bend right, "{h_{\overline{S}}}"']
