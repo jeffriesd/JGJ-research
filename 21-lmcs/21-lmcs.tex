@@ -906,19 +906,18 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 \end{array}\]
 respectively. Our calculus can similarly define a
 $\mathtt{reverseBush}$ function that reverses the data in a bush. This
-function maps, e.g., the bush {\color{red} Change one 2 to 4? Find a
-  better name for this operation than reverse. Ask Daniel.}
+function maps, e.g., the bush 
 \[\begin{array}{l}
 \mathit{bcons}\,0 \,(\mathit{bcons}\, (\mathit{bcons}\, 1\,
 (\mathit{bcons}\, (\mathit{bcons}\, 2\,\mathit{bnil}) \,
 \mathit{bnil}))\\ \hspace*{0.93in}(\mathit{bcons}\, (\mathit{bcons}\,
-(\mathit{bcons}\, 2 \, (\mathit{bcons}\, (\mathit{bcons}\, 3\,
+(\mathit{bcons}\, 3 \, (\mathit{bcons}\, (\mathit{bcons}\, 4\,
 \mathit{bnil})\,  \mathit{bnil}))\, \mathit{bnil})\, \mathit{bnil}))
 \end{array}\]
 to the bush
 \[\begin{array}{c}
-\hspace*{-1.64in}\mathit{bcons}\,3\, (\mathit{bcons}\, (\mathit{bcons}\, 0
-\,(\mathit{bcons}\, (\mathit{bcons}\, 2 \, \mathit{bnil}) \,
+\hspace*{-1.64in}\mathit{bcons}\,4\, (\mathit{bcons}\, (\mathit{bcons}\, 0
+\,(\mathit{bcons}\, (\mathit{bcons}\, 3 \, \mathit{bnil}) \,
 \mathit{bnil}))\\ 
 \hspace*{0.93in}(\mathit{bcons}\, (\mathit{bcons}\, (\mathit{bcons}\, 2
 \,(\mathit{bcons}\, (\mathit{bcons}\, 1 \, \mathit{bnil}) \,
