@@ -110,9 +110,9 @@
 \address{Appalachian State University}	
 \email{ghiorzie@appstate.edu}  
 
-\author[D.~Jeffries]{Daniel Jeffries}	
-\address{Appalachian State University}	
-\email{jeffriesd@appstate.edu}
+%\author[D.~Jeffries]{Daniel Jeffries}	
+%\address{Appalachian State University}	
+%\email{jeffriesd@appstate.edu}
 
 \begin{abstract}
 This paper considers parametricity and its consequent free theorems
@@ -1173,9 +1173,10 @@ ensure that $\{\eta : \lambda \ol{A}.\,\setsem{\Gamma;\ol{\alpha}
 constant (in particular, on $\omega$-directed sets). This is because
 Definition~\ref{def:set-env} ensures that restrictions to
 $\mathbb{T}^k$ of morphisms between set environments are identities.
-Interpretations of $\Nat$-types ensure that $\setsem{\Gamma \vdash F
-  \to G}$ and $\setsem{\Gamma \vdash \forall \ol\alpha. F}$ are as
-expected in any parametric model.
+Interpretations of $\Nat$-types ensure that the interpretations
+$\setsem{\Gamma \vdash F \to G}$ and $\setsem{\Gamma \vdash \forall
+  \ol\alpha. F}$ of the System F arrow types and $\forall$-types
+representable in our calculus are as expected in any parametric model.
 
 To make sense of the last clause in Definition~\ref{def:set-sem}, we
 need to know that, for each $\rho \in \setenv$, $T^\set_{H,\rho}$ is
@@ -1631,13 +1632,14 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
 
 The interpretations in Definitions~\ref{def:rel-sem}
 and~\ref{def:rel-sem-funcs} below respect weakening, and also ensure
-that $\relsem{\Gamma \vdash F \to G}$ and $\relsem{\Gamma \vdash
-  \forall \ol \alpha. F}$ are as expected in any parametric model.  As
-for set interpretations, $\relsem{\Gamma; \emptyset \vdash
-  \Nat^{\ol\alpha} F\,G}$ is $\omega$-cocontinuous; indeed, it is
-constant (on $\omega$-directed sets) because
-Definition~\ref{def:reln-env} ensures that restrictions to
-$\mathbb{T}^k$ of morphisms between relational environments are
+that the interpretations $\relsem{\Gamma \vdash F \to G}$ and
+$\relsem{\Gamma \vdash \forall \ol\alpha. F}$ of the System F arrow
+types and $\forall$-types representable in our calculus are as
+expected in any parametric model.  As for set interpretations,
+$\relsem{\Gamma; \emptyset \vdash \Nat^{\ol\alpha} F\,G}$ is
+$\omega$-cocontinuous; indeed, it is constant (on $\omega$-directed
+sets) because Definition~\ref{def:reln-env} ensures that restrictions
+to $\mathbb{T}^k$ of morphisms between relational environments are
 identities. If $\rho \in \relenv$ and $\vdash F$, then we write
 $\relsem{\vdash F}$ instead of $\relsem{\vdash F}\rho$.  For the last
 clause in Definition~\ref{def:rel-sem} to be well-defined we need
@@ -2704,24 +2706,24 @@ The return type for the semantic fold is
   $\dsem{\Gamma;\ol\beta \vdash F}\rho[\ol{\beta := B}]$.
 This interpretation gives
 \[\dsem{\Gamma;\emptyset \,|\, \Delta
-    \vdash \lambda x.t : F \to G}\rho = \curry
+  \vdash L_\empty x. t : \Nat^\emptyset F\, G}\rho = \curry
   (\dsem{\Gamma;\emptyset \,|\, \Delta, x : F \vdash t :
   G}\rho)\]
 and
 \[\dsem{\Gamma;\emptyset \,|\, \Delta \vdash st:
     G} \rho = \eval \circ \langle \dsem{\Gamma;\emptyset \,|\, \Delta
-  \vdash s: F \to G}\rho, \dsem{\Gamma;\emptyset \,|\, \Delta \vdash
+  \vdash s: \Nat^\emptyset F\, G}\rho, \dsem{\Gamma;\emptyset \,|\, \Delta \vdash
   t: F}\rho \rangle\]
 
 \vspace*{0.05in}
 
 \noindent
-so it specializes to the standard interpretations for System F terms.
-Term interpretation also respects substitution for both functorial and
-non-functorial type variables, as well as term substitution. That is,
-if $\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : F$ and
-$\Gamma;\Phi,\alpha \,|\, \Delta \vdash t' : F$ and $\Gamma;\Phi
-\vdash G$ then
+so it specializes to the standard interpretations of those System F
+terms that are representable in our calculus.  Term interpretation
+also respects substitution for both functorial and non-functorial type
+variables, as well as term substitution. That is, if
+$\Gamma,\alpha;\Phi \,|\, \Delta \vdash t : F$ and $\Gamma;\Phi,\alpha
+\,|\, \Delta \vdash t' : F$ and $\Gamma;\Phi \vdash G$ then
 \[\dsem{\Gamma;\Phi \,|\, \Delta[\alpha := G] \vdash t[\alpha :=
     G] : F[\alpha := G]}\rho = \dsem{\Gamma,\alpha;\Phi \,|\, \Delta
   \vdash t : F }\rho [ \alpha := \dsem{\Gamma;\Phi\vdash G}\rho ]\]
@@ -2810,13 +2812,14 @@ Naturality of term interpretations is then easily verified:
 
 Theorem~\ref{eq:ft-from-nat} gives rise to an entire family of free
 theorems that are consequences of naturality, and thus do not require
-the full power of parametricity. In particular, we can prove all of
-the standard properties of the initial algebraic constructs $\map$,
-$\tin$, and $\fold$. We have, for example, that the interpretation of
-every $\map_H$ is a functor, i.e., if $\Gamma; \ol\alpha, \ol\gamma
-\vdash H$, $\ol{\Gamma; \emptyset \,|\, \Delta \vdash g :
-  \Nat^{\ol\gamma} F \, G}$, and $\ol{\Gamma; \emptyset \,|\, \Delta
-  \vdash f : \Nat^{\ol\gamma} G \, K}$, then
+the full power of parametricity. In particular,
+Definition~\ref{def:set-interp} alone ensures that standard properties
+of the initial algebraic constructs $\map$, $\tin$, and $\fold$
+hold. We have, for example, that the interpretation of every $\map_H$
+is a functor, i.e., if $\Gamma; \ol\alpha, \ol\gamma \vdash H$,
+$\ol{\Gamma; \emptyset \,|\, \Delta \vdash g : \Nat^{\ol\gamma} F \,
+  G}$, and $\ol{\Gamma; \emptyset \,|\, \Delta \vdash f :
+  \Nat^{\ol\gamma} G \, K}$, then
   \begin{align*}
 &\setsem{
 \Gamma; \emptyset \,|\, \Delta \vdash 
@@ -3562,27 +3565,26 @@ If $\vdash t : F$, then $(\setsem{\vdash t : F},\setsem{\vdash t
 
 In this section we show how Theorem~\ref{thm:at-gen} and its
 consequences can be used to prove free theorems that go beyond mere
-naturality.  We also show that we can extend short cut short cut
-fusion for lists~\cite{glp93} to nested types, thereby formally
-proving correctness of the categorically inspired theorem
-from~\cite{jg10}.
+naturality.  We also show that we can extend short cut fusion for
+lists~\cite{glp93} to nested types, thereby formally proving
+correctness of the categorically inspired theorem from~\cite{jg10}.
 
 \subsection{Free Theorem for Type of Polymorphic
   Bottom}\label{sec:bottom} 
 
-Let $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $G^\set =
-\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$ and $G^\rel =
+Let $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $g^\set =
+\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$ and $g^\rel =
 \relsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho)) =
-G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
+Theorem~\ref{thm:at-gen}, $(g^\set(\pi_1\rho),g^\set(\pi_2\rho)) =
+g^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that $(G^\set,G^\set) \;= \;
-(G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
+instantiations of $a$ and $b$ gives that $(g^\set,g^\set) \;= \;
+(g^\set(\pi_1 \rho), g^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
   \Nat^\alpha \,\onet\,\alpha}\rho$ $ = \{\eta : K_1 \Rightarrow
 \id\}$ $ = \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
-\id)\}$ That is, $G^\set$ is a natural transformation from the
+\id)\}$ That is, $g^\set$ is a natural transformation from the
 constantly $1$-valued functor to the identity functor in $\set$. In
-particular, for every $S : \set$, $G^\set_S : 1 \to S$. Note, however,
+particular, for every $S : \set$, $g^\set_S : 1 \to S$. Note, however,
 that if $S = \emptyset$, then there can be no such morphism, so no
 such natural transformation, and thus no term $\vdash g : \Nat^\alpha
 \onet \,\alpha$, can exist.  That is, our calculus admits no
@@ -3592,24 +3594,24 @@ such natural transformation, and thus no term $\vdash g : \Nat^\alpha
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
 
-Let $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, \/$G^\set =
-\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and $G^\rel =
+Let $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, \/$g^\set =
+\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and $g^\rel =
 \relsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(G^\set(\pi_1\rho),G^\set(\pi_2\rho)) =
-G^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
+Theorem~\ref{thm:at-gen}, $(g^\set(\pi_1\rho),g^\set(\pi_2\rho)) =
+g^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
 \relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that $(G^\set, G^\set) \; = \;
-(G^\set(\pi_1 \rho), G^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
+instantiations of $a$ and $b$ gives that $(g^\set, g^\set) \; = \;
+(g^\set(\pi_1 \rho), g^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
   \Nat^\alpha \,\alpha\,\alpha}\rho$ $ = \{\eta : \id \Rightarrow
 \id\}$ $ = \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
-\id)\}$ That is, $G^\set$ is a natural transformation from the
+\id)\}$ That is, $g^\set$ is a natural transformation from the
 identity functor on $\set$ to itself. Now let $S$ be any set.  For any
 element $a$ of $S$, if $K_a :S \to S$ is the constantly $a$-valued
 morphism on $S$ then instantiating the naturality square implied by
-the above equality gives that $G^\set_S \circ K_a = K_a \circ
-G^\set_S$, i.e., $G^\set_S \, a = a$, i.e., $G^\set_S = \id_S$.
+the above equality gives that $g^\set_S \circ K_a = K_a \circ
+g^\set_S$, i.e., $g^\set_S \, a = a$, i.e., $g^\set_S = \id_S$.
 Putting these two cases together we have that for every $S : \set$,
-$G^\set_S = \id_S$, i.e., $G^\set$ is the identity natural
+$g^\set_S = \id_S$, i.e., $g^\set$ is the identity natural
 transformation for the identity functor on $\set$. So every closed
 term $g$ of closed type $\Nat^\alpha\alpha\,\alpha$ always denotes the
 identity natural transformation for the identity functor on $\set$,
@@ -3688,20 +3690,20 @@ We can recover standard short cut fusion for lists~\cite{glp93} in our
 calculus: 
 \begin{thm}
 If \,$\vdash F$, $\vdash H$, and 
-$G \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
+$\hat{g} \, = \, \setsem{\beta; \emptyset \,|\, \emptyset \vdash g :
   \Nat^{\emptyset} (\Nat^{\emptyset} (\onet + F \times \beta)\,
   \beta)\, \beta}$ for some $g$, and if $c \in \setsem{\vdash F}
 \,\times\, \setsem{\vdash H} \to \setsem{\vdash H}$ and $n \in
 \setsem{\vdash H}$, then
-\[\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (G\; (\mathit{List}\,
-\setsem{\vdash F})\,\mathit{nil} \,\mathit{cons}) = G \,\setsem{\vdash
+\[\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (\hat{g}\; (\mathit{List}\,
+\setsem{\vdash F})\,\mathit{nil} \,\mathit{cons}) = \hat{g} \,\setsem{\vdash
   H}\, n\, c \]
 \end{thm}
 \proof
 Theorem~\ref{thm:abstraction} gives
 that, for any $\rho \in \relenv$,
 \[\begin{array}{lll}
-(G \,(\pi_1 \rho), \,G\, (\pi_2 \rho)) & \in 
+(\hat{g} \,(\pi_1 \rho), \,\hat{g}\, (\pi_2 \rho)) & \in 
 & \relsem{\beta; \emptyset \vdash \Nat^{\emptyset} (\Nat^{\emptyset}
   (\onet + F \times \beta)\, \beta)\, \beta} \rho \\
 & \cong & (((\relsem{\vdash F} \rho \times
@@ -3709,7 +3711,7 @@ that, for any $\rho \in \relenv$,
 \end{array}\]
 so if $(c', c) \in \relsem{\vdash F} \rho \times
 \rho\beta \to \rho\beta$ and $(n', n) \in \rho\beta$ then
-$(G \,(\pi_1 \rho)\, n'\, c', G\, (\pi_2 \rho)\, n\, c)
+$(\hat{g} \,(\pi_1 \rho)\, n'\, c', \hat{g}\, (\pi_2 \rho)\, n\, c)
 \in \rho \beta$.
 In addition,
 \begin{align*}
@@ -3734,12 +3736,12 @@ so that if $c \in
 c' & = & \mathit{cons}\\
 n' & = & \mathit{nil}
 \end{array}\]
-thus gives that $(G \;(\mathit{List}\,\setsem{\vdash
-  F})\,\mathit{nil} \,\mathit{cons}, G \,\setsem{\vdash H} \,
+thus gives that $(\hat{g}\;(\mathit{List}\,\setsem{\vdash
+  F})\,\mathit{nil} \,\mathit{cons}, \hat{g} \,\setsem{\vdash H} \,
 n\, c) \in \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c}$, i.e.,
-that $\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (G\;
+that $\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (\hat{g}\;
 (\mathit{List}\,\setsem{\vdash F})\, \mathit{nil}\, \mathit{cons})
-= G \,\setsem{\vdash H}\, n\, c$.
+= \hat{g}\,\setsem{\vdash H}\, n\, c$.
 \qed
 
 We can extend short cut fusion results to arbitrary ADTs, as
@@ -3760,12 +3762,12 @@ H\,f\,x & = & \setsem{\emptyset; \phi, \alpha \vdash F}[\phi :=
   f][\alpha := x]\\
 \end{array}\]
 and 
-\[G = \setsem{\phi;\emptyset\,|\,\emptyset \vdash g :
+\[\hat{g} = \setsem{\phi;\emptyset\,|\,\emptyset \vdash g :
 \Nat^\emptyset\,(\Nat^\alpha\,F\,(\phi\alpha))\,(\Nat^\alpha\,\onet \,
 (\phi\alpha))}\] for some $g$, then, for every $B \in H
 \setsem{\emptyset;\alpha \vdash K} \rightarrow \setsem{\emptyset;
   \alpha \vdash K}$,
-$$\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
+$$\mathit{fold}_{H}\, B \, (\hat{g}\; \mu H \; \mathit{in}_{H}) = \hat{g}
 \,\setsem{\emptyset;\alpha \vdash K}\, B$$
 \end{thm}
 
@@ -3773,7 +3775,7 @@ $$\mathit{fold}_{H}\, B \, (G\; \mu H \; \mathit{in}_{H}) = G
 Theorem~\ref{thm:abstraction} gives that, for any 
 $\rho \in \relenv$,
 \[\begin{array}{lll}
-(G \,(\pi_1 \rho), G\, (\pi_2 \rho)) & \in &
+(\hat{g} \,(\pi_1 \rho), \hat{g}\, (\pi_2 \rho)) & \in &
 \relsem{\phi;\emptyset\vdash \Nat^{\emptyset} (\Nat^\alpha 
   F\, (\phi\alpha))\, (\Nat^\alpha\,\onet \, (\phi\alpha))}
 \rho\\ 
@@ -3785,7 +3787,7 @@ $\rho \in \relenv$,
 \end{array}\]
 \noindent
 so if $(A, B) \in \relsem{\phi;\emptyset\vdash \Nat^\alpha F\,
-  (\phi\alpha)}\rho$ then $(G \,(\pi_1 \rho)\, A, G\, (\pi_2 \rho)\,
+  (\phi\alpha)}\rho$ then $(\hat{g} \,(\pi_1 \rho)\, A, \hat{g}\, (\pi_2 \rho)\,
 B) \in \rho \phi$.
 Also,
 \[\setsem{\vdash \fold_F^K :
@@ -3822,19 +3824,19 @@ since if $(x,y) \in \graph{\mathit{map}_H \,(\mathit{fold}_H\,B)}$,
 then $$\mathit{fold}_H\, B\, (\mathit{in}_H\,x) = B\,y = B\,
 (\mathit{map}_H \,(\mathit{fold}_H\,B) \, x)$$ by the definition of
 $\mathit{fold}_H$ as a (indeed, the unique) morphism from
-$\mathit{in}_H$ to $B$.  Thus, $(G \,(\pi_1 \rho)\, A, G\, (\pi_2
+$\mathit{in}_H$ to $B$.  Thus, $(\hat{g} \,(\pi_1 \rho)\, A,  \hat{g}\, (\pi_2
 \rho)\, B) \in \graph{\mathit{fold}_H\, B}$, i.e., $\mathit{fold}_H \,
-B \, (G\, (\pi_1 \rho) \, \mathit{in}_H) = G\,(\pi_2 \rho)\,B$.  But
-since $\phi$ is the only free variable in $G$, this simplifies to
-$\mathit{fold}_H\, B \, (G\, \mu H\, \mathit{in}_H) =
-G\,\setsem{\emptyset;\alpha\vdash K}\,B$. \qed
+B \, (\hat{g}\, (\pi_1 \rho) \, \mathit{in}_H) = \hat{g}\,(\pi_2 \rho)\,B$.  But
+since $\phi$ is the only free variable in $\hat{g}$, this simplifies to
+$\mathit{fold}_H\, B \, (\hat{g}\, \mu H\, \mathit{in}_H) =
+\hat{g}\,\setsem{\emptyset;\alpha\vdash K}\,B$. \qed
 
 \vspace*{0.05in}
 
 As in~\cite{jg10}, replacing $\onet$ with any type $\emptyset;\alpha
 \vdash C$ generalizes Theorem~\ref{thm:short-cut-nested} to deliver a
 more general free theorem whose conclusion is $\mathit{fold}_{H}\, B
-\; \circ \; G\; \mu H \; \mathit{in}_{H} = G
+\; \circ \; \hat{g}\; \mu H \; \mathit{in}_{H} = \hat{g}
 \,\setsem{\emptyset;\alpha \vdash K}\, B$.
 
 \vspace*{0.05in}
@@ -3858,10 +3860,11 @@ nested type $\mathtt{Bush}$ are $\mathtt{bnil :: Bush\; A}$ and
 $\mathtt{bcons :: A \to Bush\; (Bush\; A) \to Bush\; A}$.
 
 Generalized algebraic datatypes (GADTs) --- also known as guarded
-recursive data types or first-class phantom types --- generalize
-nested types by relaxing the above restriction to allow the return
-types of data constructors to be different instances of the datatype
-than the one being defined. For example, the GADT 
+recursive data types~\cite{xcc03} or first-class phantom
+types~\cite{ch03} --- generalize nested types by relaxing the above
+restriction to allow the return types of data constructors to be
+different instances of the datatype than the one being defined. For
+example, the GADT
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
 \hspace*{0.4in}\mathtt{sconst\;:\; A \rightarrow Seq\;A}\\
@@ -3903,11 +3906,14 @@ construct, and extending the calculus in Figure~\ref{fig:terms} with
 corresponding categorically inspired constructs to introduce and
 eliminate terms of these richer types. This approach exactly mirrors
 the (entirely standard) approach taken above for product, coproduct,
-and fixpoint types. In this section we outline this approach and show
-how our model from Section~\ref{sec:term-interp} can be extended to a
-parametric model when some classes of primitive GADTs are incorporated
-in this manner. However, as we argue at the end of this section, such
-extension is likely not possible.
+and fixpoint types. In this section we outline the obvious approach to
+extending our model from Section~\ref{sec:term-interp} to a parametric
+model when some classes of primitive GADTs are incorporated in this
+manner. However, as we argue at the end of this section, this naive
+approach fails because the IEL does not hold. Unfortunately, the IEL
+not holding derails more than just parametricity: it also affects the
+well-definedness of the term semantics (in particular, the semantics
+of $L$-terms).
 
 \subsection{Left Kan Extensions}\label{sec:lke}
 
@@ -4467,7 +4473,7 @@ Lemma~\ref{lem:rel-transf-morph} therefore cannot hold.
 \end{exa}
 
 The problem in Example~\ref{ex:no-rel-transf} lies in the fact that
-the type along whose intepretation we extend contains constants, i.e.,
+the type along whose interpretation we extend contains constants, i.e.,
 subtypes constructed from $\onet$. Indeed, if $\ol{\emptyset;
   \overline{\alpha} \vdash K}$ consists only of polynomial (i.e.,
 sum-of-products) types not containing constants (i.e., formed only
