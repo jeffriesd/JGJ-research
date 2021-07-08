@@ -1341,73 +1341,69 @@ following data:
 \end{defi}
 
 \begin{defi}\label{def:RT-functor}
-An endofunctor $H$ on $RT_k$ is a triple $H = (H^1,H^2,H^*)$, where
+A {\em higher-order relation transformer} $H$ on $RT_k$ is a triple $H
+= (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are functors from $[\set^k,\set]$ to $[\set^k,\set]$
 \item $H^*$ is a functor from $RT_k$ to $[\rel^k,\rel]$
-\item For all $\overline{R : \rel(A,B)}$,
-  $\pi_1((H^*(\delta^1,\delta^2))_{\overline{R}}) = (H^1
-  \delta^1)_{\overline{A}}$ and
-  $\pi_2((H^*(\delta^1,\delta^2))_{\overline{R}}) = (H^2
-  \delta^2)_{\overline{B}}$
-\item The action of $H$ on objects is given by $H\,(F^1,F^2,F^*) =
-  (H^1F^1,\,H^2F^2,\,H^*(F^1,F^2,F^*))$
-\item The action of $H$ on morphisms is given by
-  $H\,(\delta^1,\delta^2) = (H^1\delta^1,H^2\delta^2)$ for
-  $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$
-\end{itemize}
-\end{defi}
-Since the results of applying an endofunctor $H$ to $k$-ary relation
-transformers and morphisms between them must again be $k$-ary relation
-transformers and morphisms between them, respectively,
-Definition~\ref{def:RT-functor} implicitly requires that the following
-three conditions hold:
-\begin{itemize}
 \item $H^*(F^1,F^2,F^*) \ol{R} : \rel(H^1F^1 \ol{A}, H^2F^2 \ol{B})$
   whenever $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$
 \item $H^*(F^1,F^2,F^*)\, \ol{(\alpha, \beta)} = (H^1F^1\ol{\alpha},
   H^2F^2 \ol{\beta})$ whenever $(\alpha_1, \beta_1) \in
   \Homrel(R_1,S_1),..., (\alpha_k, \beta_k)$ $\in \Homrel(R_k,S_k)$
-\item If $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$ in
-  $RT_k$ and $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then
-  $((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
-  H^*(G^1,G^2,G^*)\ol{R}$ whenever $(x, y) \in H^*(F^1,F^2,F^*)\ol{R}$
+\item For all $\overline{R : \rel(A,B)}$,
+  $\pi_1((H^*(\delta^1,\delta^2))_{\overline{R}}) = (H^1
+  \delta^1)_{\overline{A}}$ and
+  $\pi_2((H^*(\delta^1,\delta^2))_{\overline{R}}) = (H^2
+  \delta^2)_{\overline{B}}$
 \end{itemize}
-  Note, however, that this last condition is
-  automatically satisfied because it is implied by the third bullet
-  point of Definition~\ref{def:RT-functor}.
+\end{defi}
+\noindent
+Definition~\ref{def:RT-functor} entails that every higher-order
+relation transformer $H$ is an endofunctor on $RT_k$, where
+\begin{itemize}
+\item The action of $H$ on objects is given by $H\,(F^1,F^2,F^*) =
+  (H^1F^1,\,H^2F^2,\,H^*(F^1,F^2,F^*))$
+\item The action of $H$ on morphisms is given by
+  $H\,(\delta^1,\delta^2) = (H^1\delta^1,H^2\delta^2)$ for
+  $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$
+\end{itemize}  
+Note that the last condition of Definition~\ref{def:RT-functor}
+entails that if $(\delta^1,\delta^2) : (F^1,F^2,F^*)\to (G^1,G^2,G^*)$
+in $RT_k$, if $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, and if $(x,
+y) \in H^*(F^1,F^2,F^*)\ol{R}$, then
+\[((H^1\delta^1)_{\ol{A}}x, (H^2\delta^2)_{\ol{B}}y) \in
+H^*(G^1,G^2,G^*)\ol{R}\] 
 
 \begin{defi}\label{def:RT-nat-trans}
-For endofunctors $H$ and $K$ on $RT_k$, a {\em natural transformation}
-$\sigma : H \to K$ is a pair $\sigma = (\sigma^1, \sigma^2)$, where
-$\sigma^1 : H^1 \to K^1$ and $\sigma^2 : H^2 \to K^2$ are natural
-transformations between endofunctors on $[\set^k,\set]$ and the
-component of $\sigma$ at $F = (F^1,F^2,F^*) \in RT_k$ is given by
-$\sigma_F = (\sigma^1_{F^1}, \sigma^2_{F^2})$.
+A {\em morphism} $\sigma : H \to K$ between higher-order relation
+transformers $H$ and $K$ on $RT_k$ is a pair $\sigma = (\sigma^1,
+\sigma^2)$, where $\sigma^1 : H^1 \to K^1$ and $\sigma^2 : H^2 \to
+K^2$ are natural transformations between endofunctors on
+$[\set^k,\set]$ such that $((\sigma^1_{F^1})_{\overline{A}},
+(\sigma^2_{F^2})_{\overline{B}})$ is a morphism from $H^*
+F\overline{R}$ to $K^* F\overline{R}$ in $\rel$ for any $F \in RT_k$
+and any $k$-tuple of relations $\overline{R : \rel(A, B)}$.
 \end{defi}
-Definition~\ref{def:RT-nat-trans} entails that $\sigma^i_{F^i}$ is
-natural in $F^i : [\set^k,\set]$, and, for every $F$, both
+
+Definition~\ref{def:RT-nat-trans} entails that a morphism $\sigma$
+between higher-order relation transformers is a natural transformation
+between endofunctors on $RT_k$ whose component at $F = (F^1,F^2,F^*)
+\in RT_k$ is given by $\sigma_F = (\sigma^1_{F^1}, \sigma^2_{F^2})$.
+Moreover, $\sigma^i_{F^i}$ is natural in $F^i : [\set^k,\set]$, and,
+for every $F = (F^1,F^2,F^*) \in RT_k$, both
 $(\sigma^1_{F^1})_{\overline{A}}$ and
 $(\sigma^2_{F^2})_{\overline{A}}$ are natural in $\overline{A}$.
-Moreover, since the results of applying $\sigma$ to $k$-ary relation
-transformers must be morphisms of $k$-ary relation transformers,
-Definition~\ref{def:RT-nat-trans} implicitly requires that
-$(\sigma_F)_{\overline{R}} = ( (\sigma^1_{F^1})_{\overline{A}},
-(\sigma^2_{F^2})_{\overline{B}})$ is a morphism in $\rel$ for any
-$k$-tuple of relations $\overline{R : \rel(A, B)}$, i.e., that if $(x,
-y) \in H^*F\overline{R}$, then $((\sigma^1_{F^1})_{\overline{A}} x,
-(\sigma^2_{F^2})_{\overline{B}} y) \in K^*F\overline{R}$.
 
-\vspace*{0.1in}
 Critically, we can compute $\omega$-directed colimits in
-$RT_k$. Indeed, if $\cal D$ is an $\omega$-directed set then
-$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
+$RT_k$. Indeed, if $\cal D$ is an $\omega$-directed set then $\colim{d
+  \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
     D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
-    D}}{F^*_d})$.  We define an endofunctor $T = (T^1,T^2,T^*)$ on
-$RT_k$ to be {\em $\omega$-cocontinuous} if $T^1$ and $T^2$ are
-$\omega$-cocontinuous endofunctors on $[\set^k,\set]$ and $T^*$ is an
-$\omega$-cocontinuous functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is
-in $[RT_k,[\rel^k,\rel]]$.
+    D}}{F^*_d})$.  We define a higher-order relation transformer $T =
+(T^1,T^2,T^*)$ on $RT_k$ to be {\em $\omega$-cocontinuous} if $T^1$
+and $T^2$ are $\omega$-cocontinuous endofunctors on $[\set^k,\set]$
+and $T^*$ is an $\omega$-cocontinuous functor from $RT_k$ to
+$[\rel^k,\rel]$, i.e., is in $[RT_k,[\rel^k,\rel]]$.
 %\begin{lemma}\label{lem:colimits}
 %$\colim{d \in {\cal D}}{(F^1_d, F^2_d,F^*_d)} = (\colim{d \in {\cal
 %      D}}{F^1_d}, \colim{d \in {\cal D}}{F^2_d}, \colim{d \in {\cal
@@ -1464,15 +1460,6 @@ in $[RT_k,[\rel^k,\rel]]$.
 %$(\delta^1_d, \delta^2_d)$ is a morphism from $(F^1_d,F^2_d,F^*_d)$ to
 %$C$ in $RT_k$.
 %\end{proof}
-\begin{comment}
-\begin{defi}\label{def:omega-cocont}
-An endofunctor $T = (T^1,T^2,T^*)$ on $RT_k$ is {\em
-$\omega$-cocontinuous} if $T^1$ and $T^2$ are $\omega$-cocontinuous
-endofunctors on $[\set^k,\set]$ and $T^*$ is an $\omega$-cocontinuous
-functor from $RT_k$ to $[\rel^k,\rel]$, i.e., is in
-$[RT_k,[\rel^k,\rel]]$.
-\end{defi}
-\end{comment}
 Now, for any $k$, any $A : \set$, and any $R : \rel(A, B)$, let
 $K^\set_A$ be the constantly $A$-valued functor from $\set^k$ to
 $\set$ and $K^\rel_R$ be the constantly $R$-valued functor from
@@ -1481,9 +1468,10 @@ either $\set$ or $\rel$, as appropriate.  Observing that, for every
 $k$, $K^\set_0$ is initial in $[\set^k,\set]$, and $K^\rel_0$ is
 initial in $[\rel^k,\rel]$, we have that, for each $k$, $K_0 =
 (K^\set_0,K^\set_0,K^\rel_0)$ is initial in $RT_k$. Thus, if $T =
-(T^1,T^2,T^*) : RT_k \to RT_k$ is an endofunctor on $RT_k$ then we can
-define the relation transformer $\mu T$ to be $\colim{n \in \nat}{T^n
-  K_0}$. It is not hard to see that $\mu T$ is given explicitly as
+(T^1,T^2,T^*) : RT_k \to RT_k$ is a higher-order relation transformer
+on $RT_k$ then we can define the relation transformer $\mu T$ to be
+$\colim{n \in \nat}{T^n K_0}$. It is not hard to see that $\mu T$ is
+given explicitly as
 \begin{equation}\label{eq:mu}
 \mu T = (\mu T^1,\mu T^2, \colim{n \in \nat}{(T^nK_0)^*})
 \end{equation}
@@ -1503,12 +1491,12 @@ is the colimit in $[\rel^k,\rel]$ of third components of relation
 transformers, rather than a fixpoint of an endofunctor on
 $[\rel^k,\rel]$. There is thus an asymmetry between the first two
 components of $\mu T$ and its third component, which reflects the
-important conceptual observation that the third component of an
-endofunctor on $RT_k$ need not be a functor on all of
-$[\rel^k,\rel]$. In particular, although we can define $T_{H,\rho}\,
-F$ for a relation transformer $F$ in Definition~\ref{def:rel-sem}
-below, it is not clear how we could define it for an arbitrary $F :
-[\rel^k,\rel]$. 
+important conceptual observation that the third component of a
+higher-order relation transformer on $RT_k$ need not be a functor on
+all of $[\rel^k,\rel]$. In particular, although we can define
+$T_{H,\rho}\, F$ for a relation transformer $F$ in
+Definition~\ref{def:rel-sem} below, it is not clear how we could
+define it for an arbitrary $F : [\rel^k,\rel]$.
 
 \begin{defi}\label{def:reln-env}
 A {\em relation environment} maps each type variable in $\tvars^k \cup
@@ -1535,46 +1523,43 @@ the set environments mapping each type variable $\phi$ to the functors
 $(\rho\phi)^1$ and $(\rho\phi)^2$, respectively.
 
 \begin{defi}\label{def:relenv-functor}
-For each $k$, an $\omega$-cocontinuous functor $H \in [\relenv, RT_k]$
-is a triple $H = (H^1,H^2,H^*)$, where
+  For each $k$, an {\em $\omega$-cocontinuous environment transformer}
+  $H$ is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are objects in $[\setenv,[\set^k,\set]]$
 \item $H^*$ is an object in $[\relenv,[\rel^k,\rel]]$
-\item For all $\overline{R : \rel(A,B)}$ and morphisms $f$ in
-  $\relenv$, $\pi_1(H^*f \,{\overline{R}}) = H^1 (\pi_1
-  f)\,{\overline{A}}$ and $\pi_2(H^*f \,{\overline{R}}) = H^2 (\pi_2
-  f)\,{\overline{B}}$
-\item The action of $H$ on $\rho$ in $\relenv$ is given by $H \rho = (H^1
-  (\pi_1 \rho),\,H^2 (\pi_2 \rho),\,H^*\rho)$
-\item The action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
-  is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2 f))$
-\end{itemize}
-\end{defi}
-\noindent Spelling out the last two bullet points above gives the
-following analogues of the three conditions immediately following
-Definition~\ref{def:RT-functor}:
-\begin{itemize}
 \item $H^*\rho\, \ol{R} : \rel(H^1(\pi_1 \rho)\, \ol{A}, H^2(\pi_2
   \rho)\, \ol{B})$ whenever $R_1 : \rel(A_1,B_1),...,R_k :
   \rel(A_k,B_k)$
 \item $H^*\rho\, \ol{(\alpha, \beta)} = (H^1(\pi_1 \rho)\,\ol{\alpha},
   H^2(\pi_2 \rho)\, \ol{\beta})$ whenever $(\alpha_1, \beta_1) \in
   \Homrel(R_1,S_1),..., (\alpha_k, \beta_k) \in \Homrel(R_k,S_k)$
-\item If $f : \rho \to \rho'$ and
-  $R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, then $(H^1(\pi_1
-  f)\,{\ol{A}}\,x, H^2(\pi_2 f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}$
-  whenever $(x, y) \in H^*\rho\,\ol{R}$.
+\item For all $\overline{R : \rel(A,B)}$, $\pi_1(H^*f
+  \,{\overline{R}}) = H^1 (\pi_1 f)\,{\overline{A}}$ and $\pi_2(H^*f
+  \,{\overline{R}}) = H^2 (\pi_2 f)\,{\overline{B}}$
 \end{itemize}
-As before, the last condition is automatically satisfied because it is
-implied by the third bullet point of
-Definition~\ref{def:relenv-functor}.
+\end{defi}
+\noindent
+Definition~\ref{def:relenv-functor} entails that every
+$\omega$-cocontinuous environment transformer $H$ is a
+$\omega$-cocontinuous functor from $\relenv$ to $RT_k$, where
+\begin{itemize}
+\item The action of $H$ on $\rho$ in $\relenv$ is given by $H \rho = (H^1
+  (\pi_1 \rho),\,H^2 (\pi_2 \rho),\,H^*\rho)$
+\item The action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
+  is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2 f))$
+\end{itemize}
+\noindent
+Note that the last condition of Definition~\ref{def:relenv-functor}
+entails that if $f : \rho \to \rho'$, if
+$R_1:\rel(A_1,B_1),...,R_k:\rel(A_k,B_k)$, and if $(x, y) \in
+H^*\rho\,\ol{R}$, then \[(H^1(\pi_1 f)\,{\ol{A}}\,x, H^2(\pi_2
+f)\,{\ol{B}}\,y) \in H^*\rho'\,\ol{R}\]
 
 Considering $\relenv$ as a subcategory of the product $\Pi_{\phi^k \in
   \tvars \cup \fvars} RT_k$, computation of $\omega$-directed colimits
-in $RT_k$ extends componentwise to $\relenv$. Similarly,
-$\omega$-cocontinuity for endofunctors on $RT_k$ extends componentwise
-to functors from $\relenv$ to $RT_k$.  Recalling from the start of
-this subsection that Definition~\ref{def:rel-sem} is given mutually
+in $RT_k$ extends componentwise to $\relenv$. Recalling from the start
+of this subsection that Definition~\ref{def:rel-sem} is given mutually
 inductively with Definition~\ref{def:set-sem} we can now define our
 relational interpretation.
 
@@ -1608,11 +1593,6 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash F\times G}\rho &=
   \relsem{\Gamma;\Phi \vdash F}\rho \times
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
-\end{align*}
-
-\vspace*{-0.5in}
-
-\begin{align*}
    \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
   &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
@@ -1642,29 +1622,92 @@ to $\mathbb{T}^k$ of morphisms between relational environments are
 identities. If $\rho \in \relenv$ and $\vdash F$, then we write
 $\relsem{\vdash F}$ instead of $\relsem{\vdash F}\rho$.  For the last
 clause in Definition~\ref{def:rel-sem} to be well-defined we need
-$T_{H,\rho}$ to be an $\omega$-cocontinuous endofunctor on $RT$ so
-that, by Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_{H,\rho}$
-is defined in terms of $\relsem{\Gamma;\phi, \ol{\alpha} \vdash H}$,
-this means that relational interpretations of types must be
-$\omega$-cocontinuous functors from $\relenv$ to $RT_0$, which in turn
-entails that the actions of relational interpretations of types on
-objects and on morphisms in $\relenv$ are intertwined. As for set
-interpretations, we know from~\cite{jp19} that, for every $\Gamma;
-\ol{\alpha} \vdash F$, $\relsem{\Gamma; \ol{\alpha} \vdash F}$ is
-actually in $[\rel^k,\rel]$ where $k = |\ol \alpha|$. We first define
-the actions of each of these functors on morphisms between
-environments, and then argue that they are well-defined and have the
-required properties. To do this, we extend $T_H$ to a {\em functor}
-from $\relenv$ to $[[\rel^k,\rel],[\rel^k,\rel]]$. Its action on an
-object $\rho \in \relenv$ is given by the higher-order functor
+$T_{H,\rho}$ to be an $\omega$-cocontinuous higher-order relation
+transformer on $RT_k$, where $k$ is the arity of $\phi$, so that, by
+Lemma~\ref{lem:fp}, it admits a fixpoint. Since $T_{H,\rho}$ is
+defined in terms of $\relsem{\Gamma;\phi, \ol{\alpha} \vdash H}$, this
+means that relational interpretations of types must be
+$\omega$-cocontinuous environment transformer from $\relenv$ to
+$RT_0$, which in turn entails that the actions of relational
+interpretations of types on objects and on morphisms in $\relenv$ are
+intertwined. As for set interpretations, we know from~\cite{jp19}
+that, for every $\Gamma; \ol{\alpha} \vdash F$, $\relsem{\Gamma;
+  \ol{\alpha} \vdash F}$ is actually in $[\rel^k,\rel]$ where $k =
+|\ol \alpha|$. We first define the actions of each of these functors
+on morphisms between environments, and then argue that they are
+well-defined and have the required properties. To do this, we extend
+$T_H$ to a {\em higher-order $\omega$-cocontinuous environment
+  transformer} from $\relenv$ to the category of $\omega$-cocontinuous
+higher-order relation transformers on $RT_k$:
+
+\begin{defi}\label{def:howcet}
+A {\em higher-order $\omega$-cocontinuous environment transformer}
+is a triple $H = (H^1,H^2,H^*)$, where
+\begin{itemize}
+\item $H^1$ and $H^2$ are objects in
+  $[\setenv,[[\set^k,\set],[\set^k,\set]]]$ 
+\item $H^*$ is an object in $[\relenv,[[\rel^k,\rel],[\rel^k,\rel]]]$
+\item $(H^1(\pi_1 \rho) F^1,H^2(\pi_2 \rho) F^2, H^* \rho F^*) \in
+  RT_k$ whenever $(F^1,F^2,F^*) \in RT_k$
+\item $H^*\rho\, (\delta^1, \delta^2)$ is a morphism in $RT_k$
+  whenever $(\delta^1, \delta^2)$ is a morphism in $RT_k$ and,
+  moreover, $H^*\rho\, (\delta^1, \delta^2) = (H^1(\pi_1
+  \rho)\,\delta^1, H^2(\pi_2 \rho)\, \delta^2)$
+\item For all $(F^1,F^2,F^*) \in RT_k$, $\pi_1(H^* f
+  \,F^*) = H^1 (\pi_1 f)\,F^1$ and $\pi_2(H^*f
+  \,F^*) = H^2 (\pi_2 f)\,F^2$
+\end{itemize}
+\end{defi}
+\noindent
+Definition~\ref{def:howcet} entails that every higher-order
+$\omega$-cocontinuous environment transformer $H$ is a
+$\omega$-cocontinuous functor from $\relenv$ to
+the category of $\omega$-cocontinuous higher-order
+relation transformers on $RT_k$, where
+\begin{itemize}
+\item The action of $H$ on $\rho$ in $\relenv$ is given by $H \rho = (H^1
+  (\pi_1 \rho),\,H^2 (\pi_2 \rho),\,H^*\rho)$
+\item The action of $H$ on morphisms $f : \rho \to \rho'$ in $\relenv$
+  is given by $Hf = (H^1 (\pi_1 f),H^2 (\pi_2 f))$
+\end{itemize}
+\noindent
+Note that the last condition of Definition~\ref{def:howcet} entails
+that if $f : \rho \to \rho'$, if $(F^1,F^2,F^*) \in RT_k$, if $R_1 :
+\rel(A_1,B_1),...,R_k : \rel(A_k,B_k)$, and if $(x, y) \in
+H^*\rho\,F^*\,\ol{R}$, then \[(H^1(\pi_1 f)\,F^1\,\ol{A}\,x, H^2(\pi_2
+f)\,F^2\,\ol{B}\,y) \in H^*\rho'\,F^*\,\ol{R}\]
+
+
+
+
+
+------
+
+{\color{red} HERE!}
+
+
+
+The action of $T_H$ on an object $\rho \in \relenv$ is
+
+{\color{blue}
+given by the higher-order functor
 $T_{H,\rho}$ whose actions on objects and morphisms are given in
-Definition~\ref{def:rel-sem-funcs}. Its action on a morphism $f : \rho
-\to \rho'$ is the higher-order natural transformation $T_{H,f} :
+Definition~\ref{def:rel-sem-funcs}.}
+
+
+
+The action of  $T_H$ on a morphism $f : \rho \to \rho'$ is
+
+{\color{blue}
+the higher-order natural transformation $T_{H,f} :
 T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
 the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
 T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
 F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash H}f[\phi :=
-  \id_F][\ol{\alpha := \id_R}]$.
+  \id_F][\ol{\alpha := \id_R}]$.}
+
+
+CHECK CONDITIONS
 
 Using $T_H$, we can define the functorial action of relational
 interpretation.
@@ -2232,7 +2275,8 @@ application, and fixpoint cases are non-routine.
   equalities, where the second equality is by the induction hypothesis
   and the definition of the relation environment $\Eq_\rho$, the third
   is by the definition of application of relation transformers from
-  Definition~9, and the fourth is by Equation~\ref{eq:eq-pres-eq}:
+  Definition~\ref{def:rel-transf}, and the fourth is by
+  Equation~\ref{eq:eq-pres-eq}:
 \[
 \begin{split}
 \relsem{\Gamma; \Phi \vdash \phi\ol{F}}\Eq_{\rho} &=
