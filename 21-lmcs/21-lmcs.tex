@@ -1595,7 +1595,7 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
    \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
-  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
+  &= (----\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
   \text{where }	T_{H,\rho}
     &= (T^\set_{H,\pi_1\rho}, T^\set_{H,\pi_2\rho}, T^\rel_{H,\rho}) \\
   \text{and } T^\rel_{H,\rho}\,F
@@ -1635,10 +1635,9 @@ that, for every $\Gamma; \ol{\alpha} \vdash F$, $\relsem{\Gamma;
   \ol{\alpha} \vdash F}$ is actually in $[\rel^k,\rel]$ where $k =
 |\ol \alpha|$. We first define the actions of each of these functors
 on morphisms between environments, and then argue that they are
-well-defined and have the required properties. To do this, we extend
-$T_H$ to a {\em higher-order $\omega$-cocontinuous environment
-  transformer} from $\relenv$ to the category of $\omega$-cocontinuous
-higher-order relation transformers on $RT_k$:
+well-defined and have the required properties. To do this, we show
+that $T_H = (T^\set_H, T^\set_H, T^\rel_H) $ is a {\em higher-order
+  $\omega$-cocontinuous environment transformer}, as defined by
 
 \begin{defi}\label{def:howcet}
 A {\em higher-order $\omega$-cocontinuous environment transformer}
@@ -1646,16 +1645,17 @@ is a triple $H = (H^1,H^2,H^*)$, where
 \begin{itemize}
 \item $H^1$ and $H^2$ are objects in
   $[\setenv,[[\set^k,\set],[\set^k,\set]]]$ 
-\item $H^*$ is an object in $[\relenv,[[\rel^k,\rel],[\rel^k,\rel]]]$
-\item $(H^1(\pi_1 \rho) F^1,H^2(\pi_2 \rho) F^2, H^* \rho F^*) \in
-  RT_k$ whenever $(F^1,F^2,F^*) \in RT_k$
+\item $H^*$ is an object in $[\relenv,[RT_k,[\rel^k,\rel]]]$
+\item $(H^1(\pi_1 \rho) F^1,H^2(\pi_2 \rho) F^2, H^* \rho F) \in
+  RT_k$ whenever $F = (F^1,F^2,F^*) \in RT_k$
 \item $H^*\rho\, (\delta^1, \delta^2)$ is a morphism in $RT_k$
   whenever $(\delta^1, \delta^2)$ is a morphism in $RT_k$ and,
   moreover, $H^*\rho\, (\delta^1, \delta^2) = (H^1(\pi_1
   \rho)\,\delta^1, H^2(\pi_2 \rho)\, \delta^2)$
-\item For all $(F^1,F^2,F^*) \in RT_k$, $\pi_1(H^* f
-  \,F^*) = H^1 (\pi_1 f)\,F^1$ and $\pi_2(H^*f
-  \,F^*) = H^2 (\pi_2 f)\,F^2$
+\item For all $F = (F^1,F^2,F^*) \in RT_k$ and all $R_1 :
+  \rel(A_1,B_1),...,R_k : \rel(A_k,B_k)$, $\pi_1(H^* f \,F\,\ol{R}) =
+  H^1 (\pi_1 f)\,F^1\,\ol{A}$ and $\pi_2(H^*f \,F\,\ol{R}) = H^2
+  (\pi_2 f)\,F^2\,\ol{B}$
 \end{itemize}
 \end{defi}
 \noindent
@@ -1672,45 +1672,35 @@ relation transformers on $RT_k$, where
 \end{itemize}
 \noindent
 Note that the last condition of Definition~\ref{def:howcet} entails
-that if $f : \rho \to \rho'$, if $(F^1,F^2,F^*) \in RT_k$, if $R_1 :
+that if $f : \rho \to \rho'$, if $F = (F^1,F^2,F^*) \in RT_k$, if $R_1 :
 \rel(A_1,B_1),...,R_k : \rel(A_k,B_k)$, and if $(x, y) \in
-H^*\rho\,F^*\,\ol{R}$, then \[(H^1(\pi_1 f)\,F^1\,\ol{A}\,x, H^2(\pi_2
-f)\,F^2\,\ol{B}\,y) \in H^*\rho'\,F^*\,\ol{R}\]
+H^*\rho\,F\,\ol{R}$, then \[(H^1(\pi_1 f)\,F^1\,\ol{A}\,x, H^2(\pi_2
+f)\,F^2\,\ol{B}\,y) \in H^*\rho'\,F\,\ol{R}\]
 
-
-
-
-
-------
-
-{\color{red} HERE!}
-
-
-
-The action of $T_H$ on an object $\rho \in \relenv$ is
-
-{\color{blue}
-given by the higher-order functor
-$T_{H,\rho}$ whose actions on objects and morphisms are given in
-Definition~\ref{def:rel-sem-funcs}.}
-
-
-
-The action of  $T_H$ on a morphism $f : \rho \to \rho'$ is
-
-{\color{blue}
-the higher-order natural transformation $T_{H,f} :
-T_{H,\rho} \to T_{H,\rho'}$ whose action on any $F : [\rel^k,\rel]$ is
-the natural transformation $T_{H,f}\, F : T_{H,\rho}\, F \to
-T_{H,\rho'}\, F$ whose component at $\ol{R}$ is $(T_{H,f}\,
-F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash H}f[\phi :=
-  \id_F][\ol{\alpha := \id_R}]$.}
-
-
-CHECK CONDITIONS
-
-Using $T_H$, we can define the functorial action of relational
-interpretation.
+Now, the fact that $T_H = (T^\set_H, T^\set_H, T^\rel_H) $ is a
+higher-order $\omega$-cocontinuous environment transformer follows
+from the analogue for relations of the argument immediately preceding
+Definition~\ref{def:set-sem-funcs}, together with the observations
+that the action of $T^\rel_{H,\rho}$ on morphisms will be well-defined
+by Definition~\ref{def:rel-sem-funcs}, and the functorial action of
+$\relsem{\Gamma; \phi,\ol{\alpha} \vdash H}$ will already be available
+in the final clause of Definition~\ref{def:howcet} from the induction
+hypothesis on $H$ and Lemma~\ref{lem:rel-transf-morph} below. The
+action of $T_H$ on an object $\rho \in \relenv$ is given by the
+$\omega$-cocontinuous higher-order relation transformer $T_{H,\rho}$
+whose actions on objects and morphisms are given in
+Definition~\ref{def:howcet}. The action of $T_H$ on a morphism $f :
+\rho \to \rho'$ is the morphism $T_{H,f} : T_{H,\rho} \to T_{H,\rho'}$
+between higher-order relation transformers whose action on any $F \in
+RT_k$ is the morphism of relation transfomers $T_{H,f}\, F :
+T_{H,\rho}\, F \to T_{H,\rho'}\, F$ whose component at $\ol{R}$ is
+$(T_{H,f}\, F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash
+  H}f[\phi := \id_F][\ol{\alpha := \id_R}]$, i.e., is
+$(\setsem{\Gamma; \phi,\ol{\alpha} \vdash H}\,(\pi_1 f)\,[\phi :=
+  \id_{F^1}][\ol{\alpha := \id_A}], \setsem{\Gamma; \phi,\ol{\alpha}
+  \vdash H}\,(\pi_2 f)[\phi := \id_{F^2}][\ol{\alpha := \id_B}])$.
+{\color{red} CHECK CONDITIONS} Using $T_H$, we can define the
+functorial action of relational interpretation.
 \begin{defi}\label{def:rel-sem-funcs}
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
 (so that $\rho|_\tvars = \rho'|_\tvars$). The action
@@ -1764,26 +1754,21 @@ as follows:
 \end{comment}
 \end{defi}
 
-For the functors given in Definitions~\ref{def:rel-sem}
-and~\ref{def:rel-sem-funcs} to be well-defined we need that, for every
-$H$, $T_{H,\rho}\,F$ is a relation transformer for any relation
-transformer $F$, and that $T_{H,f}\, F : T_{H,\rho}\, F \to
-T_{H,\rho'}\, F$ is a morphism of relation transformers for every
-relation transformer $F$ and every morphism $f : \rho \to \rho'$ in
-$\relenv$. If we define $\sem{\Gamma;\Phi \vdash F}$ to be
-$(\setsem{\Gamma;\Phi \vdash F}, \setsem{\Gamma;\Phi \vdash
-  F},\relsem{\Gamma;\Phi \vdash F})$, then this is an immediate
-consequence of
+If we define $\sem{\Gamma;\Phi \vdash F}$ to be $(\setsem{\Gamma;\Phi
+  \vdash F}, \setsem{\Gamma;\Phi \vdash F},\relsem{\Gamma;\Phi \vdash
+  F})$, then this is an immediate consequence of
 \begin{lem}\label{lem:rel-transf-morph}
-For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F}
-\in[\relenv,RT_0]$.
+For every $\Gamma;\Phi \vdash F$, $\sem{\Gamma;\Phi \vdash F}$ is an
+$\omega$-cocontinuous environment transformer.
+
 \end{lem}
 \noindent
 The proof is a straightforward induction on the structure of $F$,
 using an appropriate result from~\cite{jp19} to deduce
 $\omega$-cocontinuity of $\sem{\Gamma;\Phi \vdash F}$ in each case,
 together with Lemma~\ref{lem:fp} and Equation~\ref{eq:mu} for
-$\mu$-types.
+$\mu$-types. We note that, for any relation environment $\rho$,  
+$\sem{\Gamma;\Phi \vdash F}\rho \in RT_0$.
 
 We can prove by simultaneous induction that our interpretations of
 types interact well with demotion of functorial variables to
@@ -3003,7 +2988,7 @@ Theorem as a special case of it for closed terms of closed type.
 
 \begin{thm}\label{thm:at-gen}
 Every well-formed term $\Gamma;\Phi~|~\Delta \vdash t : F$ induces
-a natural transformation from $\sem{\Gamma; \Phi \vdash \Delta}$ to
+a morphism from $\sem{\Gamma; \Phi \vdash \Delta}$ to
 $\sem{\Gamma; \Phi \vdash F}$, i.e., a triple of natural
 transformations 
 \[(\setsem{\Gamma;\Phi~|~\Delta \vdash t : F},\,
@@ -3020,6 +3005,7 @@ has as its component at $\rho : \setenv$ a morphism
 \setsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho & : & \setsem{\Gamma;
   \Phi \vdash \Delta}\rho \to \setsem{\Gamma; \Phi \vdash F}\rho
 \end{array}\]
+
 Moreover, for all $\rho : \relenv$, 
 \begin{equation}\label{eq:projs}
 \relsem{\Gamma;\Phi~|~\Delta \vdash t : F}\rho =
@@ -4531,8 +4517,8 @@ If $\ol{\emptyset; \overline{\alpha} \vdash K}$ consists only of
 polynomial types not containing constants, then
 \[(\setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
 }, \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} },
-\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} }) \in
-[\relenv,RT_0]\]
+\relsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A} })\]
+is an $\omega$-cocontinuous environment transformer.
 \end{prop}
 \begin{proof}
 We need only show that

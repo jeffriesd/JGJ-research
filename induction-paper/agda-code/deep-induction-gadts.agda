@@ -239,7 +239,7 @@ Arr^ A B Qa Qb (arr f) = ∀ (a : A) → Qa a → Qb (f a)
 LType^ : ∀ (A : Set) → (A → Set) → LType A → Set₁
 -- use Σ-syntax as opposed to ∃-syntax in this clause since Qb is not used
 -- and its type cannot be inferred (∃-syntax omits the type) 
--- -- LType^ A Qa (bool B e) = ∃[ Qb ] Equal^ A Bool Qa K⊤ e 
+-- LType^ A Qa (bool B e) = ∃[ Qb ] Equal^ A Bool Qa K⊤ e 
 LType^ A Qa (bool B e) = Σ[ Qb ∈ (B → Set) ] Equal^ A Bool Qa K⊤ e
 LType^ A Qa (arr B C e Tb Tc) =
   ∃[ Qb ] ∃[ Qc ] Equal^ A (Arr B C) Qa (Arr^ B C Qb Qc) e
