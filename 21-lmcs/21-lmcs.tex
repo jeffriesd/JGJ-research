@@ -279,10 +279,10 @@ fundamentally new features --- e.g., the full hierarchy of
 higher-kinds or term-indexed types --- adding complexity to their
 models that is entirely unnecessary for reasoning about nested types.
 In addition, to our knowledge no such models represent data types as
-primitive fixpoints. (See the past paragraph of this section for a
-more detailed discussion in the case of F$_\omega$.) Whether or not
-the results of this paper even hold for such calculi is an open
-question.
+primitive fixpoints, so they cannot be used to obtain the results of
+this paper.  (See the past paragraph of this section for a more
+detailed discussion in the case of F$_\omega$.) Whether or not these
+results even hold for such calculi is an open question.
 
 This paper therefore pursues the second option above.  We first design
 a Hindley-Milner-style calculus supporting primitive nested types,
@@ -511,7 +511,7 @@ are
 \[\begin{array}{c}
 \AXC{$\Gamma;\ol{\alpha^0} \vdash F$}
 \AXC{$\Gamma;\ol{\alpha^0}  \vdash G$}
-\BIC{$\Gamma;\emptyset \vdash \Nat^{\ol{\alpha^0}}F \,G$}
+\BIC{$\Gamma;\Phi \vdash \Nat^{\ol{\alpha^0}}F \,G$}
 \DisplayProof
 \\[5ex]
 \AXC{$\phi^k \in \Gamma \cup \Phi$}
@@ -540,27 +540,28 @@ We write $\vdash F$ for $\emptyset;\emptyset \vdash F$.
 Definition~\ref{def:wftypes} ensures that the expected weakening rules
 for well-formed types hold, i.e., if $\Gamma; \Phi \vdash F$ is
 well-formed, then both $\Gamma, \ol{\psi}; \Phi \vdash F$ and $\Gamma;
-\Phi, \ol{\phi} \vdash F$ are also well-formed. Note, however, that
-weakening does not change the contexts in which types can be formed.
-For example, the functorial context in which a type $\Nat^\emptyset F
-\,G$ is formed must be empty, although it can be weakened by a
-functorial variable $\beta$ {\em after} the type is formed; by
-contrast, we cannot {\em first} weaken the functorial contexts of $F$
-and $G$ to $\Gamma; \beta \vdash F$ and $\Gamma; \beta \vdash G$, and
-{\em then} form $\Nat^\emptyset F \,G$ in the weakened context
-$\Gamma; \beta$.  If $\Gamma;\emptyset \vdash F$ and $\Gamma;\emptyset
-\vdash G$, then our rules allow formation of the type
-$\Gamma;\emptyset \vdash \Nat^\emptyset F \,G$, which represents the
-System F type $\Gamma \vdash F \to G$. Similarly, if
-$\Gamma;\ol{\alpha} \vdash F$, then our rules allow formation of the
-type $\Gamma; \emptyset \vdash \Nat^{\ol\alpha} \,\onet \,F$, which
-represents the System F type $\Gamma; \emptyset \vdash \forall
-\ol\alpha . F$. However, some System F types, such as $\forall
-\alpha. (\alpha \to \alpha) \to \alpha$, are not representable in our
-calculus. Note that, in the rule for $\mu$-types, no variables in
-$\Phi$ appear in the body $F$ of $\mu \phi. \lambda \ol\alpha.F$. This
-will be critical to proving the Identity Extension Lemma for our
-calculus.
+\Phi, \ol{\phi} \vdash F$ are also well-formed. Note that weakening
+does not change the contexts in which types can be formed.  For
+example, a $\mathsf{Nat}$-type --- i.e., a type of the form
+$\Nat^{\ol{\alpha}} F \,G$ --- can be formed in any functorial
+context. But since $\Nat$-types contain no functorial variables, we
+will form them in empty functorial contexts below whenever
+convenient. Of course, we cannot {\em first} weaken the functorial
+contexts of $F$ and $G$ to $\Gamma; \ol{\alpha}, \beta \vdash F$ and
+$\Gamma; \ol{\alpha}, \beta \vdash G$, and {\em then} form
+$\Nat^{\ol{\alpha}} F \,G$ in the weakened context $\Gamma; \beta$.
+If $\Gamma;\emptyset \vdash F$ and $\Gamma;\emptyset \vdash G$, then
+our rules allow formation of the type $\Gamma;\emptyset \vdash
+\Nat^\emptyset F \,G$, which represents the System F type $\Gamma
+\vdash F \to G$. Similarly, if $\Gamma;\ol{\alpha} \vdash F$, then our
+rules allow formation of the type $\Gamma; \emptyset \vdash
+\Nat^{\ol\alpha} \,\onet \,F$, which represents the System F type
+$\Gamma; \emptyset \vdash \forall \ol\alpha . F$. However, some System
+F types, such as $\forall \alpha. (\alpha \to \alpha) \to \alpha$, are
+not representable in our calculus. Note that, in the rule for
+$\mu$-types, no variables in $\Phi$ appear in the body $F$ of $\mu
+\phi. \lambda \ol\alpha.F$. This will be critical to proving the
+Identity Extension Lemma for our calculus.
 
 Definition~\ref{def:wftypes} allows the formation of all of the types
 from Section~\ref{sec:intro}:
@@ -658,11 +659,7 @@ G[\phi :=_{\ol{\alpha}} F] \times K[\phi
 The idea is that the arguments to $\phi$ get substituted for the
 variables in $\ol\alpha$ in each $F$ replacing an occurrence of
 $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
-  :=_{\ol{\alpha}} F]$. {\color{red} REMOVE? In addition, if
-  \,$\Gamma, \phi^k; \Phi \vdash H$,\, $\Gamma; \ol\psi,\ol{\alpha}
-  \vdash F$, $|\ol\alpha| = k$, and $\Phi \cap \ol\psi = \emptyset$,
-  then $\Gamma,\ol\psi';\Phi \vdash H[\phi :=_{\ol{\alpha}} F[\ol{\psi
-        :== \psi'}]]$. Ask Daniel.}
+  :=_{\ol{\alpha}} F]$. 
 
 \subsection{Terms}\label{sec:terms}
 
@@ -727,7 +724,7 @@ $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
        \AXC{$\Gamma; \ol{\alpha} \vdash F$}
        \AXC{$\Gamma; \ol{\alpha} \vdash G$}
        \AXC{$\Gamma; \ol{\alpha} \,|\, \Delta, x : F \vdash t: G$} 
-       \TIC{$\Gamma; \emptyset
+       \TIC{$\Gamma; \Phi
          \,|\, \Delta \vdash L_{\ol{\alpha}} x.t : \Nat^{\ol{\alpha}} \,F \,G$}
        \DisplayProof\vspace*{-0.05in}
        \\\\
@@ -743,8 +740,7 @@ $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
        \AXC{$\ol{\Gamma; \ol{\beta},\ol{\gamma} \vdash F}$}
        \AXC{$\ol{\Gamma; \ol{\beta},\ol{\gamma} \vdash
            G}$}
-       \TIC{$\Gamma; \emptyset
-         ~|~\emptyset
+       \TIC{$\Gamma; \Phi         ~|~\Delta
          \vdash \map^{\ol{F},\ol{G}}_H :
          \Nat^\emptyset\;(\ol{\Nat^{\ol{\beta},\ol{\gamma}}\,F\,G})\;
          (\Nat^{\ol{\gamma}}\,H[\ol{\phi :=_{\ol{\beta}} F}]\;H[\ol{\phi
@@ -752,7 +748,7 @@ $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
        \DisplayProof\vspace*{-0.1in}
        \\\\
        \AXC{$\Gamma; \phi, \ol{\alpha} \vdash H$}
-       \UIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \tin_H :
+       \UIC{$\Gamma; \Phi  \,|\, \Delta \vdash \tin_H :
          \Nat^{\ol{\beta}} H[\phi :=_{\ol{\beta}} (\mu
            \phi.\lambda \ol{\alpha}.H)\ol{\beta}][\ol{\alpha := \beta}]\,(\mu
          \phi.\lambda \ol{\alpha}.H)\ol{\beta}$}
@@ -760,7 +756,7 @@ $\phi$. It is not hard to see that $\Gamma;\Phi \vdash H[\phi
        \\\\
        \AXC{$\Gamma; \phi,\ol{\alpha} \vdash H$}
        \AXC{$\Gamma; \ol\beta \vdash F$}
-       \BIC{$\Gamma; \emptyset  \,|\, \emptyset \vdash \fold^F_H :
+       \BIC{$\Gamma; \Phi  \,|\, \Delta \vdash \fold^F_H :
          \Nat^\emptyset\; (\Nat^{\ol{\beta}}\,H[\phi
            :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
          (\Nat^{\ol{\beta}}\,(\mu \phi.\lambda
@@ -786,17 +782,22 @@ and $\Phi$, then the formation rules for the set of {\em well-formed
 there for $L_{\ol{\alpha}}x.t$, the $L$ operator binds all occurrences
 of the type variables in $\ol{\alpha}$ in the types of $x$ and $t$, as
 well as all occurrences of $x$ in $t$. In the rule for $t_{\ol K} s$
-there is one type in $\ol K$ for every functorial
-variable in $\ol \alpha$. In the rule for $\map^{\ol{F},\ol{G}}_H$
-there is one type $F$ and one type
-$G$ for each functorial variable in $\ol\phi$. Moreover, for each
-$\phi^k$ in $\ol\phi$ the number of functorial variables in $\ol\beta$
-in the judgments for its corresponding type $F$ and
-$G$ is $k$. In the rules for $\tin_H$ and $\fold^F_H$, the functorial
-variables in $\ol{\beta}$ are fresh with respect to $H$, and there is
-one $\beta$ for every $\alpha$. Substitution for terms is the obvious
-extension of the usual capture-avoiding textual substitution, and the
-rules of Figure~\ref{fig:terms} ensure that weakening is respected.
+there is one type in $\ol K$ for every functorial variable in $\ol
+\alpha$. In the rule for $\map^{\ol{F},\ol{G}}_H$ there is one type
+$F$ and one type $G$ for each functorial variable in
+$\ol\phi$. Moreover, for each $\phi^k$ in $\ol\phi$ the number of
+functorial variables in $\ol\beta$ in the judgments for its
+corresponding type $F$ and $G$ is $k$. In the rules for $\tin_H$ and
+$\fold^F_H$, the functorial variables in $\ol{\beta}$ are fresh with
+respect to $H$, and there is one $\beta$ for every
+$\alpha$. Substitution for terms is the obvious extension of the usual
+capture-avoiding textual substitution, and the rules of
+Figure~\ref{fig:terms} ensure that weakening is respected.  Below we
+form $L$-terms, which contain no free functorial variables, in empty
+functorial contexts whenever convenient. We similarly form $\map$-,
+$\tin$-, and $\fold$-terms, which contain no free functorial variables
+or free term variables, in empty functorial contexts and empty term
+contexts whenever convenient.
 
 The ``extra'' functorial variables $\ol{\gamma}$ in the rules for
 $\map^{\ol{F},\ol{G}}_H$ (i.e., those variables not affected by the
@@ -904,9 +905,9 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 :  \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
 \alpha))\; \mathit{PTree}\,\alpha
 \end{array}\]
-respectively. Our calculus can similarly define a
-$\mathtt{reverseBush}$ function that reverses the data in a bush. This
-function maps, e.g., the bush 
+respectively. Our calculus can similarly define a $\mathtt{rustle}$
+function that changes the placement of the data in a bush. This
+function maps, e.g., the bush
 \[\begin{array}{l}
 \mathit{bcons}\,0 \,(\mathit{bcons}\, (\mathit{bcons}\, 1\,
 (\mathit{bcons}\, (\mathit{bcons}\, 2\,\mathit{bnil}) \,
@@ -2778,10 +2779,10 @@ satisfy
 \[\dsem{\Gamma; \Phi~|~\Delta \vdash
   (L_{\ol{\alpha}}x.t)_{\ol{K}}s} = \dsem{\Gamma; \Phi~|~\Delta \vdash
   t [\ol{\alpha := K}][x := s]}\]
-       {\color{red} Add if true:
-$\dsem{\Gamma; \emptyset~|~\Delta \vdash L_{\ol{\alpha}} x.t_{\ol{\alpha}} x :
-   \Nat^{\ol{\alpha}}\, F\, G} =  \dsem{\Gamma; \emptyset~|~\Delta \vdash
-   t : \Nat^{\ol{\alpha}}\, F\, G}$}
+and
+\[\dsem{\Gamma; \emptyset~|~\Delta \vdash L_{\ol{\alpha}} x.t_{\ol{\alpha}} x :
+   \Nat^{\ol{\alpha}}\, F\, G} = \dsem{\Gamma; \emptyset~|~\Delta
+  \vdash t : \Nat^{\ol{\alpha}}\, F\, G}\]
 
 %Term extensionality for both types
 %and terms --- i.e., \[\dsem{\Gamma;\Phi~|~\Delta\vdash (L_\alpha x.t)_\alpha
@@ -3593,59 +3594,42 @@ If $\vdash t : F$, then $(\setsem{\vdash t : F},\setsem{\vdash t
 \section{Free Theorems for Nested Types}\label{sec:ftnt}
 
 In this section we show how Theorem~\ref{thm:at-gen} and its
-consequences can be used to prove free theorems that go beyond mere
-naturality.  We also show that we can extend short cut fusion for
-lists~\cite{glp93} to nested types, thereby formally proving
-correctness of the categorically inspired theorem from~\cite{jg10}.
+consequences can be used to prove free theorems. Those in
+Sections~\ref{sec:ft-adt},~\ref{sec:short-cut},
+and~\ref{sec:short-cut-nested} go beyond mere naturality.  We also
+show that we can extend short cut fusion for lists~\cite{glp93} to
+nested types, thereby formally proving correctness of the
+categorically inspired theorem from~\cite{jg10}.
 
 \subsection{Free Theorem for Type of Polymorphic
   Bottom}\label{sec:bottom} 
 
-Let $ \vdash g : \Nat^\alpha \,\onet\,\alpha$, let $g^\set =
-\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$ and $g^\rel =
-\relsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(g^\set(\pi_1\rho),g^\set(\pi_2\rho)) =
-g^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
-\relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that $(g^\set,g^\set) \;= \;
-(g^\set(\pi_1 \rho), g^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
-  \Nat^\alpha \,\onet\,\alpha}\rho$ $ = \{\eta : K_1 \Rightarrow
-\id\}$ $ = \{(\eta_1 : K_1 \Rightarrow \id, \eta_2 : K_1 \Rightarrow
-\id)\}$ That is, $g^\set$ is a natural transformation from the
-constantly $1$-valued functor to the identity functor in $\set$. In
-particular, for every $S : \set$, $g^\set_S : 1 \to S$. Note, however,
-that if $S = \emptyset$, then there can be no such morphism, so no
-such natural transformation, and thus no term $\vdash g : \Nat^\alpha
-\onet \,\alpha$, can exist.  That is, our calculus admits no
-(non-terminating) terms with the closed type $\Nat^\alpha \onet
-\,\alpha$ of the polymorphic bottom.
+Suppose $ \vdash g : \Nat^\alpha \,\onet\,\alpha$ and $g^\set =
+\setsem{\vdash g : \Nat^\alpha \,\onet\,\alpha}$. Then $g^\set$ is a
+natural transformation from the constantly $1$-valued functor to the
+identity functor in $\set$.  In particular, for every $S : \set$,
+$g^\set_S : 1 \to S$. Note, however, that if $S = \emptyset$, then
+there can be no such morphism, so no such natural transformation, and
+thus no term $\vdash g : \Nat^\alpha \onet \,\alpha$, can exist.  That
+is, our calculus admits no (non-terminating) terms with the closed
+type $\Nat^\alpha \onet \,\alpha$ of the polymorphic bottom.
 
 \subsection{Free Theorem for Type of Polymorphic
   Identity}\label{sec:identity} 
 
-Let $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$, \/$g^\set =
-\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$, and $g^\rel =
-\relsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$.  By
-Theorem~\ref{thm:at-gen}, $(g^\set(\pi_1\rho),g^\set(\pi_2\rho)) =
-g^\rel\rho$. Thus, for all $\rho \in \relenv$ and any $(a, b) \in
-\relsem{\vdash \emptyset}\rho = 1$, eliding the only possible
-instantiations of $a$ and $b$ gives that $(g^\set, g^\set) \; = \;
-(g^\set(\pi_1 \rho), g^\set (\pi_2 \rho))$ $ \in \relsem{\vdash
-  \Nat^\alpha \,\alpha\,\alpha}\rho$ $ = \{\eta : \id \Rightarrow
-\id\}$ $ = \{(\eta_1 : \id \Rightarrow \id, \eta_2 : \id \Rightarrow
-\id)\}$ That is, $g^\set$ is a natural transformation from the
-identity functor on $\set$ to itself. Now let $S$ be any set.  For any
-element $a$ of $S$, if $K_a :S \to S$ is the constantly $a$-valued
-morphism on $S$ then instantiating the naturality square implied by
-the above equality gives that $g^\set_S \circ K_a = K_a \circ
-g^\set_S$, i.e., $g^\set_S \, a = a$, i.e., $g^\set_S = \id_S$.
-Putting these two cases together we have that for every $S : \set$,
-$g^\set_S = \id_S$, i.e., $g^\set$ is the identity natural
-transformation for the identity functor on $\set$. So every closed
-term $g$ of closed type $\Nat^\alpha\alpha\,\alpha$ always denotes the
-identity natural transformation for the identity functor on $\set$,
-i.e., every closed term $g$ of type $\Nat^\alpha\alpha\,\alpha$
-denotes the polymorphic identity function.
+Suppose $ \vdash g : \Nat^\alpha \,\alpha\,\alpha$ and $g^\set =
+\setsem{\vdash g : \Nat^\alpha \,\alpha\,\alpha}$.  Then $g^\set$ is a
+natural transformation from the identity functor on $\set$ to
+itself. If $S$ is any set, if $a$ is any element of $S$, and if $K_a
+:S \to S$ is the constantly $a$-valued morphism on $S$, then
+naturality of $g^\set$ gives that $g^\set_S \circ K_a = K_a \circ
+g^\set_S$, i.e., $g^\set_S \, a = a$, i.e., $g^\set_S = \id_S$.  That
+is, $g^\set$ is the identity natural transformation for the identity
+functor on $\set$. So every closed term $g$ of closed type
+$\Nat^\alpha\alpha\,\alpha$ always denotes the identity natural
+transformation for the identity functor on $\set$, i.e., every closed
+term $g$ of type $\Nat^\alpha\alpha\,\alpha$ denotes the polymorphic
+identity function.
 
 \subsection{Standard Free Theorems for ADTs and Nested
   Types}\label{sec:ft-adt} 
@@ -4407,8 +4391,8 @@ $\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t :
 \vspace*{0.05in}
 
 We conclude this subsection by showing, as promised above, that no
-cutting down of set and relational interpretations of $\Lan$-types is
-possible. We have:
+cutting down of set and relational interpretations of $\Lan$-types by
+taking subsets is possible. We have:
 
 \begin{prop}\label{prop:full-lan}
 Let $F : \set^k \to \set$ and $\ol K : \set^k \to \set^h$ be functors.
@@ -4460,10 +4444,10 @@ interpretations of $\Lan$-types.
 \subsection{Parametricity and GADTs}
 
 Having extended our calculus with both $\Lan$-types and terms of such
-types, and having given the only sensible set and relational
-interpretations for these types and terms, we now need to verify that
-these interpretations give rise to a parametric model. The first step
-in this process is to extend Lemma~\ref{lem:rel-transf-morph} to
+types, and having given sensible set and relational interpretations
+for these types and terms, we now need to verify that these
+interpretations give rise to a parametric model. The first step in
+this process is to extend Lemma~\ref{lem:rel-transf-morph} to
 $\Lan$-types by adding a clause for $\Lan$-types to the proof.
 Unfortunately, however, Lemma~\ref{lem:rel-transf-morph} does not
 extend to arbitrary $\Lan$-types, as the following example shows.
@@ -4987,9 +4971,9 @@ restricting the semantic interpretations of $\Lan$-types, as shown in
 Proposition~\ref{prop:full-lan}, suggests that the IEL may fail for
 them. We have been able neither to prove nor disprove it thus far, but
 our substantial and lengthy investigations into the issue lead us to
-conjecture that it is not possible to define a functorial semantics
-for $\Lan$-types that gives rise to parametric models for languages
-supporting even constant-free polynomial primitive GADTs.
+suspect that it may not actually be possible to define a functorial
+semantics for $\Lan$-types that gives rise to parametric models for
+languages supporting even constant-free polynomial primitive GADTs.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
