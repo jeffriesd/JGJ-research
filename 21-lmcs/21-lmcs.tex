@@ -108,7 +108,7 @@
 
 \author[E.~Ghiorzi]{Enrico Ghiorzi}	
 \address{Appalachian State University}	
-\email{ghiorzie@appstate.edu}  
+\email{enrico.ghiorzi@gmail.com}  
 
 %\author[D.~Jeffries]{Daniel Jeffries}	
 %\address{Appalachian State University}	
@@ -901,8 +901,8 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 \vdash L_{\alpha} t. \,\cse{t}{b \mapsto
  \mathit{pleaf}\, b}{t' \mapsto \mathit{pnode}\, 
     (((\map_{\mathit{PTree}\,\alpha}^{\alpha \times \alpha, \alpha \times
-      \alpha})_\emptyset\, \mathit{swap})_\alpha\, t')}
-:  \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
+      \alpha})_\emptyset\, \mathit{swap})_\alpha\, t')}\\
+\hspace*{0.5in}:  \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
 \alpha))\; \mathit{PTree}\,\alpha
 \end{array}\]
 respectively. Our calculus can similarly define a $\mathtt{rustle}$
@@ -1231,12 +1231,12 @@ $\setsem{\Gamma;\Phi \vdash \phi \ol{F}} f : \setsem{\Gamma;\Phi
   \vdash \phi \ol{F}}\rho \to \setsem{\Gamma;\Phi \vdash
   \phi\ol{F}}\rho' = (\rho\phi) \ol{\setsem{\Gamma;\Phi \vdash
     F}\rho} \to (\rho'\phi) \ol{\setsem{\Gamma;\Phi \vdash
-    F}\rho'}$ is defined by $\setsem{\Gamma;\Phi \vdash \phi
+    F}\rho'}$ is defined by \[\setsem{\Gamma;\Phi \vdash \phi
   \ol{F}} f = (f\phi)_{\ol{\setsem{\Gamma;\Phi \vdash
       F}\rho'}}\, \circ\, (\rho\phi) {\ol{\setsem{\Gamma;\Phi
       \vdash F}f}} = (\rho'\phi) {\ol{\setsem{\Gamma;\Phi \vdash
       F}f}}\, \circ\, (f \phi)_{\ol{\setsem{\Gamma;\Phi \vdash
-      F}\rho}}$.  The latter equality holds because $\rho\phi$ and
+      F}\rho}}\]  The latter equality holds because $\rho\phi$ and
   $\rho'\phi$ are functors and $f\phi : \rho\phi \to \rho'\phi$ is a
   natural transformation, so the following naturality square commutes:
 {\footnotesize\begin{equation}\label{eq:cd2}
@@ -1700,8 +1700,8 @@ $(T_{H,f}\, F)_{\ol{R}} = \relsem{\Gamma; \phi,\ol{\alpha} \vdash
 $(\setsem{\Gamma; \phi,\ol{\alpha} \vdash H}\,(\pi_1 f)\,[\phi :=
   \id_{F^1}][\ol{\alpha := \id_A}], \setsem{\Gamma; \phi,\ol{\alpha}
   \vdash H}\,(\pi_2 f)[\phi := \id_{F^2}][\ol{\alpha := \id_B}])$.
-{\color{red} CHECK CONDITIONS} Using $T_H$, we can define the
-functorial action of relational interpretation.
+Using $T_H$, we can define the functorial action of relational
+interpretation.
 \begin{defi}\label{def:rel-sem-funcs}
 Let $f: \rho \to \rho'$ for relation environments $\rho$ and $\rho'$
 (so that $\rho|_\tvars = \rho'|_\tvars$). The action
@@ -2313,10 +2313,15 @@ and for any subformula $J$ of $H$,
 [\phi := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha := \Eq_A]}
 \end{split}
 \end{equation}
-We prove Equation~\ref{eq:iel-fix-point-intermediate1} by induction on
-$n$.  The case $n=0$ is trivial, because $T^0_{H,\Eq_{\rho}} K_0 =
-K_0$ and $(T^\set_{H,\rho})^0 K_0 = K_0$; the inductive step is proved
-by the following sequence of equalities:
+The case $n=0$ is trivial:
+Equation~\ref{eq:iel-fix-point-intermediate1} and
+Equation~\ref{eq:iel-fix-point-intermediate2} both hold because
+$T^0_{H,\Eq_{\rho}} K_0 = K_0$, $(T^\set_{H,\rho})^0 K_0 = K_0$, and
+Equation~\ref{eq:eq-pres-eq} holds.
+
+The inductive case is proved as follows.  We prove
+Equation~\ref{eq:iel-fix-point-intermediate1} by the following
+sequence of equalities:
 \[
 \begin{split}
 T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
@@ -2326,19 +2331,19 @@ T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_A}
   := T^{n}_{H, \Eq_{\rho}} K_0] \overline{[\alpha :=
     \Eq_A]} \\ 
 &= \relsem{\Gamma; \phi, \ol{\alpha} \vdash H} \Eq_{\rho} [\phi
-  := \Eq_{(T^\set_{H,\rho})^n K_0}] \overline{[\alpha :=
+  := \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
     \Eq_A]} \\ 
 &= \relsem{\Gamma; \phi, \ol{\alpha} \vdash H} \Eq_{\rho [\phi
-    := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
+    := (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
       A]}} \\ 
 &= \Eq_{\setsem{\Gamma; \phi, \ol{\alpha} \vdash H} \rho [\phi
-    := (T^\set_{H,\rho})^n K_0] \overline{[\alpha :=
+    := (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
       A]}} \\ 
 &= \Eq_{(T^\set_{H,\rho})^{n+1} K_0 \overline{A}} \\ 
 &= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^*\, \overline{\Eq_A} 
 \end{split}
 \]
-Here, the third equality is by
+Here, the third equality is by the induction hypothesis of
 Equation~\ref{eq:iel-fix-point-intermediate2} for $J = H$, the fifth
 by the induction hypothesis of the IEL on $H$, and the last is by
 Equation~\ref{eq:eq-pres-eq}.
@@ -2353,42 +2358,42 @@ induction on $J$. The only interesting cases, though, are when $J =
 \[
 \begin{split}
 & \relsem{\Gamma; \phi, \ol{\alpha} \vdash \phi
-    \ol{G}} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
+    \ol{G}} \Eq_{\rho} [\phi := T^{n+1}_{H,\Eq_{\rho}} K_0]
   \overline{[\alpha := \Eq_A]}
   \\
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
+&= T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
-      T^{n}_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
+      T^{n+1}_{H,\Eq_{\rho}} K_0] \overline{[\alpha :=
         \Eq_A]}} \\ 
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
+&= T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
-      \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
+      \Eq_{(T^\set_{H,\rho})^{n+1} K_0}] \overline{[\alpha :=
         \Eq_A]}} \\ 
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
-      \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\set_{H,\rho})^{n}
+&= T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\relsem{\Gamma; 
+      \phi, \ol{\alpha} \vdash G} \Eq_{\rho [\phi := (T^\set_{H,\rho})^{n+1}
         K_0] \overline{[\alpha := A]}}} \\ 
-&= T^{n}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
+&= T^{n+1}_{H,\Eq_{\rho}} K_0\, \overline{\Eq_{\setsem{\Gamma;
         \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
-        (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
+        (T^\set_{H,\rho})^{n+1} K_0] \overline{[\alpha :=
           A]}}} \\ 
-&= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
+&= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^* \,\overline{\Eq_{\setsem{\Gamma;
         \phi, \ol{\alpha} \,\vdash G} \rho [\phi :=
-        (T^\set_{H,\rho})^{n} K_0] \overline{[\alpha :=
+        (T^\set_{H,\rho})^{n+1} K_0] \overline{[\alpha :=
           A]}}} \\ 
-&= (\Eq_{(T^\set_{H,\rho})^{n} K_0})^* \overline{\relsem{\Gamma;
+&= (\Eq_{(T^\set_{H,\rho})^{n+1} K_0})^* \overline{\relsem{\Gamma;
       \phi, \ol{\alpha} \vdash G} \Eq_{\rho} [\phi :=
-      \Eq_{(T^\set_{H,\rho})^{n} K_0}] \overline{[\alpha :=
+      \Eq_{(T^\set_{H,\rho})^{n+1} K_0}] \overline{[\alpha :=
         \Eq_A]}} \\ 
 &= \relsem{\Gamma; \phi, \ol{\alpha} \vdash \phi \ol{G}}
-  \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^{n} K_0}]
+  \Eq_{\rho} [\phi := \Eq_{(T^\set_{H,\rho})^{n+1} K_0}]
   \overline{[\alpha := \Eq_A]} 
 \end{split}
 \]
 Here, the second equality is by the induction hypothesis for
 Equation~\ref{eq:iel-fix-point-intermediate2} on the $G$s, the fourth
 is by the induction hypothesis for the IEL on the $G$s, and the fifth
-is by the induction hypothesis on $n$ for
-Equation~\ref{eq:iel-fix-point-intermediate1}.
+is by Equation~\ref{eq:iel-fix-point-intermediate1}, which we have
+just proved.
 
 \item 
   The case $J = (\mu \psi.\, \lambda \ol{\beta}.\, G) \ol{K}$
@@ -2397,25 +2402,25 @@ is proved by the sequence of equalities
 \begin{split}
 & \relsem{\Gamma; \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda
     \ol{\beta}.\, G) \ol{K}} 
-  \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}} K_0]
+  \Eq_{\rho} [\phi := T^{n+1}_{H,\Eq_{\rho}} K_0]
   [\overline{\alpha := \Eq_A}] \\
-&= (\mu {T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
+&= (\mu {T_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}})
   \,\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
-  [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
-&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  [\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]} \\ 
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
   \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
-  [\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
-&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
+  [\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}) \\ 
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}}\,K_0
   \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
-  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
-&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_A}]}) \\  %%
+&= \colim{m \in \nat} {T^m_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_A}]}}\,K_0
   \,(\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
-  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}) \\ 
-&= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]}})
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_A}]}) \\ 
+&= (\mu {T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_A}]}})
   \,\ol{\relsem{\Gamma; \phi, \ol{\alpha} \vdash K}\Eq_{\rho}
-  [\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_A}]} \\ 
+  [\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_A}]} \\ 
 &= \relsem{\Gamma; \phi, \ol{\alpha} \vdash (\mu \psi.\, \lambda \beta.\, G) \ol{K}}
-  \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha := \Eq_{A}}]
+  \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha := \Eq_{A}}]
 \end{split}
 \]
 Here, the third equality is by the induction hypothesis for
@@ -2423,43 +2428,43 @@ Equation~\ref{eq:iel-fix-point-intermediate2} on the $K$s, and the
 fourth equality holds because we can prove that, for all $m \in \nat$,
 \begin{equation}\label{eq:helper}
 T^m_{G,
-\Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
+\Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
     \Eq_A}]}\,K_0 \ = T^m_{G, \Eq_{\rho}[\phi :=
-    \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
+    \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha :=
       \Eq_A}]}\,K_0
 \end{equation}
 Indeed, the base case of Equation~\ref{eq:helper} is trivial because
 \[T^0_{G,
-  \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
+  \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha :=
       \Eq_A}]}\,K_0 \ = K_0 = T^0_{G, \Eq_{\rho}[\phi :=
-    \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
+    \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha :=
       \Eq_A}]}\,K_0\]
 and the inductive case is proved by: \\
 \begin{align*}
-& T^{m+1}_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \\
-&= T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha
-        := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}}
+& T^{m+1}_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha := \Eq_A}]}\,K_0 \\
+&= T_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha
+        := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}}
       K_0][\overline{\alpha := \Eq_A}]}\,K_0) \\
-&= T_{G, \Eq_{\rho}[\phi := T^{n}_{H,\Eq_{\rho}} K_0][\overline{\alpha
+&= T_{G, \Eq_{\rho}[\phi := T^{n+1}_{H,\Eq_{\rho}} K_0][\overline{\alpha
         := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi :=
-      \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
+      \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha :=
         \Eq_A}]}\,K_0) \\
 &= \lambda \ol{R}. \relsem{\Gamma; \psi,
-    \ol\beta \vdash G} \Eq_{\rho} [\phi := T^{n}_{H,\Eq_{\rho}}
+    \ol\beta \vdash G} \Eq_{\rho} [\phi := T^{n+1}_{H,\Eq_{\rho}}
     K_0][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G, \Eq_{\rho}[\phi
-        := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
+        := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha :=
           \Eq_A}]}\,K_0][\overline{\beta := R}] \\
 &= \lambda \ol{R}. \relsem{\Gamma; \psi,
-    \ol\beta \vdash G} \Eq_{\rho} [\phi := \Eq_{(T^{\set}_{H,\rho})^n
+    \ol\beta \vdash G} \Eq_{\rho} [\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1}
       K_0}][\overline{\alpha := \Eq_A}][\psi := T^{m}_{G,
-      \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n
+      \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1}
           K_0}][\overline{\alpha := \Eq_A}]}\,K_0][\overline{\beta :=
       R}] \\
-&= T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n
+&= T_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1}
         K_0}][\overline{\alpha := \Eq_A}]} (T^{m}_{G, \Eq_{\rho}[\phi
-      := \Eq_{(T^{\set}_{H,\rho})^n K_0}][\overline{\alpha :=
+      := \Eq_{(T^{\set}_{H,\rho})^{n+1} K_0}][\overline{\alpha :=
         \Eq_A}]}\,K_0) \\
-&= T^{m+1}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^n
+&= T^{m+1}_{G, \Eq_{\rho}[\phi := \Eq_{(T^{\set}_{H,\rho})^{n+1}
         K_0}][\overline{\alpha := \Eq_A}]}\,K_0
 \end{align*}
 Here, the second equality holds by the induction hypothesis for
@@ -2485,9 +2490,10 @@ This concludes the fixpoint case.
       F}\rho} \times \Eq_{\setsem{\Gamma; \Phi \vdash G}\rho}
   = \Eq_{\setsem{\Gamma; \Phi \vdash F}\rho \times
     \setsem{\Gamma; \Phi \vdash G}\rho} = \Eq_{\setsem{\Gamma;
-      \Phi \vdash F \times G}\rho}$
+      \Phi \vdash F \times G}\rho}$\qedhere
 \end{itemize}
-\qed
+
+\vspace*{0.1in}
 
 With the IEL in hand we can prove a Graph Lemma appropriate to our
 setting:
@@ -2536,8 +2542,8 @@ Expanding the second equation gives that if $x \in \setsem{\Gamma;
   \Phi \vdash F} f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}\]
 Then $\setsem{\Gamma; \Phi \vdash F}\id_{\rho}\, x =
 \id_{\setsem{\Gamma; \Phi \vdash F}\rho} x = x$, so for any $x \in
-\setsem{\Gamma; \Phi \vdash F}\rho$ we have that $(x, \setsem{\Gamma;
-  \Phi \vdash F}f\, x) \in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
+\setsem{\Gamma; \Phi \vdash F}\rho$ we have $(x, \setsem{\Gamma;
+  \Phi \vdash F}f\, x)$ $\in \relsem{\Gamma; \Phi \vdash F}\graph{f}$.
 Moreover, $x \in \setsem{\Gamma; \Phi \vdash F}\rho$ if and only if
 $(x, \setsem{\Gamma; \Phi \vdash F} f\, x) \in \graph{\setsem{\Gamma;
     \Phi \vdash F}f}$ and, if $x \in \setsem{\Gamma; \Phi \vdash
@@ -3045,20 +3051,18 @@ $\map$, $\tin$, and $\fold$. We omit the others.
     \set}$ and all $d : \setsem{\Gamma; \emptyset \vdash \Delta}\rho =
   \setsem{\Gamma; \ol{\alpha} \vdash \Delta}\rho[\overline{\alpha :=
       A}]$, we have that
-  \begin{align*}
-      &(\setsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
-      x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,d)_{\ol{A}} :  \\
-      &\hspace{1in} \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := A}]
+\[(\setsem{\Gamma; \emptyset \,|\, \Delta \vdash L_{\overline{\alpha}}
+      x.t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,d)_{\ol{A}} :
+\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := A}]
     \to \setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha :=
-        A}]
-  \end{align*}
-      but this follows easily from the induction hypothesis.
+        A}]\]
+but this follows easily from the induction hypothesis.
 That these maps comprise a natural transformation $\eta :
 \setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\overline{\alpha := \_}] \to
 \setsem{\Gamma; \ol{\alpha} \vdash G}\rho[\overline{\alpha := \_}]$ is
-clear since $\eta_{\ol{A}} \, = \, \curry\,
+clear since \[\eta_{\ol{A}} \, = \, \curry\,
 (\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
-  G}\rho[\overline{\alpha := A}])\,d$ is the component at $\ol{A}$ of
+  G}\rho[\overline{\alpha := A}])\,d\] is the component at $\ol{A}$ of
 the partial specialization to $d$ of the natural transformation
 $$\setsem{\Gamma; \overline{\alpha} \,|\, \Delta, x : F \vdash t:
   G}\rho[\overline{\alpha := \_}]$$  To see that the components of
@@ -3107,8 +3111,8 @@ $\underline{\Gamma;\Phi \,|\, \Delta \vdash t_{\overline K} s: G
   \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}$ is a
   natural transformation from $\setsem{\Gamma; \Phi \vdash \Delta}$ to
   $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}$ we 
-  show that, for every $\rho : \setenv$, $\setsem{\Gamma;\Phi \,|\,
-    \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}\rho$
+  show that, for every $\rho : \setenv$, \[\setsem{\Gamma;\Phi \,|\,
+    \Delta \vdash t_{\overline K} s: G [\overline{\alpha := K}]}\rho\]
   is a morphism from $\setsem{\Gamma; \Phi \vdash \Delta}\rho$ to
   $\setsem{\Gamma;\Phi \vdash G [\overline{\alpha := K}]}\rho$, and
   that this family of morphisms is natural in $\rho$. Let $d :
@@ -3132,9 +3136,9 @@ d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}},\,
 \setsem{\Gamma;\Phi \,|\, \Delta \vdash s: F [\overline{\alpha :=
       K}]}\rho\, d)\\
 \end{array}\]
-The induction hypothesis ensures that $(\setsem{\Gamma; \emptyset \,|\,
+The induction hypothesis ensures that \[(\setsem{\Gamma; \emptyset \,|\,
   \Delta \vdash t : \Nat^{\overline{\alpha}} \,F \,G}\rho\,
-d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}}$ has type
+d)_{\overline{\setsem{\Gamma;\Phi \vdash K}\rho}}\] has type
 $\setsem{\Gamma; \ol{\alpha} \vdash F}\rho[\ol{\alpha :=
     \setsem{\Gamma;\Phi \vdash K}\rho}] \to \setsem{\Gamma;
   \ol{\alpha} \vdash G}\rho[\ol{\alpha := \setsem{\Gamma;\Phi \vdash
@@ -3456,21 +3460,18 @@ $\underline{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
   \alpha.H)\overline \beta \;F)}$ \; Since $\Phi$ is empty, to see
   that 
   $$\setsem{ \Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
-    \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
-      :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
-    (\Nat^{{\ol{\beta}} }\,(\mu \phi.\lambda \overline
-    \alpha.H)\overline \beta \;F)}$$
-    is a natural transformation from
-  $\setsem{\Gamma;\emptyset \vdash \emptyset}$ to \[\setsem{\Gamma;
-    \emptyset \vdash \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
-      :=_{\ol{\beta}} F][\ol{\alpha := 
-        \beta}]\,F)\; (\Nat^{{\ol{\beta}} }\,(\mu
-    \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\] we need only
-  show that, for all $\rho : \setenv$, the unique $d :
-  \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$, and all $\eta :
+    \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi :=_{\ol{\beta}}
+      F][\ol{\alpha := \beta}]\,F)\; (\Nat^{{\ol{\beta}} }\,(\mu
+    \phi.\lambda \overline \alpha.H)\overline \beta \;F)}$$ is a
+  natural transformation from $\setsem{\Gamma;\emptyset \vdash
+    \emptyset}$ to \[\setsem{\Gamma; \emptyset \vdash
+    \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi :=_{\ol{\beta}}
+      F][\ol{\alpha := \beta}]\,F)\; (\Nat^{{\ol{\beta}} }\,(\mu
+    \phi.\lambda \overline \alpha.H)\overline \beta\,F)}\] we need
+  only show that, for all $\rho : \setenv$, all $\eta :
   \setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta}}\,H[\phi
-      :=_{\ol{\beta}} F][\ol{\alpha := 
-        \beta}]\,F} \rho$,
+      :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F} \rho$, and the
+  unique $d : \setsem{\Gamma;\emptyset \vdash \emptyset} \rho$, 
 \[ \setsem{\Gamma; \emptyset~|~\emptyset \vdash \fold^F_H :
   \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi
     :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F)\;
@@ -3531,21 +3532,21 @@ for all $\ol{f : B \to B'}$':
 ] &  
  \setsem{\Gamma; \ol{\beta} \vdash F}\rho[\ol{\beta := B'}]
 \end{tikzcd}\]}
-by naturality of $\mathit{fold}_{T^\set_{H,\rho}}\eta$.
-To see that, for all $\rho : \setenv$, $d \in
-\setsem{\Gamma; \emptyset \vdash \emptyset}\rho$, and $\eta :
-\setsem{\Gamma; \emptyset \vdash \Nat^{\ol{\beta}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha := \beta}]\,F}
-\rho$,
+by naturality of $\mathit{fold}_{T^\set_{H,\rho}}\eta$.  To see that,
+for all $\rho : \setenv$, $\eta : \setsem{\Gamma; \emptyset \vdash
+  \Nat^{\ol{\beta}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
+      \beta}]\,F} \rho$, and $d \in \setsem{\Gamma; \emptyset \vdash
+  \emptyset}\rho$,
 \[\setsem{\Gamma; \emptyset~|~\emptyset
   \vdash \fold^F_H : \Nat^\emptyset\;(\Nat^{\ol{\beta}}\,H[\phi :=_{\ol{\beta}} F][\ol{\alpha :=
       \beta}]\,F)\; (\Nat^{{\ol{\beta}} }\,(\mu
   \phi.\lambda \overline \alpha.H)\overline
   \beta\,F)}\,\rho\,d\,\eta\] satisfies the additional condition
-needed for it to be in $\setsem{\Gamma;\emptyset \vdash
+needed to be in $\setsem{\Gamma;\emptyset \vdash
   \Nat^{{\ol{\beta}} }\,(\mu \phi.\lambda \overline
   \alpha.H)\overline \beta\;F}\,\rho$, let $\ol{R : \rel(B,B')}$.
 Since $\eta$ satisfies the 
-additional condition needed for it to be in $\setsem{\Gamma; \emptyset
+additional condition needed to be in $\setsem{\Gamma; \emptyset
   \vdash \Nat^{\ol{\beta}}\,(H[\phi := F][\ol{\alpha :=
       \beta}])\,F} \rho$,
 \[\begin{array}{ll}
@@ -3749,12 +3750,14 @@ so that if $c \in
 c' & = & \mathit{cons}\\
 n' & = & \mathit{nil}
 \end{array}\]
-thus gives that $(\hat{g}\;(\mathit{List}\,\setsem{\vdash
+thus gives that \[(\hat{g}\;(\mathit{List}\,\setsem{\vdash
   F})\,\mathit{nil} \,\mathit{cons}, \hat{g} \,\setsem{\vdash H} \,
-n\, c) \in \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c}$, i.e.,
-that $\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (\hat{g}\;
+n\, c) \in \graph{\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\,
+  n\, c}\]
+i.e.,
+\[\mathit{fold}_{1 + \setsem{\vdash F} \times \_}\, n\, c\; (\hat{g}\;
 (\mathit{List}\,\setsem{\vdash F})\, \mathit{nil}\, \mathit{cons})
-= \hat{g}\,\setsem{\vdash H}\, n\, c$.
+= \hat{g}\,\setsem{\vdash H}\, n\, c\]
 \qed
 
 We can extend short cut fusion results to arbitrary ADTs, as
@@ -4590,9 +4593,9 @@ k : \setsem{ \Gamma; \Phi \vdash (\Lan^{\ol \alpha}_{\ol{K}} F)\ol{A}
 \]
 to be the unique function given by the universal property of the
 colimit representation of $k$'s domain. That is, we take $k$ to be the
-unique morphism such that, for any $\ol{S : \set_0}$ and $\ol{f :
+unique morphism such that, for any $\ol{S : \set_0}$ and \[\ol{f :
   \setsem{ \emptyset; \ol\alpha \vdash K } (\pi_1 \rho)[\ol{\alpha :=
-      S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}$, we have
+      S}] \to \setsem{ \Gamma; \Phi \vdash A } (\pi_1 \rho)}\] we have
 $k \circ j_{\ol{S},\, \ol{f}} = \pi_1 \iota_{\ol{(S, 0, 0)},\, \ol{(f,
     !)}}$.
 
@@ -5029,6 +5032,17 @@ will have to wait for a generalization of the results presented here
 to at least locally $\omega_1$-presentable categories, however:
 $\omega$-CPO, the most natural category of domains to replace $\set$,
 is not locally finitely presentable.
+
+\vspace*{0.1in}
+
+\noindent
+{\small \sc Acknowledgment} We thank Daniel Jeffries for his
+collaboration on~\cite{jgj21}, for his contributions to a preliminary
+version of this paper, and for supporting publication of the present
+version in his absence.
+
+
+
 
 \bibliographystyle{alpha}
 \bibliography{references}
