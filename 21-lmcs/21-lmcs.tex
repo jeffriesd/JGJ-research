@@ -888,7 +888,7 @@ to $((4,3),(2,1))$.  It can be defined as
 \alpha))\, (\mathit{PTree}\,(\alpha \times \alpha)))
 \end{array}\]
 and 
-$\mathit{pleaf}$,$\mathit{pnode}$, $\mathit{swap}$, and $s$ are the terms
+$\mathit{pleaf}$, $\mathit{pnode}$, $\mathit{swap}$, and $s$ are the terms
 \[\begin{array}{l}
 \vdash \tin_{\beta + \phi (\beta \times \beta)} \circ (
 L_{\alpha} x.\, \inl\, x) \; : \; \Nat^{\alpha}\, \alpha\,
@@ -1562,7 +1562,9 @@ Considering $\relenv$ as a subcategory of the product $\Pi_{\phi^k \in
 in $RT_k$ extends componentwise to $\relenv$. Recalling from the start
 of this subsection that Definition~\ref{def:rel-sem} is given mutually
 inductively with Definition~\ref{def:set-sem} we can now define our
-relational interpretation.
+relational interpretation. As with the set interpretation, the
+relational interpretation is given in two parts, in
+Definitions~\ref{def:rel-sem} and~\ref{def:rel-sem-funcs}.
 
 \begin{defi}\label{def:rel-sem}
 The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
@@ -1596,7 +1598,7 @@ The {\em relational interpretation} $\relsem{\cdot} : \F \to [\relenv,
   \relsem{\Gamma;\Phi \vdash G}\rho\\  
    \relsem{\Gamma;\Phi \vdash (\mu \phi.\lambda
     \ol{\alpha}. H)\ol{G}}\rho
-  &= (----\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
+  &= (\mu T_{H,\rho})\ol{\relsem{\Gamma;\Phi \vdash G}\rho}\\
   \text{where }	T_{H,\rho}
     &= (T^\set_{H,\pi_1\rho}, T^\set_{H,\pi_2\rho}, T^\rel_{H,\rho}) \\
   \text{and } T^\rel_{H,\rho}\,F
@@ -2882,7 +2884,7 @@ for all $\ol{f \in \setsem{\Gamma;\emptyset \vdash \Nat^\emptyset
 Here, we obtain the first equality from the appropriate instance of
 Definition~\ref{def:set-interp}, and the second one by noting that
 $\lambda \ol{A}.\,\setsem{\Gamma; \ol{\alpha}\vdash H} \rho
-[\ol{\alpha := A}]$ is a functor in $\ol{\alpha}$ and using
+[\ol{\alpha := A}]$ is a functor in $\ol{A}$ and using
 $\mathit{map}_G\,\ol f$ to denote the action of the semantic functor
 $G$ on morphisms $\ol f$. We also have, e.g., that:
 
@@ -3875,11 +3877,11 @@ the data constructors for the instance $\mathtt{Bush \;A}$ of the truly
 nested type $\mathtt{Bush}$ are $\mathtt{bnil :: Bush\; A}$ and
 $\mathtt{bcons :: A \to Bush\; (Bush\; A) \to Bush\; A}$.
 
-Generalized algebraic datatypes (GADTs) --- also known as guarded
+Generalized algebraic data types (GADTs) --- also known as guarded
 recursive data types~\cite{xcc03} or first-class phantom
 types~\cite{ch03} --- generalize nested types by relaxing the above
 restriction to allow the return types of data constructors to be
-different instances of the datatype than the one being defined. For
+different instances of the data type than the one being defined. For
 example, the GADT
 \[\begin{array}{l}
 \mathtt{data\; Seq \;(A : Set)\;:\;Set\;where}\\
@@ -3890,7 +3892,7 @@ example, the GADT
   Seq\;(Nat \to A)}
 \end{array}\]
 \noindent
-\!\!has data constructors $\mathtt{spair}$ and $\mathtt{sseq}$ with
+has data constructors $\mathtt{spair}$ and $\mathtt{sseq}$ with
 return types $\mathtt{Seq\; (A \times B)}$ and $\mathtt{Seq\;(Nat \to
   A)}$. These types are not only at different instances of \verb|Seq|
 from the instance $\mathtt{Seq\; A}$ being defined, but also at
@@ -4384,7 +4386,7 @@ is the unique natural transformation such that
   \ol\alpha} \, F \,\, G[\ol{\beta := K}]}\rho \, d)_{\ol{N}}
 \end{equation}
 as given by the universal property of the left Kan extension.  The
-relational interpretations $\relsem{\Gamma;\emptyset~|~\emptyset
+relational interpretations\\ $\relsem{\Gamma;\emptyset~|~\emptyset
   \vdash \int_{\ol K,F} : \Nat^{\Phi, \ol\alpha}\, F\,
   (\Lan^{\ol\alpha}_{\ol{K}}\, F) \ol{K}}$ and
 $\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t :
