@@ -486,8 +486,13 @@ It is not possible to extend structural induction to {\em truly}
 nested types, i.e., to nested types whose recursive occurrences appear
 below themselves. The quintessential example of such a type is that of
 bushes\footnote{To define truly nested types in Agda we must use the
-  $\mathsf{NO\_POSITIVITY\_CHECK}$ flag. A similar flag is required in
-  Coq.}\cite{bm98}:
+  $\mathsf{NO\_POSITIVITY\_CHECK}$ flag, and to define functions over
+  them we must use the $\mathsf{TERMINATING}$ flag.  (Similar flags
+  are required in Coq.) Although as programmers we know from the
+  metatheory in~\cite{jp19} that $\mathsf{Bush}$ is well-defined and
+  the functions we define over them terminate, the flags are necessary
+  because Agda fails to infer these facts. Analogous comments apply at
+  several places below.}\cite{bm98}:
 
 \vspace*{-0.1in}
 
@@ -554,6 +559,12 @@ argument, rather than the contents of that structure, which is exactly
 what structural induction should do.
 %A concrete example of such a derivation is given in
 %Section~\ref{sec:ind-equal}.
+
+Under some circumstances deep induction can be mimicked by
+hand-threading applications of structural induction through the layers
+of data comprising a deep data type. But this is not the case when,
+e.g., one or more of the custom predicates in the data type's deep induction
+rule cannot be defined by structural induction.
 
 \section{(Deep) GADTs}\label{sec:GADTs}
 
@@ -1410,7 +1421,7 @@ $\mathsf{G}$.
 \section{Case Study: Extracting Types of Lambda Terms}\label{sec:app}
 
 In this section we use deep induction for the $\mathsf{LTerm}$ GADT
-from~\eqref{eq:eq_lterm} to extract the type from a lambda term.  The
+from~\eqref{eq:eq_lterm} to infer the type from a lambda term. The
 following predicate either returns the type of its input lambda term
 if that type can be inferred or indicates that the type inference
 fails:
@@ -1421,8 +1432,17 @@ fails:
   &\mathsf{GetType : \forall \, (A : Set) \to LTerm\,A \to Set} \\
   &\mathsf{GetType \,A \,t = Maybe \, (LType \, A)}
 \end{align*}
+Of course, since $\mathsf{GetType}$ is (trivially) defined by
+structural induction, we could perform type inference using
+hand-threaded applications of structural induction as observed at the
+end of Section~\ref{sec:ADTs-and-nesteds}. Nevertheless, the example
+as given nicely illustrates deep induction.
+
+By construction every lambda term in $\mathsf{LTerm}$ is well-typed,
+although that (necessarily unique) type cannot always be inferred.
 The predicate $\mathsf{GetType}$ uses the standard $\mathsf{Maybe}$
-data type to represent failure of type inference. It is defined by:\looseness=-1
+data type to represent failure of type inference. It is defined
+by:\looseness=-1
 
 \vspace*{-0.1in}
 
