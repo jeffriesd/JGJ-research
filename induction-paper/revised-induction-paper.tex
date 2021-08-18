@@ -482,8 +482,8 @@ data of type $\mathsf{PTree\,A}$ asserting that $\mathsf{Q}$ holds for
 every element of type $\mathsf{A}$ contained in its perfect tree
 argument.
 
-It is not possible to extend structural induction to {\em truly}
-nested types, i.e., to nested types whose recursive occurrences appear
+It is not possible to extend structural induction to {\em truly
+nested types}, i.e., to nested types whose recursive occurrences appear
 below themselves. The quintessential example of such a type is that of
 bushes\footnote{To define truly nested types in Agda we must use the
   $\mathsf{NO\_POSITIVITY\_CHECK}$ flag, and to define functions over
@@ -578,7 +578,10 @@ of its arguments. GADTs relax this restriction, allowing their data
 constructors both to take as arguments \emph{and return as results}
 data whose types involve instances other than the one being
 defined. That is, GADTs' constructors' return type instances can, like
-that of $\mathsf{pair}$ in~\eqref{eq:seq}, be structured.\looseness=-1
+that of $\mathsf{pair}$ in~\eqref{eq:seq}, be structured.  For every
+GADT in this paper, we require the instance of the return type for
+each of its data constructors to be a polynomial in that constructor's
+type arguments.\looseness=-1
 %these instances can be structured.
 %
 %Applications of GADTs include generic programming, modeling
@@ -1195,10 +1198,11 @@ associated with $\mathsf{c}$ is
   P\,A\,Q_A\,(c\,\ol{B}\,e\,x)} 
 \end{array}\]
 and the induction rule for $\mathsf{G}$ is
-\[
+\begin{equation}\label{eq:gen-ind-rule}
 \mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to G\,A \to
   Set) \to dIndC\,P \to \forall (A : Set)(Q_A : A \to Set)(y : G\,A)
-\to G^{\wedge}\,A\,Q_A\,y \to P\,A\,Q_A\,y} \]
+  \to G^{\wedge}\,A\,Q_A\,y \to P\,A\,Q_A\,y}
+\end{equation}
 
 To prove that this rule is sound we define a witness
 $\mathsf{dIndG}$ inhabiting this type by
@@ -1291,24 +1295,44 @@ domain $\mathsf{F_1^{\wedge}\,\ol{B}\,\ol{Q_B}\,z}$.
     (\ol{F_k^{\wedge}\,G\,\ol{B}\,P\,\ol{Q_B}})\,\ol{p_k}}$.
 \end{itemize}
 
+\vspace*{0.05in}
+
+Observing that the above development essentially uses the equality
+GADT and its predicate lifting in the discrete category of types to
+extend the lifting in~\cite{jp20} --- now specialized to the same
+category --- to GADTs, we have established the following theorem:
+
+\begin{theorem}
+A GADT $\mathsf{G}$ of the form in \eqref{eq:gadts} admits the deep
+induction rule in~\eqref{eq:gen-ind-rule}.
+\end{theorem}
+
 \section{Truly Nested GADTs Need Not Admit Deep Induction
     Rules}\label{sec:GADT-nested}
 
-In Sections~\ref{sec:deep-ind-GADTs} and~\ref{sec:framework} we
-derived deep induction rules for GADTs that are not truly
-nested. Since both nested types and GADTs without true nesting admit
-deep induction rules, we might expect truly nested GADTs to admit them
-as well. Unfortunately, however, the techniques developed in the
-previous sections do not extend to GADTs. Indeed, the induction rule
-for a data type generally relies on (unary) parametricity of the model
-interpreting it, and deep induction for a truly nested type or a truly
-nested GADT also relies on this interpretation being functorial.
-Whereas ADTs and nested types both admit functorial parametric
-semantics, proper GADTs admit parametric semantics but do not admit
-functorial semantics. In this section we show how the techniques
-developed in this paper for deriving deep induction rules go wrong for
-truly nested GADTs by analyzing the following very simple
-example:\looseness=-1
+{\em Truly nested GADTs} are proper GADTs whose recursive occurrences
+appear below themselves. In Sections~\ref{sec:deep-ind-GADTs}
+and~\ref{sec:framework} we derived deep induction rules for GADTs that
+are not truly nested GADTs.\footnote{Note carefully the distinction
+  between a GADT that is not a nested type --- i.e., a proper GADT ---
+  and a proper GADT that is not a truly nested GADT.  In fact, truly
+  nested types are not proper GADTs and truly nested GADTs are not
+  (truly) nested types. Confusion is understandable in light of the
+  original, and now well-established, use of the term ``nested type''
+  to refer to types that do not necessarily involve actual
+  nesting~\cite{bm98}.}  Since both nested types and GADTs without
+true nesting admit deep induction rules, we might expect truly nested
+GADTs to admit them as well. Unfortunately, however, the techniques
+developed in the previous sections do not extend to GADTs. Indeed, the
+induction rule for a data type generally relies on (unary)
+parametricity of the model interpreting it, and deep induction for a
+truly nested type or a truly nested GADT also relies on this
+interpretation being functorial.  Whereas ADTs and nested types both
+admit functorial parametric semantics, proper GADTs admit parametric
+semantics but do not admit functorial semantics. In this section we
+show how the techniques developed in this paper for deriving deep
+induction rules go wrong for truly nested GADTs by analyzing the
+following very simple example:\looseness=-1
 
 \vspace*{-0.1in}
 
