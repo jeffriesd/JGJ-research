@@ -624,9 +624,7 @@ the {\em equality} GADT
 is parameterized by two type indices, but it is only possible to
 construct data elements of type $\mathsf{Equal\,A\,B}$ if $\mathsf{A}$
 and $\mathsf{B}$ are instantiated at the same type. If the types
-$\mathsf{A}$ and $\mathsf{B}$ are {\color{red} propositionally equal}
-%syntactically identical
-then the
+$\mathsf{A}$ and $\mathsf{B}$ are syntactically identical then the
 type $\mathsf{Equal\,A\,B}$ contains the single data element
 $\mathsf{refl}$. It contains no data elements otherwise.
 
@@ -1130,15 +1128,15 @@ This grammar is subject to the following restrictions. In the third
 clause the type constructor $\mathsf{F_1}$ does not contain
 $\mathsf{G}$. In the fourth clause, none of the $\mathsf{\alpha}$-many
 type constructors in $\mathsf{\ol{F_1}}$ contains $\mathsf{G}$. This
-prevents nesting, which would {\color{red} make it impossible to give}
-an induction rule for $\mathsf{G}$; see Section~\ref{sec:GADT-nested}
-below. In the fifth and sixth clauses, $\mathsf{H : Set^\gamma \to
-  Set}$ is the syntactic reflection of some functor, and thus has an
-associated map function. It is worth noting that the fifth clause
-subsumes the cases in which $\mathsf{F\,G\,\ol{B}}$ is a closed type
-or one of the $\mathsf{B_i}$, and that $\mathsf{H}$ can be the data
-type constructor for any (truly) nested type. From the map function
-for $\mathsf{H}$ we can also construct a map function
+prevents nesting, which would make it impossible to give an induction
+rule for $\mathsf{G}$; see Section~\ref{sec:GADT-nested} below. In the
+fifth and sixth clauses, $\mathsf{H : Set^\gamma \to Set}$ is the
+syntactic reflection of some functor, and thus has an associated map
+function. It is worth noting that the fifth clause subsumes the cases
+in which $\mathsf{F\,G\,\ol{B}}$ is a closed type or one of the
+$\mathsf{B_i}$, and that $\mathsf{H}$ can be the data type constructor
+for any (truly) nested type. From the map function for $\mathsf{H}$ we
+can also construct a map function
 
 \vspace*{-0.05in}
 
