@@ -69,8 +69,8 @@
   entire structure.  Deep induction can be used to prove properties of
   nested types, including truly nested types, that cannot be proved
   via structural induction.  In this paper we show how to extend deep
-  induction to deep GADTs that are not truly nested GADTs. We also
-  show that the techniques developed in this paper do not suffice for
+  induction to GADTs that are not truly nested GADTs. We also show
+  that the techniques developed in this paper do not suffice for
   extending deep induction to truly nested GADTs.\looseness=-1
 \end{abstract}
 
@@ -132,12 +132,18 @@ outer list structure and to the rose trees sitting inside
 $\mathsf{node}$'s list argument. More generally, this enhanced notion
 of induction should traverse {\em all} of the layers present in a data
 structure, propagating suitable predicates to {\em all} of the data it
-contains. With data types becoming ever more advanced, and with deeply
-structured such types becoming increasingly ubiquitous in
-formalizations, it is critically important that proof assistants
-%{\color{red} (e.g., Coq, Agda, Lean)}
-are able to automatically generate genuinely useful induction rules
-for data types that go well beyond traditional ADTs. Such data types
+contains.  With data types becoming ever more advanced, and with
+deeply structured such types becoming increasingly ubiquitous in
+formalizations, such an enhanced notion of induction is essential if
+proof assistants are to be
+%it is critically important that proof assistants
+%%{\color{red} (e.g., Coq, Agda, Lean)}
+%are
+able to automatically generate genuinely useful induction rules for
+data types that go
+%well
+beyond traditional ADTs. These
+%Such data types
 include not just deep ADTs, but also (truly\footnote{A truly nested
   type is a nested type that is defined over itself. The data type
   $\mathsf{Bush}$ in Section~\ref{sec:ADTs-and-nesteds} provides a
@@ -166,9 +172,9 @@ structure is then conditioned upon satisfaction of the appropriate
 predicates by {\em all} of the data at the preceding level.
 
 Deep induction was shown in~\cite{jp20} to deliver induction rules
-appropriate to deep nested types, including deep ADTs.  For the deep
-ADT of rose trees, for example, it gives the following genuinely
-useful induction rule:
+appropriate to nested types, including ADTs.  For the (deep) ADT of
+rose trees, for example, it gives the following genuinely useful
+induction rule:
 
 \vspace*{-0.075in}
 
@@ -204,9 +210,8 @@ list (resp., rose tree) argument.\footnote{Predicate liftings such as
   argument pointwise to the constituent data of type $\mathsf{A}$.
   The ability to define predicate liftings for more general data types
   will be critical to deriving their deep induction rules in
-  Section~\ref{sec:framework}.}
-
-Deep induction was also shown in~\cite{jp20} to
+  Section~\ref{sec:framework}.} Deep induction was also shown
+in~\cite{jp20} to
 % be the missing piece making it possible to
 %be the theretofore missing component needed to
 % be the essential ingredient making it possible to
@@ -216,12 +221,12 @@ types. Deep induction for ADTs and (truly) nested types is reviewed in
 Section~\ref{sec:ADTs-and-nesteds} below.
 
 This paper shows how to extend deep induction to proper GADTs, i.e.,
-GADTs that go beyond nested types (and thus also beyond ADTs).  A
-constructor for such a GADT $\mathsf{G}$ may, like a constructor for a
+GADTs that are not nested types (and thus are not ADTs).  A
+constructor for a GADT $\mathsf{G}$ may, like a constructor for a
 nested type, take as arguments data whose types involve instances of
 $\mathsf{G}$ other than the one being defined. These can even include
-instances involving $\mathsf{G}$ itself. If $\mathsf{G}$ is a proper
-GADT then at least one of its constructors will also have such a
+instances involving $\mathsf{G}$ itself. But if $\mathsf{G}$ is a
+proper GADT, then at least one of its constructors will also have a
 structured instance of $\mathsf{G}$ --- albeit one not involving
 $\mathsf{G}$ itself --- as its codomain.
 %But while the types of the arguments to a GADT's constructor can
@@ -243,25 +248,27 @@ For example, the constructor $\mathsf{pair}$ for the GADT
 of sequences\footnote{The type of $\mathsf{Seq}$ is actually
   $\mathsf{Set \to \Set_1}$, but to aid readability we elide the
   explicit tracking of Agda universe levels in this paper.} only
-constructs sequences of pairs, rather than sequences of arbitrary
-type, as does $\mathsf{const}$. If one or more of the constructors for
-a GADT $\mathsf{G}$ return structured instances of $\mathsf{G}$, then
-the GADT will have two distinct, but equally natural, semantics: a
-functorial semantics interpreting it as a left Kan
-extension~\cite{mac71}, and a parametric semantics interpreting it as
-the interpretation of its Church encoding~\cite{atk12,vw10}. As
-detailed in~\cite{jgj21}, a key difference in the two semantics is
-that the former views GADTs as their {\em functorial
-  completions}~\cite{jp19}, and thus as containing more data than just
-those expressible in syntax. By contrast, the latter views them as
-what might be called {\em syntax-only} GADTs. Happily, these two views
-of GADTs coincide for those GADTs that are ADTs or other nested
-types. However, both they and their attendant properties differ
-greatly for proper GADTs. In fact, the functorial and parametric
-semantics for proper GADTs are sufficiently disparate that, by
-contrast with the semantics customarily given for ADTs and other
-nested types~\cite{bfss90,gjfor15,jgj21f}, it is not at all clear how
-to define a functorial parametric semantics for them~\cite{jgj21}.
+constructs sequences of data whose types are pair-structured, rather
+than sequences of arbitrary type, as does $\mathsf{const}$.
+
+If one or more of the constructors for a GADT $\mathsf{G}$ return
+structured instances of $\mathsf{G}$, then the GADT will have two
+distinct, but equally natural, semantics: a functorial semantics
+interpreting it as a left Kan extension~\cite{mac71}, and a parametric
+semantics interpreting it as the interpretation of its Church
+encoding~\cite{atk12,vw10}. As detailed in~\cite{jgj21}, a key
+difference in the two semantics is that the former views GADTs as
+their {\em functorial completions}~\cite{jp19}, and thus as containing
+more data than just those expressible in syntax. By contrast, the
+latter views them as what might be called {\em syntax-only}
+GADTs. Happily, these two views of GADTs coincide for those GADTs that
+are ADTs or (other, including truly) nested types.  However, both they
+and their attendant properties differ greatly for proper GADTs. In
+fact, the functorial and parametric semantics for proper GADTs are
+sufficiently disparate that, by contrast with the semantics
+customarily given for ADTs and nested
+types~\cite{bfss90,gjfor15,jgj21f}, it is not at all clear how to
+define a functorial parametric semantics for GADTs~\cite{jgj21}.
 
 This observation seems, at first, to be a death knell for the prospect
 of extending deep induction to GADTs. Indeed, induction can be seen as
@@ -272,16 +279,20 @@ be possible to use it to prove properties of those elements of a
 GADT's functorial completion that are not expressible in syntax. All
 is not lost, however. As we show below, the syntax-only view of GADTs
 determined by their Church encodings {\em does} support induction
-rules --- including deep induction rules --- for GADTs.  Indeed, this
-paper gives the first-ever induction rules --- deep or otherwise ---
-for proper GADTs. But it actually delivers far more: it gives a
-general framework for deriving deep induction rules for deep GADTs
-directly from their syntax. This framework can serve as a basis for
-extending modern proof assistants' automatic generation of structural
-induction rules for ADTs to automatic generation of deep induction
-rules for GADTs. In addition, as for ADTs and other nested types, the
-structural induction rule for any GADT can be recovered from its deep
-induction rule simply by taking the custom predicates in its deep
+rules --- including deep induction rules --- for GADTs. Indeed, this
+paper gives the first-ever deep induction rules
+%--- deep or otherwise ---
+for proper GADTs.
+%It also shows how the structural induction rule for
+%a GADT can be derived as an instance of its deep induction rule.
+But it actually delivers far more: it gives a {\em general framework}
+for deriving deep induction rules for GADTs that can be instantiated
+to particular such data type of interest. This framework can serve as
+a basis for extending modern proof assistants' automatic generation of
+structural induction rules for ADTs to automatic generation of deep
+induction rules for GADTs. In addition, as for ADTs and nested types,
+the structural induction rule for any GADT can be recovered from its
+deep induction rule simply by taking the custom predicates in its deep
 induction rule to be constantly $\mathsf{True}$-valued (i.e.,
 constantly $\mathsf{\top}$-valued) predicates.
 
@@ -294,22 +305,23 @@ interpretations of their Church encodings fails to deliver. Our
 approach is to instead first give a predicate lifting styled after
 those of~\cite{jp20}, together with a (deep) induction rule, for the
 simplest --- and arguably most important --- GADT, namely the equality
-GADT. (See Section~\ref{sec:ind-equal}.)  We then derive the deep
-induction rule for a more complex GADT $\mathsf{G}$ by {\em i}) using
-the equality GADT to represent $\mathsf{G}$ as its so-called {\em
-  Henry Ford encoding}~\cite{ch03,hin03,mcb99,sjsv09,sp04}, and {\em
-  ii}) using the predicate liftings for the equality GADT and the
-other GADTs appearing in the definition of $\mathsf{G}$ to
-appropriately thread the custom predicates for the primitive types
-appearing in $\mathsf{G}$ throughout $\mathsf{G}$'s structure. This
-two-step process delivers deep induction rules for a very general
-class of deep GADTs. In Section~\ref{sec:GADTs} we introduce a series
-of increasingly complex GADTs as running examples, and in
-Section~\ref{sec:deep-ind-GADTs} we derive a deep induction rule for
-each of them. In particular, we derive the deep induction rule for the
-$\mathsf{Seq}$ data type in~\eqref{eq:seq} in
-Section~\ref{sec:ind-seq}. We present our general framework for
-deriving (deep) induction rules for (deep) GADTs in
+GADT~\eqref{eq:equal}. We then derive the deep induction rule for a
+more complex GADT $\mathsf{G}$ by {\em i}) using the equality GADT to
+represent $\mathsf{G}$ as its so-called {\em Henry Ford
+  encoding}~\cite{ch03,hin03,mcb99,sjsv09,sp04}, and {\em ii}) using
+the predicate liftings for the equality GADT and the other GADTs
+appearing in the definition of $\mathsf{G}$ to appropriately thread
+the custom predicates for the primitive types appearing in
+$\mathsf{G}$ throughout $\mathsf{G}$'s structure. This two-step
+process delivers deep induction rules for a very general class of
+GADTs. To illustrate, we introduce a series of increasingly complex
+GADTs as running examples in Section~\ref{sec:GADTs} and derive a deep
+induction rule for each of them in
+Section~\ref{sec:deep-ind-GADTs}. In particular, we derive the deep
+induction rules for the equality data type in
+Section~\ref{sec:ind-equal} and the $\mathsf{Seq}$ data type
+in~\eqref{eq:seq} in Section~\ref{sec:ind-seq}. We present our general
+framework for deriving (deep) induction rules for GADTs in
 Section~\ref{sec:framework}, and observe that the derivations in
 Section~\ref{sec:deep-ind-GADTs} are all instances of it.  In
 Section~\ref{sec:GADT-nested} we show that, by contrast with truly
@@ -321,11 +333,14 @@ themselves.\footnote{Note carefully the distinction between a GADT
   that is not a nested type --- i.e., a proper GADT --- and a proper
   GADT that is not a truly nested GADT.  In fact, truly nested types
   are not proper GADTs and truly nested GADTs are not (truly) nested
-  types. Confusion is understandable in light of the original, and now
-  well-established, use of the term ``nested type'' to refer to types
-  that do not necessarily involve actual nesting~\cite{bm98}.}  This
-does not appear to be much of a restriction, however, since truly
-nested GADTs do not, to our knowledge, appear in practice or in the
+  types. There is ample scope for confusion in light of the original,
+  and now well-established, use of the term ``nested type'' to refer
+  to {\em any} type that allows non-variable instances in the domains
+  of its constructors, whether or not that type involves actual
+%  types that do not necessarily involve actual
+  nesting~\cite{bm98}.}  This does not appear to be much of a
+restriction, however, since truly nested GADTs do not, to our
+knowledge, appear in practice or in the
 literature. Section~\ref{sec:app} comprises a case study in using deep
 induction. All of the deep induction rules appearing in this paper
 have been derived by instantiating our general framework. Our Agda
@@ -358,7 +373,7 @@ parametricity, and true nesting still is not permitted.  As far as we
 know, no attempts have been made to extend either implementation to
 truly nested types or to proper GADTs or their deep variants. In fact,
 we know of no work other than that reported here that specifically
-addresses induction rules for such data types.
+addresses induction rules for these data types.
 
 \section{Deep induction for ADTs and nested types}\label{sec:ADTs-and-nesteds}
 
@@ -565,7 +580,9 @@ Under some circumstances deep induction can be mimicked by
 hand-threading applications of structural induction through the layers
 of data comprising a deep data type. But this is not the case if,
 e.g., one or more of the custom predicates in the data type's deep
-induction rule cannot be defined by structural induction.
+induction rule is not the characteristic function of an inductive data
+type.
+%cannot be defined by structural induction.
 
 \section{(Deep) GADTs}\label{sec:GADTs}
 
@@ -607,7 +624,9 @@ the {\em equality} GADT
 is parameterized by two type indices, but it is only possible to
 construct data elements of type $\mathsf{Equal\,A\,B}$ if $\mathsf{A}$
 and $\mathsf{B}$ are instantiated at the same type. If the types
-$\mathsf{A}$ and $\mathsf{B}$ are syntactically identical then the
+$\mathsf{A}$ and $\mathsf{B}$ are {\color{red} propositionally equal}
+%syntactically identical
+then the
 type $\mathsf{Equal\,A\,B}$ contains the single data element
 $\mathsf{refl}$. It contains no data elements otherwise.
 
@@ -692,16 +711,16 @@ and other nested types. Nevertheless, we show in this section how to
 do so. We first illustrate the key components of our approach by
 deriving deep induction rules for the three specific GADTs introduced
 in Section~\ref{sec:GADTs}. Then, in Section~\ref{sec:framework}, we
-abstract these to a general framework that can be applied to any deep
-GADT that is not a truly nested GADT. As hinted above, the predicate
+abstract these to a general framework that can be applied to any GADT
+that is not a truly nested GADT. As hinted above, the predicate
 lifting for the equality GADT plays a central role in deriving both
 structural and deep induction rules for more general GADTs.
  
 \subsection{(Deep) induction for $\mathsf{Equal}$}\label{sec:ind-equal}
 
-To define the (deep) induction rule for any (deep) GADT $\mathsf{G}$
-we first need to define a predicate lifting that maps a predicate on
-a type $\mathsf{A}$ to a predicate on $\mathsf{G\,A}$. Such a predicate
+To define the (deep) induction rule for any GADT $\mathsf{G}$ we first
+need to define a predicate lifting that maps a predicate on a type
+$\mathsf{A}$ to a predicate on $\mathsf{G\,A}$. Such a predicate
 lifting $\mathsf{Equal^{\wedge} : \forall (A\,B : Set) \to (A \to Set)
   \to (B \to Set) \to Equal\,A\,B \to Set}$ for $\mathsf{Equal}$ is
 defined by $\mathsf{Equal^{\wedge}\,A\,A\,Q\,Q'\,refl = \forall (a :
@@ -724,7 +743,6 @@ $\mathsf{refl}$ constructor for $\mathsf{Equal}$:
   Equal^{\wedge}\,C\,C\,Q\,Q'\,refl \to P\,C\,C\,Q\,Q'\,refl} 
 \end{array}
 \end{equation*}
-
 The deep induction rule for $\mathsf{G}$ now states that, if all of
 $\mathsf{G}$'s data constructors respect a predicate $\mathsf{P}$,
 then $\mathsf{P}$ is satisfied by every element of $\mathsf{G}$ to
@@ -1070,8 +1088,8 @@ $\mathsf{y : Q\,a}$ and $\mathsf{x' : List^{\wedge}\, A\, Q\, l'}$).
 
 We can generalize the approach taken in
 Section~\ref{sec:deep-ind-GADTs} to a general framework for deriving
-deep induction rules for deep GADTs that are not truly nested
-GADTs. We will treat deep GADTs of the form
+deep induction rules for GADTs that are not truly nested GADTs. We
+will treat GADTs of the form
 
 \vspace*{-0.05in}
 
@@ -1112,15 +1130,15 @@ This grammar is subject to the following restrictions. In the third
 clause the type constructor $\mathsf{F_1}$ does not contain
 $\mathsf{G}$. In the fourth clause, none of the $\mathsf{\alpha}$-many
 type constructors in $\mathsf{\ol{F_1}}$ contains $\mathsf{G}$. This
-prevents nesting, which would make it impossible to give an induction
-rule for $\mathsf{G}$; see Section~\ref{sec:GADT-nested} below. In the
-fifth and sixth clauses, $\mathsf{H : Set^\gamma \to Set}$ is the
-syntactic reflection of some functor, and thus has an associated map
-function. It is worth noting that the fifth clause subsumes the cases
-in which $\mathsf{F\,G\,\ol{B}}$ is a closed type or one of the
-$\mathsf{B_i}$, and that $\mathsf{H}$ can be the data type constructor
-for any (truly) nested type. From the map function for $\mathsf{H}$ we
-can also construct a map function
+prevents nesting, which would {\color{red} make it impossible to give}
+an induction rule for $\mathsf{G}$; see Section~\ref{sec:GADT-nested}
+below. In the fifth and sixth clauses, $\mathsf{H : Set^\gamma \to
+  Set}$ is the syntactic reflection of some functor, and thus has an
+associated map function. It is worth noting that the fifth clause
+subsumes the cases in which $\mathsf{F\,G\,\ol{B}}$ is a closed type
+or one of the $\mathsf{B_i}$, and that $\mathsf{H}$ can be the data
+type constructor for any (truly) nested type. From the map function
+for $\mathsf{H}$ we can also construct a map function
 
 \vspace*{-0.05in}
 
@@ -1320,11 +1338,11 @@ induction rule in~\eqref{eq:gen-ind-rule}.
 %appear below themselves.
 In Sections~\ref{sec:deep-ind-GADTs} and~\ref{sec:framework} we
 derived deep induction rules for GADTs that are not truly nested
-GADTs. Since both nested types and GADTs without true nesting admit
-deep induction rules, we might expect truly nested GADTs to admit them
-as well. Unfortunately, however, the techniques developed in the
-previous sections do not extend to truly nested GADTs. Indeed, the
-induction rule for a data type generally relies on (unary)
+GADTs. Since both (truly) nested types and GADTs without true nesting
+admit deep induction rules, we might expect truly nested GADTs to
+admit them as well. Unfortunately, however, the techniques developed
+in the previous sections do not extend to truly nested GADTs. Indeed,
+the induction rule for a data type generally relies on (unary)
 parametricity of the model interpreting it, and deep induction for a
 truly nested type or a truly nested GADT also relies on this
 interpretation being functorial.  Whereas ADTs and nested types both
@@ -1735,10 +1753,10 @@ calculus is beyond the scope of the present paper.
 
 \section{Conclusion}\label{sec:conclusion}
 
-This paper extends deep induction to deep GADTs that are not truly
-nested. It also shows that truly nested GADTs, deep or not, do not
-obviously admit (deep) induction rules. Our development is implemented
-in Agda, as is our case study from Section~\ref{sec:app}. 
+This paper extends (deep) induction to GADTs that are not truly nested
+GADTs. It also shows that truly nested GADTs do not obviously admit
+(deep) induction rules. Our development is implemented in Agda, as is
+our case study from Section~\ref{sec:app}.
 
 \pagebreak
 
