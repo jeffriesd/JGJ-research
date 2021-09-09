@@ -208,9 +208,8 @@ of sequences\footnote{The type of $\mathsf{Seq}$ is actually
   $\mathsf{Set \to \Set_1}$, but to aid readability we elide the
   explicit tracking of Agda universe levels in this paper.} only
 constructs sequences of data whose types are pair-structured, rather
-than sequences of arbitrary type, as does $\mathsf{const}$.
-
-If one or more of the data constructors for a GADT $\mathsf{G}$ return
+than sequences of arbitrary type, as does $\mathsf{const}$. If one or
+more of the data constructors for a GADT $\mathsf{G}$ return
 structured instances of $\mathsf{G}$, then the GADT will have two
 distinct, but equally natural, semantics: a functorial semantics
 interpreting it as a left Kan extension~\cite{mac71}, and a parametric
@@ -443,7 +442,8 @@ The deep induction rule for perfect trees similarly uses polymorphic
 predicates but otherwise follows the familiar pattern. It is given
 by the first expression in Figure~\ref{fig:ptree-and-bush}. There,
 $\mathsf{Pair^{\wedge} : \forall (A\; B: Set) \to (A \to Set) \to (B
-  \to Set)\; \to\;}$ $\mathsf{A \times B \to}$ $\mathsf{Set}$ lifts predicates
+  \to Set)\; \to\;}$ $\mathsf{A \times B \to}$ $\mathsf{Set}$
+lifts predicates
 $\mathsf{Q_A}$ on data of type $\mathsf{A}$ and $\mathsf{Q_B}$ on data
 of type $\mathsf{B}$ to a predicate on pairs of type $\mathsf{A \times
   B}$ in such a way that $\mathsf{Pair^{\wedge}\,A\,B\,Q_A\,Q_B\,(a,b)
@@ -478,8 +478,9 @@ be able to lift the rule's polymorphic predicate argument to
 $\mathsf{Bush}$ itself. This observation was, in fact, the original
 motivation for the development of deep induction in~\cite{jp20}. The
 deep induction rule for bushes is given by the second expression in
-Figure~\ref{fig:ptree-and-bush}, where $\mathsf{Bush^{\wedge} :
-  \forall (A : Set) \to (A \to Set)}$ $\mathsf{\to Bush\,A \to Set}$
+Figure~\ref{fig:ptree-and-bush}, where
+\[\mathsf{Bush^{\wedge} :
+  \forall (A : Set) \to (A \to Set) \to Bush\,A \to Set}\]
 is the following lifting of a predicate $\mathsf{Q}$ on data of type
 $\mathsf{A}$ to a predicate on data of type $\mathsf{Bush\,A}$
 asserting that $\mathsf{Q}$ holds for every element of type
@@ -792,8 +793,9 @@ P\,A\,Q_A\,(const\,a)}\\
 
 To derive the deep induction rule for the GADT $\mathsf{Seq}$ we use
 its Henry Ford encoding from~\eqref{eq:eq_seq}.  We first define its
-predicate lifting $\mathsf{Seq^\wedge : \forall (A : Set) \to (A \to
-  Set) \to Seq\,A \to Set}$ as in Figure~\ref{fig:seq}. There,
+predicate lifting
+\[\mathsf{Seq^\wedge : \forall (A : Set) \to (A \to
+  Set) \to Seq\,A \to Set}\] as in Figure~\ref{fig:seq}. There,
 $\mathsf{a : A}$, $\mathsf{Q_B : B \to Set}$, $\mathsf{Q_C : C \to
   Set}$, $\mathsf{e : Equal\,A\,(B \times C)}$, $\mathsf{s_B :
   Seq\,B}$, $\mathsf{s_C : Seq\,C}$, and $\mathsf{\exists [x]\, F
@@ -1576,7 +1578,7 @@ as given nicely illustrates deep induction.
 
 \vspace*{-0.1in}
 
-\caption{Applies induction hypotheses for
+\caption{Applied induction hypotheses for
   $\mathsf{LTerm}$}\label{fig:ind-hyps-lterm-applied-to-P}
 \end{adjustbox}
 \end{figure*}
@@ -1592,8 +1594,8 @@ by:\looseness=-1
 \begin{equation}\label{eq:maybe}
 \begin{array}{l}
 \mathsf{data\ Maybe : Set \to Set\ where}\\
-\mathsf{\;\;\;\;\;\;nothing :\,  \forall \{A : Set\} \to Maybe\,A}\\
-\mathsf{\;\;\;\;\;\;just\;\;\;\;\;\;\; :\,  \forall \{A : Set\} \to A \to Maybe\,A}
+\mathsf{\;\;nothing :\,  \forall \{A : Set\} \to Maybe\,A}\\
+\mathsf{\;\;just\;\;\;\;\;\;\; :\,  \forall \{A : Set\} \to A \to Maybe\,A}
 \end{array}
 \end{equation}
 
@@ -1743,8 +1745,8 @@ and define
 \[\begin{array}{ll}
  & \!\!\mathsf{LTerm^\wedge KT\,A\, (abs\, B \,C \, e \,s \,T \,
   t')}\\
-\quad\quad= & \!\!\mathsf{(K_\top , K_\top , Equal^\wedge ArrKT ,
-  LType^\wedge KT\, B\, T , LTerm^\wedge KT\, C\, t') }
+\quad\quad= & \!\!\mathsf{(K_\top , K_\top , Equal^\wedge ArrKT ,}\\
+ & \hspace*{0.3in} \mathsf{LType^\wedge KT\, B\, T , LTerm^\wedge KT\, C\, t') }
 \end{array}\]
 \item If $\mathsf{t_1 : LTerm\,(B \to A)}$ and $\mathsf{t_2 :
   LTerm\,B}$ then, by the same reasoning as in the previous case, we
