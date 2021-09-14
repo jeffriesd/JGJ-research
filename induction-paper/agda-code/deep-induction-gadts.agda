@@ -137,7 +137,7 @@ dIndBush P cbnil cbcons A Q (bcons a bb) (Qa , liftbb) = cbcons A Q a bb Qa (dIn
   where liftPbb : Bush^ (Bush A) (P A Q) bb
         liftPbb = liftBushMap (Bush A) (Bush^ A Q) (P A Q) (dIndBush P cbnil cbcons A Q) bb liftbb
 
--- equation 3 
+-- equation 4
 -- 
 -- equality GADT 
 data Equal {l} : Set l → Set l → Set l where
@@ -146,7 +146,7 @@ data Equal {l} : Set l → Set l → Set l where
 Equal^ : ∀ {l} (A B : Set l) → (A → Set l) → (B → Set l) → (Equal A B → Set l)
 Equal^ A .A Qa Qb refl = ∀ x → Equal (Qa x) (Qb x)
 
--- equation 4
+-- equation 5
 data Seq : Set → Set₁ where
   const : ∀ {A : Set} → A → Seq A
   pair  : ∀ {A : Set} → ∀ (B C : Set) → Equal A (B × C) → Seq B → Seq C → Seq A
@@ -157,13 +157,12 @@ data Seq : Set → Set₁ where
 data Arr (A B : Set) : Set where
   arr : (A → B) → Arr A B
 
--- equation 5 
+-- figure 2 
 data LType : Set → Set₁ where
   bool : ∀ {A : Set} → ∀ (B : Set) → (e : Equal A Bool) → LType A
   arr  : ∀ {A : Set} → ∀ (B C : Set) → (e : Equal A (Arr B C)) → LType B → LType C → LType A
   list : ∀ {A : Set} → ∀ (B : Set) → (e : Equal A (List B)) → LType B → LType A
 
--- equation 6 
 data LTerm : Set → Set₁ where
   var   : ∀ {A : Set} → (s : String) → (Ta : LType A) → LTerm A
   abs   : ∀ {A : Set} → ∀ (B C : Set) → (e : Equal A (Arr B C)) → (s : String) → (Tb : LType B) → (tc : LTerm C) → LTerm A
@@ -172,7 +171,7 @@ data LTerm : Set → Set₁ where
 
 -- 4 . (Deep) induction for GADTs
 
--- equation 7
+-- equation 6
 dIndEqual : ∀ (P : ∀ (A B : Set) → (A → Set) → (B → Set) → Equal A B → Set)
          → (∀ (C : Set) (Q Q' : C → Set) → Equal^ C C Q Q' refl → P C C Q Q' refl)
          → ∀ (A B : Set) (Qa : A → Set) (Qb : B → Set) (e : Equal A B) → Equal^ A B Qa Qb e → P A B Qa Qb e
@@ -182,7 +181,7 @@ dIndEqual P crefl A .A Qa Q'a  refl liftE = crefl A Qa Q'a liftE
 K⊤ : ∀ {l} {A : Set l} → A → Set
 K⊤ _ = ⊤
 
--- equation 8
+-- equation 7
 indEqual : ∀ (Q : ∀ (A B : Set) → Equal A B → Set) → (∀ (C : Set) → Q C C refl)
             → ∀ (A B : Set) (e : Equal A B) → Q A B e
 -- -- we can define indEqual as:
@@ -207,7 +206,7 @@ Seq^ A Qa (pair B C e sb sc) =
 
 -- 4.2 - (Deep) induction for Seq
 
--- equation 9 
+-- figure 3
 dIndSeq : ∀ (P : ∀ (A : Set) → (A → Set) → Seq A → Set)
             → (∀ (A : Set) (Qa : A → Set) (a : A) → Qa a → P A Qa (const a))
             → (∀ (A B C : Set) (Qa : A → Set) (Qb : B → Set) (Qc : C → Set)
@@ -234,7 +233,7 @@ Arr^ : ∀ (A B : Set) → (A → Set) → (B → Set) → Arr A B → Set
 Arr^ A B Qa Qb (arr f) = ∀ (a : A) → Qa a → Qb (f a)
 
 
--- Figure 1
+-- figure 4
 
 LType^ : ∀ (A : Set) → (A → Set) → LType A → Set₁
 -- use Σ-syntax as opposed to ∃-syntax in this clause since Qb is not used
@@ -259,10 +258,8 @@ LTerm^ A Qa (app B tba tb) =
 LTerm^ A Qa (list B e ts) =
   ∃[ Qb ] Equal^ A (List B) Qa (List^ B Qb) e × List^ (LTerm B) (LTerm^ B Qb) ts
 
--- end Figure 1
 
-
--- equation 10 
+-- figure 5
 {-# TERMINATING #-}
 dIndLTerm : ∀ {l} (P : ∀ (A : Set) → (A → Set) → LTerm A → Set l)
                 -- var

@@ -38,13 +38,12 @@
   entire structure.  Deep induction can be used to prove properties of
   nested types, including truly nested types, that cannot be proved
   via structural induction.  In this paper we show how to extend deep
-  induction to GADTs that are not truly nested GADTs.  {\color{red}
-    This opens the way to incorporating automatic generation of (deep)
-    induction rules for them into proof assistants.}  We also show
-  that the techniques developed in this paper do not suffice for
-  extending deep induction to truly nested GADTs, {\color{red} so more
-    sophisticated techniques are needed to derive deep induction rules
-    for them.}
+  induction to GADTs that are not truly nested GADTs.  This opens the
+  way to incorporating automatic generation of (deep) induction rules
+  for them into proof assistants.  We also show that the techniques
+  developed in this paper do not suffice for extending deep induction
+  to truly nested GADTs, so more sophisticated techniques are needed
+  to derive deep induction rules for them.
 \end{abstract}
 
 \maketitle
@@ -180,14 +179,21 @@ types. Deep induction for ADTs and (truly) nested types is reviewed in
 Section~\ref{sec:ADTs-and-nesteds}.
 
 This paper shows how to extend deep induction to proper GADTs, i.e.,
-GADTs that are not nested types (and thus are not ADTs).  A
-constructor for a GADT $\mathsf{G}$ may, like a constructor for a
-nested type, take as arguments data whose types involve instances of
-$\mathsf{G}$ other than the one being defined. These can even include
-instances involving $\mathsf{G}$ itself. But if $\mathsf{G}$ is a
-proper GADT, then at least one of its constructors will also have a
-structured instance of $\mathsf{G}$ --- albeit one not involving
-$\mathsf{G}$ itself --- as its codomain.
+GADTs that are not nested types (and thus are not ADTs).  Typical
+applications of such GADTs include generic programming, modeling
+programming languages via higher-order abstract syntax, maintaining
+invariants in data structures, and expressing constraints in embedded
+domain-specific languages. They have also been used to implement
+tagless interpreters~\cite{pl04,pr06,pvww06} by trading the definition
+of a universal value domain for a direct specification of the property
+of being a value. Other applications are described in,
+e.g.,~\cite{min15,rou06}. A constructor for a GADT $\mathsf{G}$ may,
+like a constructor for a nested type, take as arguments data whose
+types involve instances of $\mathsf{G}$ other than the one being
+defined. These can even include instances involving $\mathsf{G}$
+itself. But if $\mathsf{G}$ is a proper GADT, then at least one of its
+constructors will also have a structured instance of $\mathsf{G}$ ---
+albeit one not involving $\mathsf{G}$ itself --- as its codomain.
 %But while the types of the arguments to a GADT's constructor can
 %include instances of $\mathsf{G}$ that themselves involve
 %$\mathsf{G}$, its return type cannot.
@@ -214,7 +220,7 @@ structured instances of $\mathsf{G}$, then the GADT will have two
 distinct, but equally natural, semantics: a functorial semantics
 interpreting it as a left Kan extension~\cite{mac71}, and a parametric
 semantics interpreting it as the interpretation of its Church
-encoding~\cite{atk12,vw10}. As detailed in~\cite{jgj21}, a key
+encoding~\cite{atk12,vw10}. As detailed in~\cite{jg21}, a key
 difference in the two semantics is that the former views GADTs as
 their {\em functorial completions}~\cite{jp19}, and thus as containing
 more data than just those expressible in syntax. By contrast, the
@@ -226,7 +232,7 @@ fact, the functorial and parametric semantics for proper GADTs are
 sufficiently disparate that, by contrast with the semantics
 customarily given for ADTs and nested
 types~\cite{bfss90,gjfor15,jgj21f}, it is not at all clear how to
-define a functorial parametric semantics for GADTs~\cite{jgj21}.
+define a functorial parametric semantics for GADTs~\cite{jg21}.
 
 This observation seems, at first, to be a death knell for the prospect
 of extending deep induction to GADTs. Indeed, induction can be seen as
@@ -302,7 +308,8 @@ knowledge, appear in practice or in the
 literature. Section~\ref{sec:app} comprises a case study in using deep
 induction. All of the deep induction rules appearing in this paper
 have been derived by instantiating our general framework. Our Agda
-code implementing them is available at~\cite{web-page}.
+implemention of them is available in the accompanying code.\looseness=-1
+%at~\cite{web-page}.
 
 \vspace*{0.05in}
 
@@ -460,11 +467,11 @@ appear below themselves. The quintessential example of such a type is
 that of bushes\footnote{To define truly nested types in Agda we must
   use the $\mathsf{NO\_POSITIVITY\_CHECK}$ flag, and to define
   functions over them we must use the $\mathsf{TERMINATING}$ flag.
-  {\color{red}(Similar flags are required in Coq.)} Although as
-  programmers we know from the metatheory in~\cite{jp19} that
-  $\mathsf{Bush}$ is well-defined and the functions we define over
-  them terminate, the flags are necessary because Agda fails to infer
-  these facts. Analogous comments apply at several places
+  (Similar flags are required in Coq.) Although as programmers we know
+  from the metatheory in~\cite{jp19} that $\mathsf{Bush}$ is
+  well-defined and the functions we define over them terminate, the
+  flags are necessary because Agda fails to infer these
+  facts. Analogous comments apply at several places
   below.}\cite{bm98}:
 \begin{equation*}\label{eq:bush}
 \begin{array}{l}
@@ -616,13 +623,14 @@ later, in Section~\ref{sec:ind-lam}, their deep induction rules ---
 while still being small enough to ensure clarity of exposition.
 
 Types are either booleans, arrow types, or list types. They are
-represented by the Henry Ford GADT $\mathsf{LType}$.  Terms are either
-variables, abstractions, applications, or lists of terms. They are
-similarly represented by the Henry Ford GADT $\mathsf{LTerm}$.  The
-type parameter for $\mathsf{LTerm}$ tracks the types of simply typed
-lambda calculus terms. For example, $\mathsf{LTerm\,A}$ is the type of
-simply typed lambda terms of type $\mathsf{A}$. Variables are tagged
-with their types by the data constructors $\mathsf{var}$ and
+represented by the Henry Ford GADT $\mathsf{LType}$ in
+Figure~\ref{fig:type-and-term}.  Terms are either variables,
+abstractions, applications, or lists of terms. They are similarly
+represented by the Henry Ford GADT $\mathsf{LTerm}$.  The type
+parameter for $\mathsf{LTerm}$ tracks the types of simply typed lambda
+calculus terms. For example, $\mathsf{LTerm\,A}$ is the type of simply
+typed lambda terms of type $\mathsf{A}$. Variables are tagged with
+their types by the data constructors $\mathsf{var}$ and
 $\mathsf{abs}$, whose $\mathsf{LType}$ arguments ensure that their
 type tags are legal types. This ensures that all lambda terms produced
 by $\mathsf{var}$, $\mathsf{abs}$, $\mathsf{app}$, and $\mathsf{list}$
@@ -1033,40 +1041,40 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
       -0.2in 0in, fbox, center} 
 
 {\small
-\[\begin{array}{l}
-\mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to
+\[\begin{array}{lll}
+\mathsf{dIndVar} & = & \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to
   LTerm\,A  \to Set) \to}\\
-  \quad\mathsf{\forall (A : Set) (Q_A : A \to Set) (s : String) (T_A :
+& &   \quad\mathsf{\forall (A : Set) (Q_A : A \to Set) (s : String) (T_A :
   LType\, A) \to LType^{\wedge} \, A\, Q_A\, T_A \to P \, A\, Q_A\,
-  (var \; s\, T_A)}\\[1ex]
-  \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to
+ (var \; s\, T_A)}\\[1ex]
+\mathsf{dIndAbs} & = & \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to
   LTerm\,A \to Set) \to} \\ 
-  \quad\mathsf{
+& &   \quad\mathsf{
   \forall (A\,B\,C: Set) (Q_A : A \to Set)  (Q_B : B \to Set) (Q_C : C
   \to Set) (e : Equal\, A\, (B \to C)) (s : String) \to } \\ 
-  \quad\mathsf{(T_B : LType\, B) \to (t_C : LTerm\, C)
+& &   \quad\mathsf{(T_B : LType\, B) \to (t_C : LTerm\, C)
   \to Equal^{\wedge}\,A\,(B \to C)\, Q_A \, (Arr^{\wedge} \, B\, C\,
   Q_B \, Q_C) \, e \to  } \\
-  \quad\mathsf{
+& &   \quad\mathsf{
   LType^{\wedge}\, B\, Q_B\, T_B
   \to P\, C\, Q_C\, t_C\, 
   \to P \, A\, Q_A\, (abs \,B \,C \, e \,s \,T_B \, t_C)}\\
  \\
-  \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A
+\mathsf{dIndApp} & = &  \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A
     \to Set)\to} \\ 
-  \quad \mathsf{
+& &  \quad \mathsf{
   \forall (A \,B : Set) (Q_A : A \to Set)  (Q_B : B \to Set) 
    (t_{BA} : LTerm\, (B \to A)) (t_B : LTerm\, B) \to} \\
-  \quad \mathsf{
+& &   \quad \mathsf{
   P\, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A) \, t_{BA} \, 
   \to P\, B\, Q_B\, t_B\, 
   \to P \, A\, Q_A\, (app \,B \,t_{BA} \, t_B) }\\[1ex]
-  \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A
+\mathsf{dIndList} & = &   \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to LTerm\,A
     \to Set) \to} \\ 
-  \quad \mathsf{
+& &   \quad \mathsf{
   \forall (A \,B : Set) (Q_A : A \to Set)  (Q_B : B \to Set) 
     (e : Equal\, A\, (List\, B)) (ts : List\, (LTerm\, B)) \to} \\ 
-  \quad \mathsf{
+& &   \quad \mathsf{
     Equal^{\wedge}\, A\, (List\,B)\, Q_A\, (List^{\wedge}\, B\, Q_B)\, e 
   \to List^{\wedge}\, (LTerm\,B) (P\, B\, Q_B)\, ts
   \to P \, A\, Q_A\, (list \,B \,e \, ts) }
@@ -1099,7 +1107,7 @@ $\mathsf{(List^{\wedge}\, B\, Q_B)\, e}$, and $\mathsf{lift_{List}:
 Moreover, in the definition of $\mathsf{p_{ts}}$, $\mathsf{PredMap :
   \forall\, (A : Set) \to}$ $\mathsf{(A \to Set)}$ $\mathsf{\to (A \to
   Set) \to Set }$ is the type constructor producing the type of
-morphisms between predicates defined by
+morphisms between predicates defined by\looseness=-1
 \[\mathsf{PredMap \,A\, Q\,Q'\,
   = \forall\, (a : A) \to Q\,a \to Q'\,a}\] and
 \[\begin{array}{l}
@@ -1115,7 +1123,7 @@ morphism of lifted predicates, is defined by
 (since $\mathsf{x : List^{\wedge}\,
   A\, Q\, nil}$ must necessarily be the sole inhabitant $\mathsf{tt}$
 of $\mathsf{\top}$), and by $\mathsf{liftListMap\, A\, Q\, Q'\, m\,
-  (cons\, a\, l')\, (y, x') = (m\,a\,y,}$\\ $\mathsf{liftListMap\, A\,
+  (cons\, a\, l')\, (y, x') =}$\\ $\mathsf{ (m\,a\,y, \,liftListMap\, A\,
   Q\, Q'\, m\, l'\, x')}$ (since $\mathsf{x : List^{\wedge}\, A\,
   Q\, (cons\, a\, l')}$ must be of the form $\mathsf{x = (y, x')}$
 where $\mathsf{y : Q\,a}$ and $\mathsf{x' : List^{\wedge}\, A\, Q\,
@@ -1125,10 +1133,9 @@ where $\mathsf{y : Q\,a}$ and $\mathsf{x' : List^{\wedge}\, A\, Q\,
 
 \section{The general framework}\label{sec:framework}
 
-We can generalize the approach taken in
-Section~\ref{sec:deep-ind-GADTs} to a general framework for deriving
-deep induction rules for GADTs that are not truly nested GADTs. We
-will treat GADTs of the form
+We can generalize the approach in Section~\ref{sec:deep-ind-GADTs} to
+a general framework for deriving deep induction rules for GADTs that
+are not truly nested GADTs. We will treat GADTs of the form
 
 \vspace*{-0.05in}
 
@@ -1511,7 +1518,7 @@ $\mathsf{Q'_B}$ such that $\mathsf{Q'}$ is equal to
 $\mathsf{Pair^{\wedge}\,B\,B\,Q'_B\,Q'_B}$.
 
 At a deeper level, the fundamental issue is that the $\mathsf{Equal}$
-type does not have functorial semantics~\cite{jgj21}, so that having
+type does not have functorial semantics~\cite{jg21}, so that having
 morphisms $\mathsf{A \to A'}$ and $\mathsf{B \to B'}$ (for any type
 $\mathsf{A, A', B}$ and $\mathsf{B'}$) and a proof that $\mathsf{A}$
 is equal to $\mathsf{A'}$ does not provide a proof that $\mathsf{B}$
@@ -1864,7 +1871,9 @@ isomorphisms can either be proved on an as-needed basis or, since
 $\mathsf{F^\wedge\,A\,K_\top = K_\top}$ is the unary analogue of the
 Identity Extension Lemma, be obtained at the meta-level as a
 consequence of unary parametricity. At the object level, our Agda
-code~\cite{web-page} simply postulates each isomorphism needed since
+code
+%~\cite{web-page}
+simply postulates each isomorphism needed since
 an Agda implementation of full parametricity for some relevant
 calculus is beyond the scope of the present paper.
 
@@ -1873,9 +1882,9 @@ calculus is beyond the scope of the present paper.
 This paper extends (deep) induction to GADTs that are not truly nested
 GADTs. It also shows that truly nested GADTs do not obviously admit
 (deep) induction rules. Our development is implemented in Agda, as is
-our case study from Section~\ref{sec:app}. {\color{red} Our
-  development opens the way to incorporating automatic generation of
-  (deep) induction rules for them into proof assistants.}
+our case study from Section~\ref{sec:app}. Our development opens the
+way to incorporating automatic generation of (deep) induction rules
+for them into proof assistants.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{bibfile}
