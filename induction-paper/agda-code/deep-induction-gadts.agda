@@ -209,7 +209,7 @@ Seq^ A Qa (pair B C e sb sc) =
 -- figure 3
 dIndSeq : ∀ (P : ∀ (A : Set) → (A → Set) → Seq A → Set)
             → (∀ (A : Set) (Qa : A → Set) (a : A) → Qa a → P A Qa (const a))
-            → (∀ (A B C : Set) (Qa : A → Set) (Qb : B → Set) (Qc : C → Set)
+            → (∀ (A B C   : Set) (Qa : A → Set) (Qb : B → Set) (Qc : C → Set)
                (sb : Seq B) (sc : Seq C) (e : Equal A (B × C))
                → Equal^ A (B × C) Qa (Pair^ B C Qb Qc) e
                → P B Qb sb → P C Qc sc

@@ -280,7 +280,7 @@ higher-kinds or term-indexed types --- adding complexity to their
 models that is entirely unnecessary for reasoning about nested types.
 In addition, to our knowledge no such models represent data types as
 primitive fixpoints, so they cannot be used to obtain the results of
-this paper.  (See the past paragraph of this section for a more
+this paper.  (See the last paragraph of this section for a more
 detailed discussion in the case of F$_\omega$.) Whether or not these
 results even hold for such calculi is an open question.
 
@@ -905,9 +905,15 @@ L_{\alpha} x.\, \inr\, x) \; : \; \Nat^{\alpha}\, \mathit{PTree}
 \hspace*{0.5in}:  \Nat^{\alpha} (\alpha + \mathit{PTree}\,(\alpha \times
 \alpha))\; \mathit{PTree}\,\alpha
 \end{array}\]
-respectively. Our calculus can similarly define a $\mathtt{rustle}$
-function that changes the placement of the data in a bush. This
-function maps, e.g., the bush
+respectively. Here, if $\Gamma; \emptyset \,|\, \Delta \vdash t:
+\Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset \,|\, \Delta
+\vdash s: \Nat^{\overline{\alpha}} G\,H$ are terms then the {\em
+  composition} $s \circ t$ of $t$ and $s$ is defined by $s \circ t =
+\Gamma; \emptyset\,|\, \Delta \vdash L_{\overline{\alpha}}
+x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
+\Nat^{\overline{\alpha}} F\,H$. Our calculus can similarly define a
+$\mathtt{rustle}$ function that changes the placement of the data in a
+bush. This function maps, e.g., the bush
 \[\begin{array}{l}
 \mathit{bcons}\,0 \,(\mathit{bcons}\, (\mathit{bcons}\, 1\,
 (\mathit{bcons}\, (\mathit{bcons}\, 2\,\mathit{bnil}) \,
@@ -2808,11 +2814,12 @@ transformations with respect to their source and target functorial
 types, and derive some conseqences of this observation. If $\Gamma;
 \ol{\alpha} \vdash F$ then define the {\em identity} $\id_F$ on $F$ by
 $\id_F = \Gamma;\emptyset~|~\emptyset \vdash L_{\ol{\alpha}}x.x :
-\Nat^{\ol{\alpha}} F\,F$, and if $\Gamma; \emptyset \,|\, \Delta
-\vdash t: \Nat^{\overline{\alpha}} F\,G$ and $\Gamma; \emptyset \,|\,
-\Delta \vdash s: \Nat^{\overline{\alpha}} G\,H$ are terms then define
-the {\em composition} $s \circ t$ of $t$ and $s$ by $s \circ t =
-\Gamma; \emptyset\,|\, \Delta \vdash L_{\overline{\alpha}}
+\Nat^{\ol{\alpha}} F\,F$. Also, recall from Section~\ref{sec:terms} that if
+$\Gamma; \emptyset \,|\, \Delta \vdash t: \Nat^{\overline{\alpha}}
+F\,G$ and $\Gamma; \emptyset \,|\, \Delta \vdash s:
+\Nat^{\overline{\alpha}} G\,H$ are terms then the composition $s \circ
+t$ of $t$ and $s$ is defined by $s \circ t = \Gamma; \emptyset\,|\,
+\Delta \vdash L_{\overline{\alpha}}
 x. s_{\overline{\alpha}}(t_{\overline{\alpha}}x):
 \Nat^{\overline{\alpha}} F\,H$. Then \[\setsem{\Gamma; \emptyset \,|\,
   \emptyset \vdash \id_{F} : \Nat^{\ol{\alpha}} F\,F} \rho\, \ast =
@@ -4208,18 +4215,22 @@ would not be able to express, e.g., the types
 associated with $\mathtt{Seq}$'s data constructor $\mathtt{spair}$.
 
 
-
-\subsection{Extending the Type Semantics}
+\subsection{Extending the Type Semantics}\label{sec:type-sem}
 
 To construct a parametric model of the kind we seek, we must give
 suitable interpretations of our generalized $\Nat$-types and
 $\Lan$-types, as well as of terms of both such types, in both $\set$
-and $\rel$. Recalling that the type constructor variables bound by
-$\Nat$ in the formation rule for generalized $\Nat$-types are
-interpreted in $\set$ as functors and in $\rel$ as relation
-transformers, we let $k_i$ be the arity of the $i^{th}$ element of the
-sequence $\Phi$ and extend the set and relational interpretations for
-$\Nat$ types from Section~\ref{sec:type-interp} as follows:
+and $\rel$. (Note that it is having both $\mathsf{Set}$ and
+$\mathsf{Rel}$ interpretations, and having these be interconnected in
+the specific way parametricity demands, that is at issue here; if we
+are only interested in having {\em some} model of the type calculus,
+then the one in~\cite{jp19} will do.) Recalling that the type
+constructor variables bound by $\Nat$ in the formation rule for
+generalized $\Nat$-types are interpreted in $\set$ as functors and in
+$\rel$ as relation transformers, we let $k_i$ be the arity of the
+$i^{th}$ element of the sequence $\Phi$ and extend the set and
+relational interpretations for $\Nat$ types from
+Section~\ref{sec:type-interp} as follows:
 \begin{align*}
 \setsem{\Gamma; \emptyset \vdash \Nat^\Phi\,F\,G}\rho
 &= \{\eta : \lambda \ol{K}. \,\setsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol{K}] 
@@ -4228,7 +4239,8 @@ $\Nat$ types from Section~\ref{sec:type-interp} as follows:
 &\hspace{0.4in} (\eta_{\overline{K^1}}, \eta_{\overline{K^2}})
 : \relsem{\Gamma; \Phi \vdash F}\Eq_{\rho}[\Phi := \ol{K}]
 \rightarrow \relsem{\Gamma; \Phi \vdash G}\Eq_{\rho}[\Phi := \ol{K}] \} \\
-%%%
+\end{align*}
+\begin{align*}
 \relsem{\Gamma; \emptyset \vdash \Nat^\Phi \,F\,G}\rho
 &= \{\eta : \lambda \ol{K}.\,\relsem{\Gamma; \Phi \vdash F}\rho[\Phi := \ol{K}]
 \Rightarrow \lambda \ol{K}. \,\relsem{\Gamma; \Phi \vdash G}\rho[\Phi := \ol{K}]\}\\
@@ -4336,7 +4348,7 @@ $\Lan$-types is defined analogously.
 \subsection{Extending the Term Semantics}\label{sec:term-sem}
 
 Recalling the notation for the colimit representation of left Kan
-extensions from Section~\ref{sec:lke}, we define the set and
+extensions from Section~\ref{sec:lke}, we can define the set and
 relational interpretations of the terms from the introduction and
 elimination rules for $\Lan$ types from Section~\ref{sec:ext-calc} by 
 \[
@@ -4391,7 +4403,7 @@ relational interpretations\\ $\relsem{\Gamma;\emptyset~|~\emptyset
   (\Lan^{\ol\alpha}_{\ol{K}}\, F) \ol{K}}$ and
 $\setsem{\Gamma;\emptyset~|~\Delta \vdash \partial^{G, \ol K}_F t :
   \Nat^{\Phi, \ol\beta}\, (\Lan^{\ol\alpha}_{\ol K}\,F) \ol \beta\;
-  G}$ are defined entirely analogously.
+  G}$ can then be defined entirely analogously.
 
 \vspace*{0.05in}
 
@@ -4443,8 +4455,13 @@ $y$, then $L$ would have to be the entirety of
 %      K}\rho {[\ol{\alpha := A} ]}}}\, \lambda \ol A.\,
 %\setsem{\Gamma; \Phi, \ol\alpha \vdash F}\rho {[\Phi, \ol \alpha :=
 %    \ol N, \ol A ]}$.
-An analogous result holds for relational
-interpretations of $\Lan$-types.
+An analogous result holds for relational interpretations of
+$\Lan$-types. This shows that the machinery of this section does not
+give a well-defined relational semantics and, given the expected
+properties of the term semantics, this cannot be
+fixed by restricting the relational semantics of $\mathsf{Lan}$-types
+from Section~\ref{sec:type-sem}.
+
 
 \subsection{Parametricity and GADTs}
 
@@ -4974,11 +4991,13 @@ interpretation by requiring that the natural transformations in the
 set interpretation preserve equalities. The impossibility of
 restricting the semantic interpretations of $\Lan$-types, as shown in
 Proposition~\ref{prop:full-lan}, suggests that the IEL may fail for
-them. We have been able neither to prove nor disprove it thus far, but
-our substantial and lengthy investigations into the issue lead us to
-suspect that it may not actually be possible to define a functorial
-semantics for $\Lan$-types that gives rise to parametric models for
-languages supporting even constant-free polynomial primitive GADTs.
+them. As noted above, this would derail not just parametricity, but
+the well-definedness of the term semantics as well.  We have been able
+neither to prove nor disprove the IEL thus far, but our substantial
+and lengthy investigations into the issue lead us to suspect that it
+may not actually be possible to define a functorial semantics for
+$\Lan$-types that gives rise to parametric models for languages
+supporting even constant-free polynomial primitive GADTs.
 
 \section{Conclusion and Directions for Future Work}\label{sec:conclusion}
 
