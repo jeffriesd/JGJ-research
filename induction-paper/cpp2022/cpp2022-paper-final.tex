@@ -1,6 +1,7 @@
-\documentclass[sigplan,10pt]{acmart}
-\settopmatter{printfolios=true,printccs=false,printacmref=false}
+\documentclass[sigplan,screen]{acmart}
+%\settopmatter{printfolios=true,printccs=false,printacmref=false}
 
+\usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{adjustbox}
 \usepackage{amsmath}
@@ -22,6 +23,18 @@
 \usepackage{bussproofs}
 \EnableBpAbbreviations
 \input{macros}
+
+\copyrightyear{2022}
+\acmYear{2022}
+\setcopyright{acmlicensed}\acmConference[CPP '22]{Proceedings of the 11th
+ACM SIGPLAN International Conference on Certified Programs and
+Proofs}{January 17--18, 2022}{Philadelphia, PA, USA}
+\acmBooktitle{Proceedings of the 11th ACM SIGPLAN International Conference
+on Certified Programs and Proofs (CPP '22), January 17--18, 2022,
+Philadelphia, PA, USA}
+\acmPrice{15.00}
+\acmDOI{10.1145/3497775.3503680}
+\acmISBN{978-1-4503-9182-5/22/01}
 
 \begin{document}
 \title[(Deep) Induction Rules for GADTs]{(Deep) Induction Rules for GADTs}
@@ -51,9 +64,39 @@
   to derive deep induction rules for them.
 \end{abstract}
 
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003752</concept_id>
+<concept_desc>Theory of computation</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10010124</concept_id>
+<concept_desc>Theory of computation~Semantics and reasoning</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10010124.10010131.10010137</concept_id>
+<concept_desc>Theory of computation~Categorical semantics</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Theory of computation}
+\ccsdesc[500]{Theory of computation~Semantics and reasoning}
+\ccsdesc[500]{Theory of computation~Categorical semantics}
+
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\keywords{GADTs, induction, proof assistants}
+
+
 \maketitle
 
-\vspace*{-0.1in}
 
 \section{Introduction}\label{sec:intro}
 
@@ -339,7 +382,7 @@ implementation of them is available at
 \looseness=-1
 %at~\cite{web-page}.
 
-%\vspace*{0.05in}
+\vspace*{0.05in}
 
 {\bf Additional Related Work\/} Various techniques for deriving
 induction rules for data types that go beyond ADTs have been
@@ -370,7 +413,7 @@ data types that go beyond ADTs.  But we know of no work other than
 that reported here that specifically addresses induction rules for the
 (deep) GADTs considered in this paper.
 
-\section{Deep induction for ADTs and nested types}\label{sec:ADTs-and-nesteds}
+\section{Deep Induction for ADTs and Nested Types}\label{sec:ADTs-and-nesteds}
 
 A structural induction rule for a data type allows us to prove that if
 a predicate holds for every element inductively produced by the data
@@ -445,7 +488,7 @@ perfect trees, for example, is
 \begin{figure*}[t]
 
 \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
 {\small
 \[\begin{array}{l}
@@ -589,7 +632,7 @@ $\mathsf{refl}$. It contains no data elements otherwise.
 \begin{figure*}[t]
 
 \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
 {\small
 \[\begin{array}{l}
@@ -670,7 +713,7 @@ by $\mathsf{var}$, $\mathsf{abs}$, $\mathsf{app}$, and $\mathsf{list}$
 are well-typed.  We will revisit these GADTs in
 Sections~\ref{sec:deep-ind-GADTs} and~\ref{sec:app}.
 
-\section{(Deep) induction for GADTs}\label{sec:deep-ind-GADTs}
+\section{(Deep) Induction for GADTs}\label{sec:deep-ind-GADTs}
 
 The equality constraints engendered by GADTs' data constructors makes
 deriving (deep) induction rules for them more involved than for ADTs
@@ -683,7 +726,7 @@ that is not a truly nested GADT. As hinted above, the predicate
 lifting for the equality GADT plays a central role in deriving both
 structural and deep induction rules for more general GADTs.
  
-\subsection{(Deep) induction for $\mathsf{Equal}$}\label{sec:ind-equal}
+\subsection{(Deep) Induction for $\mathsf{Equal}$}\label{sec:ind-equal}
 
 To define the (deep) induction rule for any GADT $\mathsf{G}$ we first
 need to define a predicate lifting that maps a predicate on a type
@@ -783,13 +826,13 @@ nested can similarly be recovered from its deep induction rule by
 instantiating every custom predicate by the appropriate constantly
 $\mathsf{\top}$-valued predicate.
 
-\subsection{(Deep) induction for $\mathsf{Seq}$}\label{sec:ind-seq}
+\subsection{(Deep) Induction for $\mathsf{Seq}$}\label{sec:ind-seq}
 
 
 \begin{figure*}[t]
 
 \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
 {\small
 \[\begin{array}{lll}
@@ -897,7 +940,7 @@ We therefore have
   cconst\,cpair\,C\,Q_C\,s_C\,liftC}\!\! & : &\!\! \mathsf{P\,C\,Q_C\,s_C} 
 \end{array}\]
 
-\subsection{(Deep) induction for $\mathsf{LTerm}$}\label{sec:ind-lam} 
+\subsection{(Deep) Induction for $\mathsf{LTerm}$}\label{sec:ind-lam} 
 
 \begin{figure*}[t]
 
@@ -905,7 +948,7 @@ We therefore have
 %      -0.2in 0in, fbox, center} 
 
   \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
   {\small
 \[\begin{array}{lll}
@@ -1068,7 +1111,7 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
 \begin{figure*}[t]
 
 \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
 {\small
 \[\begin{array}{lll}
@@ -1120,7 +1163,7 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
 \begin{figure*}[t]
 
     \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
   
 %  \begin{adjustbox}{varwidth=6.8in, max width=6.6in, margin=-0.1in 0in
 %      -0.2in 0in, fbox, center} 
@@ -1186,7 +1229,10 @@ Figure~\ref{fig:dindlterm}. There,
 \mathsf{liftE} & : & \mathsf{Equal^{\wedge}\, A\, (B \to C)\, Q_A\, (Arr^{\wedge} \, B\, C\, Q_B \, Q_C) \, e} \\
 \mathsf{lift_{T_B}} & : & \mathsf{LType^{\wedge} \, B\, Q_B\, T_B} \\
 \mathsf{lift_{t_C}} & : & \mathsf{LTerm^{\wedge} \, C\, Q_C\, t_C} \\
-\mathsf{lift_{t_{BA}}} & : & \mathsf{LTerm^{\wedge} \, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}} \\
+\mathsf{lift_{t_{BA}}} & : & \mathsf{LTerm^{\wedge} \, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}}
+\end{array}\]
+
+\[\begin{array}{lll}
 \mathsf{lift_{t_B}} & : & \mathsf{LTerm^{\wedge} \, B\, Q_B\, t_B} \\
 \mathsf{liftE'} & : & \mathsf{Equal^{\wedge}\, A\, (List\,B)\, Q_A\, (List^{\wedge}\, B\, Q_B)\, e} \\
 \mathsf{lift_{List}} & : & \mathsf{List^{\wedge} \, (LTerm\, B) \,
@@ -1240,7 +1286,7 @@ where $\mathsf{y : Q\,a}$ and $\mathsf{x' : List^{\wedge}\, A\, Q\,
 
 \vspace*{-0.05in}
 
-\section{The general framework}\label{sec:framework}
+\section{The General Framework}\label{sec:framework}
 
 We can generalize the approach in Section~\ref{sec:deep-ind-GADTs} to
 a general framework for deriving deep induction rules for GADTs that
@@ -1737,7 +1783,7 @@ as given nicely illustrates deep induction.
 \begin{figure*}[t]
 
 \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, fbox, center} 
+      -0.2in 0in, center} 
 
 {\small
 \[\begin{array}{lll}
@@ -1946,9 +1992,9 @@ and define
  & \hspace*{1.5in} \mathsf{LTerm^{\wedge}\, B\, K_\top\, t_2}
   \end{array}\]
   We define the second component of the pair to be
-  $\mathsf{LTerm^\wedge KT\,B\,t_2}$. We can define the first
+  $\mathsf{LTerm^\wedge KT\,B\,t_2}$. We define the first
   component from a proof of $\mathsf{LTerm^{\wedge}\, (B \to A)\,
-    K_\top\, t_1}$ and the function
+    K_\top\, t_1}$ and the function\looseness=-1
   \[\begin{array}{ll}
   & \!\! \mathsf{LTerm^\wedge EqualMap}\\
   \quad\quad : &
@@ -1959,11 +2005,11 @@ and define
     (LTerm^{\wedge}\,A\,Q)\,(LTerm^{\wedge}\,A\,Q')}
   \end{array}\] that takes two
   (extensionally) equal predicates with the same carrier and produces
-  a morphism of predicates between their liftings. The definition of
-  $\mathsf{LTerm^\wedge EqualMap}$ is straightforwardly given by
+  a morphism of predicates between their liftings. We define
+  $\mathsf{LTerm^\wedge EqualMap}$ straightforwardly by
   pattern matching on the first two arguments to $\mathsf{PredMap}$ in
   its return type, using transitivity and symmetry of the type
-  constructor $\mathsf{Equal}$, together with the analogously defined
+  constructor $\mathsf{Equal}$, together with the two analogously defined
   functions $\mathsf{LType^\wedge EqualMap}$ and $\mathsf{Arr^\wedge
     EqualMap}$ in the cases when the first argument to
   $\mathsf{PredMap}$ is constructed using $\mathsf{var}$ and
@@ -2018,6 +2064,11 @@ and define
    ts) }
 \end{array}\]
 we define
+
+\pagebreak
+
+\vspace*{-0.35in}
+
 \[\begin{array}{ll}
  & \!\!\mathsf{LTerm^\wedge KT\,A\, (list\, B\, e\,
   ts)}\\
@@ -2066,6 +2117,10 @@ GADTs. It also shows that truly nested GADTs do not obviously admit
 our case study from Section~\ref{sec:app}. Our development opens the
 way to incorporating automatic generation of (deep) induction rules
 for them into proof assistants.
+
+\subsection*{Acknowledgments}
+
+This work was supported by National Science Foundation award 1906388.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{bibfile}
