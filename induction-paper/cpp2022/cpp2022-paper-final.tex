@@ -24,17 +24,22 @@
 \EnableBpAbbreviations
 \input{macros}
 
-\copyrightyear{2022}
-\acmYear{2022}
-\setcopyright{acmlicensed}\acmConference[CPP '22]{Proceedings of the 11th
-ACM SIGPLAN International Conference on Certified Programs and
-Proofs}{January 17--18, 2022}{Philadelphia, PA, USA}
-\acmBooktitle{Proceedings of the 11th ACM SIGPLAN International Conference
-on Certified Programs and Proofs (CPP '22), January 17--18, 2022,
-Philadelphia, PA, USA}
+
+
+%%% The following is specific to CPP '22 and the paper
+%%% '(Deep) Induction Rules for GADTs'
+%%% by Patricia Johann and Enrico Ghiorzi.
+%%%
+\setcopyright{acmlicensed}
 \acmPrice{15.00}
 \acmDOI{10.1145/3497775.3503680}
+\acmYear{2022}
+\copyrightyear{2022}
+\acmSubmissionID{poplws22cppmain-p17-p}
 \acmISBN{978-1-4503-9182-5/22/01}
+\acmConference[CPP '22]{Proceedings of the 11th ACM SIGPLAN International Conference on Certified Programs and Proofs}{January 17--18, 2022}{Philadelphia, PA, USA}
+\acmBooktitle{Proceedings of the 11th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP '22), January 17--18, 2022, Philadelphia, PA, USA}
+
 
 \begin{document}
 \title[(Deep) Induction Rules for GADTs]{(Deep) Induction Rules for GADTs}
@@ -170,6 +175,7 @@ the various classes of data types considered in this paper is given in
 Table~\ref{fig:taxonomy}.\looseness=-1
 
 \begin{table}[h!]
+\caption{Data types in this paper}\label{fig:taxonomy}
 \begin{tabular}{|l|l|l|}
 \hline
 Data types & Discussed & Examples \\
@@ -184,7 +190,6 @@ Truly nested GADTs & \ref{sec:GADTs} and~\ref{sec:GADT-nested}&
 $\mathsf{G}$ in \eqref{gadt-nested}\\ 
 \hline
 \end{tabular}
-\caption{Data types in this paper}\label{fig:taxonomy}
 \end{table}
 
 {\em Deep induction}~\cite{jp20} is a generalization of structural
@@ -486,10 +491,7 @@ perfect trees, for example, is
 \end{array}\]
 
 \begin{figure*}[t]
-
-\begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
 {\small
 \[\begin{array}{l}
 \mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to PTree\,A
@@ -510,12 +512,9 @@ perfect trees, for example, is
 \quad\mathsf{\forall (A : Set) (Q : A \to Set) (b : Bush\,A) \to
   Bush^{\wedge}\,A\,Q\,b \to P\,A\,Q\,b } 
 \end{array}\]}
-
-\vspace*{-0.1in}
-
+\end{adjustbox}
 \caption{Deep induction rules for perfect trees and
   bushes}\label{fig:ptree-and-bush}
-\end{adjustbox}
 \end{figure*}
 
 The deep induction rule for perfect trees similarly uses polymorphic
@@ -630,10 +629,7 @@ type $\mathsf{Equal\,A\,B}$ contains the single data element
 $\mathsf{refl}$. It contains no data elements otherwise.
 
 \begin{figure*}[t]
-
-\begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
 {\small
 \[\begin{array}{l}
 \mathsf{data\ LType : Set \to Set\ where}\\
@@ -655,12 +651,9 @@ $\mathsf{refl}$. It contains no data elements otherwise.
   \mathsf{\;\;list\;\,\, :\,  \forall \{A : Set\} \to \forall (B : Set) \to
     Equal\,A\,(List\,B) \to List\,(LTerm\,B) \to LTerm\,A} 
 \end{array}\]}
-
-\vspace*{-0.1in}
-
+\end{adjustbox}
 \caption{The $\mathsf{LType}$ and $\mathsf{LTerm}$ data
   types}\label{fig:type-and-term}
-\end{adjustbox}
 \end{figure*}
 
 The importance of the equality GADT lies in the fact that we can
@@ -830,10 +823,7 @@ $\mathsf{\top}$-valued predicate.
 
 
 \begin{figure*}[t]
-
-\begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
 {\small
 \[\begin{array}{lll}
 \mathsf{Seq^{\wedge}\,A\,Q_A\,(const\,a)} & = & \mathsf{Q_A\,a}\\
@@ -859,20 +849,14 @@ P\,A\,Q_A\,(const\,a)}\\
 & & \mathsf{\hspace*{1.5in}  P\,C\,Q_C\,s_C \to P\, A\, Q_A\, (
   pair\,B\,C\,e\,s_B\,s_C )} 
 \end{array}\]
-
-\vspace*{0.1in}
-
 \[\begin{array}{l}
 \hspace*{-2in}\mathsf{\forall (P : \forall (A : Set) \to (A \to Set) \to Seq\,A \to
   Set)} \mathsf{\to dIndConst\,P \to dIndPair\,P \to} \\ \hspace*{-2in}\quad
 \mathsf{\forall (A : Set)(Q_A : A \to Set)(s_A : Seq\,A) \to
   Seq^{\wedge}\,A\,Q_A\,s_A \to P\,A\,Q_A\,s_A}
 \end{array}\]}
-
-\vspace*{-0.1in}
-
-\caption{Deep induction rule for $\mathsf{Seq}$}\label{fig:seq}
 \end{adjustbox}
+\caption{Deep induction rule for $\mathsf{Seq}$}\label{fig:seq}
 \end{figure*}
 
 To derive the deep induction rule for the GADT $\mathsf{Seq}$ we use
@@ -943,13 +927,7 @@ We therefore have
 \subsection{(Deep) Induction for $\mathsf{LTerm}$}\label{sec:ind-lam} 
 
 \begin{figure*}[t]
-
-%  \begin{adjustbox}{varwidth=6.8in, max width=6.6in, margin=-0.1in 0in
-%      -0.2in 0in, fbox, center} 
-
-  \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
   {\small
 \[\begin{array}{lll}
 \mathsf{LType^{\wedge}\,A\,Q_A\,(bool\,B\,e)} & = &\mathsf{\exists
@@ -977,12 +955,9 @@ We therefore have
   (List^{\wedge} \, B\, Q_B) \, e \times List^{\wedge}\, (LTerm\,B) \,
   (LTerm^{\wedge} \, B\, Q_B) \, ts}
 \end{array}   \]}
-
-\vspace*{-0.1in}
-
-\caption{Predicate liftings for $\mathsf{LType}$ and
-  $\mathsf{LTerm}$}\label{fig:liftings} \vspace*{0.1in} 
 \end{adjustbox}
+\caption{Predicate liftings for $\mathsf{LType}$ and
+  $\mathsf{LTerm}$}\label{fig:liftings}
 \end{figure*}
 
 To derive the deep induction rule for the GADT $\mathsf{LTerm}$ we use
@@ -1110,9 +1085,7 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
 
 \begin{figure*}[t]
 
-\begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
 {\small
 \[\begin{array}{lll}
 \mathsf{dIndVar} & = & \mathsf{\lambda (P : \forall (A : Set) \to (A \to Set) \to
@@ -1152,19 +1125,13 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
   \to List^{\wedge}\, (LTerm\,B) (P\, B\, Q_B)\, ts
   \to P \, A\, Q_A\, (list \,B \,e \, ts) }
 \end{array}\]}
-
-\vspace*{-0.1in}
-
-\caption{Induction hypotheses for $\mathsf{LTerm}$}\label{fig:ind-hyps-lterm}
 \end{adjustbox}
+\caption{Induction hypotheses for $\mathsf{LTerm}$}\label{fig:ind-hyps-lterm}
 \end{figure*}
 
 
 \begin{figure*}[t]
-
-    \begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-  
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth, center} 
 %  \begin{adjustbox}{varwidth=6.8in, max width=6.6in, margin=-0.1in 0in
 %      -0.2in 0in, fbox, center} 
 {\small
@@ -1201,14 +1168,11 @@ The deep induction rule for $\mathsf{LTerm}$ is thus
   clist\, B\, Q_B : PredMap\,(LTerm\,B) \,(LTerm^{\wedge}\, B\, Q_B)
   \, (P\,B\,Q_B)}
 \end{array}\]}
-
-\vspace*{-0.1in}
-
-\caption{$\mathsf{dIndLTerm}$}\label{fig:dindlterm} \vspace*{0.1in} 
 \end{adjustbox}
+\caption{$\mathsf{dIndLTerm}$}\label{fig:dindlterm} \vspace*{0.1in} 
 \end{figure*}
 
-To prove that this rule is sound we define a witness
+To prove this rule sound we define a witness
 $\mathsf{dIndLTerm}$ inhabiting the type in~\eqref{eq:ind-lam} as in
 Figure~\ref{fig:dindlterm}. There,
 
@@ -1227,12 +1191,12 @@ Figure~\ref{fig:dindlterm}. There,
 \mathsf{ts} & : & \mathsf{List\, (LTerm\, B)}\\
 \mathsf{liftA} & : & \mathsf{LTerm^{\wedge}\, A\, Q_A\, (var\;s\,T_A) = LType^{\wedge}\,A\,Q_A\,T_A} \\
 \mathsf{liftE} & : & \mathsf{Equal^{\wedge}\, A\, (B \to C)\, Q_A\, (Arr^{\wedge} \, B\, C\, Q_B \, Q_C) \, e} \\
-\mathsf{lift_{T_B}} & : & \mathsf{LType^{\wedge} \, B\, Q_B\, T_B} \\
-\mathsf{lift_{t_C}} & : & \mathsf{LTerm^{\wedge} \, C\, Q_C\, t_C} \\
-\mathsf{lift_{t_{BA}}} & : & \mathsf{LTerm^{\wedge} \, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}}
+\mathsf{lift_{T_B}} & : & \mathsf{LType^{\wedge} \, B\, Q_B\, T_B}
 \end{array}\]
 
 \[\begin{array}{lll}
+\mathsf{lift_{t_C}} & : & \mathsf{LTerm^{\wedge} \, C\, Q_C\, t_C} \\
+\mathsf{lift_{t_{BA}}} & : & \mathsf{LTerm^{\wedge} \, (B \to A)\, (Arr^{\wedge} \, B\, A\, Q_B \, Q_A)\, t_{BA}} \\
 \mathsf{lift_{t_B}} & : & \mathsf{LTerm^{\wedge} \, B\, Q_B\, t_B} \\
 \mathsf{liftE'} & : & \mathsf{Equal^{\wedge}\, A\, (List\,B)\, Q_A\, (List^{\wedge}\, B\, Q_B)\, e} \\
 \mathsf{lift_{List}} & : & \mathsf{List^{\wedge} \, (LTerm\, B) \,
@@ -1693,8 +1657,8 @@ we had the map function
 \hspace*{0.9in}\mathsf{PredMap\,(G\,A)\,(G^{\wedge}\,A\,Q)\,(G^{\wedge}\,A\,Q')} 
 \end{array}\]
 for $\mathsf{G^{\wedge}}$
-then we could define
-\[\mathsf{q = G^\wedge Map\,(G\,B)\,(G^{\wedge}\,B\,Q')\,(P\,B\,Q')\,
+then we could define $\mathsf{q}$ as
+\[\mathsf{G^\wedge Map\,(G\,B)\,(G^{\wedge}\,B\,Q')\,(P\,B\,Q')\,
 (dIndG\,P\,cc\,B\,Q')\,x\,liftG}\]  Unfortunately, however,
 we cannot define $\mathsf{G^\wedge Map}$. Indeed, its definition would
 have to be
@@ -1781,10 +1745,8 @@ end of Section~\ref{sec:ADTs-and-nesteds}. Nevertheless, the example
 as given nicely illustrates deep induction.
 
 \begin{figure*}[t]
-
-\begin{adjustbox}{varwidth=7.3in, max width=7.1in, margin=-0.0in 0in
-      -0.2in 0in, center} 
-
+\begin{adjustbox}{varwidth=\linewidth, max width=\linewidth,
+	margin=-0.0in 0in -0.2in 0in, center}
 {\small
 \[\begin{array}{lll}
 \mathsf{cvar} & : & \mathsf{\forall\, (A : Set)\, (Q_A : A \to Set)\,
@@ -1809,12 +1771,9 @@ as given nicely illustrates deep induction.
   (List^{\wedge}\, B\, Q_B)\, e \to List^{\wedge}\, (LTerm\, B)\,
   (GetType\, B)\, ts \to Maybe\, (LType\, A)}
 \end{array}\]}
-
-\vspace*{-0.1in}
-
-\caption{Applied induction hypotheses for
-  $\mathsf{LTerm}$}\label{fig:ind-hyps-lterm-applied-to-P}
 \end{adjustbox}
+\caption{Applied induction hypotheses for $\mathsf{LTerm}$}
+\label{fig:ind-hyps-lterm-applied-to-P}
 \end{figure*}
 
 By construction every lambda term in $\mathsf{LTerm}$ is well-typed,
@@ -1849,7 +1808,7 @@ $\mathsf{getTypeProof}$ by
   (LTerm^\wedge KT\, A\, t) }
 \end{array}\] where $\mathsf{t : LTerm\,A}$,
 $\mathsf{P}$ is the polymorphic predicate \[\mathsf{ \lambda \, (A:
-  Set)\, (Q : A \to Set)\, (t : LTerm\,A)\, \to Maybe \, (LType \,
+  Set)\, (Q : A \to Set)\, (t : LTerm\,A) \to Maybe \, (LType \,
   A)}\] and $\mathsf{K_\top}$ is the constantly $\mathsf{\top}$-valued
 predicate on $\mathsf{A}$, and \[\mathsf{LTerm^\wedge KT : \forall\,
   (A : Set)\, (t : LTerm A) \to LTerm^{\wedge}\, A\, K_\top\,t}\] is a
@@ -1917,12 +1876,12 @@ of the pair to define\looseness=-1
 %&= & \mathsf{Maybe\, (LType\, B) \times List^{\wedge}\, (LTerm\, B)\,
 %    (GetType\, B)\, ts'} 
 %\end{array}\]
-\begin{align*}
-  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\,
+\begin{gather*}
+  \mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\,
     (nothing , lift_{ts'}) = nothing} \\ 
-  &\mathsf{clist\, A\, B\, Q\, Q'\, e\, (cons\, t\, ts') \, liftE\,
-    (just\, T' , lift_{ts'}) = just \, (list\, B\, e\, T')} 
-\end{align*}
+  \mathsf{clist\;\! A\;\! B\;\! Q\;\! Q'\:\! e\;\! (cons\;\! t\;\! ts')\;\! liftE\;\!
+    (just\;\! T'\!, lift_{ts'}\!)\! = just (list\;\! B\;\! e\;\! T')} 
+\end{gather*}
 Here $\mathsf{e : Equal\, A\, (List\,B)}$, $\mathsf{T' : LType\, B}$,
 and
 \[\mathsf{lift_{ts'} : List^{\wedge}\, (LTerm\, B)\, (GetType\,
@@ -1950,8 +1909,8 @@ $\mathsf{List^\wedge KT}$ are defined analogously. We have:
 \[\begin{array}{ll}
  & \!\!\mathsf{LTerm^{\wedge}\,A\,K_\top\, (abs \,B \,C \,e \,s \,T
   \,t')}\\
-\quad\quad = & \!\!\mathsf{\exists [Q_B]\, [Q_C]\, Equal^{\wedge} \, A\, (B \to
-  C)\, K_\top\, (Arr^{\wedge} \, B\, C\, Q_B \, Q_C)\, e }\\
+\quad\quad\! = & \!\!\!\mathsf{\exists [Q_B] [Q_C]\;\! Equal^{\wedge}\;\! A\;\! (B\! \to\!
+  C)\;\! K_\top (Arr^{\wedge}\;\! B\;\! C\;\! Q_B\;\! Q_C)\;\! e }\\
  & \quad\quad\mathsf{\times \, LType^{\wedge}\, B\, Q_B\, T \times \,
   LTerm^{\wedge}\, C\, Q_C\,t' }
 \end{array}\]
@@ -2000,8 +1959,8 @@ and define
   \quad\quad : &
   \!\!\mathsf{\forall\, (A : Set)\, (Q\,Q' : A \to
     Set) \to}\\
-  & \;\;\mathsf{Equal^\wedge\,A\,A\,Q\,Q'\,refl \to}\\
-  &  \;\;\;\;\mathsf{PredMap\,(LTerm\,A)\,
+  & \mathsf{Equal^\wedge\,A\,A\,Q\,Q'\,refl \to}\\
+  &  \;\mathsf{PredMap\,(LTerm\,A)\,
     (LTerm^{\wedge}\,A\,Q)\,(LTerm^{\wedge}\,A\,Q')}
   \end{array}\] that takes two
   (extensionally) equal predicates with the same carrier and produces
@@ -2015,8 +1974,8 @@ and define
   $\mathsf{PredMap}$ is constructed using $\mathsf{var}$ and
   $\mathsf{app}$, respectively. If $\mathsf{L_{K_\top} :
     LTerm^{\wedge}\, (B \to A) \, K_\top\, t_1}$ is the proof
-  $\mathsf{L_{K_\top} = LTerm^\wedge KT\, (B \to A)\, t_1}$ and
-  $\mathsf{ LTerm^\wedge Arr}$ $\mathsf{: LTerm^{\wedge}\, (B \to A)\,
+  $\mathsf{L_{K_\top}\!\! =\! LTerm^\wedge KT\, (B\! \to\! A)\, t_1}$ and
+  $\mathsf{LTerm^\wedge Arr}$ $\mathsf{: LTerm^{\wedge}\, (B \to A)\,
     (Arr^{\wedge} \, B\, A\, K_\top \, K_\top)\, t_1}$ is the proof
   \[\begin{array}{l}
    \quad\quad  \mathsf{LTerm^\wedge Arr = LTerm^\wedge
@@ -2118,7 +2077,7 @@ our case study from Section~\ref{sec:app}. Our development opens the
 way to incorporating automatic generation of (deep) induction rules
 for them into proof assistants.
 
-\subsection*{Acknowledgments}
+\section*{Acknowledgments}
 
 This work was supported by National Science Foundation award 1906388.
 
